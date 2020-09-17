@@ -21,12 +21,12 @@ public class ColourSliders : MonoBehaviour
 
     private void Start()
     {
-        InitialiseSliderContainer();
-        InitialiseImageObject();
+        //InitialiseSliderContainer();
+        //InitialiseImageObject();
 
-        redSlider = InitialiseSlider(Channel.Red);
-        greenSlider = InitialiseSlider(Channel.Green);
-        blueSlider = InitialiseSlider(Channel.Blue);
+        //redSlider = InitialiseSlider(Channel.Red);
+        //greenSlider = InitialiseSlider(Channel.Green);
+        //blueSlider = InitialiseSlider(Channel.Blue);
     }
 
     private void InitialiseSliderContainer()

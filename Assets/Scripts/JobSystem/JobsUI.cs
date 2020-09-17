@@ -27,9 +27,9 @@ public class JobsUI : MonoBehaviour
         jobSprite = Resources.Load<Sprite>(JobConstants.jobSpritePath);
 
         // Create UI elements and populate with jobs 
-        availableJobsContainer = InitialiseAvailableJobsContainer();
-        scheduleContainer = InitialiseScheduleContainer();
-        AddAvailableJobs();
+        //availableJobsContainer = InitialiseAvailableJobsContainer();
+        //scheduleContainer = InitialiseScheduleContainer();
+        //AddAvailableJobs();
     }
 
     private GameObject InitialiseAvailableJobsContainer()
