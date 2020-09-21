@@ -10,4 +10,7 @@ public class Message : ScriptableObject
     public string body;
     public int condition;
     public bool unlocked;
+
+    // The job offered in the email 
+    public Job job; 
 }

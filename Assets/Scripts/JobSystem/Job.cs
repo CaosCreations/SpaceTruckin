@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[CreateAssetMenu(fileName = "JobD", menuName = "ScriptableObjects/Job", order = 1)]
+[CreateAssetMenu(fileName = "Job", menuName = "ScriptableObjects/Job", order = 1)]
 public class Job : ScriptableObject
 {
-    public string title; 
+    public string title;
+    public int reward;
+    public float duration;
+
+    // Used for job container positioning 
     public Vector2 startingPosition; 
 }

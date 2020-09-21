@@ -22,8 +22,6 @@ public class MessagesManager : MonoBehaviour
         backButton.onClick.AddListener(GoToListView);
         AddMessages();
         GoToListView();
-
-        Debug.Log(messageContainer.messages.Length); 
     }
 
     public void CheckMessagesToAdd(long moneyMade)
@@ -61,11 +59,10 @@ public class MessagesManager : MonoBehaviour
         {
             if (message.unlocked)
             {
-                Debug.Log("AddMessages message: " + message); 
                 GameObject newMessage = Instantiate(messageItemPrefab, messageParent.transform);
                 MessageButtonHandler buttonHandler = newMessage.GetComponent<MessageButtonHandler>();
                 buttonHandler.SetMessage(message);
-                buttonHandler.button.onClick.AddListener(delegate { GoToDetailView(message); });
+                buttonHandler.button.onClick.AddListener(delegate { GoToDetailView(message); });  
             }
         }
     }
@@ -75,6 +72,11 @@ public class MessagesManager : MonoBehaviour
         messagesListView.SetActive(false);
         messagesDetailView.SetActive(true);
         messageDetailViewHandler.SetMessage(message);
+        
+        if (message.job != null)
+        {
+            messageDetailViewHandler.SetJobAcceptButton(message.job); 
+        }
     }
 
     private void GoToListView()
