@@ -20,7 +20,10 @@ public class MessagesManager : MonoBehaviour
     {
         backButton.onClick.RemoveAllListeners();
         backButton.onClick.AddListener(GoToListView);
+        AddMessages();
         GoToListView();
+
+        Debug.Log(messageContainer.messages.Length); 
     }
 
     public void CheckMessagesToAdd(long moneyMade)
@@ -58,6 +61,7 @@ public class MessagesManager : MonoBehaviour
         {
             if (message.unlocked)
             {
+                Debug.Log("AddMessages message: " + message); 
                 GameObject newMessage = Instantiate(messageItemPrefab, messageParent.transform);
                 MessageButtonHandler buttonHandler = newMessage.GetComponent<MessageButtonHandler>();
                 buttonHandler.SetMessage(message);

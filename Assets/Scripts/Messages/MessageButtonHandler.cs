@@ -10,6 +10,7 @@ public class MessageButtonHandler : MonoBehaviour
 
     public void SetMessage(Message message)
     {
+        Debug.Log($"Message being set: {message}");
         text.text = $"{message.sender} - {message.subject} : {message.body}";
     }
 }
