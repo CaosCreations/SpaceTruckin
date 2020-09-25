@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class JobsUI : MonoBehaviour
 {
     public JobsContainer jobsContainer;
-    public GameObject jobPrefab; 
     private GameObject availableJobsContainer;
     private GameObject scheduleContainer;
 
@@ -27,9 +26,9 @@ public class JobsUI : MonoBehaviour
         jobSprite = Resources.Load<Sprite>(JobConstants.jobSpritePath);
 
         // Create UI elements and populate with jobs 
-        //availableJobsContainer = InitialiseAvailableJobsContainer();
-        //scheduleContainer = InitialiseScheduleContainer();
-        //AddAvailableJobs();
+        availableJobsContainer = InitialiseAvailableJobsContainer();
+        scheduleContainer = InitialiseScheduleContainer();
+        AddAvailableJobs();
     }
 
     private GameObject InitialiseAvailableJobsContainer()

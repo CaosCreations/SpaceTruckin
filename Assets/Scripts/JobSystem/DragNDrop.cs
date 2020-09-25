@@ -6,8 +6,8 @@ using UnityEngine.EventSystems;
 
 public class DragNDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    private GameObject mainCanvas;
-    private GameObject messagesPanel;
+    public GameObject mainCanvas;
+    public GameObject messagesPanel;
     public GameObject availableJobsContainer; 
     public GameObject scheduleContainer;
     public GameObject testSchedule; 
@@ -18,9 +18,6 @@ public class DragNDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 
     private void Start()
     {
-        mainCanvas = GameObject.Find("Canvas");
-        messagesPanel = GameObject.Find("MessagesPanel"); 
-
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
     }

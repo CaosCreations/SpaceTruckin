@@ -10,8 +10,8 @@ public class MessageDetailView : MonoBehaviour
 
     public void SetMessage(Message message)
     {
-        messageDetail.text = $"From: {message.sender} \n";
-        messageDetail.text += $"Subject: {message.subject} \n";
+        messageDetail.text = "From: " + message.sender + "\n";
+        messageDetail.text += "Subject: " + message.subject + "\n";
         messageDetail.text += message.body;
     }
 

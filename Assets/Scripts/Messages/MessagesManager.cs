@@ -60,6 +60,7 @@ public class MessagesManager : MonoBehaviour
             if (message.unlocked)
             {
                 GameObject newMessage = Instantiate(messageItemPrefab, messageParent.transform);
+                newMessage.name = "Message";
                 MessageButtonHandler buttonHandler = newMessage.GetComponent<MessageButtonHandler>();
                 buttonHandler.SetMessage(message);
                 buttonHandler.button.onClick.AddListener(delegate { GoToDetailView(message); });  
