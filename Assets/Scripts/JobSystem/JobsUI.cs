@@ -29,6 +29,8 @@ public class JobsUI : MonoBehaviour
         availableJobsContainer = InitialiseAvailableJobsContainer();
         scheduleContainer = InitialiseScheduleContainer();
         AddAvailableJobs();
+
+        //MessageDetailView.onJobAccept += 
     }
 
     private GameObject InitialiseAvailableJobsContainer()
