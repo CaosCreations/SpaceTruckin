@@ -20,7 +20,7 @@ public class MessageDetailView : MonoBehaviour
 
     public void SetJobAcceptButton(Job job)
     {
-        jobAcceptButton.GetComponentInChildren<Text>().text = job.title; 
+        jobAcceptButton.GetComponentInChildren<Text>().text = "Accept " + job.title; 
         jobAcceptButton.onClick.RemoveAllListeners();
         jobAcceptButton.onClick.AddListener(() => onJobAccept?.Invoke(job)); 
     }

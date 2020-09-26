@@ -15,5 +15,7 @@ public class Job : ScriptableObject
     public bool isScheduled; 
 
     // Used for job container positioning 
-    public Vector2 startingPosition; 
+    public Vector2 startingPosition;
+
+    public GameObject draggableJobObject;
 }

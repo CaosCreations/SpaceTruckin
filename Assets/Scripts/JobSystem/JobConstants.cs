@@ -14,7 +14,7 @@ public class JobConstants : MonoBehaviour
     public static Vector2 availableJobsContainerLeftPadding = new Vector2(64f, 64f);
 
     // ScheduleContainer dimensions 
-    public static int scheduleSlots = 4; 
+    public static int scheduleSlots = 14; 
     public static Vector2 scheduleContainerAnchorMin = new Vector2(0.5f, 0f);
     public static Vector2 scheduleContainerAnchorMax = Vector2.one;
     public static Vector2 scheduleContainerLocalScale = new Vector2(0.75f, 0.75f);

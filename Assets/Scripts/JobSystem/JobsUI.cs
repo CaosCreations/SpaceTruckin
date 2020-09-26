@@ -6,7 +6,10 @@ using UnityEngine.UI;
 
 public class JobsUI : MonoBehaviour
 {
+    public GameObject mainCanvas; 
+    public GameObject scheduleSlotPrefab; 
     public JobsContainer jobsContainer;
+
     private GameObject availableJobsContainer;
     private GameObject scheduleContainer;
 
@@ -28,6 +31,7 @@ public class JobsUI : MonoBehaviour
         // Create UI elements and populate with jobs 
         availableJobsContainer = InitialiseAvailableJobsContainer();
         scheduleContainer = InitialiseScheduleContainer();
+        InitialiseScheduleSlots(); 
         AddAcceptedJobs();
 
         //MessageDetailView.onJobAccept += 
@@ -62,8 +66,8 @@ public class JobsUI : MonoBehaviour
         Image scheduleImage = scheduleObject.AddComponent<Image>();
         scheduleImage.sprite = containerBackgroundSprite;
 
-        scheduleObject.AddComponent<CanvasGroup>();
-        scheduleObject.AddComponent<ScheduleUI>(); 
+        scheduleObject.AddComponent<CanvasGroup>().blocksRaycasts = true; 
+        //scheduleObject.AddComponent<ScheduleUI>(); 
 
         RectTransform rectTransform = scheduleObject.GetComponent<RectTransform>();
         rectTransform.localPosition = new Vector2(0.5f, 0f);
@@ -91,20 +95,23 @@ public class JobsUI : MonoBehaviour
             {
                 GameObject newJob = new GameObject(job.title); 
                 newJob.transform.parent = availableJobsContainer.transform;
+                job.draggableJobObject = newJob; 
 
                 // Store location data for repositioning on failed drop.  
-                // Assign the individual floats to prevent copying the reference 
+                // Assign the individual floats to prevent copying the reference. 
                 job.startingPosition = new Vector2(newJob.transform.position.x, newJob.transform.position.y);
 
                 Image jobImage = newJob.AddComponent<Image>();
                 jobImage.sprite = jobSprite; 
 
                 DragNDrop dragNDrop = newJob.AddComponent<DragNDrop>();
+                dragNDrop.mainCanvas = mainCanvas;
+                dragNDrop.jobsPanel = transform.gameObject; 
                 dragNDrop.availableJobsContainer = availableJobsContainer;
                 dragNDrop.scheduleContainer = scheduleContainer;
                 dragNDrop.job = job;
-
-                // Needs to be false otherwise Schedule can't fire events 
+                
+                // Needs to be false otherwise Schedule can't fire events. 
                 newJob.AddComponent<CanvasGroup>().interactable = false; 
             }
         }
@@ -112,13 +119,23 @@ public class JobsUI : MonoBehaviour
 
     private void InitialiseScheduleSlots()
     {
-        for (int i = 0; i < scheduleSlots; i++)
+        for (int i = 1; i <= scheduleSlots; i++)
         {
-            GameObject scheduleSlot = new GameObject(JobConstants.scheduleSlotName);
-            scheduleSlot.transform.parent = scheduleContainer.transform;
-            Image slotImage = scheduleSlot.AddComponent<Image>();
-            slotImage.sprite = scheduleSlotSprite;
-            slotImage.color = Color.blue;
+            GameObject scheduleSlot = Instantiate(scheduleSlotPrefab, scheduleContainer.transform);
+            scheduleSlot.name = "ScheduleSlot";
+            scheduleSlot.GetComponentInChildren<Text>().text = i.ToString(); 
         }
+    }
+
+    public bool IsInsideSlot(GameObject draggableJob)
+    {
+        foreach (Transform _transform in scheduleContainer.transform)
+        {
+            if (draggableJob.transform.parent == _transform)
+            {
+                return true; 
+            }
+        }
+        return false; 
     }
 }
