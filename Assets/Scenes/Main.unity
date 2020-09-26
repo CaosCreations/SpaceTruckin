@@ -663,6 +663,7 @@ GameObject:
   - component: {fileID: 1432727475}
   - component: {fileID: 1432727474}
   - component: {fileID: 1432727476}
+  - component: {fileID: 1432727478}
   - component: {fileID: 1432727477}
   m_Layer: 0
   m_Name: GameManager
@@ -740,6 +741,18 @@ MonoBehaviour:
   pilotButtonPrefab: {fileID: 5230716868348227813, guid: 561c8d19af5009041a7aafd4958ef06d,
     type: 3}
   pilotsContainer: {fileID: 11400000, guid: 579e06c9aca54514e8a62755aae4bd7b, type: 2}
+--- !u!114 &1432727478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432727473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ea7d6fcf61338343a371b769cc1ac31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1568294288
 GameObject:
   m_ObjectHideFlags: 0
@@ -1984,7 +1997,7 @@ PrefabInstance:
     - target: {fileID: 8214299309921352803, guid: 267ca3cbf973c224ab29b3c37a321f6c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 65.746025
+      value: 0.00042567542
       objectReference: {fileID: 0}
     - target: {fileID: 8214299309921352803, guid: 267ca3cbf973c224ab29b3c37a321f6c,
         type: 3}
@@ -2029,7 +2042,7 @@ PrefabInstance:
     - target: {fileID: 9047227214517731200, guid: 267ca3cbf973c224ab29b3c37a321f6c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 49.30954
+      value: 0.00037273788
       objectReference: {fileID: 0}
     - target: {fileID: 9047227214517731200, guid: 267ca3cbf973c224ab29b3c37a321f6c,
         type: 3}

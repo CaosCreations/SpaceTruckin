@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class ScheduleSlot : MonoBehaviour, IDropHandler
 {
-    public static event Action onJobSchedule;
+    public static event Action<Job> onJobSchedule;
 
     public void OnDrop(PointerEventData eventData)
     {
@@ -16,7 +16,8 @@ public class ScheduleSlot : MonoBehaviour, IDropHandler
             // Parent job to the schedule slot if dropped inside 
             eventData.pointerDrag.transform.parent = gameObject.transform;
 
-            onJobSchedule?.Invoke();
+            // DragNDrop has a reference to the job being scheduled 
+            onJobSchedule?.Invoke(eventData.pointerDrag.GetComponent<DragNDrop>().job);
         }
     }
 }

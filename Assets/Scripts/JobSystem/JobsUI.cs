@@ -34,7 +34,8 @@ public class JobsUI : MonoBehaviour
         InitialiseScheduleSlots(); 
         AddAcceptedJobs();
 
-        //MessageDetailView.onJobAccept += 
+        // Updates available jobs container when job is accepted from mail 
+        MessageDetailView.onJobAccept += AddAcceptedJob; 
     }
 
     private GameObject InitialiseAvailableJobsContainer()
@@ -82,6 +83,30 @@ public class JobsUI : MonoBehaviour
         return scheduleObject;
     }
 
+    private void AddAcceptedJob(Job job)
+    {
+        GameObject newJob = new GameObject(job.title);
+        newJob.transform.parent = availableJobsContainer.transform;
+        job.draggableJobObject = newJob;
+
+        // Store location data for repositioning on failed drop.  
+        // Assign the individual floats to prevent copying the reference. 
+        job.startingPosition = new Vector2(newJob.transform.position.x, newJob.transform.position.y);
+
+        Image jobImage = newJob.AddComponent<Image>();
+        jobImage.sprite = jobSprite;
+
+        DragNDrop dragNDrop = newJob.AddComponent<DragNDrop>();
+        dragNDrop.mainCanvas = mainCanvas;
+        dragNDrop.jobsPanel = transform.gameObject;
+        dragNDrop.availableJobsContainer = availableJobsContainer;
+        dragNDrop.scheduleContainer = scheduleContainer;
+        dragNDrop.job = job;
+
+        // Needs to be false otherwise Schedule can't fire events. 
+        newJob.AddComponent<CanvasGroup>().interactable = false;
+    }
+
     // Jobs show up in the jobs container only when 
     // they've been accepted in the messages UI 
     //
@@ -91,28 +116,9 @@ public class JobsUI : MonoBehaviour
     {
         foreach (Job job in jobsContainer.jobsContainer)
         {
-            if (job.isAccepted)
+            if (job.isAccepted /*&& !job.isScheduled)*/)
             {
-                GameObject newJob = new GameObject(job.title); 
-                newJob.transform.parent = availableJobsContainer.transform;
-                job.draggableJobObject = newJob; 
-
-                // Store location data for repositioning on failed drop.  
-                // Assign the individual floats to prevent copying the reference. 
-                job.startingPosition = new Vector2(newJob.transform.position.x, newJob.transform.position.y);
-
-                Image jobImage = newJob.AddComponent<Image>();
-                jobImage.sprite = jobSprite; 
-
-                DragNDrop dragNDrop = newJob.AddComponent<DragNDrop>();
-                dragNDrop.mainCanvas = mainCanvas;
-                dragNDrop.jobsPanel = transform.gameObject; 
-                dragNDrop.availableJobsContainer = availableJobsContainer;
-                dragNDrop.scheduleContainer = scheduleContainer;
-                dragNDrop.job = job;
-                
-                // Needs to be false otherwise Schedule can't fire events. 
-                newJob.AddComponent<CanvasGroup>().interactable = false; 
+                AddAcceptedJob(job);
             }
         }
     }
