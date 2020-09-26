@@ -1,16 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class Schedule : MonoBehaviour, IDropHandler
+[CreateAssetMenu(fileName = "Schedule", menuName = "ScriptableObjects/Schedule", order = 1)]
+public class Schedule : ScriptableObject
 {
-    public void OnDrop(PointerEventData eventData)
-    {
-        if (eventData.pointerDrag != null)
-        {
-            // Parent job to the schedule if dropped inside 
-            eventData.pointerDrag.transform.parent = gameObject.transform;
-        }
-    }
+    // Int key is the day of the calendar month 
+    public Dictionary<int, Job> schedule = new Dictionary<int, Job>(); 
 }

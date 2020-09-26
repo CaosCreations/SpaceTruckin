@@ -28,7 +28,7 @@ public class JobsUI : MonoBehaviour
         // Create UI elements and populate with jobs 
         availableJobsContainer = InitialiseAvailableJobsContainer();
         scheduleContainer = InitialiseScheduleContainer();
-        AddAvailableJobs();
+        AddAcceptedJobs();
 
         //MessageDetailView.onJobAccept += 
     }
@@ -63,7 +63,7 @@ public class JobsUI : MonoBehaviour
         scheduleImage.sprite = containerBackgroundSprite;
 
         scheduleObject.AddComponent<CanvasGroup>();
-        scheduleObject.AddComponent<Schedule>(); 
+        scheduleObject.AddComponent<ScheduleUI>(); 
 
         RectTransform rectTransform = scheduleObject.GetComponent<RectTransform>();
         rectTransform.localPosition = new Vector2(0.5f, 0f);
@@ -78,28 +78,35 @@ public class JobsUI : MonoBehaviour
         return scheduleObject;
     }
 
-    private void AddAvailableJobs()
+    // Jobs show up in the jobs container only when 
+    // they've been accepted in the messages UI 
+    //
+    // Jobs are "available" when they have been offered
+    // via a message but haven't been "accepted" yet 
+    private void AddAcceptedJobs()
     {
         foreach (Job job in jobsContainer.jobsContainer)
         {
-            GameObject newJob = new GameObject(job.title); 
-            newJob.transform.parent = availableJobsContainer.transform;
+            if (job.isAccepted)
+            {
+                GameObject newJob = new GameObject(job.title); 
+                newJob.transform.parent = availableJobsContainer.transform;
 
-            // Store location data for repositioning on failed drop.  
-            // Assign the individual floats to prevent copying the reference 
-            job.startingPosition = new Vector2(newJob.transform.position.x, newJob.transform.position.y);
+                // Store location data for repositioning on failed drop.  
+                // Assign the individual floats to prevent copying the reference 
+                job.startingPosition = new Vector2(newJob.transform.position.x, newJob.transform.position.y);
 
-            Image jobImage = newJob.AddComponent<Image>();
-            jobImage.sprite = jobSprite; 
+                Image jobImage = newJob.AddComponent<Image>();
+                jobImage.sprite = jobSprite; 
 
-            DragNDrop dragNDrop = newJob.AddComponent<DragNDrop>();
-            dragNDrop.availableJobsContainer = availableJobsContainer;
-            dragNDrop.scheduleContainer = scheduleContainer;
-            dragNDrop.job = job;
+                DragNDrop dragNDrop = newJob.AddComponent<DragNDrop>();
+                dragNDrop.availableJobsContainer = availableJobsContainer;
+                dragNDrop.scheduleContainer = scheduleContainer;
+                dragNDrop.job = job;
 
-            // Needs to be false otherwise Schedule can't fire events 
-            newJob.AddComponent<CanvasGroup>().interactable = false; 
-            
+                // Needs to be false otherwise Schedule can't fire events 
+                newJob.AddComponent<CanvasGroup>().interactable = false; 
+            }
         }
     }
 
