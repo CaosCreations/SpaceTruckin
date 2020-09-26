@@ -9,6 +9,7 @@ public class JobsUI : MonoBehaviour
     public GameObject mainCanvas; 
     public GameObject scheduleSlotPrefab; 
     public JobsContainer jobsContainer;
+    public Schedule schedule; 
 
     private GameObject availableJobsContainer;
     private GameObject scheduleContainer;
@@ -17,12 +18,8 @@ public class JobsUI : MonoBehaviour
     private Sprite scheduleSlotSprite; 
     private Sprite jobSprite;
 
-    private int scheduleSlots = JobConstants.scheduleSlots; 
-
     private void Start()
     {
-        Debug.Log("JobsContainer length: " + jobsContainer.jobsContainer.Length);
-
         // Load sprites 
         containerBackgroundSprite = Resources.Load<Sprite>(JobConstants.uiBackgroundSpritePath);
         scheduleSlotSprite = Resources.Load<Sprite>(JobConstants.scheduleSlotSpritePath);
@@ -32,10 +29,10 @@ public class JobsUI : MonoBehaviour
         availableJobsContainer = InitialiseAvailableJobsContainer();
         scheduleContainer = InitialiseScheduleContainer();
         InitialiseScheduleSlots(); 
-        AddAcceptedJobs();
+        AddJobs();
 
-        // Updates available jobs container when job is accepted from mail 
-        MessageDetailView.onJobAccept += AddAcceptedJob; 
+        // Updates available jobs container when job is accepted from a message  
+        MessageDetailView.onJobAccept += AddJob; 
     }
 
     private GameObject InitialiseAvailableJobsContainer()
@@ -83,15 +80,12 @@ public class JobsUI : MonoBehaviour
         return scheduleObject;
     }
 
-    private void AddAcceptedJob(Job job)
+    private void AddJob(Job job)
     {
         GameObject newJob = new GameObject(job.title);
         newJob.transform.parent = availableJobsContainer.transform;
-        job.draggableJobObject = newJob;
 
-        // Store location data for repositioning on failed drop.  
-        // Assign the individual floats to prevent copying the reference. 
-        job.startingPosition = new Vector2(newJob.transform.position.x, newJob.transform.position.y);
+        //newJob.transform.parent = job.isScheduled ? job.scheduleSlotTransform : availableJobsContainer.transform;
 
         Image jobImage = newJob.AddComponent<Image>();
         jobImage.sprite = jobSprite;
@@ -112,23 +106,24 @@ public class JobsUI : MonoBehaviour
     //
     // Jobs are "available" when they have been offered
     // via a message but haven't been "accepted" yet 
-    private void AddAcceptedJobs()
+    private void AddJobs()
     {
         foreach (Job job in jobsContainer.jobsContainer)
         {
-            if (job.isAccepted /*&& !job.isScheduled)*/)
+            if (job.isAccepted)
             {
-                AddAcceptedJob(job);
+                AddJob(job);
             }
         }
     }
 
     private void InitialiseScheduleSlots()
     {
-        for (int i = 1; i <= scheduleSlots; i++)
+        for (int i = 1; i <= schedule.numberOfDays; i++)
         {
             GameObject scheduleSlot = Instantiate(scheduleSlotPrefab, scheduleContainer.transform);
             scheduleSlot.name = "ScheduleSlot";
+            scheduleSlot.GetComponent<ScheduleSlot>().dayOfMonth = i; 
             scheduleSlot.GetComponentInChildren<Text>().text = i.ToString(); 
         }
     }

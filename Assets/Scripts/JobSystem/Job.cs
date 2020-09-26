@@ -10,12 +10,9 @@ public class Job : ScriptableObject
     public int reward;
     public float duration;
 
-    //public bool isAvailable;
     public bool isAccepted; 
-    public bool isScheduled; 
+    public bool isScheduled;
 
-    // Used for job container positioning 
-    public Vector2 startingPosition;
+    public Transform scheduleSlotTransform; 
 
-    public GameObject draggableJobObject;
 }

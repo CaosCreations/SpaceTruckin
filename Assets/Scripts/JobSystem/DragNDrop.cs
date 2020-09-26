@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Json;
 using UnityEngine;
@@ -6,6 +7,8 @@ using UnityEngine.EventSystems;
 
 public class DragNDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
+    public static event Action<Job> onUnscheduleJob;
+
     public GameObject mainCanvas;
     public GameObject jobsPanel;
     public GameObject availableJobsContainer; 
@@ -13,12 +16,14 @@ public class DragNDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
     public GameObject testSchedule; 
     public Job job;
 
-    private JobsUI jobsUI; 
+    private JobsManager jobsManager; 
+    private JobsUI jobsUI;
     private CanvasGroup canvasGroup;
     private RectTransform rectTransform;
 
     private void Start()
     {
+        jobsManager = jobsPanel.GetComponent<JobsManager>(); 
         jobsUI = jobsPanel.GetComponent<JobsUI>(); 
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
@@ -52,6 +57,12 @@ public class DragNDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
         if (!jobsUI.IsInsideSlot(gameObject))
         {
             gameObject.transform.parent = availableJobsContainer.transform;
+
+            // If the job was previously scheduled, update the schedule accordingly 
+            if (job.isScheduled)
+            {
+                onUnscheduleJob?.Invoke(job);
+            }
         }        
     }
 
