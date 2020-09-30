@@ -10,9 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5745358076465076626}
   - component: {fileID: 5745358076465076627}
-  - component: {fileID: 5745358076465076629}
   - component: {fileID: 5745358076465076631}
-  - component: {fileID: 5745358076465076628}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -47,31 +45,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   missionContainer: {fileID: 11400000, guid: 6abb128be21441f4b80cc81980b3c565, type: 2}
-  PlayerData: {fileID: 0}
   missionButtonPrefab: {fileID: 4084817639562825631, guid: d665d5f907daf6941b1f54f3eee41f00,
     type: 3}
   missionsPanel: {fileID: 0}
   playerMoneyText: {fileID: 0}
---- !u!114 &5745358076465076629
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5745358076465076624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6240ae4dfc8a15646a24792c28d1e598, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  messageParent: {fileID: 0}
-  messageItemPrefab: {fileID: 6110821848842840943, guid: e2a6c6a6585d1ef4986527f862145eef,
-    type: 3}
-  messageContainer: {fileID: 11400000, guid: c56a560d590fd144e90c88d3a06ea81b, type: 2}
-  messagesListView: {fileID: 0}
-  messagesDetailView: {fileID: 0}
-  messageDetailViewHandler: {fileID: 0}
-  backButton: {fileID: 0}
 --- !u!114 &5745358076465076631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,19 +62,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   schedule: {fileID: 11400000, guid: f3c7ada442946134e9e31f77a66f402a, type: 2}
---- !u!114 &5745358076465076628
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5745358076465076624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3c00b05fa09bb041aab759249d0d4cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  crewPanel: {fileID: 0}
-  pilotButtonPrefab: {fileID: 5230716868348227813, guid: 561c8d19af5009041a7aafd4958ef06d,
-    type: 3}
-  pilotsContainer: {fileID: 11400000, guid: 579e06c9aca54514e8a62755aae4bd7b, type: 2}
