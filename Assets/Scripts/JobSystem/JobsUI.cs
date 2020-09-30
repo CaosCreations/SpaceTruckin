@@ -65,7 +65,6 @@ public class JobsUI : MonoBehaviour
         scheduleImage.sprite = containerBackgroundSprite;
 
         scheduleObject.AddComponent<CanvasGroup>().blocksRaycasts = true; 
-        //scheduleObject.AddComponent<ScheduleUI>(); 
 
         RectTransform rectTransform = scheduleObject.GetComponent<RectTransform>();
         rectTransform.localPosition = new Vector2(0.5f, 0f);

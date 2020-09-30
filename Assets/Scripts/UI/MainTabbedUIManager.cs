@@ -21,39 +21,34 @@ public class MainTabbedUIManager : MonoBehaviour
 
     public enum Tab
     {
-        missions, messages, jobs, analytics, crew, upgrades
+        Missions, Messages, Jobs, Analytics, Crew, Upgrades
     }
 
     void Start()
     {
         SetupButtonListeners();
-        TabButtonClicked(Tab.missions);
-    }
-
-    void Update()
-    {
-
+        TabButtonClicked(Tab.Missions);
     }
 
     private void SetupButtonListeners()
     {
         missionsButton.onClick.RemoveAllListeners();
-        missionsButton.onClick.AddListener(delegate { TabButtonClicked(Tab.missions); });
+        missionsButton.onClick.AddListener(delegate { TabButtonClicked(Tab.Missions); });
 
         messagesButton.onClick.RemoveAllListeners();
-        messagesButton.onClick.AddListener(delegate { TabButtonClicked(Tab.messages); });
+        messagesButton.onClick.AddListener(delegate { TabButtonClicked(Tab.Messages); });
 
         jobsButton.onClick.RemoveAllListeners();
-        jobsButton.onClick.AddListener(delegate { TabButtonClicked(Tab.jobs); });
+        jobsButton.onClick.AddListener(delegate { TabButtonClicked(Tab.Jobs); });
 
         analyticsButton.onClick.RemoveAllListeners();
-        analyticsButton.onClick.AddListener(delegate { TabButtonClicked(Tab.analytics); });
+        analyticsButton.onClick.AddListener(delegate { TabButtonClicked(Tab.Analytics); });
 
         crewButton.onClick.RemoveAllListeners();
-        crewButton.onClick.AddListener(delegate { TabButtonClicked(Tab.crew); });
+        crewButton.onClick.AddListener(delegate { TabButtonClicked(Tab.Crew); });
 
         upgradesButton.onClick.RemoveAllListeners();
-        upgradesButton.onClick.AddListener(delegate { TabButtonClicked(Tab.upgrades); });
+        upgradesButton.onClick.AddListener(delegate { TabButtonClicked(Tab.Upgrades); });
     }
 
     private void TabButtonClicked(Tab tabClicked)
@@ -61,22 +56,22 @@ public class MainTabbedUIManager : MonoBehaviour
         ClearPanels();
         switch (tabClicked)
         {
-            case Tab.missions:
+            case Tab.Missions:
                 missionsPanel.SetActive(true);
                 break;
-            case Tab.messages:
+            case Tab.Messages:
                 messagesPanel.SetActive(true);
                 break;
-            case Tab.jobs:
+            case Tab.Jobs:
                 jobsPanel.SetActive(true);
                 break;
-            case Tab.analytics:
+            case Tab.Analytics:
                 analyticsPanel.SetActive(true);
                 break;
-            case Tab.crew:
+            case Tab.Crew:
                 crewPanel.SetActive(true);
                 break;
-            case Tab.upgrades:
+            case Tab.Upgrades:
                 upgradesPanel.SetActive(true);
                 break;
         }

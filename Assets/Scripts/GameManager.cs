@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public MissionContainer missionContainer;
-    public PlayerData playerData;
 
     public GameObject missionButtonPrefab;
 
@@ -16,7 +15,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        playerMoneyText.text = "$" + playerData.playerMoney;
+        playerMoneyText.text = "$" + PlayerData.playerMoney;
         GenerateMissionButtons();
     }
 
@@ -68,9 +67,9 @@ public class GameManager : MonoBehaviour
             missionButton.SetMissionTime(timeLeftInSeconds: currentTimer / MissionConstants.sliderScaleFactor);
         }
         
-        playerData.playerMoney += mission.missionValue;
+        PlayerData.playerMoney += mission.missionValue;
         missionButton.ResetMissionTime();
-        playerMoneyText.text = "$" + playerData.playerMoney;
+        playerMoneyText.text = "$" + PlayerData.playerMoney;
         mission.inProgress = false; 
     }
 

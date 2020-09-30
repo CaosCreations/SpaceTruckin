@@ -9,7 +9,6 @@ public class MessagesManager : MonoBehaviour
     public GameObject messageParent;
     public GameObject messageItemPrefab;
     public MessageContainer messageContainer;
-    public PlayerData playerData;
 
     public GameObject messagesListView;
     public GameObject messagesDetailView;
@@ -37,7 +36,7 @@ public class MessagesManager : MonoBehaviour
         {
             if (!message.unlocked)
             {
-                if (playerData.playerMoney > message.condition)
+                if (PlayerData.playerMoney > message.condition)
                 {
                     message.unlocked = true;
                 }

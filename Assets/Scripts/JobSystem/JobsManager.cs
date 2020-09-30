@@ -25,7 +25,7 @@ public class JobsManager : MonoBehaviour
         job.isScheduled = true;
         
         // In case the job is being "rescheduled."
-        // We don't want to have two entries with the same value 
+        // We don't want to have two entries with the same value. 
         if (schedule.schedule.ContainsValue(job))
         {
             schedule.schedule.Remove(GetDayOfMonth(job)); 
@@ -42,12 +42,11 @@ public class JobsManager : MonoBehaviour
         schedule.schedule.Remove(dayOfMonth); 
     }
 
-    // We don't have access to the key in the DragNDrop script
+    // We don't have access to the key in the DragNDrop script.
     private int GetDayOfMonth(Job job)
     {
-        // Get the corresponding key of the job in the dictionary 
+        // Get the corresponding key of the job in the dictionary. 
         int dayOfMonth = schedule.schedule.FirstOrDefault(k => k.Value == job).Key;
         return dayOfMonth; 
     }
-
 }
