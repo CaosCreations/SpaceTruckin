@@ -9,23 +9,28 @@ public class VendingMachineManager : MonoBehaviour
     public VendingMachineItem[] items;
 
     public GameObject[] itemObjects;
+    //public List<GameObject> itemObjects;
 
     public GameObject itemContainer;
-    public GameObject keypadContainer; 
+    public GameObject keypadContainer;
 
-    public GameObject itemPrefab; 
+    public GameObject itemPrefab;
     public GameObject keyPrefab;
 
-    public Text digitText;
-    public Text feedbackText; 
+    public Text feedbackText;
 
-    private float numberOfKeys = 10; 
-    private Color feedbackColour = Color.green;
+    private int numberOfKeys = 10;
+    private Color positiveFeedbackColour = Color.green;
+    private Color negativeFeedbackColour = Color.red;
 
     private void Start()
     {
+        items = new VendingMachineItem[numberOfKeys];
+        //itemObjects = new List<GameObject>(); 
+
+        Debug.Log("Items length: " + items.Length);
         InitialiseItems();
-        InitialiseKeypad(); 
+        InitialiseKeypad();
     }
 
 
@@ -34,20 +39,20 @@ public class VendingMachineManager : MonoBehaviour
         for (int i = 0; i < items.Length; i++)
         {
             GameObject item = Instantiate(itemPrefab, itemContainer.transform);
-            itemObjects[i] = item; 
+            itemObjects[i] = item;
             item.name = "Item " + i.ToString();
 
             Text text = item.GetComponent<Text>();
             text.text = items[i].itemName;
 
             Image image = GetComponent<Image>();
-            image.sprite = items[i].sprite; 
+            image.sprite = items[i].sprite;
         }
     }
 
     private void InitialiseKeypad()
     {
-        for (int i = 0; i < numberOfKeys; i++)
+        for (int i = 0; i < items.Length; i++)
         {
             GameObject key = Instantiate(keyPrefab, keypadContainer.transform);
             key.name = "Key " + i.ToString();
@@ -59,9 +64,25 @@ public class VendingMachineManager : MonoBehaviour
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(delegate
             {
-                items[i].PurchaseItem();
-                itemObjects[i].GetComponent<Image>().color = feedbackColour;
+                AddPurchaseListener(i);
             });
         }
     }
+
+    private void AddPurchaseListener(int itemIndex)
+    {
+        Image image = itemObjects[itemIndex].GetComponent<Image>();
+
+        if (PlayerData.playerMoney >= items[itemIndex].price)
+        {
+            Debug.Log(items[itemIndex] + " has been purchased");
+            items[itemIndex].PurchaseItem();
+            image.color = positiveFeedbackColour;
+        }
+        else
+        {
+            image.color = negativeFeedbackColour;
+        }
+    }
+
 }
