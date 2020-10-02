@@ -30,12 +30,13 @@ public class JobConstants : MonoBehaviour
     // Game object names 
     public static string availableJobsContainerName = "AvailableJobsContainer";
     public static string scheduleContainerName = "ScheduleContainer";
-    public static string scheduleSlotName = "ScheduleSlot"; 
+    public static string scheduleSlotName = "ScheduleSlot";
 
-    // Paths to png files 
-    public static string uiBackgroundSpritePath = "Sprites/ScheduleBackground"; 
-    public static string scheduleSlotSpritePath = "Sprites/ScheduleSlot";
-    public static string jobSpritePath = "Sprites/Briefcase"; 
+    // Sprite paths
+    public static string jobSystemFolderPath = "Sprites/JobSystem/";
+    public static string containerBackgroundSpritePath = jobSystemFolderPath + "ScheduleBackground";
+    public static string scheduleSlotSpritePath = jobSystemFolderPath + "ScheduleSlot";
+    public static string jobSpritePath = jobSystemFolderPath + "Briefcase"; 
 
     // Drag and drop parameters 
     public static float dragAlpha = 0.5f;

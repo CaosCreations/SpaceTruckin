@@ -28,6 +28,8 @@ public class MessageDetailView : MonoBehaviour
         Text buttonText = jobAcceptButton.GetComponentInChildren<Text>();
         buttonText.text = "Accept " + job.title;
 
+        jobAcceptButton.interactable = job.isAccepted ? false : true;  
+
         jobAcceptButton.onClick.RemoveAllListeners();
         jobAcceptButton.onClick.AddListener(() =>
         {

@@ -21,7 +21,7 @@ public class JobsUI : MonoBehaviour
     private void Start()
     {
         // Load sprites 
-        containerBackgroundSprite = Resources.Load<Sprite>(JobConstants.uiBackgroundSpritePath);
+        containerBackgroundSprite = Resources.Load<Sprite>(JobConstants.containerBackgroundSpritePath);
         scheduleSlotSprite = Resources.Load<Sprite>(JobConstants.scheduleSlotSpritePath);
         jobSprite = Resources.Load<Sprite>(JobConstants.jobSpritePath);
 

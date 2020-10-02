@@ -76,6 +76,11 @@ public class MessagesManager : MonoBehaviour
         if (message.job != null)
         {
             messageDetailViewHandler.SetJobAcceptButton(message.job); 
+            messageDetailViewHandler.jobAcceptButton.gameObject.SetActive(true);
+        }
+        else
+        {
+            messageDetailViewHandler.jobAcceptButton.gameObject.SetActive(false); 
         }
     }
 
