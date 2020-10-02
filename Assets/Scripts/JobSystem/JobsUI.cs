@@ -7,102 +7,43 @@ using UnityEngine.UI;
 public class JobsUI : MonoBehaviour
 {
     public GameObject mainCanvas; 
-    public GameObject scheduleSlotPrefab; 
-    public JobsContainer jobsContainer;
+    public GameObject availableJobsContainer;
+    public GameObject scheduleContainer;
+    public GameObject scheduleSlotPrefab;
+    public GameObject jobPrefab;
+
     public Schedule schedule;
-    public JobsManager jobsManager; 
+    public ScheduleSlot[] scheduleSlots; 
 
-    private GameObject availableJobsContainer;
-    private GameObject scheduleContainer;
-
-    private Sprite containerBackgroundSprite;
-    private Sprite scheduleSlotSprite; 
-    private Sprite jobSprite;
+    public JobsContainer jobsContainer;
 
     private void Start()
     {
-        // Load sprites 
-        containerBackgroundSprite = Resources.Load<Sprite>(JobConstants.containerBackgroundSpritePath);
-        scheduleSlotSprite = Resources.Load<Sprite>(JobConstants.scheduleSlotSpritePath);
-        jobSprite = Resources.Load<Sprite>(JobConstants.jobSpritePath);
-
-        // Create UI elements and populate with jobs 
-        scheduleContainer = InitialiseScheduleContainer();
-        availableJobsContainer = InitialiseAvailableJobsContainer();
-        InitialiseScheduleSlots(); 
+        SetupScheduleSlots(); 
         AddJobs();
 
         // Updates available jobs container when job is accepted from a message  
         MessageDetailView.onJobAccept += AddJob; 
     }
 
-    private GameObject InitialiseAvailableJobsContainer()
-    {
-        GameObject containerObject = new GameObject(JobConstants.availableJobsContainerName);
-        containerObject.transform.parent = gameObject.transform;
-
-        Image containerImage = containerObject.AddComponent<Image>();
-        containerImage.sprite = containerBackgroundSprite;
-
-        RectTransform rectTransform = containerObject.GetComponent<RectTransform>();
-        rectTransform.anchorMin = JobConstants.availableJobsContainerAnchorMin;
-        rectTransform.anchorMax = JobConstants.availableJobsContainerAnchorMax;
-        rectTransform.localPosition = Vector2.left; 
-        rectTransform.localScale = new Vector2(0.75f, 0.75f);
-        rectTransform.offsetMin = Vector2.zero;
-        rectTransform.offsetMax = Vector2.zero;
-
-        JobsUtils.SetupGridLayoutGroup(containerObject); 
-
-        return containerObject; 
-    }
-
-    private GameObject InitialiseScheduleContainer()
-    {
-        GameObject scheduleObject = new GameObject(JobConstants.scheduleContainerName);
-        scheduleObject.transform.parent = gameObject.transform;
-
-        Image scheduleImage = scheduleObject.AddComponent<Image>();
-        scheduleImage.sprite = containerBackgroundSprite;
-
-        scheduleObject.AddComponent<CanvasGroup>().blocksRaycasts = true; 
-
-        RectTransform rectTransform = scheduleObject.GetComponent<RectTransform>();
-        rectTransform.localPosition = new Vector2(0.5f, 0f);
-        rectTransform.anchorMin = JobConstants.scheduleContainerAnchorMin;
-        rectTransform.anchorMax = JobConstants.scheduleContainerAnchorMax;
-        rectTransform.localScale = JobConstants.scheduleContainerLocalScale;
-        rectTransform.offsetMin = Vector2.zero;
-        rectTransform.offsetMax = Vector2.zero;
-
-        JobsUtils.SetupGridLayoutGroup(scheduleObject); 
-
-        return scheduleObject;
-    }
-
     private void AddJob(Job job)
     {
-        GameObject newJob = new GameObject(job.title);
+        GameObject newJob = Instantiate(jobPrefab);
+        newJob.name = job.title;
 
         // If job was already scheduled, parent it to its pre-assigned schedule slot,
         // which matches the date it was scheduled for. 
-        Transform parentTransform = job.isScheduled ?
+        Transform parentTransform = job.isScheduled ? 
             job.scheduleSlotTransform : availableJobsContainer.transform;
 
         newJob.transform.parent = parentTransform;
 
-        Image jobImage = newJob.AddComponent<Image>();
-        jobImage.sprite = jobSprite;
-
-        DragNDrop dragNDrop = newJob.AddComponent<DragNDrop>();
+        DragNDrop dragNDrop = newJob.GetComponent<DragNDrop>();
         dragNDrop.mainCanvas = mainCanvas;
         dragNDrop.jobsPanel = transform.gameObject;
         dragNDrop.availableJobsContainer = availableJobsContainer;
         dragNDrop.scheduleContainer = scheduleContainer;
         dragNDrop.job = job;
-
-        // Needs to be false otherwise Schedule can't fire events. 
-        newJob.AddComponent<CanvasGroup>().interactable = false;
     }
 
     // Jobs show up in the jobs container only when 
@@ -121,27 +62,12 @@ public class JobsUI : MonoBehaviour
         }
     }
 
-    private void InitialiseScheduleSlots()
+    private void SetupScheduleSlots()
     {
-        for (int i = 1; i <= schedule.numberOfDays; i++)
+        Debug.Log("Arr length: " + scheduleSlots.Length); 
+        for (int i = 1; i <= scheduleSlots.Length; i++)
         {
-            if (schedule.schedule.ContainsKey(i))
-            {
-                // Don't rebuild the schedule slot if it already exists, 
-                // i.e. the job has already been scheduled, 
-                // just set it's parent since the container is being rebuilt 
-                GameObject scheduleSlot = schedule.schedule[i].scheduleSlotTransform.gameObject;
-                scheduleSlot.transform.parent = scheduleContainer.transform;
-
-                // Problem: how to order them correctly in the grid layout group 
-            }
-            else
-            {
-                GameObject scheduleSlot = Instantiate(scheduleSlotPrefab, scheduleContainer.transform);
-                scheduleSlot.name = "ScheduleSlot" + i.ToString();
-                scheduleSlot.GetComponent<ScheduleSlot>().dayOfMonth = i; 
-                scheduleSlot.GetComponentInChildren<Text>().text = i.ToString(); 
-            }
+            scheduleSlots[i].GetComponentInChildren<Text>().text = i.ToString(); 
         }
     }
 

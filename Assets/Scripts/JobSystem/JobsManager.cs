@@ -42,7 +42,7 @@ public class JobsManager : MonoBehaviour
         schedule.schedule.Remove(dayOfMonth); 
     }
 
-    // We don't have access to the key in the DragNDrop script.
+    // We don't have access to the key in the DragNDrop and JobsUI scripts. 
     private int GetDayOfMonth(Job job)
     {
         // Get the corresponding key of the job in the dictionary. 
