@@ -9,7 +9,8 @@ public class JobsUI : MonoBehaviour
     public GameObject mainCanvas; 
     public GameObject scheduleSlotPrefab; 
     public JobsContainer jobsContainer;
-    public Schedule schedule; 
+    public Schedule schedule;
+    public JobsManager jobsManager; 
 
     private GameObject availableJobsContainer;
     private GameObject scheduleContainer;
@@ -26,8 +27,8 @@ public class JobsUI : MonoBehaviour
         jobSprite = Resources.Load<Sprite>(JobConstants.jobSpritePath);
 
         // Create UI elements and populate with jobs 
-        availableJobsContainer = InitialiseAvailableJobsContainer();
         scheduleContainer = InitialiseScheduleContainer();
+        availableJobsContainer = InitialiseAvailableJobsContainer();
         InitialiseScheduleSlots(); 
         AddJobs();
 
@@ -82,9 +83,13 @@ public class JobsUI : MonoBehaviour
     private void AddJob(Job job)
     {
         GameObject newJob = new GameObject(job.title);
-        newJob.transform.parent = availableJobsContainer.transform;
 
-        //newJob.transform.parent = job.isScheduled ? job.scheduleSlotTransform : availableJobsContainer.transform;
+        // If job was already scheduled, parent it to its pre-assigned schedule slot,
+        // which matches the date it was scheduled for. 
+        Transform parentTransform = job.isScheduled ?
+            job.scheduleSlotTransform : availableJobsContainer.transform;
+
+        newJob.transform.parent = parentTransform;
 
         Image jobImage = newJob.AddComponent<Image>();
         jobImage.sprite = jobSprite;
@@ -109,10 +114,10 @@ public class JobsUI : MonoBehaviour
     {
         foreach (Job job in jobsContainer.jobsContainer)
         {
-            if (job.isAccepted)
-            {
-                AddJob(job);
-            }
+            if (!job.isAccepted)
+                continue; 
+
+            AddJob(job); 
         }
     }
 
@@ -120,10 +125,23 @@ public class JobsUI : MonoBehaviour
     {
         for (int i = 1; i <= schedule.numberOfDays; i++)
         {
-            GameObject scheduleSlot = Instantiate(scheduleSlotPrefab, scheduleContainer.transform);
-            scheduleSlot.name = "ScheduleSlot";
-            scheduleSlot.GetComponent<ScheduleSlot>().dayOfMonth = i; 
-            scheduleSlot.GetComponentInChildren<Text>().text = i.ToString(); 
+            if (schedule.schedule.ContainsKey(i))
+            {
+                // Don't rebuild the schedule slot if it already exists, 
+                // i.e. the job has already been scheduled, 
+                // just set it's parent since the container is being rebuilt 
+                GameObject scheduleSlot = schedule.schedule[i].scheduleSlotTransform.gameObject;
+                scheduleSlot.transform.parent = scheduleContainer.transform;
+
+                // Problem: how to order them correctly in the grid layout group 
+            }
+            else
+            {
+                GameObject scheduleSlot = Instantiate(scheduleSlotPrefab, scheduleContainer.transform);
+                scheduleSlot.name = "ScheduleSlot" + i.ToString();
+                scheduleSlot.GetComponent<ScheduleSlot>().dayOfMonth = i; 
+                scheduleSlot.GetComponentInChildren<Text>().text = i.ToString(); 
+            }
         }
     }
 

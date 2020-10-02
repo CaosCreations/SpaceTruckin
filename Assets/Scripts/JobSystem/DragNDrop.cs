@@ -16,14 +16,12 @@ public class DragNDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
     public GameObject testSchedule; 
     public Job job;
 
-    private JobsManager jobsManager; 
     private JobsUI jobsUI;
     private CanvasGroup canvasGroup;
     private RectTransform rectTransform;
 
     private void Start()
     {
-        jobsManager = jobsPanel.GetComponent<JobsManager>(); 
         jobsUI = jobsPanel.GetComponent<JobsUI>(); 
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
