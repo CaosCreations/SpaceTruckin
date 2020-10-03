@@ -55,20 +55,19 @@ public class JobsUI : MonoBehaviour
     {
         foreach (Job job in jobsContainer.jobsContainer)
         {
-            if (job.isAccepted)
-            {
-                AddJob(job); 
-            }
+            if (!job.isAccepted)
+                continue; 
+
+            AddJob(job); 
         }
     }
 
     private void SetupScheduleSlots()
     {
-        for (int i = 0; i < scheduleSlots.Length; i++)
+        Debug.Log("Arr length: " + scheduleSlots.Length); 
+        for (int i = 1; i <= scheduleSlots.Length; i++)
         {
-            int dayOfMonth = i + 1;
-            scheduleSlots[i].GetComponent<ScheduleSlot>().dayOfMonth = dayOfMonth;
-            scheduleSlots[i].GetComponentInChildren<Text>().text = dayOfMonth.ToString(); 
+            scheduleSlots[i].GetComponentInChildren<Text>().text = i.ToString(); 
         }
     }
 
