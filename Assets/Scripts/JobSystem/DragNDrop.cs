@@ -13,6 +13,7 @@ public class DragNDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
     public GameObject jobsPanel;
     public GameObject availableJobsContainer; 
     public GameObject scheduleContainer;
+    public GameObject testSchedule; 
     public Job job;
 
     private JobsUI jobsUI;
