@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class JobsManager : MonoBehaviour
 {
+    public Schedule schedule; 
+
     private void Start()
     {
         MessageDetailView.onJobAccept += AcceptJob;
@@ -24,27 +26,27 @@ public class JobsManager : MonoBehaviour
         
         // In case the job is being "rescheduled."
         // We don't want to have two entries with the same value. 
-        if (ScheduleData.schedule.ContainsValue(job))
+        if (schedule.schedule.ContainsValue(job))
         {
-            ScheduleData.schedule.Remove(GetDayOfMonth(job)); 
+            schedule.schedule.Remove(GetDayOfMonth(job)); 
         }
 
-        ScheduleData.schedule.Add(dayOfMonth, job);
-        ScheduleData.LogSchedule(); 
+        schedule.schedule.Add(dayOfMonth, job);
+        schedule.LogSchedule(); 
     }
 
     private void UnscheduleJob(Job job)
     {
         job.isScheduled = false; 
         int dayOfMonth = GetDayOfMonth(job);
-        ScheduleData.schedule.Remove(dayOfMonth); 
+        schedule.schedule.Remove(dayOfMonth); 
     }
 
     // We don't have access to the key in the DragNDrop script.
     private int GetDayOfMonth(Job job)
     {
         // Get the corresponding key of the job in the dictionary. 
-        int dayOfMonth = ScheduleData.schedule.FirstOrDefault(k => k.Value == job).Key;
+        int dayOfMonth = schedule.schedule.FirstOrDefault(k => k.Value == job).Key;
         return dayOfMonth; 
     }
 }

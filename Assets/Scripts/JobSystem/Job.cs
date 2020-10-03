@@ -13,6 +13,6 @@ public class Job : ScriptableObject
     public bool isAccepted; 
     public bool isScheduled;
 
-    public Transform scheduleSlotTransform;
+    public Transform scheduleSlotTransform; 
 
 }
