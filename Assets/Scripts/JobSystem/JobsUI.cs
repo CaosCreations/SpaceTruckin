@@ -9,7 +9,6 @@ public class JobsUI : MonoBehaviour
     public GameObject mainCanvas; 
     public GameObject scheduleSlotPrefab; 
     public JobsContainer jobsContainer;
-    public Schedule schedule;
     public JobsManager jobsManager; 
 
     private GameObject availableJobsContainer;
@@ -35,7 +34,7 @@ public class JobsUI : MonoBehaviour
         // Updates available jobs container when job is accepted from a message  
         MessageDetailView.onJobAccept += AddJob;
 
-        schedule.LogSchedule(); 
+        ScheduleData.LogSchedule(); 
     }
 
     private GameObject InitialiseAvailableJobsContainer()
@@ -125,7 +124,7 @@ public class JobsUI : MonoBehaviour
 
     private void InitialiseScheduleSlots()
     {
-        for (int i = 0; i < schedule.numberOfDays; i++)
+        for (int i = 0; i < ScheduleData.numberOfDays; i++)
         {
             GameObject scheduleSlot = Instantiate(scheduleSlotPrefab, scheduleContainer.transform);
             int dayOfMonth = i + 1;
@@ -133,11 +132,13 @@ public class JobsUI : MonoBehaviour
             scheduleSlot.GetComponent<ScheduleSlot>().dayOfMonth = dayOfMonth;
             scheduleSlot.GetComponentInChildren<Text>().text = dayOfMonth.ToString(); 
 
-            if (schedule.schedule.ContainsKey(dayOfMonth))
+            if (ScheduleData.schedule.ContainsKey(dayOfMonth))
             {
+                Debug.Log("#" + dayOfMonth + " key exists"); 
+
                 // We don't have a reference to the schedule slot from last session,
                 // since it's been rebuilt 
-                schedule.schedule[i].scheduleSlotTransform = scheduleSlot.transform;
+                ScheduleData.schedule[i].scheduleSlotTransform = scheduleSlot.transform;
             }
         }
     }
