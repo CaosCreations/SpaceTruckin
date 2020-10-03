@@ -33,7 +33,9 @@ public class JobsUI : MonoBehaviour
         AddJobs();
 
         // Updates available jobs container when job is accepted from a message  
-        MessageDetailView.onJobAccept += AddJob; 
+        MessageDetailView.onJobAccept += AddJob;
+
+        schedule.LogSchedule(); 
     }
 
     private GameObject InitialiseAvailableJobsContainer()
@@ -114,33 +116,28 @@ public class JobsUI : MonoBehaviour
     {
         foreach (Job job in jobsContainer.jobsContainer)
         {
-            if (!job.isAccepted)
-                continue; 
-
-            AddJob(job); 
+            if (job.isAccepted)
+            {
+                AddJob(job); 
+            }
         }
     }
 
     private void InitialiseScheduleSlots()
     {
-        for (int i = 1; i <= schedule.numberOfDays; i++)
+        for (int i = 0; i < schedule.numberOfDays; i++)
         {
-            if (schedule.schedule.ContainsKey(i))
-            {
-                // Don't rebuild the schedule slot if it already exists, 
-                // i.e. the job has already been scheduled, 
-                // just set it's parent since the container is being rebuilt 
-                GameObject scheduleSlot = schedule.schedule[i].scheduleSlotTransform.gameObject;
-                scheduleSlot.transform.parent = scheduleContainer.transform;
+            GameObject scheduleSlot = Instantiate(scheduleSlotPrefab, scheduleContainer.transform);
+            int dayOfMonth = i + 1;
+            scheduleSlot.name = "ScheduleSlot" + dayOfMonth.ToString();
+            scheduleSlot.GetComponent<ScheduleSlot>().dayOfMonth = dayOfMonth;
+            scheduleSlot.GetComponentInChildren<Text>().text = dayOfMonth.ToString(); 
 
-                // Problem: how to order them correctly in the grid layout group 
-            }
-            else
+            if (schedule.schedule.ContainsKey(dayOfMonth))
             {
-                GameObject scheduleSlot = Instantiate(scheduleSlotPrefab, scheduleContainer.transform);
-                scheduleSlot.name = "ScheduleSlot" + i.ToString();
-                scheduleSlot.GetComponent<ScheduleSlot>().dayOfMonth = i; 
-                scheduleSlot.GetComponentInChildren<Text>().text = i.ToString(); 
+                // We don't have a reference to the schedule slot from last session,
+                // since it's been rebuilt 
+                schedule.schedule[i].scheduleSlotTransform = scheduleSlot.transform;
             }
         }
     }

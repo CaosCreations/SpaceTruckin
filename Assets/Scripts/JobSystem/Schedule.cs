@@ -8,7 +8,7 @@ public class Schedule : ScriptableObject
     // Int key is the day of the calendar month 
     public Dictionary<int, Job> schedule = new Dictionary<int, Job>();
 
-    public int numberOfDays = 28;  
+    public int numberOfDays = 14;  
 
     public void LogSchedule()
     {
