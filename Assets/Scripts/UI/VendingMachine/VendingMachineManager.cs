@@ -6,10 +6,10 @@ using UnityEngine.UI;
 public class VendingMachineManager : MonoBehaviour
 {
     // Items indices correspond to the keys on the keypad 
-    public VendingMachineItem[] items;
+    public VendingMachineItemContainer items; 
 
+    // Store corresponding gameObjects to manipulate them later 
     public GameObject[] itemObjects;
-    //public List<GameObject> itemObjects;
 
     public GameObject itemContainer;
     public GameObject keypadContainer;
@@ -19,16 +19,14 @@ public class VendingMachineManager : MonoBehaviour
 
     public Text feedbackText;
 
-    private int numberOfKeys = 10;
     private Color positiveFeedbackColour = Color.green;
     private Color negativeFeedbackColour = Color.red;
 
     private void Start()
     {
-        items = new VendingMachineItem[numberOfKeys];
-        //itemObjects = new List<GameObject>(); 
+        itemObjects = new GameObject[items.items.Length];
 
-        Debug.Log("Items length: " + items.Length);
+        Debug.Log("Items length: " + items.items.Length);
         InitialiseItems();
         InitialiseKeypad();
     }
@@ -36,47 +34,73 @@ public class VendingMachineManager : MonoBehaviour
 
     private void InitialiseItems()
     {
-        for (int i = 0; i < items.Length; i++)
+        for (int i = 0; i < items.items.Length; i++)
         {
-            GameObject item = Instantiate(itemPrefab, itemContainer.transform);
-            itemObjects[i] = item;
-            item.name = "Item " + i.ToString();
+            GameObject newItem = Instantiate(itemPrefab, itemContainer.transform);
+            itemObjects[i] = newItem;
+            newItem.name = "Item " + i.ToString();
 
-            Text text = item.GetComponent<Text>();
-            text.text = items[i].itemName;
+            //Text text = newItem.GetComponentInChildren<Text>();
+            //text.text = items.items[i].itemName;
 
-            Image image = GetComponent<Image>();
-            image.sprite = items[i].sprite;
+            Image image = newItem.GetComponent<Image>();
+            image.sprite = items.items[i].sprite;
         }
     }
 
     private void InitialiseKeypad()
     {
-        for (int i = 0; i < items.Length; i++)
+        for (int i = 0; i < items.items.Length; i++)
         {
-            GameObject key = Instantiate(keyPrefab, keypadContainer.transform);
-            key.name = "Key " + i.ToString();
+            Debug.Log("i value: " + i);
 
-            Text text = key.GetComponentInChildren<Text>();
-            text.text = i.ToString();
+            GameObject key = Instantiate(keyPrefab, keypadContainer.transform);
+            key.name = "Key " + i;
 
             Button button = key.GetComponent<Button>();
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(delegate
             {
+                Debug.Log("i addlistener: " + i);
                 AddPurchaseListener(i);
             });
+
+            Text text = key.GetComponentInChildren<Text>();
+            text.text = i.ToString();
         }
+
+        //int itemIndex = 0; 
+        //foreach (VendingMachineItem item in items.items)
+        //{
+        //    GameObject key = Instantiate(keyPrefab, keypadContainer.transform);
+        //    key.name = "Key " + itemIndex; 
+
+        //    Button button = key.GetComponent<Button>();
+        //    button.onClick.RemoveAllListeners();
+        //    button.onClick.AddListener(delegate
+        //    {
+        //        Debug.Log("i addlistener: " + itemIndex);
+        //        AddPurchaseListener(itemIndex);
+        //    });
+
+        //    Text text = key.GetComponentInChildren<Text>();
+        //    text.text = itemIndex.ToString();
+
+        //    itemIndex++; 
+        //}
     }
 
     private void AddPurchaseListener(int itemIndex)
     {
-        Image image = itemObjects[itemIndex].GetComponent<Image>();
+        Debug.Log("Item index: " + itemIndex);
 
-        if (PlayerData.playerMoney >= items[itemIndex].price)
+        Image image = itemObjects[itemIndex].GetComponent<Image>();
+        ResetAllColours();
+
+        if (PlayerData.playerMoney >= items.items[itemIndex].price)
         {
-            Debug.Log(items[itemIndex] + " has been purchased");
-            items[itemIndex].PurchaseItem();
+            Debug.Log(items.items[itemIndex] + " has been purchased");
+            items.items[itemIndex].PurchaseItem();
             image.color = positiveFeedbackColour;
         }
         else
@@ -85,4 +109,11 @@ public class VendingMachineManager : MonoBehaviour
         }
     }
 
+    private void ResetAllColours()
+    {
+        foreach (GameObject itemObject in itemObjects)
+        {
+            itemObject.GetComponent<Image>().color = Color.white;
+        }
+    }
 }

@@ -7,6 +7,7 @@ public class VendingMachineItem : ScriptableObject
 {
     public string itemName;
     public int price;
+    public int stock;
     public byte keyCode;
 
     public Sprite sprite; 
