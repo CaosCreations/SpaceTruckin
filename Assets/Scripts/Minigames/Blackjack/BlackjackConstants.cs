@@ -40,8 +40,12 @@ public static class BlackjackConstants
 	public static int lowWager = 100; 
 	public static int mediumWager = 500;
 	public static int highWager = 1000; 
-	public static int playerStartingChips = 2500; 
-	
+	public static int playerStartingChips = 2500;
+
+	// Sprite paths 
+	public static string cardsFolderPath = "Sprites/Minigames/Blackjack/PlayingCards";
+	public static string cardbackPath = "Sprites/Minigames/Blackjack/Cardbacks/cardback1";
+
 	// Misc  
 	public static string fontName = "Arial.ttf"; 
 	public static Color tableColor = Color.green; 

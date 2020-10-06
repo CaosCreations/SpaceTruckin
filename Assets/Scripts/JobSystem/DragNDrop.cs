@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Json;
 using UnityEngine;
@@ -6,21 +7,22 @@ using UnityEngine.EventSystems;
 
 public class DragNDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    private GameObject mainCanvas;
-    private GameObject messagesPanel;
+    public static event Action<Job> onUnscheduleJob;
+
+    public GameObject mainCanvas;
+    public GameObject jobsPanel;
     public GameObject availableJobsContainer; 
     public GameObject scheduleContainer;
     public GameObject testSchedule; 
     public Job job;
 
+    private JobsUI jobsUI;
     private CanvasGroup canvasGroup;
     private RectTransform rectTransform;
 
     private void Start()
     {
-        mainCanvas = GameObject.Find("Canvas");
-        messagesPanel = GameObject.Find("MessagesPanel"); 
-
+        jobsUI = jobsPanel.GetComponent<JobsUI>(); 
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
     }
@@ -28,7 +30,7 @@ public class DragNDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
     public void OnBeginDrag(PointerEventData eventData)
     {
         // Unparent the job object from the available jobs UI 
-        gameObject.transform.parent = messagesPanel.transform;
+        gameObject.transform.parent = jobsPanel.transform;
 
         canvasGroup.alpha = JobConstants.dragAlpha; 
         canvasGroup.blocksRaycasts = false; 
@@ -49,10 +51,16 @@ public class DragNDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 
         canvasGroup.alpha = JobConstants.dropAlpha; 
 
-        // Return to starting position if not dropped in schedule 
-        if (gameObject.transform.parent != scheduleContainer.transform)
+        // Return to starting position if not dropped in a slot  
+        if (!jobsUI.IsInsideSlot(gameObject))
         {
             gameObject.transform.parent = availableJobsContainer.transform;
+
+            // If the job was previously scheduled, update the schedule accordingly 
+            if (job.isScheduled)
+            {
+                onUnscheduleJob?.Invoke(job);
+            }
         }        
     }
 

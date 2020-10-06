@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Terminal : MonoBehaviour
 {
+    public GameManager gameManager;
     public GameObject player;
-    public GameObject canvasManagerObject;
 
     private Rigidbody rb; 
     private CanvasManager canvasManager;
@@ -19,7 +19,11 @@ public class Terminal : MonoBehaviour
             rb.WakeUp();
         }
 
-        canvasManager = canvasManagerObject.GetComponent<CanvasManager>();
+        canvasManager = GetComponent<CanvasManager>();
+
+        // Terminal canvas instance scales down 
+        // the mission buttons to (0,0) for some reason. 
+        ScaleUpMissionButtons(); 
     }
 
     private void OnTriggerStay(Collider other)
@@ -34,6 +38,14 @@ public class Terminal : MonoBehaviour
             {
                 canvasManager.DeactivateCanvas();
             }
+        }
+    }
+
+    private void ScaleUpMissionButtons()
+    {
+        foreach (Transform _transform in gameManager.missionsPanel.transform)
+        {
+            _transform.localScale = Vector2.one; 
         }
     }
 }
