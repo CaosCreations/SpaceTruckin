@@ -8,7 +8,7 @@ public class VendingMachineManager : MonoBehaviour
     // Items indices correspond to the keys on the keypad 
     public VendingMachineItemContainer items; 
 
-    // Store corresponding gameObjects to manipulate them later 
+    // Store corresponding gameObjects to provide purchase feedback later  
     public GameObject[] itemObjects;
 
     public GameObject itemContainer;
@@ -19,6 +19,7 @@ public class VendingMachineManager : MonoBehaviour
 
     public Text feedbackText;
 
+    // Hide these later on 
     private Color positiveFeedbackColour = Color.green;
     private Color negativeFeedbackColour = Color.red;
 
@@ -26,11 +27,11 @@ public class VendingMachineManager : MonoBehaviour
     {
         itemObjects = new GameObject[items.items.Length];
 
-        Debug.Log("Items length: " + items.items.Length);
         InitialiseItems();
         InitialiseKeypad();
-    }
 
+        PlayerData.playerMoney = 1000; 
+    }
 
     private void InitialiseItems()
     {
@@ -50,62 +51,49 @@ public class VendingMachineManager : MonoBehaviour
 
     private void InitialiseKeypad()
     {
-        for (int i = 0; i < items.items.Length; i++)
-        {
-            Debug.Log("i value: " + i);
+        AssignKeyCodes();
 
+        foreach (VendingMachineItem item in items.items)
+        {
             GameObject key = Instantiate(keyPrefab, keypadContainer.transform);
-            key.name = "Key " + i;
+            key.name = "Key " + item.keyCode;
 
             Button button = key.GetComponent<Button>();
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(delegate
             {
-                Debug.Log("i addlistener: " + i);
-                AddPurchaseListener(i);
+                AddPurchaseListener(item.keyCode);
             });
 
             Text text = key.GetComponentInChildren<Text>();
-            text.text = i.ToString();
+            text.text = item.keyCode.ToString();
         }
+    }
 
-        //int itemIndex = 0; 
-        //foreach (VendingMachineItem item in items.items)
-        //{
-        //    GameObject key = Instantiate(keyPrefab, keypadContainer.transform);
-        //    key.name = "Key " + itemIndex; 
-
-        //    Button button = key.GetComponent<Button>();
-        //    button.onClick.RemoveAllListeners();
-        //    button.onClick.AddListener(delegate
-        //    {
-        //        Debug.Log("i addlistener: " + itemIndex);
-        //        AddPurchaseListener(itemIndex);
-        //    });
-
-        //    Text text = key.GetComponentInChildren<Text>();
-        //    text.text = itemIndex.ToString();
-
-        //    itemIndex++; 
-        //}
+    private void AssignKeyCodes()
+    {
+        for (int i = 0; i < items.items.Length; i++)
+        {
+            Debug.Log(i);
+            items.items[i].keyCode = (byte)i; 
+        }
     }
 
     private void AddPurchaseListener(int itemIndex)
     {
-        Debug.Log("Item index: " + itemIndex);
-
         Image image = itemObjects[itemIndex].GetComponent<Image>();
         ResetAllColours();
 
         if (PlayerData.playerMoney >= items.items[itemIndex].price)
         {
-            Debug.Log(items.items[itemIndex] + " has been purchased");
             items.items[itemIndex].PurchaseItem();
             image.color = positiveFeedbackColour;
+            feedbackText.text = items.items[itemIndex].itemName + " has been purchased!";
         }
         else
         {
             image.color = negativeFeedbackColour;
+            feedbackText.text = "Insufficient funds.";
         }
     }
 
