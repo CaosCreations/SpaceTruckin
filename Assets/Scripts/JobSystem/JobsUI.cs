@@ -54,7 +54,10 @@ public class JobsUI : MonoBehaviour
         rectTransform.offsetMin = Vector2.zero;
         rectTransform.offsetMax = Vector2.zero;
 
-        JobsUtils.SetupGridLayoutGroup(containerObject); 
+        JobsUtils.SetupGridLayoutGroup(containerObject);
+
+        // For now, this container requires more spacing 
+        containerObject.GetComponent<GridLayoutGroup>().spacing = JobConstants.availableJobsGridSpacing;
 
         return containerObject; 
     }
