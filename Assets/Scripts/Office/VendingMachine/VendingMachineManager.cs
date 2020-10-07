@@ -44,9 +44,6 @@ public class VendingMachineManager : MonoBehaviour
             itemObjects[i] = newItem;
             newItem.name = "Item " + i.ToString();
 
-            //Text text = newItem.GetComponentInChildren<Text>();
-            //text.text = items.items[i].itemName;
-
             Image image = newItem.GetComponent<Image>();
             image.sprite = items.items[i].sprite;
         }
@@ -77,7 +74,6 @@ public class VendingMachineManager : MonoBehaviour
     {
         for (int i = 0; i < items.items.Length; i++)
         {
-            Debug.Log(i);
             items.items[i].keyCode = (byte)i;
         }
     }
