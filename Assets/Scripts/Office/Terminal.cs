@@ -26,6 +26,8 @@ public class Terminal : MonoBehaviour
         ScaleUpMissionButtons(); 
     }
 
+    // Could break this out into a trigger utils class, 
+    // as it is likely to be used by other interactable objects. 
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject == player)
