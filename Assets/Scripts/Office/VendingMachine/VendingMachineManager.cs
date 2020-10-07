@@ -8,9 +8,6 @@ public class VendingMachineManager : MonoBehaviour
     // Items indices correspond to the keys on the keypad 
     public VendingMachineItemContainer items;
 
-    // Store corresponding gameObjects to provide purchase feedback later  
-    public GameObject[] itemObjects;
-
     public GameObject itemContainer;
     public GameObject keypadContainer;
 
@@ -19,12 +16,18 @@ public class VendingMachineManager : MonoBehaviour
 
     public Text feedbackText;
 
+    private CanvasManager canvasManager;
+
+    // Store corresponding gameObjects to provide purchase feedback  
+    private GameObject[] itemObjects;
+
     // Hide these later on 
     private Color positiveFeedbackColour = Color.green;
     private Color negativeFeedbackColour = Color.red;
 
     private void Start()
     {
+        canvasManager = GetComponent<CanvasManager>();
         itemObjects = new GameObject[items.items.Length];
 
         InitialiseItems();
