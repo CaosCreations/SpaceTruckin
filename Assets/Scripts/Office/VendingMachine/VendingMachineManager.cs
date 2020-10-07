@@ -16,8 +16,6 @@ public class VendingMachineManager : MonoBehaviour
 
     public Text feedbackText;
 
-    private CanvasManager canvasManager;
-
     // Store corresponding gameObjects to provide purchase feedback  
     private GameObject[] itemObjects;
 
@@ -27,13 +25,10 @@ public class VendingMachineManager : MonoBehaviour
 
     private void Start()
     {
-        canvasManager = GetComponent<CanvasManager>();
         itemObjects = new GameObject[items.items.Length];
 
         InitialiseItems();
         InitialiseKeypad();
-
-        PlayerData.playerMoney = 1000;
     }
 
     private void InitialiseItems()
@@ -102,5 +97,12 @@ public class VendingMachineManager : MonoBehaviour
         {
             itemObject.GetComponent<Image>().color = Color.white;
         }
+    }
+    
+    // Call this in the trigger script when the player exists the machine 
+    public void CleanUI()
+    {
+        feedbackText.text = string.Empty; 
+        ResetAllColours();
     }
 }

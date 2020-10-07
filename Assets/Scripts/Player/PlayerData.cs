@@ -13,4 +13,14 @@ public class PlayerData : ScriptableObject
     {
         playerMoney = playerStartingMoney;
     }
+
+    public static void SpendMoney(long amount)
+    {
+        playerMoney -= amount; 
+    }
+
+    public static void ReceiveMoney(long amount)
+    {
+        playerMoney += amount;
+    }
 }

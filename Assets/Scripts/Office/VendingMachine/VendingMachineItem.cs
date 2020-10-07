@@ -14,6 +14,6 @@ public class VendingMachineItem : ScriptableObject
 
     public void PurchaseItem()
     {
-        PlayerData.playerMoney -= price;
+        PlayerData.SpendMoney(price); 
     }
 }
