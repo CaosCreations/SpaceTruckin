@@ -47,18 +47,19 @@ public class ClockManager : MonoBehaviour
         StartClock(); 
         // Other startup logic tbd 
     }
+	
+	private void ResetClock()
+    {
+        clockStopped = true;
+        currentTime = dayStartTime;
+        currentTimeInSeconds = (int)currentTime.TotalSeconds;
+        //clockText.text = currentTime.ToString();
+    }
 
 	private void StartClock()
 	{
         clockStopped = false; 
 	}
-    private void ResetClock()
-    {
-        clockStopped = false;
-        currentTime = dayStartTime;
-        currentTimeInSeconds = (int)currentTime.TotalSeconds;
-        //clockText.text = currentTime.ToString();
-    }
 
 	private void StopClock()
     {
