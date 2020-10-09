@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5745358076465076626}
   - component: {fileID: 5745358076465076627}
+  - component: {fileID: 5089660706073705400}
   - component: {fileID: 5745358076465076631}
   m_Layer: 0
   m_Name: GameManager
@@ -49,6 +50,19 @@ MonoBehaviour:
     type: 3}
   missionsPanel: {fileID: 0}
   playerMoneyText: {fileID: 0}
+--- !u!114 &5089660706073705400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5745358076465076624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc7c9cd4e1309f642b51d2e9fea65489, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clockText: {fileID: 0}
 --- !u!114 &5745358076465076631
 MonoBehaviour:
   m_ObjectHideFlags: 0
