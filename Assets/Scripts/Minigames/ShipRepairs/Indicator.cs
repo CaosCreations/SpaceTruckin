@@ -3,38 +3,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Could do with a better name 
 public class Indicator : MonoBehaviour
 {
     public GameObject greenZone;
 
     private Workstation workstation;
+    private bool isInsideGreenZone; 
 
     private void Start()
     {
         workstation = GetComponentInParent<Workstation>();
+        Workstation.onRotationStopped += DetermineOutcome; 
     }
 
-    // If indicator is colliding with the green zone, 
-    // the player wins the minigame. 
-    public void DetermineOutcome(bool colliding)
+    public void DetermineOutcome()
     {
-        if (colliding)
+        if (isInsideGreenZone)
         {
             workstation.PlayerWins();
         }
         else
         {
-            workstation.PlayerLoses(); 
+            workstation.PlayerLoses();
         }
     }
 
-    private void OnTriggerStay(Collider other) 
+    private void OnTriggerEnter(Collider other)
     {
-        // We should only check for a collision when the player has stopped the spin.
-        if (workstation.minigameStarted)
-        {
-            DetermineOutcome(other.gameObject == greenZone); 
-        }
+        isInsideGreenZone = true; 
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        isInsideGreenZone = false;
     }
 }

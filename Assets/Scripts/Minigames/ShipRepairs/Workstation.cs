@@ -2,66 +2,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Workstation : MonoBehaviour
 {
-    public GameObject greenZone;
-    public GameObject indicator;
+    public static event Action onRotationStopped; 
 
-    public float rotationSpeed;
+    public GreenZone greenZone;
 
-    public bool isRotating; 
+    public RepairsManager repairsManager;
+        
+    public bool isRotating;
 
-    // Move all fields below to the manager/constants class 
-    public bool minigameStarted; 
+    private float rotationSpeed;
+    private float startingSpeed; 
+    private float speedIncrease;
 
-    private int points;
-    private int consecutiveWins;
-
-    // Hide these later 
-    private string pointsText;
-    private string feedbackText;
-    private string successMessage = "Success!";
-    private string failureMessage = "Failure!";
-    private string midRotationMessage = "Spinning...";
 
     private void Start()
     {
-        rotationSpeed = 8f; 
-    }
-
-    public void StartRotating()
-    {
-        isRotating = true;
-        feedbackText = midRotationMessage;
-    }
-
-    public void StopRotating()
-    {
-        isRotating = false;
-    }
-
-    public void PlayerWins()
-    {
-        Debug.Log(successMessage);
-        feedbackText = successMessage;
-        points++;
-        consecutiveWins++;
-    }
-
-    public void PlayerLoses()
-    {
-        Debug.Log(failureMessage);
-        feedbackText = failureMessage;
-        consecutiveWins = 0; 
-    }
-
-    private void StartMinigame()
-    {
-        minigameStarted = true;
-        isRotating = true;
+        startingSpeed = 3f;
+        rotationSpeed = startingSpeed;
+        speedIncrease = 1f; 
     }
 
     public void RotateWorkStation()
@@ -69,39 +33,76 @@ public class Workstation : MonoBehaviour
         transform.eulerAngles += new Vector3(0f, 0f, rotationSpeed);
     }
 
-    // This will increase the difficulty by disorientating the player 
-    public void ReverseRotationDirection()
+    public void StartRotating()
     {
-        rotationSpeed = rotationSpeed > 0 ? rotationSpeed * -1 : Mathf.Abs(rotationSpeed); 
+        isRotating = true;
+        repairsManager.ResetFeedbackText();
+    }
+
+    public void StopRotating()
+    {
+        isRotating = false;
+        onRotationStopped?.Invoke();
+    }
+
+    public void PlayerWins()
+    {
+        repairsManager.points++;
+        repairsManager.consecutiveWins++;
+        IncreaseRotationSpeed();
+
+        // Decrease green zone size every 3 wins 
+        if (repairsManager.consecutiveWins % 3 == 0 
+            && repairsManager.consecutiveWins > 0)
+        {
+            greenZone.DecreaseSize();
+        }
+
+        if (UnityEngine.Random.Range(0, 1) == 1)
+        {
+            ReverseRotationDirection();
+        }
+
+        repairsManager.UpdateText(true);
+    }
+
+    public void PlayerLoses()
+    {
+        repairsManager.consecutiveWins = 0;
+        ResetRotationSpeed();
+        greenZone.ResetSize();
+        repairsManager.UpdateText(false);
     }
 
     // This will increase the difficulty by decreasing the timing window 
-    public void IncreaseRotationSpeed(float speedIncrease) 
+    public void IncreaseRotationSpeed()
     {
         rotationSpeed += speedIncrease;
     }
 
+    private void ResetRotationSpeed()
+    {
+        rotationSpeed = startingSpeed;
+    }
+
+    // This will increase the difficulty by disorientating the player 
+    public void ReverseRotationDirection()
+    {
+        rotationSpeed = rotationSpeed > 0 ? rotationSpeed * -1 : Mathf.Abs(rotationSpeed);
+        Debug.Log("Speed: " + rotationSpeed);
+    }
+
     private void Update()
     {
-        // The branching of this block could definitely be improved. 
-        if (Input.GetMouseButtonUp(1))
+        if (Input.GetMouseButtonUp(0))
         {
-            // If we don't check for this, 
-            // the player will win when starting the first spin.
-            if (!minigameStarted)
+            if (isRotating)
             {
-                StartMinigame(); 
+                StopRotating();
             }
             else
             {
-                if (isRotating)
-                {
-                    StopRotating();
-                }
-                else
-                {
-                    StartRotating(); 
-                }
+                StartRotating();
             }
         }
 
