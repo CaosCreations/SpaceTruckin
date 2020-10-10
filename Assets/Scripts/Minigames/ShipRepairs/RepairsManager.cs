@@ -4,5 +4,8 @@ using UnityEngine;
 
 public class RepairsManager : MonoBehaviour
 {
+    public int streak; 
     public int minigameDifficulty; 
+
+
 }
