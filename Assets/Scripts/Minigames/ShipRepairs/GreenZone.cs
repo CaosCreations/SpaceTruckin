@@ -14,7 +14,7 @@ public class GreenZone : MonoBehaviour
     }
 
     // Call this to increase the difficulty 
-    public void DecreaseSize()
+    public void ReduceSize()
     {
         transform.localScale += new Vector3(-sizeDecrease, 0f, 0f); 
     }

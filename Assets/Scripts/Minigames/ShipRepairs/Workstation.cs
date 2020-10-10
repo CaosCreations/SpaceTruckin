@@ -20,15 +20,22 @@ public class Workstation : MonoBehaviour
     private float startingSpeed; 
     private float speedIncrease;
 
+    private float rotationReversalThreshold;
+    private float rotationReversalUpperBound;
+    private float greenZoneShrinkInterval;
 
     private void Start()
     {
         startingSpeed = 3f;
         rotationSpeed = startingSpeed;
-        speedIncrease = 1f; 
+        speedIncrease = 1f;
+
+        rotationReversalThreshold = 3;
+        rotationReversalUpperBound = 5;
+        greenZoneShrinkInterval = 3; 
     }
 
-    public void RotateWorkStation()
+    public void RotateWorkstation()
     {
         transform.eulerAngles += new Vector3(0f, 0f, rotationSpeed);
     }
@@ -51,14 +58,14 @@ public class Workstation : MonoBehaviour
         repairsManager.consecutiveWins++;
         IncreaseRotationSpeed();
 
-        // Decrease green zone size every 3 wins 
-        if (repairsManager.consecutiveWins % 3 == 0 
+        // Decrease green zone size every n wins 
+        if (repairsManager.consecutiveWins % greenZoneShrinkInterval == 0 
             && repairsManager.consecutiveWins > 0)
         {
-            greenZone.DecreaseSize();
+            greenZone.ReduceSize();
         }
 
-        if (UnityEngine.Random.Range(0, 1) == 1)
+        if (UnityEngine.Random.Range(0, rotationReversalUpperBound) > rotationReversalThreshold)
         {
             ReverseRotationDirection();
         }
@@ -88,7 +95,7 @@ public class Workstation : MonoBehaviour
     // This will increase the difficulty by disorientating the player 
     public void ReverseRotationDirection()
     {
-        rotationSpeed = rotationSpeed > 0 ? rotationSpeed * -1 : Mathf.Abs(rotationSpeed);
+        rotationSpeed *= -1; 
         Debug.Log("Speed: " + rotationSpeed);
     }
 
@@ -108,12 +115,7 @@ public class Workstation : MonoBehaviour
 
         if (isRotating)
         {
-            RotateWorkStation();
+            RotateWorkstation();
         }
-    }
-
-    private void OnGUI()
-    {
-        
     }
 }
