@@ -9,8 +9,11 @@ public class RandomNameGenerator : MonoBehaviour
 {
 	private enum NameCategory 
 	{
-		HumanMale, HumanFemale, Oshunian, Helicid, Robot 
+		HumanMale, HumanFemale, Helicid, Oshunian, Robot 
 	};
+
+	private int prefixLength = 3;
+	private int suffixLength = 4;
 
 	/// <summary>
 		/// Name formats:
@@ -19,22 +22,28 @@ public class RandomNameGenerator : MonoBehaviour
 			///		Oshunian - [FirstName] [Title]
 			///		Robot - [Prefix]-[Suffix]
 			///		
+		/// 
 	/// </summary>
-
-	private string[] humanMaleNames;
-	private string[] humanFemaleNames;
-	private string[] helicidNames;
-	private string[] oshunianNames; 
-
-	private int prefixLength = 3;
-	private int suffixLength = 4;
 
 	public void Start()
 	{
-		humanMaleNames = PilotNameDataSingleton.Instance.HumanMaleNames;
-		humanFemaleNames = PilotNameDataSingleton.Instance.HumanFemaleNames;
-		helicidNames = PilotNameDataSingleton.Instance.HelicidNames;
-		oshunianNames = PilotNameDataSingleton.Instance.OshunianNames;
+
+	}
+
+	// Combine the value returned with an initial, digit, or second portion
+	private string GenerateNamePortion(string[] namePool)
+	{
+		return namePool[Random.Range(0, namePool.Length)];
+	}
+
+	private char GenerateInitial()
+	{
+		return char.ToUpper((char)('a' + Random.Range(0, 26)));
+	}
+
+	private int GenerateDigit()
+	{
+		return Random.Range(0, 9);
 	}
 
 	private string GenerateName(NameCategory nameCategory)
@@ -43,25 +52,25 @@ public class RandomNameGenerator : MonoBehaviour
         {
             case NameCategory.HumanMale:
 				//var maleSurname = humanMaleNames[Random.Range(0, humanMaleNames.Length)];
-				var maleFirstName = GenerateNamePortion(humanMaleNames);
+				var maleFirstName = GenerateNamePortion(PilotNameDataSingleton.Instance.HumanMaleNames);
 				var maleSurname = GenerateInitial(); 
                 return $"{maleFirstName} {maleSurname}.";
 
 			case NameCategory.HumanFemale:
-				var femaleFirstName = GenerateNamePortion(humanFemaleNames);
+				var femaleFirstName = GenerateNamePortion(PilotNameDataSingleton.Instance.HumanFemaleNames);
 				var femaleSurname = GenerateInitial(); 
 				return  $"{femaleFirstName} {femaleSurname}.";
 
 			case NameCategory.Helicid:
-				var helicidSurname = GenerateNamePortion(helicidNames);
+				var helicidSurname = GenerateNamePortion(PilotNameDataSingleton.Instance.HelicidNames);
 				var helicidFirstName = GenerateInitial(); 
 
 				// Helicid surnames come first 
-				return $"{helicidSurname}. {helicidFirstName}";
+				return $"{helicidSurname} {helicidFirstName}.";
 
 			case NameCategory.Oshunian:
-				var oshunianFirstName = GenerateNamePortion(oshunianNames);
-				var oshunianSurname = GenerateInitial();
+				var oshunianFirstName = GenerateNamePortion(PilotNameDataSingleton.Instance.OshunianNames);
+				var oshunianSurname = GenerateNamePortion(PilotNameDataSingleton.Instance.OshunianTitles);
 
 				// No space required since the surname is a title with a space built in
 				return $"{oshunianFirstName}{oshunianSurname}";
@@ -72,8 +81,7 @@ public class RandomNameGenerator : MonoBehaviour
 
 				for (int i = 0; i < prefixLength; i++)
 				{
-					prefix += char.ToUpper((char)('a' + Random.Range(0, 26)));
-					Debug.Log("prefix " + suffix);
+					prefix += GenerateInitial();
 				}
 				for (int i = 0; i < suffixLength; i++)
 				{
@@ -85,20 +93,5 @@ public class RandomNameGenerator : MonoBehaviour
 			default:
 				return string.Empty;
 		}
-	}
-
-	private string GenerateNamePortion(string[] namePool)
-    {
-		return namePool[Random.Range(0, namePool.Length)];
-	}
-
-	private char GenerateInitial()
-    {
-		return char.ToUpper((char)('a' + Random.Range(0, 26)));
-	}
-
-	private int GenerateDigit()
-    {
-		return Random.Range(0, 9); 
 	}
 }

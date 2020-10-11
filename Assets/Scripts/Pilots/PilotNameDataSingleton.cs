@@ -10,6 +10,7 @@ public class PilotNameDataSingleton : MonoBehaviour
     public string[] HumanFemaleNames { get; private set; }
     public string[] HelicidNames { get; private set; }
     public string[] OshunianNames { get; private set; }
+    public string[] OshunianTitles { get; set; }
 
     private void Awake()
     {
@@ -21,6 +22,7 @@ public class PilotNameDataSingleton : MonoBehaviour
             HumanFemaleNames = File.ReadAllLines(PilotsConstants.humanFemaleNamesPath);
             HelicidNames = File.ReadAllLines(PilotsConstants.helicidNamesPath);
             OshunianNames = File.ReadAllLines(PilotsConstants.oshunianNamesPath);
+            OshunianTitles = File.ReadAllLines(PilotsConstants.oshunianTitlesPath);
         }
         else
         {
