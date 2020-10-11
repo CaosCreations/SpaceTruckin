@@ -29,4 +29,10 @@ public class PilotsConstants : MonoBehaviour
 
     public static Vector2 backButtonAnchorMin = new Vector2(0.25f, 0f);
     public static Vector2 backButtonAnchorMax = new Vector2(0.75f, 0.25f);
+
+    // Paths to text files 
+    public static string humanMaleNamesPath = "./Assets/ImportedAssets/male_names.txt";
+    public static string humanFemaleNamesPath = "./Assets/ImportedAssets/male_names.txt";
+    public static string helicidNamesPath = "./Assets/ImportedAssets/helicid_names.txt";
+    public static string oshunianNamesPath = "./Assets/ImportedAssets/oshunian_names.txt";
 }

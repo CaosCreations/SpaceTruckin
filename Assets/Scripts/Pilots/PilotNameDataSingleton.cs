@@ -6,8 +6,10 @@ using UnityEngine;
 public class PilotNameDataSingleton : MonoBehaviour
 {
     public static PilotNameDataSingleton Instance { get; private set; }
-    public string[] MaleNames { get; private set; } 
-    public string[] FemaleNames { get; private set; } 
+    public string[] HumanMaleNames { get; private set; } 
+    public string[] HumanFemaleNames { get; private set; }
+    public string[] HelicidNames { get; private set; }
+    public string[] OshunianNames { get; private set; }
 
     private void Awake()
     {
@@ -15,8 +17,10 @@ public class PilotNameDataSingleton : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject); 
-            MaleNames = File.ReadAllLines("./Assets/ImportedAssets/male_names.txt"); 
-            FemaleNames = File.ReadAllLines("./Assets/ImportedAssets/female_names.txt");
+            HumanMaleNames = File.ReadAllLines(PilotsConstants.humanMaleNamesPath); 
+            HumanFemaleNames = File.ReadAllLines(PilotsConstants.humanFemaleNamesPath);
+            HelicidNames = File.ReadAllLines(PilotsConstants.helicidNamesPath);
+            OshunianNames = File.ReadAllLines(PilotsConstants.oshunianNamesPath);
         }
         else
         {
