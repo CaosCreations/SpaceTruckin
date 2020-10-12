@@ -51,7 +51,6 @@ public class RandomNameGenerator : MonoBehaviour
 		switch (nameCategory)
         {
             case NameCategory.HumanMale:
-				//var maleSurname = humanMaleNames[Random.Range(0, humanMaleNames.Length)];
 				var maleFirstName = GenerateNamePortion(PilotNameDataSingleton.Instance.HumanMaleNames);
 				var maleSurname = GenerateInitial(); 
                 return $"{maleFirstName} {maleSurname}.";
