@@ -14,6 +14,7 @@ public class PilotsConstants : MonoBehaviour
     public static string backButtonName = "BackButton";
     public static string backButtonText = "Back"; 
 
+
     // UI dimensions 
     public static Vector2 buttonGroupAnchorMin = new Vector2(0.25f, 0.5f); 
     public static Vector2 buttonGroupAnchorMax = new Vector2(0.5f, 0.5f);
@@ -29,4 +30,12 @@ public class PilotsConstants : MonoBehaviour
 
     public static Vector2 backButtonAnchorMin = new Vector2(0.25f, 0f);
     public static Vector2 backButtonAnchorMax = new Vector2(0.75f, 0.25f);
+
+
+    // Paths to text files containing pilot names 
+    public static string humanMaleNamesPath = "./Assets/ImportedAssets/male_names.txt";
+    public static string humanFemaleNamesPath = "./Assets/ImportedAssets/female_names.txt";
+    public static string helicidNamesPath = "./Assets/ImportedAssets/helicid_names.txt";
+    public static string oshunianNamesPath = "./Assets/ImportedAssets/oshunian_first_names.txt";
+    public static string oshunianTitlesPath = "./Assets/ImportedAssets/oshunian_titles.txt";
 }
