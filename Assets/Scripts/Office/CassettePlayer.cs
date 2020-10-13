@@ -14,10 +14,19 @@ public class CassettePlayer : MonoBehaviour
 	public Button previousTrackButton;
 
 	private AudioSource audioSource;
-	private AudioClip firstTrack; 
-	private AudioClip currentlyPlayingTrack;
 
 	private CanvasManager canvasManager;
+
+	// Use these flags to differentiate between the 
+	// player pressing pause/stop and the audiosource  
+	// not playing 
+	private bool trackStopped;
+	private bool trackPaused;
+
+	// Without this, when the user goes back/forward 
+	// while the track is playing, we can't automatically
+	// play the next track 
+	private bool trackPlaying;
 
 	private int currentTrackIndex;
 
@@ -31,55 +40,6 @@ public class CassettePlayer : MonoBehaviour
 		AddListeners();
 	}
 
-	private void PlayTrack() 
-	{
-		SetAllButtonsInteractable();
-		playButton.interactable = false;
-		audioSource.clip = tracks[currentTrackIndex];
-		audioSource.Play();
-	}
-
-	private void PauseTrack()
-	{
-		SetAllButtonsInteractable();
-		pauseButton.interactable = false;
-		audioSource.Pause();
-		// update UI 
-	}
-
-	private void StopTrack()
-	{
-		SetAllButtonsInteractable();
-		stopButton.interactable = false;
-		audioSource.Stop();
-	}
-
-	private void ChangeTrack(bool next) 
-	{
-		// We could wrap around to the first/last track, 
-		// but this may be less authentic and unnecessary
-		if (next && currentTrackIndex + 1 >= tracks.Length ||
-			!next && currentTrackIndex - 1 < 0)
-		{
-			return;
-		}
-
-		currentTrackIndex = next ? currentTrackIndex + 1 : currentTrackIndex - 1;
-
-		// Grey out the corresponding button 
-		if (next)
-        {
-			nextTrackButton.interactable = false;
-        }
-		else
-        {
-			previousTrackButton.interactable = false; 
-        }
-
-		audioSource.clip = tracks[currentTrackIndex];
-		audioSource.Play();
-	}
-
 	private void AddListeners()
 	{
 		playButton.onClick.AddListener(() => PlayTrack());
@@ -87,6 +47,73 @@ public class CassettePlayer : MonoBehaviour
 		stopButton.onClick.AddListener(() => StopTrack());
 		nextTrackButton.onClick.AddListener(() => ChangeTrack(next: true));
 		previousTrackButton.onClick.AddListener(() => ChangeTrack(next: false));
+	}
+
+	private void PlayTrack() 
+	{
+		SetAllButtonsInteractable();
+		playButton.interactable = false;
+		ResetFlags();
+		trackPlaying = true; 
+		audioSource.clip = tracks[currentTrackIndex];
+		audioSource.Play();
+
+		Debug.Log("Current track playing: " + audioSource.clip.name); 
+	}
+
+	private void PauseTrack()
+	{
+		SetAllButtonsInteractable();
+		pauseButton.interactable = false;
+		ResetFlags(); 
+		trackPaused = true;
+		audioSource.Pause();
+	}
+
+	private void StopTrack()
+	{
+		SetAllButtonsInteractable();
+		stopButton.interactable = false;
+		ResetFlags();
+		trackStopped = true;
+		audioSource.Stop();
+	}
+
+	private void ChangeTrack(bool next) 
+	{
+		// We could wrap around to the first/last track, 
+		// but this may be less authentic (it's a cassette player) 
+		if (next && currentTrackIndex + 1 >= tracks.Length ||
+			!next && currentTrackIndex - 1 < 0)
+		{
+			return;
+		}
+
+		currentTrackIndex = next ? currentTrackIndex + 1 : currentTrackIndex - 1;
+		audioSource.clip = tracks[currentTrackIndex];
+
+		SetAllButtonsInteractable();
+
+		// Don't grey out the following buttons if they are active,
+		// since they will still be in effect 
+		if (trackPlaying)
+        {
+			playButton.interactable = false;
+
+			// Instantly play track when switching while previous track was active 
+			audioSource.Play();
+        }
+		else
+        {
+			if (trackStopped)
+            {
+				stopButton.interactable = false;
+            }
+			else if (trackPaused)
+            {
+				pauseButton.interactable = false; 
+            }
+        }
 	}
 
 	// Call this before greying out the most recently pushed button 
@@ -98,6 +125,14 @@ public class CassettePlayer : MonoBehaviour
 		nextTrackButton.interactable = true;
 		previousTrackButton.interactable = true;
 	}
+
+	// Call this when playing, pausing, or stopping tracks 
+	private void ResetFlags()
+    {
+		trackStopped = false;
+		trackPaused = false;
+		trackPlaying = false;
+    }
 	
 	private void OnTriggerStay(Collider other)
 	{
