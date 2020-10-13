@@ -13,25 +13,20 @@ public class CassettePlayer : MonoBehaviour
 	public Button nextTrackButton;
 	public Button previousTrackButton;
 
-	public Text currentTrackText;
-
 	private AudioSource audioSource;
 	private AudioClip firstTrack; 
 	private AudioClip currentlyPlayingTrack;
+
 	private CanvasManager canvasManager;
 
 	private int currentTrackIndex;
-	private bool trackPaused;
-
-	private string currentTrackTextPrefix = "Current Track: ";
 
 	private void Start()
 	{
 		audioSource = GetComponent<AudioSource>();
 		audioSource.clip = tracks[currentTrackIndex];
-
+		
 		canvasManager = GetComponent<CanvasManager>();
-		trackPaused = true;
 
 		AddListeners();
 	}
@@ -42,8 +37,6 @@ public class CassettePlayer : MonoBehaviour
 		playButton.interactable = false;
 		audioSource.clip = tracks[currentTrackIndex];
 		audioSource.Play();
-		// update UI 
-		currentTrackText.text = tracks[currentTrackIndex].name; 
 	}
 
 	private void PauseTrack()
@@ -58,29 +51,33 @@ public class CassettePlayer : MonoBehaviour
 	{
 		SetAllButtonsInteractable();
 		stopButton.interactable = false;
-		// does it reset the firstTrack?
-		// or just put the track back to the start
 		audioSource.Stop();
-		// audioSource.clip = firstTrack; 
 	}
 
 	private void ChangeTrack(bool next) 
 	{
-		// do we wrap around or stop at the first/last track?
+		// We could wrap around to the first/last track, 
+		// but this may be less authentic and unnecessary
 		if (next && currentTrackIndex + 1 >= tracks.Length ||
 			!next && currentTrackIndex - 1 < 0)
 		{
-			// maybe play a failed action sound effect here 
-			// and/or grey out the button 
 			return;
 		}
 
 		currentTrackIndex = next ? currentTrackIndex + 1 : currentTrackIndex - 1;
 
+		// Grey out the corresponding button 
+		if (next)
+        {
+			nextTrackButton.interactable = false;
+        }
+		else
+        {
+			previousTrackButton.interactable = false; 
+        }
+
 		audioSource.clip = tracks[currentTrackIndex];
 		audioSource.Play();
-
-		currentTrackText.text = "Current Track: " + tracks[currentTrackIndex].name;
 	}
 
 	private void AddListeners()
