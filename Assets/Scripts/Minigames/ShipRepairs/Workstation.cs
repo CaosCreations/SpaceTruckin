@@ -11,28 +11,15 @@ public class Workstation : MonoBehaviour
     public static event Action onRotationStopped; 
 
     public GreenZone greenZone;
-
     public RepairsManager repairsManager;
         
     public bool isRotating;
 
     private float rotationSpeed;
-    private float startingSpeed; 
-    private float speedIncrease;
-
-    private float rotationReversalThreshold;
-    private float rotationReversalUpperBound;
-    private float greenZoneShrinkInterval;
 
     private void Start()
     {
-        startingSpeed = 3f;
-        rotationSpeed = startingSpeed;
-        speedIncrease = 1f;
-
-        rotationReversalThreshold = 3;
-        rotationReversalUpperBound = 5;
-        greenZoneShrinkInterval = 3; 
+		rotationSpeed = RepairsConstants.startingSpeed;
     }
 
     public void RotateWorkstation()
@@ -59,18 +46,19 @@ public class Workstation : MonoBehaviour
         IncreaseRotationSpeed();
 
         // Decrease green zone size every n wins 
-        if (repairsManager.consecutiveWins % greenZoneShrinkInterval == 0 
+        if (repairsManager.consecutiveWins % RepairsConstants.greenZoneShrinkInterval == 0 
             && repairsManager.consecutiveWins > 0)
         {
             greenZone.ReduceSize();
         }
 
-        if (UnityEngine.Random.Range(0, rotationReversalUpperBound) > rotationReversalThreshold)
+        if (UnityEngine.Random.Range(0, RepairsConstants.rotationReversalUpperBound) > 
+			RepairsConstants.rotationReversalThreshold)
         {
             ReverseRotationDirection();
         }
 
-        repairsManager.UpdateText(true);
+        repairsManager.UpdateFeedbackText(true);
     }
 
     public void PlayerLoses()
@@ -78,25 +66,24 @@ public class Workstation : MonoBehaviour
         repairsManager.consecutiveWins = 0;
         ResetRotationSpeed();
         greenZone.ResetSize();
-        repairsManager.UpdateText(false);
+        repairsManager.UpdateFeedbackText(false);
     }
 
     // This will increase the difficulty by decreasing the timing window 
     public void IncreaseRotationSpeed()
     {
-        rotationSpeed += speedIncrease;
+        rotationSpeed += RepairsConstants.speedIncrease;
     }
 
     private void ResetRotationSpeed()
     {
-        rotationSpeed = startingSpeed;
+        rotationSpeed = RepairsConstants.startingSpeed;
     }
 
     // This will increase the difficulty by disorientating the player 
     public void ReverseRotationDirection()
     {
         rotationSpeed *= -1; 
-        Debug.Log("Speed: " + rotationSpeed);
     }
 
     private void Update()
