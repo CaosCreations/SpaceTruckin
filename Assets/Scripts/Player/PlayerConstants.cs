@@ -7,4 +7,6 @@ public class PlayerConstants : MonoBehaviour
     // Keybinds
     public static KeyCode action = KeyCode.E;
     public static KeyCode exit = KeyCode.Escape;
+
+    public static string objectTag = "Player"; 
 }
