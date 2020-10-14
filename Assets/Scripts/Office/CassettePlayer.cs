@@ -136,7 +136,7 @@ public class CassettePlayer : MonoBehaviour
 	
 	private void OnTriggerStay(Collider other)
 	{
-		if (other.CompareTag("Player"))
+		if (other.CompareTag(PlayerConstants.objectTag))
 		{
 			if (Input.GetKeyDown(PlayerConstants.action))
 			{
