@@ -9,25 +9,25 @@ public class RandomNameGenerator : MonoBehaviour
 {
 	private enum NameCategory 
 	{
-		HumanMale, HumanFemale, Helicid, Oshunian, Robot 
+		HumanMale, HumanFemale, Helicid, Oshunian, Vesta, Robot 
 	};
 
-	private int prefixLength = 3;
-	private int suffixLength = 4;
+	private int robotPrefixLength = 3;
+	private int robotSuffixLength = 4;
 
 	/// <summary>
 		/// Name formats:
 			///		Human - [FirstName] [Initial].
 			///		Helicid - [LastName] [Initial]. 
 			///		Oshunian - [FirstName] [Title]
-			///		Robot - [Prefix]-[Suffix]
+			///		Vesta - [Prefix]-[Name]
+			///		Robot - [Alphabetical prefix]-[Numerical suffix]
 			///		
 		/// 
 	/// </summary>
 
 	public void Start()
 	{
-
 	}
 
 	// Combine the value returned with an initial, digit, or second portion
@@ -74,15 +74,20 @@ public class RandomNameGenerator : MonoBehaviour
 				// No space required since the surname is a title with a space built in
 				return $"{oshunianFirstName}{oshunianSurname}";
 
+			case NameCategory.Vesta:
+				var vestaPefix = GenerateNamePortion(PilotNameDataSingleton.Instance.VestaPrefixes);
+				var vestaName = GenerateNamePortion(PilotNameDataSingleton.Instance.VestaNames); 
+				return $"{vestaPefix}-{vestaName}";
+
 			case NameCategory.Robot:
 				string prefix = string.Empty;
 				string suffix = string.Empty;
 
-				for (int i = 0; i < prefixLength; i++)
+				for (int i = 0; i < robotPrefixLength; i++)
 				{
 					prefix += GenerateInitial();
 				}
-				for (int i = 0; i < suffixLength; i++)
+				for (int i = 0; i < robotSuffixLength; i++)
 				{
 					suffix += GenerateDigit().ToString();
 				}
