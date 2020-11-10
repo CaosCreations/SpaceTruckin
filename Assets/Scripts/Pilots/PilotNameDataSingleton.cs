@@ -6,11 +6,13 @@ using UnityEngine;
 public class PilotNameDataSingleton : MonoBehaviour
 {
     public static PilotNameDataSingleton Instance { get; private set; }
-    public string[] HumanMaleNames { get; private set; } 
+    public string[] HumanMaleNames { get; private set; }
     public string[] HumanFemaleNames { get; private set; }
     public string[] HelicidNames { get; private set; }
     public string[] OshunianNames { get; private set; }
     public string[] OshunianTitles { get; set; }
+    public string[] VestaPrefixes { get; set; }
+    public string[] VestaNames { get; set; }
 
     private void Awake()
     {
@@ -23,6 +25,8 @@ public class PilotNameDataSingleton : MonoBehaviour
             HelicidNames = File.ReadAllLines(PilotsConstants.helicidNamesPath);
             OshunianNames = File.ReadAllLines(PilotsConstants.oshunianNamesPath);
             OshunianTitles = File.ReadAllLines(PilotsConstants.oshunianTitlesPath);
+            VestaPrefixes = File.ReadAllLines(PilotsConstants.vestaPrefixesPath);
+            VestaNames = File.ReadAllLines(PilotsConstants.vestaNamesPath);
         }
         else
         {

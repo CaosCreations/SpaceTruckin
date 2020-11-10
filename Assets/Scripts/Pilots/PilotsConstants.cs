@@ -33,9 +33,13 @@ public class PilotsConstants : MonoBehaviour
 
 
     // Paths to text files containing pilot names 
-    public static string humanMaleNamesPath = "./Assets/ImportedAssets/male_names.txt";
-    public static string humanFemaleNamesPath = "./Assets/ImportedAssets/female_names.txt";
-    public static string helicidNamesPath = "./Assets/ImportedAssets/helicid_names.txt";
-    public static string oshunianNamesPath = "./Assets/ImportedAssets/oshunian_first_names.txt";
-    public static string oshunianTitlesPath = "./Assets/ImportedAssets/oshunian_titles.txt";
+    public static string parentDirectoryPath = "./Assets/ImportedAssets/PilotNames/";
+    public static string humanMaleNamesPath = parentDirectoryPath + "male_names.txt";
+    public static string humanFemaleNamesPath = parentDirectoryPath + "female_names.txt";
+    public static string helicidNamesPath = parentDirectoryPath + "helicid_names.txt";
+    public static string oshunianNamesPath = parentDirectoryPath + "oshunian_first_names.txt";
+    public static string oshunianTitlesPath = parentDirectoryPath + "oshunian_titles.txt";
+    public static string vestaPrefixesPath = parentDirectoryPath + "vesta_prefixes.txt";
+    public static string vestaNamesPath = parentDirectoryPath + "vesta_names.txt";
+
 }
