@@ -78,7 +78,7 @@ public class VendingMachineManager : MonoBehaviour
         Image image = itemObjects[itemIndex].GetComponent<Image>();
         ResetAllColours();
 
-        if (PlayerData.playerMoney >= items.items[itemIndex].price)
+        if (PlayerManager.Instance.playerData.playerMoney >= items.items[itemIndex].price)
         {
             items.items[itemIndex].PurchaseItem();
             image.color = positiveFeedbackColour;

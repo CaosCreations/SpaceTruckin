@@ -36,7 +36,7 @@ public class MessagesManager : MonoBehaviour
         {
             if (!message.unlocked)
             {
-                if (PlayerData.playerMoney > message.condition)
+                if (PlayerManager.Instance.playerData.playerMoney > message.condition)
                 {
                     message.unlocked = true;
                 }

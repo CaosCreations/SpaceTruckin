@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        playerMoneyText.text = "$" + PlayerData.playerMoney;
+        playerMoneyText.text = "$" + PlayerManager.Instance.playerData.playerMoney;
         GenerateMissionButtons();
     }
 
@@ -66,10 +66,10 @@ public class GameManager : MonoBehaviour
 			missionButton.slider.value += 1f / scaledTimer; 
             missionButton.SetMissionTime(timeLeftInSeconds: currentTimer / MissionConstants.sliderScaleFactor);
         }
-        
-        PlayerData.playerMoney += mission.missionValue;
+
+        PlayerManager.MissionComplete(mission);
         missionButton.ResetMissionTime();
-        playerMoneyText.text = "$" + PlayerData.playerMoney;
+        playerMoneyText.text = "$" + PlayerManager.Instance.playerData.playerMoney;
         mission.inProgress = false; 
     }
 
