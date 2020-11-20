@@ -12,12 +12,14 @@ public class CanvasManager : MonoBehaviour
 
     public void ActivateCanvas()
     {
+        //Time.timeScale = 0;
         canvas.gameObject.SetActive(true);
         onCanvasActivated?.Invoke();
     }
 
     public void DeactivateCanvas()
     {
+        //Time.timeScale = 1;
         canvas.gameObject.SetActive(false);
         onCanvasDeactivated?.Invoke();
     }
