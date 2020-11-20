@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public enum UICanvasType
 {
-    Terminal, Vending, Hangar, None
+    Terminal, Vending, Hangar, Cassette, None
 }
 
 public class UIManager : MonoBehaviour
@@ -13,8 +14,12 @@ public class UIManager : MonoBehaviour
     public GameObject terminalCanvas;
     public GameObject vendingCanvas;
     public GameObject hangarNodeCanvas;
+    public GameObject casetteCanvas;
 
     public UICanvasType interactableType;
+
+    public static event Action onCanvasActivated;
+    public static event Action onCanvasDeactivated;
 
     private void Awake()
     {
@@ -58,6 +63,7 @@ public class UIManager : MonoBehaviour
         Instance.terminalCanvas.SetActive(false);
         Instance.hangarNodeCanvas.SetActive(false);
         Instance.vendingCanvas.SetActive(false);
+        Instance.casetteCanvas.SetActive(false);
     }
 
     public static void ShowCanvas()
@@ -75,6 +81,9 @@ public class UIManager : MonoBehaviour
                 break;
             case UICanvasType.Vending:
                 Instance.vendingCanvas.SetActive(true);
+                break;
+            case UICanvasType.Cassette:
+                Instance.casetteCanvas.SetActive(true);
                 break;
         }
     }
