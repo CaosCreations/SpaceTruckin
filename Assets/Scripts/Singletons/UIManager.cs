@@ -47,7 +47,7 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(PlayerConstants.action))
+        if (Input.GetKeyDown(PlayerConstants.action) && interactableType != UICanvasType.None)
         {
             ShowCanvas();
         }
