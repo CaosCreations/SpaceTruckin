@@ -67,7 +67,7 @@ public class MissionsManager : MonoBehaviour
             missionButton.SetMissionTime(timeLeftInSeconds: currentTimer / MissionConstants.sliderScaleFactor);
         }
 
-        PlayerManager.MissionComplete(mission);
+        mission.ProcessOutcomes();
         missionButton.ResetMissionTime();
         playerMoneyText.text = "$" + PlayerManager.Instance.playerData.playerMoney;
         mission.inProgress = false; 

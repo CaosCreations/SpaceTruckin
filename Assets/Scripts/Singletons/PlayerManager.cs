@@ -42,14 +42,6 @@ public class PlayerManager : MonoBehaviour
         
     }
 
-
-    public static void MissionComplete(Mission mission)
-    {
-        Instance.playerData.playerMoney += mission.missionValue;
-        // TODO: apply any mission modifiers, or talent modifiers
-        // TODO: apply ship outcome
-    }
-
     public static void VendingMachine()
     {
 
