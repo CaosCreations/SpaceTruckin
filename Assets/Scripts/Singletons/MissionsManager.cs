@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
+public class MissionsManager : MonoBehaviour
 {
     public MissionContainer missionContainer;
 
@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        playerMoneyText.text = "$" + PlayerData.playerMoney;
+        playerMoneyText.text = "$" + PlayerManager.Instance.playerData.playerMoney;
         GenerateMissionButtons();
     }
 
@@ -66,10 +66,10 @@ public class GameManager : MonoBehaviour
 			missionButton.slider.value += 1f / scaledTimer; 
             missionButton.SetMissionTime(timeLeftInSeconds: currentTimer / MissionConstants.sliderScaleFactor);
         }
-        
-        PlayerData.playerMoney += mission.missionValue;
+
+        mission.ProcessOutcomes();
         missionButton.ResetMissionTime();
-        playerMoneyText.text = "$" + PlayerData.playerMoney;
+        playerMoneyText.text = "$" + PlayerManager.Instance.playerData.playerMoney;
         mission.inProgress = false; 
     }
 

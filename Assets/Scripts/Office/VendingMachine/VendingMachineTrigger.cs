@@ -4,28 +4,20 @@ using UnityEngine;
 
 public class VendingMachineTrigger : MonoBehaviour
 {
-    private CanvasManager canvasManager;
     private VendingMachineManager vendingMachineManager;
 
     private void Start()
     {
-        canvasManager = GetComponentInParent<CanvasManager>();
         vendingMachineManager = GetComponentInParent<VendingMachineManager>(); 
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag(PlayerConstants.objectTag))
-        {
-            if (Input.GetKeyDown(PlayerConstants.action))
-            {
-                canvasManager.ActivateCanvas();
-            }
-            else if (Input.GetKeyDown(PlayerConstants.exit))
-            {
-                vendingMachineManager.CleanUI(); 
-                canvasManager.DeactivateCanvas();
-            }
-        }
+        UIManager.SetCanInteract(UICanvasType.Vending, true);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        UIManager.SetCanInteract(UICanvasType.Vending, false);
     }
 }

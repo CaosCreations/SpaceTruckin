@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainTabbedUIManager : MonoBehaviour
+public class TerminalUIManager : MonoBehaviour
 {
     public Button missionsButton;
     public Button messagesButton;

@@ -6,20 +6,20 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlayerData", menuName = "ScriptableObjects/PlayerData", order = 1)]
 public class PlayerData : ScriptableObject
 {
-    public static int playerStartingMoney; 
-    public static long playerMoney;
+    public int playerStartingMoney; 
+    public long playerMoney;
 
-    public static void Init()
+    public void Init()
     {
         playerMoney = playerStartingMoney;
     }
 
-    public static void SpendMoney(long amount)
+    public void SpendMoney(long amount)
     {
         playerMoney -= amount; 
     }
 
-    public static void ReceiveMoney(long amount)
+    public void ReceiveMoney(long amount)
     {
         playerMoney += amount;
     }

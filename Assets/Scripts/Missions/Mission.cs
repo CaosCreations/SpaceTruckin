@@ -5,7 +5,18 @@ public class Mission : ScriptableObject
 {
     public string pilotsName;
     public int missionDurationInSeconds;
-    public long missionValue;
+    public string missionName;
+
+    [SerializeField]
+    public MissionOutcome[] outcomes;
 
     public bool inProgress;
+
+    public void ProcessOutcomes()
+    {
+        foreach (MissionOutcome outcome in outcomes)
+        {
+            outcome.Process();
+        }
+    }
 }

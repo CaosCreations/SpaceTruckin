@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5745358076465076627}
   - component: {fileID: 5089660706073705400}
   - component: {fileID: 5745358076465076631}
+  - component: {fileID: 667742070}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -63,6 +64,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clockText: {fileID: 0}
+  realTimeDayDurationInSeconds: 900
 --- !u!114 &5745358076465076631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,3 +78,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   schedule: {fileID: 11400000, guid: f3c7ada442946134e9e31f77a66f402a, type: 2}
+--- !u!114 &667742070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5745358076465076624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a0cefb547b064e4b95af006d265baf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerData: {fileID: 11400000, guid: 1506149f15b36014eb19522e7ab71165, type: 2}

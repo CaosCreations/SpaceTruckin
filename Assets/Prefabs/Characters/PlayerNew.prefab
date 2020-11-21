@@ -94,9 +94,7 @@ GameObject:
   - component: {fileID: 1972979662120986136}
   - component: {fileID: 1972979662120986133}
   - component: {fileID: 1972979662120986137}
-  - component: {fileID: 6877220392937526241}
-  - component: {fileID: 4392894313927051706}
-  - component: {fileID: 9190018061237726626}
+  - component: {fileID: 1930419353}
   m_Layer: 0
   m_Name: PlayerNew
   m_TagString: Player
@@ -133,8 +131,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteAnimator: {fileID: 1972979662120986137}
-  maximumSpeed: 100
-  acceleration: 10
+  maximumSpeed: 8
+  acceleration: 0.5
 --- !u!114 &1972979662120986137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,37 +163,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8713f2f490656184aabe2ffc53a7c017, type: 3}
   - {fileID: 21300000, guid: a2d1dde8e1a043f4fa5ff54384747bff, type: 3}
   - {fileID: 21300000, guid: 6a7d2e0bed60d8b45a333175f791a924, type: 3}
-  material: {fileID: 0}
---- !u!114 &6877220392937526241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1972979662120986132}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67ddc2ac3de30314e830d4fe609ee30e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!54 &4392894313927051706
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1972979662120986132}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
---- !u!65 &9190018061237726626
-BoxCollider:
+  material: {fileID: 2100000, guid: b984f31d42bd13945b662729a787ee1d, type: 2}
+--- !u!143 &1930419353
+CharacterController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -205,7 +175,12 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 2, z: 1}
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6220973636959777398
 GameObject:
@@ -233,7 +208,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6220973636959777398}
   m_LocalRotation: {x: 0, y: 0.8660254, z: -0.5, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.277, z: 0.393}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children: []
   m_Father: {fileID: 1972979662120986136}

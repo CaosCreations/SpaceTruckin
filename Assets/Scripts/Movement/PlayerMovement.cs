@@ -18,16 +18,22 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float maximumSpeed; 
     [SerializeField] private float acceleration;
 
-    private Rigidbody rb;
+    private CharacterController characterController;
+    private float gravity = -9.81f;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>(); 
+        characterController = GetComponent<CharacterController>(); 
     }    
 
     // Get input in Update 
     private void Update()
     {
+        if(Time.timeScale == 0)
+        {
+            return;
+        }
+
         movementVector.x = Input.GetAxisRaw("Horizontal");
         movementVector.y = Input.GetAxisRaw("Vertical");
 
@@ -43,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
             movementVector /= movementVector.magnitude;
         }
 
+        ApplyGravity();
         MovePlayer(); 
     }
 
@@ -82,6 +89,11 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void ApplyGravity()
+    {
+        characterController.Move(new Vector3(0, gravity * Time.fixedDeltaTime, 0));
+    }
+
     private void MovePlayer()
     {
         if (currentSpeed < maximumSpeed)
@@ -94,8 +106,8 @@ public class PlayerMovement : MonoBehaviour
             currentSpeed = 0f;
         }
 
-        Vector3 movement = new Vector3(movementVector.x, 0f, movementVector.y); 
-        rb.MovePosition(transform.position + movement * currentSpeed * Time.fixedDeltaTime); 
+        Vector3 movement = new Vector3(movementVector.x, 0f, movementVector.y);
+        characterController.Move(movement * currentSpeed *Time.fixedDeltaTime);
     }
 
     private void LogMovementData()

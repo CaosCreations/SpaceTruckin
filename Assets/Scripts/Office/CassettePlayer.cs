@@ -15,8 +15,6 @@ public class CassettePlayer : MonoBehaviour
 
 	private AudioSource audioSource;
 
-	private CanvasManager canvasManager;
-
 	// Use these flags to differentiate between the 
 	// player pressing pause/stop and the audiosource  
 	// not playing 
@@ -32,11 +30,9 @@ public class CassettePlayer : MonoBehaviour
 
 	private void Start()
 	{
-		audioSource = GetComponent<AudioSource>();
+		audioSource = FindObjectOfType<AudioSource>();
 		audioSource.clip = tracks[currentTrackIndex];
 		
-		canvasManager = GetComponent<CanvasManager>();
-
 		AddListeners();
 	}
 
@@ -133,19 +129,14 @@ public class CassettePlayer : MonoBehaviour
 		trackPaused = false;
 		trackPlaying = false;
     }
-	
-	private void OnTriggerStay(Collider other)
-	{
-		if (other.CompareTag(PlayerConstants.objectTag))
-		{
-			if (Input.GetKeyDown(PlayerConstants.action))
-			{
-				canvasManager.ActivateCanvas();
-			}
-			else if (Input.GetKeyDown(PlayerConstants.exit))
-			{
-				canvasManager.DeactivateCanvas();
-			}
-		}
+
+    private void OnTriggerEnter(Collider other)
+    {
+		UIManager.SetCanInteract(UICanvasType.Cassette, true);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+		UIManager.SetCanInteract(UICanvasType.Cassette, false);
 	}
 }
