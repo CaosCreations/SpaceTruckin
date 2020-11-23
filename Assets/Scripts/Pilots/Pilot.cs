@@ -10,11 +10,9 @@ public enum Species
 [CreateAssetMenu(fileName = "Pilot", menuName = "ScriptableObjects/Pilot", order = 1)]
 public class Pilot : ScriptableObject
 {
+    public int id, xp, level, missionsCompleted;
     public string pilotName, shipName, description;
     public Species species;
-    public int level, experience, missionsCompleted;
     public bool hired, onMission;
-
-    public Sprite avatar; 
-
+    public Sprite avatar;
 }
