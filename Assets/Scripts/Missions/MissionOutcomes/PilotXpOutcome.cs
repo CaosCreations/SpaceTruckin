@@ -1,3 +1,4 @@
+using Assets.Scripts.Singletons;
 using UnityEngine;
 
 // PilotXpOutcome can occur as a result of a mission, mission modifier, event, faction event, etc. 
