@@ -8,7 +8,6 @@ public class MissionModifierOutcome : MissionOutcome
     public MissionOutcome[] outcomes;
 
     public Sprite sprite;
-    public string flavourText;
 
     public override void Process(Mission mission)
     {
