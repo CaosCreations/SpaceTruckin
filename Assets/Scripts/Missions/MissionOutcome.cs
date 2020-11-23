@@ -4,13 +4,14 @@ using UnityEngine;
 
 public interface IMissionOutcome
 {
-    void Process();
+    void Process(Mission mission);
 }
 
 public class MissionOutcome : ScriptableObject, IMissionOutcome
 {
-    public virtual void Process()
+    public int probability;
+
+    public virtual void Process(Mission mission)
     {
-        throw new System.NotImplementedException();
     }
 }
