@@ -22,7 +22,16 @@ public class PilotsManager : MonoBehaviour
             Destroy(Instance.gameObject);
             Instance = this;
         }
+        AssignUniqueIds();
         DontDestroyOnLoad(this.gameObject);
+    }
+
+    private void AssignUniqueIds()
+    {
+        for (int i = 0; i < pilots.Length; i++)
+        {
+            pilots[i].id = i; 
+        }
     }
 
     public static void AwardXp(int index, int xp)

@@ -10,7 +10,10 @@ public enum Species
 [CreateAssetMenu(fileName = "Pilot", menuName = "ScriptableObjects/Pilot", order = 1)]
 public class Pilot : ScriptableObject
 {
-    public int id, xp, level, missionsCompleted;
+    [Header("Leave this blank. It is set automatically.")]
+    public int id; 
+
+    public int xp, level, missionsCompleted;
     public string pilotName, shipName, description;
     public bool hired, onMission;
     public Species species;
