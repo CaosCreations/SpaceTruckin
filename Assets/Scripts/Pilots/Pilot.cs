@@ -17,6 +17,6 @@ public class Pilot : ScriptableObject
     public string pilotName, shipName, description;
     public bool hired, onMission;
     public Species species;
-    public Ship ship;
+    public Ship? ship; 
     public Sprite avatar;
 }
