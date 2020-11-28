@@ -4,7 +4,7 @@ public class ShipsManager : MonoBehaviour
 {
     public static ShipsManager Instance;
 
-    public Ship[] ships;
+    private static Ship[] ships;
 
     private void Awake()
     {
@@ -25,8 +25,14 @@ public class ShipsManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
-    public static void DamageShip(int shipId, int damage)
+    public static void DamageShip(int index, int damage)
     {
-        ships[shipId].hullIntegrity = Mathf.Max(0, ships[shipId].hullIntegrity - damage);
+        for (int i = 0; i < ships.Length; i++)
+        {
+            if (ships[i] != null && index == ships[i].id)
+            {
+                ships[i].hullIntegrity = Mathf.Max(0, ships[i].hullIntegrity - damage);
+            }
+        }
     }
 }
