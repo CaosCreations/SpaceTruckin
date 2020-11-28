@@ -9,6 +9,6 @@ public class PilotXpOutcome : MissionOutcome
 	
 	public override void Process(Mission mission) 
 	{
-		PilotsManager.AwardXp(Random.Range(xpMin, xpMax));
+		PilotsManager.AwardXp(mission.pilot.id, Random.Range(xpMin, xpMax));
 	}
 }
