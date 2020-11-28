@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public enum Direction
 {
-    Up, Upleft, Left, Downleft, Down, Downright, Right, Upright
+    Up, UpLeft, Left, DownLeft, Down, DownRight, Right, UpRight
 }
 
 public class PlayerMovement : MonoBehaviour
@@ -61,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (movementVector == new Vector2(-1f, 1f))
         {
-            SpriteAnimator.direction = Direction.Upleft;
+            SpriteAnimator.direction = Direction.UpLeft;
         }
         else if (movementVector == Vector2.left)
         {
@@ -69,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (movementVector == new Vector2(-1f, -1f))
         {
-            SpriteAnimator.direction = Direction.Downleft;
+            SpriteAnimator.direction = Direction.DownLeft;
         }
         else if (movementVector == Vector2.down)
         {
@@ -77,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (movementVector == new Vector2(1f, -1f))
         {
-            SpriteAnimator.direction = Direction.Downright;
+            SpriteAnimator.direction = Direction.DownRight;
         }
         else if (movementVector == Vector2.right)
         {
@@ -85,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (movementVector == Vector2.one)
         {
-            SpriteAnimator.direction = Direction.Upright;
+            SpriteAnimator.direction = Direction.UpRight;
         }
     }
 

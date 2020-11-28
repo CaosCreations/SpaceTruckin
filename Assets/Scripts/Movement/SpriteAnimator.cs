@@ -90,7 +90,7 @@ public class SpriteAnimator : MonoBehaviour
                 stationaryPosition = stationaryFrames[0];
                 flipped = false;
                 break;
-            case Direction.Upleft:
+            case Direction.UpLeft:
                 frameArray = leftFrames;
                 stationaryPosition = stationaryFrames[1];
                 flipped = false;
@@ -100,7 +100,7 @@ public class SpriteAnimator : MonoBehaviour
                 stationaryPosition = stationaryFrames[1];
                 flipped = false;
                 break;
-            case Direction.Downleft:
+            case Direction.DownLeft:
                 frameArray = leftFrames;
                 stationaryPosition = stationaryFrames[1];
                 flipped = false;
@@ -110,7 +110,7 @@ public class SpriteAnimator : MonoBehaviour
                 stationaryPosition = stationaryFrames[2];
                 flipped = false;
                 break;
-            case Direction.Downright:
+            case Direction.DownRight:
                 frameArray = rightFrames;
                 stationaryPosition = stationaryFrames[3];
                 flipped = false;
@@ -120,7 +120,7 @@ public class SpriteAnimator : MonoBehaviour
                 stationaryPosition = stationaryFrames[3];
                 flipped = false;
                 break;
-            case Direction.Upright:
+            case Direction.UpRight:
                 frameArray = rightFrames;
                 stationaryPosition = stationaryFrames[3];
                 flipped = false;
