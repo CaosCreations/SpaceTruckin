@@ -8,7 +8,7 @@ public class MoneyOutcome : MissionOutcome
     public float moneyMin;
     public float moneyMax;
 
-    public override void Process(Mission mission)
+    public override void Process()
     {
         PlayerManager.Instance.playerData.playerMoney += (long)Random.Range(moneyMin, moneyMax);
     }

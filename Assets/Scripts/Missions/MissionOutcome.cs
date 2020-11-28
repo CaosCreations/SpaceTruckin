@@ -15,4 +15,8 @@ public class MissionOutcome : ScriptableObject, IMissionOutcome
     public virtual void Process(Mission mission)
     {
     }
+
+    public virtual void Process()
+    {
+    }
 }
