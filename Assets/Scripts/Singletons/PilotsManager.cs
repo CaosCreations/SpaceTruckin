@@ -4,7 +4,7 @@ public class PilotsManager : MonoBehaviour
 {
     public static PilotsManager Instance;
 
-    public Pilot[] pilots; 
+    private static Pilot[] pilots; 
 
     private void Awake()
     {
@@ -23,5 +23,16 @@ public class PilotsManager : MonoBehaviour
             Instance = this;
         }
         DontDestroyOnLoad(this.gameObject);
+    }
+
+    public static void AwardXp(int index, int xp)
+    {
+        for (int i = 0; i < pilots.Length; i++)
+        {
+            if (pilots[i] != null && index == pilots[i].id)
+            {
+                pilots[i].xp += xp; 
+            }
+        }
     }
 }
