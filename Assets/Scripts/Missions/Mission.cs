@@ -3,7 +3,7 @@
 [CreateAssetMenu(fileName = "Mission", menuName = "ScriptableObjects/Mission", order = 1)]
 public class Mission : ScriptableObject
 {
-    public string pilotsName;
+    public Pilot pilot; 
     public int missionDurationInSeconds;
     public string missionName;
 
@@ -16,7 +16,7 @@ public class Mission : ScriptableObject
     {
         foreach (MissionOutcome outcome in outcomes)
         {
-            outcome.Process();
+            outcome.Process(this);
         }
     }
 }

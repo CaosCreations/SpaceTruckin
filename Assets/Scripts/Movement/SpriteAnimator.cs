@@ -1,8 +1,4 @@
-﻿using System; 
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SpriteAnimator : MonoBehaviour
 {
@@ -89,42 +85,42 @@ public class SpriteAnimator : MonoBehaviour
         // Ugliest switch block in existence 
         switch (direction)
         {
-            case Direction.up:
+            case Direction.Up:
                 frameArray = upFrames;
                 stationaryPosition = stationaryFrames[0];
                 flipped = false;
                 break;
-            case Direction.upleft:
+            case Direction.UpLeft:
                 frameArray = leftFrames;
                 stationaryPosition = stationaryFrames[1];
                 flipped = false;
                 break;
-            case Direction.left:
+            case Direction.Left:
                 frameArray = leftFrames;
                 stationaryPosition = stationaryFrames[1];
                 flipped = false;
                 break;
-            case Direction.downleft:
+            case Direction.DownLeft:
                 frameArray = leftFrames;
                 stationaryPosition = stationaryFrames[1];
                 flipped = false;
                 break;
-            case Direction.down:
+            case Direction.Down:
                 frameArray = downFrames;
                 stationaryPosition = stationaryFrames[2];
                 flipped = false;
                 break;
-            case Direction.downright:
+            case Direction.DownRight:
                 frameArray = rightFrames;
                 stationaryPosition = stationaryFrames[3];
                 flipped = false;
                 break;
-            case Direction.right:
+            case Direction.Right:
                 frameArray = rightFrames;
                 stationaryPosition = stationaryFrames[3];
                 flipped = false;
                 break;
-            case Direction.upright:
+            case Direction.UpRight:
                 frameArray = rightFrames;
                 stationaryPosition = stationaryFrames[3];
                 flipped = false;

@@ -22,7 +22,7 @@ public class MissionButton : MonoBehaviour
     public void Setup(Mission mission)
     {
         performingMission = false;
-        pilotText.text = mission.pilotsName;
+        pilotText.text = mission.pilot.pilotName;
         this.mission = mission;
 
         ResetMissionTime();
