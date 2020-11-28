@@ -4,7 +4,7 @@ public class PilotsManager : MonoBehaviour
 {
     public static PilotsManager Instance;
 
-    private static Pilot[] pilots; 
+    public Pilot[] pilots;
 
     private void Awake()
     {
@@ -22,25 +22,25 @@ public class PilotsManager : MonoBehaviour
             Destroy(Instance.gameObject);
             Instance = this;
         }
-        AssignUniqueIds();
         DontDestroyOnLoad(this.gameObject);
+        AssignUniqueIds();
     }
 
     private void AssignUniqueIds()
     {
-        for (int i = 0; i < pilots.Length; i++)
+        for (int i = 0; i < Instance.pilots.Length; i++)
         {
-            pilots[i].id = i; 
+            Instance.pilots[i].id = i;
         }
     }
 
     public static void AwardXp(int index, int xp)
     {
-        for (int i = 0; i < pilots.Length; i++)
+        for (int i = 0; i < Instance.pilots.Length; i++)
         {
-            if (pilots[i] != null && index == pilots[i].id)
+            if (Instance.pilots[i] != null && index == Instance.pilots[i].id)
             {
-                pilots[i].xp += xp; 
+                Instance.pilots[i].xp += xp;
             }
         }
     }
