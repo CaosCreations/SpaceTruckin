@@ -15,8 +15,8 @@ public class Pilot : ScriptableObject
 
     public int xp, level, missionsCompleted;
     public string pilotName, shipName, description;
-    public bool hired, onMission;
+    public bool hired, onMission, isAssignedToShip; 
     public Species species;
-    public Ship? ship; 
+    public Ship ship; 
     public Sprite avatar;
 }
