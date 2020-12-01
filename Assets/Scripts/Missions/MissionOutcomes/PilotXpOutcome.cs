@@ -21,7 +21,7 @@ public class PilotXpOutcome : MissionOutcome
             if (mission.outcomes[i].GetType().Equals(typeof(OmenOutcome)))
             {
                 OmenOutcome omen = mission.outcomes[i] as OmenOutcome;
-                coefficient += probability <= Random.Range(0f, 1f) ? omen.coefficient : omen.coefficient * -1;
+                coefficient += probability >= Random.Range(0f, 1f) ? omen.coefficient : omen.coefficient * -1;
             }
         }
         return coefficient;
