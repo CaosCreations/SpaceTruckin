@@ -116,11 +116,4 @@ public class PlayerMovement : MonoBehaviour
         Vector3 movement = new Vector3(movementVector.x, 0f, movementVector.y);
         characterController.Move(movement * currentSpeed *Time.fixedDeltaTime);
     }
-
-    private void LogMovementData()
-    {
-        Debug.Log("Movement vector: " + movementVector);
-        Debug.Log("Current speed: " + currentSpeed);
-        Debug.Log("Maximum speed: " + maximumSpeed);
-    }
 }
