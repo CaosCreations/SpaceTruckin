@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public static Vector2 movementVector;
 
-    [SerializeField] private SpriteAnimator spriteAnimator;
+    [SerializeField] private Animator animator;
 
     private float currentSpeed; 
     [SerializeField] private float maximumSpeed; 
@@ -57,35 +57,42 @@ public class PlayerMovement : MonoBehaviour
     {
         if (movementVector == Vector2.up)
         {
-            SpriteAnimator.direction = Direction.Up;
+            animator.SetBool("Up", true);
         }
         else if (movementVector == new Vector2(-1f, 1f))
         {
-            SpriteAnimator.direction = Direction.UpLeft;
+            animator.SetBool("Up", true);
         }
         else if (movementVector == Vector2.left)
         {
-            SpriteAnimator.direction = Direction.Left;
+            animator.SetBool("Left", true);
         }
         else if (movementVector == new Vector2(-1f, -1f))
         {
-            SpriteAnimator.direction = Direction.DownLeft;
+            animator.SetBool("Left", true);
         }
         else if (movementVector == Vector2.down)
         {
-            SpriteAnimator.direction = Direction.Down;
+            animator.SetBool("Down", true);
         }
         else if (movementVector == new Vector2(1f, -1f))
         {
-            SpriteAnimator.direction = Direction.DownRight;
+            animator.SetBool("Down", true);
         }
         else if (movementVector == Vector2.right)
         {
-            SpriteAnimator.direction = Direction.Right;
+            animator.SetBool("Right", true);
         }
         else if (movementVector == Vector2.one)
         {
-            SpriteAnimator.direction = Direction.UpRight;
+            animator.SetBool("Right", true);
+        }
+        else
+        {
+            animator.SetBool("Up", false);
+            animator.SetBool("Down", false);
+            animator.SetBool("Right", false);
+            animator.SetBool("Left", false);
         }
     }
 
