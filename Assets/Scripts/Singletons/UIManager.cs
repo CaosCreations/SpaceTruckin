@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum UICanvasType
 {
-    Terminal, Vending, Hangar, Cassette, None
+    Terminal, Vending, Hangar, Cassette, NoticeBoard, None
 }
 
 public class UIManager : MonoBehaviour
