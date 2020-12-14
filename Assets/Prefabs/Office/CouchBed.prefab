@@ -138,8 +138,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3049638430222377123}
   - component: {fileID: 5767901444892130945}
+  - component: {fileID: 8739147715186078560}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: UIActivator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -167,8 +168,21 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8198554739482841579}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 1.5, z: 1.5}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8739147715186078560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8198554739482841579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebb9c4b525e4c024b9365abca80f8b37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0

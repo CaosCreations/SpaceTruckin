@@ -129,14 +129,4 @@ public class CassettePlayer : MonoBehaviour
 		trackPaused = false;
 		trackPlaying = false;
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-		UIManager.SetCanInteract(UICanvasType.Cassette, true);
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-		UIManager.SetCanInteract(UICanvasType.Cassette, false);
-	}
 }

@@ -5,16 +5,19 @@ using UnityEngine;
 
 public enum UICanvasType
 {
-    Terminal, Vending, Hangar, Cassette, NoticeBoard, None
+    Bed, Terminal, Vending, Hangar, Cassette, NoticeBoard, None
 }
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
+
+    public GameObject bedCanvas;
     public GameObject terminalCanvas;
     public GameObject vendingCanvas;
     public GameObject hangarNodeCanvas;
     public GameObject casetteCanvas;
+    public GameObject noticeBoardCanvas;
 
     public UICanvasType interactableType;
 
@@ -60,10 +63,12 @@ public class UIManager : MonoBehaviour
 
     public static void ClearCanvases()
     {
+        Instance.bedCanvas.SetActive(false);
         Instance.terminalCanvas.SetActive(false);
         Instance.hangarNodeCanvas.SetActive(false);
         Instance.vendingCanvas.SetActive(false);
         Instance.casetteCanvas.SetActive(false);
+        Instance.noticeBoardCanvas.SetActive(false);
     }
 
     public static void ShowCanvas()
@@ -84,6 +89,12 @@ public class UIManager : MonoBehaviour
                 break;
             case UICanvasType.Cassette:
                 Instance.casetteCanvas.SetActive(true);
+                break;
+            case UICanvasType.NoticeBoard:
+                Instance.noticeBoardCanvas.SetActive(true);
+                break;
+            case UICanvasType.Bed:
+                Instance.bedCanvas.SetActive(true);
                 break;
         }
     }
