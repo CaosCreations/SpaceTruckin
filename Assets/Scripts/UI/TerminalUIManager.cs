@@ -7,21 +7,19 @@ public class TerminalUIManager : MonoBehaviour
 {
     public Button missionsButton;
     public Button messagesButton;
-    public Button jobsButton; 
     public Button analyticsButton;
     public Button crewButton;
     public Button upgradesButton;
 
     public GameObject missionsPanel;
     public GameObject messagesPanel;
-    public GameObject jobsPanel; 
     public GameObject analyticsPanel;
     public GameObject crewPanel;
     public GameObject upgradesPanel;
 
     public enum Tab
     {
-        Missions, Messages, Jobs, Analytics, Crew, Upgrades
+        Missions, Messages, Analytics, Crew, Upgrades
     }
 
     void Start()
@@ -37,9 +35,6 @@ public class TerminalUIManager : MonoBehaviour
 
         messagesButton.onClick.RemoveAllListeners();
         messagesButton.onClick.AddListener(delegate { TabButtonClicked(Tab.Messages); });
-
-        jobsButton.onClick.RemoveAllListeners();
-        jobsButton.onClick.AddListener(delegate { TabButtonClicked(Tab.Jobs); });
 
         analyticsButton.onClick.RemoveAllListeners();
         analyticsButton.onClick.AddListener(delegate { TabButtonClicked(Tab.Analytics); });
@@ -62,9 +57,6 @@ public class TerminalUIManager : MonoBehaviour
             case Tab.Messages:
                 messagesPanel.SetActive(true);
                 break;
-            case Tab.Jobs:
-                jobsPanel.SetActive(true);
-                break;
             case Tab.Analytics:
                 analyticsPanel.SetActive(true);
                 break;
@@ -81,7 +73,6 @@ public class TerminalUIManager : MonoBehaviour
     {
         missionsPanel.SetActive(false);
         messagesPanel.SetActive(false);
-        jobsPanel.SetActive(false); 
         analyticsPanel.SetActive(false);
         crewPanel.SetActive(false);
         upgradesPanel.SetActive(false);

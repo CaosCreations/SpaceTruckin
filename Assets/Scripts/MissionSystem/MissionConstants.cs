@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JobConstants : MonoBehaviour
+public class MissionConstants : MonoBehaviour
 {
     // AvailableJobsContainer dimensions  
     public static Vector2 availableJobsContainerAnchorMin = Vector2.zero;

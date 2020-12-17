@@ -12,5 +12,5 @@ public class Message : ScriptableObject
     public bool unlocked;
 
     // The job offered in the email 
-    public Job job; 
+    //public Job job; 
 }
