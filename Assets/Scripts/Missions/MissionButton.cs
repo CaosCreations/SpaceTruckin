@@ -22,7 +22,7 @@ public class MissionButton : MonoBehaviour
     public void Setup(Mission mission)
     {
         performingMission = false;
-        pilotText.text = mission.pilot.pilotName;
+        pilotText.text = mission.currentPilot.pilotName;
         this.mission = mission;
 
         ResetMissionTime();
@@ -36,7 +36,7 @@ public class MissionButton : MonoBehaviour
 
     public void ResetMissionTime()
     {
-        TimeSpan missionDuration = new TimeSpan(0, 0, mission.missionDurationInSeconds);
+        TimeSpan missionDuration = new TimeSpan(0, 0, mission.missionDurationInDays);
         countdownText.text = missionDuration.ToString("c");
     }
 }

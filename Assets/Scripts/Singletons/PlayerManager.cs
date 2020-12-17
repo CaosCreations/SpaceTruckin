@@ -9,24 +9,18 @@ public class PlayerManager : MonoBehaviour
     [Header("Set In Editor")]
     public PlayerData playerData;
 
-
-    private void Awake()
+    void Awake()
     {
-        if (FindObjectsOfType(GetType()).Length > 1)
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
         {
             Destroy(gameObject);
+            return;
         }
-
-        if (PlayerManager.Instance == null)
-        {
-            PlayerManager.Instance = this;
-        }
-        else if (PlayerManager.Instance == this)
-        {
-            Destroy(PlayerManager.Instance.gameObject);
-            PlayerManager.Instance = this;
-        }
-        DontDestroyOnLoad(this.gameObject);
     }
 
     void Start()

@@ -24,23 +24,18 @@ public class UIManager : MonoBehaviour
     public static event Action onCanvasActivated;
     public static event Action onCanvasDeactivated;
 
-    private void Awake()
+    void Awake()
     {
-        if (FindObjectsOfType(GetType()).Length > 1)
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
         {
             Destroy(gameObject);
+            return;
         }
-
-        if (UIManager.Instance == null)
-        {
-            UIManager.Instance = this;
-        }
-        else if (UIManager.Instance == this)
-        {
-            Destroy(UIManager.Instance.gameObject);
-            UIManager.Instance = this;
-        }
-        DontDestroyOnLoad(this.gameObject);
     }
 
     private void Start()

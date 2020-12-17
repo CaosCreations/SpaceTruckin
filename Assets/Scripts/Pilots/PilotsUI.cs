@@ -62,9 +62,8 @@ public class PilotsUI : MonoBehaviour
 
 		foreach (Pilot pilot in pilotsContainer.pilots)
 		{
-			GameObject pilotButton = Instantiate(pilotButtonPrefab);
+			GameObject pilotButton = Instantiate(pilotButtonPrefab, pilotButtonGroup.transform);
 			pilotButton.name = $"{pilot.pilotName}Button"; 
-			pilotButton.transform.parent = pilotButtonGroup.transform;
 			pilotButton.GetComponentInChildren<Text>().text = pilot.pilotName;
 			Button button = pilotButton.GetComponent<Button>();
 			button.onClick.RemoveAllListeners(); 

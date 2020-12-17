@@ -3,9 +3,19 @@
 [CreateAssetMenu(fileName = "Mission", menuName = "ScriptableObjects/Mission", order = 1)]
 public class Mission : ScriptableObject
 {
-    public Pilot pilot; 
-    public int missionDurationInSeconds;
+    [Header("Set in Editor")]
+    public int missionDurationInDays;
     public string missionName;
+    public string customer;
+    public string cargo;
+    public int reward;
+    public int moneyNeededToUnlock;
+
+    // Data to persist
+    [Header("Data to update IN GAME")]
+    public bool hasBeenAcceptedInNoticeBoard;
+    public Pilot currentPilot;
+
 
     [SerializeField]
     public MissionOutcome[] outcomes;

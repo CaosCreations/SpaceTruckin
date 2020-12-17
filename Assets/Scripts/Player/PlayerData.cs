@@ -8,6 +8,7 @@ public class PlayerData : ScriptableObject
 {
     public int playerStartingMoney; 
     public long playerMoney;
+    public long playerTotalMoneyAcquired;
 
     public void Init()
     {
@@ -22,5 +23,6 @@ public class PlayerData : ScriptableObject
     public void ReceiveMoney(long amount)
     {
         playerMoney += amount;
+        playerTotalMoneyAcquired += amount;
     }
 }

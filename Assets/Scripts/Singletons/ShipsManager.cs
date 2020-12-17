@@ -6,23 +6,18 @@ public class ShipsManager : MonoBehaviour
 
     public Ship[] ships;
 
-    private void Awake()
+    void Awake()
     {
-        if (FindObjectsOfType(GetType()).Length > 1)
-        {
-            Destroy(gameObject);
-        }
-
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
-        else if (Instance == this)
+        else
         {
-            Destroy(Instance.gameObject);
-            Instance = this;
+            Destroy(gameObject);
+            return;
         }
-        DontDestroyOnLoad(this.gameObject);
     }
 
     public static void DamageShip(int index, int damage)
