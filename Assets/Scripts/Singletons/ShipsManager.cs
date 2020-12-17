@@ -9,7 +9,10 @@ public class ShipsManager : MonoBehaviour
 {
     public static ShipsManager Instance;
 
+    public GameObject shipInstancePrefab;
     public Ship[] ships;
+
+    public HangarSlot[] hangarSlots;
 
     void Awake()
     {
@@ -23,6 +26,12 @@ public class ShipsManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        Init();
+    }
+
+    public void Init()
+    {
+        hangarSlots = FindObjectsOfType<HangarSlot>();
         UpdateHangarShips();
     }
 
@@ -39,11 +48,11 @@ public class ShipsManager : MonoBehaviour
 
     public static void LaunchShip(HangarNode node)
     {
-        foreach (Ship ship in Instance.ships)
+        foreach (HangarSlot slot in Instance.hangarSlots)
         {
-            if (ship.hangarNode == node)
+            if (slot.node == node)
             {
-                ship.shipInstanceInHangar.Launch();
+                slot.LaunchShip();
             }
         }
     }
@@ -63,12 +72,48 @@ public class ShipsManager : MonoBehaviour
 
     public static void UpdateHangarShips()
     {
+        ClearSlots();
         foreach (Ship ship in Instance.ships)
         {
             if (ship.isOwned)
             {
-                GameObject shipInstance = Instantiate(ship.shipPrefab);
-                ship.shipInstanceInHangar = shipInstance.AddComponent<ShipInstance>();
+                HangarSlot shipSlot = GetShipSlot(ship);
+
+                if(shipSlot != null)
+                {
+                    GameObject shipParentInstance = Instantiate(Instance.shipInstancePrefab, shipSlot.transform);
+                    Instantiate(ship.shipPrefab, shipParentInstance.transform);
+                    ShipInstance instance = shipParentInstance.GetComponent<ShipInstance>();
+                    shipSlot.shipInstance = instance;
+                }
+                else
+                {
+                    Debug.Log("Ship Hangar node not set");
+                }
+            }
+        }
+    }
+
+    private static HangarSlot GetShipSlot(Ship ship)
+    {
+        foreach(HangarSlot slot in Instance.hangarSlots)
+        {
+            if(slot.node == ship.hangarNode)
+            {
+                return slot;
+            }
+        }
+
+        return null;
+    }
+
+    private static void ClearSlots()
+    {
+        foreach (HangarSlot slot in Instance.hangarSlots)
+        {
+            if (slot.transform.childCount > 0)
+            {
+                Destroy(slot.transform.GetChild(0).gameObject);
             }
         }
     }

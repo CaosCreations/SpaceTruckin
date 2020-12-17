@@ -68,6 +68,7 @@ public class HangarNodeUI : MonoBehaviour
 
     void PopulateUI()
     {
+        QuitMenu();
         shipPreview = Instantiate(shipToInspect.shipPrefab);
 
         fuelSlider.value = shipToInspect.GetFuelPercent();
@@ -76,18 +77,23 @@ public class HangarNodeUI : MonoBehaviour
         hullButton.onClick.RemoveAllListeners();
         hullButton.onClick.AddListener(Repair);
 
+        upgradeButton.onClick.RemoveAllListeners();
+        upgradeButton.onClick.AddListener(Upgrade);
+
         launchButton.onClick.RemoveAllListeners();
         launchButton.onClick.AddListener(Launch);
     }
 
     private void CheckFueling()
     {
-        if (fuelButton.isFueling
-            && shipToInspect.currentFuel < shipToInspect.maxFuel
-            && PlayerManager.Instance.playerData.SpendMoney(fuelCostPerUnit))
-        { 
-            shipToInspect.currentFuel++;
-            fuelSlider.value = shipToInspect.GetFuelPercent();
+        if (fuelButton.isFueling)
+        {
+            if (shipToInspect.currentFuel < shipToInspect.maxFuel
+             && PlayerManager.Instance.playerData.SpendMoney(fuelCostPerUnit))
+            {
+                shipToInspect.currentFuel++;
+                fuelSlider.value = shipToInspect.GetFuelPercent();
+            }
         }
     }
 
@@ -111,7 +117,17 @@ public class HangarNodeUI : MonoBehaviour
 
     private void Launch()
     {
-        ShipsManager.LaunchShip(hangarNode);
+        if (shipToInspect.currentFuel > 0)
+        {
+            ShipsManager.LaunchShip(hangarNode);
+            Time.timeScale = 1;
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            Debug.Log("Ship has no fuel!");
+        }
+        
     }
 
     private void QuitMenu()

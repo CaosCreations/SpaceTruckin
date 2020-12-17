@@ -49,6 +49,7 @@ public class UIManager : MonoBehaviour
     {
         if (Input.GetKeyDown(PlayerConstants.action) && interactableType != UICanvasType.None)
         {
+            Time.timeScale = 0;
             ShowCanvas();
         }
         if (Input.GetKeyDown(PlayerConstants.exit) && !currentMenuOverridesEscape)
@@ -71,7 +72,6 @@ public class UIManager : MonoBehaviour
     public static void ShowCanvas()
     {
         ClearCanvases();
-        Time.timeScale = 0;
 
         switch (Instance.interactableType)
         {

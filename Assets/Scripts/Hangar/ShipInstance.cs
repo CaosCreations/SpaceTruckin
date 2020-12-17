@@ -7,24 +7,27 @@ public class ShipInstance : MonoBehaviour
     public bool isLaunching;
     public Animator launchAnimator;
 
+    private void Awake()
+    {
+        launchAnimator = GetComponent<Animator>();
+    }
+
     public void Launch()
     {
         isLaunching = true;
+        launchAnimator.SetBool("Launch", true);
     }
 
     private void Update()
     {
         if (isLaunching)
         {
-            launchAnimator.SetBool("launch", true);
+            // If the animation has finished, delete the object
+            if (launchAnimator.GetCurrentAnimatorStateInfo(0).length >
+                launchAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime)
+            {
+                Destroy(gameObject);
+            }
         }
-
-        // If the animation has finished, delete the object
-        if(launchAnimator.GetCurrentAnimatorStateInfo(0).length >
-            launchAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime)
-        {
-            Destroy(gameObject);
-        }
-
     }
 }
