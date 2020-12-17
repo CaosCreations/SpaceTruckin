@@ -15,9 +15,15 @@ public class PlayerData : ScriptableObject
         playerMoney = playerStartingMoney;
     }
 
-    public void SpendMoney(long amount)
+    public bool SpendMoney(long amount)
     {
-        playerMoney -= amount; 
+        if(amount < playerMoney)
+        {
+            playerMoney -= amount;
+            return true;
+        }
+
+        return false;
     }
 
     public void ReceiveMoney(long amount)

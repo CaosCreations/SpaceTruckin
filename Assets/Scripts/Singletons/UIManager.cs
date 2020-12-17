@@ -18,8 +18,10 @@ public class UIManager : MonoBehaviour
     public GameObject hangarNodeCanvas;
     public GameObject casetteCanvas;
     public GameObject noticeBoardCanvas;
+    public bool currentMenuOverridesEscape;
 
     public UICanvasType interactableType;
+    public HangarNode hangarNode;
 
     public static event Action onCanvasActivated;
     public static event Action onCanvasDeactivated;
@@ -49,7 +51,7 @@ public class UIManager : MonoBehaviour
         {
             ShowCanvas();
         }
-        if (Input.GetKeyDown(PlayerConstants.exit))
+        if (Input.GetKeyDown(PlayerConstants.exit) && !currentMenuOverridesEscape)
         {
             Time.timeScale = 1;
             ClearCanvases();
@@ -99,6 +101,19 @@ public class UIManager : MonoBehaviour
         if (canInteract)
         {
             Instance.interactableType = type;
+        }
+        else
+        {
+            Instance.interactableType = UICanvasType.None;
+        }
+    }
+
+    public static void SetCanInteractHangarNode(HangarNode node, bool canInteract)
+    {
+        if (canInteract)
+        {
+            Instance.interactableType = UICanvasType.Hangar;
+            Instance.hangarNode = node;
         }
         else
         {

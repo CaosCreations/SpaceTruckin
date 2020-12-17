@@ -3,6 +3,30 @@
 [CreateAssetMenu(fileName = "Ship", menuName = "ScriptableObjects/Ship", order = 1)]
 public class Ship : ScriptableObject
 {
-    public int id, hullIntegrity;
-    public string shipName; 
+    [Header("Set In Editor")]
+    public int id;
+    public string shipName;
+
+    public float maxHullIntegrity;
+    public int maxFuel;
+
+    public GameObject shipPrefab;
+
+    [Header("Set at Runtime")]
+    public bool isOwned;
+    public HangarNode hangarNode;
+    public ShipInstance shipInstanceInHangar;
+
+    public int currentFuel;
+    public float currenthullIntegrity;
+
+    public float GetHullPercent()
+    {
+        return currenthullIntegrity / maxHullIntegrity;
+    }
+
+    public float GetFuelPercent()
+    {
+        return currentFuel / maxFuel;
+    }
 }
