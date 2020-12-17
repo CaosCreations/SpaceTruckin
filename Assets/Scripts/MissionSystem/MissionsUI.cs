@@ -9,6 +9,8 @@ public class MissionsUI : MonoBehaviour
     public GameObject scrollViewContent;
     public GameObject missionItemPrefab;
 
+    //public RectTransform[] missionSlots;
+    public MissionScheduleSlot[] missionSlots;
 
     void Start()
     {
@@ -37,5 +39,18 @@ public class MissionsUI : MonoBehaviour
             MissionUIItem missionItem = scrollItem.GetComponent<MissionUIItem>();
             missionItem.Init(mission);
         }
+    }
+
+    public Transform GetSlotForMissionDrag(Vector2 position)
+    {
+        foreach(MissionScheduleSlot slot in missionSlots)
+        {
+            if(RectTransformUtility.RectangleContainsScreenPoint(slot.parentTransform, position))
+            {
+                return slot.slotTransform;
+            }
+        }
+
+        return null;
     }
 }

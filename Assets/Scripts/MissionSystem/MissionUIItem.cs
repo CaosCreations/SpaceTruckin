@@ -4,21 +4,26 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MissionUIItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    public Mission mission;
+    [Header("Set in Editor")]
     public Text missionNameText;
-    [SerializeField]
-    private Canvas canvas;
-    private CanvasGroup canvasGroup;
 
-    private RectTransform rectTransform;
+    [Header("Set at Runtime")]
+    public Mission mission;
+    private MissionsUI missionsUI;
+    public Canvas canvas;
+    private CanvasGroup canvasGroup;
+    private RectTransform myRectTransform;
+    private Transform scrollViewContent;
 
     private void Awake()
     {
-        rectTransform = GetComponent<RectTransform>();
+        missionsUI = GetComponentInParent<MissionsUI>();
         canvas = GetComponentInParent<Canvas>();
         canvasGroup = GetComponent<CanvasGroup>();
+        myRectTransform = GetComponent<RectTransform>();
+        scrollViewContent = transform.parent;
     }
 
     public void Init(Mission mission)
@@ -27,29 +32,34 @@ public class MissionUIItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         missionNameText.text = mission.missionName;
     }
 
-    public void OnPointerDown(PointerEventData eventData)
-    {
-    }
-
-    public void OnPointerUp(PointerEventData eventData)
-    {
-    }
-
     public void OnBeginDrag(PointerEventData eventData)
     {
-        //rectTransform.
+        myRectTransform.SetParent(missionsUI.transform);
+        canvasGroup.alpha = MissionConstants.dragAlpha;
+        canvasGroup.blocksRaycasts = false;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
-        //transform.position = Input.mousePosition;
+        // Delta is the distance that the mouse moved since previous frame
+        // Divide by canvas scale factor to prevent object from not following the mouse properly on a scaled canvas
+        myRectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        transform.position = Vector3.zero;
-    }
+        // Raycast will pass through and hit the schedule
+        canvasGroup.blocksRaycasts = true;
+        canvasGroup.alpha = MissionConstants.dropAlpha;
 
-    
+        Transform slot = missionsUI.GetSlotForMissionDrag(eventData.position);
+        if(slot != null)
+        {
+            myRectTransform.SetParent(slot);
+        }
+        else
+        {
+            myRectTransform.SetParent(scrollViewContent);
+        }
+    }
 }

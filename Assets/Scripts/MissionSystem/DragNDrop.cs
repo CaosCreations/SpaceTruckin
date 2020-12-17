@@ -13,13 +13,13 @@ public class DragNDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
     public GameObject availableJobsContainer;
     public GameObject scheduleContainer;
 
-    private MissionsUI jobsUI;
+    private MissionsUI missionsUI;
     private CanvasGroup canvasGroup;
     private RectTransform rectTransform;
 
     private void Start()
     {
-        jobsUI = missionsPanel.GetComponent<MissionsUI>();
+        missionsUI = GetComponentInParent<MissionsUI>();
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
     }
