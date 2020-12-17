@@ -56,7 +56,7 @@ public class NoticeBoard : MonoBehaviour
     {
         foreach(Mission mission in MissionsManager.Instance.missionContainer.missions)
         {
-            if(mission.moneyNeededToUnlock <= PlayerManager.Instance.playerData.playerMoney
+            if(mission.moneyNeededToUnlock <= PlayerManager.Instance.playerData.playerTotalMoneyAcquired
                 && !mission.hasBeenAcceptedInNoticeBoard)
             {
                 GameObject scrollItem = Instantiate(scrollItemPrefab, scrollViewContent.transform);
