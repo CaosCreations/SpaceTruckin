@@ -69,7 +69,8 @@ public class HangarNodeUI : MonoBehaviour
     void PopulateUI()
     {
         QuitMenu();
-        shipPreview = Instantiate(shipToInspect.shipPrefab);
+        shipPreview = Instantiate(shipToInspect.shipPrefab, transform);
+        SetLayerRecursively(shipPreview, 9);
 
         fuelSlider.value = shipToInspect.GetFuelPercent();
 
@@ -139,5 +140,13 @@ public class HangarNodeUI : MonoBehaviour
         UIManager.Instance.currentMenuOverridesEscape = false;
     }
 
-    
+    void SetLayerRecursively(GameObject gameObject, int newLayer)
+    {
+        gameObject.layer = newLayer;
+
+        foreach (Transform child in gameObject.transform)
+        {
+            SetLayerRecursively(child.gameObject, newLayer);
+        }
+    }
 }
