@@ -9,6 +9,9 @@ public class PlayerManager : MonoBehaviour
     [Header("Set In Editor")]
     public PlayerData playerData;
 
+    [Header("Set at Runtime")]
+    public bool isPaused;
+
     void Awake()
     {
         if (Instance == null)

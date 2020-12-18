@@ -49,18 +49,17 @@ public class UIManager : MonoBehaviour
     {
         if (Input.GetKeyDown(PlayerConstants.action) && interactableType != UICanvasType.None)
         {
-            Time.timeScale = 0;
             ShowCanvas();
         }
         if (Input.GetKeyDown(PlayerConstants.exit) && !currentMenuOverridesEscape)
         {
-            Time.timeScale = 1;
             ClearCanvases();
         }
     }
 
     public static void ClearCanvases()
     {
+        PlayerManager.Instance.isPaused = false;
         Instance.bedCanvas.SetActive(false);
         Instance.terminalCanvas.SetActive(false);
         Instance.hangarNodeCanvas.SetActive(false);
@@ -94,6 +93,8 @@ public class UIManager : MonoBehaviour
                 Instance.bedCanvas.SetActive(true);
                 break;
         }
+
+        PlayerManager.Instance.isPaused = true;
     }
 
     public static void SetCanInteract(UICanvasType type, bool canInteract)

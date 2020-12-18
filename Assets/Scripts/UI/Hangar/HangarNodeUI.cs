@@ -121,8 +121,7 @@ public class HangarNodeUI : MonoBehaviour
         if (shipToInspect.currentFuel > 0)
         {
             ShipsManager.LaunchShip(hangarNode);
-            Time.timeScale = 1;
-            gameObject.SetActive(false);
+            UIManager.ClearCanvases();
         }
         else
         {

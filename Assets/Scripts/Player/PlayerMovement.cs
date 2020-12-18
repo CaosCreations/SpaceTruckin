@@ -29,7 +29,7 @@ public class PlayerMovement : MonoBehaviour
     // Get input in Update 
     private void Update()
     {
-        if(Time.timeScale == 0)
+        if (PlayerManager.Instance.isPaused)
         {
             return;
         }
@@ -114,6 +114,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         Vector3 movement = new Vector3(movementVector.x, 0f, movementVector.y);
-        characterController.Move(movement * currentSpeed *Time.fixedDeltaTime);
+        characterController.Move(movement * currentSpeed * Time.fixedDeltaTime);
     }
 }
