@@ -19,8 +19,24 @@ public class MissionsUI : MonoBehaviour
 
     private void OnEnable()
     {
+        SetupMissionSlots();
         CleanMenu();
         PopulateScrollView();
+    }
+
+    void SetupMissionSlots()
+    {
+        foreach (MissionScheduleSlot slot in missionSlots)
+        {
+            if (ShipsManager.NodeHasShip(slot.hangarNode))
+            {
+                slot.IsActive = true;
+            }
+            else
+            {
+                slot.IsActive = false;
+            }
+        }
     }
 
     void CleanMenu()
@@ -66,7 +82,8 @@ public class MissionsUI : MonoBehaviour
     {
         foreach(MissionScheduleSlot slot in missionSlots)
         {
-            if(RectTransformUtility.RectangleContainsScreenPoint(slot.parentTransform, position))
+            if(RectTransformUtility.RectangleContainsScreenPoint(slot.parentTransform, position)
+                && slot.IsActive)
             {
                 return slot;
             }

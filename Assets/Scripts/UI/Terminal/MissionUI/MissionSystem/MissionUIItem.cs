@@ -55,13 +55,32 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         MissionScheduleSlot slot = missionsUI.GetSlotForMissionDrag(eventData.position);
         if(slot != null)
         {
+            CheckReplaceMission(slot);
             myRectTransform.SetParent(slot.slotTransform);
             mission.scheduledHangarNode = slot.hangarNode;
         }
         else
         {
-            myRectTransform.SetParent(scrollViewContent);
-            mission.scheduledHangarNode = HangarNode.None;
+            Unschedule();
         }
+    }
+
+    private void CheckReplaceMission(MissionScheduleSlot slot)
+    {
+        if(slot.slotTransform.childCount > 0)
+        {
+            MissionUIItem missionToUnschedule = slot.slotTransform.GetChild(0).GetComponent<MissionUIItem>();
+            
+            if(missionToUnschedule != null)
+            {
+                missionToUnschedule.Unschedule();
+            }
+        }
+    }
+
+    public void Unschedule()
+    {
+        myRectTransform.SetParent(scrollViewContent);
+        mission.scheduledHangarNode = HangarNode.None;
     }
 }

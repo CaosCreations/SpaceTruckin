@@ -33,9 +33,10 @@ public class HangarNodeUI : MonoBehaviour
         hangarNode = UIManager.Instance.hangarNode;
         shipToInspect = ShipsManager.GetShipForNode(hangarNode);
 
+        // There is no ship at this node, don't open UI
         if(shipToInspect == null)
         {
-            gameObject.SetActive(false);
+            UIManager.ClearCanvases();
         }
 
         PopulateUI();

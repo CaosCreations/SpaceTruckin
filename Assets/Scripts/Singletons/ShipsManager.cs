@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 public enum HangarNode
 {
@@ -92,6 +93,17 @@ public class ShipsManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public static bool NodeHasShip(HangarNode node)
+    {
+        Ship ship = Instance.ships.Where(x => x.hangarNode == node).FirstOrDefault();
+        if (ship != null)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private static HangarSlot GetShipSlot(Ship ship)
