@@ -39,7 +39,6 @@ public class NoticeBoard : MonoBehaviour
         if(selectedMission != null)
         {
             selectedMission.hasBeenAcceptedInNoticeBoard = true;
-            MissionsManager.Instance.missionsAcceptedInNoticeBoard.Add(selectedMission);
             CleanScrollView();
             PopulateScrollView();
             CleanDetailPane();

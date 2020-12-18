@@ -6,4 +6,5 @@ public class MissionScheduleSlot : MonoBehaviour
 {
     public RectTransform parentTransform;
     public RectTransform slotTransform;
+    public HangarNode hangarNode;
 }

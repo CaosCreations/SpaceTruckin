@@ -2,7 +2,7 @@
 
 public enum HangarNode
 {
-    One, Two, Three, Four, Five, Six, None
+    None, One, Two, Three, Four, Five, Six
 }
 
 public class ShipsManager : MonoBehaviour

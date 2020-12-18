@@ -23,13 +23,13 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         canvas = GetComponentInParent<Canvas>();
         canvasGroup = GetComponent<CanvasGroup>();
         myRectTransform = GetComponent<RectTransform>();
-        scrollViewContent = transform.parent;
     }
 
-    public void Init(Mission mission)
+    public void Init(Mission mission, Transform scrollViewContent)
     {
         this.mission = mission;
         missionNameText.text = mission.missionName;
+        this.scrollViewContent = scrollViewContent;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -52,14 +52,16 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         canvasGroup.blocksRaycasts = true;
         canvasGroup.alpha = MissionConstants.dropAlpha;
 
-        Transform slot = missionsUI.GetSlotForMissionDrag(eventData.position);
+        MissionScheduleSlot slot = missionsUI.GetSlotForMissionDrag(eventData.position);
         if(slot != null)
         {
-            myRectTransform.SetParent(slot);
+            myRectTransform.SetParent(slot.slotTransform);
+            mission.scheduledHangarNode = slot.hangarNode;
         }
         else
         {
             myRectTransform.SetParent(scrollViewContent);
+            mission.scheduledHangarNode = HangarNode.None;
         }
     }
 }

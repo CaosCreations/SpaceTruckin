@@ -13,8 +13,9 @@ public class Mission : ScriptableObject
 
     // Data to persist
     [Header("Data to update IN GAME")]
-    public bool hasBeenAcceptedInNoticeBoard;
-    public Pilot currentPilot;
+    public bool hasBeenAcceptedInNoticeBoard = false;
+    public HangarNode scheduledHangarNode = HangarNode.None;
+    public Pilot currentPilot = null;
 
 
     [SerializeField]
