@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public enum UICanvasType
@@ -19,6 +20,7 @@ public class UIManager : MonoBehaviour
     public GameObject casetteCanvas;
     public GameObject noticeBoardCanvas;
     public bool currentMenuOverridesEscape;
+    public TextMeshPro interactionTextMesh;
 
     public UICanvasType interactableType;
     public HangarNode hangarNode;
@@ -38,6 +40,7 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        interactionTextMesh = GetComponentInChildren<TextMeshPro>();
     }
 
     private void Start()
@@ -54,6 +57,17 @@ public class UIManager : MonoBehaviour
         if (Input.GetKeyDown(PlayerConstants.exit) && !currentMenuOverridesEscape)
         {
             ClearCanvases();
+        }
+        
+        if(interactableType != UICanvasType.None)
+        {
+            interactionTextMesh.gameObject.SetActive(true);
+            interactionTextMesh.text = GetInteractionString();
+            interactionTextMesh.transform.position = PlayerManager.Instance.playerMovement.transform.position + new Vector3(0, 0.5f, 0);
+        }
+        else
+        {
+            interactionTextMesh.gameObject.SetActive(false);
         }
     }
 
@@ -102,6 +116,7 @@ public class UIManager : MonoBehaviour
         if (canInteract)
         {
             Instance.interactableType = type;
+
         }
         else
         {
@@ -120,5 +135,33 @@ public class UIManager : MonoBehaviour
         {
             Instance.interactableType = UICanvasType.None;
         }
+    }
+
+    private static string GetInteractionString()
+    {
+        string interaction = "Press E to ";
+        switch (Instance.interactableType)
+        {
+            case UICanvasType.Bed:
+                interaction += "Sleep";
+                break;
+            case UICanvasType.Cassette:
+                interaction += "Play Music";
+                break;
+            case UICanvasType.Hangar:
+                interaction += "Manage Ship";
+                break;
+            case UICanvasType.NoticeBoard:
+                interaction += "Accept Missions";
+                break;
+            case UICanvasType.Terminal:
+                interaction += "Manage Company";
+                break;
+            case UICanvasType.Vending:
+                interaction += "Buy Snax";
+                break;
+        }
+
+        return interaction;
     }
 }

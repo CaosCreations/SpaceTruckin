@@ -11,6 +11,7 @@ public class PlayerManager : MonoBehaviour
 
     [Header("Set at Runtime")]
     public bool isPaused;
+    public PlayerMovement playerMovement;
 
     void Awake()
     {
@@ -24,6 +25,8 @@ public class PlayerManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
+        playerMovement = FindObjectOfType<PlayerMovement>();
     }
 
     void Start()
