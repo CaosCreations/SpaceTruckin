@@ -29,6 +29,7 @@ public class NoticeBoard : MonoBehaviour
     private void OnEnable()
     {
         selectedMission = null;
+        CleanDetailPane();
         CleanScrollView();
         PopulateScrollView();
     }
@@ -41,6 +42,7 @@ public class NoticeBoard : MonoBehaviour
             MissionsManager.Instance.missionsAcceptedInNoticeBoard.Add(selectedMission);
             CleanScrollView();
             PopulateScrollView();
+            CleanDetailPane();
         }
     }
 
@@ -50,6 +52,14 @@ public class NoticeBoard : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+    }
+
+    void CleanDetailPane()
+    {
+        jobNameText.text = string.Empty;
+        customerNameText.text = string.Empty;
+        cargoText.text = string.Empty;
+        rewardText.text = string.Empty;
     }
 
     void PopulateScrollView()
