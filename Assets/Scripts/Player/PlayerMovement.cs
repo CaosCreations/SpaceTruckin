@@ -11,6 +11,8 @@ public enum Direction
 public class PlayerMovement : MonoBehaviour
 {
     public static Vector2 movementVector;
+    public float killFloorHeight = -25;
+    public Vector3 playerResetPosition = new Vector3(8.5f, 0.8f, -10f);
 
     [SerializeField] private Animator animator;
 
@@ -33,6 +35,12 @@ public class PlayerMovement : MonoBehaviour
         {
             return;
         }
+        if (IsPlayerBelowKillFloor())
+        {
+            ResetPlayerToOrigin();
+            return;
+
+        }
 
         movementVector.x = Input.GetAxisRaw("Horizontal");
         movementVector.y = Input.GetAxisRaw("Vertical");
@@ -43,6 +51,8 @@ public class PlayerMovement : MonoBehaviour
     // Move player in FixedUpdate 
     private void FixedUpdate()
     {
+
+ 
         // Adjust for diagonal input 
         if (movementVector.magnitude > 1f)
         {
@@ -115,5 +125,17 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 movement = new Vector3(movementVector.x, 0f, movementVector.y);
         characterController.Move(movement * currentSpeed * Time.fixedDeltaTime);
+    }
+
+    private bool IsPlayerBelowKillFloor()
+    {
+        return characterController.transform.position.y < killFloorHeight;
+    }
+
+    private void ResetPlayerToOrigin()
+    {
+        characterController.enabled = false;
+        transform.position = playerResetPosition;
+        characterController.enabled = true;
     }
 }
