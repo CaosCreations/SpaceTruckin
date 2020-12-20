@@ -53,6 +53,7 @@ public class ShipsManager : MonoBehaviour
         {
             if (slot.node == node)
             {
+                GetShipForNode(node).hangarNode = HangarNode.None;
                 slot.LaunchShip();
             }
         }

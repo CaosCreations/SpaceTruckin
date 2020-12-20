@@ -6,10 +6,16 @@ using UnityEngine.UI;
 
 public class HangarNodeUI : MonoBehaviour
 {
+    public enum HangarPanel
+    {
+        Main, Repair, Upgrade, Customization
+    }
+
     [Header("Set In Editor")]
     public GameObject mainPanel;
     public GameObject repairPanel;
     public GameObject upgradePanel;
+    public GameObject customizationPanel;
 
     public Slider fuelSlider;
     public FuelButton fuelButton;
@@ -19,13 +25,14 @@ public class HangarNodeUI : MonoBehaviour
 
     public Button upgradeButton;
     public Button launchButton;
+    public Button customizationButton;
 
     [Header("Set at Runtime")]
     public GameObject shipPreview;
     public HangarNode hangarNode;
     public Ship shipToInspect;
 
-    private bool isInMenu;
+    private bool isInSubMenu;
     private long fuelCostPerUnit = 1;
     private float fuelTimer = 0;
     private float fuelTimerInterval = 0.025f;
@@ -51,11 +58,11 @@ public class HangarNodeUI : MonoBehaviour
 
     void Update()
     {
-        if (isInMenu)
+        if (isInSubMenu)
         {
             if (Input.GetKeyDown(PlayerConstants.exit))
             {
-                QuitMenu();
+                SwitchPanel(HangarPanel.Main);
             }
         }
         else
@@ -71,7 +78,7 @@ public class HangarNodeUI : MonoBehaviour
 
     void PopulateUI()
     {
-        QuitMenu();
+        SwitchPanel(HangarPanel.Main);
         shipPreview = Instantiate(shipToInspect.shipPrefab, transform);
         SetLayerRecursively(shipPreview, 9);
 
@@ -79,10 +86,13 @@ public class HangarNodeUI : MonoBehaviour
 
         hullSlider.value = shipToInspect.GetHullPercent();
         hullButton.onClick.RemoveAllListeners();
-        hullButton.onClick.AddListener(Repair);
+        hullButton.onClick.AddListener(() => SwitchPanel(HangarPanel.Repair));
 
         upgradeButton.onClick.RemoveAllListeners();
-        upgradeButton.onClick.AddListener(Upgrade);
+        upgradeButton.onClick.AddListener(() => SwitchPanel(HangarPanel.Upgrade));
+
+        customizationButton.onClick.RemoveAllListeners();
+        customizationButton.onClick.AddListener(() => SwitchPanel(HangarPanel.Customization));
 
         launchButton.onClick.RemoveAllListeners();
         launchButton.onClick.AddListener(Launch);
@@ -105,22 +115,31 @@ public class HangarNodeUI : MonoBehaviour
         }
     }
 
-    private void Repair()
-    {
-        mainPanel.SetActive(false);
-        repairPanel.SetActive(true);
-        upgradePanel.SetActive(true);
-        isInMenu = true;
-        UIManager.Instance.currentMenuOverridesEscape = true;
-    }
-
-    private void Upgrade()
+    private void SwitchPanel(HangarPanel panel)
     {
         mainPanel.SetActive(false);
         repairPanel.SetActive(false);
-        upgradePanel.SetActive(true);
-        isInMenu = true;
-        UIManager.Instance.currentMenuOverridesEscape = true;
+        upgradePanel.SetActive(false);
+        customizationPanel.SetActive(false);
+
+        switch (panel)
+        {
+            case HangarPanel.Main:
+                mainPanel.SetActive(true);
+                break;
+            case HangarPanel.Repair:
+                repairPanel.SetActive(true);
+                break;
+            case HangarPanel.Upgrade:
+                upgradePanel.SetActive(true);
+                break;
+            case HangarPanel.Customization:
+                customizationPanel.SetActive(true);
+                break;
+        }
+
+        isInSubMenu = !(panel == HangarPanel.Main);
+        UIManager.Instance.currentMenuOverridesEscape = isInSubMenu;
     }
 
     private void Launch()
@@ -135,15 +154,6 @@ public class HangarNodeUI : MonoBehaviour
             Debug.Log("Ship has no fuel!");
         }
         
-    }
-
-    private void QuitMenu()
-    {
-        mainPanel.SetActive(true);
-        repairPanel.SetActive(false);
-        upgradePanel.SetActive(false);
-        isInMenu = false;
-        UIManager.Instance.currentMenuOverridesEscape = false;
     }
 
     void SetLayerRecursively(GameObject gameObject, int newLayer)
