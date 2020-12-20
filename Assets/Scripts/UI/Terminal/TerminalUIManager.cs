@@ -92,6 +92,9 @@ public class TerminalUIManager : MonoBehaviour
     // Use with terminal-specific event 
     private void UpdateMoneyText()
     {
-        moneyText.text = "$ " + PlayerManager.Instance.playerData.playerMoney;
+        if (UIManager.Instance.interactableType.Equals(UICanvasType.Terminal))
+        {
+            moneyText.text = "$ " + PlayerManager.Instance.playerData.playerMoney;
+        }
     }
 }
