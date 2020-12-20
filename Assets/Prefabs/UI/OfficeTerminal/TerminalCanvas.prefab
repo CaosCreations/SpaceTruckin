@@ -1305,7 +1305,7 @@ GameObject:
   - component: {fileID: 3631385488226677067}
   - component: {fileID: 3631385488226677108}
   m_Layer: 5
-  m_Name: UpgradesPanel
+  m_Name: LicensesPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1401,7 +1401,7 @@ GameObject:
   - component: {fileID: 3631385488229304492}
   - component: {fileID: 3631385488229304493}
   m_Layer: 5
-  m_Name: CrewButton
+  m_Name: FleetButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1744,7 +1744,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Upgrades
+  m_Text: Licenses
 --- !u!1 &3631385488663850294
 GameObject:
   m_ObjectHideFlags: 0
@@ -1823,7 +1823,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Crew
+  m_Text: Fleet
 --- !u!1 &3631385488716630448
 GameObject:
   m_ObjectHideFlags: 0
@@ -2303,7 +2303,7 @@ GameObject:
   - component: {fileID: 3631385489389372511}
   - component: {fileID: 3631385489389372504}
   m_Layer: 5
-  m_Name: UpgradesButton
+  m_Name: LicensesButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2551,7 +2551,7 @@ GameObject:
   - component: {fileID: 3631385489729504504}
   - component: {fileID: 1511978678183600859}
   m_Layer: 5
-  m_Name: CrewPanel
+  m_Name: FleetPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3933,6 +3933,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1460672041842650802, guid: 8dcebb73fb5bd9e4d92a22720260c40d,
+        type: 3}
+      propertyPath: m_Value
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2654036286100815343, guid: 8dcebb73fb5bd9e4d92a22720260c40d,
         type: 3}
