@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection.Emit;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,12 +24,8 @@ public class ClockManager : MonoBehaviour
 
     private void Start()
     {
-        //UIManager.onGamePaused += StopClock;
-        //UIManager.onGameResumed += StartClock;
         UIManager.onCanvasActivated += StopClock;
         UIManager.onCanvasDeactivated += StartClock;
-
-        //EditorApplication.pauseStateChanged += SetClockStopped;
 
         CalculateTickSpeedMultiplier();
         StartDay();

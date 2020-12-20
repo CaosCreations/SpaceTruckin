@@ -25,12 +25,8 @@ public class UIManager : MonoBehaviour
     public UICanvasType interactableType;
     public HangarNode hangarNode;
 
-    //public static event Action<UICanvasType> onCanvasActivated;
     public static event Action onCanvasActivated;
     public static event Action onCanvasDeactivated;
-
-    public static event Action onGamePaused;
-    public static event Action onGameResumed;
 
     void Awake()
     {
@@ -90,7 +86,6 @@ public class UIManager : MonoBehaviour
     {
         ClearCanvases();
         PlayerManager.Instance.isPaused = true;
-        onGamePaused?.Invoke();
 
         switch (Instance.interactableType)
         {

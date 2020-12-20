@@ -27,7 +27,7 @@ public class TerminalUIManager : MonoBehaviour
     {
         SetupButtonListeners();
         TabButtonClicked(Tab.Missions);
-        UIManager.onCanvasActivated += UpdateMoneyText;
+        PlayerManager.onFinancialTransaction += UpdateMoneyText;
     }
 
     private void SetupButtonListeners()
@@ -80,21 +80,8 @@ public class TerminalUIManager : MonoBehaviour
         upgradesPanel.SetActive(false);
     }
 
-    // Use with generic event 
-    private void UpdateMoneyText(UICanvasType canvasType)
+    private void UpdateMoneyText(long updatedMoney)
     {
-        if (canvasType.Equals(UICanvasType.Terminal))
-        {
-            moneyText.text = "$ " + PlayerManager.Instance.playerData.playerMoney;
-        }
-    }
-
-    // Use with terminal-specific event 
-    private void UpdateMoneyText()
-    {
-        if (UIManager.Instance.interactableType.Equals(UICanvasType.Terminal))
-        {
-            moneyText.text = "$ " + PlayerManager.Instance.playerData.playerMoney;
-        }
+        moneyText.text = "$ " + updatedMoney;
     }
 }
