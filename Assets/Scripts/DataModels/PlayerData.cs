@@ -9,15 +9,19 @@ public class PlayerData : ScriptableObject
     public long playerMoney;
     public long playerTotalMoneyAcquired; //Used to unlock missions
 
-    public bool SpendMoney(long amount)
+    public bool CanSpendMoney(long amount)
     {
-        if(amount < playerMoney)
+        if (amount < playerMoney)
         {
-            playerMoney -= amount;
             return true;
         }
 
         return false;
+    }
+
+    public void SpendMoney(long amount)
+    {
+        playerMoney -= amount;
     }
 
     public void ReceiveMoney(long amount)

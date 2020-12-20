@@ -26,6 +26,6 @@ public class Ship : ScriptableObject
 
     public float GetFuelPercent()
     {
-        return currentFuel / maxFuel;
+        return (float) currentFuel / maxFuel;
     }
 }

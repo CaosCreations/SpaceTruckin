@@ -27,6 +27,8 @@ public class HangarNodeUI : MonoBehaviour
 
     private bool isInMenu;
     private long fuelCostPerUnit = 1;
+    private float fuelTimer = 0;
+    private float fuelTimerInterval = 0.025f;
 
     private void OnEnable()
     {
@@ -88,14 +90,18 @@ public class HangarNodeUI : MonoBehaviour
 
     private void CheckFueling()
     {
-        if (fuelButton.isFueling)
+        fuelTimer += Time.deltaTime;
+
+        if (fuelButton.isFueling
+            && fuelTimer > fuelTimerInterval
+            && shipToInspect.currentFuel < shipToInspect.maxFuel
+            && PlayerManager.Instance.playerData.CanSpendMoney(fuelCostPerUnit)
+            )
         {
-            if (shipToInspect.currentFuel < shipToInspect.maxFuel
-             && PlayerManager.Instance.playerData.SpendMoney(fuelCostPerUnit))
-            {
-                shipToInspect.currentFuel++;
-                fuelSlider.value = shipToInspect.GetFuelPercent();
-            }
+            PlayerManager.Instance.playerData.SpendMoney(fuelCostPerUnit);
+            shipToInspect.currentFuel++;
+            fuelSlider.value = shipToInspect.GetFuelPercent();
+            fuelTimer = 0;
         }
     }
 
