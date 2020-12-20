@@ -85,6 +85,7 @@ public class UIManager : MonoBehaviour
     public static void ShowCanvas()
     {
         ClearCanvases();
+        PlayerManager.Instance.isPaused = true;
 
         switch (Instance.interactableType)
         {
@@ -107,8 +108,6 @@ public class UIManager : MonoBehaviour
                 Instance.bedCanvas.SetActive(true);
                 break;
         }
-
-        PlayerManager.Instance.isPaused = true;
     }
 
     public static void SetCanInteract(UICanvasType type, bool canInteract)

@@ -14,6 +14,7 @@ public class Ship : ScriptableObject
 
     [Header("Set at Runtime")]
     public bool isOwned;
+    public bool isLaunched;
     public HangarNode hangarNode;
 
     public int currentFuel;

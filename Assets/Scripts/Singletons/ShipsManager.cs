@@ -53,7 +53,7 @@ public class ShipsManager : MonoBehaviour
         {
             if (slot.node == node)
             {
-                GetShipForNode(node).hangarNode = HangarNode.None;
+                GetShipForNode(node).isLaunched = true;
                 slot.LaunchShip();
             }
         }
@@ -77,7 +77,7 @@ public class ShipsManager : MonoBehaviour
         ClearSlots();
         foreach (Ship ship in Instance.ships)
         {
-            if (ship.isOwned)
+            if (ship.isOwned && !ship.isLaunched)
             {
                 HangarSlot shipSlot = GetShipSlot(ship);
 
