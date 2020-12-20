@@ -8,7 +8,11 @@ public class HangarNodeUIActivator : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        UIManager.SetCanInteractHangarNode(hangarNode, true);
+        Ship shipForNode = ShipsManager.GetShipForNode(hangarNode);
+        if(shipForNode != null && !shipForNode.isLaunched)
+        {
+            UIManager.SetCanInteractHangarNode(hangarNode, true);
+        }
     }
 
     private void OnTriggerExit(Collider other)
