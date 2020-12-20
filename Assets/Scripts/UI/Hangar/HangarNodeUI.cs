@@ -106,10 +106,10 @@ public class HangarNodeUI : MonoBehaviour
         if (fuelButton.isFueling
             && fuelTimer > fuelTimerInterval
             && shipToInspect.currentFuel < shipToInspect.maxFuel
-            && PlayerManager.Instance.playerData.CanSpendMoney(fuelCostPerUnit)
+            && PlayerManager.Instance.CanSpendMoney(fuelCostPerUnit)
             )
         {
-            PlayerManager.Instance.playerData.SpendMoney(fuelCostPerUnit);
+            PlayerManager.Instance.SpendMoney(fuelCostPerUnit);
             shipToInspect.currentFuel++;
             fuelSlider.value = shipToInspect.GetFuelPercent();
             fuelTimer = 0;
