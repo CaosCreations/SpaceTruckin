@@ -8,7 +8,7 @@ public class PilotXpOutcome : MissionOutcome
 	
 	public override void Process(Mission mission) 
 	{
-		PilotsManager.AwardXp(mission.currentPilot.id, Mathf.FloorToInt(Random.Range(xpMin, xpMax) * ApplyOmens(mission)));
+		PilotsManager.AwardXp(mission.ship.pilot.id, Mathf.FloorToInt(Random.Range(xpMin, xpMax) * ApplyOmens(mission)));
 	}
 
     // A mission can have multiple omens attached to it

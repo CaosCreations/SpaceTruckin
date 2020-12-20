@@ -10,18 +10,15 @@ public class Mission : ScriptableObject
     public string cargo;
     public int reward;
     public int moneyNeededToUnlock;
+    [SerializeField]
+    public MissionOutcome[] outcomes;
 
     // Data to persist
     [Header("Data to update IN GAME")]
     public bool hasBeenAcceptedInNoticeBoard = false;
-    public HangarNode scheduledHangarNode = HangarNode.None;
-    public Pilot currentPilot = null;
+    public Ship ship = null;
+    public int daysLeftToComplete;
 
-
-    [SerializeField]
-    public MissionOutcome[] outcomes;
-
-    public bool inProgress;
 
     public void ProcessOutcomes()
     {
@@ -29,5 +26,20 @@ public class Mission : ScriptableObject
         {
             outcome.Process(this);
         }
+    }
+
+    public void ScheduleMission(Ship ship)
+    {
+        this.ship = ship;
+    }
+
+    public void StartMission()
+    {
+        daysLeftToComplete = missionDurationInDays;
+    }
+    
+    public bool IsInProgress()
+    {
+        return daysLeftToComplete > 0;
     }
 }

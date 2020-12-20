@@ -28,9 +28,18 @@ public class MissionsUI : MonoBehaviour
     {
         foreach (MissionScheduleSlot slot in missionSlots)
         {
-            if (ShipsManager.NodeHasShip(slot.hangarNode))
+            Ship ship = ShipsManager.NodeHasShip(slot.hangarNode);
+            if (ship != null)
             {
-                slot.IsActive = true;
+                slot.ship = ship;
+                if(ship.currentMission == null)
+                {
+                    slot.IsActive = true;
+                }
+                else
+                {
+                    slot.IsActive = !ship.currentMission.IsInProgress();
+                }
             }
             else
             {
@@ -67,7 +76,7 @@ public class MissionsUI : MonoBehaviour
         List<Mission> scheduledMissions = MissionsManager.GetScheduledMissions();
         foreach(MissionScheduleSlot slot in missionSlots)
         {
-            Mission missionForSlot = scheduledMissions.Where(x => x.scheduledHangarNode == slot.hangarNode).FirstOrDefault();
+            Mission missionForSlot = scheduledMissions.Where(x => x.ship == slot.ship).FirstOrDefault();
 
             if(missionForSlot != null)
             {

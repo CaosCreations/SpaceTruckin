@@ -8,9 +8,12 @@ public class MissionScheduleSlot : MonoBehaviour
     public RectTransform parentTransform;
     public RectTransform slotTransform;
     public Image slotImage;
+
     public HangarNode hangarNode;
+    public Ship ship;
 
     private bool isActive;
+
     public bool IsActive
     {
         get

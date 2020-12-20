@@ -53,8 +53,13 @@ public class ShipsManager : MonoBehaviour
         {
             if (slot.node == node)
             {
-                GetShipForNode(node).isLaunched = true;
-                slot.LaunchShip();
+                Ship ship = GetShipForNode(node);
+                if(ship != null)
+                {
+                    ship.currentMission.StartMission();
+                    ship.isLaunched = true;
+                    slot.LaunchShip();
+                }
             }
         }
     }
@@ -96,15 +101,15 @@ public class ShipsManager : MonoBehaviour
         }
     }
 
-    public static bool NodeHasShip(HangarNode node)
+    public static Ship NodeHasShip(HangarNode node)
     {
         Ship ship = Instance.ships.Where(x => x.hangarNode == node).FirstOrDefault();
         if (ship != null)
         {
-            return true;
+            return ship;
         }
 
-        return false;
+        return null;
     }
 
     private static HangarSlot GetShipSlot(Ship ship)

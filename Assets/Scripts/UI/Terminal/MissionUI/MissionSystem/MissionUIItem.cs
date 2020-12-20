@@ -34,34 +34,53 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        myRectTransform.SetParent(missionsUI.transform);
-        canvasGroup.alpha = MissionConstants.dragAlpha;
-        canvasGroup.blocksRaycasts = false;
+        if(!mission.IsInProgress())
+        {
+            myRectTransform.SetParent(missionsUI.transform);
+            canvasGroup.alpha = MissionConstants.dragAlpha;
+            canvasGroup.blocksRaycasts = false;
+        }
+        
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         // Delta is the distance that the mouse moved since previous frame
         // Divide by canvas scale factor to prevent object from not following the mouse properly on a scaled canvas
-        myRectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+        if (!mission.IsInProgress())
+        {
+            myRectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        // Raycast will pass through and hit the schedule
-        canvasGroup.blocksRaycasts = true;
-        canvasGroup.alpha = MissionConstants.dropAlpha;
+        if (!mission.IsInProgress())
+        {
+            // Raycast will pass through and hit the schedule
+            canvasGroup.blocksRaycasts = true;
+            canvasGroup.alpha = MissionConstants.dropAlpha;
 
-        MissionScheduleSlot slot = missionsUI.GetSlotForMissionDrag(eventData.position);
-        if(slot != null)
-        {
-            CheckReplaceMission(slot);
-            myRectTransform.SetParent(slot.slotTransform);
-            mission.scheduledHangarNode = slot.hangarNode;
-        }
-        else
-        {
-            Unschedule();
+            MissionScheduleSlot slot = missionsUI.GetSlotForMissionDrag(eventData.position);
+            if (slot != null)
+            {
+                CheckReplaceMission(slot);
+                myRectTransform.SetParent(slot.slotTransform);
+
+                if (slot.ship != null)
+                {
+                    slot.ship.currentMission = mission;
+                    mission.ship = slot.ship;
+                }
+                else
+                {
+                    Debug.LogError("The MissionScheduleSlot does not have a ship");
+                }
+            }
+            else
+            {
+                Unschedule();
+            }
         }
     }
 
@@ -81,6 +100,7 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     public void Unschedule()
     {
         myRectTransform.SetParent(scrollViewContent);
-        mission.scheduledHangarNode = HangarNode.None;
+        mission.ship.currentMission = null;
+        mission.ship = null;
     }
 }

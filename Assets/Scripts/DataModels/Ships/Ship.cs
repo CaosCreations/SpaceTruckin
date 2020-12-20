@@ -11,11 +11,13 @@ public class Ship : ScriptableObject
     public int maxFuel;
 
     public GameObject shipPrefab;
+    public Pilot pilot;
 
     [Header("Set at Runtime")]
     public bool isOwned;
     public bool isLaunched;
     public HangarNode hangarNode;
+    public Mission currentMission;
 
     public int currentFuel;
     public float currenthullIntegrity;

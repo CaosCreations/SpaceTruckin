@@ -145,7 +145,8 @@ public class HangarNodeUI : MonoBehaviour
 
     private void Launch()
     {
-        if (shipToInspect.currentFuel > 0)
+        if (shipToInspect.currentFuel > 0
+            && shipToInspect.currentMission != null)
         {
             ShipsManager.LaunchShip(hangarNode);
             UIManager.ClearCanvases();

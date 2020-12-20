@@ -33,7 +33,7 @@ public class MissionsManager : MonoBehaviour
     {
         return Instance.missionContainer.missions
             .Where(x => x.hasBeenAcceptedInNoticeBoard
-            && x.scheduledHangarNode == HangarNode.None)
+            && x.ship == null)
             .ToList();
     }
 
@@ -41,7 +41,25 @@ public class MissionsManager : MonoBehaviour
     {
         return Instance.missionContainer.missions
             .Where(x => x.hasBeenAcceptedInNoticeBoard
-            && x.scheduledHangarNode != HangarNode.None)
+            && x.ship != null)
             .ToList();
+    }
+
+    public static void UpdateMissionSchedule()
+    {
+        foreach(Mission mission in Instance.missionContainer.missions)
+        {
+            if(mission.IsInProgress()){
+                mission.daysLeftToComplete--;
+
+                // We just finished the mission
+                if (!mission.IsInProgress())
+                {
+                    mission.ship.isLaunched = false;
+                    mission.ship.currentMission = null;
+                    mission.ship = null;
+                }
+            }
+        }
     }
 }

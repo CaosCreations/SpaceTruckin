@@ -21,6 +21,7 @@ public class BedCanvasUI : MonoBehaviour
     {
         timer = 0;
         opacity = 0;
+        EndDay();
     }
 
     void Update()
@@ -42,5 +43,11 @@ public class BedCanvasUI : MonoBehaviour
         {
             UIManager.ClearCanvases();
         }
+    }
+
+    private void EndDay()
+    {
+        MissionsManager.UpdateMissionSchedule();
+        ShipsManager.UpdateHangarShips();
     }
 }
