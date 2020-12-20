@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -61,12 +60,6 @@ public class ClockManager : MonoBehaviour
     private void StopClock()
     {
         clockStopped = true;
-    }
-
-    private void SetClockStopped(PauseState pauseState)
-    {
-        clockStopped = pauseState.Equals(PauseState.Paused);
-        
     }
 
     private void EndDay()

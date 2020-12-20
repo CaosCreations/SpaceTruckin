@@ -89,7 +89,6 @@ public class UIManager : MonoBehaviour
         {
             case UICanvasType.Terminal:
                 Instance.terminalCanvas.SetActive(true);
-                //onCanvasActivated?.Invoke(UICanvasType.Terminal);
                 onCanvasActivated?.Invoke();
                 break;
             case UICanvasType.Hangar:
