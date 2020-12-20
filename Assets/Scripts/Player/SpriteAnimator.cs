@@ -71,7 +71,7 @@ public class SpriteAnimator : MonoBehaviour
                 //spriteRenderer.flipX = flipped ? true : false;
                 material.mainTextureScale = flipped ? new Vector2(-1f, 1f) : Vector2.one;
 
-                // Update the sprite being renderer
+                // Update the sprite being rendered
                 //spriteRenderer.sprite = frameArray[currentFrame]; 
                 material.mainTexture = frameArray[currentFrame].texture;
             }
