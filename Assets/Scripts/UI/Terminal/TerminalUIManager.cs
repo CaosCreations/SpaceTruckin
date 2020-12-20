@@ -10,6 +10,7 @@ public class TerminalUIManager : MonoBehaviour
     public Button analyticsButton;
     public Button crewButton;
     public Button upgradesButton;
+    public Text moneyText;
 
     public GameObject missionsPanel;
     public GameObject messagesPanel;
@@ -26,7 +27,7 @@ public class TerminalUIManager : MonoBehaviour
     {
         SetupButtonListeners();
         TabButtonClicked(Tab.Missions);
-        // UIManager.onCanvasActivated += 
+        UIManager.onCanvasActivated += UpdateMoneyText;
     }
 
     private void SetupButtonListeners()
@@ -77,5 +78,20 @@ public class TerminalUIManager : MonoBehaviour
         analyticsPanel.SetActive(false);
         crewPanel.SetActive(false);
         upgradesPanel.SetActive(false);
+    }
+
+    // Use with generic event 
+    private void UpdateMoneyText(UICanvasType canvasType)
+    {
+        if (canvasType.Equals(UICanvasType.Terminal))
+        {
+            moneyText.text = "$ " + PlayerManager.Instance.playerData.playerMoney;
+        }
+    }
+
+    // Use with terminal-specific event 
+    private void UpdateMoneyText()
+    {
+        moneyText.text = "$ " + PlayerManager.Instance.playerData.playerMoney;
     }
 }
