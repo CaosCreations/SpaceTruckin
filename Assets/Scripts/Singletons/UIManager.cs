@@ -25,7 +25,7 @@ public class UIManager : MonoBehaviour
     public UICanvasType interactableType;
     public HangarNode hangarNode;
 
-    public static event Action onCanvasActivated;
+    public static event Action<UICanvasType> onCanvasActivated;
     public static event Action onCanvasDeactivated;
 
     void Awake()
@@ -91,6 +91,7 @@ public class UIManager : MonoBehaviour
         {
             case UICanvasType.Terminal:
                 Instance.terminalCanvas.SetActive(true);
+                onCanvasActivated?.Invoke(UICanvasType.Terminal);
                 break;
             case UICanvasType.Hangar:
                 Instance.hangarNodeCanvas.SetActive(true);

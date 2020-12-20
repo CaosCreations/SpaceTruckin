@@ -26,6 +26,7 @@ public class TerminalUIManager : MonoBehaviour
     {
         SetupButtonListeners();
         TabButtonClicked(Tab.Missions);
+        // UIManager.onCanvasActivated += 
     }
 
     private void SetupButtonListeners()
