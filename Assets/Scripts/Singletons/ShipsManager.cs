@@ -1,28 +1,39 @@
 ﻿using UnityEngine;
+using System.Linq;
+
+public enum HangarNode
+{
+    None, One, Two, Three, Four, Five, Six
+}
 
 public class ShipsManager : MonoBehaviour
 {
     public static ShipsManager Instance;
 
+    public GameObject shipInstancePrefab;
     public Ship[] ships;
 
-    private void Awake()
-    {
-        if (FindObjectsOfType(GetType()).Length > 1)
-        {
-            Destroy(gameObject);
-        }
+    public HangarSlot[] hangarSlots;
 
+    void Awake()
+    {
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
-        else if (Instance == this)
+        else
         {
-            Destroy(Instance.gameObject);
-            Instance = this;
+            Destroy(gameObject);
+            return;
         }
-        DontDestroyOnLoad(this.gameObject);
+        Init();
+    }
+
+    public void Init()
+    {
+        hangarSlots = FindObjectsOfType<HangarSlot>();
+        UpdateHangarShips();
     }
 
     public static void DamageShip(int index, int damage)
@@ -31,7 +42,96 @@ public class ShipsManager : MonoBehaviour
         {
             if (Instance.ships[i] != null && index == Instance.ships[i].id)
             {
-                Instance.ships[i].hullIntegrity = Mathf.Max(0, Instance.ships[i].hullIntegrity - damage);
+                Instance.ships[i].currenthullIntegrity = Mathf.Max(0, Instance.ships[i].currenthullIntegrity - damage);
+            }
+        }
+    }
+
+    public static void LaunchShip(HangarNode node)
+    {
+        foreach (HangarSlot slot in Instance.hangarSlots)
+        {
+            if (slot.node == node)
+            {
+                Ship ship = GetShipForNode(node);
+                if(ship != null)
+                {
+                    ship.currentMission.StartMission();
+                    ship.isLaunched = true;
+                    slot.LaunchShip();
+                }
+            }
+        }
+    }
+
+    public static Ship GetShipForNode(HangarNode node)
+    {
+        foreach(Ship ship in Instance.ships)
+        {
+            if(ship.hangarNode == node)
+            {
+                return ship;
+            }
+        }
+
+        return null;
+    }
+
+    public static void UpdateHangarShips()
+    {
+        ClearSlots();
+        foreach (Ship ship in Instance.ships)
+        {
+            if (ship.isOwned && !ship.isLaunched)
+            {
+                HangarSlot shipSlot = GetShipSlot(ship);
+
+                if(shipSlot != null)
+                {
+                    GameObject shipParentInstance = Instantiate(Instance.shipInstancePrefab, shipSlot.transform);
+                    Instantiate(ship.shipPrefab, shipParentInstance.transform);
+                    ShipInstance instance = shipParentInstance.GetComponent<ShipInstance>();
+                    shipSlot.shipInstance = instance;
+                }
+                else
+                {
+                    Debug.Log("Ship Hangar node not set");
+                }
+            }
+        }
+    }
+
+    public static Ship NodeHasShip(HangarNode node)
+    {
+        Ship ship = Instance.ships.Where(x => x.hangarNode == node).FirstOrDefault();
+        if (ship != null)
+        {
+            return ship;
+        }
+
+        return null;
+    }
+
+    private static HangarSlot GetShipSlot(Ship ship)
+    {
+        foreach(HangarSlot slot in Instance.hangarSlots)
+        {
+            if(slot.node == ship.hangarNode)
+            {
+                return slot;
+            }
+        }
+
+        return null;
+    }
+
+    private static void ClearSlots()
+    {
+        foreach (HangarSlot slot in Instance.hangarSlots)
+        {
+            if (slot.transform.childCount > 0)
+            {
+                Destroy(slot.transform.GetChild(0).gameObject);
             }
         }
     }

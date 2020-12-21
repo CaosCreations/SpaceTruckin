@@ -12,8 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c90981045dcf564ca5a5e8e5da29649, type: 3}
   m_Name: Mission1
   m_EditorClassIdentifier: 
-  pilotsName: stefano
-  missionDurationInSeconds: 1
+  missionDurationInDays: 1
+  missionName: Deliver moon rocks
+  customer: Cool people
+  cargo: Moon rocks
+  reward: 100
+  moneyNeededToUnlock: 0
   outcomes:
   - {fileID: 11400000, guid: efbf1a0dc439c224fb074156ec201368, type: 2}
-  inProgress: 0
+  hasBeenAcceptedInNoticeBoard: 0
+  ship: {fileID: 0}
+  daysLeftToComplete: 0

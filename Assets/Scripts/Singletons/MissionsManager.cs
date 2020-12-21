@@ -2,79 +2,64 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class MissionsManager : MonoBehaviour
 {
+    public static MissionsManager Instance { get; private set; }
+
     public MissionContainer missionContainer;
 
-    public GameObject missionButtonPrefab;
-
-    public GameObject missionsPanel;
-
-    public Text playerMoneyText;
-
-    void Start()
+    void Awake()
     {
-        playerMoneyText.text = "$" + PlayerManager.Instance.playerData.playerMoney;
-        GenerateMissionButtons();
-    }
-
-    void GenerateMissionButtons()
-    {
-        missionsPanel.GetComponentInChildren<GridLayoutGroup>();    
-
-        foreach(Mission mission in missionContainer.missions)
+        if (Instance == null)
         {
-            GameObject newButton = Instantiate(missionButtonPrefab);
-            MissionButton missionButton = newButton.GetComponent<MissionButton>();
-
-            missionButton.Setup(mission);
-
-            newButton.transform.parent = missionsPanel.transform;
-
-            missionButton.button.onClick.AddListener( delegate { PerformMission(missionButton); } );
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
-    }
-
-    void PerformMission(MissionButton missionButton)
-    {
-        if (missionButton.mission.inProgress)
+        else
         {
+            Destroy(gameObject);
             return;
         }
-        missionButton.slider.value = 0f; 
-        StartCoroutine(WaitForMission(missionButton));
+        Init();
     }
 
-    IEnumerator WaitForMission(MissionButton missionButton)
+    void Init()
     {
-        Mission mission = missionButton.mission;
-        mission.inProgress = true;
+    }
 
-        // Scale timer by a factor of n 
-        // to match the progress intervals 
-		int scaledTimer = mission.missionDurationInSeconds * MissionConstants.sliderScaleFactor;
-        int currentTimer = scaledTimer;
-		float waitTime = 1f / MissionConstants.sliderScaleFactor;
-        while(currentTimer > 0)
+    public static List<Mission> GetAcceptedMissions()
+    {
+        return Instance.missionContainer.missions
+            .Where(x => x.hasBeenAcceptedInNoticeBoard
+            && x.ship == null)
+            .ToList();
+    }
+
+    public static List<Mission> GetScheduledMissions()
+    {
+        return Instance.missionContainer.missions
+            .Where(x => x.hasBeenAcceptedInNoticeBoard
+            && x.ship != null)
+            .ToList();
+    }
+
+    public static void UpdateMissionSchedule()
+    {
+        foreach(Mission mission in Instance.missionContainer.missions)
         {
-            // Wait for a fraction of a second 
-            // in order to accomodate missions 
-            // under a second in length 
-            yield return new WaitForSeconds(waitTime);
-            currentTimer--;
-			missionButton.slider.value += 1f / scaledTimer; 
-            missionButton.SetMissionTime(timeLeftInSeconds: currentTimer / MissionConstants.sliderScaleFactor);
+            if(mission.IsInProgress()){
+                mission.daysLeftToComplete--;
+
+                // We just finished the mission
+                if (!mission.IsInProgress())
+                {
+                    mission.ship.isLaunched = false;
+                    mission.ship.currentMission = null;
+                    mission.ship = null;
+                }
+            }
         }
-
-        mission.ProcessOutcomes();
-        missionButton.ResetMissionTime();
-        playerMoneyText.text = "$" + PlayerManager.Instance.playerData.playerMoney;
-        mission.inProgress = false; 
-    }
-
-    void Update()
-    {
-        
     }
 }

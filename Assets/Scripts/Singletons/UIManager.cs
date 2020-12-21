@@ -1,43 +1,44 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public enum UICanvasType
 {
-    Terminal, Vending, Hangar, Cassette, None
+    Bed, Terminal, Vending, Hangar, Cassette, NoticeBoard, None
 }
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
+
+    public GameObject bedCanvas;
     public GameObject terminalCanvas;
     public GameObject vendingCanvas;
     public GameObject hangarNodeCanvas;
     public GameObject casetteCanvas;
+    public GameObject noticeBoardCanvas;
+    public bool currentMenuOverridesEscape;
+    public TextMeshPro interactionTextMesh;
 
     public UICanvasType interactableType;
+    public HangarNode hangarNode;
 
     public static event Action onCanvasActivated;
     public static event Action onCanvasDeactivated;
 
-    private void Awake()
+    void Awake()
     {
-        if (FindObjectsOfType(GetType()).Length > 1)
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
         {
             Destroy(gameObject);
+            return;
         }
-
-        if (UIManager.Instance == null)
-        {
-            UIManager.Instance = this;
-        }
-        else if (UIManager.Instance == this)
-        {
-            Destroy(UIManager.Instance.gameObject);
-            UIManager.Instance = this;
-        }
-        DontDestroyOnLoad(this.gameObject);
+        interactionTextMesh = GetComponentInChildren<TextMeshPro>();
     }
 
     private void Start()
@@ -51,25 +52,38 @@ public class UIManager : MonoBehaviour
         {
             ShowCanvas();
         }
-        if (Input.GetKeyDown(PlayerConstants.exit))
+        if (Input.GetKeyDown(PlayerConstants.exit) && !currentMenuOverridesEscape)
         {
-            Time.timeScale = 1;
             ClearCanvases();
+        }
+        
+        if(interactableType != UICanvasType.None)
+        {
+            interactionTextMesh.gameObject.SetActive(true);
+            interactionTextMesh.text = GetInteractionString();
+            interactionTextMesh.transform.position = PlayerManager.Instance.playerMovement.transform.position + new Vector3(0, 0.5f, 0);
+        }
+        else
+        {
+            interactionTextMesh.gameObject.SetActive(false);
         }
     }
 
     public static void ClearCanvases()
     {
+        PlayerManager.Instance.isPaused = false;
+        Instance.bedCanvas.SetActive(false);
         Instance.terminalCanvas.SetActive(false);
         Instance.hangarNodeCanvas.SetActive(false);
         Instance.vendingCanvas.SetActive(false);
         Instance.casetteCanvas.SetActive(false);
+        Instance.noticeBoardCanvas.SetActive(false);
     }
 
     public static void ShowCanvas()
     {
         ClearCanvases();
-        Time.timeScale = 0;
+        PlayerManager.Instance.isPaused = true;
 
         switch (Instance.interactableType)
         {
@@ -85,6 +99,12 @@ public class UIManager : MonoBehaviour
             case UICanvasType.Cassette:
                 Instance.casetteCanvas.SetActive(true);
                 break;
+            case UICanvasType.NoticeBoard:
+                Instance.noticeBoardCanvas.SetActive(true);
+                break;
+            case UICanvasType.Bed:
+                Instance.bedCanvas.SetActive(true);
+                break;
         }
     }
 
@@ -93,10 +113,52 @@ public class UIManager : MonoBehaviour
         if (canInteract)
         {
             Instance.interactableType = type;
+
         }
         else
         {
             Instance.interactableType = UICanvasType.None;
         }
+    }
+
+    public static void SetCanInteractHangarNode(HangarNode node, bool canInteract)
+    {
+        if (canInteract)
+        {
+            Instance.interactableType = UICanvasType.Hangar;
+            Instance.hangarNode = node;
+        }
+        else
+        {
+            Instance.interactableType = UICanvasType.None;
+        }
+    }
+
+    private static string GetInteractionString()
+    {
+        string interaction = "Press E to ";
+        switch (Instance.interactableType)
+        {
+            case UICanvasType.Bed:
+                interaction += "Sleep";
+                break;
+            case UICanvasType.Cassette:
+                interaction += "Play Music";
+                break;
+            case UICanvasType.Hangar:
+                interaction += "Manage Ship";
+                break;
+            case UICanvasType.NoticeBoard:
+                interaction += "Accept Missions";
+                break;
+            case UICanvasType.Terminal:
+                interaction += "Manage Company";
+                break;
+            case UICanvasType.Vending:
+                interaction += "Buy Snax";
+                break;
+        }
+
+        return interaction;
     }
 }

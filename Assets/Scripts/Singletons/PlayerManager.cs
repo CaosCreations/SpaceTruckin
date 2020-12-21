@@ -9,24 +9,26 @@ public class PlayerManager : MonoBehaviour
     [Header("Set In Editor")]
     public PlayerData playerData;
 
+    [Header("Set at Runtime")]
+    public bool isPaused;
+    public PlayerMovement playerMovement;
 
-    private void Awake()
+    public static event System.Action<long> onFinancialTransaction;
+
+    void Awake()
     {
-        if (FindObjectsOfType(GetType()).Length > 1)
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
         {
             Destroy(gameObject);
+            return;
         }
 
-        if (PlayerManager.Instance == null)
-        {
-            PlayerManager.Instance = this;
-        }
-        else if (PlayerManager.Instance == this)
-        {
-            Destroy(PlayerManager.Instance.gameObject);
-            PlayerManager.Instance = this;
-        }
-        DontDestroyOnLoad(this.gameObject);
+        playerMovement = FindObjectOfType<PlayerMovement>();
     }
 
     void Start()
@@ -37,13 +39,26 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    void Update()
+    public bool CanSpendMoney(long amount)
     {
-        
+        if (amount < Instance.playerData.playerMoney)
+        {
+            return true;
+        }
+
+        return false;
     }
 
-    public static void VendingMachine()
+    public void SpendMoney(long amount)
     {
+        Instance.playerData.playerMoney -= amount;
+        onFinancialTransaction?.Invoke(Instance.playerData.playerMoney);
+    }
 
+    public void ReceiveMoney(long amount)
+    {
+        Instance.playerData.playerMoney += amount;
+        Instance.playerData.playerTotalMoneyAcquired += amount;
+        onFinancialTransaction?.Invoke(Instance.playerData.playerMoney);
     }
 }
