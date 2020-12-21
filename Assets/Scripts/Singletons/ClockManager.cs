@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection.Emit;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,9 +23,8 @@ public class ClockManager : MonoBehaviour
 
     private void Start()
     {
-		// Temporary
         UIManager.onCanvasActivated += StopClock;
-        UIManager.onCanvasDeactivated += StartClock; 
+        UIManager.onCanvasDeactivated += StartClock;
 
         CalculateTickSpeedMultiplier();
         StartDay();
@@ -56,12 +52,12 @@ public class ClockManager : MonoBehaviour
         //clockText.text = currentTime.ToString();
     }
 
-	private void StartClock()
-	{
-        clockStopped = false; 
-	}
+    private void StartClock()
+    {
+        clockStopped = false;
+    }
 
-	private void StopClock()
+    private void StopClock()
     {
         clockStopped = true;
     }

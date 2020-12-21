@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class TerminalUIManager : MonoBehaviour
@@ -10,6 +8,7 @@ public class TerminalUIManager : MonoBehaviour
     public Button analyticsButton;
     public Button crewButton;
     public Button upgradesButton;
+    public Text moneyText;
 
     public GameObject missionsPanel;
     public GameObject messagesPanel;
@@ -26,6 +25,7 @@ public class TerminalUIManager : MonoBehaviour
     {
         SetupButtonListeners();
         TabButtonClicked(Tab.Missions);
+        PlayerManager.onFinancialTransaction += UpdateMoneyText;
     }
 
     private void SetupButtonListeners()
@@ -76,5 +76,10 @@ public class TerminalUIManager : MonoBehaviour
         analyticsPanel.SetActive(false);
         crewPanel.SetActive(false);
         upgradesPanel.SetActive(false);
+    }
+
+    private void UpdateMoneyText(long updatedMoney)
+    {
+        moneyText.text = "$ " + updatedMoney;
     }
 }
