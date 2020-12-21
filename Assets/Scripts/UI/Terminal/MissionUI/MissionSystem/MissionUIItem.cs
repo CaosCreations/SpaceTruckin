@@ -100,7 +100,10 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     public void Unschedule()
     {
         myRectTransform.SetParent(scrollViewContent);
-        mission.ship.currentMission = null;
-        mission.ship = null;
+        if(mission.ship != null)
+        {
+            mission.ship.currentMission = null;
+            mission.ship = null;
+        }
     }
 }
