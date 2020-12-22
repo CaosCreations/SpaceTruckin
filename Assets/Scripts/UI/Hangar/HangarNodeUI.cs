@@ -19,6 +19,7 @@ public class HangarNodeUI : MonoBehaviour
 
     public Slider fuelSlider;
     public FuelButton fuelButton;
+    private Button fuelButtonControl; 
 
     public Slider hullSlider;
     public Button hullButton;
@@ -97,6 +98,9 @@ public class HangarNodeUI : MonoBehaviour
 
         launchButton.onClick.RemoveAllListeners();
         launchButton.onClick.AddListener(Launch);
+
+        fuelButtonControl = fuelButton.GetComponent<Button>();
+        fuelButtonControl.interactable = shipToInspect.currentFuel < shipToInspect.maxFuel;
     }
 
     private void CheckFueling()
@@ -113,6 +117,11 @@ public class HangarNodeUI : MonoBehaviour
             shipToInspect.currentFuel++;
             fuelSlider.value = shipToInspect.GetFuelPercent();
             fuelTimer = 0;
+            
+            if (shipToInspect.currentFuel >= shipToInspect.maxFuel)
+            {
+                fuelButtonControl.interactable = false;
+            }
         }
     }
 
