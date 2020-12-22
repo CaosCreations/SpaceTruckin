@@ -38,6 +38,11 @@ public class HangarNodeUI : MonoBehaviour
     private float fuelTimer = 0;
     private float fuelTimerInterval = 0.025f;
 
+    private void Awake()
+    {
+        fuelButtonControl = fuelButton.GetComponent<Button>();
+    }
+
     private void OnEnable()
     {
         hangarNode = UIManager.Instance.hangarNode;
@@ -51,6 +56,7 @@ public class HangarNodeUI : MonoBehaviour
         }
 
         PopulateUI();
+        fuelButtonControl.interactable = shipToInspect.currentFuel < shipToInspect.maxFuel;
     }
 
     private void OnDisable()
@@ -98,9 +104,6 @@ public class HangarNodeUI : MonoBehaviour
 
         launchButton.onClick.RemoveAllListeners();
         launchButton.onClick.AddListener(Launch);
-
-        fuelButtonControl = fuelButton.GetComponent<Button>();
-        fuelButtonControl.interactable = shipToInspect.currentFuel < shipToInspect.maxFuel;
     }
 
     private void CheckFueling()
