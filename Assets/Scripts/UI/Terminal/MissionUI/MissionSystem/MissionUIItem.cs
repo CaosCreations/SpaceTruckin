@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler
 {
     [Header("Set in Editor")]
     public Text missionNameText;
@@ -104,6 +104,15 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         {
             mission.ship.currentMission = null;
             mission.ship = null;
+        }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left) 
+        {
+            Debug.Log("Click");
+            missionsUI.DisplayMissionDetails(this);
         }
     }
 }
