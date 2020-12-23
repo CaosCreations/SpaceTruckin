@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
@@ -10,6 +8,7 @@ public class MissionsUI : MonoBehaviour
 {
     public GameObject scrollViewContent;
     public GameObject missionItemPrefab;
+    public GameObject missionDetailsPrefab;
     public GameObject missionSchedule;
 
     public MissionScheduleSlot[] missionSlots;
@@ -103,37 +102,49 @@ public class MissionsUI : MonoBehaviour
         return null;
     }
 
-    public void DisplayMissionDetails(MissionUIItem item)
+    public void DisplayMissionDetails(MissionUIItem listItem)
     {
-        GameObject missionDetails = new GameObject("Mission Details");
-        missionDetails.transform.parent = missionSchedule.transform;
-        RectTransform rect = missionDetails.GetComponent<RectTransform>();
+        GameObject missionDetails = new GameObject("MissionDetails");
+        missionDetails.transform.parent = transform;
+        //missionDetails.transform.parent = missionSchedule.transform;
+        //missionDetails.AddComponent<Image>().color = Color.magenta;
+        RectTransform listRect = listItem.GetComponent<RectTransform>();
+        RectTransform detailsRect = missionDetails.AddComponent<RectTransform>();
+        detailsRect.ResetRect();
 
-        Vector2 anchorMin = new Vector2();
-        Vector2 anchorMax = new Vector2();
-        
-        if (item.transform.localPosition.y < 0.33f)
+        var anchors = new System.ValueTuple<Vector2, Vector2>();
+        anchors.Item1.x = 0.55f;
+
+        // Place the details in line with the corresponding mission
+        if (listRect.localPosition.y < 0.33f)
         {
-            rect.anchorMin = new Vector2(0f, 0.66f);
-            rect.anchorMax = new Vector2(1f, 1f);
+            anchors.Item1.y = 0.66f;
+            anchors.Item2 = Vector2.one;
         }
-        else if (item.transform.localPosition.y >= 0.33f && item.transform.localPosition.y < 0.66f)
+        else if (listRect.localPosition.y >= 0.33f && listRect.localPosition.y < 0.66f)
         {
-            rect.anchorMin = new Vector2(0f, 0.33f);
-            rect.anchorMax = new Vector2(1f, 0.66f);
+            anchors.Item1.y = 0.33f;
+            anchors.Item2 = new Vector2(1f, 0.66f);
         }
         else
         {
-            rect.anchorMin = new Vector2(0f, 0.33f);
-            rect.anchorMax = new Vector2(1f, 0f);
+            anchors.Item1.y = 0.33f;
+            anchors.Item2 = Vector2.right;
         }
+        detailsRect.SetAnchors(anchors);
 
         Text detailsText = missionDetails.AddComponent<Text>();
-        detailsText.text = BuildDetailsText(item.mission);
+        //GameObject textContainer = new GameObject("MissionDetailsText");
+        //textContainer.transform.parent = missionDetails.transform;
+        //Text detailsText = textContainer.AddComponent<Text>();
+        //textContainer.GetComponent<RectTransform>().ResetRect();
+        detailsText.text = BuildDetailsText(listItem.mission);
+        detailsText.SetDefaultFont();
+        detailsText.fontSize = 36;
 
     }
 
-    private string BuildDetailsText( Mission mission)
+    private string BuildDetailsText(Mission mission)
     {
         StringBuilder builder = new StringBuilder();
         builder.AppendLine("Name: " + mission.missionName);
