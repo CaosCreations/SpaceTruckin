@@ -10,6 +10,7 @@ public class MissionsUI : MonoBehaviour
     public GameObject missionItemPrefab;
     public GameObject missionDetailsPrefab;
     public GameObject missionSchedule;
+    public GameObject missionDetails; 
 
     public MissionScheduleSlot[] missionSlots;
 
@@ -104,43 +105,45 @@ public class MissionsUI : MonoBehaviour
 
     public void DisplayMissionDetails(MissionUIItem listItem)
     {
-        GameObject missionDetails = new GameObject("MissionDetails");
+        missionDetails = new GameObject("MissionDetails");
         missionDetails.transform.parent = transform;
-        //missionDetails.transform.parent = missionSchedule.transform;
-        //missionDetails.AddComponent<Image>().color = Color.magenta;
         RectTransform listRect = listItem.GetComponent<RectTransform>();
         RectTransform detailsRect = missionDetails.AddComponent<RectTransform>();
         detailsRect.ResetRect();
+        missionDetails.AddComponent<Image>().color = Color.magenta;
 
         var anchors = new System.ValueTuple<Vector2, Vector2>();
         anchors.Item1.x = 0.55f;
+        anchors.Item2.x = 0.95f; 
 
         // Place the details in line with the corresponding mission
         if (listRect.localPosition.y < 0.33f)
         {
-            anchors.Item1.y = 0.66f;
-            anchors.Item2 = Vector2.one;
+            anchors.Item1.y = 0.65f;
+            anchors.Item2.y = 0.95f;
         }
         else if (listRect.localPosition.y >= 0.33f && listRect.localPosition.y < 0.66f)
         {
-            anchors.Item1.y = 0.33f;
-            anchors.Item2 = new Vector2(1f, 0.66f);
+            anchors.Item1.y = 0.35f;
+            anchors.Item2.y = 0.65f; 
         }
         else
         {
-            anchors.Item1.y = 0.33f;
-            anchors.Item2 = Vector2.right;
+            anchors.Item1.y = 0.05f;
+            anchors.Item2.y = 0.35f;
         }
         detailsRect.SetAnchors(anchors);
 
-        Text detailsText = missionDetails.AddComponent<Text>();
-        //GameObject textContainer = new GameObject("MissionDetailsText");
-        //textContainer.transform.parent = missionDetails.transform;
-        //Text detailsText = textContainer.AddComponent<Text>();
-        //textContainer.GetComponent<RectTransform>().ResetRect();
+        GameObject textContainer = new GameObject("MissionDetailsText");
+        textContainer.transform.parent = missionDetails.transform;
+        Text detailsText = textContainer.AddComponent<Text>();
+        RectTransform textRect = textContainer.GetComponent<RectTransform>();
+        textRect.ResetRect();
+        textRect.StretchAnchors();
         detailsText.text = BuildDetailsText(listItem.mission);
         detailsText.SetDefaultFont();
-        detailsText.fontSize = 36;
+        detailsText.resizeTextForBestFit = true;
+        detailsText.color = Color.black;
 
     }
 
@@ -149,7 +152,7 @@ public class MissionsUI : MonoBehaviour
         StringBuilder builder = new StringBuilder();
         builder.AppendLine("Name: " + mission.missionName);
         builder.AppendLine("Customer: " + mission.customer);
-        builder.Append("Cargo: " + mission.cargo);
+        builder.AppendLine("Cargo: " + mission.cargo);
 
         if (string.IsNullOrEmpty(mission.description))
         {

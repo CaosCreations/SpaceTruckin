@@ -16,6 +16,7 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     private CanvasGroup canvasGroup;
     private RectTransform myRectTransform;
     private Transform scrollViewContent;
+    private bool isShowingDetails; 
 
     private void Awake()
     {
@@ -109,10 +110,17 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left) 
+        if (eventData.button == PointerEventData.InputButton.Left)
         {
-            Debug.Log("Click");
-            missionsUI.DisplayMissionDetails(this);
+            if (!isShowingDetails)
+            {
+                missionsUI.DisplayMissionDetails(this);
+            }
+            else
+            {
+                //missionsUI.HideMissionDetails();
+            }
+            isShowingDetails = !isShowingDetails;
         }
     }
 }
