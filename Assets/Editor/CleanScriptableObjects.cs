@@ -26,6 +26,32 @@ public class CleanScriptableObjects: EditorWindow
             }
         }
     }
+
+    [MenuItem("Tools/Clean Scriptable Object Save Data")]
+    private static void CleanSaveData()
+    {
+        CleanPersistent();
+    }
+
+    private static void CleanPersistent()
+    {
+        var selected = Selection.activeObject;
+
+        if (selected is MissionContainer)
+        {
+            MissionContainer missionContainer = (MissionContainer)selected;
+            foreach (Mission mission in missionContainer.missions)
+            {
+                foreach (FieldInfo field in mission.missionSaveData.GetType().GetFields())
+                {
+                    field.SetValue(mission.missionSaveData, null);
+                }
+                EditorUtility.SetDirty(mission);
+            }
+        }
+    }
+
+
     
     private static void RecursivelyCleanData(object data)
     {
