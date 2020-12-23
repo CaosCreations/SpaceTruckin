@@ -114,7 +114,6 @@ public class HangarNodeUI : MonoBehaviour
             shipToInspect.currentFuel++;
             fuelSlider.value = shipToInspect.GetFuelPercent();
             fuelTimer = 0;
-
             fuelButton.button.interactable = ShouldButtonBeInteractable();
         }
     }
@@ -174,6 +173,6 @@ public class HangarNodeUI : MonoBehaviour
     private bool ShouldButtonBeInteractable()
     {
         return shipToInspect.currentFuel < shipToInspect.maxFuel
-            || !PlayerManager.Instance.CanSpendMoney(fuelCostPerUnit);
+            && PlayerManager.Instance.CanSpendMoney(fuelCostPerUnit);
     }
 }
