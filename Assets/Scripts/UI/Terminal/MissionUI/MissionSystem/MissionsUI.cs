@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System.Linq;
 using System.Text;
 using System;
+using UnityEngine.EventSystems;
 
 public class MissionsUI : MonoBehaviour
 {
@@ -104,17 +105,18 @@ public class MissionsUI : MonoBehaviour
         return null;
     }
 
-    public void CreateMissionDetails(MissionUIItem listItem)
+    public void DisplayMissionDetails(MissionUIItem listItem)
     {
-        DestroyMissionDetails();
+        Destroy(missionDetails);
         missionDetails = new GameObject("MissionDetails");
         missionDetails.transform.parent = transform;
         RectTransform listRect = listItem.GetComponent<RectTransform>();
         RectTransform detailsRect = missionDetails.AddComponent<RectTransform>();
         detailsRect.ResetRect();
-        missionDetails.AddComponent<Image>().color = Color.magenta;
-        
         detailsRect.SetAnchors(GetMissionDetailsAnchors(listRect));
+        missionDetails.AddComponent<Image>().color = Color.magenta;
+
+        SetupMissionDetailsEventTrigger();
 
         GameObject textContainer = new GameObject("MissionDetailsText");
         textContainer.transform.parent = missionDetails.transform;
@@ -128,23 +130,45 @@ public class MissionsUI : MonoBehaviour
         detailsText.color = Color.black;
     }
 
+    // Let the player close the mission details box by clicking on it 
+    private void SetupMissionDetailsEventTrigger()
+    {
+        EventTrigger trigger = missionDetails.AddComponent<EventTrigger>();
+        EventTrigger.Entry entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.PointerClick;
+        entry.callback.RemoveAllListeners();
+        entry.callback.AddListener((e) =>
+        {
+            Destroy(missionDetails);
+        });
+        trigger.triggers.Add(entry);
+    }
+
+    /// <summary>
+    ///     Returns a tuple of anchors based on the local position of the item in the list of missions.
+    ///     If the item is in the top third of the list, the anchors will span the top third of the view
+    /// </summary>
+    /// <param name="listRect"></param>
+    /// <returns></returns>
     private ValueTuple<Vector2, Vector2> GetMissionDetailsAnchors(RectTransform listRect)
     {
         var anchors = new ValueTuple<Vector2, Vector2>();
         anchors.Item1.x = 0.55f;
         anchors.Item2.x = 0.95f;
 
-        // Place the details in line with the corresponding mission
+        // Top third 
         if (listRect.localPosition.y < 0.33f)
         {
             anchors.Item1.y = 0.65f;
             anchors.Item2.y = 0.95f;
         }
+        // Middle third 
         else if (listRect.localPosition.y >= 0.33f && listRect.localPosition.y < 0.66f)
         {
             anchors.Item1.y = 0.35f;
             anchors.Item2.y = 0.65f;
         }
+        // Bottom third 
         else
         {
             anchors.Item1.y = 0.05f;
@@ -169,10 +193,5 @@ public class MissionsUI : MonoBehaviour
         builder.AppendLine("Fuel cost: " + mission.fuelCost);
         builder.AppendLine("Reward: " + mission.reward);
         return builder.ToString();
-    }
-
-    public void DestroyMissionDetails()
-    {
-        Destroy(missionDetails);
     }
 }

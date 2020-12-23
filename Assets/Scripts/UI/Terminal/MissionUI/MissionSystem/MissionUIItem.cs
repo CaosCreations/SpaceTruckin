@@ -16,7 +16,7 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     private CanvasGroup canvasGroup;
     private RectTransform myRectTransform;
     private Transform scrollViewContent;
-    private bool isShowingDetails; 
+    private bool hasBeenRecentlyClicked; 
 
     private void Awake()
     {
@@ -112,15 +112,15 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            if (!isShowingDetails)
+            if (!hasBeenRecentlyClicked)
             {
-                missionsUI.CreateMissionDetails(this);
+                missionsUI.DisplayMissionDetails(this);
             }
             else
             {
-                missionsUI.DestroyMissionDetails();
+                Destroy(missionsUI.missionDetails);
             }
-            isShowingDetails = !isShowingDetails;
+            hasBeenRecentlyClicked = !hasBeenRecentlyClicked;
         }
     }
 }
