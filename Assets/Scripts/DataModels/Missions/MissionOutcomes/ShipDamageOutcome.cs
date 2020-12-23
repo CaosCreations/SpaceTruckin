@@ -5,6 +5,6 @@ public class ShipDamageOutcome : MissionOutcome
 
     public override void Process(Mission mission)
     {
-        ShipsManager.DamageShip(mission.ship.pilot.id, shipDamage);
+        ShipsManager.DamageShip(mission.missionSaveData.ship.pilot.id, shipDamage);
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class CleanScriptableObjects: EditorWindow
 {
     [MenuItem("Tools/Clean Scriptable Objects")]
-    private static void CleanData()
+    private static void CleanObjectsSelected()
     {
         CleanSelection();
     }
@@ -27,8 +27,8 @@ public class CleanScriptableObjects: EditorWindow
         }
     }
 
-    [MenuItem("Tools/Clean Scriptable Object Save Data")]
-    private static void CleanSaveData()
+    [MenuItem("Tools/Clean Scriptable Object Container Save Data")]
+    private static void CleanContainerSaveData()
     {
         CleanPersistent();
     }
@@ -61,18 +61,9 @@ public class CleanScriptableObjects: EditorWindow
                 EditorUtility.SetDirty(pilot);
             }
         }
-    }
-    
-    private static void RecursivelyCleanData(object data)
-    {
-        if (System.Array.TrueForAll(data.GetType().GetFields(), x => x == null))
+        else
         {
-            return; 
-        }
-        foreach (FieldInfo field in data.GetType().GetFields())
-        {
-            field.SetValue(data, null);
-            RecursivelyCleanData(field);
+            Debug.LogError("You have not selected a valid object");
         }
     }
 }

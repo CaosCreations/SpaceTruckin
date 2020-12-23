@@ -35,7 +35,7 @@ public class PilotsManager : MonoBehaviour
         {
             if (Instance.pilots[i] != null && index == Instance.pilots[i].id)
             {
-                Instance.pilots[i].xp += xp;
+                Instance.pilots[i].pilotSaveData.xp += xp;
             }
         }
     }

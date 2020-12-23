@@ -76,7 +76,7 @@ public class MissionsUI : MonoBehaviour
         List<Mission> scheduledMissions = MissionsManager.GetScheduledMissions();
         foreach(MissionScheduleSlot slot in missionSlots)
         {
-            Mission missionForSlot = scheduledMissions.Where(x => x.ship == slot.ship).FirstOrDefault();
+            Mission missionForSlot = scheduledMissions.Where(x => x.missionSaveData.ship == slot.ship).FirstOrDefault();
 
             if(missionForSlot != null)
             {

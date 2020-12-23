@@ -70,8 +70,8 @@ public class PilotsUI : MonoBehaviour
 			button.onClick.AddListener(delegate { OpenPilotProfilePanel(pilot); });
 
 			// these will be set by the hire pilots logic later on
-			pilot.hired = true; 
-			pilot.onMission = false; 
+			pilot.pilotSaveData.hired = true; 
+			pilot.pilotSaveData.onMission = false; 
 		}
 	}
 

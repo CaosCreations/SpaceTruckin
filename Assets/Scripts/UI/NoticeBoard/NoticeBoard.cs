@@ -38,7 +38,7 @@ public class NoticeBoard : MonoBehaviour
     {
         if(selectedMission != null)
         {
-            selectedMission.hasBeenAcceptedInNoticeBoard = true;
+            selectedMission.missionSaveData.hasBeenAcceptedInNoticeBoard = true;
             CleanScrollView();
             PopulateScrollView();
             CleanDetailPane();
@@ -66,7 +66,7 @@ public class NoticeBoard : MonoBehaviour
         foreach(Mission mission in MissionsManager.Instance.missionContainer.missions)
         {
             if(mission.moneyNeededToUnlock <= PlayerManager.Instance.playerData.playerTotalMoneyAcquired
-                && !mission.hasBeenAcceptedInNoticeBoard)
+                && !mission.missionSaveData.hasBeenAcceptedInNoticeBoard)
             {
                 GameObject scrollItem = Instantiate(scrollItemPrefab, scrollViewContent.transform);
                 NoticeBoardItem noticeBoardItem = scrollItem.GetComponent<NoticeBoardItem>();

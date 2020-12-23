@@ -70,7 +70,7 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
                 if (slot.ship != null)
                 {
                     slot.ship.currentMission = mission;
-                    mission.ship = slot.ship;
+                    mission.missionSaveData.ship = slot.ship;
                 }
                 else
                 {
@@ -100,10 +100,10 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     public void Unschedule()
     {
         myRectTransform.SetParent(scrollViewContent);
-        if(mission.ship != null)
+        if(mission.missionSaveData.ship != null)
         {
-            mission.ship.currentMission = null;
-            mission.ship = null;
+            mission.missionSaveData.ship.currentMission = null;
+            mission.missionSaveData.ship = null;
         }
     }
 }
