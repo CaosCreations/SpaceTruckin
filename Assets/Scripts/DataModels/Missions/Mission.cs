@@ -8,7 +8,6 @@ public class Mission : ScriptableObject
     public class MissionSaveData
     {
         // Data to persist
-        [Header("Data to update IN GAME")]
         public bool hasBeenAcceptedInNoticeBoard = false;
         public Ship ship = null;
         public int daysLeftToComplete;
@@ -24,7 +23,6 @@ public class Mission : ScriptableObject
     [SerializeField]
     public MissionOutcome[] outcomes;
 
-    // Data to persist
     [Header("Data to update IN GAME")]
     public MissionSaveData missionSaveData;
 

@@ -49,9 +49,19 @@ public class CleanScriptableObjects: EditorWindow
                 EditorUtility.SetDirty(mission);
             }
         }
+        else if (selected is PilotsContainer)
+        {
+            PilotsContainer pilotsContainer = (PilotsContainer)selected;
+            foreach (Pilot pilot in pilotsContainer.pilots)
+            {
+                foreach (FieldInfo field in pilot.pilotSaveData.GetType().GetFields())
+                {
+                    field.SetValue(pilot.pilotSaveData, null);
+                }
+                EditorUtility.SetDirty(pilot);
+            }
+        }
     }
-
-
     
     private static void RecursivelyCleanData(object data)
     {
