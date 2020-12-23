@@ -56,7 +56,8 @@ public class HangarNodeUI : MonoBehaviour
         }
 
         PopulateUI();
-        fuelButtonControl.interactable = shipToInspect.currentFuel < shipToInspect.maxFuel;
+        fuelButtonControl.interactable = shipToInspect.currentFuel < shipToInspect.maxFuel
+            || !PlayerManager.Instance.CanSpendMoney(fuelCostPerUnit);
     }
 
     private void OnDisable()
@@ -121,7 +122,8 @@ public class HangarNodeUI : MonoBehaviour
             fuelSlider.value = shipToInspect.GetFuelPercent();
             fuelTimer = 0;
             
-            if (shipToInspect.currentFuel >= shipToInspect.maxFuel)
+            if (shipToInspect.currentFuel >= shipToInspect.maxFuel
+                || !PlayerManager.Instance.CanSpendMoney(fuelCostPerUnit))
             {
                 fuelButtonControl.interactable = false;
             }
@@ -179,4 +181,5 @@ public class HangarNodeUI : MonoBehaviour
             SetLayerRecursively(child.gameObject, newLayer);
         }
     }
+
 }
