@@ -114,11 +114,11 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         {
             if (!isShowingDetails)
             {
-                missionsUI.DisplayMissionDetails(this);
+                missionsUI.CreateMissionDetails(this);
             }
             else
             {
-                //missionsUI.HideMissionDetails();
+                missionsUI.DestroyMissionDetails();
             }
             isShowingDetails = !isShowingDetails;
         }

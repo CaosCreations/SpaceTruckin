@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using System.Text;
+using System;
 
 public class MissionsUI : MonoBehaviour
 {
@@ -103,36 +104,17 @@ public class MissionsUI : MonoBehaviour
         return null;
     }
 
-    public void DisplayMissionDetails(MissionUIItem listItem)
+    public void CreateMissionDetails(MissionUIItem listItem)
     {
+        DestroyMissionDetails();
         missionDetails = new GameObject("MissionDetails");
         missionDetails.transform.parent = transform;
         RectTransform listRect = listItem.GetComponent<RectTransform>();
         RectTransform detailsRect = missionDetails.AddComponent<RectTransform>();
         detailsRect.ResetRect();
         missionDetails.AddComponent<Image>().color = Color.magenta;
-
-        var anchors = new System.ValueTuple<Vector2, Vector2>();
-        anchors.Item1.x = 0.55f;
-        anchors.Item2.x = 0.95f; 
-
-        // Place the details in line with the corresponding mission
-        if (listRect.localPosition.y < 0.33f)
-        {
-            anchors.Item1.y = 0.65f;
-            anchors.Item2.y = 0.95f;
-        }
-        else if (listRect.localPosition.y >= 0.33f && listRect.localPosition.y < 0.66f)
-        {
-            anchors.Item1.y = 0.35f;
-            anchors.Item2.y = 0.65f; 
-        }
-        else
-        {
-            anchors.Item1.y = 0.05f;
-            anchors.Item2.y = 0.35f;
-        }
-        detailsRect.SetAnchors(anchors);
+        
+        detailsRect.SetAnchors(GetMissionDetailsAnchors(listRect));
 
         GameObject textContainer = new GameObject("MissionDetailsText");
         textContainer.transform.parent = missionDetails.transform;
@@ -144,7 +126,31 @@ public class MissionsUI : MonoBehaviour
         detailsText.SetDefaultFont();
         detailsText.resizeTextForBestFit = true;
         detailsText.color = Color.black;
+    }
 
+    private ValueTuple<Vector2, Vector2> GetMissionDetailsAnchors(RectTransform listRect)
+    {
+        var anchors = new ValueTuple<Vector2, Vector2>();
+        anchors.Item1.x = 0.55f;
+        anchors.Item2.x = 0.95f;
+
+        // Place the details in line with the corresponding mission
+        if (listRect.localPosition.y < 0.33f)
+        {
+            anchors.Item1.y = 0.65f;
+            anchors.Item2.y = 0.95f;
+        }
+        else if (listRect.localPosition.y >= 0.33f && listRect.localPosition.y < 0.66f)
+        {
+            anchors.Item1.y = 0.35f;
+            anchors.Item2.y = 0.65f;
+        }
+        else
+        {
+            anchors.Item1.y = 0.05f;
+            anchors.Item2.y = 0.35f;
+        }
+        return anchors;
     }
 
     private string BuildDetailsText(Mission mission)
@@ -160,7 +166,13 @@ public class MissionsUI : MonoBehaviour
         }
 
         builder.AppendLine("Description: " + mission.description);
+        builder.AppendLine("Fuel cost: " + mission.fuelCost);
         builder.AppendLine("Reward: " + mission.reward);
         return builder.ToString();
+    }
+
+    public void DestroyMissionDetails()
+    {
+        Destroy(missionDetails);
     }
 }
