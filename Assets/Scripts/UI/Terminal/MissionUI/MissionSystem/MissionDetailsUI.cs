@@ -18,9 +18,6 @@ public class MissionDetailsUI : MonoBehaviour
     public void DisplayMissionDetails(MissionUIItem listItem)
     {
         DestroyMissionDetails();
-
-        // Let the player close the mission details box by clicking on it 
-        missionDetails.AddCustomEvent(EventTriggerType.PointerClick, () => DestroyMissionDetails());
         SetupDetailsContainer(listItem.GetComponent<RectTransform>());
         SetupDetailsText();
     }
@@ -38,6 +35,9 @@ public class MissionDetailsUI : MonoBehaviour
         detailsRect.ResetRect();
         detailsRect.SetAnchors(GetMissionDetailsAnchors(listRect));
         missionDetails.AddComponent<Image>().color = Color.magenta;
+
+        // Let the player close the mission details box by clicking on it 
+        missionDetails.AddCustomEvent(EventTriggerType.PointerClick, () => DestroyMissionDetails());
     }
 
     private void SetupDetailsText()
