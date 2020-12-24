@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -12,15 +10,16 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     [Header("Set at Runtime")]
     public Mission mission;
     private MissionsUI missionsUI;
+    private MissionDetailsUI missionDetailsUI;
     public Canvas canvas;
     private CanvasGroup canvasGroup;
     private RectTransform myRectTransform;
     private Transform scrollViewContent;
-    private bool hasBeenRecentlyClicked; 
 
     private void Awake()
     {
         missionsUI = GetComponentInParent<MissionsUI>();
+        missionDetailsUI = GetComponentInParent<MissionDetailsUI>();
         canvas = GetComponentInParent<Canvas>();
         canvasGroup = GetComponent<CanvasGroup>();
         myRectTransform = GetComponent<RectTransform>();
@@ -112,15 +111,16 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            if (!hasBeenRecentlyClicked)
+            if (missionDetailsUI.missionBeingDisplayed == mission)
             {
-                missionsUI.DisplayMissionDetails(this);
+                missionDetailsUI.DestroyMissionDetails();
+                missionDetailsUI.missionBeingDisplayed = null;
             }
             else
             {
-                Destroy(missionsUI.missionDetails);
+                missionDetailsUI.DisplayMissionDetails(this);
+                missionDetailsUI.missionBeingDisplayed = mission;
             }
-            hasBeenRecentlyClicked = !hasBeenRecentlyClicked;
         }
     }
 }
