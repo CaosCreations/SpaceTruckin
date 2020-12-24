@@ -118,8 +118,8 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
             }
             else
             {
-                missionDetailsUI.DisplayMissionDetails(this);
                 missionDetailsUI.missionBeingDisplayed = mission;
+                missionDetailsUI.DisplayMissionDetails(this);
             }
         }
     }

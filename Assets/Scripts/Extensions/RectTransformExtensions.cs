@@ -8,13 +8,13 @@ public static class RectTransformExtensions
         self.anchorMax = anchors.Item2;
     }
 
-    public static void StretchAnchors(this RectTransform self)
+    public static void Stretch(this RectTransform self)
     {
         self.anchorMin = Vector2.zero;
         self.anchorMax = Vector2.one;
     }
 
-    public static void ResetRect(this RectTransform self)
+    public static void Reset(this RectTransform self)
     {
         // Set Top, Right, Bottom, Left to 0
         self.offsetMin = Vector2.zero;
@@ -23,5 +23,4 @@ public static class RectTransformExtensions
         // Set Scale to 1 
         self.localScale = Vector2.one;
     }
-
 }
