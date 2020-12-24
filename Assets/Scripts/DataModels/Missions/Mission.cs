@@ -8,6 +8,8 @@ public class Mission : ScriptableObject
     public string missionName;
     public string customer;
     public string cargo;
+    public string description;
+    public int fuelCost;
     public int reward;
     public int moneyNeededToUnlock;
     [SerializeField]

@@ -1,20 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using System.Linq;
 
 public class MissionsUI : MonoBehaviour
 {
     public GameObject scrollViewContent;
     public GameObject missionItemPrefab;
+    private MissionDetailsUI missionDetailsUI;
 
     public MissionScheduleSlot[] missionSlots;
 
     void Start()
     {
-        
+        missionDetailsUI = GetComponent<MissionDetailsUI>();
     }
 
     private void OnEnable()
@@ -62,6 +60,7 @@ public class MissionsUI : MonoBehaviour
                 Destroy(slot.slotTransform.GetChild(0).gameObject);
             }
         }
+        missionDetailsUI?.DestroyMissionDetails();
     }
 
     void PopulateScrollView()

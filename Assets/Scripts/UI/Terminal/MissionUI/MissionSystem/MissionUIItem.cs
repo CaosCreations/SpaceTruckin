@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler
 {
     [Header("Set in Editor")]
     public Text missionNameText;
@@ -12,6 +10,7 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     [Header("Set at Runtime")]
     public Mission mission;
     private MissionsUI missionsUI;
+    private MissionDetailsUI missionDetailsUI;
     public Canvas canvas;
     private CanvasGroup canvasGroup;
     private RectTransform myRectTransform;
@@ -20,6 +19,7 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     private void Awake()
     {
         missionsUI = GetComponentInParent<MissionsUI>();
+        missionDetailsUI = GetComponentInParent<MissionDetailsUI>();
         canvas = GetComponentInParent<Canvas>();
         canvasGroup = GetComponent<CanvasGroup>();
         myRectTransform = GetComponent<RectTransform>();
@@ -104,6 +104,23 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         {
             mission.ship.currentMission = null;
             mission.ship = null;
+        }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            if (missionDetailsUI.missionBeingDisplayed == mission)
+            {
+                missionDetailsUI.DestroyMissionDetails();
+                missionDetailsUI.missionBeingDisplayed = null;
+            }
+            else
+            {
+                missionDetailsUI.missionBeingDisplayed = mission;
+                missionDetailsUI.DisplayMissionDetails(this);
+            }
         }
     }
 }
