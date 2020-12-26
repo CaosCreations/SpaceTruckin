@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI; 
 
 public class PilotsUI : MonoBehaviour
@@ -33,16 +31,12 @@ public class PilotsUI : MonoBehaviour
 	{
 		pilotProfilePanel = new GameObject(PilotsConstants.profilePanelName);
 
-		// Sibling of the crew panel so that it can be active
-		// while the crew panel is inactive. 
+		// Sibling of the crew panel so that it can be active while the crew panel is inactive. 
 		pilotProfilePanel.transform.parent = crewPanel.transform.parent.transform;
 
 		RectTransform rectTransform = pilotProfilePanel.AddComponent<RectTransform>();
-		rectTransform.anchorMin = Vector2.zero;
-		rectTransform.anchorMax = Vector2.one;
-		rectTransform.localScale = Vector3.one;
-		rectTransform.offsetMin = Vector2.zero;
-		rectTransform.offsetMax = Vector2.zero;  
+		rectTransform.Reset();
+		rectTransform.Stretch();
 
 		pilotProfilePanel.SetActive(false);
 	}
@@ -52,9 +46,8 @@ public class PilotsUI : MonoBehaviour
 		GameObject pilotButtonGroup = new GameObject(PilotsConstants.buttonGroupName);
 		pilotButtonGroup.transform.parent = crewPanel.transform;
 		RectTransform rectTransform = pilotButtonGroup.AddComponent<RectTransform>();
-		rectTransform.localPosition = Vector2.zero;
-		rectTransform.anchorMin = PilotsConstants.buttonGroupAnchorMin; 
-		rectTransform.anchorMax = PilotsConstants.buttonGroupAnchorMax; 
+        rectTransform.localPosition = Vector2.zero;
+        rectTransform.SetAnchors((PilotsConstants.buttonGroupAnchorMin, PilotsConstants.buttonGroupAnchorMax));
 
         VerticalLayoutGroup verticalLayoutGroup = pilotButtonGroup.AddComponent<VerticalLayoutGroup>();
 		verticalLayoutGroup.childControlWidth = true;
@@ -69,7 +62,7 @@ public class PilotsUI : MonoBehaviour
 			button.onClick.RemoveAllListeners(); 
 			button.onClick.AddListener(delegate { OpenPilotProfilePanel(pilot); });
 
-			// these will be set by the hire pilots logic later on
+			// These will be set by the hire pilots logic later on
 			pilot.hired = true; 
 			pilot.onMission = false; 
 		}
@@ -90,14 +83,11 @@ public class PilotsUI : MonoBehaviour
 		pilotNameObject.transform.parent = pilotProfilePanel.transform;
 
 		RectTransform rectTransform = pilotNameObject.AddComponent<RectTransform>();
-		rectTransform.anchorMin = PilotsConstants.nameTextAnchorMin;
-		rectTransform.anchorMax = PilotsConstants.nameTextAnchorMax; 
-        rectTransform.localScale = Vector3.one;
-        rectTransform.offsetMin = Vector2.zero;
-		rectTransform.offsetMax = Vector2.zero;
+		rectTransform.Reset();
+		rectTransform.SetAnchors((PilotsConstants.nameTextAnchorMin, PilotsConstants.nameTextAnchorMax));
 
 		pilotNameText = pilotNameObject.AddComponent<Text>();
-		SetFont(pilotNameText); 
+		pilotNameText.SetDefaultFont();
 	}
 
 	private void GeneratePilotDescription()
@@ -106,14 +96,11 @@ public class PilotsUI : MonoBehaviour
 		pilotDescriptionObject.transform.parent = pilotProfilePanel.transform;
 
 		RectTransform rectTransform = pilotDescriptionObject.AddComponent<RectTransform>();
-		rectTransform.anchorMin = PilotsConstants.descriptionAnchorMin;
-		rectTransform.anchorMax = PilotsConstants.descriptionAnchorMax;
-        rectTransform.localScale = Vector3.one;
-        rectTransform.offsetMin = Vector2.zero;
-		rectTransform.offsetMax = Vector2.zero;
+		rectTransform.Reset();
+		rectTransform.SetAnchors((PilotsConstants.descriptionAnchorMin, PilotsConstants.descriptionAnchorMax));
 
 		pilotDescriptionText = pilotDescriptionObject.AddComponent<Text>();
-		SetFont(pilotDescriptionText); 
+		pilotDescriptionText.SetDefaultFont();
 	}
 
 	private void GeneratePilotAvatar()
@@ -122,11 +109,8 @@ public class PilotsUI : MonoBehaviour
 		pilotAvatarObject.transform.parent = pilotProfilePanel.transform;
 
 		RectTransform rectTransform = pilotAvatarObject.AddComponent<RectTransform>();
-		rectTransform.anchorMin = PilotsConstants.avatarAnchorMin;
-		rectTransform.anchorMax = PilotsConstants.avatarAnchorMax; 
-        rectTransform.localScale = Vector3.one;
-        rectTransform.offsetMin = Vector2.zero;
-		rectTransform.offsetMax = Vector2.zero;
+		rectTransform.Reset();
+		rectTransform.SetAnchors((PilotsConstants.avatarAnchorMin, PilotsConstants.avatarAnchorMax));
 
 		pilotAvatar = pilotAvatarObject.AddComponent<Image>();
 	}
@@ -142,36 +126,18 @@ public class PilotsUI : MonoBehaviour
         }
 
 		RectTransform rectTransform = backButton.GetComponent<RectTransform>();
-		rectTransform.anchorMin = PilotsConstants.backButtonAnchorMin;
-		rectTransform.anchorMax = PilotsConstants.backButtonAnchorMax;
-		rectTransform.localScale = Vector2.one; 
-		rectTransform.offsetMin = Vector2.zero;
-		rectTransform.offsetMax = Vector2.zero;
+		rectTransform.Reset();
+		rectTransform.SetAnchors((PilotsConstants.backButtonAnchorMin, PilotsConstants.backButtonAnchorMax));
 
 		Button button = backButton.GetComponent<Button>();
 		button.onClick.RemoveAllListeners();
 		button.onClick.AddListener(delegate { ClosePilotProfilePanel(); });
-
 		backButton.GetComponentInChildren<Text>().text = PilotsConstants.backButtonText; 
     }
-
+	
 	private void ClosePilotProfilePanel()
 	{
 		crewPanel.SetActive(true);
 		pilotProfilePanel.SetActive(false); 
-	}
-
-	private void SetFont(Text text)
-    {
-		text.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-	}
-
-	private void CycleThroughProfiles()
-	{
-		// would be nice to have a button that cycles through subsequent pilot profiles
-		// rather than going back to the hangar then going to the next pilot
-		// getting a reference to the next pilot in the GeneratePilotButtons() method? 
-		
-		// index the pilotsContainer; update it each time a pilotButton is clicked.
 	}
 }
