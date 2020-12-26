@@ -96,7 +96,7 @@ public class PilotsUI : MonoBehaviour
 	private string BuildDetailsString(Pilot pilot)
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.AppendLine("Name: " + pilot.name);
+		builder.AppendLine("Name: " + pilot.pilotName);
 		builder.AppendLine("Ship: " + pilot.ship.shipName);
 		builder.AppendLine("Level: " + pilot.level);
 		builder.AppendLine("Experience: " + pilot.xp);
