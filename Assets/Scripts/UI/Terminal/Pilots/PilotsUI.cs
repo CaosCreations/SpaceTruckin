@@ -4,6 +4,9 @@ using UnityEngine.UI;
 public class PilotsUI : MonoBehaviour
 {
 	public GameObject crewPanel;
+	public GameObject crewItemPrefab;
+	public Transform scrollViewContent;
+
 	public GameObject pilotButtonPrefab;
 	public PilotsContainer pilotsContainer;
 
@@ -21,12 +24,23 @@ public class PilotsUI : MonoBehaviour
 	private void GeneratePilotsUI()
     {
 		GeneratePilotProfilePanel();
-		GeneratePilotButtons();
-		GeneratePilotNameText();
-        GeneratePilotDescription();
-		GeneratePilotAvatar();
-		GenerateShipAvatar();
-		GenerateBackButton(); 
+		PopulateScrollView();
+		//GeneratePilotButtons();
+		//GeneratePilotNameText();
+		//GeneratePilotDescription();
+		//GeneratePilotAvatar();
+		//GenerateShipAvatar();
+		//GenerateBackButton(); 
+	}
+
+	private void PopulateScrollView()
+	{
+		foreach (Pilot pilot in pilotsContainer.pilots)
+        {
+			GameObject crewItem = Instantiate(crewItemPrefab, scrollViewContent);
+			crewItem.GetComponent<Button>().AddOnClick(() => OpenPilotProfilePanel(pilot));
+			crewItem.GetComponentInChildren<Text>().text = pilot.pilotName;
+        }
 	}
 
 	private void GeneratePilotProfilePanel()
