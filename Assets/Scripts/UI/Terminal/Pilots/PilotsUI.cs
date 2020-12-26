@@ -5,45 +5,50 @@ using UnityEngine.UI;
 public class PilotsUI : MonoBehaviour
 {
 	public GameObject crewPanel;
-	public GameObject crewItemPrefab;
 	public Transform scrollViewContent;
-
-	public GameObject pilotButtonPrefab;
-	public PilotsContainer pilotsContainer;
+	public GameObject crewItemPrefab;
+	public GameObject backButtonPrefab;
 
 	public GameObject pilotProfilePanel;
 	private Text pilotDetailsText; 
 	private Image pilotAvatar;
 	private Image shipAvatar; 
 
+	public PilotsContainer pilotsContainer;
 
 	private void Awake()
 	{
 		GeneratePilotsUI();
-
-		// Close the pilot profile panel if the player navigates away from it
-		// without clicking the back button 
-		TerminalUIManager.onTabButtonClicked += ClosePilotProfilePanel;
+		TerminalUIManager.onTabButtonClicked += () => pilotProfilePanel.SetActive(false);
     }
 
 	private void GeneratePilotsUI()
     {
+		PopulateScrollView();
 		GeneratePilotProfilePanel();
         GenerateShipAvatar();
         GeneratePilotAvatar();
 		GeneratePilotDetails();
         GenerateBackButton();
-		PopulateScrollView();
     }
 
 	private void PopulateScrollView()
 	{
 		foreach (Pilot pilot in pilotsContainer.pilots)
-        {
-			GameObject crewItem = Instantiate(crewItemPrefab, scrollViewContent);
+		{
+            GameObject crewItem = Instantiate(crewItemPrefab, scrollViewContent);
 			crewItem.GetComponent<Button>().AddOnClick(() => OpenPilotProfilePanel(pilot));
 			crewItem.GetComponentInChildren<Text>().text = pilot.pilotName;
-        }
+		}
+	}
+
+	private void OpenPilotProfilePanel(Pilot pilot)
+	{
+		crewPanel.SetActive(false);
+		pilotProfilePanel.SetActive(true);
+		shipAvatar.sprite = pilot.ship.shipAvatar;
+		pilotAvatar.sprite = pilot.avatar;
+		pilotDetailsText.text = BuildDetailsString(pilot);
 	}
 
 	private void GeneratePilotProfilePanel()
@@ -60,14 +65,21 @@ public class PilotsUI : MonoBehaviour
 		pilotProfilePanel.SetActive(false);
 	}
 
-	private void OpenPilotProfilePanel(Pilot pilot)
+	private void GenerateShipAvatar()
 	{
-		crewPanel.SetActive(false);
-        pilotProfilePanel.SetActive(true);
-		shipAvatar.sprite = pilot.ship.shipAvatar;
-		pilotAvatar.sprite = pilot.avatar;
-		pilotDetailsText.text = BuildDetailsString(pilot);
-    }
+		GameObject shipAvatarObject = new GameObject().ScaffoldUI(
+			PilotsConstants.shipAvatarObjectName, pilotProfilePanel, PilotsConstants.shipAvatarAnchors);
+
+		shipAvatar = shipAvatarObject.AddComponent<Image>();
+	}
+
+	private void GeneratePilotAvatar()
+	{
+		GameObject pilotAvatarObject = new GameObject().ScaffoldUI(
+			PilotsConstants.pilotAvatarObjectName, pilotProfilePanel, PilotsConstants.pilotAvatarAnchors);
+
+		pilotAvatar = pilotAvatarObject.AddComponent<Image>();
+	}
 
 	private void GeneratePilotDetails()
     {
@@ -77,6 +89,7 @@ public class PilotsUI : MonoBehaviour
 		pilotDetails.GetComponent<RectTransform>().SetPadding(Side.Top, PilotsConstants.topPadding);
 		pilotDetailsText = pilotDetails.AddComponent<Text>();
 		pilotDetailsText.SetDefaultFont();
+		pilotDetailsText.resizeTextForBestFit = true; 
 		pilotDetailsText.color = Color.black;
 	}
 
@@ -98,44 +111,27 @@ public class PilotsUI : MonoBehaviour
 		return builder.ToString();
 	}
 
-	private void GeneratePilotAvatar()
-    {
-		GameObject pilotAvatarObject = new GameObject().ScaffoldUI(
-			PilotsConstants.pilotAvatarObjectName, pilotProfilePanel, PilotsConstants.pilotAvatarAnchors);
-
-		pilotAvatar = pilotAvatarObject.AddComponent<Image>();
-	}
-
-	private void GenerateShipAvatar()
-    {
-		GameObject shipAvatarObject = new GameObject().ScaffoldUI(
-			PilotsConstants.shipAvatarObjectName, pilotProfilePanel, PilotsConstants.shipAvatarAnchors);
-
-		shipAvatar = shipAvatarObject.AddComponent<Image>();
-
-    }
-
 	private void GenerateBackButton()
     {
-		GameObject backButton = Instantiate(pilotButtonPrefab);
-		backButton.name = PilotsConstants.backButtonName;
+		GameObject backButton = Instantiate(backButtonPrefab);
 
-		if (pilotProfilePanel != null)
+        if (pilotProfilePanel != null)
         {
-			backButton.transform.parent = pilotProfilePanel.transform; 
+            backButton.transform.parent = pilotProfilePanel.transform;
         }
 
-		RectTransform rectTransform = backButton.GetComponent<RectTransform>();
-		rectTransform.Reset();
-		rectTransform.SetAnchors(PilotsConstants.backButtonAnchors);
+        RectTransform rectTransform = backButton.GetComponent<RectTransform>();
+        rectTransform.Reset();
+        rectTransform.SetAnchors(PilotsConstants.backButtonAnchors);
 
-		Button button = backButton.GetComponent<Button>();
-		button.onClick.RemoveAllListeners();
-		button.onClick.AddListener(delegate { ClosePilotProfilePanel(); });
-		backButton.GetComponentInChildren<Text>().text = PilotsConstants.backButtonText; 
+        //Button button = backButton.GetComponent<Button>();
+        //button.onClick.RemoveAllListeners();
+        //button.onClick.AddListener(delegate { BackToCrewPanel(); });
+        backButton.GetComponent<Button>().AddOnClick(() => BackToCrewPanel());
+		//backButton.GetComponentInChildren<Text>().text = PilotsConstants.backButtonText; 
     }
 	
-	private void ClosePilotProfilePanel()
+	private void BackToCrewPanel()
 	{
 		crewPanel.SetActive(true);
 		pilotProfilePanel.SetActive(false); 

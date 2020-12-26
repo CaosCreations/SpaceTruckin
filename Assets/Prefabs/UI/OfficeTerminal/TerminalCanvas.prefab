@@ -2813,11 +2813,12 @@ MonoBehaviour:
   analyticsButton: {fileID: 3631385489750028469}
   crewButton: {fileID: 3631385488229304493}
   upgradesButton: {fileID: 3631385489389372504}
-  moneyText: {fileID: 0}
+  moneyText: {fileID: 3631385489837344266}
   missionsPanel: {fileID: 2574278240523882435}
   messagesPanel: {fileID: 3631385488993936416}
   analyticsPanel: {fileID: 3631385488186349895}
   crewPanel: {fileID: 3631385489729504507}
+  pilotsUI: {fileID: 1511978678183600859}
   upgradesPanel: {fileID: 3631385488226677111}
 --- !u!222 &3631385489712040974
 CanvasRenderer:
@@ -2994,11 +2995,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crewPanel: {fileID: 3631385489729504507}
+  scrollViewContent: {fileID: 5716831112094062603}
   crewItemPrefab: {fileID: 7977027017722328396, guid: 40dc2651dfd748645b95b118a68e9672,
     type: 3}
-  scrollViewContent: {fileID: 5716831112094062603}
-  pilotButtonPrefab: {fileID: 5230716868348227813, guid: 561c8d19af5009041a7aafd4958ef06d,
+  backButtonPrefab: {fileID: 1151850908495107415, guid: b34a59504cb57a84ca85c040b6c55b12,
     type: 3}
+  pilotProfilePanel: {fileID: 0}
   pilotsContainer: {fileID: 11400000, guid: 54b49376359d8b041921d1638514d681, type: 2}
 --- !u!1 &3631385489750028471
 GameObject:
