@@ -11,6 +11,7 @@ public class Ship : ScriptableObject
     public int maxFuel;
 
     public GameObject shipPrefab;
+    public Sprite shipAvatar; 
     public Pilot pilot;
 
     [Header("Set at Runtime")]

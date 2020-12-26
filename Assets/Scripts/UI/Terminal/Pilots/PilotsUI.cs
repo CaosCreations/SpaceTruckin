@@ -10,7 +10,8 @@ public class PilotsUI : MonoBehaviour
 	private GameObject pilotProfilePanel;
 	private Text pilotNameText;
 	private Text pilotDescriptionText; 
-	private Image pilotAvatar; 
+	private Image pilotAvatar;
+	private Image shipAvatar; 
 
 	private void Awake()
 	{
@@ -24,6 +25,7 @@ public class PilotsUI : MonoBehaviour
 		GeneratePilotNameText();
         GeneratePilotDescription();
 		GeneratePilotAvatar();
+		GenerateShipAvatar();
 		GenerateBackButton(); 
 	}
 
@@ -75,6 +77,7 @@ public class PilotsUI : MonoBehaviour
 		pilotNameText.text = pilot.pilotName;
 		pilotDescriptionText.text = pilot.description;
 		pilotAvatar.sprite = pilot.avatar;
+		shipAvatar.sprite = pilot.ship.shipAvatar;
     }
 
 	private void GeneratePilotNameText()
@@ -105,15 +108,20 @@ public class PilotsUI : MonoBehaviour
 
 	private void GeneratePilotAvatar()
     {
-		GameObject pilotAvatarObject = new GameObject(PilotsConstants.avatarObjectName);
-		pilotAvatarObject.transform.parent = pilotProfilePanel.transform;
-
-		RectTransform rectTransform = pilotAvatarObject.AddComponent<RectTransform>();
-		rectTransform.Reset();
-		rectTransform.SetAnchors((PilotsConstants.avatarAnchorMin, PilotsConstants.avatarAnchorMax));
+		GameObject pilotAvatarObject = new GameObject().ScaffoldUI(
+			PilotsConstants.pilotAvatarObjectName, pilotProfilePanel, (PilotsConstants.avatarAnchorMin, PilotsConstants.avatarAnchorMax));
 
 		pilotAvatar = pilotAvatarObject.AddComponent<Image>();
 	}
+
+	private void GenerateShipAvatar()
+    {
+		GameObject shipAvatarObject = new GameObject().ScaffoldUI(
+			PilotsConstants.shipAvatarObjectName, pilotProfilePanel, (Vector2.zero, new Vector2(0.66f, 1f)));
+
+		shipAvatar = shipAvatarObject.AddComponent<Image>();
+
+    }
 
 	private void GenerateBackButton()
     {

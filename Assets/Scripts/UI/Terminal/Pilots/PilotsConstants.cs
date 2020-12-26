@@ -9,7 +9,8 @@ public class PilotsConstants : MonoBehaviour
     public static string buttonGroupName = "PilotButtonGroup";
     public static string nameTextName = "PilotName";
     public static string descriptionObjectName = "PilotDescription";
-    public static string avatarObjectName = "PilotAvatar";
+    public static string pilotAvatarObjectName = "PilotAvatar";
+    public static string shipAvatarObjectName = "ShipAvatar";
 
     public static string backButtonName = "BackButton";
     public static string backButtonText = "Back"; 
