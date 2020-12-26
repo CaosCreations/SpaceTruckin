@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Text;
+using UnityEngine;
 using UnityEngine.UI; 
 
 public class PilotsUI : MonoBehaviour
@@ -11,8 +12,7 @@ public class PilotsUI : MonoBehaviour
 	public PilotsContainer pilotsContainer;
 
 	private GameObject pilotProfilePanel;
-	private Text pilotNameText;
-	private Text pilotDescriptionText; 
+	private Text pilotDetailsText; 
 	private Image pilotAvatar;
 	private Image shipAvatar; 
 
@@ -24,14 +24,12 @@ public class PilotsUI : MonoBehaviour
 	private void GeneratePilotsUI()
     {
 		GeneratePilotProfilePanel();
+        GenerateShipAvatar();
+        GeneratePilotAvatar();
+		GeneratePilotDetails();
+        GenerateBackButton();
 		PopulateScrollView();
-		//GeneratePilotButtons();
-		//GeneratePilotNameText();
-		//GeneratePilotDescription();
-		//GeneratePilotAvatar();
-		//GenerateShipAvatar();
-		//GenerateBackButton(); 
-	}
+    }
 
 	private void PopulateScrollView()
 	{
@@ -57,73 +55,47 @@ public class PilotsUI : MonoBehaviour
 		pilotProfilePanel.SetActive(false);
 	}
 
-	private void GeneratePilotButtons()
-	{
-		GameObject pilotButtonGroup = new GameObject(PilotsConstants.buttonGroupName);
-		pilotButtonGroup.transform.parent = crewPanel.transform;
-		RectTransform rectTransform = pilotButtonGroup.AddComponent<RectTransform>();
-        rectTransform.localPosition = Vector2.zero;
-        rectTransform.SetAnchors((PilotsConstants.buttonGroupAnchorMin, PilotsConstants.buttonGroupAnchorMax));
-
-        VerticalLayoutGroup verticalLayoutGroup = pilotButtonGroup.AddComponent<VerticalLayoutGroup>();
-		verticalLayoutGroup.childControlWidth = true;
-		verticalLayoutGroup.childControlHeight = true;
-
-		foreach (Pilot pilot in pilotsContainer.pilots)
-		{
-			GameObject pilotButton = Instantiate(pilotButtonPrefab, pilotButtonGroup.transform);
-			pilotButton.name = $"{pilot.pilotName}Button"; 
-			pilotButton.GetComponentInChildren<Text>().text = pilot.pilotName;
-			Button button = pilotButton.GetComponent<Button>();
-			button.onClick.RemoveAllListeners(); 
-			button.onClick.AddListener(delegate { OpenPilotProfilePanel(pilot); });
-
-			// These will be set by the hire pilots logic later on
-			pilot.hired = true; 
-			pilot.onMission = false; 
-		}
-	}
-
 	private void OpenPilotProfilePanel(Pilot pilot)
 	{
 		crewPanel.SetActive(false);
         pilotProfilePanel.SetActive(true);
-		pilotNameText.text = pilot.pilotName;
-		pilotDescriptionText.text = pilot.description;
-		pilotAvatar.sprite = pilot.avatar;
 		shipAvatar.sprite = pilot.ship.shipAvatar;
+		pilotAvatar.sprite = pilot.avatar;
+		pilotDetailsText.text = BuildDetailsString(pilot);
     }
 
-	private void GeneratePilotNameText()
+	private void GeneratePilotDetails()
     {
-		GameObject pilotNameObject = new GameObject(PilotsConstants.nameTextName);
-		pilotNameObject.transform.parent = pilotProfilePanel.transform;
+		GameObject pilotDetails = new GameObject().ScaffoldUI(
+			PilotsConstants.detailsObjectName, pilotProfilePanel, (PilotsConstants.pilotDetailsAnchorMin, PilotsConstants.pilotDetailsAnchorMax));
 
-		RectTransform rectTransform = pilotNameObject.AddComponent<RectTransform>();
-		rectTransform.Reset();
-		rectTransform.SetAnchors((PilotsConstants.nameTextAnchorMin, PilotsConstants.nameTextAnchorMax));
-
-		pilotNameText = pilotNameObject.AddComponent<Text>();
-		pilotNameText.SetDefaultFont();
+		pilotDetailsText = pilotDetails.AddComponent<Text>();
+		pilotDetailsText.SetDefaultFont();
+		pilotDetailsText.color = Color.black;
 	}
 
-	private void GeneratePilotDescription()
-    {
-		GameObject pilotDescriptionObject = new GameObject(PilotsConstants.descriptionObjectName);
-		pilotDescriptionObject.transform.parent = pilotProfilePanel.transform;
+	private string BuildDetailsString(Pilot pilot)
+	{
+		StringBuilder builder = new StringBuilder();
+		builder.AppendLine("Name: " + pilot.name);
+		builder.AppendLine("Ship: " + pilot.ship.shipName);
+		builder.AppendLine("Level: " + pilot.level);
+		builder.AppendLine("Experience: " + pilot.xp);
 
-		RectTransform rectTransform = pilotDescriptionObject.AddComponent<RectTransform>();
-		rectTransform.Reset();
-		rectTransform.SetAnchors((PilotsConstants.descriptionAnchorMin, PilotsConstants.descriptionAnchorMax));
+		if (string.IsNullOrEmpty(pilot.description))
+		{
+			pilot.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tortor dui, elementum eu convallis non, cursus ac dolor. Quisque dictum est quam, et pellentesque velit rutrum eget. Nullam interdum ultricies velit pharetra aliquet. Integer sodales a magna quis ornare. Ut vulputate nibh ipsum. Vivamus tincidunt nec nisi in fermentum. Mauris consequat mi vel odio consequat, eget gravida urna lobortis. Pellentesque eu ipsum consectetur, pharetra nulla in, consectetur turpis. Curabitur ornare eu nisi tempus varius. Phasellus vel ex mauris. Fusce fermentum mi id elementum gravida.";
+		}
 
-		pilotDescriptionText = pilotDescriptionObject.AddComponent<Text>();
-		pilotDescriptionText.SetDefaultFont();
+		builder.AppendLine("Description: " + pilot.description);
+		builder.AppendLine("Missions completed: " + pilot.missionsCompleted);
+		return builder.ToString();
 	}
 
 	private void GeneratePilotAvatar()
     {
 		GameObject pilotAvatarObject = new GameObject().ScaffoldUI(
-			PilotsConstants.pilotAvatarObjectName, pilotProfilePanel, (PilotsConstants.avatarAnchorMin, PilotsConstants.avatarAnchorMax));
+			PilotsConstants.pilotAvatarObjectName, pilotProfilePanel, (PilotsConstants.pilotAvatarAnchorMin, PilotsConstants.pilotAvatarAnchorMax));
 
 		pilotAvatar = pilotAvatarObject.AddComponent<Image>();
 	}
@@ -131,7 +103,7 @@ public class PilotsUI : MonoBehaviour
 	private void GenerateShipAvatar()
     {
 		GameObject shipAvatarObject = new GameObject().ScaffoldUI(
-			PilotsConstants.shipAvatarObjectName, pilotProfilePanel, (Vector2.zero, new Vector2(0.66f, 1f)));
+			PilotsConstants.shipAvatarObjectName, pilotProfilePanel, (PilotsConstants.shipAvatarAnchorMin, PilotsConstants.shipAvatarAnchorMax));
 
 		shipAvatar = shipAvatarObject.AddComponent<Image>();
 

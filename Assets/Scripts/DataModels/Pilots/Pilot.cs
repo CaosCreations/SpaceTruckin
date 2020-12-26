@@ -13,6 +13,7 @@ public class Pilot : ScriptableObject
     [Header("Leave this blank. It is set automatically.")]
     public int id; 
 
+    [Header("")]
     public int xp, level, missionsCompleted;
     public string pilotName, shipName, description;
     public bool hired, onMission, isAssignedToShip; 
