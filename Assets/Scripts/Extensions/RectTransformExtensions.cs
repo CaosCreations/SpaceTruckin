@@ -1,5 +1,10 @@
 ﻿using UnityEngine;
 
+public enum Side
+{
+    Top = 0, Right = 1, Bottom = 2, Left = 3
+}
+
 public static class RectTransformExtensions
 {
     public static void SetAnchors(this RectTransform self, System.ValueTuple<Vector2, Vector2> anchors)
@@ -22,5 +27,24 @@ public static class RectTransformExtensions
 
         // Set Scale to 1 
         self.localScale = Vector2.one;
+    }
+
+    public static void SetPadding(this RectTransform self, Side side, float value)
+    {
+        switch (side)
+        {
+            case Side.Top:
+                self.offsetMax = new Vector2(self.offsetMax.x, -value);
+                break;
+            case Side.Right:
+                self.offsetMax = new Vector2(-value, self.offsetMax.y);
+                break;
+            case Side.Bottom:
+                self.offsetMin = new Vector2(self.offsetMax.x, value);
+                break;
+            case Side.Left:
+                self.offsetMin = new Vector2(value, self.offsetMin.y);
+                break;
+        }
     }
 }

@@ -69,6 +69,7 @@ public class PilotsUI : MonoBehaviour
 		GameObject pilotDetails = new GameObject().ScaffoldUI(
 			PilotsConstants.detailsObjectName, pilotProfilePanel, (PilotsConstants.pilotDetailsAnchorMin, PilotsConstants.pilotDetailsAnchorMax));
 
+		pilotDetails.GetComponent<RectTransform>().SetPadding(Side.Top, PilotsConstants.topPadding);
 		pilotDetailsText = pilotDetails.AddComponent<Text>();
 		pilotDetailsText.SetDefaultFont();
 		pilotDetailsText.color = Color.black;

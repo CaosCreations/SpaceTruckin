@@ -14,19 +14,20 @@ public class PilotsConstants : MonoBehaviour
 
 
     // UI dimensions 
-    public static float borderWidth = 0.05f; 
+    public static float border = 0.05f;
+    public static float topPadding = 32f;
 
-    public static Vector2 pilotAvatarAnchorMin = new Vector2((1 - borderWidth * 2) / 1.5f, (1 - borderWidth * 2) / 1.5f);
-    public static Vector2 pilotAvatarAnchorMax = new Vector2(1 - borderWidth, 1 - borderWidth);
+    public static Vector2 pilotAvatarAnchorMin = new Vector2((1 - border * 2) / 1.5f, (1 - border * 2) / 1.5f);
+    public static Vector2 pilotAvatarAnchorMax = new Vector2(1 - border, 1 - border);
 
-    public static Vector2 pilotDetailsAnchorMin = new Vector2((1 - borderWidth * 2) / 1.5f, borderWidth);
-    public static Vector2 pilotDetailsAnchorMax = new Vector2(1 - borderWidth, (1 - borderWidth * 2) / 1.5f);
+    public static Vector2 pilotDetailsAnchorMin = new Vector2((1 - border * 2) / 1.5f, border);
+    public static Vector2 pilotDetailsAnchorMax = new Vector2(1 - border, (1 - border * 2) / 1.5f);
 
-    public static Vector2 shipAvatarAnchorMin = new Vector2(borderWidth, borderWidth);
-    public static Vector2 shipAvatarAnchorMax = new Vector2((1 - borderWidth * 2) / 1.5f, 1 - borderWidth);
+    public static Vector2 shipAvatarAnchorMin = new Vector2(border, border);
+    public static Vector2 shipAvatarAnchorMax = new Vector2((1 - border * 2) / 1.5f, 1 - border);
 
-    public static Vector2 backButtonAnchorMin = new Vector2((1 - borderWidth * 2) / 2 - 0.2f, borderWidth);
-    public static Vector2 backButtonAnchorMax = new Vector2((1 - borderWidth * 2) / 2 + 0.2f, borderWidth + 0.2f);
+    public static Vector2 backButtonAnchorMin = new Vector2((1 - border * 2) / 2 - 0.2f, border);
+    public static Vector2 backButtonAnchorMax = new Vector2((1 - border * 2) / 2 + 0.2f, border + 0.2f);
 
 
     // Paths to text files containing pilot names 
