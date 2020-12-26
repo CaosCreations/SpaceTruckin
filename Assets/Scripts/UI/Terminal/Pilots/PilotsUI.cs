@@ -11,14 +11,19 @@ public class PilotsUI : MonoBehaviour
 	public GameObject pilotButtonPrefab;
 	public PilotsContainer pilotsContainer;
 
-	private GameObject pilotProfilePanel;
+	public GameObject pilotProfilePanel;
 	private Text pilotDetailsText; 
 	private Image pilotAvatar;
 	private Image shipAvatar; 
 
+
 	private void Awake()
 	{
-		GeneratePilotsUI(); 
+		GeneratePilotsUI();
+
+		// Close the pilot profile panel if the player navigates away from it
+		// without clicking the back button 
+		TerminalUIManager.onTabButtonClicked += ClosePilotProfilePanel;
     }
 
 	private void GeneratePilotsUI()
@@ -67,7 +72,7 @@ public class PilotsUI : MonoBehaviour
 	private void GeneratePilotDetails()
     {
 		GameObject pilotDetails = new GameObject().ScaffoldUI(
-			PilotsConstants.detailsObjectName, pilotProfilePanel, (PilotsConstants.pilotDetailsAnchorMin, PilotsConstants.pilotDetailsAnchorMax));
+			PilotsConstants.detailsObjectName, pilotProfilePanel, PilotsConstants.pilotDetailsAnchors);
 
 		pilotDetails.GetComponent<RectTransform>().SetPadding(Side.Top, PilotsConstants.topPadding);
 		pilotDetailsText = pilotDetails.AddComponent<Text>();
@@ -96,7 +101,7 @@ public class PilotsUI : MonoBehaviour
 	private void GeneratePilotAvatar()
     {
 		GameObject pilotAvatarObject = new GameObject().ScaffoldUI(
-			PilotsConstants.pilotAvatarObjectName, pilotProfilePanel, (PilotsConstants.pilotAvatarAnchorMin, PilotsConstants.pilotAvatarAnchorMax));
+			PilotsConstants.pilotAvatarObjectName, pilotProfilePanel, PilotsConstants.pilotAvatarAnchors);
 
 		pilotAvatar = pilotAvatarObject.AddComponent<Image>();
 	}
@@ -104,7 +109,7 @@ public class PilotsUI : MonoBehaviour
 	private void GenerateShipAvatar()
     {
 		GameObject shipAvatarObject = new GameObject().ScaffoldUI(
-			PilotsConstants.shipAvatarObjectName, pilotProfilePanel, (PilotsConstants.shipAvatarAnchorMin, PilotsConstants.shipAvatarAnchorMax));
+			PilotsConstants.shipAvatarObjectName, pilotProfilePanel, PilotsConstants.shipAvatarAnchors);
 
 		shipAvatar = shipAvatarObject.AddComponent<Image>();
 
@@ -122,7 +127,7 @@ public class PilotsUI : MonoBehaviour
 
 		RectTransform rectTransform = backButton.GetComponent<RectTransform>();
 		rectTransform.Reset();
-		rectTransform.SetAnchors((PilotsConstants.backButtonAnchorMin, PilotsConstants.backButtonAnchorMax));
+		rectTransform.SetAnchors(PilotsConstants.backButtonAnchors);
 
 		Button button = backButton.GetComponent<Button>();
 		button.onClick.RemoveAllListeners();

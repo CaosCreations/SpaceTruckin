@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,17 +18,10 @@ public class PilotsConstants : MonoBehaviour
     public static float border = 0.05f;
     public static float topPadding = 32f;
 
-    public static Vector2 pilotAvatarAnchorMin = new Vector2((1 - border * 2) / 1.5f, (1 - border * 2) / 1.5f);
-    public static Vector2 pilotAvatarAnchorMax = new Vector2(1 - border, 1 - border);
-
-    public static Vector2 pilotDetailsAnchorMin = new Vector2((1 - border * 2) / 1.5f, border);
-    public static Vector2 pilotDetailsAnchorMax = new Vector2(1 - border, (1 - border * 2) / 1.5f);
-
-    public static Vector2 shipAvatarAnchorMin = new Vector2(border, border);
-    public static Vector2 shipAvatarAnchorMax = new Vector2((1 - border * 2) / 1.5f, 1 - border);
-
-    public static Vector2 backButtonAnchorMin = new Vector2((1 - border * 2) / 2 - 0.2f, border);
-    public static Vector2 backButtonAnchorMax = new Vector2((1 - border * 2) / 2 + 0.2f, border + 0.2f);
+    public static ValueTuple<Vector2, Vector2> pilotAvatarAnchors = (new Vector2((1 - border * 2) / 1.5f, (1 - border * 2) / 1.5f), new Vector2(1 - border, 1 - border));
+    public static ValueTuple<Vector2, Vector2> pilotDetailsAnchors = (new Vector2((1 - border * 2) / 1.5f, border), new Vector2(1 - border, (1 - border * 2) / 1.5f));
+    public static ValueTuple<Vector2, Vector2> shipAvatarAnchors = (new Vector2(border, border), new Vector2((1 - border * 2) / 1.5f, 1 - border));
+    public static ValueTuple<Vector2, Vector2> backButtonAnchors = (new Vector2((1 - border * 2) / 2 - 0.2f, border), new Vector2((1 - border* 2) / 2 + 0.2f, border + 0.2f));
 
 
     // Paths to text files containing pilot names 
