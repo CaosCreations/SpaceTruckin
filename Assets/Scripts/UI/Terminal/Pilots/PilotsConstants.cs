@@ -6,31 +6,27 @@ public class PilotsConstants : MonoBehaviour
 {
     // GameObject names 
     public static string profilePanelName = "PilotProfilePanel";
-    public static string buttonGroupName = "PilotButtonGroup";
-    public static string nameTextName = "PilotName";
-    public static string descriptionObjectName = "PilotDescription";
+    public static string detailsObjectName = "PilotDetails";
     public static string pilotAvatarObjectName = "PilotAvatar";
     public static string shipAvatarObjectName = "ShipAvatar";
-
     public static string backButtonName = "BackButton";
     public static string backButtonText = "Back"; 
 
 
     // UI dimensions 
-    public static Vector2 buttonGroupAnchorMin = new Vector2(0.25f, 0.5f); 
-    public static Vector2 buttonGroupAnchorMax = new Vector2(0.5f, 0.5f);
+    public static float borderWidth = 0.05f; 
 
-    public static Vector2 nameTextAnchorMin = new Vector2(0f, 0.75f);
-    public static Vector2 nameTextAnchorMax = new Vector2(0.5f, 1f);
+    public static Vector2 pilotAvatarAnchorMin = new Vector2((1 - borderWidth * 2) / 1.5f, (1 - borderWidth * 2) / 1.5f);
+    public static Vector2 pilotAvatarAnchorMax = new Vector2(1 - borderWidth, 1 - borderWidth);
 
-    public static Vector2 descriptionAnchorMin = new Vector2(0f, 0.5f);
-    public static Vector2 descriptionAnchorMax = new Vector2(0.5f, 0.75f);
+    public static Vector2 pilotDetailsAnchorMin = new Vector2((1 - borderWidth * 2) / 1.5f, borderWidth);
+    public static Vector2 pilotDetailsAnchorMax = new Vector2(1 - borderWidth, (1 - borderWidth * 2) / 1.5f);
 
-    public static Vector2 avatarAnchorMin = Vector2.one / 2f; 
-    public static Vector2 avatarAnchorMax = Vector2.one; 
+    public static Vector2 shipAvatarAnchorMin = new Vector2(borderWidth, borderWidth);
+    public static Vector2 shipAvatarAnchorMax = new Vector2((1 - borderWidth * 2) / 1.5f, 1 - borderWidth);
 
-    public static Vector2 backButtonAnchorMin = new Vector2(0.25f, 0f);
-    public static Vector2 backButtonAnchorMax = new Vector2(0.75f, 0.25f);
+    public static Vector2 backButtonAnchorMin = new Vector2((1 - borderWidth * 2) / 2 - 0.2f, borderWidth);
+    public static Vector2 backButtonAnchorMax = new Vector2((1 - borderWidth * 2) / 2 + 0.2f, borderWidth + 0.2f);
 
 
     // Paths to text files containing pilot names 
