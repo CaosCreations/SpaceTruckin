@@ -10,15 +10,21 @@ public class AIDestination : MonoBehaviour
     // The bounding area within which the destination can be set.  
     private List<Vector3> boundaryVertices; 
 
-    private void Start()
+    private void Awake()
     {
         Vector3[] vertices = boundingPlane.GetComponent<MeshFilter>().sharedMesh.vertices;
+        Bounds filterBounds = boundingPlane.GetComponent<MeshFilter>().mesh.bounds;
+        Bounds rendBounds = boundingPlane.GetComponent<Renderer>().bounds;
+        //Vector3[] vertices = boundingPlane.GetComponent<MeshCollider>().sharedMesh.vertices;
         boundaryVertices = GetBoundaryVertices(vertices);
+
+        Debug.Log("Size: " + rendBounds.size);
     }
 
     private List<Vector3> GetBoundaryVertices(Vector3[] vertices)
     {
         List<Vector3> boundaryVertices = new List<Vector3>();
+        Vector3 extents = boundingPlane.GetComponent<MeshFilter>().mesh.bounds.extents;
 
         // Unity planes have an 11x11 grid of points.
         // We need to get the world position via TransformPoint.
@@ -29,28 +35,44 @@ public class AIDestination : MonoBehaviour
         boundaryVertices.Add(transform.TransformPoint(vertices[110]));
         boundaryVertices.Add(transform.TransformPoint(vertices[120]));
 
+        //boundaryVertices.Add(transform.TransformPoint(vertices[0]) - extents);
+        //boundaryVertices.Add(transform.TransformPoint(vertices[10]) - extents);
+        //boundaryVertices.Add(transform.TransformPoint(vertices[110]) - extents);
+        //boundaryVertices.Add(transform.TransformPoint(vertices[120]) - extents);
+
+        boundaryVertices[0] += new Vector3(extents.x, 0f, 0f);
+        boundaryVertices[1] += new Vector3(extents.x, 0f, 0f);
+        boundaryVertices[2] += new Vector3(extents.x, 0f, 0f);
+        boundaryVertices[3] += new Vector3(extents.x, 0f, 0f);
+
+        //boundaryVertices.Add(vertices[0]);
+        //boundaryVertices.Add(vertices[10]);
+        //boundaryVertices.Add(vertices[110]);
+        //boundaryVertices.Add(vertices[120]);
+
         Debug.Log("Local scale: " + boundingPlane.transform.localScale);
 
         // If the plane has been scaled up or down, the vertices will need to 
         // be adjusted accordingly, as they are based on the default plane mesh 
-        if (boundingPlane.transform.localScale != Vector3.one)
-        {
-            if (boundaryVertices.Count > 0)
-            {
-                for (int i = 0; i < boundaryVertices.Count; i++)
-                {
-                    boundaryVertices[i] = new Vector3(
-                        boundaryVertices[i].x * boundingPlane.transform.localScale.x,
-                        boundaryVertices[i].y * boundingPlane.transform.localScale.y,
-                        boundaryVertices[i].z * boundingPlane.transform.localScale.z);
-                }
-            }
-        }
+        //if (boundingPlane.transform.localScale != Vector3.one)
+        //{
+        //    if (boundaryVertices.Count > 0)
+        //    {
+        //        for (int i = 0; i < boundaryVertices.Count; i++)
+        //        {
+        //            boundaryVertices[i] = new Vector3(
+        //                boundaryVertices[i].x * Math.Abs(boundingPlane.transform.localScale.x),
+        //                boundaryVertices[i].y * Math.Abs(boundingPlane.transform.localScale.y),
+        //                boundaryVertices[i].z * Math.Abs(boundingPlane.transform.localScale.z));
+        //        }
+        //    }
+        //}
 
         foreach (Vector3 v in boundaryVertices)
         {
             Debug.Log("Vert: " + v);
         }
+        Debug.Log("BP pos: " + boundingPlane.transform.position);
         
         return boundaryVertices;
     }
@@ -79,7 +101,7 @@ public class AIDestination : MonoBehaviour
     private void DrawVertices()
     {
         Gizmos.color = Color.red;
-        if (boundaryVertices.Count > 0)
+        if (boundaryVertices != null && boundaryVertices.Count > 0)
         {
             for (int i = 0; i < boundaryVertices.Count; i++)
             {
