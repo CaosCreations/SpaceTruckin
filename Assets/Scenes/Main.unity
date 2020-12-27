@@ -1755,7 +1755,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.25, y: 1, z: 0.25}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &919372271
 MeshRenderer:
@@ -1814,7 +1814,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919372269}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.892, y: 0.515, z: -5.437}
+  m_LocalPosition: {x: -3.98, y: 0.515, z: -5.53}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1478012239}
@@ -2248,8 +2248,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1243585814}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -4.84}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -1.68, y: 0, z: -7.53}
+  m_LocalScale: {x: 0.73764, y: 1, z: 0.5311951}
   m_Children: []
   m_Father: {fileID: 1987757343}
   m_RootOrder: 3
@@ -2611,6 +2611,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3884917099127812465, guid: 57dbde44ce5c4374ea3392735f69f6fc,
         type: 3}
+      propertyPath: destination
+      value: 
+      objectReference: {fileID: 919372269}
+    - target: {fileID: 3884917099127812465, guid: 57dbde44ce5c4374ea3392735f69f6fc,
+        type: 3}
       propertyPath: npcDestination
       value: 
       objectReference: {fileID: 919372269}
@@ -2627,7 +2632,7 @@ PrefabInstance:
     - target: {fileID: 6694815930813038419, guid: 57dbde44ce5c4374ea3392735f69f6fc,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.8
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 6694815930813038419, guid: 57dbde44ce5c4374ea3392735f69f6fc,
         type: 3}

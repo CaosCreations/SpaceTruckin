@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6694815930813038419}
   - component: {fileID: 3884917099127812465}
   - component: {fileID: 4375679438569091118}
-  - component: {fileID: 6694815930813038430}
   - component: {fileID: 5154841543579387346}
   - component: {fileID: 1165880214609095092}
   - component: {fileID: 6110822453201859718}
@@ -60,8 +59,8 @@ NavMeshAgent:
   m_GameObject: {fileID: 6694815930813038431}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.4
-  m_Speed: 3.5
+  m_Radius: 0.2
+  m_Speed: 2
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -73,23 +72,6 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &6694815930813038430
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6694815930813038431}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32efae1bbf32a9c4b9f9313206942c04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  killFloorHeight: -25
-  playerResetPosition: {x: 8.5, y: 0.8, z: -10}
-  animator: {fileID: 1165880214609095092}
-  maximumSpeed: 8
-  acceleration: 0.5
 --- !u!143 &5154841543579387346
 CharacterController:
   m_ObjectHideFlags: 0
@@ -190,7 +172,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 0.5}
+  m_Size: {x: 0.35, y: 1, z: 0.35}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &1382740644827857432
 Rigidbody:
@@ -206,5 +188,5 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0

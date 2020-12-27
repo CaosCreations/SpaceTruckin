@@ -8,71 +8,36 @@ public class AIDestination : MonoBehaviour
     public GameObject boundingPlane;
 
     // The bounding area within which the destination can be set.  
-    private List<Vector3> boundaryVertices; 
+    private List<Vector3> boundaryVertices;
 
     private void Awake()
     {
         Vector3[] vertices = boundingPlane.GetComponent<MeshFilter>().sharedMesh.vertices;
-        Bounds filterBounds = boundingPlane.GetComponent<MeshFilter>().mesh.bounds;
-        Bounds rendBounds = boundingPlane.GetComponent<Renderer>().bounds;
-        //Vector3[] vertices = boundingPlane.GetComponent<MeshCollider>().sharedMesh.vertices;
         boundaryVertices = GetBoundaryVertices(vertices);
-
-        Debug.Log("Size: " + rendBounds.size);
     }
 
+    /// <summary>
+    ///     Unity planes have an 11x11 grid of points.
+    ///     We need to get the world position via TransformPoint.
+    ///     The first two indices are the near corners, and the 
+    ///     last two are the far corners (depending on perspective).
+    /// </summary>
+    /// <param name="vertices"></param>
+    /// <returns>The four corners of the bounding plane</returns>
     private List<Vector3> GetBoundaryVertices(Vector3[] vertices)
     {
         List<Vector3> boundaryVertices = new List<Vector3>();
         Vector3 extents = boundingPlane.GetComponent<MeshFilter>().mesh.bounds.extents;
 
-        // Unity planes have an 11x11 grid of points.
-        // We need to get the world position via TransformPoint.
-        // The first two indices are the near corners, and the 
-        // last two are the far corners (depending on perspective). 
-        boundaryVertices.Add(transform.TransformPoint(vertices[0]));
-        boundaryVertices.Add(transform.TransformPoint(vertices[10]));
-        boundaryVertices.Add(transform.TransformPoint(vertices[110]));
-        boundaryVertices.Add(transform.TransformPoint(vertices[120]));
-
-        //boundaryVertices.Add(transform.TransformPoint(vertices[0]) - extents);
-        //boundaryVertices.Add(transform.TransformPoint(vertices[10]) - extents);
-        //boundaryVertices.Add(transform.TransformPoint(vertices[110]) - extents);
-        //boundaryVertices.Add(transform.TransformPoint(vertices[120]) - extents);
-
-        boundaryVertices[0] += new Vector3(extents.x, 0f, 0f);
-        boundaryVertices[1] += new Vector3(extents.x, 0f, 0f);
-        boundaryVertices[2] += new Vector3(extents.x, 0f, 0f);
-        boundaryVertices[3] += new Vector3(extents.x, 0f, 0f);
-
-        //boundaryVertices.Add(vertices[0]);
-        //boundaryVertices.Add(vertices[10]);
-        //boundaryVertices.Add(vertices[110]);
-        //boundaryVertices.Add(vertices[120]);
-
-        Debug.Log("Local scale: " + boundingPlane.transform.localScale);
-
-        // If the plane has been scaled up or down, the vertices will need to 
-        // be adjusted accordingly, as they are based on the default plane mesh 
-        //if (boundingPlane.transform.localScale != Vector3.one)
-        //{
-        //    if (boundaryVertices.Count > 0)
-        //    {
-        //        for (int i = 0; i < boundaryVertices.Count; i++)
-        //        {
-        //            boundaryVertices[i] = new Vector3(
-        //                boundaryVertices[i].x * Math.Abs(boundingPlane.transform.localScale.x),
-        //                boundaryVertices[i].y * Math.Abs(boundingPlane.transform.localScale.y),
-        //                boundaryVertices[i].z * Math.Abs(boundingPlane.transform.localScale.z));
-        //        }
-        //    }
-        //}
+        boundaryVertices.Add(boundingPlane.transform.TransformPoint(vertices[0]));
+        boundaryVertices.Add(boundingPlane.transform.TransformPoint(vertices[10]));
+        boundaryVertices.Add(boundingPlane.transform.TransformPoint(vertices[110]));
+        boundaryVertices.Add(boundingPlane.transform.TransformPoint(vertices[120]));
 
         foreach (Vector3 v in boundaryVertices)
         {
             Debug.Log("Vert: " + v);
         }
-        Debug.Log("BP pos: " + boundingPlane.transform.position);
         
         return boundaryVertices;
     }
@@ -84,7 +49,7 @@ public class AIDestination : MonoBehaviour
             UnityEngine.Random.Range(boundaryVertices[0].x, boundaryVertices[1].x),
             UnityEngine.Random.Range(boundaryVertices[0].z, boundaryVertices[2].z));
 
-        Debug.Log("1: " + xzPos.Item1 + "\n2: " + xzPos.Item2);
+        Debug.Log("New x: " + xzPos.Item1 + "\nNew z: " + xzPos.Item2);
 
         return xzPos;
     }
@@ -95,10 +60,16 @@ public class AIDestination : MonoBehaviour
         {
             Tuple<float, float> xzPos = GetNextDestination();
             transform.position = new Vector3(xzPos.Item1, transform.position.y, xzPos.Item2);
+
+            NPCAgent agent = other.GetComponent<NPCAgent>();
+            if (agent != null)
+            {
+                agent.isWaiting = true; 
+            }
         }
     }
 
-    private void DrawVertices()
+    private void DrawBoundaryVertices()
     {
         Gizmos.color = Color.red;
         if (boundaryVertices != null && boundaryVertices.Count > 0)
@@ -113,6 +84,6 @@ public class AIDestination : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        DrawVertices();
+        DrawBoundaryVertices();
     }
 }
