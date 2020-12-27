@@ -82,8 +82,18 @@ public class MissionsUI : MonoBehaviour
                 GameObject scrollItem = Instantiate(missionItemPrefab, slot.slotTransform);
                 MissionUIItem missionItem = scrollItem.GetComponent<MissionUIItem>();
                 missionItem.Init(missionForSlot, scrollViewContent.transform);
+                
+                if (missionItem.mission.IsInProgress())
+                {
+                    ShowMissionProgress(missionItem);
+                }
             }
         }
+    }
+
+    private void ShowMissionProgress(MissionUIItem missionItem)
+    {
+        missionItem.missionNameText.text = missionItem.mission.missionName + $"\n({missionItem.mission.daysLeftToComplete} days remaining)";
     }
 
     public MissionScheduleSlot GetSlotForMissionDrag(Vector2 position)
