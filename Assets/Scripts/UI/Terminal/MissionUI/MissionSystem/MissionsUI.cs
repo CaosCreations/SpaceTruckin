@@ -93,7 +93,8 @@ public class MissionsUI : MonoBehaviour
 
     private void ShowMissionProgress(MissionUIItem missionItem)
     {
-        missionItem.missionNameText.text = missionItem.mission.missionName + $"\n({missionItem.mission.daysLeftToComplete} days remaining)";
+        string unit = missionItem.mission.daysLeftToComplete > 1 ? "days" : "day";
+        missionItem.missionNameText.text = missionItem.mission.missionName + $"\n({missionItem.mission.daysLeftToComplete} {unit} remaining)";
     }
 
     public MissionScheduleSlot GetSlotForMissionDrag(Vector2 position)
