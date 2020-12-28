@@ -7,13 +7,14 @@ public class AIDestination : MonoBehaviour
     // The object that determines the vertices of the roaming boundary.
     public GameObject boundingPlane;
 
-    // The bounding area within which the destination can be set.  
+    // The corners of the bounding area within which the destination can be set.  
     private List<Vector3> boundaryVertices;
 
     private void Awake()
     {
         Vector3[] vertices = boundingPlane.GetComponent<MeshFilter>().sharedMesh.vertices;
         boundaryVertices = GetBoundaryVertices(vertices);
+        MoveDestination();
     }
 
     /// <summary>
@@ -58,8 +59,7 @@ public class AIDestination : MonoBehaviour
     {
         if (other.CompareTag("NPC"))
         {
-            Tuple<float, float> xzPos = GetNextDestination();
-            transform.position = new Vector3(xzPos.Item1, transform.position.y, xzPos.Item2);
+            MoveDestination();
 
             NPCAgent agent = other.GetComponent<NPCAgent>();
             if (agent != null)
@@ -67,6 +67,12 @@ public class AIDestination : MonoBehaviour
                 agent.isWaiting = true; 
             }
         }
+    }
+
+    private void MoveDestination()
+    {
+        Tuple<float, float> xzPos = GetNextDestination();
+        transform.position = new Vector3(xzPos.Item1, transform.position.y, xzPos.Item2);
     }
 
     private void DrawBoundaryVertices()

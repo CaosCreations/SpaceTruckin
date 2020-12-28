@@ -7,8 +7,8 @@ public class NPCAgent: MonoBehaviour
     private NavMeshAgent agent;
     
     public bool isWaiting;
-    private int waitTimeLowerBound = 120;
-    private int waitTimeUpperBound = 360; 
+    [SerializeField] private int waitTimeLowerBound = 240;
+    [SerializeField] private int waitTimeUpperBound = 720; 
     private int timer;
 
     private void Start()
