@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class AIDestination : MonoBehaviour
 {
+    // The NPC that will move towards the attached game object.
+    // There is a one-to-one relationship between NPCs and destinations.
+    public NPCAgent npcAgent; 
+
     // The object that determines the vertices of the roaming boundary.
     public GameObject boundingPlane;
 
@@ -23,8 +27,8 @@ public class AIDestination : MonoBehaviour
     ///     The first two indices are the near corners, and the 
     ///     last two are the far corners (depending on perspective).
     /// </summary>
-    /// <param name="vertices"></param>
-    /// <returns>The four corners of the bounding plane</returns>
+    /// <param name="vertices"> The raw vertices of the plane's mesh. </param>
+    /// <returns> The four corners of the bounding plane. </returns>
     private List<Vector3> GetBoundaryVertices(Vector3[] vertices)
     {
         List<Vector3> boundaryVertices = new List<Vector3>();
@@ -45,7 +49,7 @@ public class AIDestination : MonoBehaviour
 
     private Tuple<float, float> GetNextDestination()
     {
-        // The x and z values of the next destination's position 
+        // The x and z values of the next destination's position.
         Tuple<float, float> xzPos = new Tuple<float, float>(
             UnityEngine.Random.Range(boundaryVertices[0].x, boundaryVertices[1].x),
             UnityEngine.Random.Range(boundaryVertices[0].z, boundaryVertices[2].z));
@@ -57,15 +61,11 @@ public class AIDestination : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("NPC"))
+        // We don't compare tag in case the wrong NPC collides with us.
+        if (other.gameObject == npcAgent.gameObject)
         {
             MoveDestination();
-
-            NPCAgent agent = other.GetComponent<NPCAgent>();
-            if (agent != null)
-            {
-                agent.isWaiting = true; 
-            }
+            npcAgent.isWaiting = true;
         }
     }
 
