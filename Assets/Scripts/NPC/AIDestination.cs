@@ -14,17 +14,21 @@ public class AIDestination : MonoBehaviour
     // The corners of the bounding area within which the destination can be set.  
     private List<Vector3> boundaryVertices;
 
+    private BoxCollider boxCollider;
+
     private void Awake()
     {
         Vector3[] vertices = boundingPlane.GetComponent<MeshFilter>().sharedMesh.vertices;
         boundaryVertices = GetBoundaryVertices(vertices);
+        boxCollider = GetComponent<BoxCollider>();
+
         MoveDestination();
     }
 
     /// <summary>
     ///     Unity planes have an 11x11 grid of points.
     ///     We need to get the world position via TransformPoint.
-    ///     The first two indices are the near corners, and the 
+    ///     The first two elements are the near corners, and the 
     ///     last two are the far corners (depending on perspective).
     /// </summary>
     /// <param name="vertices"> The raw vertices of the plane's mesh. </param>
@@ -32,8 +36,6 @@ public class AIDestination : MonoBehaviour
     private List<Vector3> GetBoundaryVertices(Vector3[] vertices)
     {
         List<Vector3> boundaryVertices = new List<Vector3>();
-        Vector3 extents = boundingPlane.GetComponent<MeshFilter>().mesh.bounds.extents;
-
         boundaryVertices.Add(boundingPlane.transform.TransformPoint(vertices[0]));
         boundaryVertices.Add(boundingPlane.transform.TransformPoint(vertices[10]));
         boundaryVertices.Add(boundingPlane.transform.TransformPoint(vertices[110]));
@@ -65,7 +67,7 @@ public class AIDestination : MonoBehaviour
         if (other.gameObject == npcAgent.gameObject)
         {
             MoveDestination();
-            npcAgent.isWaiting = true;
+            npcAgent.Wait();
         }
     }
 
@@ -88,8 +90,15 @@ public class AIDestination : MonoBehaviour
         }
     }
 
+    private void DrawDestination()
+    {
+        Gizmos.color = npcAgent.gizmoColour;
+        Gizmos.DrawWireCube(boxCollider.bounds.center, boxCollider.bounds.size);
+    }
+
     private void OnDrawGizmos()
     {
         DrawBoundaryVertices();
+        DrawDestination();
     }
 }

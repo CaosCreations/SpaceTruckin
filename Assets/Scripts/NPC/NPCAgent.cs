@@ -7,15 +7,27 @@ public class NPCAgent: MonoBehaviour
     private NavMeshAgent agent;
     
     public bool isWaiting;
-    [SerializeField] private int waitTimeLowerBound = 240;
-    [SerializeField] private int waitTimeUpperBound = 720; 
+    public int waitTimeLowerBound = 240;
+    public int waitTimeUpperBound = 720; 
     private int timer;
+    
+    public Color gizmoColour; 
 
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         agent.SetDestination(destination.transform.position);
         timer = GetTimeToWait();
+    }
+
+    private int GetTimeToWait()
+    {
+        return Random.Range(waitTimeLowerBound, waitTimeUpperBound);
+    }
+
+    public void Wait()
+    {
+        isWaiting = true;
     }
 
     private void Update()
@@ -32,8 +44,7 @@ public class NPCAgent: MonoBehaviour
         }
     }
 
-    private int GetTimeToWait()
-    {
-        return Random.Range(waitTimeLowerBound, waitTimeUpperBound);
-    }
+
+
+
 }
