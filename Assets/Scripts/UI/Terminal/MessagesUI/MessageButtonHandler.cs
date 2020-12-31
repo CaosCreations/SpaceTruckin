@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class MessageButtonHandler : MonoBehaviour
@@ -10,7 +8,6 @@ public class MessageButtonHandler : MonoBehaviour
 
     public void SetMessage(Message message)
     {
-        //Debug.Log($"Message being set: {message}");
         text.text = $"{message.sender}\n{message.subject}";
     }
 }

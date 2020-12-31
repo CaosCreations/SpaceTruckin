@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class MessageDetailView : MonoBehaviour
 {
     public Text messageDetail;
-    public Button jobAcceptButton;
+    public Button missionAcceptButton;
 
     public void SetMessage(Message message)
     {
@@ -15,25 +12,24 @@ public class MessageDetailView : MonoBehaviour
         messageDetail.text += "Subject: " + message.subject + "\n\n";
         messageDetail.text += message.body + "\n";
 
-        //if (message.job != null)
-        //{
-        //    messageDetail.text += "I've got a job for you.";
-        //}
+        if (message.mission != null)
+        {
+            messageDetail.text += "I've got a mission for you.";
+        }
     }
 
-    //public void SetJobAcceptButton(Job job)
-    //{
-    //    Text buttonText = jobAcceptButton.GetComponentInChildren<Text>();
-    //    buttonText.text = "Accept " + job.title;
+    public void SetupMissionAcceptButton(Mission mission)
+    {
+        Text buttonText = missionAcceptButton.GetComponentInChildren<Text>();
+        buttonText.text = "Accept " + mission.missionName;
 
-    //    jobAcceptButton.interactable = job.isAccepted ? false : true;  
+        missionAcceptButton.interactable = !mission.hasBeenUnlocked;
+        missionAcceptButton.AddOnClick(() =>
+        {
+            buttonText.text = "Mission Accepted!";
+            missionAcceptButton.interactable = false;
+            //onJobAccept?.Invoke(mission);
+        });
 
-    //    jobAcceptButton.onClick.RemoveAllListeners();
-    //    jobAcceptButton.onClick.AddListener(() =>
-    //    {
-    //        buttonText.text = "Job Accepted!";
-    //        jobAcceptButton.interactable = false;
-    //        onJobAccept?.Invoke(job);
-    //    });
-    //}
+    }
 }

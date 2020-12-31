@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "Message", menuName = "ScriptableObjects/Message", order = 1)]
 public class Message : ScriptableObject
@@ -11,6 +9,6 @@ public class Message : ScriptableObject
     public int condition;
     public bool unlocked;
 
-    // The job offered in the email 
-    //public Job job; 
+    // The mission offered in the email
+    public Mission mission;
 }

@@ -17,6 +17,7 @@ public class Mission : ScriptableObject
 
     // Data to persist
     [Header("Data to update IN GAME")]
+    public bool hasBeenUnlocked = false;
     public bool hasBeenAcceptedInNoticeBoard = false;
     public Ship ship = null;
     public int daysLeftToComplete;
