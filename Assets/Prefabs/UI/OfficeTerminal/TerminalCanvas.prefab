@@ -780,6 +780,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8542943779111802378}
+  - {fileID: 7715908941844128431}
   - {fileID: 8899489682358160332}
   - {fileID: 4957314750829557698}
   - {fileID: 9182990084006462947}
@@ -803,8 +804,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d870b2db06d653d42a72008f5a2911a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  messageDetail: {fileID: 0}
-  jobAcceptButton: {fileID: 0}
+  messageSubjectText: {fileID: 680141421736438246}
+  messageSenderText: {fileID: 5339676341768478945}
+  messageBodyText: {fileID: 1597592801600506642}
+  missionAcceptButton: {fileID: 4458960960503876316}
 --- !u!222 &3225520172221434057
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2172,11 +2175,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6240ae4dfc8a15646a24792c28d1e598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  messageParent: {fileID: 3747388243337139549}
+  scrollViewContent: {fileID: 3747388243337139549}
   messageItemPrefab: {fileID: 6110821848842840943, guid: e2a6c6a6585d1ef4986527f862145eef,
     type: 3}
   messageContainer: {fileID: 11400000, guid: 17c0b5eb2d119eb478259e5c6fc60e76, type: 2}
-  messagesListView: {fileID: 0}
+  messagesListView: {fileID: 7528424651425798914}
   messagesDetailView: {fileID: 2966020593215242214}
   messageDetailViewHandler: {fileID: 98143622120515430}
   backButton: {fileID: 417345303655444877}
@@ -2911,10 +2914,10 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6561792722906791844}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.85}
+  m_AnchorMin: {x: 0, y: 0.4}
+  m_AnchorMax: {x: 1, y: 0.75}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -64, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3153,7 +3156,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Accept Job
+  m_Text: Accept Mission
 --- !u!1 &5279029066037517809
 GameObject:
   m_ObjectHideFlags: 0
@@ -3521,6 +3524,85 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &6895306755274943970
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7715908941844128431}
+  - component: {fileID: 1936619692459557722}
+  - component: {fileID: 5339676341768478945}
+  m_Layer: 5
+  m_Name: SenderText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &7715908941844128431
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6895306755274943970}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6561792722906791844}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0.75}
+  m_AnchorMax: {x: 1, y: 0.85}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -64, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &1936619692459557722
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6895306755274943970}
+  m_CullTransparentMesh: 0
+--- !u!114 &5339676341768478945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6895306755274943970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 0
+    m_BestFit: 1
+    m_MinSize: 10
+    m_MaxSize: 80
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Sender
 --- !u!1 &6907225715378228160
 GameObject:
   m_ObjectHideFlags: 0
@@ -3534,7 +3616,7 @@ GameObject:
   - component: {fileID: 677584407810532452}
   - component: {fileID: 4458960960503876316}
   m_Layer: 5
-  m_Name: JobAcceptButton
+  m_Name: MissionAcceptButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3553,10 +3635,10 @@ RectTransform:
   m_Children:
   - {fileID: 2335819381507484769}
   m_Father: {fileID: 6561792722906791844}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.4}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.3}
+  m_AnchorMax: {x: 0.4, y: 0.4}
   m_AnchoredPosition: {x: 16, y: 0}
   m_SizeDelta: {x: -32, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3673,7 +3755,7 @@ RectTransform:
   m_Children:
   - {fileID: 8108860803385258357}
   m_Father: {fileID: 6561792722906791844}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0.1}
@@ -3849,7 +3931,7 @@ GameObject:
   - component: {fileID: 1712106934186539091}
   - component: {fileID: 4362070260681266982}
   m_Layer: 5
-  m_Name: MessagesListScrollView
+  m_Name: MessagesListView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4407,15 +4489,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8dcebb73fb5bd9e4d92a22720260c40d, type: 3}
---- !u!1 &2574278240523882435 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8852226454832215821, guid: 8dcebb73fb5bd9e4d92a22720260c40d,
-    type: 3}
-  m_PrefabInstance: {fileID: 6440360104811788494}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &959527325968601081 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6066397490914326327, guid: 8dcebb73fb5bd9e4d92a22720260c40d,
+    type: 3}
+  m_PrefabInstance: {fileID: 6440360104811788494}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2574278240523882435 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8852226454832215821, guid: 8dcebb73fb5bd9e4d92a22720260c40d,
     type: 3}
   m_PrefabInstance: {fileID: 6440360104811788494}
   m_PrefabAsset: {fileID: 0}

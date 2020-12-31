@@ -3,22 +3,26 @@ using UnityEngine.UI;
 
 public class MessageDetailView : MonoBehaviour
 {
-    public Text messageDetail;
+    public Text messageSubjectText;
+    public Text messageSenderText;
+    public Text messageBodyText;
     public Button missionAcceptButton;
 
-    public void SetMessage(Message message)
+    public void SetMessageDetails(Message message)
     {
-        messageDetail.text = "From: " + message.sender + "\n";
-        messageDetail.text += "Subject: " + message.subject + "\n\n";
-        messageDetail.text += message.body + "\n";
+        messageSubjectText.text = message.subject;
+        messageSenderText.text = message.sender;
+        messageBodyText.text = message.body.InsertNewLines();
 
         if (message.mission != null)
         {
-            messageDetail.text += "I've got a mission for you.";
+            messageBodyText.text += "\nI've got a mission for you:";
+            // Add mission details here (reuse code if possible)
+            // 
         }
     }
 
-    public void SetupMissionAcceptButton(Mission mission)
+    public void SetMissionAcceptButton(Mission mission)
     {
         Text buttonText = missionAcceptButton.GetComponentInChildren<Text>();
         buttonText.text = "Accept " + mission.missionName;

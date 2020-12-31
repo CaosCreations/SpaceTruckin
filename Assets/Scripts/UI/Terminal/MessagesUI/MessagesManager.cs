@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class MessagesManager : MonoBehaviour
 {
-    public GameObject messageParent;
+    public GameObject scrollViewContent;
     public GameObject messageItemPrefab;
     public MessageContainer messageContainer;
 
@@ -14,8 +14,7 @@ public class MessagesManager : MonoBehaviour
 
     private void Start()
     {
-        backButton.onClick.RemoveAllListeners();
-        backButton.onClick.AddListener(GoToListView);
+        backButton.AddOnClick(() => GoToListView());
         AddMessages();
         GoToListView();
     }
@@ -43,7 +42,7 @@ public class MessagesManager : MonoBehaviour
 
     private void CleanScrollView()
     {
-        foreach (Transform child in messageParent.transform)
+        foreach (Transform child in scrollViewContent.transform)
         {
             Destroy(child.gameObject);
         }
@@ -55,7 +54,7 @@ public class MessagesManager : MonoBehaviour
         {
             if (message.unlocked)
             {
-                GameObject newMessage = Instantiate(messageItemPrefab, messageParent.transform);
+                GameObject newMessage = Instantiate(messageItemPrefab, scrollViewContent.transform);
                 newMessage.name = "Message";
                 MessageButtonHandler buttonHandler = newMessage.GetComponent<MessageButtonHandler>();
                 buttonHandler.SetMessage(message);
@@ -68,11 +67,11 @@ public class MessagesManager : MonoBehaviour
     {
         messagesListView.SetActive(false);
         messagesDetailView.SetActive(true);
-        messageDetailViewHandler.SetMessage(message);
+        messageDetailViewHandler.SetMessageDetails(message);
 
         if (message.mission != null)
         {
-            messageDetailViewHandler.SetupMissionAcceptButton(message.mission);
+            messageDetailViewHandler.SetMissionAcceptButton(message.mission);
             messageDetailViewHandler.missionAcceptButton.gameObject.SetActive(true);
         }
         else
