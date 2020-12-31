@@ -52,7 +52,7 @@ public class MessagesManager : MonoBehaviour
     {
         foreach (Message message in messageContainer.messages)
         {
-            if (message.unlocked)
+            if (message != null && message.unlocked)
             {
                 GameObject newMessage = Instantiate(messageItemPrefab, scrollViewContent.transform);
                 newMessage.name = "Message";

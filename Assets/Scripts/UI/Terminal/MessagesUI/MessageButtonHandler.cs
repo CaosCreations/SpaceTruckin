@@ -8,6 +8,6 @@ public class MessageButtonHandler : MonoBehaviour
 
     public void SetMessage(Message message)
     {
-        text.text = $"{message.sender}\n{message.subject}";
+        text.text = $"<b>{message.sender}</b>: {message.subject}";
     }
 }
