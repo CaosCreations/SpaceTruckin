@@ -13,11 +13,17 @@ public class MessageDetailView : MonoBehaviour
     {
         messageSubjectText.text = message.subject;
         messageSenderText.text = message.sender;
+
+        if (string.IsNullOrEmpty(message.body))
+        {
+            message.body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tortor dui, elementum eu convallis non, cursus ac dolor. Quisque dictum est quam, et pellentesque velit rutrum eget. Nullam interdum ultricies velit pharetra aliquet. Integer sodales a magna quis ornare. Ut vulputate nibh ipsum. Vivamus tincidunt nec nisi in fermentum. Mauris consequat mi vel odio consequat, eget gravida urna lobortis. Pellentesque eu ipsum consectetur, pharetra nulla in, consectetur turpis. Curabitur ornare eu nisi tempus varius. Phasellus vel ex mauris. Fusce fermentum mi id elementum gravida.";
+
+        }
         messageBodyText.text = message.body.InsertNewLines();
 
         if (message.mission != null)
         {
-            messageBodyText.text += "\nI've got a mission for you. See the details below:";
+            messageBodyText.text += "\n\nI've got a mission for you. See the details below:";
             messageBodyText.text += "\n\n" + missionDetailsUI.BuildDetailsString(message.mission);
         }
     }
@@ -32,7 +38,7 @@ public class MessageDetailView : MonoBehaviour
         {
             buttonText.text = "Mission Accepted!";
             missionAcceptButton.interactable = false;
+            mission.hasBeenAccepted = true;
         });
-
     }
 }

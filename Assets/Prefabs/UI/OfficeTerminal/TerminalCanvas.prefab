@@ -693,6 +693,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6561792722906791844}
   - component: {fileID: 98143622120515430}
+  - component: {fileID: 8956883592104651224}
   - component: {fileID: 3225520172221434057}
   - component: {fileID: 343153418413739130}
   m_Layer: 5
@@ -742,6 +743,21 @@ MonoBehaviour:
   messageSenderText: {fileID: 5339676341768478945}
   messageBodyText: {fileID: 1597592801600506642}
   missionAcceptButton: {fileID: 4458960960503876316}
+  missionDetailsUI: {fileID: 8956883592104651224}
+--- !u!114 &8956883592104651224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2966020593215242214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8946bc6f3edc509418831f5f22bc70f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missionDetails: {fileID: 0}
+  missionBeingDisplayed: {fileID: 0}
 --- !u!222 &3225520172221434057
 CanvasRenderer:
   m_ObjectHideFlags: 0

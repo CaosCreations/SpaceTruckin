@@ -85,18 +85,18 @@ public class MissionDetailsUI : MonoBehaviour
     public string BuildDetailsString(Mission mission)
     {
         StringBuilder builder = new StringBuilder();
-        builder.AppendLine("Name: " + missionBeingDisplayed.missionName);
-        builder.AppendLine("Customer: " + missionBeingDisplayed.customer);
-        builder.AppendLine("Cargo: " + missionBeingDisplayed.cargo);
+        builder.AppendLine("Name: " + mission.missionName);
+        builder.AppendLine("Customer: " + mission.customer);
+        builder.AppendLine("Cargo: " + mission.cargo);
 
-        if (string.IsNullOrEmpty(missionBeingDisplayed.description))
+        if (string.IsNullOrEmpty(mission.description))
         {
-            missionBeingDisplayed.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tortor dui, elementum eu convallis non, cursus ac dolor. Quisque dictum est quam, et pellentesque velit rutrum eget. Nullam interdum ultricies velit pharetra aliquet. Integer sodales a magna quis ornare. Ut vulputate nibh ipsum. Vivamus tincidunt nec nisi in fermentum. Mauris consequat mi vel odio consequat, eget gravida urna lobortis. Pellentesque eu ipsum consectetur, pharetra nulla in, consectetur turpis. Curabitur ornare eu nisi tempus varius. Phasellus vel ex mauris. Fusce fermentum mi id elementum gravida.";
+            mission.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tortor dui, elementum eu convallis non, cursus ac dolor. Quisque dictum est quam, et pellentesque velit rutrum eget. Nullam interdum ultricies velit pharetra aliquet. Integer sodales a magna quis ornare. Ut vulputate nibh ipsum. Vivamus tincidunt nec nisi in fermentum. Mauris consequat mi vel odio consequat, eget gravida urna lobortis. Pellentesque eu ipsum consectetur, pharetra nulla in, consectetur turpis. Curabitur ornare eu nisi tempus varius. Phasellus vel ex mauris. Fusce fermentum mi id elementum gravida.";
         }
 
-        builder.AppendLine("Description: " + missionBeingDisplayed.description);
-        builder.AppendLine("Fuel cost: " + missionBeingDisplayed.fuelCost);
-        builder.AppendLine("Reward: " + missionBeingDisplayed.reward);
+        builder.AppendLine("Description: " + mission.description);
+        builder.AppendLine("Fuel cost: " + mission.fuelCost);
+        builder.AppendLine("Reward: " + mission.reward);
         return builder.ToString();
     }
 }
