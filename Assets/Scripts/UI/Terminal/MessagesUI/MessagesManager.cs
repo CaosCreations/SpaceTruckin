@@ -58,8 +58,6 @@ public class MessagesManager : MonoBehaviour
                 newMessage.name = "Message";
                 MessageButtonHandler buttonHandler = newMessage.GetComponent<MessageButtonHandler>();
                 buttonHandler.Init(message, () => GoToDetailView(message));
-                //buttonHandler.button.AddOnClick(() => GoToDetailView(message));
-                //GenerateMessageItem();
             }
         }
     }

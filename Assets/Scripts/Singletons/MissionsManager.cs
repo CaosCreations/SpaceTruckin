@@ -32,7 +32,7 @@ public class MissionsManager : MonoBehaviour
     public static List<Mission> GetAcceptedMissions()
     {
         return Instance.missionContainer.missions
-            .Where(x => x.hasBeenAcceptedInNoticeBoard
+            .Where(x => x.hasBeenAccepted
             && x.ship == null)
             .ToList();
     }
@@ -40,7 +40,7 @@ public class MissionsManager : MonoBehaviour
     public static List<Mission> GetScheduledMissions()
     {
         return Instance.missionContainer.missions
-            .Where(x => x.hasBeenAcceptedInNoticeBoard
+            .Where(x => x.hasBeenAccepted
             && x.ship != null)
             .ToList();
     }

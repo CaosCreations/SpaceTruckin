@@ -7,6 +7,7 @@ public class MessageDetailView : MonoBehaviour
     public Text messageSenderText;
     public Text messageBodyText;
     public Button missionAcceptButton;
+    public MissionDetailsUI missionDetailsUI;
 
     public void SetMessageDetails(Message message)
     {
@@ -16,9 +17,8 @@ public class MessageDetailView : MonoBehaviour
 
         if (message.mission != null)
         {
-            messageBodyText.text += "\nI've got a mission for you:";
-            // Add mission details here (reuse code if possible)
-            // 
+            messageBodyText.text += "\nI've got a mission for you. See the details below:";
+            messageBodyText.text += "\n\n" + missionDetailsUI.BuildDetailsString(message.mission);
         }
     }
 
@@ -27,12 +27,11 @@ public class MessageDetailView : MonoBehaviour
         Text buttonText = missionAcceptButton.GetComponentInChildren<Text>();
         buttonText.text = "Accept " + mission.missionName;
 
-        missionAcceptButton.interactable = !mission.hasBeenUnlocked;
+        missionAcceptButton.interactable = !mission.hasBeenAccepted;
         missionAcceptButton.AddOnClick(() =>
         {
             buttonText.text = "Mission Accepted!";
             missionAcceptButton.interactable = false;
-            //onJobAccept?.Invoke(mission);
         });
 
     }

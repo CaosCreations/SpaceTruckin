@@ -76,13 +76,13 @@ public class MissionDetailsUI : MonoBehaviour
         RectTransform textRect = textContainer.GetComponent<RectTransform>();
         textRect.Reset();
         textRect.Stretch();
-        detailsText.text = BuildDetailsString();
+        detailsText.text = BuildDetailsString(missionBeingDisplayed);
         detailsText.SetDefaultFont();
         detailsText.resizeTextForBestFit = true;
         detailsText.color = Color.black;
     }
 
-    private string BuildDetailsString()
+    public string BuildDetailsString(Mission mission)
     {
         StringBuilder builder = new StringBuilder();
         builder.AppendLine("Name: " + missionBeingDisplayed.missionName);

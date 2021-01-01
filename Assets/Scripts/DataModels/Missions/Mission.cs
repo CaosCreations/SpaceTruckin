@@ -1,5 +1,10 @@
 ﻿using UnityEngine;
 
+public enum MissionSource
+{
+    Noticeboard = 1, Email = 2, Npc = 3
+}
+
 [CreateAssetMenu(fileName = "Mission", menuName = "ScriptableObjects/Mission", order = 1)]
 public class Mission : ScriptableObject
 {
@@ -17,8 +22,7 @@ public class Mission : ScriptableObject
 
     // Data to persist
     [Header("Data to update IN GAME")]
-    public bool hasBeenUnlocked = false;
-    public bool hasBeenAcceptedInNoticeBoard = false;
+    public bool hasBeenAccepted = false;
     public Ship ship = null;
     public int daysLeftToComplete;
 
