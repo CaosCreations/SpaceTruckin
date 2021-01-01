@@ -57,8 +57,9 @@ public class MessagesManager : MonoBehaviour
                 GameObject newMessage = Instantiate(messageItemPrefab, scrollViewContent.transform);
                 newMessage.name = "Message";
                 MessageButtonHandler buttonHandler = newMessage.GetComponent<MessageButtonHandler>();
-                buttonHandler.SetMessage(message);
-                buttonHandler.button.AddOnClick(() => GoToDetailView(message));
+                buttonHandler.Init(message, () => GoToDetailView(message));
+                //buttonHandler.button.AddOnClick(() => GoToDetailView(message));
+                //GenerateMessageItem();
             }
         }
     }
@@ -84,5 +85,21 @@ public class MessagesManager : MonoBehaviour
     {
         messagesListView.SetActive(true);
         messagesDetailView.SetActive(false);
+    }
+
+    public void GenerateMessageItem()
+    {
+        GameObject newItem = new GameObject().ScaffoldUI(
+            name: "MessageItem", parent: scrollViewContent, anchors: (Vector2.zero, Vector2.one));
+
+        newItem.AddComponent<Button>();
+        newItem.AddComponent<MessageButtonHandler>();
+        
+        //Text itemText = new GameObject().ScaffoldUI(
+        //    name: "ItemText", parent: newItem, anchors: (Vector2.zero, Vector2.one)).AddComponent<Text>();
+
+        //itemText.text = "NEW ITEM";
+
+        //return newItem;
     }
 }
