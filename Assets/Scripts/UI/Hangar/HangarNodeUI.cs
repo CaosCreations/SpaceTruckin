@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class HangarNodeUI : MonoBehaviour
@@ -180,6 +177,8 @@ public class HangarNodeUI : MonoBehaviour
 
     private bool ShouldLaunchButtonBeInteractable()
     {
-        return shipToInspect.currentFuel >= shipToInspect.maxFuel;
+        // We need to be maxed out on fuel and hull integrity in order to launch 
+        return shipToInspect.currentFuel >= shipToInspect.maxFuel
+            && shipToInspect.currenthullIntegrity >= shipToInspect.maxHullIntegrity;
     }
 }
