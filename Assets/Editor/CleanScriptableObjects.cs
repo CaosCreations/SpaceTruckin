@@ -30,10 +30,10 @@ public class CleanScriptableObjects : EditorWindow
     [MenuItem("Tools/Clean Scriptable Object Container Save Data")]
     private static void CleanContainerSaveData()
     {
-        CleanPersistent();
+        CleanSaveData();
     }
 
-    private static void CleanPersistent()
+    private static void CleanSaveData()
     {
         var selected = Selection.activeObject;
 
@@ -61,9 +61,34 @@ public class CleanScriptableObjects : EditorWindow
                 EditorUtility.SetDirty(pilot);
             }
         }
+        else if (selected is ShipsContainer)
+        {
+            ShipsContainer shipsContainer = (ShipsContainer)selected;
+            foreach (Ship ship in shipsContainer.ships)
+            {
+                foreach (FieldInfo field in ship.shipSaveData.GetType().GetFields())
+                {
+                    field.SetValue(ship.shipSaveData, null);
+                }
+                EditorUtility.SetDirty(ship);
+            }
+        }
+        else if (selected is MessagesContainer) 
+        {
+            MessagesContainer messagesContainer = (MessagesContainer)selected;
+            foreach (Message message in messagesContainer.messages)
+            {
+                foreach (FieldInfo field in message.messageSaveData.GetType().GetFields())
+                {
+                    field.SetValue(message.messageSaveData, null);
+                }
+                EditorUtility.SetDirty(message);
+            }
+        }
         else
         {
-            Debug.LogError("You have not selected a valid object");
+            Debug.LogError("Invalid object selected: " + selected);
+            EditorUtils.DisplayErrorDialogue("")
         }
     }
 }
