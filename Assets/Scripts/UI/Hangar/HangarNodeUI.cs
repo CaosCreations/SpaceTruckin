@@ -177,8 +177,7 @@ public class HangarNodeUI : MonoBehaviour
 
     private bool ShouldLaunchButtonBeInteractable()
     {
-        // We need to be maxed out on fuel and hull integrity in order to launch 
-        return shipToInspect.currentFuel >= shipToInspect.maxFuel
-            && shipToInspect.currenthullIntegrity >= shipToInspect.maxHullIntegrity;
+        return shipToInspect.currentFuel >= shipToInspect.currentMission.fuelCost
+            && shipToInspect.currenthullIntegrity > 0;
     }
 }
