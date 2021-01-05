@@ -92,12 +92,5 @@ public class MessagesManager : MonoBehaviour
 
         newItem.AddComponent<Button>();
         newItem.AddComponent<MessageButtonHandler>();
-        
-        //Text itemText = new GameObject().ScaffoldUI(
-        //    name: "ItemText", parent: newItem, anchors: (Vector2.zero, Vector2.one)).AddComponent<Text>();
-
-        //itemText.text = "NEW ITEM";
-
-        //return newItem;
     }
 }
