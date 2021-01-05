@@ -17,6 +17,8 @@ public class MessagesManager : MonoBehaviour
         backButton.AddOnClick(() => GoToListView());
         AddMessages();
         GoToListView();
+
+        MissionsManager.onMissionCompleted += SendThankyouEmail;
     }
 
     public void CheckMessagesToAdd(long moneyMade)
@@ -54,12 +56,17 @@ public class MessagesManager : MonoBehaviour
         {
             if (message != null && message.unlocked)
             {
-                GameObject newMessage = Instantiate(messageItemPrefab, scrollViewContent.transform);
-                newMessage.name = "Message";
-                MessageButtonHandler buttonHandler = newMessage.GetComponent<MessageButtonHandler>();
-                buttonHandler.Init(message, () => GoToDetailView(message));
+                AddMessage(message);
             }
         }
+    }
+
+    private void AddMessage(Message message)
+    {
+        GameObject newMessage = Instantiate(messageItemPrefab, scrollViewContent.transform);
+        newMessage.name = "Message";
+        MessageButtonHandler buttonHandler = newMessage.GetComponent<MessageButtonHandler>();
+        buttonHandler.Init(message, () => GoToDetailView(message));
     }
 
     private void GoToDetailView(Message message)
@@ -92,12 +99,19 @@ public class MessagesManager : MonoBehaviour
 
         newItem.AddComponent<Button>();
         newItem.AddComponent<MessageButtonHandler>();
-        
-        //Text itemText = new GameObject().ScaffoldUI(
-        //    name: "ItemText", parent: newItem, anchors: (Vector2.zero, Vector2.one)).AddComponent<Text>();
+    }
 
-        //itemText.text = "NEW ITEM";
+    private void SendThankyouEmail(Mission mission)
+    {
+        // Todo: Check if first time completed
+        // Todo: Encapsulate this into a builder method 
 
-        //return newItem;
+        Message newMessage = ScriptableObject.CreateInstance<Message>();
+        newMessage.sender = mission.customer;
+        newMessage.subject = "Thank you!"; 
+        newMessage.body = $"Hey pal,\nThanks for helping me out with {mission.missionName}";
+        newMessage.unlocked = true;
+
+        AddMessage(newMessage);
     }
 }
