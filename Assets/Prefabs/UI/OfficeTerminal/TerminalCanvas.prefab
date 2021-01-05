@@ -2765,6 +2765,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3631385489712040968}
   - component: {fileID: 3631385489712040972}
+  - component: {fileID: 9088929300123780833}
   - component: {fileID: 3631385489712040974}
   - component: {fileID: 3631385489712040975}
   - component: {fileID: 3631385489712040973}
@@ -2820,6 +2821,19 @@ MonoBehaviour:
   crewPanel: {fileID: 3631385489729504507}
   pilotsUI: {fileID: 1511978678183600859}
   upgradesPanel: {fileID: 3631385488226677111}
+--- !u!114 &9088929300123780833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3631385489712040969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12ce7cc20330f014b9acbe36ca27c24d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terminalManager: {fileID: 3631385489712040972}
 --- !u!222 &3631385489712040974
 CanvasRenderer:
   m_ObjectHideFlags: 0
