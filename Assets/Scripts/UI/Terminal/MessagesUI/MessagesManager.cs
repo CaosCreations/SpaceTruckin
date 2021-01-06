@@ -15,6 +15,10 @@ public class MessagesManager : MonoBehaviour
     private void Start()
     {
         backButton.AddOnClick(() => GoToListView());
+    }
+
+    private void OnEnable()
+    {
         AddMessages();
         GoToListView();
     }
