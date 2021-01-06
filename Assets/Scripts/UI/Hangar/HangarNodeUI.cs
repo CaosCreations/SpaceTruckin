@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class HangarNodeUI : MonoBehaviour
@@ -50,7 +47,8 @@ public class HangarNodeUI : MonoBehaviour
         }
 
         PopulateUI();
-        fuelButton.button.interactable = ShouldButtonBeInteractable();
+        fuelButton.button.interactable = ShouldFuelButtonBeInteractable();
+        launchButton.interactable = ShouldLaunchButtonBeInteractable();
     }
 
     private void OnDisable()
@@ -114,7 +112,8 @@ public class HangarNodeUI : MonoBehaviour
             shipToInspect.currentFuel++;
             fuelSlider.value = shipToInspect.GetFuelPercent();
             fuelTimer = 0;
-            fuelButton.button.interactable = ShouldButtonBeInteractable();
+            fuelButton.button.interactable = ShouldFuelButtonBeInteractable();
+            launchButton.interactable = ShouldLaunchButtonBeInteractable();
         }
     }
 
@@ -170,9 +169,15 @@ public class HangarNodeUI : MonoBehaviour
         }
     }
 
-    private bool ShouldButtonBeInteractable()
+    private bool ShouldFuelButtonBeInteractable()
     {
         return shipToInspect.currentFuel < shipToInspect.maxFuel
             && PlayerManager.Instance.CanSpendMoney(fuelCostPerUnit);
+    }
+
+    private bool ShouldLaunchButtonBeInteractable()
+    {
+        return shipToInspect.currentFuel >= shipToInspect.currentMission.fuelCost
+            && shipToInspect.currenthullIntegrity > 0;
     }
 }
