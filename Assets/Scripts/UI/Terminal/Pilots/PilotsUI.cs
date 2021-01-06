@@ -1,177 +1,139 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Text;
 using UnityEngine;
 using UnityEngine.UI; 
 
 public class PilotsUI : MonoBehaviour
 {
 	public GameObject crewPanel;
-	public GameObject pilotButtonPrefab;
-	public PilotsContainer pilotsContainer;
+	public GameObject pilotList; 
+	public Transform scrollViewContent;
+	public GameObject crewItemPrefab;
+	public GameObject backButtonPrefab;
 
-	private GameObject pilotProfilePanel;
-	private Text pilotNameText;
-	private Text pilotDescriptionText; 
-	private Image pilotAvatar; 
+	public GameObject pilotProfilePanel;
+	private Text pilotDetailsText; 
+	private Image pilotAvatar;
+	private Image shipAvatar; 
+
+	public PilotsContainer pilotsContainer;
 
 	private void Awake()
 	{
-		GeneratePilotsUI(); 
+		GeneratePilotsUI();
     }
 
-	private void GeneratePilotsUI()
+    private void OnEnable()
     {
+		pilotList.SetActive(true);
+		pilotProfilePanel.SetActive(false);
+    }
+
+    private void GeneratePilotsUI()
+    {
+		PopulateScrollView();
 		GeneratePilotProfilePanel();
-		GeneratePilotButtons();
-		GeneratePilotNameText();
-        GeneratePilotDescription();
-		GeneratePilotAvatar();
-		GenerateBackButton(); 
+        GenerateShipAvatar();
+        GeneratePilotAvatar();
+		GeneratePilotDetails();
+        GenerateBackButton();
+    }
+
+	private void PopulateScrollView()
+	{
+		foreach (Pilot pilot in pilotsContainer.pilots)
+		{
+            GameObject crewItem = Instantiate(crewItemPrefab, scrollViewContent);
+			crewItem.GetComponent<Button>().AddOnClick(() => OpenPilotProfilePanel(pilot));
+			crewItem.GetComponentInChildren<Text>().text = pilot.pilotName;
+		}
+	}
+	
+	private void OpenPilotProfilePanel(Pilot pilot)
+	{
+		pilotList.SetActive(false);
+		pilotProfilePanel.SetActive(true);
+		shipAvatar.sprite = pilot.ship.shipAvatar;
+		pilotAvatar.sprite = pilot.avatar;
+		pilotDetailsText.text = BuildDetailsString(pilot);
 	}
 
 	private void GeneratePilotProfilePanel()
 	{
 		pilotProfilePanel = new GameObject(PilotsConstants.profilePanelName);
-
-		// Sibling of the crew panel so that it can be active
-		// while the crew panel is inactive. 
-		pilotProfilePanel.transform.parent = crewPanel.transform.parent.transform;
+		pilotProfilePanel.transform.SetParent(crewPanel.transform);
 
 		RectTransform rectTransform = pilotProfilePanel.AddComponent<RectTransform>();
-		rectTransform.anchorMin = Vector2.zero;
-		rectTransform.anchorMax = Vector2.one;
-		rectTransform.localScale = Vector3.one;
-		rectTransform.offsetMin = Vector2.zero;
-		rectTransform.offsetMax = Vector2.zero;  
-
+		rectTransform.Reset();
+		rectTransform.Stretch();
+			
 		pilotProfilePanel.SetActive(false);
 	}
 
-	private void GeneratePilotButtons()
+	private void GenerateShipAvatar()
 	{
-		GameObject pilotButtonGroup = new GameObject(PilotsConstants.buttonGroupName);
-		pilotButtonGroup.transform.parent = crewPanel.transform;
-		RectTransform rectTransform = pilotButtonGroup.AddComponent<RectTransform>();
-		rectTransform.localPosition = Vector2.zero;
-		rectTransform.anchorMin = PilotsConstants.buttonGroupAnchorMin; 
-		rectTransform.anchorMax = PilotsConstants.buttonGroupAnchorMax; 
+		GameObject shipAvatarObject = new GameObject().ScaffoldUI(
+			PilotsConstants.shipAvatarObjectName, pilotProfilePanel, PilotsConstants.shipAvatarAnchors);
 
-        VerticalLayoutGroup verticalLayoutGroup = pilotButtonGroup.AddComponent<VerticalLayoutGroup>();
-		verticalLayoutGroup.childControlWidth = true;
-		verticalLayoutGroup.childControlHeight = true;
-
-		foreach (Pilot pilot in pilotsContainer.pilots)
-		{
-			GameObject pilotButton = Instantiate(pilotButtonPrefab, pilotButtonGroup.transform);
-			pilotButton.name = $"{pilot.pilotName}Button"; 
-			pilotButton.GetComponentInChildren<Text>().text = pilot.pilotName;
-			Button button = pilotButton.GetComponent<Button>();
-			button.onClick.RemoveAllListeners(); 
-			button.onClick.AddListener(delegate { OpenPilotProfilePanel(pilot); });
-
-			// these will be set by the hire pilots logic later on
-			pilot.hired = true; 
-			pilot.onMission = false; 
-		}
-	}
-
-	private void OpenPilotProfilePanel(Pilot pilot)
-	{
-		crewPanel.SetActive(false);
-        pilotProfilePanel.SetActive(true);
-		pilotNameText.text = pilot.pilotName;
-		pilotDescriptionText.text = pilot.description;
-		pilotAvatar.sprite = pilot.avatar;
-    }
-
-	private void GeneratePilotNameText()
-    {
-		GameObject pilotNameObject = new GameObject(PilotsConstants.nameTextName);
-		pilotNameObject.transform.parent = pilotProfilePanel.transform;
-
-		RectTransform rectTransform = pilotNameObject.AddComponent<RectTransform>();
-		rectTransform.anchorMin = PilotsConstants.nameTextAnchorMin;
-		rectTransform.anchorMax = PilotsConstants.nameTextAnchorMax; 
-        rectTransform.localScale = Vector3.one;
-        rectTransform.offsetMin = Vector2.zero;
-		rectTransform.offsetMax = Vector2.zero;
-
-		pilotNameText = pilotNameObject.AddComponent<Text>();
-		SetFont(pilotNameText); 
-	}
-
-	private void GeneratePilotDescription()
-    {
-		GameObject pilotDescriptionObject = new GameObject(PilotsConstants.descriptionObjectName);
-		pilotDescriptionObject.transform.parent = pilotProfilePanel.transform;
-
-		RectTransform rectTransform = pilotDescriptionObject.AddComponent<RectTransform>();
-		rectTransform.anchorMin = PilotsConstants.descriptionAnchorMin;
-		rectTransform.anchorMax = PilotsConstants.descriptionAnchorMax;
-        rectTransform.localScale = Vector3.one;
-        rectTransform.offsetMin = Vector2.zero;
-		rectTransform.offsetMax = Vector2.zero;
-
-		pilotDescriptionText = pilotDescriptionObject.AddComponent<Text>();
-		SetFont(pilotDescriptionText); 
+		shipAvatar = shipAvatarObject.AddComponent<Image>();
 	}
 
 	private void GeneratePilotAvatar()
-    {
-		GameObject pilotAvatarObject = new GameObject(PilotsConstants.avatarObjectName);
-		pilotAvatarObject.transform.parent = pilotProfilePanel.transform;
-
-		RectTransform rectTransform = pilotAvatarObject.AddComponent<RectTransform>();
-		rectTransform.anchorMin = PilotsConstants.avatarAnchorMin;
-		rectTransform.anchorMax = PilotsConstants.avatarAnchorMax; 
-        rectTransform.localScale = Vector3.one;
-        rectTransform.offsetMin = Vector2.zero;
-		rectTransform.offsetMax = Vector2.zero;
+	{
+		GameObject pilotAvatarObject = new GameObject().ScaffoldUI(
+			PilotsConstants.pilotAvatarObjectName, pilotProfilePanel, PilotsConstants.pilotAvatarAnchors);
 
 		pilotAvatar = pilotAvatarObject.AddComponent<Image>();
 	}
 
+	private void GeneratePilotDetails()
+    {
+		GameObject pilotDetails = new GameObject().ScaffoldUI(
+			PilotsConstants.detailsObjectName, pilotProfilePanel, PilotsConstants.pilotDetailsAnchors);
+
+		pilotDetails.GetComponent<RectTransform>().SetPadding(Side.Top, PilotsConstants.topPadding);
+		pilotDetailsText = pilotDetails.AddComponent<Text>();
+		pilotDetailsText.SetDefaultFont();
+		pilotDetailsText.resizeTextForBestFit = true; 
+		pilotDetailsText.color = Color.black;
+	}
+
+	private string BuildDetailsString(Pilot pilot)
+	{
+		StringBuilder builder = new StringBuilder();
+		builder.AppendLine("Name: " + pilot.pilotName);
+		builder.AppendLine("Ship: " + pilot.ship.shipName);
+		builder.AppendLine("Level: " + pilot.level);
+		builder.AppendLine("Experience: " + pilot.xp);
+
+		if (string.IsNullOrEmpty(pilot.description))
+		{
+			pilot.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tortor dui, elementum eu convallis non, cursus ac dolor. Quisque dictum est quam, et pellentesque velit rutrum eget. Nullam interdum ultricies velit pharetra aliquet. Integer sodales a magna quis ornare. Ut vulputate nibh ipsum. Vivamus tincidunt nec nisi in fermentum. Mauris consequat mi vel odio consequat, eget gravida urna lobortis. Pellentesque eu ipsum consectetur, pharetra nulla in, consectetur turpis. Curabitur ornare eu nisi tempus varius. Phasellus vel ex mauris. Fusce fermentum mi id elementum gravida.";
+		}
+
+		builder.AppendLine("Description: " + pilot.description);
+		builder.AppendLine("Missions completed: " + pilot.missionsCompleted);
+		return builder.ToString();
+	}
+
 	private void GenerateBackButton()
     {
-		GameObject backButton = Instantiate(pilotButtonPrefab);
-		backButton.name = PilotsConstants.backButtonName;
+		GameObject backButton = Instantiate(backButtonPrefab);
 
-		if (pilotProfilePanel != null)
+        if (pilotProfilePanel != null)
         {
-			backButton.transform.parent = pilotProfilePanel.transform; 
+			backButton.transform.SetParent(pilotProfilePanel.transform);
         }
 
-		RectTransform rectTransform = backButton.GetComponent<RectTransform>();
-		rectTransform.anchorMin = PilotsConstants.backButtonAnchorMin;
-		rectTransform.anchorMax = PilotsConstants.backButtonAnchorMax;
-		rectTransform.localScale = Vector2.one; 
-		rectTransform.offsetMin = Vector2.zero;
-		rectTransform.offsetMax = Vector2.zero;
+        RectTransform rectTransform = backButton.GetComponent<RectTransform>();
+        rectTransform.Reset();
+        rectTransform.SetAnchors(PilotsConstants.backButtonAnchors);
 
-		Button button = backButton.GetComponent<Button>();
-		button.onClick.RemoveAllListeners();
-		button.onClick.AddListener(delegate { ClosePilotProfilePanel(); });
-
-		backButton.GetComponentInChildren<Text>().text = PilotsConstants.backButtonText; 
+        backButton.GetComponent<Button>().AddOnClick(() => BackToPilotList());
     }
-
-	private void ClosePilotProfilePanel()
+	
+	private void BackToPilotList()
 	{
-		crewPanel.SetActive(true);
+		pilotList.SetActive(true);
 		pilotProfilePanel.SetActive(false); 
-	}
-
-	private void SetFont(Text text)
-    {
-		text.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-	}
-
-	private void CycleThroughProfiles()
-	{
-		// would be nice to have a button that cycles through subsequent pilot profiles
-		// rather than going back to the hangar then going to the next pilot
-		// getting a reference to the next pilot in the GeneratePilotButtons() method? 
-		
-		// index the pilotsContainer; update it each time a pilotButton is clicked.
 	}
 }

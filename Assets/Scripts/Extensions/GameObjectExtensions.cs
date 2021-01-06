@@ -15,4 +15,14 @@ public static class GameObjectExtensions
         entry.callback.AddListener(e => callback());
         trigger.triggers.Add(entry);
     }
+
+    public static GameObject ScaffoldUI(this GameObject self, string name, GameObject parent, (Vector2, Vector2) anchors)
+    {
+        self.name = name;
+        self.transform.parent = parent.transform;
+        RectTransform rectTransform = self.AddComponent<RectTransform>();
+        rectTransform.Reset();
+        rectTransform.SetAnchors(anchors);
+        return self; 
+    }
 }

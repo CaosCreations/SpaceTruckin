@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,30 +7,22 @@ public class PilotsConstants : MonoBehaviour
 {
     // GameObject names 
     public static string profilePanelName = "PilotProfilePanel";
-    public static string buttonGroupName = "PilotButtonGroup";
-    public static string nameTextName = "PilotName";
-    public static string descriptionObjectName = "PilotDescription";
-    public static string avatarObjectName = "PilotAvatar";
-
+    public static string detailsObjectName = "PilotDetails";
+    public static string pilotAvatarObjectName = "PilotAvatar";
+    public static string shipAvatarObjectName = "ShipAvatar";
     public static string backButtonName = "BackButton";
     public static string backButtonText = "Back"; 
 
 
     // UI dimensions 
-    public static Vector2 buttonGroupAnchorMin = new Vector2(0.25f, 0.5f); 
-    public static Vector2 buttonGroupAnchorMax = new Vector2(0.5f, 0.5f);
+    public static float borderSize = 0.05f;
+    public static float topPadding = 32f;
+    public static float buttonHeight = 0.1f; 
 
-    public static Vector2 nameTextAnchorMin = new Vector2(0f, 0.75f);
-    public static Vector2 nameTextAnchorMax = new Vector2(0.5f, 1f);
-
-    public static Vector2 descriptionAnchorMin = new Vector2(0f, 0.5f);
-    public static Vector2 descriptionAnchorMax = new Vector2(0.5f, 0.75f);
-
-    public static Vector2 avatarAnchorMin = Vector2.one / 2f; 
-    public static Vector2 avatarAnchorMax = Vector2.one; 
-
-    public static Vector2 backButtonAnchorMin = new Vector2(0.25f, 0f);
-    public static Vector2 backButtonAnchorMax = new Vector2(0.75f, 0.25f);
+    public static ValueTuple<Vector2, Vector2> pilotAvatarAnchors = (new Vector2((1 - borderSize * 2) / 1.5f, (1 - borderSize * 2) / 1.5f), new Vector2(1 - borderSize, 1 - borderSize));
+    public static ValueTuple<Vector2, Vector2> pilotDetailsAnchors = (new Vector2((1 - borderSize * 2) / 1.5f, borderSize), new Vector2(1 - borderSize, (1 - borderSize * 2) / 1.5f));
+    public static ValueTuple<Vector2, Vector2> shipAvatarAnchors = (new Vector2(borderSize, borderSize), new Vector2((1 - borderSize * 2) / 1.5f, 1 - borderSize));
+    public static ValueTuple<Vector2, Vector2> backButtonAnchors = (new Vector2(borderSize, borderSize), new Vector2((1 - borderSize* 2) / 3, borderSize + buttonHeight));
 
 
     // Paths to text files containing pilot names 

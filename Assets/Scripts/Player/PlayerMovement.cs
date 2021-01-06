@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UIElements;
+﻿using UnityEngine;
 
 public enum Direction
 {
@@ -25,8 +22,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        characterController = GetComponent<CharacterController>(); 
-    }    
+        characterController = GetComponent<CharacterController>();
+    }
 
     // Get input in Update 
     private void Update()
@@ -51,8 +48,11 @@ public class PlayerMovement : MonoBehaviour
     // Move player in FixedUpdate 
     private void FixedUpdate()
     {
+        if (PlayerManager.Instance.isPaused)
+        {
+            return;
+        }
 
- 
         // Adjust for diagonal input 
         if (movementVector.magnitude > 1f)
         {

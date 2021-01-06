@@ -14,6 +14,7 @@ public class TerminalUIManager : MonoBehaviour
     public GameObject messagesPanel;
     public GameObject analyticsPanel;
     public GameObject crewPanel;
+    public PilotsUI pilotsUI;
     public GameObject upgradesPanel;
 
     public enum Tab
