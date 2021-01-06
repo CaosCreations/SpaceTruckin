@@ -23,8 +23,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
-        UIManager.onCanvasActivated += HaltPlayer;
-    }    
+    }
 
     // Get input in Update 
     private void Update()
@@ -138,12 +137,5 @@ public class PlayerMovement : MonoBehaviour
         characterController.enabled = false;
         transform.position = playerResetPosition;
         characterController.enabled = true;
-    }
-
-    private void HaltPlayer()
-    {
-        characterController.Move(Vector3.zero);
-        movementVector = Vector2.zero;
-        currentSpeed = 0f;
     }
 }
