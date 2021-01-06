@@ -14,6 +14,7 @@ public class Mission : ScriptableObject
     public string customer;
     public string cargo;
     public string description;
+    public string thankYouMessage;
     public int fuelCost;
     public int reward;
     public int moneyNeededToUnlock;

@@ -9,7 +9,7 @@ public class MissionsManager : MonoBehaviour
     public static MissionsManager Instance { get; private set; }
 
     public MissionContainer missionContainer;
-    public static event System.Action<Mission> onMissionCompleted; 
+    public event System.Action<Mission> onMissionCompleted; 
 
     void Awake()
     {
@@ -62,7 +62,7 @@ public class MissionsManager : MonoBehaviour
 
                     // Todo: Put this somewhere else (generic next day handler)
                     // Firing an event seems suboptimal 
-                    onMissionCompleted?.Invoke(mission);
+                    Instance.onMissionCompleted?.Invoke(mission);
                 }
             }
         }

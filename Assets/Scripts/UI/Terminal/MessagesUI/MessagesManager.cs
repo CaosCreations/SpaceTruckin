@@ -15,10 +15,13 @@ public class MessagesManager : MonoBehaviour
     private void Start()
     {
         backButton.AddOnClick(() => GoToListView());
+        MissionsManager.Instance.onMissionCompleted += SendThankYouEmail;
+    }
+
+    private void OnEnable()
+    {
         AddMessages();
         GoToListView();
-
-        MissionsManager.onMissionCompleted += SendThankyouEmail;
     }
 
     public void CheckMessagesToAdd(long moneyMade)
@@ -101,17 +104,24 @@ public class MessagesManager : MonoBehaviour
         newItem.AddComponent<MessageButtonHandler>();
     }
 
-    private void SendThankyouEmail(Mission mission)
+    private void SendThankYouEmail(Mission mission)
     {
-        // Todo: Check if first time completed
-        // Todo: Encapsulate this into a builder method 
+        Debug.Log("Sending thank you email");
 
         Message newMessage = ScriptableObject.CreateInstance<Message>();
         newMessage.sender = mission.customer;
-        newMessage.subject = "Thank you!"; 
-        newMessage.body = $"Hey pal,\nThanks for helping me out with {mission.missionName}";
-        newMessage.unlocked = true;
+        newMessage.subject = "Thank you!";
 
+        if (string.IsNullOrEmpty(mission.thankYouMessage))      
+        {
+            newMessage.body = $"Hey pal,\nThanks for helping me out with {mission.missionName}";
+        }
+        else
+        {
+            newMessage.body = mission.thankYouMessage;
+        }
+        newMessage.unlocked = true;
+        messageContainer.messages[messageContainer.messages.Length] = newMessage;
         AddMessage(newMessage);
     }
 }
