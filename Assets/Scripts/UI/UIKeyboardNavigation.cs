@@ -7,12 +7,13 @@ public class UIKeyboardNavigation : MonoBehaviour
 {
     public TerminalUIManager terminalManager;
     private ArrayList navigableButtons;
-    private int currentIndex; 
+    private int currentIndex;
+
+    private Color selectedColour = Color.green;
+    private Color unselectedColour = Color.white;
 
     private void Start()
     {
-        // Todo: Determine which is the starting button to highlight
-
         navigableButtons = GetNavigableButtons();
         HighlightButton(currentIndex);
 
@@ -38,15 +39,16 @@ public class UIKeyboardNavigation : MonoBehaviour
     private void HighlightButton(int index)
     {
         var selectedButton = navigableButtons[index] as Button;
-        selectedButton.GetComponent<Image>().color = Color.green;
+        selectedButton.GetComponent<Image>().color = selectedColour;
     }
 
     private void UnhighlightButton(int index)
     {
         var selectedButton = navigableButtons[index] as Button;
-        selectedButton.GetComponent<Image>().color = Color.grey;
+        selectedButton.GetComponent<Image>().color = unselectedColour;
     }
 
+    // Todo: This is so ugly... But it works
     private void NavigateButtons()
     {
         if (Input.GetKeyDown(KeyCode.DownArrow))
@@ -82,6 +84,13 @@ public class UIKeyboardNavigation : MonoBehaviour
     private void Update()
     {
         NavigateButtons();
+
+        // Todo: Encapsulate; mesh better with the other polling methods 
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            Button button = navigableButtons[currentIndex] as Button;
+            button.onClick.Invoke();
+        }
     }
 
 
