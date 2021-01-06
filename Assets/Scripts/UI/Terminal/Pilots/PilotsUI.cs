@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class PilotsUI : MonoBehaviour
 {
 	public GameObject crewPanel;
+	public GameObject pilotList; 
 	public Transform scrollViewContent;
 	public GameObject crewItemPrefab;
 	public GameObject backButtonPrefab;
@@ -19,10 +20,15 @@ public class PilotsUI : MonoBehaviour
 	private void Awake()
 	{
 		GeneratePilotsUI();
-		TerminalUIManager.onTabButtonClicked += () => pilotProfilePanel.SetActive(false);
     }
 
-	private void GeneratePilotsUI()
+    private void OnEnable()
+    {
+		pilotList.SetActive(true);
+		pilotProfilePanel.SetActive(false);
+    }
+
+    private void GeneratePilotsUI()
     {
 		PopulateScrollView();
 		GeneratePilotProfilePanel();
@@ -41,10 +47,10 @@ public class PilotsUI : MonoBehaviour
 			crewItem.GetComponentInChildren<Text>().text = pilot.pilotName;
 		}
 	}
-
+	
 	private void OpenPilotProfilePanel(Pilot pilot)
 	{
-		crewPanel.SetActive(false);
+		pilotList.SetActive(false);
 		pilotProfilePanel.SetActive(true);
 		shipAvatar.sprite = pilot.ship.shipAvatar;
 		pilotAvatar.sprite = pilot.avatar;
@@ -54,14 +60,12 @@ public class PilotsUI : MonoBehaviour
 	private void GeneratePilotProfilePanel()
 	{
 		pilotProfilePanel = new GameObject(PilotsConstants.profilePanelName);
-
-		// Sibling of the crew panel so that it can be active while the crew panel is inactive. 
-		pilotProfilePanel.transform.parent = crewPanel.transform.parent.transform;
+		pilotProfilePanel.transform.SetParent(crewPanel.transform);
 
 		RectTransform rectTransform = pilotProfilePanel.AddComponent<RectTransform>();
 		rectTransform.Reset();
 		rectTransform.Stretch();
-
+			
 		pilotProfilePanel.SetActive(false);
 	}
 
@@ -117,23 +121,19 @@ public class PilotsUI : MonoBehaviour
 
         if (pilotProfilePanel != null)
         {
-            backButton.transform.parent = pilotProfilePanel.transform;
+			backButton.transform.SetParent(pilotProfilePanel.transform);
         }
 
         RectTransform rectTransform = backButton.GetComponent<RectTransform>();
         rectTransform.Reset();
         rectTransform.SetAnchors(PilotsConstants.backButtonAnchors);
 
-        //Button button = backButton.GetComponent<Button>();
-        //button.onClick.RemoveAllListeners();
-        //button.onClick.AddListener(delegate { BackToCrewPanel(); });
-        backButton.GetComponent<Button>().AddOnClick(() => BackToCrewPanel());
-		//backButton.GetComponentInChildren<Text>().text = PilotsConstants.backButtonText; 
+        backButton.GetComponent<Button>().AddOnClick(() => BackToPilotList());
     }
 	
-	private void BackToCrewPanel()
+	private void BackToPilotList()
 	{
-		crewPanel.SetActive(true);
+		pilotList.SetActive(true);
 		pilotProfilePanel.SetActive(false); 
 	}
 }

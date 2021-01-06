@@ -17,8 +17,6 @@ public class TerminalUIManager : MonoBehaviour
     public PilotsUI pilotsUI;
     public GameObject upgradesPanel;
 
-    public static event System.Action onTabButtonClicked; 
-
     public enum Tab
     {
         Missions, Messages, Analytics, Crew, Upgrades
@@ -69,13 +67,6 @@ public class TerminalUIManager : MonoBehaviour
             case Tab.Upgrades:
                 upgradesPanel.SetActive(true);
                 break;
-        }
-
-        // We need to close the pilots profile panel if the player navigates away from it 
-        // without hitting the back button, as otherwise it will conflict with the other panels.
-        if (pilotsUI.pilotProfilePanel != null && pilotsUI.pilotProfilePanel.activeSelf)
-        {
-            onTabButtonClicked?.Invoke();   
         }
     }
 
