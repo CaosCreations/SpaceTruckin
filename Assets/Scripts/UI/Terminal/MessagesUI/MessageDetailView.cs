@@ -1,39 +1,44 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class MessageDetailView : MonoBehaviour
 {
-    public Text messageDetail;
-    public Button jobAcceptButton;
+    public Text messageSubjectText;
+    public Text messageSenderText;
+    public Text messageBodyText;
+    public Button missionAcceptButton;
+    public MissionDetailsUI missionDetailsUI;
 
-    public void SetMessage(Message message)
+    public void SetMessageDetails(Message message)
     {
-        messageDetail.text = "From: " + message.sender + "\n";
-        messageDetail.text += "Subject: " + message.subject + "\n\n";
-        messageDetail.text += message.body + "\n";
+        messageSubjectText.text = message.subject;
+        messageSenderText.text = message.sender;
 
-        //if (message.job != null)
-        //{
-        //    messageDetail.text += "I've got a job for you.";
-        //}
+        if (string.IsNullOrEmpty(message.body))
+        {
+            messageBodyText.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tortor dui, elementum eu convallis non, cursus ac dolor. Quisque dictum est quam, et pellentesque velit rutrum eget. Nullam interdum ultricies velit pharetra aliquet. Integer sodales a magna quis ornare. Ut vulputate nibh ipsum. Vivamus tincidunt nec nisi in fermentum. Mauris consequat mi vel odio consequat, eget gravida urna lobortis. Pellentesque eu ipsum consectetur, pharetra nulla in, consectetur turpis. Curabitur ornare eu nisi tempus varius. Phasellus vel ex mauris. Fusce fermentum mi id elementum gravida.";
+
+        }
+        messageBodyText.text = messageBodyText.text.InsertNewLines();
+
+        if (message.mission != null)
+        {
+            messageBodyText.text += "\n\nI've got a mission for you. See the details below:";
+            messageBodyText.text += "\n\n" + missionDetailsUI.BuildDetailsString(message.mission);
+        }
     }
 
-    //public void SetJobAcceptButton(Job job)
-    //{
-    //    Text buttonText = jobAcceptButton.GetComponentInChildren<Text>();
-    //    buttonText.text = "Accept " + job.title;
+    public void SetMissionAcceptButton(Mission mission)
+    {
+        Text buttonText = missionAcceptButton.GetComponentInChildren<Text>();
+        buttonText.text = "Accept " + mission.missionName;
 
-    //    jobAcceptButton.interactable = job.isAccepted ? false : true;  
-
-    //    jobAcceptButton.onClick.RemoveAllListeners();
-    //    jobAcceptButton.onClick.AddListener(() =>
-    //    {
-    //        buttonText.text = "Job Accepted!";
-    //        jobAcceptButton.interactable = false;
-    //        onJobAccept?.Invoke(job);
-    //    });
-    //}
+        missionAcceptButton.interactable = !mission.hasBeenAccepted;
+        missionAcceptButton.AddOnClick(() =>
+        {
+            buttonText.text = "Mission Accepted!";
+            missionAcceptButton.interactable = false;
+            mission.hasBeenAccepted = true;
+        });
+    }
 }

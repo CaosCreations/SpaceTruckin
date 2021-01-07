@@ -1,16 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class MessageButtonHandler : MonoBehaviour
 {
-    public Button button;
-    public Text text;
-
-    public void SetMessage(Message message)
+    public void Init(Message message, UnityEngine.Events.UnityAction callback)
     {
-        //Debug.Log($"Message being set: {message}");
-        text.text = $"{message.sender}\n{message.subject}";
+        GetComponent<Button>().AddOnClick(callback);
+        GetComponentInChildren<Text>().text = $"<b>{message.sender}</b>: {message.subject}";
     }
 }

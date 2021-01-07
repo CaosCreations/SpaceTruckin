@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class MessagesManager : MonoBehaviour
 {
-    public GameObject messageParent;
+    public GameObject scrollViewContent;
     public GameObject messageItemPrefab;
     public MessageContainer messageContainer;
 
@@ -15,78 +12,89 @@ public class MessagesManager : MonoBehaviour
     public MessageDetailView messageDetailViewHandler;
     public Button backButton;
 
-    //private void Start()
-    //{
-    //    backButton.onClick.RemoveAllListeners();
-    //    backButton.onClick.AddListener(GoToListView);
-    //    AddMessages();
-    //    GoToListView();
-    //}
+    private void Start()
+    {
+        backButton.AddOnClick(() => GoToListView());
+    }
 
-    //public void CheckMessagesToAdd(long moneyMade)
-    //{
-    //    UnlockMessages();
-    //    CleanScrollView();
-    //    AddMessages();
-    //}
+    private void OnEnable()
+    {
+        AddMessages();
+        GoToListView();
+    }
 
-    //private void UnlockMessages()
-    //{
-    //    foreach (Message message in messageContainer.messages)
-    //    {
-    //        if (!message.unlocked)
-    //        {
-    //            if (PlayerManager.Instance.playerData.playerMoney > message.condition)
-    //            {
-    //                message.unlocked = true;
-    //            }
-    //        }
-    //    }
-    //}
+    public void CheckMessagesToAdd(long moneyMade)
+    {
+        UnlockMessages();
+        CleanScrollView();
+        AddMessages();
+    }
 
-    //private void CleanScrollView()
-    //{
-    //    foreach (Transform child in messageParent.transform)
-    //    {
-    //        Destroy(child.gameObject);
-    //    }
-    //}
+    private void UnlockMessages()
+    {
+        foreach (Message message in messageContainer.messages)
+        {
+            if (!message.unlocked)
+            {
+                if (PlayerManager.Instance.playerData.playerMoney > message.condition)
+                {
+                    message.unlocked = true;
+                }
+            }
+        }
+    }
 
-    //private void AddMessages()
-    //{
-    //    foreach (Message message in messageContainer.messages)
-    //    {
-    //        if (message.unlocked)
-    //        {
-    //            GameObject newMessage = Instantiate(messageItemPrefab, messageParent.transform);
-    //            newMessage.name = "Message";
-    //            MessageButtonHandler buttonHandler = newMessage.GetComponent<MessageButtonHandler>();
-    //            buttonHandler.SetMessage(message);
-    //            buttonHandler.button.onClick.AddListener(delegate { GoToDetailView(message); });  
-    //        }
-    //    }
-    //}
+    private void CleanScrollView()
+    {
+        foreach (Transform child in scrollViewContent.transform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
 
-    //private void GoToDetailView(Message message)
-    //{
-    //    messagesListView.SetActive(false);
-    //    messagesDetailView.SetActive(true);
-    //    messageDetailViewHandler.SetMessage(message);
-        
-    //    if (message.job != null)
-    //    {
-    //        messageDetailViewHandler.SetJobAcceptButton(message.job); 
-    //        messageDetailViewHandler.jobAcceptButton.gameObject.SetActive(true);
-    //    }
-    //    else
-    //    {
-    //        messageDetailViewHandler.jobAcceptButton.gameObject.SetActive(false); 
-    //    }
-    //}
+    private void AddMessages()
+    {
+        foreach (Message message in messageContainer.messages)
+        {
+            if (message != null && message.unlocked)
+            {
+                GameObject newMessage = Instantiate(messageItemPrefab, scrollViewContent.transform);
+                newMessage.name = "Message";
+                MessageButtonHandler buttonHandler = newMessage.GetComponent<MessageButtonHandler>();
+                buttonHandler.Init(message, () => GoToDetailView(message));
+            }
+        }
+    }
 
-    //private void GoToListView()
-    //{
-    //    messagesListView.SetActive(true);
-    //    messagesDetailView.SetActive(false);
-    //}
+    private void GoToDetailView(Message message)
+    {
+        messagesListView.SetActive(false);
+        messagesDetailView.SetActive(true);
+        messageDetailViewHandler.SetMessageDetails(message);
+
+        if (message.mission != null)
+        {
+            messageDetailViewHandler.SetMissionAcceptButton(message.mission);
+            messageDetailViewHandler.missionAcceptButton.gameObject.SetActive(true);
+        }
+        else
+        {
+            messageDetailViewHandler.missionAcceptButton.gameObject.SetActive(false);
+        }
+    }
+
+    private void GoToListView()
+    {
+        messagesListView.SetActive(true);
+        messagesDetailView.SetActive(false);
+    }
+
+    public void GenerateMessageItem()
+    {
+        GameObject newItem = new GameObject().ScaffoldUI(
+            name: "MessageItem", parent: scrollViewContent, anchors: (Vector2.zero, Vector2.one));
+
+        newItem.AddComponent<Button>();
+        newItem.AddComponent<MessageButtonHandler>();
+    }
 }
