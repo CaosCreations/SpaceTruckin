@@ -5,8 +5,10 @@ using UnityEngine.UI;
 public class PilotsUI : MonoBehaviour
 {
 	public GameObject crewPanel;
-	public GameObject pilotList; 
+	public GameObject hiredPilotsList;
+	public GameObject pilotsToHireList; 
 	public Transform scrollViewContent;
+
 	public GameObject crewItemPrefab;
 	public GameObject backButtonPrefab;
 
@@ -24,7 +26,7 @@ public class PilotsUI : MonoBehaviour
 
     private void OnEnable()
     {
-		pilotList.SetActive(true);
+		TogglePilotLists();
 		pilotProfilePanel.SetActive(false);
     }
 
@@ -50,7 +52,7 @@ public class PilotsUI : MonoBehaviour
 	
 	private void OpenPilotProfilePanel(Pilot pilot)
 	{
-		pilotList.SetActive(false);
+		hiredPilotsList.SetActive(false);
 		pilotProfilePanel.SetActive(true);
 		shipAvatar.sprite = pilot.ship.shipAvatar;
 		pilotAvatar.sprite = pilot.avatar;
@@ -133,7 +135,13 @@ public class PilotsUI : MonoBehaviour
 	
 	private void BackToPilotList()
 	{
-		pilotList.SetActive(true);
+		TogglePilotLists();
 		pilotProfilePanel.SetActive(false); 
 	}
+
+	private void TogglePilotLists()
+    {
+		hiredPilotsList.SetActive(!hiredPilotsList.activeSelf);
+		pilotsToHireList.SetActive(!pilotsToHireList.activeSelf);
+    }
 }
