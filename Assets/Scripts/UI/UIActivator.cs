@@ -8,11 +8,19 @@ public class UIActivator : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        UIManager.SetCanInteract(type, true);
+        PlayerMovement player = other.gameObject.GetComponent<PlayerMovement>();
+        if(player != null)
+        {
+            UIManager.SetCanInteract(type, true);
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        UIManager.SetCanInteract(type, false);
+        PlayerMovement player = other.gameObject.GetComponent<PlayerMovement>();
+        if (player != null)
+        {
+            UIManager.SetCanInteract(type, false);
+        }
     }
 }
