@@ -42,7 +42,6 @@ public class AIBoundingPlane : MonoBehaviour
         {
             for (int i = 0; i < boundaryVertices.Count; i++)
             {
-
                 Gizmos.DrawSphere(boundaryVertices[i], 0.25f);
             }
         }

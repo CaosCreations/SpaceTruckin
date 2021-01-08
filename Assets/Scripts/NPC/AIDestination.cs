@@ -43,7 +43,7 @@ public class AIDestination : MonoBehaviour
     private void MoveDestination()
     {
         Vector2 xzPosition = GetNextDestination();
-        transform.position = new Vector3(xzPosition.x, transform.position.y, xzPosition.y);
+        transform.position = new Vector3(xzPosition.x, 0, xzPosition.y);
     }
 
     private void DrawDestination()
