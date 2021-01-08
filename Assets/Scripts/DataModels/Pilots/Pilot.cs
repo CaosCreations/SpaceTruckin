@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 public enum Species
 {
     Human, Helicid, Myorijiin, Oshunian, HelmetGuy, Vesta
@@ -11,11 +8,11 @@ public enum Species
 public class Pilot : ScriptableObject
 {
     [Header("Leave this blank. It is set automatically.")]
-    public int id; 
+    public int id;
 
-    public int xp, level, missionsCompleted;
+    public int xp, level, missionsCompleted, hireCost;
     public string pilotName, shipName, description;
-    public bool hired, onMission, isAssignedToShip; 
+    public bool isHired, isOnMission, isAssignedToShip; 
     public Species species;
     public Ship ship; 
     public Sprite avatar;

@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public class PilotsManager : MonoBehaviour
-{
+{   
     public static PilotsManager Instance;
 
-    public Pilot[] pilots;
+    public PilotsContainer pilotsContainer;
 
     void Awake()
     {
@@ -23,20 +24,36 @@ public class PilotsManager : MonoBehaviour
 
     private void AssignUniqueIds()
     {
-        for (int i = 0; i < Instance.pilots.Length; i++)
+        for (int i = 0; i < Instance.pilotsContainer.pilots.Length; i++)
         {
-            Instance.pilots[i].id = i;
+            Instance.pilotsContainer.pilots[i].id = i;
         }
     }
 
-    public static void AwardXp(int index, int xp)
+    public void AwardXp(int index, int xp)
     {
-        for (int i = 0; i < Instance.pilots.Length; i++)
+        for (int i = 0; i < Instance.pilotsContainer.pilots.Length; i++)
         {
-            if (Instance.pilots[i] != null && index == Instance.pilots[i].id)
+            if (Instance.pilotsContainer.pilots[i] != null && index == Instance.pilotsContainer.pilots[i].id)
             {
-                Instance.pilots[i].xp += xp;
+                Instance.pilotsContainer.pilots[i].xp += xp;
             }
         }
+    }
+
+    public void HirePilot(int index)
+    {
+        Instance.pilotsContainer.pilots[index].isHired = true;
+    }
+
+    public Pilot[] GetHiredPilots()
+    {
+        return pilotsContainer.pilots.ToList().Where(p => p.isHired).ToArray();
+        
+    }
+
+    public Pilot[] GetPilotsForHire()
+    {
+        return pilotsContainer.pilots.ToList().Where(p => !p.isHired).ToArray();
     }
 }

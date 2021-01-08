@@ -1,60 +1,128 @@
 ﻿using System.Text;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI; 
 
 public class PilotsUI : MonoBehaviour
 {
+	// The parent object 
 	public GameObject crewPanel;
-	public GameObject pilotList; 
-	public Transform scrollViewContent;
-	public GameObject crewItemPrefab;
-	public GameObject backButtonPrefab;
+	
+	/// <summary>
+	///		There are two scroll views, one for the list of currently hired pilots,
+	///		and the other for the list of pilots that are available to hire. 
+	/// </summary>
+	public GameObject hiredPilotsList;
+	public GameObject hiredPilotsListHeader;
+	public Transform hiredPilotsScrollViewContent;
+	
+	public GameObject pilotsForHireList; 
+	public GameObject pilotsForHireListHeader;
+	public Transform pilotsForHireScrollViewContent;
 
-	public GameObject pilotProfilePanel;
+	public GameObject crewItemPrefab;
+	public GameObject buttonPrefab;
+	public GameObject backButtonPrefab;
+	public GameObject hireButtonPrefab;
+	private Button hireButton;	
+
+	private GameObject pilotProfilePanel;
 	private Text pilotDetailsText; 
 	private Image pilotAvatar;
 	private Image shipAvatar; 
 
-	public PilotsContainer pilotsContainer;
-
 	private void Awake()
 	{
-		GeneratePilotsUI();
+		GeneratePilotProfile();
     }
 
-    private void OnEnable()
+    private void GeneratePilotProfile()
     {
-		pilotList.SetActive(true);
-		pilotProfilePanel.SetActive(false);
-    }
-
-    private void GeneratePilotsUI()
-    {
-		PopulateScrollView();
 		GeneratePilotProfilePanel();
         GenerateShipAvatar();
         GeneratePilotAvatar();
 		GeneratePilotDetails();
-        GenerateBackButton();
+		GeneratePilotProfileButton(
+			backButtonPrefab, PilotsConstants.backButtonAnchors, () => SetPilotListVisibility(true));
     }
 
-	private void PopulateScrollView()
+	private void OnEnable()
 	{
-		foreach (Pilot pilot in pilotsContainer.pilots)
-		{
-            GameObject crewItem = Instantiate(crewItemPrefab, scrollViewContent);
-			crewItem.GetComponent<Button>().AddOnClick(() => OpenPilotProfilePanel(pilot));
-			crewItem.GetComponentInChildren<Text>().text = pilot.pilotName;
-		}
+		SetPilotListVisibility(true);
+		PopulateScrollViews();
 	}
-	
-	private void OpenPilotProfilePanel(Pilot pilot)
+
+	private void SetPilotListVisibility(bool visible)
 	{
-		pilotList.SetActive(false);
-		pilotProfilePanel.SetActive(true);
+		hiredPilotsList.SetActive(visible);
+		hiredPilotsListHeader.SetActive(visible);
+		pilotsForHireList.SetActive(visible);
+		pilotsForHireListHeader.SetActive(visible);
+		pilotProfilePanel.SetActive(!visible);
+	}
+
+	private void PopulateScrollViews()
+    {
+		PopulateScrollView(PilotsManager.Instance.GetHiredPilots(), hiredPilotsScrollViewContent);
+		PopulateScrollView(PilotsManager.Instance.GetPilotsForHire(), pilotsForHireScrollViewContent);
+    }
+
+	private void PopulateScrollView(Pilot[] pilots, Transform scrollViewContent)
+	{
+		CleanScrollView(scrollViewContent);
+		if (pilots != null)
+        {
+			foreach (Pilot pilot in pilots)
+			{
+				GameObject crewItem = Instantiate(crewItemPrefab, scrollViewContent);
+				crewItem.GetComponent<Button>().AddOnClick(() => ShowPilotProfilePanel(pilot));
+				crewItem.GetComponentInChildren<Text>().text = pilot.pilotName;
+			}
+        }
+	}
+
+	private void CleanScrollView(Transform scrollViewContent)
+    {
+		foreach (Transform transform in scrollViewContent)
+        {
+			Destroy(transform.gameObject);
+        }
+    }
+	
+	private void ShowPilotProfilePanel(Pilot pilot)
+	{
+		SetPilotListVisibility(visible: false);
 		shipAvatar.sprite = pilot.ship.shipAvatar;
 		pilotAvatar.sprite = pilot.avatar;
 		pilotDetailsText.text = BuildDetailsString(pilot);
+
+		// If the pilot doesn't already work for us, then set up a button to handle hiring him 
+		if (!pilot.isHired)
+        {
+			hireButton = GeneratePilotProfileButton(
+				hireButtonPrefab, PilotsConstants.hireButtonAnchors, () => HirePilot(pilot));
+		}
+		else if (pilot.isHired && hireButton != null)
+        {
+			Destroy(hireButton.gameObject);
+        }
+	}
+
+	private Button GeneratePilotProfileButton(GameObject prefab, (Vector2, Vector2) anchors, UnityAction callback)
+	{
+		GameObject newButton = Instantiate(prefab);
+		if (pilotProfilePanel != null)
+		{
+			newButton.transform.SetParent(pilotProfilePanel.transform);
+		}
+
+		RectTransform rectTransform = newButton.GetComponent<RectTransform>();
+		rectTransform.Reset();
+		rectTransform.SetAnchors(anchors);
+
+		Button button = newButton.GetComponent<Button>();
+		button.AddOnClick(callback);
+		return button;
 	}
 
 	private void GeneratePilotProfilePanel()
@@ -115,25 +183,15 @@ public class PilotsUI : MonoBehaviour
 		return builder.ToString();
 	}
 
-	private void GenerateBackButton()
+	private void HirePilot(Pilot pilot)
     {
-		GameObject backButton = Instantiate(backButtonPrefab);
-
-        if (pilotProfilePanel != null)
+		if (pilot != null && PlayerManager.Instance.CanSpendMoney(pilot.hireCost))
         {
-			backButton.transform.SetParent(pilotProfilePanel.transform);
+			PlayerManager.Instance.SpendMoney(pilot.hireCost);
+			PilotsManager.Instance.HirePilot(pilot.id);
+			hireButton.interactable = false;
+			hireButton.GetComponentInChildren<Text>().text = "Pilot Hired!";
+			PopulateScrollViews();
         }
-
-        RectTransform rectTransform = backButton.GetComponent<RectTransform>();
-        rectTransform.Reset();
-        rectTransform.SetAnchors(PilotsConstants.backButtonAnchors);
-
-        backButton.GetComponent<Button>().AddOnClick(() => BackToPilotList());
     }
-	
-	private void BackToPilotList()
-	{
-		pilotList.SetActive(true);
-		pilotProfilePanel.SetActive(false); 
-	}
 }
