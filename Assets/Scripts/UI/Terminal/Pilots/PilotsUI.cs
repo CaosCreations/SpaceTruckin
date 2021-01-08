@@ -6,9 +6,13 @@ using UnityEngine.UI;
 public class PilotsUI : MonoBehaviour
 {
 	public GameObject crewPanel;
+
 	public GameObject hiredPilotsList;
-	public GameObject pilotsForHireList; 
+	public GameObject hiredPilotsListHeader;
 	public Transform hiredPilotsScrollViewContent;
+	
+	public GameObject pilotsForHireList; 
+	public GameObject pilotsForHireListHeader;
 	public Transform pilotsForHireScrollViewContent;
 
 	public GameObject crewItemPrefab;
@@ -31,7 +35,8 @@ public class PilotsUI : MonoBehaviour
 
     private void OnEnable()
     {
-		TogglePilotLists();
+		// check active on prefab state 
+		TogglePilotLists(); // check toggle when pressing fleet btn while on fleet tab 
 		pilotProfilePanel.SetActive(false);
     }
 
@@ -185,6 +190,8 @@ public class PilotsUI : MonoBehaviour
 	private void TogglePilotLists()
     {
 		hiredPilotsList.SetActive(!hiredPilotsList.activeSelf);
+		hiredPilotsListHeader.SetActive(!hiredPilotsListHeader.activeSelf);
 		pilotsForHireList.SetActive(!pilotsForHireList.activeSelf);
+		pilotsForHireListHeader.SetActive(!pilotsForHireListHeader.activeSelf);
 	}
 }
