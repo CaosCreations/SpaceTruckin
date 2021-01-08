@@ -32,7 +32,6 @@ public class PilotsUI : MonoBehaviour
     private void OnEnable()
     {
 		TogglePilotLists();
-		PopulateScrollViews();
 		pilotProfilePanel.SetActive(false);
     }
 
@@ -54,6 +53,7 @@ public class PilotsUI : MonoBehaviour
 
 	private void PopulateScrollView(Pilot[] pilots, Transform scrollViewContent)
 	{
+		CleanScrollView(scrollViewContent);
 		if (pilots != null)
         {
 			foreach (Pilot pilot in pilots)
@@ -64,6 +64,14 @@ public class PilotsUI : MonoBehaviour
 			}
         }
 	}
+
+	private void CleanScrollView(Transform scrollViewContent)
+    {
+		foreach (Transform transform in scrollViewContent)
+        {
+			Destroy(transform.gameObject);
+        }
+    }
 	
 	private void OpenPilotProfilePanel(Pilot pilot)
 	{
@@ -164,6 +172,7 @@ public class PilotsUI : MonoBehaviour
 			PilotsManager.Instance.HirePilot(pilot.id);
 			hireButton.interactable = false;
 			hireButton.GetComponentInChildren<Text>().text = "Pilot Hired!";
+			PopulateScrollViews();
         }
     }
 	
@@ -177,5 +186,5 @@ public class PilotsUI : MonoBehaviour
     {
 		hiredPilotsList.SetActive(!hiredPilotsList.activeSelf);
 		pilotsForHireList.SetActive(!pilotsForHireList.activeSelf);
-    }
+	}
 }
