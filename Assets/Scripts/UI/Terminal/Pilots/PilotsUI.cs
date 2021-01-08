@@ -36,11 +36,10 @@ public class PilotsUI : MonoBehaviour
 		PopulateScrollView(hiredPilotsScrollViewContent);
 		PopulateScrollView(pilotsForHireScrollViewContent);
 		GeneratePilotProfilePanel();
+        GeneratePilotProfileButton(BackToPilotList, PilotsConstants.backButtonAnchors);
         GenerateShipAvatar();
         GeneratePilotAvatar();
 		GeneratePilotDetails();
-        GeneratePilotProfileButton(BackToPilotList, PilotsConstants.backButtonAnchors);
-		GeneratePilotProfileButton(HirePilot, PilotsConstants.hireButtonAnchors);
     }	
 
 	private void PopulateScrollView(Transform scrollViewContent)
@@ -60,6 +59,12 @@ public class PilotsUI : MonoBehaviour
 		shipAvatar.sprite = pilot.ship.shipAvatar;
 		pilotAvatar.sprite = pilot.avatar;
 		pilotDetailsText.text = BuildDetailsString(pilot);
+
+		// If the pilot doesn't already work for us, then set up a button to handle hiring him 
+		if (!pilot.hired)
+        {
+			GeneratePilotProfileButton(() => HirePilot(pilot), PilotsConstants.hireButtonAnchors);
+		}
 	}
 
 	private void GeneratePilotProfilePanel()
@@ -134,6 +139,15 @@ public class PilotsUI : MonoBehaviour
         rectTransform.SetAnchors(anchors);
 
         newButton.GetComponent<Button>().AddOnClick(callback);
+    }
+
+	private void HirePilot(Pilot pilot)
+    {
+		if (pilot != null && PlayerManager.Instance.CanSpendMoney(pilot.hireCost))
+        {
+			PlayerManager.Instance.SpendMoney(pilot.hireCost);
+			PilotsManager.Instance.HirePilot(pilot);
+        }
     }
 	
 	private void BackToPilotList()

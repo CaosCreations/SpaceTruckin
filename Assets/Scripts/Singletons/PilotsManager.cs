@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 public class PilotsManager : MonoBehaviour
-{
+{   
     public static PilotsManager Instance;
 
     public Pilot[] pilots;
@@ -29,7 +29,7 @@ public class PilotsManager : MonoBehaviour
         }
     }
 
-    public static void AwardXp(int index, int xp)
+    public void AwardXp(int index, int xp)
     {
         for (int i = 0; i < Instance.pilots.Length; i++)
         {
@@ -39,4 +39,13 @@ public class PilotsManager : MonoBehaviour
             }
         }
     }
+
+    public void HirePilot(Pilot pilot)
+    {
+        pilot.hired = true;
+        int index = pilots.Length;
+        pilot.id = index; 
+        pilots[index] = pilot;
+    }
+
 }
