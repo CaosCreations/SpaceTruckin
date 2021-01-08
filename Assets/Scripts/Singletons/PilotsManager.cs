@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public class PilotsManager : MonoBehaviour
 {   
@@ -45,16 +46,14 @@ public class PilotsManager : MonoBehaviour
         Instance.pilotsContainer.pilots[index].isHired = true;
     }
 
+    public Pilot[] GetHiredPilots()
+    {
+        return pilotsContainer.pilots.ToList().Where(p => p.isHired).ToArray();
+        
+    }
+
     public Pilot[] GetPilotsForHire()
     {
-        var pilotsForHire = new System.Collections.Generic.List<Pilot>();
-        for (int i = 0; i < pilotsContainer.pilots.Length; i++)
-        {
-            if (pilotsContainer.pilots[i] != null && !pilotsContainer.pilots[i].isHired)
-            {
-                pilotsForHire.Add(pilotsContainer.pilots[i]);
-            }
-        }
-        return pilotsForHire.ToArray();
+        return pilotsContainer.pilots.ToList().Where(p => !p.isHired).ToArray();
     }
 }
