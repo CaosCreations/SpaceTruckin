@@ -4,7 +4,7 @@ public class PilotsManager : MonoBehaviour
 {   
     public static PilotsManager Instance;
 
-    public Pilot[] pilots;
+    public PilotsContainer pilotsContainer;
 
     void Awake()
     {
@@ -23,19 +23,19 @@ public class PilotsManager : MonoBehaviour
 
     private void AssignUniqueIds()
     {
-        for (int i = 0; i < Instance.pilots.Length; i++)
+        for (int i = 0; i < Instance.pilotsContainer.pilots.Length; i++)
         {
-            Instance.pilots[i].id = i;
+            Instance.pilotsContainer.pilots[i].id = i;
         }
     }
 
     public void AwardXp(int index, int xp)
     {
-        for (int i = 0; i < Instance.pilots.Length; i++)
+        for (int i = 0; i < Instance.pilotsContainer.pilots.Length; i++)
         {
-            if (Instance.pilots[i] != null && index == Instance.pilots[i].id)
+            if (Instance.pilotsContainer.pilots[i] != null && index == Instance.pilotsContainer.pilots[i].id)
             {
-                Instance.pilots[i].xp += xp;
+                Instance.pilotsContainer.pilots[i].xp += xp;
             }
         }
     }
@@ -43,21 +43,21 @@ public class PilotsManager : MonoBehaviour
     public void HirePilot(Pilot pilot)
     {
         pilot.isHired = true;
-        int index = pilots.Length;
+        int index = pilotsContainer.pilots.Length;
         pilot.id = index; 
-        pilots[index] = pilot;
+        pilotsContainer.pilots[index] = pilot;
     }
 
     public Pilot[] GetPilotsForHire()
     {
-        Pilot[] pilotsForHire = new Pilot[] { };
-        for (int i = 0; i < pilots.Length; i++)
+        var pilotsForHire = new System.Collections.Generic.List<Pilot>();
+        for (int i = 0; i < pilotsContainer.pilots.Length; i++)
         {
-            if (pilots[i] != null && !pilots[i].isHired)
+            if (pilotsContainer.pilots[i] != null && !pilotsContainer.pilots[i].isHired)
             {
-                pilotsForHire[i] = pilots[i];
+                pilotsForHire.Add(pilotsContainer.pilots[i]);
             }
         }
-        return pilotsForHire;
+        return pilotsForHire.ToArray();
     }
 }
