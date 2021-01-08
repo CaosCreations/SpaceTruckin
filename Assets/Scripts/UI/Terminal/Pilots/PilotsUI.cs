@@ -31,40 +31,35 @@ public class PilotsUI : MonoBehaviour
 	private Image pilotAvatar;
 	private Image shipAvatar; 
 
-    private void OnEnable()
-    {
-		ShowPilotLists();
-		PopulateScrollViews();
-    }
-
-	private void ShowPilotLists()
-    {
-		HideOrShowPilotLists(active: true);
-		pilotProfilePanel.SetActive(false);
-    }
-
-	private void HideOrShowPilotLists(bool active)
-	{
-		hiredPilotsList.SetActive(active);
-		hiredPilotsListHeader.SetActive(active);
-		pilotsForHireList.SetActive(active);
-		pilotsForHireListHeader.SetActive(active);
-	}
-
 	private void Awake()
 	{
-		GeneratePilotsUI();
+		GeneratePilotProfile();
     }
 
-    private void GeneratePilotsUI()
+    private void GeneratePilotProfile()
     {
-		//PopulateScrollViews();
 		GeneratePilotProfilePanel();
         GenerateShipAvatar();
         GeneratePilotAvatar();
 		GeneratePilotDetails();
-		GeneratePilotProfileButton(backButtonPrefab, PilotsConstants.backButtonAnchors, ShowPilotLists);
-    }	
+		GeneratePilotProfileButton(
+			backButtonPrefab, PilotsConstants.backButtonAnchors, () => SetPilotListVisibility(true));
+    }
+
+	private void OnEnable()
+	{
+		SetPilotListVisibility(true);
+		PopulateScrollViews();
+	}
+
+	private void SetPilotListVisibility(bool visible)
+	{
+		hiredPilotsList.SetActive(visible);
+		hiredPilotsListHeader.SetActive(visible);
+		pilotsForHireList.SetActive(visible);
+		pilotsForHireListHeader.SetActive(visible);
+		pilotProfilePanel.SetActive(!visible);
+	}
 
 	private void PopulateScrollViews()
     {
@@ -96,8 +91,7 @@ public class PilotsUI : MonoBehaviour
 	
 	private void ShowPilotProfilePanel(Pilot pilot)
 	{
-		HideOrShowPilotLists(active: false);
-		pilotProfilePanel.SetActive(true);
+		SetPilotListVisibility(visible: false);
 		shipAvatar.sprite = pilot.ship.shipAvatar;
 		pilotAvatar.sprite = pilot.avatar;
 		pilotDetailsText.text = BuildDetailsString(pilot);
@@ -108,10 +102,27 @@ public class PilotsUI : MonoBehaviour
 			hireButton = GeneratePilotProfileButton(
 				hireButtonPrefab, PilotsConstants.hireButtonAnchors, () => HirePilot(pilot));
 		}
-		else if (hireButton != null)
+		else if (pilot.isHired && hireButton != null)
         {
 			Destroy(hireButton.gameObject);
         }
+	}
+
+	private Button GeneratePilotProfileButton(GameObject prefab, (Vector2, Vector2) anchors, UnityAction callback)
+	{
+		GameObject newButton = Instantiate(prefab);
+		if (pilotProfilePanel != null)
+		{
+			newButton.transform.SetParent(pilotProfilePanel.transform);
+		}
+
+		RectTransform rectTransform = newButton.GetComponent<RectTransform>();
+		rectTransform.Reset();
+		rectTransform.SetAnchors(anchors);
+
+		Button button = newButton.GetComponent<Button>();
+		button.AddOnClick(callback);
+		return button;
 	}
 
 	private void GeneratePilotProfilePanel()
@@ -171,23 +182,6 @@ public class PilotsUI : MonoBehaviour
 		builder.AppendLine("Missions completed: " + pilot.missionsCompleted);
 		return builder.ToString();
 	}
-
-	private Button GeneratePilotProfileButton(GameObject prefab, (Vector2, Vector2) anchors, UnityAction callback)
-    {
-		GameObject newButton = Instantiate(prefab);
-        if (pilotProfilePanel != null)
-        {
-			newButton.transform.SetParent(pilotProfilePanel.transform);
-        }
-
-        RectTransform rectTransform = newButton.GetComponent<RectTransform>();
-        rectTransform.Reset();
-        rectTransform.SetAnchors(anchors);
-
-		Button button = newButton.GetComponent<Button>();
-		button.AddOnClick(callback);
-		return button;
-    }
 
 	private void HirePilot(Pilot pilot)
     {
