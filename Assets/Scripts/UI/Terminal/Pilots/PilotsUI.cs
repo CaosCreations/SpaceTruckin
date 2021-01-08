@@ -33,8 +33,8 @@ public class PilotsUI : MonoBehaviour
 
     private void GeneratePilotsUI()
     {
-		PopulateScrollView(hiredPilotsScrollViewContent);
-		PopulateScrollView(pilotsForHireScrollViewContent);
+		PopulateScrollView(pilotsContainer.pilots, hiredPilotsScrollViewContent);
+		PopulateScrollView(PilotsManager.Instance.GetPilotsForHire(), pilotsForHireScrollViewContent);
 		GeneratePilotProfilePanel();
         GeneratePilotProfileButton(BackToPilotList, PilotsConstants.backButtonAnchors);
         GenerateShipAvatar();
@@ -42,9 +42,9 @@ public class PilotsUI : MonoBehaviour
 		GeneratePilotDetails();
     }	
 
-	private void PopulateScrollView(Transform scrollViewContent)
+	private void PopulateScrollView(Pilot[] pilots, Transform scrollViewContent)
 	{
-		foreach (Pilot pilot in pilotsContainer.pilots)
+		foreach (Pilot pilot in pilots)
 		{
             GameObject crewItem = Instantiate(crewItemPrefab, scrollViewContent);
 			crewItem.GetComponent<Button>().AddOnClick(() => OpenPilotProfilePanel(pilot));
@@ -61,7 +61,7 @@ public class PilotsUI : MonoBehaviour
 		pilotDetailsText.text = BuildDetailsString(pilot);
 
 		// If the pilot doesn't already work for us, then set up a button to handle hiring him 
-		if (!pilot.hired)
+		if (!pilot.isHired)
         {
 			GeneratePilotProfileButton(() => HirePilot(pilot), PilotsConstants.hireButtonAnchors);
 		}
@@ -147,6 +147,7 @@ public class PilotsUI : MonoBehaviour
         {
 			PlayerManager.Instance.SpendMoney(pilot.hireCost);
 			PilotsManager.Instance.HirePilot(pilot);
+			Debug.Log("Pilot hired: " + pilot.pilotName);
         }
     }
 	

@@ -42,10 +42,22 @@ public class PilotsManager : MonoBehaviour
 
     public void HirePilot(Pilot pilot)
     {
-        pilot.hired = true;
+        pilot.isHired = true;
         int index = pilots.Length;
         pilot.id = index; 
         pilots[index] = pilot;
     }
 
+    public Pilot[] GetPilotsForHire()
+    {
+        Pilot[] pilotsForHire = new Pilot[] { };
+        for (int i = 0; i < pilots.Length; i++)
+        {
+            if (pilots[i] != null && !pilots[i].isHired)
+            {
+                pilotsForHire[i] = pilots[i];
+            }
+        }
+        return pilotsForHire;
+    }
 }
