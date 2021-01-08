@@ -8,11 +8,17 @@ public class UIActivator : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        UIManager.SetCanInteract(type, true);
+        if(other.tag == PlayerConstants.objectTag)
+        {
+            UIManager.SetCanInteract(type, true);
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        UIManager.SetCanInteract(type, false);
+        if(other.tag == PlayerConstants.objectTag)
+        {
+            UIManager.SetCanInteract(type, false);
+        }
     }
 }
