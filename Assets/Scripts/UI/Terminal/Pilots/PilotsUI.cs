@@ -14,7 +14,8 @@ public class PilotsUI : MonoBehaviour
 	public GameObject crewItemPrefab;
 	public GameObject buttonPrefab;
 	public GameObject backButtonPrefab;
-	public GameObject hireButtonPrefab; 
+	public GameObject hireButtonPrefab;
+	private Button hireButton; 
 
 	private GameObject pilotProfilePanel;
 	private Text pilotDetailsText; 
@@ -31,20 +32,25 @@ public class PilotsUI : MonoBehaviour
     private void OnEnable()
     {
 		TogglePilotLists();
+		PopulateScrollViews();
 		pilotProfilePanel.SetActive(false);
     }
 
     private void GeneratePilotsUI()
     {
-		PopulateScrollView(pilotsContainer.pilots, hiredPilotsScrollViewContent);
-		PopulateScrollView(PilotsManager.Instance.GetPilotsForHire(), pilotsForHireScrollViewContent);
-
+		PopulateScrollViews();
 		GeneratePilotProfilePanel();
         GenerateShipAvatar();
         GeneratePilotAvatar();
 		GeneratePilotDetails();
         GeneratePilotProfileButton(backButtonPrefab, PilotsConstants.backButtonAnchors, BackToPilotList);
     }	
+
+	private void PopulateScrollViews()
+    {
+		PopulateScrollView(pilotsContainer.pilots, hiredPilotsScrollViewContent);
+		PopulateScrollView(PilotsManager.Instance.GetPilotsForHire(), pilotsForHireScrollViewContent);
+    }
 
 	private void PopulateScrollView(Pilot[] pilots, Transform scrollViewContent)
 	{
@@ -70,7 +76,8 @@ public class PilotsUI : MonoBehaviour
 		// If the pilot doesn't already work for us, then set up a button to handle hiring him 
 		if (!pilot.isHired)
         {
-			GeneratePilotProfileButton(hireButtonPrefab, PilotsConstants.hireButtonAnchors, () => HirePilot(pilot));
+			hireButton = GeneratePilotProfileButton(
+				hireButtonPrefab, PilotsConstants.hireButtonAnchors, () => HirePilot(pilot));
 		}
 	}
 
@@ -132,10 +139,9 @@ public class PilotsUI : MonoBehaviour
 		return builder.ToString();
 	}
 
-	private void GeneratePilotProfileButton(GameObject prefab, (Vector2, Vector2) anchors, UnityAction callback)
+	private Button GeneratePilotProfileButton(GameObject prefab, (Vector2, Vector2) anchors, UnityAction callback)
     {
 		GameObject newButton = Instantiate(prefab);
-
         if (pilotProfilePanel != null)
         {
 			newButton.transform.SetParent(pilotProfilePanel.transform);
@@ -145,7 +151,9 @@ public class PilotsUI : MonoBehaviour
         rectTransform.Reset();
         rectTransform.SetAnchors(anchors);
 
-        newButton.GetComponent<Button>().AddOnClick(callback);
+		Button button = newButton.GetComponent<Button>();
+		button.AddOnClick(callback);
+		return button;
     }
 
 	private void HirePilot(Pilot pilot)
@@ -153,8 +161,9 @@ public class PilotsUI : MonoBehaviour
 		if (pilot != null && PlayerManager.Instance.CanSpendMoney(pilot.hireCost))
         {
 			PlayerManager.Instance.SpendMoney(pilot.hireCost);
-			PilotsManager.Instance.HirePilot(pilot);
-			Debug.Log("Pilot hired: " + pilot.pilotName);
+			PilotsManager.Instance.HirePilot(pilot.id);
+			hireButton.interactable = false;
+			hireButton.GetComponentInChildren<Text>().text = "Pilot Hired!";
         }
     }
 	

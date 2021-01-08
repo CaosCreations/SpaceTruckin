@@ -23,7 +23,7 @@ public class PilotsConstants : MonoBehaviour
     public static ValueTuple<Vector2, Vector2> pilotDetailsAnchors = (new Vector2((1 - borderSize * 2) / 1.5f, borderSize), new Vector2(1 - borderSize, (1 - borderSize * 2) / 1.5f));
     public static ValueTuple<Vector2, Vector2> shipAvatarAnchors = (new Vector2(borderSize, borderSize), new Vector2((1 - borderSize * 2) / 1.5f, 1 - borderSize));
     public static ValueTuple<Vector2, Vector2> backButtonAnchors = (new Vector2(borderSize, borderSize), new Vector2((1 - borderSize * 2) / 3, borderSize + buttonHeight));
-    public static ValueTuple<Vector2, Vector2> hireButtonAnchors = (new Vector2(1 - borderSize * 2 / 3, borderSize), new Vector2((1 - borderSize * 2) / 1.5f, borderSize + buttonHeight));
+    public static ValueTuple<Vector2, Vector2> hireButtonAnchors = (new Vector2((1 - borderSize * 2) / 3, borderSize), new Vector2((1 - borderSize * 2) / 1.5f - borderSize, borderSize + buttonHeight));
 
 
     // Paths to text files containing pilot names 

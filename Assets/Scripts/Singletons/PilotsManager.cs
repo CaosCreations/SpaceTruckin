@@ -40,12 +40,9 @@ public class PilotsManager : MonoBehaviour
         }
     }
 
-    public void HirePilot(Pilot pilot)
+    public void HirePilot(int index)
     {
-        pilot.isHired = true;
-        int index = pilotsContainer.pilots.Length;
-        pilot.id = index; 
-        pilotsContainer.pilots[index] = pilot;
+        Instance.pilotsContainer.pilots[index].isHired = true;
     }
 
     public Pilot[] GetPilotsForHire()
