@@ -6,11 +6,12 @@ public class PilotsUI : MonoBehaviour
 {
 	public GameObject crewPanel;
 	public GameObject hiredPilotsList;
-	public GameObject pilotsToHireList; 
-	public Transform scrollViewContent;
+	public GameObject pilotsForHireList; 
+	public Transform hiredPilotsScrollViewContent;
+	public Transform pilotsForHireScrollViewContent;
 
 	public GameObject crewItemPrefab;
-	public GameObject backButtonPrefab;
+	public GameObject buttonPrefab;
 
 	public GameObject pilotProfilePanel;
 	private Text pilotDetailsText; 
@@ -32,15 +33,17 @@ public class PilotsUI : MonoBehaviour
 
     private void GeneratePilotsUI()
     {
-		PopulateScrollView();
+		PopulateScrollView(hiredPilotsScrollViewContent);
+		PopulateScrollView(pilotsForHireScrollViewContent);
 		GeneratePilotProfilePanel();
         GenerateShipAvatar();
         GeneratePilotAvatar();
 		GeneratePilotDetails();
-        GenerateBackButton();
-    }
+        GeneratePilotProfileButton(BackToPilotList, PilotsConstants.backButtonAnchors);
+		GeneratePilotProfileButton(HirePilot, PilotsConstants.hireButtonAnchors);
+    }	
 
-	private void PopulateScrollView()
+	private void PopulateScrollView(Transform scrollViewContent)
 	{
 		foreach (Pilot pilot in pilotsContainer.pilots)
 		{
@@ -52,7 +55,7 @@ public class PilotsUI : MonoBehaviour
 	
 	private void OpenPilotProfilePanel(Pilot pilot)
 	{
-		hiredPilotsList.SetActive(false);
+		TogglePilotLists();
 		pilotProfilePanel.SetActive(true);
 		shipAvatar.sprite = pilot.ship.shipAvatar;
 		pilotAvatar.sprite = pilot.avatar;
@@ -117,20 +120,20 @@ public class PilotsUI : MonoBehaviour
 		return builder.ToString();
 	}
 
-	private void GenerateBackButton()
+	private void GeneratePilotProfileButton(UnityEngine.Events.UnityAction callback, (Vector2, Vector2) anchors)
     {
-		GameObject backButton = Instantiate(backButtonPrefab);
+		GameObject newButton = Instantiate(buttonPrefab);
 
         if (pilotProfilePanel != null)
         {
-			backButton.transform.SetParent(pilotProfilePanel.transform);
+			newButton.transform.SetParent(pilotProfilePanel.transform);
         }
 
-        RectTransform rectTransform = backButton.GetComponent<RectTransform>();
+        RectTransform rectTransform = newButton.GetComponent<RectTransform>();
         rectTransform.Reset();
-        rectTransform.SetAnchors(PilotsConstants.backButtonAnchors);
+        rectTransform.SetAnchors(anchors);
 
-        backButton.GetComponent<Button>().AddOnClick(() => BackToPilotList());
+        newButton.GetComponent<Button>().AddOnClick(callback);
     }
 	
 	private void BackToPilotList()
@@ -142,6 +145,6 @@ public class PilotsUI : MonoBehaviour
 	private void TogglePilotLists()
     {
 		hiredPilotsList.SetActive(!hiredPilotsList.activeSelf);
-		pilotsToHireList.SetActive(!pilotsToHireList.activeSelf);
+		pilotsForHireList.SetActive(!pilotsForHireList.activeSelf);
     }
 }
