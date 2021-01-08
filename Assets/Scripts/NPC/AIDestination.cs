@@ -18,10 +18,10 @@ public class AIDestination : MonoBehaviour
         MoveDestination();
     }
 
-    private Tuple<float, float> GetNextDestination()
+    private Vector2 GetNextDestination()
     {
         // The x and z values of the next destination's position.
-        Tuple<float, float> xzPosition = new Tuple<float, float>(
+        Vector2 xzPosition = new Vector2(
             UnityEngine.Random.Range(
                 aiBoundingPlane.boundaryVertices[0].x, aiBoundingPlane.boundaryVertices[1].x),
             UnityEngine.Random.Range(
@@ -42,8 +42,8 @@ public class AIDestination : MonoBehaviour
 
     private void MoveDestination()
     {
-        Tuple<float, float> xzPosition = GetNextDestination();
-        transform.position = new Vector3(xzPosition.Item1, transform.position.y, xzPosition.Item2);
+        Vector2 xzPosition = GetNextDestination();
+        transform.position = new Vector3(xzPosition.x, transform.position.y, xzPosition.y);
     }
 
     private void DrawDestination()
