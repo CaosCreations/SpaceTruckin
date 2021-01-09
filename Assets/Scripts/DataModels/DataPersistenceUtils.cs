@@ -13,6 +13,9 @@ public enum PersistentDataType
 
 public interface IPersistentData
 {
+    string folderName;
+    void SaveData();
+    void LoadData();
 
 }
 
@@ -76,6 +79,11 @@ public static class DataPersistenceUtils
     //            return 
     //    }
 
+    //}
+
+    //private static string GetFileName(object )
+    //{
+        // 
     //}
 }
 

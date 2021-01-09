@@ -8,15 +8,17 @@ public enum MissionSource
 }
 
 [CreateAssetMenu(fileName = "Mission", menuName = "ScriptableObjects/Mission", order = 1)]
-public class Mission : ScriptableObject
+public class Mission : ScriptableObject, IPersistentData
 {
     public class MissionSaveData
     {
-        // Data to persist
+
         public bool hasBeenAccepted = false;
-        public Ship ship = null;
         public int daysLeftToComplete;
+        public Ship ship = null;
     }
+
+    private string folderName = "Missions";
 
     [Header("Set in Editor")]
     public int missionDurationInDays;
@@ -52,10 +54,11 @@ public class Mission : ScriptableObject
         return missionSaveData.daysLeftToComplete > 0;
     }
 
-    public void SaveMissionData()
+    public void SaveData()
     {
+        // Mission name must be unique 
         Debug.Log($"Saving mission: {missionName}");
-        string folderPath = Path.Combine(Application.persistentDataPath, missionName);
+        string folderPath = Path.Combine(Application.persistentDataPath, folderName);
         if (!Directory.Exists(folderPath))
         {
             try
@@ -80,5 +83,42 @@ public class Mission : ScriptableObject
         }
         Debug.Log($"Finished saving mission: {missionName}");
 
+    }
+
+    public void LoadData()
+    {
+        Debug.Log($"loading level {missionName}");
+        string folderPath = Path.Combine(Application.persistentDataPath, folderName);
+        string filePath = Path.Combine(folderPath, $"{missionName}.save");
+        if (File.Exists(filePath))
+        {
+            try
+            {
+                string fileContents = File.ReadAllText(filePath);
+                missionSaveData = JsonUtility.FromJson<MissionSaveData>(fileContents);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"{e.Message}\n{e.StackTrace}");
+            }
+        }
+        Debug.Log($"Finished loading level {missionName}");
+    }
+
+    public void Clear()
+    {
+        string folderPath = Path.Combine(Application.persistentDataPath, missionName);
+        string filePath = Path.Combine(folderPath, $"/{missionName}.save");
+        if (File.Exists(filePath))
+        {
+            try
+            {
+                File.Delete(filePath);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"{e.Message}\n{e.StackTrace}");
+            }
+        }
     }
 }
