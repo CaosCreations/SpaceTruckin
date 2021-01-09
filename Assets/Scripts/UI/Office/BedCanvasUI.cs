@@ -48,6 +48,7 @@ public class BedCanvasUI : MonoBehaviour
     private void EndDay()
     {
         MissionsManager.UpdateMissionSchedule();
+        MissionsManager.SavePersistentDataForUpdatedMissions();
         ShipsManager.UpdateHangarShips();
     }
 }

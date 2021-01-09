@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 
-public class MissionsManager : MonoBehaviour
+public class MissionsManager : MonoBehaviour, IDataModelManager
 {
     public static MissionsManager Instance { get; private set; }
 
@@ -34,16 +34,16 @@ public class MissionsManager : MonoBehaviour
     public static List<Mission> GetAcceptedMissions()
     {
         return Instance.missionContainer.missions
-            .Where(x => x.missionSaveData.hasBeenAccepted
-            && x.missionSaveData.ship == null)
+            .Where(x => x.saveData.hasBeenAccepted
+            && x.saveData.ship == null)
             .ToList();
     }
 
     public static List<Mission> GetScheduledMissions()
     {
         return Instance.missionContainer.missions
-            .Where(x => x.missionSaveData.hasBeenAccepted
-            && x.missionSaveData.ship != null)
+            .Where(x => x.saveData.hasBeenAccepted
+            && x.saveData.ship != null)
             .ToList();
     }
 
@@ -52,20 +52,25 @@ public class MissionsManager : MonoBehaviour
         foreach(Mission mission in Instance.missionContainer.missions)
         {
             if(mission.IsInProgress()){
-                mission.missionSaveData.daysLeftToComplete--;
+                mission.saveData.daysLeftToComplete--;
 
                 // We just finished the mission
                 if (!mission.IsInProgress())
                 {
-                    mission.missionSaveData.ship.shipSaveData.isLaunched = false;
-                    mission.missionSaveData.ship.shipSaveData.currentMission = null;
-                    mission.missionSaveData.ship = null;
+                    mission.saveData.ship.shipSaveData.isLaunched = false;
+                    mission.saveData.ship.shipSaveData.currentMission = null;
+                    mission.saveData.ship = null;
                 }
             }
         }
     }
 
-    public static void SavePersistentDataForUpdatedMissions()
+    public static void RegisterUpdatedPersistentData(Mission mission)
+    {
+        Instance.missionsWithUpdatedData.Add(mission);
+    }
+
+    public void SavePersistentDataForUpdatedDataModels()
     {
         foreach (Mission mission in Instance.missionsWithUpdatedData)
         {
@@ -73,12 +78,7 @@ public class MissionsManager : MonoBehaviour
         }
     }
 
-    public static void RegisterUpdatedMission(Mission mission)
-    {
-        Instance.missionsWithUpdatedData.Add(mission);
-    }
-
-    public static void SavePersistentDataForAllMissions()
+    public void SavePersistentDataForAllDataModels()
     {
         foreach (Mission mission in Instance.missionContainer.missions)
         {
