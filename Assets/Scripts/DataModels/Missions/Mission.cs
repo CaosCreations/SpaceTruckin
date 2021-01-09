@@ -12,7 +12,6 @@ public class Mission : ScriptableObject, IPersistentData
 {
     public class MissionSaveData
     {
-
         public bool hasBeenAccepted = false;
         public int daysLeftToComplete;
         public Ship ship = null;
@@ -42,11 +41,13 @@ public class Mission : ScriptableObject, IPersistentData
     public void ScheduleMission(Ship ship)
     {
         missionSaveData.ship = ship;
+        //ShipsManager.RegisterUpdatedMission
     }
 
     public void StartMission()
     {
         missionSaveData.daysLeftToComplete = missionDurationInDays;
+        MissionsManager.RegisterUpdatedMission(this);
     }
     
     public bool IsInProgress()

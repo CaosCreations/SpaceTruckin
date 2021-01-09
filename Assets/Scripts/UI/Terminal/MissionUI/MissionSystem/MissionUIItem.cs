@@ -69,8 +69,8 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
                 if (slot.ship != null)
                 {
-                    slot.ship.currentMission = mission;
-                    mission.ship = slot.ship;
+                    slot.ship.shipSaveData.currentMission = mission;
+                    mission.missionSaveData.ship = slot.ship;
                 }
                 else
                 {
@@ -82,6 +82,8 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
                 Unschedule();
             }
         }
+        MissionsManager.RegisterUpdatedMission(mission);
+        //ShipsManager.RegisterUpdatedShip(ship);
     }
 
     private void CheckReplaceMission(MissionScheduleSlot slot)
@@ -100,10 +102,10 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     public void Unschedule()
     {
         myRectTransform.SetParent(scrollViewContent);
-        if(mission.ship != null)
+        if(mission.missionSaveData.ship != null)
         {
-            mission.ship.currentMission = null;
-            mission.ship = null;
+            mission.missionSaveData.ship.shipSaveData.currentMission = null;
+            mission.missionSaveData.ship = null;
         }
     }
 
