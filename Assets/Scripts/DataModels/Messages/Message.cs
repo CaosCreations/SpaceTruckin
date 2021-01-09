@@ -3,12 +3,18 @@
 [CreateAssetMenu(fileName = "Message", menuName = "ScriptableObjects/Message", order = 1)]
 public class Message : ScriptableObject
 {
-    public string sender;
-    public string subject;
-    public string body;
+    public class MessageSaveData
+    {
+        public bool isUnlocked;
+    }
+
+    [Header("Set in Editor")]
+    public string sender, subject, body;
     public int condition;
-    public bool unlocked;
 
     // The mission offered in the email
     public Mission mission;
+
+    [Header("Data to update IN GAME")]
+    public MessageSaveData messageSaveData;
 }

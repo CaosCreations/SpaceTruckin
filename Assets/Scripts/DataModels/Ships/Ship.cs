@@ -24,7 +24,7 @@ public class Ship : ScriptableObject
     public Sprite shipAvatar; 
     public Pilot pilot;
 
-    [Header("Set at Runtime")]
+    [Header("Data to update IN GAME")]
     public ShipSaveData shipSaveData;
 
     public float GetHullPercent()
