@@ -2,37 +2,33 @@
 using System.IO;
 using UnityEngine;
 
-public enum MissionSource
-{
-    Noticeboard = 1, Email = 2, Npc = 3
-}
-
 [CreateAssetMenu(fileName = "Mission", menuName = "ScriptableObjects/Mission", order = 1)]
 public class Mission : ScriptableObject, IPersistentData
 {
-    public class MissionSaveData
+    [Header("Set in Editor")] 
+    public MissionData data;
+    
+    [Header("Data to update IN GAME")] 
+    public MissionSaveData saveData; 
+
+    public class MissionData
     {
-        public bool hasBeenAccepted = false;
-        public int daysLeftToComplete;
-        public Ship ship = null;
+        public int missionDurationInDays;
+        public string missionName, customer, cargo, description;
+        public int fuelCost, reward, moneyNeededToUnlock;
+        public MissionOutcome[] outcomes;
     }
 
-    private string folderName = "Missions";
-
-    [Header("Set in Editor")]
-    public int missionDurationInDays;
-    public string missionName, customer, cargo, description;
-    public int fuelCost, reward, moneyNeededToUnlock;
-
-    [Header("Data to update IN GAME")]
-    public MissionSaveData missionSaveData; 
-
-    [SerializeField]
-    public MissionOutcome[] outcomes;
+    public class MissionSaveData
+    {
+        [SerializeField] public bool hasBeenAccepted = false;
+        [SerializeField] public int daysLeftToComplete;
+        [SerializeField] public Ship ship = null;
+    }
 
     public void ProcessOutcomes()
     {
-        foreach (MissionOutcome outcome in outcomes)
+        foreach (MissionOutcome outcome in data.outcomes)
         {
             outcome.Process(this);
         }
@@ -40,26 +36,26 @@ public class Mission : ScriptableObject, IPersistentData
 
     public void ScheduleMission(Ship ship)
     {
-        missionSaveData.ship = ship;
+        saveData.ship = ship;
         //ShipsManager.RegisterUpdatedMission
     }
 
     public void StartMission()
     {
-        missionSaveData.daysLeftToComplete = missionDurationInDays;
+        saveData.daysLeftToComplete = data.missionDurationInDays;
         MissionsManager.RegisterUpdatedMission(this);
     }
     
     public bool IsInProgress()
     {
-        return missionSaveData.daysLeftToComplete > 0;
+        return saveData.daysLeftToComplete > 0;
     }
 
     public void SaveData()
     {
         // Mission name must be unique 
-        Debug.Log($"Saving mission: {missionName}");
-        string folderPath = Path.Combine(Application.persistentDataPath, folderName);
+        Debug.Log($"Saving mission: {data.missionName}");
+        string folderPath = Path.Combine(Application.persistentDataPath, this.GetType().Name);
         if (!Directory.Exists(folderPath))
         {
             try
@@ -72,8 +68,8 @@ public class Mission : ScriptableObject, IPersistentData
             }
         }
 
-        string filePath = Path.Combine(folderPath, $"{missionName}.save");
-        string fileContents = JsonUtility.ToJson(missionSaveData);
+        string filePath = Path.Combine(folderPath, $"{data.missionName}.save");
+        string fileContents = JsonUtility.ToJson(saveData);
         try
         {
             File.WriteAllText(filePath, fileContents);
@@ -82,34 +78,34 @@ public class Mission : ScriptableObject, IPersistentData
         {
             Debug.LogError($"{e.Message}\n{e.StackTrace}");
         }
-        Debug.Log($"Finished saving mission: {missionName}");
+        Debug.Log($"Finished saving mission: {data.missionName}");
 
     }
 
     public void LoadData()
     {
-        Debug.Log($"loading level {missionName}");
-        string folderPath = Path.Combine(Application.persistentDataPath, folderName);
-        string filePath = Path.Combine(folderPath, $"{missionName}.save");
+        Debug.Log($"loading level {data.missionName}");
+        string folderPath = Path.Combine(Application.persistentDataPath, this.GetType().Name);
+        string filePath = Path.Combine(folderPath, $"{data.missionName}.save");
         if (File.Exists(filePath))
         {
             try
             {
                 string fileContents = File.ReadAllText(filePath);
-                missionSaveData = JsonUtility.FromJson<MissionSaveData>(fileContents);
+                saveData = JsonUtility.FromJson<MissionSaveData>(fileContents);
             }
             catch (Exception e)
             {
                 Debug.LogError($"{e.Message}\n{e.StackTrace}");
             }
         }
-        Debug.Log($"Finished loading level {missionName}");
+        Debug.Log($"Finished loading level {data.missionName}");
     }
 
     public void Clear()
     {
-        string folderPath = Path.Combine(Application.persistentDataPath, missionName);
-        string filePath = Path.Combine(folderPath, $"/{missionName}.save");
+        string folderPath = Path.Combine(Application.persistentDataPath, data.missionName);
+        string filePath = Path.Combine(folderPath, $"/{data.missionName}.save");
         if (File.Exists(filePath))
         {
             try
