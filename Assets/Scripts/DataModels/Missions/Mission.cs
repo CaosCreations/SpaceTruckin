@@ -44,7 +44,7 @@ public class Mission : ScriptableObject, IDataModel
     public void StartMission()
     {
         saveData.daysLeftToComplete = data.missionDurationInDays;
-        MissionsManager.RegisterUpdatedPersistentData();
+        MissionsManager.Instance.RegisterUpdatedPersistentData(this);
     }
     
     public bool IsInProgress()
@@ -54,8 +54,8 @@ public class Mission : ScriptableObject, IDataModel
 
     public void SaveData()
     {
-        // Mission name must be unique 
-        Debug.Log($"Saving mission: {data.missionName}");
+        Debug.Log($"Saving mission: {data.missionName}_{saveData.guid}");
+        
         string folderPath = Path.Combine(Application.persistentDataPath, this.GetType().Name);
         if (!Directory.Exists(folderPath))
         {
@@ -69,7 +69,7 @@ public class Mission : ScriptableObject, IDataModel
             }
         }
 
-        string filePath = Path.Combine(folderPath, $"{data.missionName}.save");
+        string filePath = Path.Combine(folderPath, $"{data.missionName}_{saveData.guid}.save");
         string fileContents = JsonUtility.ToJson(saveData);
         try
         {
@@ -79,7 +79,7 @@ public class Mission : ScriptableObject, IDataModel
         {
             Debug.LogError($"{e.Message}\n{e.StackTrace}");
         }
-        Debug.Log($"Finished saving mission: {data.missionName}");
+        Debug.Log($"Finished saving mission: {data.missionName}_{saveData.guid}");
 
     }
 
@@ -87,7 +87,7 @@ public class Mission : ScriptableObject, IDataModel
     {
         Debug.Log($"loading level {data.missionName}");
         string folderPath = Path.Combine(Application.persistentDataPath, this.GetType().Name);
-        string filePath = Path.Combine(folderPath, $"{data.missionName}.save");
+        string filePath = Path.Combine(folderPath, $"{data.missionName}_{saveData.guid}.save");
         if (File.Exists(filePath))
         {
             try
@@ -100,13 +100,13 @@ public class Mission : ScriptableObject, IDataModel
                 Debug.LogError($"{e.Message}\n{e.StackTrace}");
             }
         }
-        Debug.Log($"Finished loading level {data.missionName}");
+        Debug.Log($"Finished loading level: {data.missionName}_{saveData.guid}");
     }
 
-    public void Clear()
+    public void DeleteData()
     {
         string folderPath = Path.Combine(Application.persistentDataPath, data.missionName);
-        string filePath = Path.Combine(folderPath, $"/{data.missionName}.save");
+        string filePath = Path.Combine(folderPath, $"/{data.missionName}_{saveData.guid}.save");
         if (File.Exists(filePath))
         {
             try

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-public interface IDataModelManager
+﻿public interface IDataModelManager
 {
-    void SavePersistentDataForAllDataModels();
-    void SavePersistentDataForUpdatedDataModels();
-    void RegisterUpdatedPersistentData(IDataModel dataModel);
+    void SaveAllData();
+    void SaveUpdatedData();
+    void RegisterUpdatedData(IDataModel dataModel);
+    void LoadData();
+    void DeleteAllData();
+    void DeleteData(IDataModel dataModel);
 }

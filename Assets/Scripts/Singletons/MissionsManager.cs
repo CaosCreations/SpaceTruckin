@@ -26,7 +26,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
 
     void Init()
     {
-        // Load data here
+        LoadData();
     }
 
     public static List<Mission> GetAcceptedMissions()
@@ -63,15 +63,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    public void SavePersistentDataForUpdatedDataModels()
-    {
-        foreach (Mission mission in Instance.missionsWithUpdatedData)
-        {
-            mission.SaveData();
-        }
-    }
-
-    public void SavePersistentDataForAllDataModels()
+    public void SaveAllData()
     {
         foreach (Mission mission in Instance.missionContainer.missions)
         {
@@ -79,8 +71,37 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    public void RegisterUpdatedPersistentData(IDataModel dataModel)
+    public void SaveUpdatedData()
+    {
+        foreach (Mission mission in Instance.missionsWithUpdatedData)
+        {
+            mission.SaveData();
+        }
+    }
+
+    public void RegisterUpdatedData(IDataModel dataModel)
     {
         Instance.missionsWithUpdatedData.Add(dataModel);
+    }
+
+    public void LoadData()
+    {
+        foreach (Mission mission in Instance.missionContainer.missions)
+        {
+            mission.LoadData();
+        }
+    }
+
+    public void DeleteData(IDataModel dataModel)
+    {
+        dataModel.DeleteData();
+    }
+
+    public void DeleteAllData()
+    {
+        foreach (Mission mission in Instance.missionsWithUpdatedData)
+        {
+            mission.DeleteData();
+        }
     }
 }
