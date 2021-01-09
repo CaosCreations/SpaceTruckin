@@ -7,13 +7,23 @@ public enum Species
 [CreateAssetMenu(fileName = "Pilot", menuName = "ScriptableObjects/Pilot", order = 1)]
 public class Pilot : ScriptableObject
 {
+    public class PilotSaveData
+    {
+        // Data to persist
+        public int xp, level, missionsCompleted;
+        public bool hired, onMission, isAssignedToShip;
+    }
+
     [Header("Leave this blank. It is set automatically.")]
     public int id;
 
-    public int xp, level, missionsCompleted, hireCost;
+    [Header("Set in Editor")]
     public string pilotName, shipName, description;
-    public bool isHired, isOnMission, isAssignedToShip; 
+    int hireCost;
     public Species species;
     public Ship ship; 
     public Sprite avatar;
+
+    [Header("Data to update IN GAME")]
+    public PilotSaveData pilotSaveData;
 }

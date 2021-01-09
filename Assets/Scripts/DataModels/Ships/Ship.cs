@@ -3,10 +3,20 @@
 [CreateAssetMenu(fileName = "Ship", menuName = "ScriptableObjects/Ship", order = 1)]
 public class Ship : ScriptableObject
 {
-    [Header("Set In Editor")]
-    public int id;
-    public string shipName;
+    public class ShipSaveData
+    {
+        public bool isOwned, isLaunched;
+        public int currentFuel;
+        public float currenthullIntegrity;
+        public HangarNode hangarNode;
+        public Mission currentMission;
+    }
 
+    [Header("Leave this blank. It is set automatically.")]
+    public int id;
+
+    [Header("Set In Editor")]
+    public string shipName;
     public float maxHullIntegrity;
     public int maxFuel;
 
@@ -15,21 +25,15 @@ public class Ship : ScriptableObject
     public Pilot pilot;
 
     [Header("Set at Runtime")]
-    public bool isOwned;
-    public bool isLaunched;
-    public HangarNode hangarNode;
-    public Mission currentMission;
-
-    public int currentFuel;
-    public float currenthullIntegrity;
+    public ShipSaveData shipSaveData;
 
     public float GetHullPercent()
     {
-        return currenthullIntegrity / maxHullIntegrity;
+        return shipSaveData.currenthullIntegrity / maxHullIntegrity;
     }
 
     public float GetFuelPercent()
     {
-        return (float) currentFuel / maxFuel;
+        return (float)shipSaveData.currentFuel / maxFuel;
     }
 }
