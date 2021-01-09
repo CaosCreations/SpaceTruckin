@@ -54,7 +54,6 @@ public class Mission : ScriptableObject
 
     public void SaveMissionData()
     {
-        // Append a guid or use existing mission id to handle duplicates?
         Debug.Log($"Saving mission: {missionName}");
         string folderPath = Path.Combine(Application.persistentDataPath, missionName);
         if (!Directory.Exists(folderPath))
