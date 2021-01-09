@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.IO;
+using UnityEngine;
 
 public enum MissionSource
 {
@@ -48,5 +50,36 @@ public class Mission : ScriptableObject
     public bool IsInProgress()
     {
         return missionSaveData.daysLeftToComplete > 0;
+    }
+
+    public void SaveMissionData()
+    {
+        // Append a guid or use existing mission id to handle duplicates?
+        Debug.Log($"Saving mission: {missionName}");
+        string folderPath = Path.Combine(Application.persistentDataPath, missionName);
+        if (!Directory.Exists(folderPath))
+        {
+            try
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"{e.Message}\n{e.StackTrace}");
+            }
+        }
+
+        string filePath = Path.Combine(folderPath, $"{missionName}.save");
+        string fileContents = JsonUtility.ToJson(missionSaveData);
+        try
+        {
+            File.WriteAllText(filePath, fileContents);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"{e.Message}\n{e.StackTrace}");
+        }
+        Debug.Log($"Finished saving mission: {missionName}");
+
     }
 }
