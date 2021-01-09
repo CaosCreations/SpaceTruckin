@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 public interface IDataModelManager
 {
-    void SavePersistentDataForUpdatedDataModels();
     void SavePersistentDataForAllDataModels();
-    void RegisterUpdatedPersistentData(object persistentData);
+    void SavePersistentDataForUpdatedDataModels();
+    void RegisterUpdatedPersistentData(IDataModel dataModel);
 }

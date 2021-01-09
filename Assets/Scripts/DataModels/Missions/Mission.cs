@@ -3,7 +3,7 @@ using System.IO;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Mission", menuName = "ScriptableObjects/Mission", order = 1)]
-public class Mission : ScriptableObject, IPersistentData
+public class Mission : ScriptableObject, IDataModel
 {
     [Header("Set in Editor")] 
     public MissionData data;
@@ -21,6 +21,7 @@ public class Mission : ScriptableObject, IPersistentData
 
     public class MissionSaveData
     {
+        [SerializeField] public Guid guid = new Guid();
         [SerializeField] public bool hasBeenAccepted = false;
         [SerializeField] public int daysLeftToComplete;
         [SerializeField] public Ship ship = null;
@@ -43,7 +44,7 @@ public class Mission : ScriptableObject, IPersistentData
     public void StartMission()
     {
         saveData.daysLeftToComplete = data.missionDurationInDays;
-        MissionsManager.RegisterUpdatedMission(this);
+        MissionsManager.RegisterUpdatedPersistentData();
     }
     
     public bool IsInProgress()

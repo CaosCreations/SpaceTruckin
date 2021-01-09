@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using System.Linq;
 
 public class MissionsManager : MonoBehaviour, IDataModelManager
@@ -9,7 +7,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
     public static MissionsManager Instance { get; private set; }
 
     public MissionContainer missionContainer;
-    public List<Mission> missionsWithUpdatedData; 
+    public List<IDataModel> missionsWithUpdatedData; 
 
     void Awake()
     {
@@ -65,11 +63,6 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    public static void RegisterUpdatedPersistentData(Mission mission)
-    {
-        Instance.missionsWithUpdatedData.Add(mission);
-    }
-
     public void SavePersistentDataForUpdatedDataModels()
     {
         foreach (Mission mission in Instance.missionsWithUpdatedData)
@@ -84,5 +77,10 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         {
             mission.SaveData();
         }
+    }
+
+    public void RegisterUpdatedPersistentData(IDataModel dataModel)
+    {
+        Instance.missionsWithUpdatedData.Add(dataModel);
     }
 }

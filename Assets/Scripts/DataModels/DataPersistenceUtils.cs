@@ -11,7 +11,7 @@ public enum PersistentDataType
     Mission = 1, Pilot = 2, Ship = 3, Message = 4 
 }
 
-public interface IPersistentData
+public interface IDataModel
 {
     string folderName;
     void SaveData();
