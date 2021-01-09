@@ -11,6 +11,7 @@ public class Mission : ScriptableObject, IDataModel
     [Header("Data to update IN GAME")] 
     public MissionSaveData saveData; 
 
+    // Non-persistent data
     public class MissionData
     {
         public int missionDurationInDays;
@@ -19,6 +20,7 @@ public class Mission : ScriptableObject, IDataModel
         public MissionOutcome[] outcomes;
     }
 
+    // Persistent data 
     public class MissionSaveData
     {
         [SerializeField] public Guid guid = new Guid();
@@ -71,6 +73,8 @@ public class Mission : ScriptableObject, IDataModel
 
         string filePath = Path.Combine(folderPath, $"{data.missionName}_{saveData.guid}.save");
         string fileContents = JsonUtility.ToJson(saveData);
+
+        string fileContents = JsonUtility.ToJson(new MissionSaveData() { saveData.guid, saveData.hasBeenAccepted, saveData.daysLeftToComplete, saveData.ship });
         try
         {
             File.WriteAllText(filePath, fileContents);
