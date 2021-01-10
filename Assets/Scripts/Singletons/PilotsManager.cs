@@ -31,15 +31,20 @@ public class PilotsManager : MonoBehaviour
         }
     }
 
-    public void AwardXp(int index, int xp)
+    public void AwardXp(Ship ship, int xp)
     {
-        for (int i = 0; i < Instance.Pilots.Length; i++)
+        if (ship != null && ship.Pilot != null)
         {
-            if (Instance.Pilots[i] != null && index == Instance.Pilots[i].id)
-            {
-                Instance.Pilots[i].Xp += xp;
-            }
+            ship.Pilot.Xp += xp;
         }
+
+        //for (int i = 0; i < Instance.Pilots.Length; i++)
+        //{
+        //    if (Instance.Pilots[i] != null && index == Instance.Pilots[i].id)
+        //    {
+        //        Instance.Pilots[i].Xp += xp;
+        //    }
+        //}
     }
 
     public void HirePilot(int index)

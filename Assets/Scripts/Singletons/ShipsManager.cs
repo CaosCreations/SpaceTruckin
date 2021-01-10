@@ -37,15 +37,17 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         UpdateHangarShips();
     }
 
-    public static void DamageShip(int index, int damage)
+    public static void DamageShip(Ship ship, int damage)
     {
-        for (int i = 0; i < Instance.Ships.Length; i++)
-        {
-            if (Instance.Ships[i] != null && index == Instance.Ships[i].id)
-            {
-                Instance.Ships[i].CurrentHullIntegrity = Mathf.Max(0, Instance.Ships[i].CurrentHullIntegrity - damage);
-            }
-        }
+        ship.CurrentHullIntegrity -= damage; 
+
+        //for (int i = 0; i < Instance.Ships.Length; i++)
+        //{
+        //    if (Instance.Ships[i] != null && index == Instance.Ships[i].id)
+        //    {
+        //        Instance.Ships[i].CurrentHullIntegrity = Mathf.Max(0, Instance.Ships[i].CurrentHullIntegrity - damage);
+        //    }
+        //}
     }
 
     public static void LaunchShip(HangarNode node)

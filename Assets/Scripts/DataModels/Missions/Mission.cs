@@ -18,7 +18,7 @@ public class Mission : ScriptableObject, IDataModel
     {
         public int missionDurationInDays;
         public string missionName, customer, cargo, description;
-        public int fuelCost, reward, moneyNeededToUnlock;
+        public int fuelCost, reward, moneyNeededToUnlock; // may need to be longs later
         public MissionOutcome[] outcomes;
     }
 
@@ -31,6 +31,19 @@ public class Mission : ScriptableObject, IDataModel
         [SerializeField] public Ship ship = null;
     }
 
+    public string MissionName 
+    {
+        get => data.missionName; set => data.missionName = value; 
+    }
+
+    public string Customer
+    {
+        get => data.customer; set => data.customer = value;
+    }
+    
+    public string Cargo { get => data.cargo; set => data.cargo = value; }
+
+    public int Reward { get => data.reward; set => data.reward = value; }
 
     public bool HasBeenAccepted
     {
@@ -44,7 +57,16 @@ public class Mission : ScriptableObject, IDataModel
         set => saveData.daysLeftToComplete = value;
     }
 
+    public int FuelCost { get => data.fuelCost; set => data.fuelCost = value; }
+
+    public int MoneyNeededToUnlock
+    {
+        get => data.moneyNeededToUnlock; set => data.moneyNeededToUnlock = value;
+    }
+
     public Ship Ship { get => saveData.ship; set => saveData.ship = null; }
+
+    public MissionOutcome[] Outcomes { get => data.outcomes; }
 
     public void SaveData()
     {

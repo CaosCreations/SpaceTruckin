@@ -51,6 +51,8 @@ public class Ship : ScriptableObject
         get => saveData.currentFuel; set => saveData.currentFuel = value;
     }
 
+    public int MaxFuel { get => data.maxFuel; set => data.maxFuel = value; }
+
     public float CurrentHullIntegrity
     {
         get => saveData.currenthullIntegrity; set => saveData.currenthullIntegrity = value;
@@ -70,6 +72,8 @@ public class Ship : ScriptableObject
     {
         get => data.shipPrefab; set => data.shipPrefab = value;
     }
+
+    public Pilot Pilot { get => data.pilot; set => data.pilot = value; }
 
     public float GetHullPercent()
     {
