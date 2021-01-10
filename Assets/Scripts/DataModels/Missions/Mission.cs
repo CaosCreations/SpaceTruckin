@@ -41,12 +41,13 @@ public class Mission : ScriptableObject, IDataModel
     {
         saveData.ship = ship;
         //ShipsManager.RegisterUpdatedMission
+        DataModelsUtils.SaveData(this);
     }
 
     public void StartMission()
     {
         saveData.daysLeftToComplete = data.missionDurationInDays;
-        MissionsManager.Instance.RegisterUpdatedPersistentData(this);
+        MissionsManager.Instance.RegisterUpdatedData(this);
     }
     
     public bool IsInProgress()
@@ -74,7 +75,12 @@ public class Mission : ScriptableObject, IDataModel
         string filePath = Path.Combine(folderPath, $"{data.missionName}_{saveData.guid}.save");
         string fileContents = JsonUtility.ToJson(saveData);
 
-        string fileContents = JsonUtility.ToJson(new MissionSaveData() { saveData.guid, saveData.hasBeenAccepted, saveData.daysLeftToComplete, saveData.ship });
+        string fileContents = JsonUtility.ToJson(
+            new MissionSaveData() 
+            { 
+                guid = saveData.guid, hasBeenAccepted = saveData.hasBeenAccepted, daysLeftToComplete = saveData.daysLeftToComplete, ship = saveData.ship 
+            
+            });
         try
         {
             File.WriteAllText(filePath, fileContents);
@@ -89,7 +95,7 @@ public class Mission : ScriptableObject, IDataModel
 
     public void LoadData()
     {
-        Debug.Log($"loading level {data.missionName}");
+        Debug.Log($"loading level: {data.missionName}");
         string folderPath = Path.Combine(Application.persistentDataPath, this.GetType().Name);
         string filePath = Path.Combine(folderPath, $"{data.missionName}_{saveData.guid}.save");
         if (File.Exists(filePath))
@@ -109,7 +115,8 @@ public class Mission : ScriptableObject, IDataModel
 
     public void DeleteData()
     {
-        string folderPath = Path.Combine(Application.persistentDataPath, data.missionName);
+        Debug.Log($"Deleting mission: {data.missionName}_{saveData.guid}");
+        string folderPath = Path.Combine(Application.persistentDataPath, this.GetType().Name);
         string filePath = Path.Combine(folderPath, $"/{data.missionName}_{saveData.guid}.save");
         if (File.Exists(filePath))
         {

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PilotsManager : MonoBehaviour
@@ -6,6 +7,7 @@ public class PilotsManager : MonoBehaviour
     public static PilotsManager Instance;
 
     public PilotsContainer pilotsContainer;
+    public List<IDataModel> pilotsWithUpdatedData; 
 
     void Awake()
     {
@@ -56,4 +58,6 @@ public class PilotsManager : MonoBehaviour
     {
         return pilotsContainer.pilots.ToList().Where(p => !p.isHired).ToArray();
     }
+
+
 }
