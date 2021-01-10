@@ -10,7 +10,7 @@ public class Message : ScriptableObject, IDataModel
     [Header("Data to update IN GAME")]
     public MessageSaveData saveData;
 
-    public string FOLDER_NAME { get; private set; } = "MessageSaveData";
+    private const string FOLDER_NAME = "MessageSaveData";
 
     public class MessageData
     {
@@ -30,7 +30,7 @@ public class Message : ScriptableObject, IDataModel
 
     public bool IsUnlocked 
     { 
-        get { return saveData.isUnlocked; } set { saveData.isUnlocked = value; } 
+        get => saveData.isUnlocked; set => saveData.isUnlocked = value;  
     }
 
     public void SaveData()

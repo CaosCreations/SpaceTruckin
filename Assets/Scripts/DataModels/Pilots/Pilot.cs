@@ -17,7 +17,7 @@ public class Pilot : ScriptableObject
     [Header("Data to update IN GAME")]
     public PilotSaveData saveData;
 
-    public string FOLDER_NAME { get; private set; } = "PilotSaveData";
+    private const string FOLDER_NAME = "PilotSaveData";
 
     public class PilotData
     {
@@ -36,28 +36,28 @@ public class Pilot : ScriptableObject
     }
 
 
-    public int Xp { get { return saveData.xp; } }
+    public int Xp { get => saveData.xp; set => saveData.xp = value; }
 
-    public int Level { get { return saveData.level; } }
+    public int Level { get => saveData.level; set => saveData.level = value; }
 
     public int MissionsCompleted 
     { 
-        get { return saveData.missionsCompleted; } set { saveData.missionsCompleted = value; } 
+        get => saveData.missionsCompleted; set { saveData.missionsCompleted = value; } 
     }
 
     public bool IsHired 
-    { 
-        get { return saveData.isHired; } set { saveData.isHired = value; } 
+    {
+        get => saveData.isHired; set { saveData.isHired = value; } 
     }
 
     public bool IsOnMission 
     {
-        get { return saveData.isOnMission; } set { saveData.isOnMission = value; } 
+        get => saveData.isOnMission; set { saveData.isOnMission = value; } 
     }
 
     public bool IsAssignedToShip
     {
-        get { return saveData.isAssignedToShip; } set { saveData.isAssignedToShip = value; }
+        get => saveData.isAssignedToShip; set { saveData.isAssignedToShip = value; }
     }
 
     public void SaveData()

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 
 public class PilotsManager : MonoBehaviour
@@ -7,7 +6,7 @@ public class PilotsManager : MonoBehaviour
     public static PilotsManager Instance;
 
     public PilotsContainer pilotsContainer;
-    public List<IDataModel> pilotsWithUpdatedData; 
+    public Pilot[] Pilots { get => pilotsContainer.pilots; }
 
     void Awake()
     {
@@ -26,38 +25,36 @@ public class PilotsManager : MonoBehaviour
 
     private void AssignUniqueIds()
     {
-        for (int i = 0; i < Instance.pilotsContainer.pilots.Length; i++)
+        for (int i = 0; i < Instance.Pilots.Length; i++)
         {
-            Instance.pilotsContainer.pilots[i].id = i;
+            Instance.Pilots[i].id = i;
         }
     }
 
     public void AwardXp(int index, int xp)
     {
-        for (int i = 0; i < Instance.pilotsContainer.pilots.Length; i++)
+        for (int i = 0; i < Instance.Pilots.Length; i++)
         {
-            if (Instance.pilotsContainer.pilots[i] != null && index == Instance.pilotsContainer.pilots[i].id)
+            if (Instance.Pilots[i] != null && index == Instance.Pilots[i].id)
             {
-                Instance.pilotsContainer.pilots[i].xp += xp;
+                Instance.Pilots[i].Xp += xp;
             }
         }
     }
 
     public void HirePilot(int index)
     {
-        Instance.pilotsContainer.pilots[index].isHired = true;
+        Instance.Pilots[index].IsHired = true;
     }
 
     public Pilot[] GetHiredPilots()
     {
-        return pilotsContainer.pilots.ToList().Where(p => p.isHired).ToArray();
+        return Instance.Pilots.ToList().Where(p => p.IsHired).ToArray();
         
     }
 
     public Pilot[] GetPilotsForHire()
     {
-        return pilotsContainer.pilots.ToList().Where(p => !p.isHired).ToArray();
+        return Instance.Pilots.ToList().Where(p => !p.IsHired).ToArray();
     }
-
-
 }

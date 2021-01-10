@@ -6,9 +6,8 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
 {
     public static MissionsManager Instance { get; private set; }
 
-    public MissionContainer missionContainer;
+    [SerializeField] private MissionContainer missionContainer;
     public Mission[] Missions { get => missionContainer.missions; }
-    public List<IDataModel> missionsWithUpdatedData;
 
     void Awake()
     {
@@ -32,33 +31,33 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
 
     public static List<Mission> GetAcceptedMissions()
     {
-        return Instance.missionContainer.missions
+        return Instance.Missions
             .Where(x => x.HasBeenAccepted
-            && x.saveData.ship == null)
+            && x.Ship == null)
             .ToList();
     }
 
     public static List<Mission> GetScheduledMissions()
     {
-        return Instance.missionContainer.missions
-            .Where(x => x.saveData.hasBeenAccepted
-            && x.saveData.ship != null)
+        return Instance.Missions
+            .Where(x => x.HasBeenAccepted
+            && x.Ship != null)
             .ToList();
     }
 
     public static void UpdateMissionSchedule()
     {
-        foreach(Mission mission in Instance.missionContainer.missions)
+        foreach(Mission mission in Instance.Missions)
         {
             if(mission.IsInProgress()){
-                mission.saveData.daysLeftToComplete--;
+                mission.DaysLeftToComplete--;
 
                 // We just finished the mission
                 if (!mission.IsInProgress())
                 {
                     mission.Ship.IsLaunched = false;
                     mission.Ship.CurrentMission = null;
-                    mission.saveData.ship = null;
+                    mission.Ship = null;
                 }
             }
         }
@@ -66,7 +65,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
 
     public void SaveData()
     {
-        foreach (Mission mission in Instance.missionContainer.missions)
+        foreach (Mission mission in Instance.Missions)
         {
             mission.SaveData();
         }
@@ -74,7 +73,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
 
     public async void LoadData()
     {
-        foreach (Mission mission in Instance.missionContainer.missions)
+        foreach (Mission mission in Instance.Missions)
         {
             await mission.LoadDataAsync();
         }

@@ -13,7 +13,7 @@ public class Ship : ScriptableObject
     [Header("Data to update IN GAME")]
     private ShipSaveData saveData;
 
-    public string FOLDER_NAME = "ShipsSaveData";
+    private const string FOLDER_NAME = "ShipsSaveData";
 
     public class ShipData
     {
@@ -34,36 +34,41 @@ public class Ship : ScriptableObject
         [SerializeField] public HangarNode hangarNode;
         [SerializeField] public Mission currentMission;
     }
-
+        
 
     public bool IsOwned
     {
-        get { return saveData.isOwned; } set { saveData.isOwned = value; }
+        get => saveData.isOwned; set => saveData.isOwned = value;
     }
 
     public bool IsLaunched
     {
-        get { return saveData.isLaunched; } set { saveData.isLaunched = value; }
+        get => saveData.isLaunched; set => saveData.isLaunched = value;
     }
 
     public int CurrentFuel
     {
-        get { return saveData.currentFuel; } set { saveData.currentFuel = value; }
+        get => saveData.currentFuel; set => saveData.currentFuel = value;
     }
 
     public float CurrentHullIntegrity
     {
-        get { return saveData.currenthullIntegrity; } set { saveData.currenthullIntegrity = value; }
+        get => saveData.currenthullIntegrity; set => saveData.currenthullIntegrity = value;
     }
 
     public HangarNode HangarNode
     {
-        get { return saveData.hangarNode; } set { saveData.hangarNode = value; }
+        get => saveData.hangarNode; set => saveData.hangarNode = value;
     }
 
     public Mission CurrentMission
     {
-        get { return saveData.currentMission; } set { saveData.currentMission = value; }
+        get => saveData.currentMission; set => saveData.currentMission = value;
+    }
+
+    public GameObject ShipPrefab
+    {
+        get => data.shipPrefab; set => data.shipPrefab = value;
     }
 
     public float GetHullPercent()

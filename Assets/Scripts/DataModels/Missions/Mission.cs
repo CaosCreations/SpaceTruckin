@@ -11,7 +11,7 @@ public class Mission : ScriptableObject, IDataModel
     [Header("Data to update IN GAME")] 
     public MissionSaveData saveData;
 
-    public static string FOLDER_NAME = "MissionSaveData";
+    private const string FOLDER_NAME = "MissionSaveData";
 
     // Non-persistent data
     public class MissionData
@@ -34,20 +34,20 @@ public class Mission : ScriptableObject, IDataModel
 
     public bool HasBeenAccepted
     {
-        get { return saveData.hasBeenAccepted; }
-        set { saveData.hasBeenAccepted = value; }
+        get => saveData.hasBeenAccepted; 
+        set => saveData.hasBeenAccepted = value;
     }
 
     public int DaysLeftToComplete
     {
-        get { return saveData.daysLeftToComplete; }
-        set { saveData.daysLeftToComplete = value; }
+        get => saveData.daysLeftToComplete; 
+        set => saveData.daysLeftToComplete = value;
     }
 
     public Ship Ship
     {
-        get { return saveData.ship; }
-        set { saveData.ship = null; }
+        get => saveData.ship; 
+        set => saveData.ship = null;
     }
 
     public void SaveData()
