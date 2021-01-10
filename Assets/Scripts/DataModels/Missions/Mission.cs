@@ -13,12 +13,6 @@ public class Mission : ScriptableObject, IDataModel
 
     public static string FOLDER_NAME = "MissionSaveData";
 
-    public bool HasBeenAccepted
-    {
-        get { return saveData.hasBeenAccepted; }
-        set { saveData.hasBeenAccepted = value; }
-    }
-
     // Non-persistent data
     public class MissionData
     {
@@ -37,12 +31,35 @@ public class Mission : ScriptableObject, IDataModel
         [SerializeField] public Ship ship = null;
     }
 
-    public void ProcessOutcomes()
+
+    public bool HasBeenAccepted
     {
-        foreach (MissionOutcome outcome in data.outcomes)
-        {
-            outcome.Process(this);
-        }
+        get { return saveData.hasBeenAccepted; }
+        set { saveData.hasBeenAccepted = value; }
+    }
+
+    public int DaysLeftToComplete
+    {
+        get { return saveData.daysLeftToComplete; }
+        set { saveData.daysLeftToComplete = value; }
+    }
+
+    public Ship Ship
+    {
+        get { return saveData.ship; }
+        set { saveData.ship = null; }
+    }
+
+    public void SaveData()
+    {
+        string fileName = $"{data.missionName}_{saveData.guid}";
+        DataModelsUtils.SaveFileAsync(fileName, FOLDER_NAME, saveData);
+    }
+
+    public async Task LoadDataAsync()
+    {
+        string fileName = $"{data.missionName}_{saveData.guid}";
+        saveData = await DataModelsUtils.LoadFileAsync<MissionSaveData>(fileName, FOLDER_NAME);
     }
 
     public void ScheduleMission(Ship ship)
@@ -54,21 +71,17 @@ public class Mission : ScriptableObject, IDataModel
     {
         saveData.daysLeftToComplete = data.missionDurationInDays;
     }
-    
+
     public bool IsInProgress()
     {
         return saveData.daysLeftToComplete > 0;
     }
 
-    public void SaveData()
+    public void ProcessOutcomes()
     {
-        string fileName = $"{data.missionName}_{saveData.guid}";
-        DataModelsUtils.SaveFileAsync(fileName, FOLDER_NAME, saveData);
-    }
-
-    public async void LoadDataAsync()
-    {
-        string fileName = $"{data.missionName}_{saveData.guid}";
-        saveData = await DataModelsUtils.LoadFileAsync<MissionSaveData>(fileName, FOLDER_NAME);
+        foreach (MissionOutcome outcome in data.outcomes)
+        {
+            outcome.Process(this);
+        }
     }
 }

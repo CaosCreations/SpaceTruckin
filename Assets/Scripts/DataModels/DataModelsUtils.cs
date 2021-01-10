@@ -46,8 +46,6 @@ public static class DataModelsUtils
             {
                 await fileStream.WriteAsync(buffer, 0, buffer.Length);
             }
-
-
         }
         catch (Exception e)
         {
@@ -93,5 +91,10 @@ public static class DataModelsUtils
             }
         }
         return new T();
+    }
+
+    public static string GetUniqueFileName(string fileName, Guid guid)
+    {
+        return $"{fileName}_{guid}.truckin";
     }
 }

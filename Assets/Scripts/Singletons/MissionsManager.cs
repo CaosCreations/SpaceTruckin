@@ -56,8 +56,8 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
                 // We just finished the mission
                 if (!mission.IsInProgress())
                 {
-                    mission.saveData.ship.saveData.isLaunched = false;
-                    mission.saveData.ship.saveData.currentMission = null;
+                    mission.Ship.IsLaunched = false;
+                    mission.Ship.CurrentMission = null;
                     mission.saveData.ship = null;
                 }
             }
@@ -72,11 +72,11 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    public void LoadData()
+    public async void LoadData()
     {
         foreach (Mission mission in Instance.missionContainer.missions)
         {
-            mission.LoadData();
+            await mission.LoadDataAsync();
         }
     }
 

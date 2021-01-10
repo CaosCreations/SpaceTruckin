@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Ship", menuName = "ScriptableObjects/Ship", order = 1)]
@@ -9,12 +8,13 @@ public class Ship : ScriptableObject
     public int id;
 
     [Header("Set In Editor")]
-    public ShipData data;
+    private ShipData data;
 
     [Header("Data to update IN GAME")]
-    public ShipSaveData saveData;
+    private ShipSaveData saveData;
 
-    public 
+    public string FOLDER_NAME = "ShipsSaveData";
+
     public class ShipData
     {
         public string shipName;
@@ -27,12 +27,43 @@ public class Ship : ScriptableObject
     }
     public class ShipSaveData
     {
-        public Guid guid = new Guid();
-        public bool isOwned, isLaunched;
-        public int currentFuel;
-        public float currenthullIntegrity;
-        public HangarNode hangarNode;
-        public Mission currentMission;
+        [SerializeField] public Guid guid = new Guid();
+        [SerializeField] public bool isOwned, isLaunched;
+        [SerializeField] public int currentFuel;
+        [SerializeField] public float currenthullIntegrity;
+        [SerializeField] public HangarNode hangarNode;
+        [SerializeField] public Mission currentMission;
+    }
+
+
+    public bool IsOwned
+    {
+        get { return saveData.isOwned; } set { saveData.isOwned = value; }
+    }
+
+    public bool IsLaunched
+    {
+        get { return saveData.isLaunched; } set { saveData.isLaunched = value; }
+    }
+
+    public int CurrentFuel
+    {
+        get { return saveData.currentFuel; } set { saveData.currentFuel = value; }
+    }
+
+    public float CurrentHullIntegrity
+    {
+        get { return saveData.currenthullIntegrity; } set { saveData.currenthullIntegrity = value; }
+    }
+
+    public HangarNode HangarNode
+    {
+        get { return saveData.hangarNode; } set { saveData.hangarNode = value; }
+    }
+
+    public Mission CurrentMission
+    {
+        get { return saveData.currentMission; } set { saveData.currentMission = value; }
     }
 
     public float GetHullPercent()
@@ -47,70 +78,13 @@ public class Ship : ScriptableObject
 
     public void SaveData()
     {
-        Debug.Log($"Saving mission: {data.shipName}_{saveData.guid}");
-
-        string folderPath = Path.Combine(Application.persistentDataPath, this.GetType().Name);
-        if (!Directory.Exists(folderPath))
-        {
-            try
-            {
-                Directory.CreateDirectory(folderPath);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"{e.Message}\n{e.StackTrace}");
-            }
-        }
-
-        string filePath = Path.Combine(folderPath, $"{data.shipName}_{saveData.guid}.save");
-        string fileContents = JsonUtility.ToJson(saveData);
-        try
-        {
-            File.WriteAllText(filePath, fileContents);
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"{e.Message}\n{e.StackTrace}");
-        }
-        Debug.Log($"Finished saving mission: {data.shipName}_{saveData.guid}");
-
+        string fileName = $"{data.shipName}_{saveData.guid}";
+        DataModelsUtils.SaveFileAsync(fileName, FOLDER_NAME, saveData);
     }
 
-    public void LoadData()
+    public async System.Threading.Tasks.Task LoadDataAsync()
     {
-        Debug.Log($"loading level: {data.shipName}");
-        string folderPath = Path.Combine(Application.persistentDataPath, this.GetType().Name);
-        string filePath = Path.Combine(folderPath, $"{data.shipName}_{saveData.guid}.save");
-        if (File.Exists(filePath))
-        {
-            try
-            {
-                string fileContents = File.ReadAllText(filePath);
-                saveData = JsonUtility.FromJson<ShipSaveData>(fileContents);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"{e.Message}\n{e.StackTrace}");
-            }
-        }
-        Debug.Log($"Finished loading level: {data.shipName}_{saveData.guid}");
-    }
-
-    public void DeleteData()
-    {
-        Debug.Log($"Deleting mission: {data.shipName}_{saveData.guid}");
-        string folderPath = Path.Combine(Application.persistentDataPath, this.GetType().Name);
-        string filePath = Path.Combine(folderPath, $"/{data.shipName}_{saveData.guid}.save");
-        if (File.Exists(filePath))
-        {
-            try
-            {
-                File.Delete(filePath);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"{e.Message}\n{e.StackTrace}");
-            }
-        }
+        string fileName = $"{data.shipName}_{saveData.guid}";
+        saveData = await DataModelsUtils.LoadFileAsync<ShipSaveData>(fileName, FOLDER_NAME);
     }
 }
