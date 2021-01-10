@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Mission", menuName = "ScriptableObjects/Mission", order = 1)]
@@ -9,9 +8,17 @@ public class Mission : ScriptableObject, IDataModel
     public MissionData data;
     
     [Header("Data to update IN GAME")] 
-    public MissionSaveData saveData; 
+    public MissionSaveData saveData;
+
+    public static string FOLDER_NAME = "MissionSaveData";
 
     // Non-persistent data
+    public bool HasBeenAccepted
+    {
+        get { return saveData.hasBeenAccepted; }
+        set { saveData.hasBeenAccepted = value; }
+    }
+
     public class MissionData
     {
         public int missionDurationInDays;
@@ -40,14 +47,11 @@ public class Mission : ScriptableObject, IDataModel
     public void ScheduleMission(Ship ship)
     {
         saveData.ship = ship;
-        //ShipsManager.RegisterUpdatedMission
-        DataModelsUtils.SaveData(this);
     }
 
     public void StartMission()
     {
         saveData.daysLeftToComplete = data.missionDurationInDays;
-        MissionsManager.Instance.RegisterUpdatedData(this);
     }
     
     public bool IsInProgress()
@@ -57,77 +61,13 @@ public class Mission : ScriptableObject, IDataModel
 
     public void SaveData()
     {
-        Debug.Log($"Saving mission: {data.missionName}_{saveData.guid}");
-        
-        string folderPath = Path.Combine(Application.persistentDataPath, this.GetType().Name);
-        if (!Directory.Exists(folderPath))
-        {
-            try
-            {
-                Directory.CreateDirectory(folderPath);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"{e.Message}\n{e.StackTrace}");
-            }
-        }
-
-        string filePath = Path.Combine(folderPath, $"{data.missionName}_{saveData.guid}.save");
-        string fileContents = JsonUtility.ToJson(saveData);
-
-        string fileContents = JsonUtility.ToJson(
-            new MissionSaveData() 
-            { 
-                guid = saveData.guid, hasBeenAccepted = saveData.hasBeenAccepted, daysLeftToComplete = saveData.daysLeftToComplete, ship = saveData.ship 
-            
-            });
-        try
-        {
-            File.WriteAllText(filePath, fileContents);
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"{e.Message}\n{e.StackTrace}");
-        }
-        Debug.Log($"Finished saving mission: {data.missionName}_{saveData.guid}");
-
+        string fileName = $"{data.missionName}_{saveData.guid}";
+        DataModelsUtils.SaveFile(fileName, FOLDER_NAME, saveData);
     }
 
-    public void LoadData()
+    public async void LoadData()
     {
-        Debug.Log($"loading level: {data.missionName}");
-        string folderPath = Path.Combine(Application.persistentDataPath, this.GetType().Name);
-        string filePath = Path.Combine(folderPath, $"{data.missionName}_{saveData.guid}.save");
-        if (File.Exists(filePath))
-        {
-            try
-            {
-                string fileContents = File.ReadAllText(filePath);
-                saveData = JsonUtility.FromJson<MissionSaveData>(fileContents);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"{e.Message}\n{e.StackTrace}");
-            }
-        }
-        Debug.Log($"Finished loading level: {data.missionName}_{saveData.guid}");
-    }
-
-    public void DeleteData()
-    {
-        Debug.Log($"Deleting mission: {data.missionName}_{saveData.guid}");
-        string folderPath = Path.Combine(Application.persistentDataPath, this.GetType().Name);
-        string filePath = Path.Combine(folderPath, $"/{data.missionName}_{saveData.guid}.save");
-        if (File.Exists(filePath))
-        {
-            try
-            {
-                File.Delete(filePath);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"{e.Message}\n{e.StackTrace}");
-            }
-        }
+        string fileName = $"{data.missionName}_{saveData.guid}";
+        saveData = await DataModelsUtils.LoadFile<MissionSaveData>(fileName, FOLDER_NAME);
     }
 }

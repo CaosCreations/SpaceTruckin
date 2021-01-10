@@ -14,6 +14,7 @@ public class Ship : ScriptableObject
     [Header("Data to update IN GAME")]
     public ShipSaveData saveData;
 
+    public 
     public class ShipData
     {
         public string shipName;
