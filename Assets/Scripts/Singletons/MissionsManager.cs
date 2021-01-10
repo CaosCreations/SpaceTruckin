@@ -26,7 +26,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
 
     void Init()
     {
-        LoadData();
+        LoadDataAsync();
     }
 
     public static List<Mission> GetAcceptedMissions()
@@ -71,7 +71,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    public async void LoadData()
+    public async void LoadDataAsync()
     {
         foreach (Mission mission in Instance.Missions)
         {

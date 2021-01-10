@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using UnityEngine;
 
-public class PilotsManager : MonoBehaviour
+public class PilotsManager : MonoBehaviour, IDataModelManager
 {   
     public static PilotsManager Instance;
 
@@ -61,5 +61,26 @@ public class PilotsManager : MonoBehaviour
     public Pilot[] GetPilotsForHire()
     {
         return Instance.Pilots.ToList().Where(p => !p.IsHired).ToArray();
+    }
+
+    public void SaveData()
+    {
+        foreach (Pilot pilot in Instance.Pilots)
+        {
+            pilot.SaveData();
+        }
+    }
+
+    public async void LoadDataAsync()
+    {
+        foreach (Pilot pilot in Instance.Pilots)
+        {
+            await pilot.LoadDataAsync();
+        }
+    }
+
+    public void DeleteData()
+    {
+        Instance.DeleteData();
     }
 }

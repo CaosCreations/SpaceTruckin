@@ -48,7 +48,14 @@ public class BedCanvasUI : MonoBehaviour
     private void EndDay()
     {
         MissionsManager.UpdateMissionSchedule();
-        MissionsManager.SavePersistentDataForUpdatedMissions();
         ShipsManager.UpdateHangarShips();
+
+        // These could be in the parent singleton class maybe
+        PlayerManager.Instance.SaveData();
+        MissionsManager.Instance.SaveData();
+        PilotsManager.Instance.SaveData();
+        ShipsManager.Instance.SaveData();
+        MessagesManager.Instance.SaveData();
     }
+
 }

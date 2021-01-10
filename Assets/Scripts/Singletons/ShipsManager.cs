@@ -147,7 +147,7 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    public async void LoadData()
+    public async void LoadDataAsync()
     {
         foreach (Ship ship in Instance.Ships)
         {

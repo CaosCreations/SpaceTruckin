@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : MonoBehaviour, IDataModelManager
 {
     public static PlayerManager Instance;
 
@@ -67,5 +67,20 @@ public class PlayerManager : MonoBehaviour
         Instance.Money += amount;
         Instance.TotalMoneyAcquired += amount;
         onFinancialTransaction?.Invoke(Instance.Money);
+    }
+
+    public void SaveData()
+    {
+        playerData.SaveData();
+    }
+
+    public async void LoadDataAsync()
+    {
+        await playerData.LoadDataAsync();
+    }
+
+    public void DeleteData()
+    {
+        
     }
 }

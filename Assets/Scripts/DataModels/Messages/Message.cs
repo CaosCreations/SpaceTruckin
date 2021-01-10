@@ -28,6 +28,15 @@ public class Message : ScriptableObject, IDataModel
     }
 
 
+    public string MessageName
+    {
+        get => data.messageName; set => data.messageName = value;
+    }
+
+    public string Sender { get => data.sender; set => data.sender = value; }
+
+    public string Subject { get => data.subject; set => data.subject = value; }
+
     public bool IsUnlocked 
     { 
         get => saveData.isUnlocked; set => saveData.isUnlocked = value;  
