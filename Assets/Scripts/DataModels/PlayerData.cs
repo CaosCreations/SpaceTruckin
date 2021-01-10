@@ -27,13 +27,13 @@ public class PlayerData : ScriptableObject, IDataModel
 
     public void SaveData()
     {
-        string fileName = $"{FILE_NAME}_{saveData.guid}";
+        string fileName = DataModelsUtils.GetUniqueFileName(FILE_NAME, saveData.guid);
         DataModelsUtils.SaveFileAsync(fileName, FOLDER_NAME, this);
     }
 
     public async System.Threading.Tasks.Task LoadDataAsync()
     {
-        string fileName = $"{FILE_NAME}_{saveData.guid}";
+        string fileName = DataModelsUtils.GetUniqueFileName(FILE_NAME, saveData.guid);
         await DataModelsUtils.LoadFileAsync<PlayerSaveData>(fileName, FOLDER_NAME);
     }
 }

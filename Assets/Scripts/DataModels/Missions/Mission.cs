@@ -44,21 +44,17 @@ public class Mission : ScriptableObject, IDataModel
         set => saveData.daysLeftToComplete = value;
     }
 
-    public Ship Ship
-    {
-        get => saveData.ship; 
-        set => saveData.ship = null;
-    }
+    public Ship Ship { get => saveData.ship; set => saveData.ship = null; }
 
     public void SaveData()
     {
-        string fileName = $"{data.missionName}_{saveData.guid}";
+        string fileName = DataModelsUtils.GetUniqueFileName(data.missionName, saveData.guid);
         DataModelsUtils.SaveFileAsync(fileName, FOLDER_NAME, saveData);
     }
 
     public async Task LoadDataAsync()
     {
-        string fileName = $"{data.missionName}_{saveData.guid}";
+        string fileName = DataModelsUtils.GetUniqueFileName(data.missionName, saveData.guid);
         saveData = await DataModelsUtils.LoadFileAsync<MissionSaveData>(fileName, FOLDER_NAME);
     }
 

@@ -83,13 +83,13 @@ public class Ship : ScriptableObject
 
     public void SaveData()
     {
-        string fileName = $"{data.shipName}_{saveData.guid}";
+        string fileName = DataModelsUtils.GetUniqueFileName(data.shipName, saveData.guid);
         DataModelsUtils.SaveFileAsync(fileName, FOLDER_NAME, saveData);
     }
 
     public async System.Threading.Tasks.Task LoadDataAsync()
     {
-        string fileName = $"{data.shipName}_{saveData.guid}";
+        string fileName = DataModelsUtils.GetUniqueFileName(data.shipName, saveData.guid);
         saveData = await DataModelsUtils.LoadFileAsync<ShipSaveData>(fileName, FOLDER_NAME);
     }
 }

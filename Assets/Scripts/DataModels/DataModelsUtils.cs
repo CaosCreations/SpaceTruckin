@@ -7,6 +7,8 @@ using UnityEngine;
 
 public static class DataModelsUtils
 {
+    public const string FILE_EXTENSION = ".truckin";
+
     public static void SaveAllData(IDataModel[] dataModels)
     {
         foreach (IDataModel dataModel in dataModels)
@@ -95,6 +97,6 @@ public static class DataModelsUtils
 
     public static string GetUniqueFileName(string fileName, Guid guid)
     {
-        return $"{fileName}_{guid}.truckin";
+        return $"{fileName}_{guid}{FILE_EXTENSION}";
     }
 }

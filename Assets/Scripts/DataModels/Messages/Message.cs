@@ -35,13 +35,13 @@ public class Message : ScriptableObject, IDataModel
 
     public void SaveData()
     {
-        string fileName = $"{data.messageName}_{saveData.guid}";
+        string fileName = DataModelsUtils.GetUniqueFileName(data.messageName, saveData.guid);
         DataModelsUtils.SaveFileAsync(fileName, FOLDER_NAME, saveData);
     }
 
     public async System.Threading.Tasks.Task LoadDataAsync()
     {
-        string fileName = $"{data.messageName}_{saveData.guid}";
+        string fileName = DataModelsUtils.GetUniqueFileName(data.messageName, saveData.guid);
         saveData = await DataModelsUtils.LoadFileAsync<MessageSaveData>(fileName, FOLDER_NAME);
     }
 }
