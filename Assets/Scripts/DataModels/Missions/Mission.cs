@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Mission", menuName = "ScriptableObjects/Mission", order = 1)]
@@ -12,13 +13,13 @@ public class Mission : ScriptableObject, IDataModel
 
     public static string FOLDER_NAME = "MissionSaveData";
 
-    // Non-persistent data
     public bool HasBeenAccepted
     {
         get { return saveData.hasBeenAccepted; }
         set { saveData.hasBeenAccepted = value; }
     }
 
+    // Non-persistent data
     public class MissionData
     {
         public int missionDurationInDays;
@@ -62,12 +63,12 @@ public class Mission : ScriptableObject, IDataModel
     public void SaveData()
     {
         string fileName = $"{data.missionName}_{saveData.guid}";
-        DataModelsUtils.SaveFile(fileName, FOLDER_NAME, saveData);
+        DataModelsUtils.SaveFileAsync(fileName, FOLDER_NAME, saveData);
     }
 
-    public async void LoadData()
+    public async void LoadDataAsync()
     {
         string fileName = $"{data.missionName}_{saveData.guid}";
-        saveData = await DataModelsUtils.LoadFile<MissionSaveData>(fileName, FOLDER_NAME);
+        saveData = await DataModelsUtils.LoadFileAsync<MissionSaveData>(fileName, FOLDER_NAME);
     }
 }

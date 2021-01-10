@@ -1,10 +1,5 @@
-﻿using System;
-using System.IO;
-using UnityEngine;
-
-public interface IDataModel
+﻿public interface IDataModel
 {
     void SaveData();
-    void LoadData();
-
+    System.Threading.Tasks.Task LoadDataAsync();
 }

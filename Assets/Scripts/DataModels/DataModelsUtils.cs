@@ -20,7 +20,7 @@ public static class DataModelsUtils
         model.SaveData();
     }
 
-    public static async void SaveFile<T>(string fileName, string folderName, T dataModel)
+    public static async void SaveFileAsync<T>(string fileName, string folderName, T dataModel)
     {
         string folderPath = Path.Combine(Application.persistentDataPath, folderName);
         if (!Directory.Exists(folderPath))
@@ -41,7 +41,7 @@ public static class DataModelsUtils
         {
             var buffer = Encoding.UTF8.GetBytes(fileContents);
             
-            using (var fileStream = new FileStream(fileName, FileMode.OpenOrCreate,
+            using (var fileStream = new FileStream(filePath, FileMode.OpenOrCreate,
                 FileAccess.Write, FileShare.None, buffer.Length, true))
             {
                 await fileStream.WriteAsync(buffer, 0, buffer.Length);
@@ -55,14 +55,16 @@ public static class DataModelsUtils
         }
     }
 
-    public static async Task<T> LoadFile<T>(string fileName, string folderName) where T : class, new()
+    public static async Task<T> LoadFileAsync<T>(string fileName, string folderName) where T : class, new()
     {
         string folderPath = Path.Combine(Application.persistentDataPath, folderName);
         string filePath = Path.Combine(folderPath, fileName);
+
         if (File.Exists(filePath))
         {
             try
             {
+                // Create async file stream 
                 using (var sourceStream =
                     new FileStream(
                         filePath,
@@ -71,19 +73,19 @@ public static class DataModelsUtils
                 {
                     var builder = new StringBuilder();
 
-                    // Creating a byte array of size 4096 = 0x1000
+                    // Create a byte array of size 4096 = 0x1000
                     byte[] buffer = new byte[0x1000];
 
-                    int numRead;
-                    while ((numRead = await sourceStream.ReadAsync(buffer, 0, buffer.Length)) != 0)
+                    // Read bytes asynchronously until the end of the file is reached 
+                    int numberOfBytesRead;
+                    while ((numberOfBytesRead = await sourceStream.ReadAsync(buffer, 0, buffer.Length)) != 0)
                     {
-                        string text = Encoding.Unicode.GetString(buffer, 0, numRead);
+                        string text = Encoding.Unicode.GetString(buffer, 0, numberOfBytesRead);
                         builder.Append(text);
                     }
+                    // Deserialise the string
                     return JsonUtility.FromJson<T>(builder.ToString());
                 }
-
-                
             }
             catch (Exception e)
             {
