@@ -33,6 +33,11 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
+        if (DataModelsUtils.SaveDataExists(Ship.FOLDER_NAME))
+        {
+            LoadDataAsync();
+        }
+
         hangarSlots = FindObjectsOfType<HangarSlot>();
         UpdateHangarShips();
     }
@@ -40,14 +45,6 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
     public static void DamageShip(Ship ship, int damage)
     {
         ship.CurrentHullIntegrity -= damage; 
-
-        //for (int i = 0; i < Instance.Ships.Length; i++)
-        //{
-        //    if (Instance.Ships[i] != null && index == Instance.Ships[i].id)
-        //    {
-        //        Instance.Ships[i].CurrentHullIntegrity = Mathf.Max(0, Instance.Ships[i].CurrentHullIntegrity - damage);
-        //    }
-        //}
     }
 
     public static void LaunchShip(HangarNode node)
@@ -157,6 +154,6 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
 
     public void DeleteData()
     {
-        Instance.DeleteData();
+        DataModelsUtils.RecursivelyDeleteSaveData(Ship.FOLDER_NAME);
     }
 }

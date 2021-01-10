@@ -9,10 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5745358076465076626}
-  - component: {fileID: 5745358076465076627}
   - component: {fileID: 667742070}
-  - component: {fileID: 7158868080756466719}
+  - component: {fileID: 5745358076465076627}
   - component: {fileID: 3197085279453762649}
+  - component: {fileID: 7158868080756466719}
+  - component: {fileID: 8710179870615699991}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -34,19 +35,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5745358076465076627
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5745358076465076624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c98cf337111ef1438bb6bbe98b6c4a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  missionContainer: {fileID: 11400000, guid: 6abb128be21441f4b80cc81980b3c565, type: 2}
 --- !u!114 &667742070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,6 +50,32 @@ MonoBehaviour:
   playerData: {fileID: 11400000, guid: 1506149f15b36014eb19522e7ab71165, type: 2}
   isPaused: 0
   playerMovement: {fileID: 0}
+--- !u!114 &5745358076465076627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5745358076465076624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c98cf337111ef1438bb6bbe98b6c4a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missionContainer: {fileID: 11400000, guid: 6abb128be21441f4b80cc81980b3c565, type: 2}
+--- !u!114 &3197085279453762649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5745358076465076624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74ca5a61a9ef9e944b38e5c8922ed28d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pilotsContainer: {fileID: 11400000, guid: 6394e5a47496bdc4eaa6194b9fa5d3a4, type: 2}
 --- !u!114 &7158868080756466719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78,7 +92,7 @@ MonoBehaviour:
     type: 3}
   shipsContainer: {fileID: 11400000, guid: 6bd5f91068b898f4d96ba6794873186e, type: 2}
   hangarSlots: []
---- !u!114 &3197085279453762649
+--- !u!114 &8710179870615699991
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,7 +101,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5745358076465076624}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74ca5a61a9ef9e944b38e5c8922ed28d, type: 3}
+  m_Script: {fileID: 11500000, guid: d1e942e90d9f5834a962f44dd0d63571, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pilotsContainer: {fileID: 11400000, guid: 6394e5a47496bdc4eaa6194b9fa5d3a4, type: 2}
+  messageContainer: {fileID: 11400000, guid: 17c0b5eb2d119eb478259e5c6fc60e76, type: 2}

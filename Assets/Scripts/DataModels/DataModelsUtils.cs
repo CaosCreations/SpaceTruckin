@@ -1,6 +1,6 @@
-﻿
-using System;
+﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -9,22 +9,9 @@ public static class DataModelsUtils
 {
     public const string FILE_EXTENSION = ".truckin";
 
-    public static void SaveAllData(IDataModel[] dataModels)
-    {
-        foreach (IDataModel dataModel in dataModels)
-        {
-            dataModel.SaveData();
-        }
-    }
-
-    public static void SaveData(IDataModel model)
-    {
-        model.SaveData();
-    }
-
     public static async void SaveFileAsync<T>(string fileName, string folderName, T dataModel)
     {
-        string folderPath = Path.Combine(Application.persistentDataPath, folderName);
+        string folderPath = GetSaveDataPath(folderName);
         if (!Directory.Exists(folderPath))
         {
             try
@@ -57,7 +44,7 @@ public static class DataModelsUtils
 
     public static async Task<T> LoadFileAsync<T>(string fileName, string folderName) where T : class, new()
     {
-        string folderPath = Path.Combine(Application.persistentDataPath, folderName);
+        string folderPath = GetSaveDataPath(folderName);
         string filePath = Path.Combine(folderPath, fileName);
 
         if (File.Exists(filePath))
@@ -93,6 +80,31 @@ public static class DataModelsUtils
             }
         }
         return new T();
+    }
+
+    // This should probably be called in the singleton base class 
+    public static void RecursivelyDeleteSaveData(string folderName)
+    {
+        string folderPath = GetSaveDataPath(folderName);
+        if (Directory.Exists(folderPath))
+        {
+            Directory.Delete(folderPath, recursive: true);
+        }
+    }
+
+    public static bool SaveDataExists(string folderName)
+    {
+        string folderPath = GetSaveDataPath(folderName);
+        if (Directory.Exists(folderPath)) 
+        {
+            return !Directory.EnumerateFileSystemEntries(folderPath).Any();
+        }
+        return false; 
+    }
+
+    public static string GetSaveDataPath(string folderName)
+    {
+        return Path.Combine(Application.persistentDataPath, folderName);
     }
 
     public static string GetUniqueFileName(string fileName, Guid guid)

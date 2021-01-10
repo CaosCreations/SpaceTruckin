@@ -23,7 +23,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
 
     public static event System.Action<long> onFinancialTransaction;
 
-    void Awake()
+    private void Awake()
     {
         if (Instance == null)
         {
@@ -35,15 +35,23 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
-
+        Init();
         playerMovement = FindObjectOfType<PlayerMovement>();
     }
 
-    void Start()
+    private void Start()
     {
         if (playerData == null)
         {
             Debug.LogError("No player data found");
+        }
+    }
+
+    public void Init()
+    {
+        if (DataModelsUtils.SaveDataExists(PlayerData.FOLDER_NAME))
+        {
+            LoadDataAsync();
         }
     }
 
@@ -81,6 +89,6 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
 
     public void DeleteData()
     {
-        
+        DataModelsUtils.RecursivelyDeleteSaveData(PlayerData.FOLDER_NAME);
     }
 }

@@ -24,9 +24,12 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         Init();
     }
 
-    void Init()
+    public void Init()
     {
-        LoadDataAsync();
+        if (DataModelsUtils.SaveDataExists(Mission.FOLDER_NAME))
+        {
+            LoadDataAsync();
+        }
     }
 
     public static List<Mission> GetAcceptedMissions()
@@ -78,9 +81,9 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
             await mission.LoadDataAsync();
         }
     }
-
+    
     public void DeleteData()
     {
-        Instance.DeleteData();
+        DataModelsUtils.RecursivelyDeleteSaveData(Mission.FOLDER_NAME);
     }
 }

@@ -22,9 +22,12 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
         Init();
     }
 
-    private void Init()
+    public void Init()
     {
-        LoadDataAsync();
+        if (DataModelsUtils.SaveDataExists(Message.FOLDER_NAME))
+        {
+            LoadDataAsync();
+        }
     }
 
     public void UnlockMessages()

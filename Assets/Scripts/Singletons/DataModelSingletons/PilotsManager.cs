@@ -20,14 +20,14 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
-        AssignUniqueIds();
+        Init();
     }
 
-    private void AssignUniqueIds()
+    public void Init()
     {
-        for (int i = 0; i < Instance.Pilots.Length; i++)
+        if (DataModelsUtils.SaveDataExists(Pilot.FOLDER_NAME))
         {
-            Instance.Pilots[i].id = i;
+            LoadDataAsync();
         }
     }
 
@@ -37,14 +37,6 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         {
             ship.Pilot.Xp += xp;
         }
-
-        //for (int i = 0; i < Instance.Pilots.Length; i++)
-        //{
-        //    if (Instance.Pilots[i] != null && index == Instance.Pilots[i].id)
-        //    {
-        //        Instance.Pilots[i].Xp += xp;
-        //    }
-        //}
     }
 
     public void HirePilot(int index)
@@ -54,13 +46,13 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
 
     public Pilot[] GetHiredPilots()
     {
-        return Instance.Pilots.ToList().Where(p => p.IsHired).ToArray();
+        return Instance.Pilots.Where(p => p.IsHired) as Pilot[];
         
     }
 
     public Pilot[] GetPilotsForHire()
     {
-        return Instance.Pilots.ToList().Where(p => !p.IsHired).ToArray();
+        return Instance.Pilots.Where(p => !p.IsHired) as Pilot[];
     }
 
     public void SaveData()

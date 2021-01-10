@@ -12,7 +12,7 @@ public class MessagesUI : MonoBehaviour
 
     private void Start()
     {
-        backButton.AddOnClick(() => GoToListView());
+        backButton.AddOnClick(GoToListView);
     }
 
     private void OnEnable()

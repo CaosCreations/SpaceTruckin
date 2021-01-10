@@ -3,4 +3,5 @@
     void SaveData();
     void LoadDataAsync();
     void DeleteData();
+    void Init();
 }
