@@ -4,9 +4,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlayerData", menuName = "ScriptableObjects/PlayerData", order = 1)]
 public class PlayerData : ScriptableObject, IDataModel
 {
-    public PlayerSaveData saveData;
-    private const string FOLDER_NAME = "PlayerSaveData";
-    private const string FILE_NAME = "PlayerSave";
+    private PlayerSaveData saveData;
+
+    public static string FOLDER_NAME = "PlayerSaveData";
+    public static string FILE_NAME = "PlayerSave";
 
     public class PlayerSaveData
     {
