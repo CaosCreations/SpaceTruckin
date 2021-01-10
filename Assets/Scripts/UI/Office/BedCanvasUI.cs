@@ -55,7 +55,8 @@ public class BedCanvasUI : MonoBehaviour
         MissionsManager.Instance.SaveData();
         PilotsManager.Instance.SaveData();
         ShipsManager.Instance.SaveData();
-        MessagesManager.Instance.SaveData();
+
+        //MessagesManager.Instance.SaveData();
     }
 
 }

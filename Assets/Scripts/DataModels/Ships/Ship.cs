@@ -35,6 +35,7 @@ public class Ship : ScriptableObject
         [SerializeField] public Mission currentMission;
     }
         
+    public string Name { get => data.shipName; }
 
     public bool IsOwned
     {
@@ -72,6 +73,8 @@ public class Ship : ScriptableObject
     {
         get => data.shipPrefab; set => data.shipPrefab = value;
     }
+
+    public Sprite Avatar { get => data.shipAvatar; set => data.shipAvatar = value; }
 
     public Pilot Pilot { get => data.pilot; set => data.pilot = value; }
 

@@ -23,8 +23,8 @@ public class Message : ScriptableObject, IDataModel
 
     public class MessageSaveData
     {
-        public Guid guid = new Guid();
-        public bool isUnlocked;
+        [SerializeField] public Guid guid = new Guid();
+        [SerializeField] public bool isUnlocked;
     }
 
 
@@ -37,10 +37,16 @@ public class Message : ScriptableObject, IDataModel
 
     public string Subject { get => data.subject; set => data.subject = value; }
 
+    public string Body { get => data.body; set => data.body = value; }
+
     public bool IsUnlocked 
     { 
         get => saveData.isUnlocked; set => saveData.isUnlocked = value;  
     }
+
+    public int Condition { get => data.condition; set => data.condition = value; }
+
+    public Mission Mission { get => data.mission; set => data.mission = value; }
 
     public void SaveData()
     {

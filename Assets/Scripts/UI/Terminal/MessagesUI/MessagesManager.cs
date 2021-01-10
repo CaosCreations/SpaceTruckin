@@ -34,11 +34,11 @@ public class MessagesManager : MonoBehaviour
     {
         foreach (Message message in messageContainer.messages)
         {
-            if (!message.unlocked)
+            if (!message.IsUnlocked)
             {
-                if (PlayerManager.Instance.playerData.playerMoney > message.condition)
+                if (PlayerManager.Instance.CanSpendMoney(message.Condition))
                 {
-                    message.unlocked = true;
+                    message.IsUnlocked = true;
                 }
             }
         }
@@ -56,7 +56,7 @@ public class MessagesManager : MonoBehaviour
     {
         foreach (Message message in messageContainer.messages)
         {
-            if (message != null && message.unlocked)
+            if (message != null && message.IsUnlocked)
             {
                 GameObject newMessage = Instantiate(messageItemPrefab, scrollViewContent.transform);
                 newMessage.name = "Message";
@@ -72,9 +72,9 @@ public class MessagesManager : MonoBehaviour
         messagesDetailView.SetActive(true);
         messageDetailViewHandler.SetMessageDetails(message);
 
-        if (message.mission != null)
+        if (message.Mission != null)
         {
-            messageDetailViewHandler.SetMissionAcceptButton(message.mission);
+            messageDetailViewHandler.SetMissionAcceptButton(message.Mission);
             messageDetailViewHandler.missionAcceptButton.gameObject.SetActive(true);
         }
         else

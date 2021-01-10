@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+
 public enum Species
 {
     Human, Helicid, Myorijiin, Oshunian, HelmetGuy, Vesta
@@ -22,7 +23,7 @@ public class Pilot : ScriptableObject
     public class PilotData
     {
         public string pilotName, shipName, description;
-        int hireCost;
+        public int hireCost;
         public Species species;
         public Ship ship;
         public Sprite avatar;
@@ -30,11 +31,20 @@ public class Pilot : ScriptableObject
 
     public class PilotSaveData
     {
-        public Guid guid = new Guid();
-        public int xp, level, missionsCompleted;
-        public bool isHired, isOnMission, isAssignedToShip;
+        [SerializeField] public Guid guid = new Guid();
+        [SerializeField] public int xp, level, missionsCompleted;
+        [SerializeField] public bool isHired, isOnMission, isAssignedToShip;
     }
 
+
+    public string Name { get => data.pilotName; }
+
+    public string Description 
+    {
+        get => data.description; set => data.description = value; 
+    }
+    
+    public int HireCost { get => data.hireCost; }
 
     public int Xp { get => saveData.xp; set => saveData.xp = value; }
 
@@ -59,6 +69,10 @@ public class Pilot : ScriptableObject
     {
         get => saveData.isAssignedToShip; set { saveData.isAssignedToShip = value; }
     }
+
+    public Ship Ship { get => data.ship; }
+
+    public Sprite Avatar { get => data.avatar; set => data.avatar = value; }
 
     public void SaveData()
     {

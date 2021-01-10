@@ -43,6 +43,8 @@ public class Mission : ScriptableObject, IDataModel
     
     public string Cargo { get => data.cargo; set => data.cargo = value; }
 
+    public string Description { get => data.description; set => data.description = value; }
+
     public int Reward { get => data.reward; set => data.reward = value; }
 
     public bool HasBeenAccepted
