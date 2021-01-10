@@ -6,7 +6,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
 
     [Header("Set In Editor")]
     [SerializeField] private PlayerData playerData;
-    private long Money
+    public long Money
     {
         get => playerData.PlayerMoney;
         set => playerData.PlayerMoney = value;

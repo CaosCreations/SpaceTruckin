@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class MessagesManager : MonoBehaviour
+public class MessagesUI : MonoBehaviour
 {
     public GameObject scrollViewContent;
     public GameObject messageItemPrefab;
-    public MessageContainer messageContainer;
-
     public GameObject messagesListView;
     public GameObject messagesDetailView;
     public MessageDetailView messageDetailViewHandler;
@@ -19,29 +17,10 @@ public class MessagesManager : MonoBehaviour
 
     private void OnEnable()
     {
-        AddMessages();
-        GoToListView();
-    }
-
-    public void CheckMessagesToAdd(long moneyMade)
-    {
-        UnlockMessages();
+        MessagesManager.Instance.UnlockMessages();
         CleanScrollView();
         AddMessages();
-    }
-
-    private void UnlockMessages()
-    {
-        foreach (Message message in messageContainer.messages)
-        {
-            if (!message.IsUnlocked)
-            {
-                if (PlayerManager.Instance.CanSpendMoney(message.Condition))
-                {
-                    message.IsUnlocked = true;
-                }
-            }
-        }
+        GoToListView();
     }
 
     private void CleanScrollView()
@@ -54,7 +33,7 @@ public class MessagesManager : MonoBehaviour
 
     private void AddMessages()
     {
-        foreach (Message message in messageContainer.messages)
+        foreach (Message message in MessagesManager.Instance.Messages)
         {
             if (message != null && message.IsUnlocked)
             {

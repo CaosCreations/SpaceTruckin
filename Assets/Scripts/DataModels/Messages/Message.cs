@@ -28,7 +28,7 @@ public class Message : ScriptableObject, IDataModel
     }
 
 
-    public string MessageName
+    public string Name
     {
         get => data.messageName; set => data.messageName = value;
     }
