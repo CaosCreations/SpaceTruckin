@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -97,14 +98,26 @@ public static class DataModelsUtils
         string folderPath = GetSaveDataPath(folderName);
         if (Directory.Exists(folderPath)) 
         {
-            return !Directory.EnumerateFileSystemEntries(folderPath).Any();
+            //return !Directory.EnumerateFileSystemEntries(folderPath).Any();
+            IEnumerable<string> entries = Directory.EnumerateFileSystemEntries(folderPath);
+            if (entries != null && entries.Any())
+            {
+                return true;
+            }
         }
         return false; 
     }
 
     public static string GetSaveDataPath(string folderName)
     {
-        return Path.Combine(Application.persistentDataPath, folderName);
+        //return Path.Combine(Application.persistentDataPath, folderName);
+        return Path.GetFullPath(Path.Combine(Application.persistentDataPath, folderName));
+
+    }
+
+    public static void CreateSaveFolder(string folderName)
+    {
+        Directory.CreateDirectory(GetSaveDataPath(folderName));
     }
 
     public static string GetUniqueFileName(string fileName, Guid guid)

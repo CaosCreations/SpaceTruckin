@@ -16,9 +16,10 @@ public partial class Mission : ScriptableObject, IDataModel
 
     public static string FOLDER_NAME = "MissionSaveData";
 
+    [Serializable]
     public class MissionSaveData
     {
-        [SerializeField] public Guid guid = new Guid();
+        [SerializeField] public Guid guid;
         [SerializeField] public bool hasBeenAccepted = false;
         [SerializeField] public int daysLeftToComplete;
         [SerializeField] public Ship ship = null;

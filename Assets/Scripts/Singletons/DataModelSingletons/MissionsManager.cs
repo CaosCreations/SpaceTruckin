@@ -30,6 +30,10 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         {
             LoadDataAsync();
         }
+        else
+        {
+            DataModelsUtils.CreateSaveFolder(Mission.FOLDER_NAME);
+        }
     }
 
     public static List<Mission> GetAcceptedMissions()

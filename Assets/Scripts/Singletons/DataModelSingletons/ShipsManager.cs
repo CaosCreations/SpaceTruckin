@@ -37,6 +37,10 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         {
             LoadDataAsync();
         }
+        else
+        {
+            DataModelsUtils.CreateSaveFolder(Ship.FOLDER_NAME);
+        }
 
         hangarSlots = FindObjectsOfType<HangarSlot>();
         UpdateHangarShips();

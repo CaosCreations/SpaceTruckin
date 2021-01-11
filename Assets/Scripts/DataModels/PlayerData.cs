@@ -4,16 +4,18 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlayerData", menuName = "ScriptableObjects/PlayerData", order = 1)]
 public class PlayerData : ScriptableObject, IDataModel
 {
-    private PlayerSaveData saveData;
+    [Header("Data to update IN GAME")]
+    public PlayerSaveData saveData;
 
     public static string FOLDER_NAME = "PlayerSaveData";
     public static string FILE_NAME = "PlayerSave";
 
+    [Serializable]
     public class PlayerSaveData
     {
+        public Guid guid = new Guid();
         public long playerMoney;
         public long playerTotalMoneyAcquired; //Used to unlock missions
-        public Guid guid = new Guid();
     }
 
     public long PlayerMoney
@@ -36,5 +38,15 @@ public class PlayerData : ScriptableObject, IDataModel
     {
         string fileName = DataModelsUtils.GetUniqueFileName(FILE_NAME, saveData.guid);
         await DataModelsUtils.LoadFileAsync<PlayerSaveData>(fileName, FOLDER_NAME);
+    }
+
+    public void SetDefaults()
+    {
+        saveData = new PlayerSaveData()
+        {
+            playerMoney = 0,
+            playerTotalMoneyAcquired = 0,
+            guid = new Guid()
+        };
     }
 }

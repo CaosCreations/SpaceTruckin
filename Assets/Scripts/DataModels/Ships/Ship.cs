@@ -11,16 +11,16 @@ public partial class Ship : ScriptableObject, IDataModel
     public string shipName;
     public float maxHullIntegrity;
     public int maxFuel;
-
     public GameObject shipPrefab;
     public Sprite shipAvatar;
     public Pilot pilot;
 
     [Header("Data to update IN GAME")]
-    private ShipSaveData saveData;
+    public ShipSaveData saveData;
 
     public static string FOLDER_NAME = "ShipSaveData";
 
+    [Serializable]
     public class ShipSaveData
     {
         [SerializeField] public Guid guid = new Guid();
@@ -30,7 +30,6 @@ public partial class Ship : ScriptableObject, IDataModel
         [SerializeField] public HangarNode hangarNode;
         [SerializeField] public Mission currentMission;
     }
-
 
     public float GetHullPercent()
     {
@@ -52,5 +51,19 @@ public partial class Ship : ScriptableObject, IDataModel
     {
         string fileName = DataModelsUtils.GetUniqueFileName(shipName, saveData.guid);
         saveData = await DataModelsUtils.LoadFileAsync<ShipSaveData>(fileName, FOLDER_NAME);
+    }
+
+    public void SetDefaults()
+    {
+        saveData = new ShipSaveData()
+        {
+            guid = new Guid(),
+            isOwned = false,
+            isLaunched = false,
+            currentFuel = 0,
+            currenthullIntegrity = 0,
+            hangarNode = HangarNode.None,
+            currentMission = null
+        };
     }
 }

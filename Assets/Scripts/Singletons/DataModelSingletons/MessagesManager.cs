@@ -28,6 +28,10 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
         {
             LoadDataAsync();
         }
+        else
+        {
+            DataModelsUtils.CreateSaveFolder(Message.FOLDER_NAME);
+        }
     }
 
     public void UnlockMessages()

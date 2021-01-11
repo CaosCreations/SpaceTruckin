@@ -12,16 +12,16 @@ public partial class Message : ScriptableObject, IDataModel
     public Mission mission;
 
     [Header("Data to update IN GAME")]
-    private MessageSaveData saveData;
+    public MessageSaveData saveData;
 
     public static string FOLDER_NAME = "MessageSaveData";
 
+    [Serializable]
     public class MessageSaveData
     {
         [SerializeField] public Guid guid = new Guid();
         [SerializeField] public bool isUnlocked;
     }
-
 
     public void SaveData()
     {

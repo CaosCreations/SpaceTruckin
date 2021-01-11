@@ -20,10 +20,11 @@ public partial class Pilot : ScriptableObject
     public Sprite avatar;
 
     [Header("Data to update IN GAME")]
-    private PilotSaveData saveData;
+    public PilotSaveData saveData;
 
     public static string FOLDER_NAME = "PilotSaveData";
 
+    [Serializable]
     public class PilotSaveData
     {
         [SerializeField] public Guid guid = new Guid();
@@ -42,5 +43,19 @@ public partial class Pilot : ScriptableObject
     {
         string fileName = $"{pilotName}_{saveData.guid}";
         saveData = await DataModelsUtils.LoadFileAsync<PilotSaveData>(fileName, FOLDER_NAME);
+    }
+
+    public void SetDefaults()
+    {
+        saveData = new PilotSaveData()
+        {
+            guid = new Guid(),
+            xp = 0,
+            level = 1,
+            missionsCompleted = 0,
+            isHired = false,
+            isOnMission = false,
+            isAssignedToShip = false
+        };
     }
 }
