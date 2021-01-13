@@ -19,7 +19,7 @@ public partial class Mission : ScriptableObject, IDataModel
     [Serializable]
     public class MissionSaveData
     {
-        [SerializeField] public Guid guid;
+        [SerializeField] public Guid guid = Guid.NewGuid();
         [SerializeField] public bool hasBeenAccepted = false;
         [SerializeField] public int daysLeftToComplete;
         [SerializeField] public Ship ship = null;

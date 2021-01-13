@@ -13,10 +13,12 @@ public class PlayerData : ScriptableObject, IDataModel
     [Serializable]
     public class PlayerSaveData
     {
-        public Guid guid = new Guid();
+        public Guid guid = Guid.NewGuid();
         public long playerMoney;
         public long playerTotalMoneyAcquired; //Used to unlock missions
     }
+
+    public Guid Guid { get => saveData.guid; set => saveData.guid = value; } // might not need this
 
     public long PlayerMoney
     {

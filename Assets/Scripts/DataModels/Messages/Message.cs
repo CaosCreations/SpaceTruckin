@@ -19,7 +19,7 @@ public partial class Message : ScriptableObject, IDataModel
     [Serializable]
     public class MessageSaveData
     {
-        [SerializeField] public Guid guid = new Guid();
+        [SerializeField] public Guid guid = Guid.NewGuid();
         [SerializeField] public bool isUnlocked;
     }
 

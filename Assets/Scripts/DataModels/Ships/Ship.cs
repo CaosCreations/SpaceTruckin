@@ -23,7 +23,7 @@ public partial class Ship : ScriptableObject, IDataModel
     [Serializable]
     public class ShipSaveData
     {
-        [SerializeField] public Guid guid = new Guid();
+        [SerializeField] public Guid guid = Guid.NewGuid();
         [SerializeField] public bool isOwned, isLaunched;
         [SerializeField] public int currentFuel;
         [SerializeField] public float currenthullIntegrity;

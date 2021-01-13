@@ -27,7 +27,7 @@ public partial class Pilot : ScriptableObject
     [Serializable]
     public class PilotSaveData
     {
-        [SerializeField] public Guid guid = new Guid();
+        [SerializeField] public Guid guid = Guid.NewGuid();
         [SerializeField] public int xp, level, missionsCompleted;
         [SerializeField] public bool isHired, isOnMission, isAssignedToShip;
     }
