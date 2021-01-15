@@ -51,10 +51,10 @@ public class BedCanvasUI : MonoBehaviour
         ShipsManager.UpdateHangarShips();
 
         // These could be in the parent singleton class maybe
-        PlayerManager.Instance.SaveData();
+        //PlayerManager.Instance.SaveData();
         MissionsManager.Instance.SaveData();
-        PilotsManager.Instance.SaveData();
-        ShipsManager.Instance.SaveData();
+        //PilotsManager.Instance.SaveData();
+        //ShipsManager.Instance.SaveData();
 
         //MessagesManager.Instance.SaveData();
     }

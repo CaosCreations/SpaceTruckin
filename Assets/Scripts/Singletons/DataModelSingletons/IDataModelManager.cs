@@ -4,4 +4,6 @@
     void LoadDataAsync();
     void DeleteData();
     void Init();
+    void AssignUniqueIds();
+    //void GetById();
 }

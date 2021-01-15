@@ -20,7 +20,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
-        Init();
+        //Init();
     }
 
     public void Init()

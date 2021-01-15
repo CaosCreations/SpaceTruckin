@@ -19,27 +19,27 @@ public partial class Mission : ScriptableObject, IDataModel
     [Serializable]
     public class MissionSaveData
     {
-        [SerializeField] public Guid guid = Guid.NewGuid();
+        [SerializeField] public int id;
+        [SerializeField] public int shipId;
         [SerializeField] public bool hasBeenAccepted = false;
         [SerializeField] public int daysLeftToComplete;
-        [SerializeField] public Ship ship = null;
+        //[SerializeField] public Ship ship = null;
     }
 
     public void SaveData()
     {
-        string fileName = DataModelsUtils.GetUniqueFileName(missionName, saveData.guid);
-        DataModelsUtils.SaveFileAsync(fileName, FOLDER_NAME, saveData);
+        DataModelsUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
     }
 
     public async Task LoadDataAsync()
     {
-        string fileName = DataModelsUtils.GetUniqueFileName(missionName, saveData.guid);
-        saveData = await DataModelsUtils.LoadFileAsync<MissionSaveData>(fileName, FOLDER_NAME);
+        saveData = await DataModelsUtils.LoadFileAsync<MissionSaveData>(name, FOLDER_NAME);
     }
 
-    public void ScheduleMission(Ship ship)
+    public void ScheduleMission(Ship ship/*, int id*/)
     {
-        saveData.ship = ship;
+        saveData.shipId = ship.id;
+        //saveData.shipId = id;
     }
 
     public void StartMission()

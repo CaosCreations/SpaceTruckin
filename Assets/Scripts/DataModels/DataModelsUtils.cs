@@ -24,7 +24,8 @@ public static class DataModelsUtils
                 Debug.LogError($"{e.Message}\n{e.StackTrace}");
             }
         }
-        string filePath = Path.Combine(folderPath, fileName);
+
+        string filePath = Path.Combine(folderPath, fileName + FILE_EXTENSION);
         string fileContents = JsonUtility.ToJson(dataModel);
 
         try
@@ -46,7 +47,7 @@ public static class DataModelsUtils
     public static async Task<T> LoadFileAsync<T>(string fileName, string folderName) where T : class, new()
     {
         string folderPath = GetSaveDataPath(folderName);
-        string filePath = Path.Combine(folderPath, fileName);
+        string filePath = Path.Combine(folderPath, fileName + FILE_EXTENSION);
 
         if (File.Exists(filePath))
         {
@@ -83,7 +84,6 @@ public static class DataModelsUtils
         return new T();
     }
 
-    // This should probably be called in the singleton base class 
     public static void RecursivelyDeleteSaveData(string folderName)
     {
         string folderPath = GetSaveDataPath(folderName);
@@ -98,7 +98,6 @@ public static class DataModelsUtils
         string folderPath = GetSaveDataPath(folderName);
         if (Directory.Exists(folderPath)) 
         {
-            //return !Directory.EnumerateFileSystemEntries(folderPath).Any();
             IEnumerable<string> entries = Directory.EnumerateFileSystemEntries(folderPath);
             if (entries != null && entries.Any())
             {
@@ -110,9 +109,7 @@ public static class DataModelsUtils
 
     public static string GetSaveDataPath(string folderName)
     {
-        //return Path.Combine(Application.persistentDataPath, folderName);
         return Path.GetFullPath(Path.Combine(Application.persistentDataPath, folderName));
-
     }
 
     public static void CreateSaveFolder(string folderName)

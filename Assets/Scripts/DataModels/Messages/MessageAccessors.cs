@@ -3,6 +3,11 @@
     // This class is just for property accessors. 
     // The fields are all located in Message.cs. 
     
+    //public System.Guid Guid 
+    //{   
+    //    get => saveData.guid; set => saveData.guid = value; 
+    //}
+
     public string Name
     {
         get => messageName; set => messageName = value;

@@ -19,19 +19,16 @@ public partial class Message : ScriptableObject, IDataModel
     [Serializable]
     public class MessageSaveData
     {
-        [SerializeField] public Guid guid = Guid.NewGuid();
         [SerializeField] public bool isUnlocked;
     }
 
     public void SaveData()
     {
-        string fileName = DataModelsUtils.GetUniqueFileName(messageName, saveData.guid);
-        DataModelsUtils.SaveFileAsync(fileName, FOLDER_NAME, saveData);
+        DataModelsUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
     }
 
     public async System.Threading.Tasks.Task LoadDataAsync()
     {
-        string fileName = DataModelsUtils.GetUniqueFileName(messageName, saveData.guid);
-        saveData = await DataModelsUtils.LoadFileAsync<MessageSaveData>(fileName, FOLDER_NAME);
+        saveData = await DataModelsUtils.LoadFileAsync<MessageSaveData>(name, FOLDER_NAME);
     }
 }

@@ -23,12 +23,13 @@ public partial class Ship : ScriptableObject, IDataModel
     [Serializable]
     public class ShipSaveData
     {
-        [SerializeField] public Guid guid = Guid.NewGuid();
+        //[SerializeField] public Guid guid = Guid.NewGuid();
+        [SerializeField] public int id, currentMissionId;
         [SerializeField] public bool isOwned, isLaunched;
         [SerializeField] public int currentFuel;
         [SerializeField] public float currenthullIntegrity;
         [SerializeField] public HangarNode hangarNode;
-        [SerializeField] public Mission currentMission;
+        //[SerializeField] public Mission currentMission;
     }
 
     public float GetHullPercent()
@@ -43,27 +44,11 @@ public partial class Ship : ScriptableObject, IDataModel
 
     public void SaveData()
     {
-        string fileName = DataModelsUtils.GetUniqueFileName(shipName, saveData.guid);
-        DataModelsUtils.SaveFileAsync(fileName, FOLDER_NAME, saveData);
+        DataModelsUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
     }
 
     public async System.Threading.Tasks.Task LoadDataAsync()
     {
-        string fileName = DataModelsUtils.GetUniqueFileName(shipName, saveData.guid);
-        saveData = await DataModelsUtils.LoadFileAsync<ShipSaveData>(fileName, FOLDER_NAME);
-    }
-
-    public void SetDefaults()
-    {
-        saveData = new ShipSaveData()
-        {
-            guid = new Guid(),
-            isOwned = false,
-            isLaunched = false,
-            currentFuel = 0,
-            currenthullIntegrity = 0,
-            hangarNode = HangarNode.None,
-            currentMission = null
-        };
+        saveData = await DataModelsUtils.LoadFileAsync<ShipSaveData>(name, FOLDER_NAME);
     }
 }

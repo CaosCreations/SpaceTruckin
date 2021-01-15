@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public partial class Ship
 {
@@ -34,9 +35,15 @@ public partial class Ship
         get => saveData.hangarNode; set => saveData.hangarNode = value;
     }
 
+    //public Mission CurrentMission
+    //{
+    //    get => saveData.currentMission; set => saveData.currentMission = value;
+    //}
+
     public Mission CurrentMission
     {
-        get => saveData.currentMission; set => saveData.currentMission = value;
+        get => MissionsManager.Instance.Missions
+            .FirstOrDefault(m => m.saveData.id == saveData.currentMissionId);
     }
 
     public GameObject ShipPrefab

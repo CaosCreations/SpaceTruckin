@@ -36,6 +36,14 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         }
     }
 
+    private void AssignUniqueIds()
+    {
+        for (int i = 0; i < Instance.Missions.Length; i++)
+        {
+            Instance.Missions[i].saveData.id = i;
+        }
+    }
+
     public static List<Mission> GetAcceptedMissions()
     {
         return Instance.Missions

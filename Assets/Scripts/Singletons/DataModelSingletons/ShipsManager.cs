@@ -28,7 +28,7 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
-        Init();
+        //Init();
     }
 
     public void Init()
