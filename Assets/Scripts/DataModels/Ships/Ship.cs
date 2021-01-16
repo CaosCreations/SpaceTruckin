@@ -4,8 +4,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Ship", menuName = "ScriptableObjects/Ship", order = 1)]
 public partial class Ship : ScriptableObject, IDataModel
 {
-    [Header("Leave this blank. It is set automatically.")]
-    public int id;
+    //[Header("Leave this blank. It is set automatically.")]
+    //public int id;
 
     [Header("Set In Editor")]
     public string shipName;

@@ -32,11 +32,12 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         }
         else
         {
+            AssignUniqueIds();
             DataModelsUtils.CreateSaveFolder(Mission.FOLDER_NAME);
         }
     }
 
-    private void AssignUniqueIds()
+    public void AssignUniqueIds()
     {
         for (int i = 0; i < Instance.Missions.Length; i++)
         {

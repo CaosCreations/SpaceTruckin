@@ -27,29 +27,26 @@ public partial class Pilot : ScriptableObject
     [Serializable]
     public class PilotSaveData
     {
-        [SerializeField] public Guid guid = Guid.NewGuid();
+        [SerializeField] public int id; 
         [SerializeField] public int xp, level, missionsCompleted;
         [SerializeField] public bool isHired, isOnMission, isAssignedToShip;
     }
 
-
     public void SaveData()
     {
-        string fileName = $"{pilotName}_{saveData.guid}";
-        DataModelsUtils.SaveFileAsync(fileName, FOLDER_NAME, saveData);
+        DataModelsUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
     }
 
     public async System.Threading.Tasks.Task LoadDataAsync()
     {
-        string fileName = $"{pilotName}_{saveData.guid}";
-        saveData = await DataModelsUtils.LoadFileAsync<PilotSaveData>(fileName, FOLDER_NAME);
+        saveData = await DataModelsUtils.LoadFileAsync<PilotSaveData>(name, FOLDER_NAME);
     }
 
     public void SetDefaults()
     {
         saveData = new PilotSaveData()
         {
-            guid = new Guid(),
+            //guid = new Guid(),
             xp = 0,
             level = 1,
             missionsCompleted = 0,

@@ -31,6 +31,15 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
         else
         {
             DataModelsUtils.CreateSaveFolder(Message.FOLDER_NAME);
+            AssignUniqueIds();
+        }
+    }
+
+    public void AssignUniqueIds()
+    {
+        for (int i = 0; i < Instance.Messages.Length; i++)
+        {
+            Instance.Messages[i].saveData.id = i;
         }
     }
 

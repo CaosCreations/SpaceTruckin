@@ -8,7 +8,6 @@ public class PlayerData : ScriptableObject, IDataModel
     public PlayerSaveData saveData;
 
     public static string FOLDER_NAME = "PlayerSaveData";
-    public static string FILE_NAME = "PlayerSave";
 
     [Serializable]
     public class PlayerSaveData
@@ -24,6 +23,7 @@ public class PlayerData : ScriptableObject, IDataModel
     {
         get => saveData.playerMoney; set => saveData.playerMoney = value;
     }
+
     public long PlayerTotalMoneyAcquired
     {
         get => saveData.playerTotalMoneyAcquired; 
@@ -32,14 +32,12 @@ public class PlayerData : ScriptableObject, IDataModel
 
     public void SaveData()
     {
-        string fileName = DataModelsUtils.GetUniqueFileName(FILE_NAME, saveData.guid);
-        DataModelsUtils.SaveFileAsync(fileName, FOLDER_NAME, this);
+        DataModelsUtils.SaveFileAsync(name, FOLDER_NAME, this);
     }
 
     public async System.Threading.Tasks.Task LoadDataAsync()
     {
-        string fileName = DataModelsUtils.GetUniqueFileName(FILE_NAME, saveData.guid);
-        await DataModelsUtils.LoadFileAsync<PlayerSaveData>(fileName, FOLDER_NAME);
+        await DataModelsUtils.LoadFileAsync<PlayerSaveData>(name, FOLDER_NAME);
     }
 
     public void SetDefaults()

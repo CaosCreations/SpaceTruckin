@@ -40,10 +40,19 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         else
         {
             DataModelsUtils.CreateSaveFolder(Ship.FOLDER_NAME);
+            AssignUniqueIds();
         }
 
         hangarSlots = FindObjectsOfType<HangarSlot>();
         UpdateHangarShips();
+    }
+
+    public void AssignUniqueIds()
+    {
+        for (int i = 0; i < Instance.Ships.Length; i++)
+        {
+            Instance.Ships[i].saveData.id = i;
+        }
     }
 
     public static void DamageShip(Ship ship, int damage)

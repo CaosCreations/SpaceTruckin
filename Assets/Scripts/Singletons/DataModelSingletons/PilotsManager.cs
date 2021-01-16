@@ -31,6 +31,14 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         }
     }
 
+    public void AssignUniqueIds()
+    {
+        for (int i = 0; i < Instance.Pilots.Length; i++)
+        {
+            Instance.Pilots[i].saveData.id = i;
+        }
+    }
+
     public void AwardXp(Ship ship, int xp)
     {
         if (ship != null && ship.Pilot != null)
@@ -39,9 +47,9 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    public void HirePilot(int index)
+    public void HirePilot(Pilot pilot)
     {
-        Instance.Pilots[index].IsHired = true;
+        pilot.IsHired = true;
     }
 
     public Pilot[] GetHiredPilots()

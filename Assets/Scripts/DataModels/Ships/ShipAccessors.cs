@@ -44,6 +44,7 @@ public partial class Ship
     {
         get => MissionsManager.Instance.Missions
             .FirstOrDefault(m => m.saveData.id == saveData.currentMissionId);
+        set => saveData.currentMissionId = value != null ? value.Id : -1;
     }
 
     public GameObject ShipPrefab

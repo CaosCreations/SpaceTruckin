@@ -73,7 +73,9 @@ public static class DataModelsUtils
                         builder.Append(text);
                     }
                     // Deserialise the string
-                    return JsonUtility.FromJson<T>(builder.ToString());
+                    var parsedJson = JsonUtility.FromJson<T>(builder.ToString());
+                    return parsedJson;
+                    //return JsonUtility.FromJson<T>(builder.ToString());
                 }
             }
             catch (Exception e)

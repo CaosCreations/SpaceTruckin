@@ -35,8 +35,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
-        //Init();
-        playerMovement = FindObjectOfType<PlayerMovement>();
+        Init();
     }
 
     private void Start()
@@ -57,9 +56,9 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         }
         else
         {
-            //playerData.Guid = new System.Guid();
             DataModelsUtils.CreateSaveFolder(PlayerData.FOLDER_NAME);
         }
+        playerMovement = FindObjectOfType<PlayerMovement>();
     }
 
     public bool CanSpendMoney(long amount)

@@ -188,7 +188,7 @@ public class PilotsUI : MonoBehaviour
 		if (pilot != null && PlayerManager.Instance.CanSpendMoney(pilot.HireCost))
         {
 			PlayerManager.Instance.SpendMoney(pilot.HireCost);
-			PilotsManager.Instance.HirePilot(pilot.id);
+			PilotsManager.Instance.HirePilot(pilot);
 			hireButton.interactable = false;
 			hireButton.GetComponentInChildren<Text>().text = "Pilot Hired!";
 			PopulateScrollViews();

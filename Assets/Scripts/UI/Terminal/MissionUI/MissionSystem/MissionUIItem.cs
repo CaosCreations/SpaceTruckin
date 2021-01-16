@@ -70,6 +70,7 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
                 if (slot.ship != null)
                 {
                     slot.ship.CurrentMission = mission;
+                    //mission.Ship = slot.ship;
                     mission.Ship = slot.ship;
                 }
                 else

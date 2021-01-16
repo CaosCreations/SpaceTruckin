@@ -34,14 +34,16 @@ public partial class Mission
     {
         get => moneyNeededToUnlock; set => moneyNeededToUnlock = value;
     }
-    
+
+    public int Id { get => saveData.id; }
+
     public int ShipId { get => saveData.shipId; set => saveData.shipId = value; }
 
     //public Ship Ship { get => saveData.ship; set => saveData.ship = null; }
-    public Ship Ship 
+    public Ship Ship
     {
-        //get => MissionsManager.Instance.Missions.FirstOrDefault(m => m.saveData.shipId == saveData.id);
         get => ShipsManager.Instance.Ships.FirstOrDefault(s => s.saveData.id == saveData.shipId);
+        set => saveData.shipId = value != null ? value.saveData.id : -1;
     }
 
     public MissionOutcome[] Outcomes { get => outcomes; }
