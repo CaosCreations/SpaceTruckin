@@ -48,7 +48,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        Debug.Log("Combined path: " + DataModelsUtils.GetSaveDataPath(PlayerData.FOLDER_NAME));
+        Debug.Log("Combined path: " + DataModelsUtils.GetSaveFolderPath(PlayerData.FOLDER_NAME));
 
         if (DataModelsUtils.SaveDataExists(PlayerData.FOLDER_NAME))
         {

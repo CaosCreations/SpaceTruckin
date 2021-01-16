@@ -12,7 +12,7 @@ public static class DataModelsUtils
 
     public static async void SaveFileAsync<T>(string fileName, string folderName, T dataModel)
     {
-        string folderPath = GetSaveDataPath(folderName);
+        string folderPath = GetSaveFolderPath(folderName);
         if (!Directory.Exists(folderPath))
         {
             try
@@ -46,7 +46,7 @@ public static class DataModelsUtils
 
     public static async Task<T> LoadFileAsync<T>(string fileName, string folderName) where T : class, new()
     {
-        string folderPath = GetSaveDataPath(folderName);
+        string folderPath = GetSaveFolderPath(folderName);
         string filePath = Path.Combine(folderPath, fileName + FILE_EXTENSION);
 
         if (File.Exists(filePath))
@@ -68,9 +68,14 @@ public static class DataModelsUtils
         return new T();
     }
 
+    public static string GetSaveFolderPath(string folderName)
+    {
+        return Path.GetFullPath(Path.Combine(Application.persistentDataPath, folderName));
+    }
+
     public static void RecursivelyDeleteSaveData(string folderName)
     {
-        string folderPath = GetSaveDataPath(folderName);
+        string folderPath = GetSaveFolderPath(folderName);
         if (Directory.Exists(folderPath))
         {
             Directory.Delete(folderPath, recursive: true);
@@ -79,10 +84,12 @@ public static class DataModelsUtils
 
     public static bool SaveDataExists(string folderName)
     {
-        string folderPath = GetSaveDataPath(folderName);
+        string folderPath = GetSaveFolderPath(folderName);
         if (Directory.Exists(folderPath)) 
         {
+            // Get entries so we can confirm that the folder is not empty
             IEnumerable<string> entries = Directory.EnumerateFileSystemEntries(folderPath);
+
             if (entries != null && entries.Any())
             {
                 return true;
@@ -91,13 +98,8 @@ public static class DataModelsUtils
         return false; 
     }
 
-    public static string GetSaveDataPath(string folderName)
-    {
-        return Path.GetFullPath(Path.Combine(Application.persistentDataPath, folderName));
-    }
-
     public static void CreateSaveFolder(string folderName)
     {
-        Directory.CreateDirectory(GetSaveDataPath(folderName));
+        Directory.CreateDirectory(GetSaveFolderPath(folderName));
     }
 }
