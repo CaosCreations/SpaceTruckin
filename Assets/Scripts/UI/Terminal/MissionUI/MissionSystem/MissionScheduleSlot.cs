@@ -31,6 +31,4 @@ public class MissionScheduleSlot : MonoBehaviour
             }
         }
     }
-
-    public int ShipId { get => ship.saveData.id; }
 }

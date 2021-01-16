@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -20,9 +19,9 @@ public partial class Mission : ScriptableObject, IDataModel
     [Serializable]
     public class MissionSaveData
     {
-        [SerializeField] public int id, shipId; 
         [SerializeField] public bool hasBeenAccepted = false;
         [SerializeField] public int daysLeftToComplete;
+        [SerializeField] public Ship ship = null;
     }
 
     public void SaveData()
@@ -32,16 +31,12 @@ public partial class Mission : ScriptableObject, IDataModel
 
     public async Task LoadDataAsync()
     {
-        //saveData = await DataModelsUtils.LoadFileAsync<MissionSaveData>(name, FOLDER_NAME);
-        string path = Path.Combine(Application.persistentDataPath, FOLDER_NAME, name + ".truckin");
-        string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, FOLDER_NAME, name + ".truckin"));
-        saveData = JsonUtility.FromJson<MissionSaveData>(json);
+        saveData = await DataModelsUtils.LoadFileAsync<MissionSaveData>(name, FOLDER_NAME);
     }   
 
-    public void ScheduleMission(Ship ship/*, int id*/)
+    public void ScheduleMission(Ship ship)
     {
         Ship = ship;
-        //saveData.shipId = id;
     }
 
     public void StartMission()

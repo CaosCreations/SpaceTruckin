@@ -4,9 +4,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Ship", menuName = "ScriptableObjects/Ship", order = 1)]
 public partial class Ship : ScriptableObject, IDataModel
 {
-    //[Header("Leave this blank. It is set automatically.")]
-    //public int id;
-
     [Header("Set In Editor")]
     public string shipName;
     public float maxHullIntegrity;
@@ -23,13 +20,11 @@ public partial class Ship : ScriptableObject, IDataModel
     [Serializable]
     public class ShipSaveData
     {
-        //[SerializeField] public Guid guid = Guid.NewGuid();
-        [SerializeField] public int id, currentMissionId;
         [SerializeField] public bool isOwned, isLaunched;
         [SerializeField] public int currentFuel;
         [SerializeField] public float currenthullIntegrity;
         [SerializeField] public HangarNode hangarNode;
-        //[SerializeField] public Mission currentMission;
+        [SerializeField] public Mission currentMission;
     }
 
     public float GetHullPercent()

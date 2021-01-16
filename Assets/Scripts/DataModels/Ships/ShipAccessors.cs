@@ -35,16 +35,9 @@ public partial class Ship
         get => saveData.hangarNode; set => saveData.hangarNode = value;
     }
 
-    //public Mission CurrentMission
-    //{
-    //    get => saveData.currentMission; set => saveData.currentMission = value;
-    //}
-
-    public Mission CurrentMission
-    {
-        get => MissionsManager.Instance.Missions
-            .FirstOrDefault(m => m.saveData.id == saveData.currentMissionId);
-        set => saveData.currentMissionId = value != null ? value.Id : -1;
+    public Mission CurrentMission 
+    { 
+        get => saveData.currentMission; set => saveData.currentMission = value; 
     }
 
     public GameObject ShipPrefab

@@ -35,16 +35,7 @@ public partial class Mission
         get => moneyNeededToUnlock; set => moneyNeededToUnlock = value;
     }
 
-    public int Id { get => saveData.id; }
-
-    public int ShipId { get => saveData.shipId; set => saveData.shipId = value; }
-
-    //public Ship Ship { get => saveData.ship; set => saveData.ship = null; }
-    public Ship Ship
-    {
-        get => ShipsManager.Instance.Ships.FirstOrDefault(s => s.saveData.id == saveData.shipId);
-        set => saveData.shipId = value != null ? value.saveData.id : -1;
-    }
+    public Ship Ship { get => saveData.ship; set => saveData.ship = value; }
 
     public MissionOutcome[] Outcomes { get => outcomes; }
 }

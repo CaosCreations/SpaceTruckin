@@ -19,7 +19,6 @@ public partial class Message : ScriptableObject, IDataModel
     [Serializable]
     public class MessageSaveData
     {
-        [SerializeField] public int id;
         [SerializeField] public bool isUnlocked;
     }
 
