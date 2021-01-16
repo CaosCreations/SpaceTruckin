@@ -12,12 +12,9 @@ public class PlayerData : ScriptableObject, IDataModel
     [Serializable]
     public class PlayerSaveData
     {
-        public Guid guid = Guid.NewGuid();
         public long playerMoney;
         public long playerTotalMoneyAcquired; //Used to unlock missions
     }
-
-    public Guid Guid { get => saveData.guid; set => saveData.guid = value; } // might not need this
 
     public long PlayerMoney
     {
@@ -32,21 +29,11 @@ public class PlayerData : ScriptableObject, IDataModel
 
     public void SaveData()
     {
-        DataModelsUtils.SaveFileAsync(name, FOLDER_NAME, this);
+        DataModelsUtils.SaveFileAsync(name, FOLDER_NAME, saveData); 
     }
 
     public async System.Threading.Tasks.Task LoadDataAsync()
     {
-        await DataModelsUtils.LoadFileAsync<PlayerSaveData>(name, FOLDER_NAME);
-    }
-
-    public void SetDefaults()
-    {
-        saveData = new PlayerSaveData()
-        {
-            playerMoney = 0,
-            playerTotalMoneyAcquired = 0,
-            guid = new Guid()
-        };
+        saveData = await DataModelsUtils.LoadFileAsync<PlayerSaveData>(name, FOLDER_NAME);
     }
 }

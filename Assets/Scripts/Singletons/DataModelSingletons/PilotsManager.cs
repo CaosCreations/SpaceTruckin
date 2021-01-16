@@ -20,7 +20,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
-        //Init();
+        Init();
     }
 
     public void Init()
@@ -28,6 +28,10 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         if (DataModelsUtils.SaveDataExists(Pilot.FOLDER_NAME))
         {
             LoadDataAsync();
+        }
+        else
+        {
+            DataModelsUtils.CreateSaveFolder(Pilot.FOLDER_NAME);
         }
     }
 
