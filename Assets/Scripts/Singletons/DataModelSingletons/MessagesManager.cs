@@ -19,7 +19,7 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
-        //Init();
+        Init();
     }
 
     public void Init()

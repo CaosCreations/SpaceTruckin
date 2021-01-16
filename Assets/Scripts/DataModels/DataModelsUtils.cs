@@ -46,6 +46,7 @@ public static class DataModelsUtils
 
     public static async Task<T> LoadFileAsync<T>(string fileName, string folderName) where T : class, new()
     {
+        Debug.Log($"{typeof(T)} load commencing.");
         string folderPath = GetSaveFolderPath(folderName);
         string filePath = Path.Combine(folderPath, fileName + FILE_EXTENSION);
 
@@ -58,6 +59,7 @@ public static class DataModelsUtils
                 {
                     json = await reader.ReadToEndAsync();
                 }
+                Debug.Log($"{typeof(T)} load finishing.");
                 return JsonUtility.FromJson<T>(json);
             }
             catch (Exception e)

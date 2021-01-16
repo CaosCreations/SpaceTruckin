@@ -48,8 +48,6 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        Debug.Log("Combined path: " + DataModelsUtils.GetSaveFolderPath(PlayerData.FOLDER_NAME));
-
         if (DataModelsUtils.SaveDataExists(PlayerData.FOLDER_NAME))
         {
             LoadDataAsync();
