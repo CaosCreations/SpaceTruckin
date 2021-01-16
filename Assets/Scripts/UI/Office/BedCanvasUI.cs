@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class BedCanvasUI : MonoBehaviour
@@ -56,5 +54,4 @@ public class BedCanvasUI : MonoBehaviour
         ShipsManager.Instance.SaveData();
         MessagesManager.Instance.SaveData();
     }
-
 }
