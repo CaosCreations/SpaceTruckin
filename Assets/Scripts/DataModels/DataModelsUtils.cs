@@ -53,7 +53,7 @@ public static class DataModelsUtils
         {
             try
             {
-                string json; 
+                string json;
                 using (StreamReader reader = File.OpenText(filePath))
                 {
                     json = await reader.ReadToEndAsync();
@@ -99,10 +99,5 @@ public static class DataModelsUtils
     public static void CreateSaveFolder(string folderName)
     {
         Directory.CreateDirectory(GetSaveDataPath(folderName));
-    }
-
-    public static string GetUniqueFileName(string fileName, Guid guid)
-    {
-        return $"{fileName}_{guid}{FILE_EXTENSION}";
     }
 }
