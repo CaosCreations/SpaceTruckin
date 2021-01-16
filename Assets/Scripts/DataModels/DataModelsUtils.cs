@@ -53,30 +53,12 @@ public static class DataModelsUtils
         {
             try
             {
-                // Create async file stream 
-                using (var sourceStream =
-                    new FileStream(
-                        filePath,
-                        FileMode.Open, FileAccess.Read, FileShare.Read,
-                        bufferSize: 4096, useAsync: true))
+                string json; 
+                using (StreamReader reader = File.OpenText(filePath))
                 {
-                    var builder = new StringBuilder();
-
-                    // Create a byte array of size 4096 = 0x1000
-                    byte[] buffer = new byte[0x1000];
-
-                    // Read bytes asynchronously until the end of the file is reached 
-                    int numberOfBytesRead;
-                    while ((numberOfBytesRead = await sourceStream.ReadAsync(buffer, 0, buffer.Length)) != 0)
-                    {
-                        string text = Encoding.Unicode.GetString(buffer, 0, numberOfBytesRead);
-                        builder.Append(text);
-                    }
-                    // Deserialise the string
-                    var parsedJson = JsonUtility.FromJson<T>(builder.ToString());
-                    return parsedJson;
-                    //return JsonUtility.FromJson<T>(builder.ToString());
+                    json = await reader.ReadToEndAsync();
                 }
+                return JsonUtility.FromJson<T>(json);
             }
             catch (Exception e)
             {
