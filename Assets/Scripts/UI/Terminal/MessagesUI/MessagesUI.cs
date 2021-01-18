@@ -39,6 +39,8 @@ public class MessagesUI : MonoBehaviour
             {
                 GameObject newMessage = Instantiate(messageItemPrefab, scrollViewContent.transform);
                 newMessage.name = "Message";
+                newMessage.GetComponent<Image>().color = GetMessageColour(message);
+
                 MessageButtonHandler buttonHandler = newMessage.GetComponent<MessageButtonHandler>();
                 buttonHandler.Init(message, () => GoToDetailView(message));
             }
@@ -76,4 +78,8 @@ public class MessagesUI : MonoBehaviour
         newItem.AddComponent<Button>();
         newItem.AddComponent<MessageButtonHandler>();
     }
+
+    private Color GetMessageColour(Message message)
+        => message.IsUnread ? MessageConstants.UnreadColour
+        : MessageConstants.ReadColour;
 }
