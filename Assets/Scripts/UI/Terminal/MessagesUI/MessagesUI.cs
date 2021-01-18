@@ -14,9 +14,16 @@ public class MessagesUI : MonoBehaviour
 
     public Button unreadFilterButton;
     public Button readFilterButton;
+
+    // Determines what kinds of messages will appear in the list
     private MessageFilterMode currentFilterMode;
 
     private void Start()
+    {
+        AddListeners();
+    }
+
+    private void AddListeners()
     {
         backButton.AddOnClick(GoToListView);
         unreadFilterButton.AddOnClick(() => FilterMessages(MessageFilterMode.Unread));
@@ -71,6 +78,21 @@ public class MessagesUI : MonoBehaviour
         }
     }
 
+    private void FilterMessages(MessageFilterMode filterMode)
+    {
+        // Reset the filter mode if clicking that button for the second consecutive time
+        if (filterMode == currentFilterMode)
+        {
+            currentFilterMode = MessageFilterMode.None;
+        }
+        else
+        {
+            currentFilterMode = filterMode;
+        }
+        CleanScrollView();
+        AddMessages();
+    }
+
     private bool MessageIsFilteredOut(Message message)
     {
         if (currentFilterMode == MessageFilterMode.Unread && !message.IsUnread
@@ -80,6 +102,9 @@ public class MessagesUI : MonoBehaviour
         }
         return false;
     }
+
+    private Color GetMessageColour(Message message) =>
+        message.IsUnread ? MessageConstants.UnreadColour : MessageConstants.ReadColour;
 
     private void GoToDetailView(Message message)
     {
@@ -98,20 +123,5 @@ public class MessagesUI : MonoBehaviour
         }
     }
 
-    private Color GetMessageColour(Message message) => 
-        message.IsUnread ? MessageConstants.UnreadColour : MessageConstants.ReadColour;
 
-    private void FilterMessages(MessageFilterMode filterMode)
-    {
-        if (filterMode == currentFilterMode)
-        {
-            currentFilterMode = MessageFilterMode.None;
-        }
-        else
-        {
-            currentFilterMode = filterMode;
-        }
-        CleanScrollView();
-        AddMessages();
-    }
 }
