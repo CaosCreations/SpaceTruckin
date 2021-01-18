@@ -18,9 +18,15 @@ public class MessagesUI : MonoBehaviour
     private void OnEnable()
     {
         MessagesManager.Instance.UnlockMessages();
+        GoToListView();
+    }
+
+    private void GoToListView()
+    {
+        messagesListView.SetActive(true);
+        messagesDetailView.SetActive(false);
         CleanScrollView();
         AddMessages();
-        GoToListView();
     }
 
     private void CleanScrollView()
@@ -68,12 +74,6 @@ public class MessagesUI : MonoBehaviour
         }
     }
 
-    private void GoToListView()
-    {
-        messagesListView.SetActive(true);
-        messagesDetailView.SetActive(false);
-    }
-
     public void GenerateMessageItem()
     {
         GameObject newItem = new GameObject().ScaffoldUI(
@@ -84,6 +84,5 @@ public class MessagesUI : MonoBehaviour
     }
 
     private Color GetMessageColour(Message message) => 
-        message.IsUnread ? MessageConstants.UnreadColour
-        : MessageConstants.ReadColour;
+        message.IsUnread ? MessageConstants.UnreadColour : MessageConstants.ReadColour;
 }
