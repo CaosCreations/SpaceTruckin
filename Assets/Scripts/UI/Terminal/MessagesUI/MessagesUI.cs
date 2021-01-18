@@ -11,7 +11,7 @@ public class MessagesUI : MonoBehaviour
     public GameObject messagesDetailView;
     public MessageDetailView messageDetailViewHandler;
     public Button backButton;
-    private MessageFilterMode filterMode = MessageFilterMode.None;
+    private MessageFilterMode currentFilterMode = MessageFilterMode.None;
 
     private void Start()
     {
@@ -67,8 +67,8 @@ public class MessagesUI : MonoBehaviour
 
     private bool MessageIsFilteredOut(Message message)
     {
-        if (filterMode == MessageFilterMode.Unread && !message.IsUnread
-            || filterMode == MessageFilterMode.Read && message.IsUnread)
+        if (currentFilterMode == MessageFilterMode.Unread && !message.IsUnread
+            || currentFilterMode == MessageFilterMode.Read && message.IsUnread)
         {
             return true;
         }
@@ -104,5 +104,17 @@ public class MessagesUI : MonoBehaviour
     private Color GetMessageColour(Message message) => 
         message.IsUnread ? MessageConstants.UnreadColour : MessageConstants.ReadColour;
 
-
+    private void FilterMessages(MessageFilterMode filterMode)
+    {
+        if (filterMode == currentFilterMode)
+        {
+            currentFilterMode = MessageFilterMode.None;
+        }
+        else
+        {
+            currentFilterMode = filterMode;
+        }
+        CleanScrollView();
+        AddMessages();
+    }
 }
