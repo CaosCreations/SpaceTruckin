@@ -42,7 +42,11 @@ public class MessagesUI : MonoBehaviour
                 newMessage.GetComponent<Image>().color = GetMessageColour(message);
 
                 MessageButtonHandler buttonHandler = newMessage.GetComponent<MessageButtonHandler>();
-                buttonHandler.Init(message, () => GoToDetailView(message));
+                buttonHandler.Init(message, () =>
+                {
+                    GoToDetailView(message);
+                    message.IsUnread = false; 
+                });
             }
         }
     }
@@ -79,7 +83,7 @@ public class MessagesUI : MonoBehaviour
         newItem.AddComponent<MessageButtonHandler>();
     }
 
-    private Color GetMessageColour(Message message)
-        => message.IsUnread ? MessageConstants.UnreadColour
+    private Color GetMessageColour(Message message) => 
+        message.IsUnread ? MessageConstants.UnreadColour
         : MessageConstants.ReadColour;
 }
