@@ -98,15 +98,6 @@ public class MessagesUI : MonoBehaviour
         }
     }
 
-    public void GenerateMessageItem()
-    {
-        GameObject newItem = new GameObject().ScaffoldUI(
-            name: "MessageItem", parent: scrollViewContent, anchors: (Vector2.zero, Vector2.one));
-
-        newItem.AddComponent<Button>();
-        newItem.AddComponent<MessageButtonHandler>();
-    }
-
     private Color GetMessageColour(Message message) => 
         message.IsUnread ? MessageConstants.UnreadColour : MessageConstants.ReadColour;
 
