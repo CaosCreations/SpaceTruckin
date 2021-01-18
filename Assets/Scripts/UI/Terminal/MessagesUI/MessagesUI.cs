@@ -14,7 +14,7 @@ public class MessagesUI : MonoBehaviour
 
     public Button unreadFilterButton;
     public Button readFilterButton;
-    private MessageFilterMode currentFilterMode = MessageFilterMode.None;
+    private MessageFilterMode currentFilterMode;
 
     private void Start()
     {
@@ -26,6 +26,7 @@ public class MessagesUI : MonoBehaviour
     private void OnEnable()
     {
         MessagesManager.Instance.UnlockMessages();
+        currentFilterMode = MessageFilterMode.None;
         GoToListView();
     }
 
