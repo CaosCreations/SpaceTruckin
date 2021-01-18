@@ -11,11 +11,16 @@ public class MessagesUI : MonoBehaviour
     public GameObject messagesDetailView;
     public MessageDetailView messageDetailViewHandler;
     public Button backButton;
+
+    public Button unreadFilterButton;
+    public Button readFilterButton;
     private MessageFilterMode currentFilterMode = MessageFilterMode.None;
 
     private void Start()
     {
         backButton.AddOnClick(GoToListView);
+        unreadFilterButton.AddOnClick(() => FilterMessages(MessageFilterMode.Unread));
+        readFilterButton.AddOnClick(() => FilterMessages(MessageFilterMode.Read));
     }
 
     private void OnEnable()
