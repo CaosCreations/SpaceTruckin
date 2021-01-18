@@ -20,6 +20,7 @@ public partial class Message : ScriptableObject, IDataModel
     public class MessageSaveData
     {
         [SerializeField] public bool isUnlocked;
+        [SerializeField] public bool isUnread;
     }
 
     public void SaveData()
