@@ -46,4 +46,12 @@ public partial class Ship : ScriptableObject, IDataModel
     {
         saveData = await DataModelsUtils.LoadFileAsync<ShipSaveData>(name, FOLDER_NAME);
     }
+
+    private void OnValidate()
+    {
+        if (CurrentFuel > 100 || CurrentFuel < 0)
+        {
+            Debug.Log("Fuel must be within 0-100 range");
+        }
+    }
 }
