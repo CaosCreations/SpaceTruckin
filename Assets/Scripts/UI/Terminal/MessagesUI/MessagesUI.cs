@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+public enum MessageFilterMode { None, Unread, Read }
+
 public class MessagesUI : MonoBehaviour
 {
     public GameObject scrollViewContent;
@@ -9,6 +11,7 @@ public class MessagesUI : MonoBehaviour
     public GameObject messagesDetailView;
     public MessageDetailView messageDetailViewHandler;
     public Button backButton;
+    private MessageFilterMode filterMode = MessageFilterMode.None;
 
     private void Start()
     {
@@ -41,6 +44,11 @@ public class MessagesUI : MonoBehaviour
     {
         foreach (Message message in MessagesManager.Instance.Messages)
         {
+            if (MessageIsFilteredOut(message))
+            {
+                continue;
+            }
+
             if (message != null && message.IsUnlocked)
             {
                 GameObject newMessage = Instantiate(messageItemPrefab, scrollViewContent.transform);
@@ -55,6 +63,16 @@ public class MessagesUI : MonoBehaviour
                 });
             }
         }
+    }
+
+    private bool MessageIsFilteredOut(Message message)
+    {
+        if (filterMode == MessageFilterMode.Unread && !message.IsUnread
+            || filterMode == MessageFilterMode.Read && message.IsUnread)
+        {
+            return true;
+        }
+        return false;
     }
 
     private void GoToDetailView(Message message)
@@ -85,4 +103,6 @@ public class MessagesUI : MonoBehaviour
 
     private Color GetMessageColour(Message message) => 
         message.IsUnread ? MessageConstants.UnreadColour : MessageConstants.ReadColour;
+
+
 }
