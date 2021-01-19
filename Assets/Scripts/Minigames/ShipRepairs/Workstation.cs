@@ -5,21 +5,21 @@ public class Workstation : MonoBehaviour
 {
     public static event Action onRotationStopped; 
     private RepairsManager repairsManager;
-        
+
     public bool isRotating;
     private bool isDirectionReversed; 
-    public float rotationSpeed;
+    public float currentRotationSpeed;
 
     private void Start()
     {
         repairsManager = GetComponentInParent<RepairsManager>();
-		rotationSpeed = RepairsConstants.startingSpeed;
+		currentRotationSpeed = RepairsConstants.StartingSpeed;
     }
 
     public void RotateWorkstation()
     {
-        float zRotation = isDirectionReversed ? rotationSpeed
-            : rotationSpeed * -1f;
+        float zRotation = isDirectionReversed ? currentRotationSpeed
+            : currentRotationSpeed * -1f;
 
         transform.eulerAngles += new Vector3(
             0f, 0f, zRotation * Time.deltaTime);
@@ -39,10 +39,10 @@ public class Workstation : MonoBehaviour
 
     // Increase the difficulty by decreasing the timing window 
     public void IncreaseRotationSpeed() =>
-        rotationSpeed += RepairsConstants.speedIncrease;
+        currentRotationSpeed += RepairsConstants.SpeedIncrease;
 
     public void ResetRotationSpeed() =>
-        rotationSpeed = RepairsConstants.startingSpeed;
+        currentRotationSpeed = RepairsConstants.StartingSpeed;
 
     // Increase the difficulty by disorientating the player 
     public void ReverseRotationDirection() =>

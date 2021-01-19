@@ -2,7 +2,7 @@
 
 public class Indicator : MonoBehaviour
 {
-    public GameObject greenZone;
+    //public GameObject greenZone;
     private RepairsManager repairsManager;
     private bool isInsideGreenZone; 
 

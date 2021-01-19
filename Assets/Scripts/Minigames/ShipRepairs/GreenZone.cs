@@ -15,7 +15,7 @@ public class GreenZone : MonoBehaviour
     public void ReduceSize()
     {
         transform.localScale += new Vector3(
-            -RepairsConstants.sizeDecrease, 0f, 0f); 
+            -RepairsConstants.SizeDecrease, 0f, 0f); 
     }
 
     public void ResetSize()

@@ -1,14 +1,14 @@
 public static class RepairsConstants 
 {
     // Workstation 
-    public static float startingSpeed = 120f;
-    public static float speedIncrease = 12f;
+    public static float StartingSpeed = 120f;
+    public static float SpeedIncrease = 12f;
 
     // Green zone 
-    public static float sizeDecrease = 0.01f; 
+    public static float SizeDecrease = 0.01f; 
 
     // Difficulty increase-related 
-    public static float rotationReversalThreshold = 3f; 
-    public static float rotationReversalUpperBound = 5f;
-    public static float greenZoneShrinkInterval = 3f; 
+    public static float RotationReversalThreshold = 3f; 
+    public static float RotationReversalUpperBound = 5f;
+    public static float GreenZoneShrinkInterval = 3f; 
 }

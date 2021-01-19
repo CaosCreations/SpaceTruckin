@@ -1,11 +1,9 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 public class RepairsManager : MonoBehaviour
 {
     private Workstation workstation;
     private GreenZone greenZone;
-    public Text speedText;
 
     public int points;
     public int consecutiveWins;
@@ -27,7 +25,7 @@ public class RepairsManager : MonoBehaviour
         points++;
         consecutiveWins++;
         workstation.IncreaseRotationSpeed();
-        Debug.Log("New speed: " + workstation.rotationSpeed);
+        Debug.Log("New speed: " + workstation.currentRotationSpeed);
 
         // Decrease green zone size every n wins 
         if (IsGreenZoneShrinking())
@@ -39,7 +37,7 @@ public class RepairsManager : MonoBehaviour
         {
             workstation.ReverseRotationDirection();
         }
-        UpdateFeedbackText(true);
+        UpdateFeedbackText(success: true);
     }
 
     public void PlayerLoses()
@@ -49,18 +47,17 @@ public class RepairsManager : MonoBehaviour
         greenZone.ResetSize();
         UpdateFeedbackText(success: false);
     }
-    //
-    // 
+
     public bool IsGreenZoneShrinking()
     {
-        return consecutiveWins % RepairsConstants.greenZoneShrinkInterval == 0
+        return consecutiveWins % RepairsConstants.GreenZoneShrinkInterval == 0
             && consecutiveWins > 0;
     }
 
     public bool IsDirectionReversing()
     {
-        return Random.Range(0, RepairsConstants.rotationReversalUpperBound)
-            > RepairsConstants.rotationReversalThreshold;
+        return Random.Range(0, RepairsConstants.RotationReversalUpperBound)
+            > RepairsConstants.RotationReversalThreshold;
     }
 
     public void UpdateFeedbackText(bool success)
