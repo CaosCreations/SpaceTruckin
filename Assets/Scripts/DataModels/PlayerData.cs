@@ -12,8 +12,8 @@ public class PlayerData : ScriptableObject, IDataModel
     [Serializable]
     public class PlayerSaveData
     {
-        public long playerMoney;
-        public long playerTotalMoneyAcquired; //Used to unlock missions
+        [SerializeField] public long playerMoney;
+        [SerializeField] public long playerTotalMoneyAcquired; //Used to unlock missions
     }
 
     public long PlayerMoney
