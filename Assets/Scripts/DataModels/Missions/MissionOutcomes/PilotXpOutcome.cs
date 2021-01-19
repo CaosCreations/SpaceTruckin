@@ -18,7 +18,7 @@ public class PilotXpOutcome : MissionOutcome
 
         for (int i = 0; i < mission.Outcomes.Length; i++)
         {
-            if (mission.Outcomes[i].GetType().Equals(typeof(OmenOutcome)))
+            if (mission.Outcomes[i] is OmenOutcome)
             {
                 OmenOutcome omen = mission.Outcomes[i] as OmenOutcome;
                 coefficient += probability >= Random.Range(0f, 1f) ? omen.coefficient : omen.coefficient * -1;
