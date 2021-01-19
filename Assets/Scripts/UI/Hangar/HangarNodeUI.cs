@@ -40,7 +40,7 @@ public class HangarNodeUI : MonoBehaviour
         shipToInspect = ShipsManager.GetShipForNode(hangarNode);
 
         // There is no ship at this node, don't open UI
-        if(shipToInspect == null || shipToInspect.isLaunched)
+        if(shipToInspect == null || shipToInspect.IsLaunched)
         {
             UIManager.ClearCanvases();
             return;
@@ -79,7 +79,7 @@ public class HangarNodeUI : MonoBehaviour
     void PopulateUI()
     {
         SwitchPanel(HangarPanel.Main);
-        shipPreview = Instantiate(shipToInspect.shipPrefab, transform);
+        shipPreview = Instantiate(shipToInspect.ShipPrefab, transform);
         SetLayerRecursively(shipPreview, 9);
 
         fuelSlider.value = shipToInspect.GetFuelPercent();
@@ -104,12 +104,12 @@ public class HangarNodeUI : MonoBehaviour
 
         if (fuelButton.isFueling
             && fuelTimer > fuelTimerInterval
-            && shipToInspect.currentFuel < shipToInspect.maxFuel
+            && shipToInspect.CurrentFuel < shipToInspect.MaxFuel
             && PlayerManager.Instance.CanSpendMoney(fuelCostPerUnit)
             )
         {
             PlayerManager.Instance.SpendMoney(fuelCostPerUnit);
-            shipToInspect.currentFuel++;
+            shipToInspect.CurrentFuel++;
             fuelSlider.value = shipToInspect.GetFuelPercent();
             fuelTimer = 0;
             fuelButton.button.interactable = ShouldFuelButtonBeInteractable();
@@ -146,8 +146,8 @@ public class HangarNodeUI : MonoBehaviour
 
     private void Launch()
     {
-        if (shipToInspect.currentFuel > 0
-            && shipToInspect.currentMission != null)
+        if (shipToInspect.CurrentFuel > 0
+            && shipToInspect.CurrentMission != null)
         {
             ShipsManager.LaunchShip(hangarNode);
             UIManager.ClearCanvases();
@@ -171,13 +171,17 @@ public class HangarNodeUI : MonoBehaviour
 
     private bool ShouldFuelButtonBeInteractable()
     {
-        return shipToInspect.currentFuel < shipToInspect.maxFuel
+        return shipToInspect.CurrentFuel < shipToInspect.MaxFuel
             && PlayerManager.Instance.CanSpendMoney(fuelCostPerUnit);
     }
 
     private bool ShouldLaunchButtonBeInteractable()
     {
-        return shipToInspect.currentFuel >= shipToInspect.currentMission.fuelCost
-            && shipToInspect.currenthullIntegrity > 0;
+        if (shipToInspect.CurrentMission != null)
+        {
+            return shipToInspect.CurrentFuel >= shipToInspect.CurrentMission.FuelCost
+                && shipToInspect.CurrentHullIntegrity > 0;
+        }
+        return false;
     }
 }

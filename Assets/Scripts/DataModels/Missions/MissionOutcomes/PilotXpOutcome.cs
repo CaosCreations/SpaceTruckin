@@ -8,7 +8,7 @@ public class PilotXpOutcome : MissionOutcome
 	
 	public override void Process(Mission mission) 
 	{
-		PilotsManager.Instance.AwardXp(mission.ship.pilot.id, Mathf.FloorToInt(Random.Range(xpMin, xpMax) * ApplyOmens(mission)));
+		PilotsManager.Instance.AwardXp(mission.Ship, Mathf.FloorToInt(Random.Range(xpMin, xpMax) * ApplyOmens(mission)));
 	}
 
     // A mission can have multiple omens attached to it
@@ -16,11 +16,11 @@ public class PilotXpOutcome : MissionOutcome
     {
         float coefficient = 1f;
 
-        for (int i = 0; i < mission.outcomes.Length; i++)
+        for (int i = 0; i < mission.Outcomes.Length; i++)
         {
-            if (mission.outcomes[i].GetType().Equals(typeof(OmenOutcome)))
+            if (mission.Outcomes[i] is OmenOutcome)
             {
-                OmenOutcome omen = mission.outcomes[i] as OmenOutcome;
+                OmenOutcome omen = mission.Outcomes[i] as OmenOutcome;
                 coefficient += probability >= Random.Range(0f, 1f) ? omen.coefficient : omen.coefficient * -1;
             }
         }

@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65c61d5d74a340740ad66c5ce01d5754, type: 3}
   m_Name: StarterShip
   m_EditorClassIdentifier: 
-  id: 0
   shipName: Starter Ship
   maxHullIntegrity: 100
   maxFuel: 100
@@ -20,9 +19,10 @@ MonoBehaviour:
     type: 3}
   shipAvatar: {fileID: 21300000, guid: 96c9ce1d9e3993243af287359acea75d, type: 3}
   pilot: {fileID: 0}
-  isOwned: 1
-  isLaunched: 1
-  hangarNode: 1
-  currentMission: {fileID: 11400000, guid: dd2f9e9775edffc48a6117814e680e47, type: 2}
-  currentFuel: 100
-  currenthullIntegrity: 0
+  saveData:
+    isOwned: 1
+    isLaunched: 0
+    currentFuel: 0
+    currenthullIntegrity: 100
+    hangarNode: 1
+    currentMission: {fileID: 0}

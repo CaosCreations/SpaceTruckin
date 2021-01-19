@@ -26,6 +26,7 @@ public class TerminalUIManager : MonoBehaviour
     {
         SetupButtonListeners();
         TabButtonClicked(Tab.Missions);
+        UpdateMoneyText();
         PlayerManager.onFinancialTransaction += UpdateMoneyText;
     }
 
@@ -79,8 +80,8 @@ public class TerminalUIManager : MonoBehaviour
         upgradesPanel.SetActive(false);
     }
 
-    private void UpdateMoneyText(long updatedMoney)
+    private void UpdateMoneyText()
     {
-        moneyText.text = "$ " + updatedMoney;
+        moneyText.text = "$ " + PlayerManager.Instance.Money;
     }
 }

@@ -1,31 +1,53 @@
-﻿using UnityEngine;
-
-public enum MissionSource
-{
-    Noticeboard = 1, Email = 2, Npc = 3
-}
+﻿using System;
+using System.Threading.Tasks;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "Mission", menuName = "ScriptableObjects/Mission", order = 1)]
-public class Mission : ScriptableObject
+public partial class Mission : ScriptableObject, IDataModel
 {
     [Header("Set in Editor")]
     public int missionDurationInDays;
-    public string missionName;
-    public string customer;
-    public string cargo;
-    public string description;
-    public int fuelCost;
-    public int reward;
-    public int moneyNeededToUnlock;
-    [SerializeField]
+    public string missionName, customer, cargo, description;
+    public int fuelCost, reward, moneyNeededToUnlock; // may need to be longs later
     public MissionOutcome[] outcomes;
 
-    // Data to persist
-    [Header("Data to update IN GAME")]
-    public bool hasBeenAccepted = false;
-    public Ship ship = null;
-    public int daysLeftToComplete;
+    [Header("Data to update IN GAME")] 
+    public MissionSaveData saveData;
 
+    public static string FOLDER_NAME = "MissionSaveData";
+
+    [Serializable]
+    public class MissionSaveData
+    {
+        [SerializeField] public bool hasBeenAccepted = false;
+        [SerializeField] public int daysLeftToComplete;
+        [SerializeField] public Ship ship = null;
+    }
+
+    public void SaveData()
+    {
+        DataModelsUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
+    }
+
+    public async Task LoadDataAsync()
+    {
+        saveData = await DataModelsUtils.LoadFileAsync<MissionSaveData>(name, FOLDER_NAME);
+    }   
+
+    public void ScheduleMission(Ship ship)
+    {
+        Ship = ship;
+    }
+
+    public void StartMission()
+    {
+        saveData.daysLeftToComplete = missionDurationInDays;
+    }
+
+    public bool IsInProgress()
+    {
+        return saveData.daysLeftToComplete > 0;
+    }
 
     public void ProcessOutcomes()
     {
@@ -33,20 +55,5 @@ public class Mission : ScriptableObject
         {
             outcome.Process(this);
         }
-    }
-
-    public void ScheduleMission(Ship ship)
-    {
-        this.ship = ship;
-    }
-
-    public void StartMission()
-    {
-        daysLeftToComplete = missionDurationInDays;
-    }
-    
-    public bool IsInProgress()
-    {
-        return daysLeftToComplete > 0;
     }
 }
