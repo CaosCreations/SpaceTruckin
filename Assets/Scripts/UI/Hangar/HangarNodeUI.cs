@@ -177,7 +177,11 @@ public class HangarNodeUI : MonoBehaviour
 
     private bool ShouldLaunchButtonBeInteractable()
     {
-        return shipToInspect.CurrentFuel >= shipToInspect.CurrentMission.FuelCost
-            && shipToInspect.CurrentHullIntegrity > 0;
+        if (shipToInspect.CurrentMission != null)
+        {
+            return shipToInspect.CurrentFuel >= shipToInspect.CurrentMission.FuelCost
+                && shipToInspect.CurrentHullIntegrity > 0;
+        }
+        return false;
     }
 }
