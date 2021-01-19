@@ -156,8 +156,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.25, z: 0}
   m_LocalScale: {x: 0.2, y: 0.5, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_Father: {fileID: 1706501890}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &192989947
 BoxCollider:
@@ -693,7 +693,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1096831135
 GameObject:
@@ -725,8 +725,8 @@ Transform:
   m_Children:
   - {fileID: 1894188018}
   - {fileID: 2058747916}
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_Father: {fileID: 1706501890}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1096831137
 MonoBehaviour:
@@ -740,8 +740,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b704c3ca7658f44f871df4fb5c74b59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  greenZone: {fileID: 192989952}
-  repairsManager: {fileID: 1706501889}
   isRotating: 0
 --- !u!1 &1183538317
 GameObject:
@@ -947,7 +945,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbbba726916b63f4d8aacfdab6f1f09f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  workstation: {fileID: 1096831137}
   points: 0
   consecutiveWins: 0
 --- !u!4 &1706501890
@@ -960,9 +957,11 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1096831136}
+  - {fileID: 192989946}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1894188017
 GameObject:

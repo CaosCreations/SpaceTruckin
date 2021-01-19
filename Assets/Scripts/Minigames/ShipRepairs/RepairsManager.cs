@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class RepairsManager : MonoBehaviour
 {
-    public Workstation workstation;
-    public GreenZone greenZone;
+    private Workstation workstation;
+    private GreenZone greenZone;
 
     public int points;
     public int consecutiveWins;
@@ -18,8 +16,8 @@ public class RepairsManager : MonoBehaviour
 
     private void Start()
     {
-        workstation = GetComponent<Workstation>();
-        greenZone = GetComponent<GreenZone>();
+        workstation = GetComponentInChildren<Workstation>();
+        greenZone = GetComponentInChildren<GreenZone>();
     }
 
     public void PlayerWins()

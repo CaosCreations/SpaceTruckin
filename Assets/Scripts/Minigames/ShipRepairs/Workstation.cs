@@ -4,20 +4,21 @@ using UnityEngine;
 public class Workstation : MonoBehaviour
 {
     public static event Action onRotationStopped; 
-    public GreenZone greenZone;
-    public RepairsManager repairsManager;
+    private RepairsManager repairsManager;
         
     public bool isRotating;
     private float rotationSpeed;
 
     private void Start()
     {
+        repairsManager = GetComponentInParent<RepairsManager>();
 		rotationSpeed = RepairsConstants.startingSpeed;
     }
 
     public void RotateWorkstation()
     {
-        transform.eulerAngles += new Vector3(0f, 0f, rotationSpeed);
+        transform.eulerAngles += new Vector3(
+            0f, 0f, rotationSpeed * Time.deltaTime);
     }
 
     public void StartRotating()
