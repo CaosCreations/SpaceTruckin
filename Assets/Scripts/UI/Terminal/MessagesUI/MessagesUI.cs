@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+public enum MessageFilterMode { None, Unread, Read }
+
 public class MessagesUI : MonoBehaviour
 {
     public GameObject scrollViewContent;
@@ -10,17 +12,37 @@ public class MessagesUI : MonoBehaviour
     public MessageDetailView messageDetailViewHandler;
     public Button backButton;
 
+    public Button unreadFilterButton;
+    public Button readFilterButton;
+
+    // Determines what kinds of messages will appear in the list
+    private MessageFilterMode currentFilterMode;
+
     private void Start()
     {
+        AddListeners();
+    }
+
+    private void AddListeners()
+    {
         backButton.AddOnClick(GoToListView);
+        unreadFilterButton.AddOnClick(() => FilterMessages(MessageFilterMode.Unread));
+        readFilterButton.AddOnClick(() => FilterMessages(MessageFilterMode.Read));
     }
 
     private void OnEnable()
     {
         MessagesManager.Instance.UnlockMessages();
+        currentFilterMode = MessageFilterMode.None;
+        GoToListView();
+    }
+
+    private void GoToListView()
+    {
+        messagesListView.SetActive(true);
+        messagesDetailView.SetActive(false);
         CleanScrollView();
         AddMessages();
-        GoToListView();
     }
 
     private void CleanScrollView()
@@ -35,15 +57,54 @@ public class MessagesUI : MonoBehaviour
     {
         foreach (Message message in MessagesManager.Instance.Messages)
         {
+            if (MessageIsFilteredOut(message))
+            {
+                continue;
+            }
+
             if (message != null && message.IsUnlocked)
             {
                 GameObject newMessage = Instantiate(messageItemPrefab, scrollViewContent.transform);
                 newMessage.name = "Message";
+                newMessage.GetComponent<Image>().color = GetMessageColour(message);
+
                 MessageButtonHandler buttonHandler = newMessage.GetComponent<MessageButtonHandler>();
-                buttonHandler.Init(message, () => GoToDetailView(message));
+                buttonHandler.Init(message, () =>
+                {
+                    GoToDetailView(message);
+                    message.IsUnread = false; 
+                });
             }
         }
     }
+
+    private void FilterMessages(MessageFilterMode filterMode)
+    {
+        // Reset the filter mode if clicking that button for the second consecutive time
+        if (filterMode == currentFilterMode)
+        {
+            currentFilterMode = MessageFilterMode.None;
+        }
+        else
+        {
+            currentFilterMode = filterMode;
+        }
+        CleanScrollView();
+        AddMessages();
+    }
+
+    private bool MessageIsFilteredOut(Message message)
+    {
+        if (currentFilterMode == MessageFilterMode.Unread && !message.IsUnread
+            || currentFilterMode == MessageFilterMode.Read && message.IsUnread)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private Color GetMessageColour(Message message) =>
+        message.IsUnread ? MessageConstants.UnreadColour : MessageConstants.ReadColour;
 
     private void GoToDetailView(Message message)
     {
@@ -62,18 +123,5 @@ public class MessagesUI : MonoBehaviour
         }
     }
 
-    private void GoToListView()
-    {
-        messagesListView.SetActive(true);
-        messagesDetailView.SetActive(false);
-    }
 
-    public void GenerateMessageItem()
-    {
-        GameObject newItem = new GameObject().ScaffoldUI(
-            name: "MessageItem", parent: scrollViewContent, anchors: (Vector2.zero, Vector2.one));
-
-        newItem.AddComponent<Button>();
-        newItem.AddComponent<MessageButtonHandler>();
-    }
 }

@@ -19,6 +19,11 @@
         get => saveData.isUnlocked; set => saveData.isUnlocked = value;
     }
 
+    public bool IsUnread 
+    {
+        get => saveData.isUnread; set => saveData.isUnread = value; 
+    }
+
     public int Condition { get => condition; set => condition = value; }
 
     public Mission Mission { get => mission; set => mission = value; }
