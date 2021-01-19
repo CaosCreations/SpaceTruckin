@@ -21,7 +21,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     public bool isPaused;
     public PlayerMovement playerMovement;
 
-    public static event System.Action<long> onFinancialTransaction;
+    public static event System.Action onFinancialTransaction;
 
     private void Awake()
     {
@@ -71,14 +71,14 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     public void SpendMoney(long amount)
     {
         Instance.Money -= amount;
-        onFinancialTransaction?.Invoke(Instance.Money);
+        onFinancialTransaction?.Invoke();
     }
 
     public void ReceiveMoney(long amount)
     {
         Instance.Money += amount;
         Instance.TotalMoneyAcquired += amount;
-        onFinancialTransaction?.Invoke(Instance.Money);
+        onFinancialTransaction?.Invoke();
     }
 
     public void SaveData()
