@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class RepairsManager : MonoBehaviour
 {
     private Workstation workstation;
     private GreenZone greenZone;
+    public Text speedText;
 
     public int points;
     public int consecutiveWins;
@@ -25,6 +27,7 @@ public class RepairsManager : MonoBehaviour
         points++;
         consecutiveWins++;
         workstation.IncreaseRotationSpeed();
+        Debug.Log("New speed: " + workstation.rotationSpeed);
 
         // Decrease green zone size every n wins 
         if (IsGreenZoneShrinking())
