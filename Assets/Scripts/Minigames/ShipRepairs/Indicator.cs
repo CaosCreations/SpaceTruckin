@@ -8,10 +8,12 @@ public class Indicator : MonoBehaviour
     public GameObject greenZone;
 
     private Workstation workstation;
+    private RepairsManager repairsManager;
     private bool isInsideGreenZone; 
 
     private void Start()
     {
+        repairsManager = GetComponentInParent<RepairsManager>();
         workstation = GetComponentInParent<Workstation>();
         Workstation.onRotationStopped += DetermineOutcome; 
     }
@@ -20,11 +22,11 @@ public class Indicator : MonoBehaviour
     {
         if (isInsideGreenZone)
         {
-            workstation.PlayerWins();
+            //workstation.PlayerWins();
         }
         else
         {
-            workstation.PlayerLoses();
+            //workstation.PlayerLoses();
         }
     }
 

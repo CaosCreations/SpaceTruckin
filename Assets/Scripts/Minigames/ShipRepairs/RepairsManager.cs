@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class RepairsManager : MonoBehaviour
 {
+    public Workstation workstation;
+    public GreenZone greenZone;
+
     public int points;
     public int consecutiveWins;
 
@@ -12,6 +15,52 @@ public class RepairsManager : MonoBehaviour
     private string consecutiveWinsText = "Consecutive Wins: ";
     private string successMessage = "Success!";
     private string failureMessage = "Failure!";
+
+    private void Start()
+    {
+        workstation = GetComponent<Workstation>();
+        greenZone = GetComponent<GreenZone>();
+    }
+
+    public void PlayerWins()
+    {
+        points++;
+        consecutiveWins++;
+        workstation.IncreaseRotationSpeed();
+
+        // Decrease green zone size every n wins 
+        if (IsGreenZoneShrinking())
+        {
+            greenZone.ReduceSize();
+        }
+
+        if (IsDirectionReversing())
+        {
+            workstation.ReverseRotationDirection();
+        }
+        UpdateFeedbackText(true);
+    }
+
+    public void PlayerLoses()
+    {
+        consecutiveWins = 0;
+        workstation.ResetRotationSpeed();
+        greenZone.ResetSize();
+        UpdateFeedbackText(success: false);
+    }
+    //
+    // 
+    public bool IsGreenZoneShrinking()
+    {
+        return consecutiveWins % RepairsConstants.greenZoneShrinkInterval == 0
+            && consecutiveWins > 0;
+    }
+
+    public bool IsDirectionReversing()
+    {
+        return Random.Range(0, RepairsConstants.rotationReversalUpperBound)
+            > RepairsConstants.rotationReversalThreshold;
+    }
 
     public void UpdateFeedbackText(bool success)
     {
