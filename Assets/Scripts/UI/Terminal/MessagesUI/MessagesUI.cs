@@ -12,6 +12,7 @@ public class MessagesUI : MonoBehaviour
     public MessageDetailView messageDetailViewHandler;
     public Button backButton;
 
+    public GameObject filterButtonContainer;
     public Button unreadFilterButton;
     public Button readFilterButton;
 
@@ -40,6 +41,7 @@ public class MessagesUI : MonoBehaviour
     private void GoToListView()
     {
         messagesListView.SetActive(true);
+        filterButtonContainer.SetActive(true);
         messagesDetailView.SetActive(false);
         CleanScrollView();
         AddMessages();
@@ -109,6 +111,7 @@ public class MessagesUI : MonoBehaviour
     private void GoToDetailView(Message message)
     {
         messagesListView.SetActive(false);
+        filterButtonContainer.SetActive(false);
         messagesDetailView.SetActive(true);
         messageDetailViewHandler.SetMessageDetails(message);
 
@@ -122,6 +125,4 @@ public class MessagesUI : MonoBehaviour
             messageDetailViewHandler.missionAcceptButton.gameObject.SetActive(false);
         }
     }
-
-
 }
