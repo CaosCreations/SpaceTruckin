@@ -5,7 +5,9 @@ public class MessageDetailView : MonoBehaviour
 {
     public Text messageSubjectText;
     public Text messageSenderText;
-    public Text messageBodyText;
+    public GameObject messageBodyPrefab;
+    public GameObject messageBodyScrollViewContent;
+    
     public Button missionAcceptButton;
     public MissionDetailsUI missionDetailsUI;
 
@@ -14,9 +16,15 @@ public class MessageDetailView : MonoBehaviour
         messageSubjectText.text = message.Subject;
         messageSenderText.text = message.Sender;
 
+        GameObject messageBody = Instantiate(messageBodyPrefab, messageBodyScrollViewContent.transform);
+        RectTransform rectTransform = messageBody.GetComponent<RectTransform>();
+        rectTransform.Reset();
+        rectTransform.Stretch();
+
+        Text messageBodyText = messageBody.GetComponent<Text>();
         if (string.IsNullOrEmpty(message.Body))
         {
-            messageBodyText.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tortor dui, elementum eu convallis non, cursus ac dolor. Quisque dictum est quam, et pellentesque velit rutrum eget. Nullam interdum ultricies velit pharetra aliquet. Integer sodales a magna quis ornare. Ut vulputate nibh ipsum. Vivamus tincidunt nec nisi in fermentum. Mauris consequat mi vel odio consequat, eget gravida urna lobortis. Pellentesque eu ipsum consectetur, pharetra nulla in, consectetur turpis. Curabitur ornare eu nisi tempus varius. Phasellus vel ex mauris. Fusce fermentum mi id elementum gravida.";
+            messageBodyText.text = PlaceholderUtils.GenerateLoremIpsum(16);
 
         }
         messageBodyText.text = messageBodyText.text.InsertNewLines();
