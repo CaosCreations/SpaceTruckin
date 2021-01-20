@@ -10,7 +10,7 @@ public class DeleteSaveData : MonoBehaviour
     {
         if (!Directory.Exists(Application.persistentDataPath))
         {
-            Debug.Log("No save data to delete");
+            Debug.LogError("<b>No save data to delete</b>");
             return;
         }
         Directory.Delete(Application.persistentDataPath, recursive: true);
@@ -27,10 +27,7 @@ public class DeleteSaveData : MonoBehaviour
             MissionContainer missionContainer = (MissionContainer)selected;
             foreach (Mission mission in missionContainer.missions)
             {
-                foreach (FieldInfo field in mission.saveData.GetType().GetFields())
-                {
-                    field.SetValue(mission.saveData, null);
-                }
+                NullifyFields(mission.saveData);
                 EditorUtility.SetDirty(mission);
             }
         }
@@ -39,10 +36,7 @@ public class DeleteSaveData : MonoBehaviour
             PilotsContainer pilotsContainer = (PilotsContainer)selected;
             foreach (Pilot pilot in pilotsContainer.pilots)
             {
-                foreach (FieldInfo field in pilot.saveData.GetType().GetFields())
-                {
-                    field.SetValue(pilot.saveData, null);
-                }
+                NullifyFields(pilot.saveData);
                 EditorUtility.SetDirty(pilot);
             }
         }
@@ -51,10 +45,7 @@ public class DeleteSaveData : MonoBehaviour
             ShipsContainer shipsContainer = (ShipsContainer)selected;
             foreach (Ship ship in shipsContainer.ships)
             {
-                foreach (FieldInfo field in ship.saveData.GetType().GetFields())
-                {
-                    field.SetValue(ship.saveData, null);
-                }
+                NullifyFields(ship.saveData);
                 EditorUtility.SetDirty(ship);
             }
         }
@@ -63,18 +54,23 @@ public class DeleteSaveData : MonoBehaviour
             MessageContainer messagesContainer = (MessageContainer)selected;
             foreach (Message message in messagesContainer.messages)
             {
-                foreach (FieldInfo field in message.saveData.GetType().GetFields())
-                {
-                    field.SetValue(message.saveData, null);
-                }
+                NullifyFields(message.saveData);
                 EditorUtility.SetDirty(message);
             }
         }
         else
         {
-            Debug.LogError("Invalid object selected: " + selected);
-
+            Debug.LogError("<b>Invalid object selected:</b> " + selected);
+            return;
         }
+        Debug.Log("Successfully deleted save data for: " + selected);
+    }
 
+    private static void NullifyFields<T>(T saveData)
+    {
+        foreach (FieldInfo field in saveData.GetType().GetFields())
+        {
+            field.SetValue(saveData, null);
+        }
     }
 }
