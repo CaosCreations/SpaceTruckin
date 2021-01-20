@@ -11,7 +11,8 @@ public class PilotXpOutcome : MissionOutcome
 		PilotsManager.Instance.AwardXp(mission.Ship, Mathf.FloorToInt(Random.Range(xpMin, xpMax) * ApplyOmens(mission)));
 	}
 
-    // A mission can have multiple omens attached to it
+    // Omens apply an xp buff/debuff depending on the dice roll.
+    // A mission can have multiple omens attached to it.
     private float ApplyOmens(Mission mission)
     {
         float coefficient = 1f;

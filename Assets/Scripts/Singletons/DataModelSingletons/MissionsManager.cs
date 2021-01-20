@@ -65,6 +65,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
                     mission.Ship.IsLaunched = false;
                     mission.Ship.CurrentMission = null;
                     mission.Ship = null;
+                    mission.ProcessOutcomes();
                 }
             }
         }
