@@ -18,6 +18,11 @@ public class DeleteSaveData : MonoBehaviour
     }
 
     [MenuItem("Space Truckin/Delete Scriptable Object Container Save Data")]
+    private static void DeleteContainerFromTruckinMenu() => DeleteContainer();
+
+    [MenuItem("Assets/Delete Scriptable Object Container Save Data")]
+    private static void DeleteContainerFromAssetContextMenu() => DeleteContainer();
+
     private static void DeleteContainer()
     {
         var selected = Selection.activeObject;
