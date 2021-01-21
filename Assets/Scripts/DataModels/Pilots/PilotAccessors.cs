@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public partial class Pilot
 {
@@ -38,7 +39,7 @@ public partial class Pilot
         get => saveData.isAssignedToShip; set { saveData.isAssignedToShip = value; }
     }
 
-    public Ship Ship { get => ship; }
+    public Ship Ship { get => ShipsManager.Instance.Ships.FirstOrDefault(s => s.Pilot == this); } 
 
     public Sprite Avatar { get => avatar; set => avatar = value; }
 }

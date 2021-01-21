@@ -13,7 +13,6 @@ public partial class Pilot : ScriptableObject
     public string pilotName, shipName, description;
     public int hireCost;
     public Species species;
-    public Ship ship;
     public Sprite avatar;
 
     [Header("Data to update IN GAME")]
