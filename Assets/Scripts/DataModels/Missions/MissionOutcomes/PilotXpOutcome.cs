@@ -8,7 +8,8 @@ public class PilotXpOutcome : MissionOutcome
 	
 	public override void Process(Mission mission) 
 	{
-		PilotsManager.Instance.AwardXp(mission.Ship, Mathf.FloorToInt(Random.Range(xpMin, xpMax) * ApplyOmens(mission)));
+		PilotsManager.Instance.AwardXp(
+            mission.Ship, Mathf.FloorToInt(Random.Range(xpMin, xpMax) * ApplyOmens(mission)));
 	}
 
     // Omens apply an xp buff/debuff depending on the dice roll.
