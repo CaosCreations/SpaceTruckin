@@ -12,7 +12,6 @@ public class PilotXpOutcome : MissionOutcome
             mission.Ship, Mathf.FloorToInt(Random.Range(xpMin, xpMax) * ApplyOmens(mission)));
 	}
 
-    // Omens apply an xp buff/debuff depending on the dice roll.
     // A mission can have multiple omens attached to it.
     private float ApplyOmens(Mission mission)
     {

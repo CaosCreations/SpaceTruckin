@@ -9,6 +9,5 @@ public class MoneyOutcome : MissionOutcome
     public override void Process(Mission mission)
     {
         PlayerManager.Instance.ReceiveMoney((long)Random.Range(moneyMin, moneyMax));
-        Debug.Log("New balance: " + PlayerManager.Instance.Money);
     }
 }
