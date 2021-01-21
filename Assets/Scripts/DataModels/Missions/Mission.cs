@@ -20,7 +20,7 @@ public partial class Mission : ScriptableObject, IDataModel
     public class MissionSaveData
     {
         [SerializeField] public bool hasBeenAccepted = false;
-        [SerializeField] public int daysLeftToComplete;
+        [SerializeField] public int daysLeftToComplete, numberOfCompletions;
         [SerializeField] public Ship ship = null;
     }
 
@@ -49,7 +49,7 @@ public partial class Mission : ScriptableObject, IDataModel
         return saveData.daysLeftToComplete > 0;
     }
 
-    public void ProcessOutcomes()
+    private void ProcessOutcomes()
     {
         foreach (MissionOutcome outcome in outcomes)
         {
@@ -58,5 +58,14 @@ public partial class Mission : ScriptableObject, IDataModel
                 outcome.Process(this);
             }
         }
+    }
+
+    public void CompleteMission()
+    {
+        ProcessOutcomes();
+        Ship.DeductFuel();
+        Ship.IsLaunched = false;
+        Ship.CurrentMission = null;
+        Ship = null;
     }
 }
