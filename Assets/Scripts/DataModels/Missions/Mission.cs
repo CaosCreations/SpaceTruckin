@@ -53,7 +53,10 @@ public partial class Mission : ScriptableObject, IDataModel
     {
         foreach (MissionOutcome outcome in outcomes)
         {
-            outcome.Process(this);
+            if (outcome != null)
+            {
+                outcome.Process(this);
+            }
         }
     }
 }

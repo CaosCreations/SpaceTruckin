@@ -6,7 +6,7 @@ public class MoneyOutcome : MissionOutcome
     public float moneyMin;
     public float moneyMax;
 
-    public override void Process()
+    public override void Process(Mission mission)
     {
         PlayerManager.Instance.ReceiveMoney((long)Random.Range(moneyMin, moneyMax));
     }

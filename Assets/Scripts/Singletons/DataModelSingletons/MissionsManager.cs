@@ -62,6 +62,8 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
                 // We just finished the mission
                 if (!mission.IsInProgress())
                 {
+                    mission.ProcessOutcomes();
+                    mission.Ship.DeductFuel();
                     mission.Ship.IsLaunched = false;
                     mission.Ship.CurrentMission = null;
                     mission.Ship = null;

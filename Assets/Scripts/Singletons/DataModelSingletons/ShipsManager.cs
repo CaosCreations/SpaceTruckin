@@ -47,7 +47,8 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
 
     public static void DamageShip(Ship ship, int damage)
     {
-        ship.CurrentHullIntegrity -= damage; 
+        ship.CurrentHullIntegrity = Mathf.Max(
+            0, ship.CurrentHullIntegrity - damage);
     }
 
     public static void LaunchShip(HangarNode node)
