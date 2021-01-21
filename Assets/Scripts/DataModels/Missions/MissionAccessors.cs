@@ -28,6 +28,12 @@ public partial class Mission
         set => saveData.daysLeftToComplete = value;
     }
 
+    public int NumberOfCompletions
+    {
+        get => saveData.numberOfCompletions;
+        set => saveData.numberOfCompletions = value;
+    }
+
     public int FuelCost { get => fuelCost; set => fuelCost = value; }
 
     public int MoneyNeededToUnlock

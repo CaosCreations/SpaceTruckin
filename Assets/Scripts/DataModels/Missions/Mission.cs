@@ -6,10 +6,10 @@ using UnityEngine;
 public partial class Mission : ScriptableObject, IDataModel
 {
     [Header("Set in Editor")]
-    private int missionDurationInDays;
-    private string missionName, customer, cargo, description;
-    private int fuelCost, reward, moneyNeededToUnlock; // may need to be longs later
-    private MissionOutcome[] outcomes;
+    [SerializeField] private int missionDurationInDays;
+    [SerializeField] private string missionName, customer, cargo, description;
+    [SerializeField] private int fuelCost, reward, moneyNeededToUnlock; // may need to be longs later
+    [SerializeField] private MissionOutcome[] outcomes;
 
     [Header("Data to update IN GAME")] 
     public MissionSaveData saveData;
@@ -67,5 +67,12 @@ public partial class Mission : ScriptableObject, IDataModel
         Ship.IsLaunched = false;
         Ship.CurrentMission = null;
         Ship = null;
+        NumberOfCompletions++;
+
+        // Send a thank you email on first completion of the mission
+        if (NumberOfCompletions >= 0 && NumberOfCompletions <= 1)
+        {
+            MessagesManager.Instance.CreateThankYouMessage(this);
+        }
     }
 }

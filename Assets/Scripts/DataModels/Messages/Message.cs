@@ -5,11 +5,11 @@ using UnityEngine;
 public partial class Message : ScriptableObject, IDataModel
 {
     [Header("Set in Editor")]
-    private string messageName, sender, subject, body;
-    private int condition;
+    [SerializeField] private string messageName, sender, subject, body;
+    [SerializeField] private int condition;
 
     // The mission offered in the email
-    private Mission mission;
+    [SerializeField] private Mission mission;
 
     [Header("Data to update IN GAME")]
     public MessageSaveData saveData;

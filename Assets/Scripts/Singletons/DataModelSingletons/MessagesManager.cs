@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 
 public class MessagesManager : MonoBehaviour, IDataModelManager
@@ -6,7 +7,10 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
     public static MessagesManager Instance { get; private set; }
 
     [SerializeField] private MessageContainer messageContainer;
-    public Message[] Messages { get => messageContainer.messages; }
+    public Message[] Messages 
+    { 
+        get => messageContainer.messages; set => messageContainer.messages = value; 
+    }
 
     private void Awake()
     {
@@ -54,18 +58,26 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
     /// a mission for the first time.
     /// </summary>
     /// <param name="mission"></param>
-    public void CreateThankyouMessage(Mission mission)
+    public void CreateThankYouMessage(Mission mission)
     {
         Message newMessage = ScriptableObject.CreateInstance<Message>();
+        newMessage.name = $"THANKYOUTEST";
         newMessage.Name = $"{mission.Name} followup.";
 
         // Placeholders
         newMessage.Subject = $"Thanks for completing {mission.Name}!";
         newMessage.Body = $"Hello Trucker. I really needed the {mission.Cargo}.";
 
+        newMessage.saveData = new Message.MessageSaveData();
         newMessage.IsUnlocked = true;
-        Instance.Messages.ToList().Add(newMessage); 
-        Instance.Messages.ToArray();
+
+        Array.Resize(
+            ref messageContainer.messages, messageContainer.messages.Length + 1);
+        Instance.Messages[Instance.Messages.Length - 1] = newMessage;
+
+        //var messagesToAppendTo = Instance.Messages.ToList();
+        //messagesToAppendTo.Add(newMessage);
+        //Instance.Messages = messagesToAppendTo.ToArray();
     }
 
     public void SaveData()
