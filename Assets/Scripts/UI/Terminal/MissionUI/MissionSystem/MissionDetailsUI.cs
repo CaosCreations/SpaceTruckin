@@ -85,7 +85,7 @@ public class MissionDetailsUI : MonoBehaviour
     public string BuildDetailsString(Mission mission)
     {
         StringBuilder builder = new StringBuilder();
-        builder.AppendLine("Name: " + mission.MissionName);
+        builder.AppendLine("Name: " + mission.Name);
         builder.AppendLine("Customer: " + mission.Customer);
         builder.AppendLine("Cargo: " + mission.Cargo);
 

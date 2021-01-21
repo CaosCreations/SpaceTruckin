@@ -6,10 +6,10 @@ using UnityEngine;
 public partial class Mission : ScriptableObject, IDataModel
 {
     [Header("Set in Editor")]
-    public int missionDurationInDays;
-    public string missionName, customer, cargo, description;
-    public int fuelCost, reward, moneyNeededToUnlock; // may need to be longs later
-    public MissionOutcome[] outcomes;
+    private int missionDurationInDays;
+    private string missionName, customer, cargo, description;
+    private int fuelCost, reward, moneyNeededToUnlock; // may need to be longs later
+    private MissionOutcome[] outcomes;
 
     [Header("Data to update IN GAME")] 
     public MissionSaveData saveData;

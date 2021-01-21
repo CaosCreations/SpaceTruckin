@@ -39,7 +39,7 @@ public class MessageDetailView : MonoBehaviour
     public void SetMissionAcceptButton(Mission mission)
     {
         Text buttonText = missionAcceptButton.GetComponentInChildren<Text>();
-        buttonText.text = "Accept " + mission.MissionName;
+        buttonText.text = "Accept " + mission.Name;
 
         missionAcceptButton.interactable = !mission.HasBeenAccepted;
         missionAcceptButton.AddOnClick(() =>

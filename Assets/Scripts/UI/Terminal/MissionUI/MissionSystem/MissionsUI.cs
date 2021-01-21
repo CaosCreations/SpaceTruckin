@@ -95,7 +95,7 @@ public class MissionsUI : MonoBehaviour
     {
         string substring = missionItem.mission.DaysLeftToComplete > 1 ? "days" : "day";
         
-        missionItem.missionNameText.text = missionItem.mission.MissionName 
+        missionItem.missionNameText.text = missionItem.mission.Name 
             + $"\n({missionItem.mission.DaysLeftToComplete} {substring} remaining)";
     }
 

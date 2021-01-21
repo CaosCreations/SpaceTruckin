@@ -76,7 +76,7 @@ public class NoticeBoard : MonoBehaviour
     public void SelectItem(Mission missionToSelect)
     {
         selectedMission = missionToSelect;
-        jobNameText.text = selectedMission.MissionName;
+        jobNameText.text = selectedMission.Name;
         customerNameText.text = selectedMission.Customer;
         cargoText.text = selectedMission.Cargo;
         rewardText.text = $"${selectedMission.Reward}";
