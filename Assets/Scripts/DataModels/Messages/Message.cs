@@ -23,12 +23,12 @@ public partial class Message : ScriptableObject, IDataModel
         [SerializeField] public bool isUnread;
     }
 
-    public void SaveData()
+    public virtual void SaveData()
     {
         DataModelsUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
     }
 
-    public async System.Threading.Tasks.Task LoadDataAsync()
+    public virtual async System.Threading.Tasks.Task LoadDataAsync()
     {
         saveData = await DataModelsUtils.LoadFileAsync<MessageSaveData>(name, FOLDER_NAME);
     }

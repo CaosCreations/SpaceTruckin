@@ -19,9 +19,9 @@ public partial class Mission : ScriptableObject, IDataModel
     [Serializable]
     public class MissionSaveData
     {
-        [SerializeField] public bool hasBeenAccepted = false;
-        [SerializeField] public int daysLeftToComplete, numberOfCompletions;
-        [SerializeField] public Ship ship = null;
+        public bool hasBeenAccepted = false;
+        public int daysLeftToComplete, numberOfCompletions;
+        public Ship ship = null;
     }
 
     public void SaveData()
