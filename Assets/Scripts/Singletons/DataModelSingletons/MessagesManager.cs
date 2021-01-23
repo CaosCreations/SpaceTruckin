@@ -5,10 +5,7 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
     public static MessagesManager Instance { get; private set; }
 
     [SerializeField] private MessageContainer messageContainer;
-    public Message[] Messages 
-    { 
-        get => messageContainer.messages; set => messageContainer.messages = value; 
-    }
+    public Message[] Messages { get => messageContainer.messages; }
 
     private void Awake()
     {

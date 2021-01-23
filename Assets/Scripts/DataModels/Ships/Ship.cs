@@ -37,11 +37,6 @@ public partial class Ship : ScriptableObject, IDataModel
         return (float)saveData.currentFuel / maxFuel;
     }
 
-    public void CompleteMission()
-    {
-
-    }
-
     public void SaveData()
     {
         DataModelsUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
