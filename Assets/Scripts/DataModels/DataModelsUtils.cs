@@ -12,7 +12,7 @@ public static class DataModelsUtils
 
     public static async void SaveFileAsync<T>(string fileName, string folderName, T dataModel)
     {
-        string folderPath = GetSaveFolderPath(folderName);
+        string folderPath = GetFullPath(folderName);
         if (!Directory.Exists(folderPath))
         {
             try
@@ -46,7 +46,7 @@ public static class DataModelsUtils
 
     public static async Task<T> LoadFileAsync<T>(string fileName, string folderName) where T : class, new()
     {
-        string folderPath = GetSaveFolderPath(folderName);
+        string folderPath = GetFullPath(folderName);
         string filePath = Path.Combine(folderPath, fileName + FILE_EXTENSION);
 
         if (File.Exists(filePath))
@@ -65,26 +65,31 @@ public static class DataModelsUtils
                 Debug.LogError($"{e.Message}\n{e.StackTrace}");
             }
         }
+        else
+        {
+
+        }
+
         return new T();
     }
 
-    public static string GetSaveFolderPath(string folderName)
+    public static string GetFullPath(string name)
     {
-        return Path.GetFullPath(Path.Combine(Application.persistentDataPath, folderName));
+        return Path.GetFullPath(Path.Combine(Application.persistentDataPath, name));
     }
 
     public static void RecursivelyDeleteSaveData(string folderName)
     {
-        string folderPath = GetSaveFolderPath(folderName);
+        string folderPath = GetFullPath(folderName);
         if (Directory.Exists(folderPath))
         {
             Directory.Delete(folderPath, recursive: true);
         }
     }
 
-    public static bool SaveDataExists(string folderName)
+    public static bool SaveFolderExists(string folderName)
     {
-        string folderPath = GetSaveFolderPath(folderName);
+        string folderPath = GetFullPath(folderName);
         if (Directory.Exists(folderPath)) 
         {
             // Get entries so we can confirm that the folder is not empty
@@ -98,8 +103,14 @@ public static class DataModelsUtils
         return false; 
     }
 
+    public static bool SaveFileExists(string fileName)
+    {
+        string filePath = GetFullPath(fileName);
+        return File.Exists(filePath);
+    }
+
     public static void CreateSaveFolder(string folderName)
     {
-        Directory.CreateDirectory(GetSaveFolderPath(folderName));
+        Directory.CreateDirectory(GetFullPath(folderName));
     }
 }
