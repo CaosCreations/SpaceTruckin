@@ -68,12 +68,12 @@ public partial class Mission : ScriptableObject, IDataModel
         Ship.IsLaunched = false;
         Ship.CurrentMission = null;
         Ship = null;
-        NumberOfCompletions++;
 
         // Send a thank you email on first completion of the mission
-        if (NumberOfCompletions >= 0 && NumberOfCompletions <= 1)
+        if (NumberOfCompletions <= 0)
         {
             thankYouMessage.IsUnlocked = true; 
         }
+        NumberOfCompletions++;
     }
 }
