@@ -22,7 +22,8 @@ public class MessageDetailView : MonoBehaviour
         rectTransform.Stretch();
 
         Text messageBodyText = messageBody.GetComponent<Text>();
-        if (string.IsNullOrEmpty(message.Body))
+        messageBodyText.text = message.body;
+        if (string.IsNullOrEmpty(messageBodyText.text))
         {
             messageBodyText.text = PlaceholderUtils.GenerateLoremIpsum(16);
 
