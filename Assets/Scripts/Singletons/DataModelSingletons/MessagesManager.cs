@@ -29,7 +29,7 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        if (DataModelsUtils.SaveDataExists(Message.FOLDER_NAME))
+        if (DataModelsUtils.SaveFolderExists(Message.FOLDER_NAME))
         {
             LoadDataAsync();
         }
@@ -37,6 +37,11 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
         {
             DataModelsUtils.CreateSaveFolder(Message.FOLDER_NAME);
         }
+    }
+
+    private void Start()
+    {
+
     }
 
     public void UnlockMessages()
@@ -53,31 +58,13 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    /// <summary>
-    /// Creates a new message that will be sent to the player after they complete
-    /// a mission for the first time.
-    /// </summary>
-    /// <param name="mission"></param>
-    public void CreateThankYouMessage(Mission mission)
+    public void AddNewMessage(Message message)
     {
-        Message newMessage = ScriptableObject.CreateInstance<Message>();
-        newMessage.name = $"THANKYOUTEST";
-        newMessage.Name = $"{mission.Name} followup.";
-
-        // Placeholders
-        newMessage.Subject = $"Thanks for completing {mission.Name}!";
-        newMessage.Body = $"Hello Trucker. I really needed the {mission.Cargo}.";
-
-        newMessage.saveData = new Message.MessageSaveData();
-        newMessage.IsUnlocked = true;
-
-        Array.Resize(
-            ref messageContainer.messages, messageContainer.messages.Length + 1);
-        Instance.Messages[Instance.Messages.Length - 1] = newMessage;
-
-        //var messagesToAppendTo = Instance.Messages.ToList();
-        //messagesToAppendTo.Add(newMessage);
-        //Instance.Messages = messagesToAppendTo.ToArray();
+        if (messageContainer.messages[messageContainer.messages.Length - 1] != null)
+        {
+            Array.Resize(ref messageContainer.messages, messageContainer.messages.Length + 1);
+        }
+        messageContainer.messages[messageContainer.messages.Length - 1] = message;
     }
 
     public void SaveData()
