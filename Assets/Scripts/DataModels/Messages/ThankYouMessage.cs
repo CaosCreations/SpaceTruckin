@@ -16,7 +16,7 @@ public class ThankYouMessage : Message
         ThankYouMessage newMessage = CreateInstance<ThankYouMessage>();
         newMessage.name = $"{mission.Name}_ThankYouMessage";
         await LoadDataAsync();
-        
+
         MessagesManager.Instance.AddNewMessage(newMessage);
     }
 

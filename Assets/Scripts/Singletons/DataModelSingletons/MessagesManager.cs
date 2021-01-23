@@ -41,7 +41,7 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
 
     private void Start()
     {
-
+        CreateThankYouMessage(MissionsManager.Instance.Missions.First());
     }
 
     public void UnlockMessages()
@@ -58,7 +58,15 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    public void AddNewMessage(Message message)
+    public void CreateThankYouMessage(Mission mission)
+    {
+        ThankYouMessage newThankYouMessage = ScriptableObject.CreateInstance<ThankYouMessage>();
+        newThankYouMessage.name = $"{mission.Name}_ThankYouMessage";
+        newThankYouMessage.Init(mission);
+        AddNewMessage(newThankYouMessage);
+    }
+
+    public void AddNewMessage(ThankYouMessage message)
     {
         if (messageContainer.messages[messageContainer.messages.Length - 1] != null)
         {
