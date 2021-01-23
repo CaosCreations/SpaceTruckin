@@ -25,7 +25,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        if (DataModelsUtils.SaveDataExists(Pilot.FOLDER_NAME))
+        if (DataModelsUtils.SaveFolderExists(Pilot.FOLDER_NAME))
         {
             LoadDataAsync();
         }

@@ -32,6 +32,7 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
         if (DataModelsUtils.SaveFolderExists(Message.FOLDER_NAME))
         {
             LoadDataAsync();
+            RemoveDeadMessages();
         }
         else
         {
@@ -73,6 +74,13 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
             Array.Resize(ref messageContainer.messages, messageContainer.messages.Length + 1);
         }
         messageContainer.messages[messageContainer.messages.Length - 1] = message;
+    }
+
+    // We will lose references to ThankYouMessage instances once the scene closes.
+    // So we clean the container. 
+    public void RemoveDeadMessages()
+    {
+        Instance.Messages = Instance.Messages.ToList().Where(m => m != null).ToArray();
     }
 
     public void SaveData()

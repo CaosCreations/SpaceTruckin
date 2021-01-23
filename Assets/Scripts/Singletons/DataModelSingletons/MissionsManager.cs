@@ -26,7 +26,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        if (DataModelsUtils.SaveDataExists(Mission.FOLDER_NAME))
+        if (DataModelsUtils.SaveFolderExists(Mission.FOLDER_NAME))
         {
             LoadDataAsync();
         }

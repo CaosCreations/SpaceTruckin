@@ -48,7 +48,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        if (DataModelsUtils.SaveDataExists(PlayerData.FOLDER_NAME))
+        if (DataModelsUtils.SaveFolderExists(PlayerData.FOLDER_NAME))
         {
             LoadDataAsync();
         }
