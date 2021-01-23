@@ -9,6 +9,15 @@ public class ThankYouMessage : Message
     public class ThankYouMessageSaveData : MessageSaveData
     {
         public string sender, subject, body;
+
+        public ThankYouMessageSaveData(Mission mission)
+        {
+            sender = mission.Customer;
+            subject = $"Thank for you completing {mission.Name}";
+            body = $"I really needed that {mission.Cargo}!";
+            isUnlocked = true;
+            isUnread = false;
+        }
     }
 
     public new bool IsUnread { get => saveData.isUnread; set => saveData.isUnread = value; }
@@ -17,13 +26,18 @@ public class ThankYouMessage : Message
     // when we need to send it, i.e. when the relevant mission is complete.
     public new bool IsUnlocked { get => true; }
 
-
     public async void Init(Mission mission)
     {
         ThankYouMessage newMessage = CreateInstance<ThankYouMessage>();
         newMessage.name = $"{mission.Name}_ThankYouMessage";
-        await LoadDataAsync();
-        
+        if (!DataModelsUtils.SaveFileExists(newMessage.name))
+        {
+            newMessage.saveData = new ThankYouMessageSaveData(mission);
+        }
+        else
+        {
+            await LoadDataAsync();
+        }
         MessagesManager.Instance.AddNewMessage(newMessage);
     }
 
