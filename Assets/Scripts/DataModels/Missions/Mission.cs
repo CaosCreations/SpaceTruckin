@@ -70,7 +70,7 @@ public partial class Mission : ScriptableObject, IDataModel
         Ship = null;
 
         // Send a thank you email on first completion of the mission
-        if (NumberOfCompletions <= 0)
+        if (thankYouMessage != null && NumberOfCompletions <= 0)
         {
             thankYouMessage.IsUnlocked = true; 
         }
