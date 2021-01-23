@@ -10,6 +10,7 @@ public partial class Mission : ScriptableObject, IDataModel
     [SerializeField] private string missionName, customer, cargo, description;
     [SerializeField] private int fuelCost, reward, moneyNeededToUnlock; // may need to be longs later
     [SerializeField] private MissionOutcome[] outcomes;
+    [SerializeField] private ThankYouMessage thankYouMessage;
 
     [Header("Data to update IN GAME")] 
     public MissionSaveData saveData;
@@ -72,7 +73,7 @@ public partial class Mission : ScriptableObject, IDataModel
         // Send a thank you email on first completion of the mission
         if (NumberOfCompletions >= 0 && NumberOfCompletions <= 1)
         {
-            MessagesManager.Instance.CreateThankYouMessage(this);
+            thankYouMessage.IsUnlocked = true; 
         }
     }
 }

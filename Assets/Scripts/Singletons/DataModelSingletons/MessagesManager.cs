@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MessagesManager : MonoBehaviour, IDataModelManager
 {
@@ -32,17 +30,11 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
         if (DataModelsUtils.SaveFolderExists(Message.FOLDER_NAME))
         {
             LoadDataAsync();
-            RemoveDeadMessages();
         }
         else
         {
             DataModelsUtils.CreateSaveFolder(Message.FOLDER_NAME);
         }
-    }
-
-    private void Start()
-    {
-        CreateThankYouMessage(MissionsManager.Instance.Missions.First());
     }
 
     public void UnlockMessages()
@@ -57,30 +49,6 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
                 }
             }
         }
-    }
-
-    public void CreateThankYouMessage(Mission mission)
-    {
-        ThankYouMessage newThankYouMessage = ScriptableObject.CreateInstance<ThankYouMessage>();
-        newThankYouMessage.name = $"{mission.Name}_ThankYouMessage";
-        newThankYouMessage.Init(mission);
-        AddNewMessage(newThankYouMessage);
-    }
-
-    public void AddNewMessage(ThankYouMessage message)
-    {
-        if (messageContainer.messages[messageContainer.messages.Length - 1] != null)
-        {
-            Array.Resize(ref messageContainer.messages, messageContainer.messages.Length + 1);
-        }
-        messageContainer.messages[messageContainer.messages.Length - 1] = message;
-    }
-
-    // We will lose references to ThankYouMessage instances once the scene closes.
-    // So we clean the container. 
-    public void RemoveDeadMessages()
-    {
-        Instance.Messages = Instance.Messages.ToList().Where(m => m != null).ToArray();
     }
 
     public void SaveData()
