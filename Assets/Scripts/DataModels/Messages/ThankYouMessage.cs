@@ -3,23 +3,31 @@ using System.Threading.Tasks;
 
 public class ThankYouMessage : Message
 {
-    public new ThankYouMessageSaveData saveData; 
+    public ThankYouMessage(Mission mission)
+    {
+        sender = mission.Customer;
+        subject = $"Thank for you completing {mission.Name}";
+        body = $"I really needed that {mission.Cargo}!";
+        //isUnlocked = true;
+        //isUnread = false;
+    }
     
+    public new ThankYouMessageSaveData saveData;
+
     [Serializable]
     public class ThankYouMessageSaveData : MessageSaveData
     {
-        public string sender, subject, body;
 
-        public ThankYouMessageSaveData(Mission mission)
-        {
-            sender = mission.Customer;
-            subject = $"Thank for you completing {mission.Name}";
-            body = $"I really needed that {mission.Cargo}!";
-            isUnlocked = true;
-            isUnread = false;
-        }
+        //public ThankYouMessageSaveData(Mission mission)
+        //{
+        //    sender = mission.Customer;
+        //    subject = $"Thank for you completing {mission.Name}";
+        //    body = $"I really needed that {mission.Cargo}!";
+        //    isUnlocked = true;
+        //    isUnread = false;
+        //    //}
+        //}
     }
-
     public new bool IsUnread { get => saveData.isUnread; set => saveData.isUnread = value; }
 
     // Unlocked is always true, since we only create the message instance
@@ -52,10 +60,5 @@ public class ThankYouMessage : Message
             saveData.isUnread = false;
         }
         DataModelsUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
-    }
-
-    public async override Task LoadDataAsync()
-    {
-        saveData = await DataModelsUtils.LoadFileAsync<ThankYouMessageSaveData>(name, FOLDER_NAME);
     }
 }

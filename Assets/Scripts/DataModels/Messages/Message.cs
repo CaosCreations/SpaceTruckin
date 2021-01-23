@@ -5,8 +5,8 @@ using UnityEngine;
 public partial class Message : ScriptableObject, IDataModel
 {
     [Header("Set in Editor")]
-    [SerializeField] private string messageName, sender, subject, body;
-    [SerializeField] private int condition;
+    public string messageName, sender, subject, body;
+    public int condition;
 
     // The mission offered in the email
     [SerializeField] private Mission mission;
