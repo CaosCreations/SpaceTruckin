@@ -14,7 +14,7 @@ public partial class Mission
 
     public string Description { get => description; set => description = value; }
 
-    public int Reward { get => reward; set => reward = value; }
+    public long Reward { get => reward; set => reward = value; }
 
     public bool HasBeenAccepted
     {
@@ -36,7 +36,7 @@ public partial class Mission
 
     public int FuelCost { get => fuelCost; set => fuelCost = value; }
 
-    public int MoneyNeededToUnlock
+    public long MoneyNeededToUnlock
     {
         get => moneyNeededToUnlock; set => moneyNeededToUnlock = value;
     }

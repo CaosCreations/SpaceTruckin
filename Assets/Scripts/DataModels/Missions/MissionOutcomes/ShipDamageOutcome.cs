@@ -4,7 +4,9 @@
 
 public class ShipDamageOutcome : MissionOutcome
 {   
-    public int shipDamage;
+    [SerializeField] private int shipDamage;
+
+    public int Damage { get; }
 
     public override void Process(Mission mission)
     {

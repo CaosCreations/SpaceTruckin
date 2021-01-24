@@ -2,6 +2,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Handles the presentation of details for a single recently completed mission.
+/// </summary>
 public class NewDayReportCard : MonoBehaviour
 {
     private Image shipAvatar;

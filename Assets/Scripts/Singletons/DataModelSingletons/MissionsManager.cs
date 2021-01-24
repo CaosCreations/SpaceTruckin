@@ -8,6 +8,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
 
     [SerializeField] private MissionContainer missionContainer;
     public Mission[] Missions { get => missionContainer.missions; }
+    public List<Mission> MissionsCompletedYesterday { get; set; } 
 
     private void Awake()
     {
@@ -34,6 +35,8 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         {
             DataModelsUtils.CreateSaveFolder(Mission.FOLDER_NAME);
         }
+        Mission.OnMissionCompleted += (mission) => 
+            MissionsCompletedYesterday.Add(mission);
     }
 
     public static List<Mission> GetAcceptedMissions()
@@ -59,9 +62,11 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
 
     public static void UpdateMissionSchedule()
     {
+        Instance.MissionsCompletedYesterday = new List<Mission>();
         foreach(Mission mission in Instance.Missions)
         {
-            if(mission.IsInProgress()){
+            if(mission.IsInProgress())
+            {
                 mission.DaysLeftToComplete--;
 
                 // We just finished the mission
@@ -72,6 +77,10 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
             }
         }
     }
+
+    public static bool MissionsWereCompletedYesterday() => 
+        Instance.MissionsCompletedYesterday != null 
+        && Instance.MissionsCompletedYesterday.Any();
 
     public void SaveData()
     {
