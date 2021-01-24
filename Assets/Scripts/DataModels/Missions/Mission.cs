@@ -8,13 +8,15 @@ public partial class Mission : ScriptableObject, IDataModel
     [Header("Set in Editor")]
     [SerializeField] private int missionDurationInDays;
     [SerializeField] private string missionName, customer, cargo, description;
-    [SerializeField] private int fuelCost, reward, moneyNeededToUnlock; // may need to be longs later
+    [SerializeField] private int fuelCost;
+    [SerializeField] private long reward, moneyNeededToUnlock;
     [SerializeField] private MissionOutcome[] outcomes;
     [SerializeField] private ThankYouMessage thankYouMessage;
 
     [Header("Data to update IN GAME")] 
     public MissionSaveData saveData;
 
+    public static event Action<Mission> OnMissionCompleted;
     public static string FOLDER_NAME = "MissionSaveData";
 
     [Serializable]
@@ -75,5 +77,6 @@ public partial class Mission : ScriptableObject, IDataModel
             thankYouMessage.IsUnlocked = true; 
         }
         NumberOfCompletions++;
+        OnMissionCompleted?.Invoke(this);
     }
 }
