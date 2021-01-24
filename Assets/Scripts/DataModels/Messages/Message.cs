@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Message", menuName = "ScriptableObjects/Message", order = 1)]
+[CreateAssetMenu(fileName = "Message", menuName = "ScriptableObjects/Messages/Message", order = 1)]
 public partial class Message : ScriptableObject, IDataModel
 {
     [Header("Set in Editor")]
