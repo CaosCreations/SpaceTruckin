@@ -9,7 +9,7 @@ public class NewDayReportCard : MonoBehaviour
 {
     private Image shipAvatar;
     private Text detailsText;
-    private Button nextCardButton; 
+    public Button nextCardButton; 
 
     private void Start()
     {

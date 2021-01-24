@@ -35,6 +35,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         {
             DataModelsUtils.CreateSaveFolder(Mission.FOLDER_NAME);
         }
+        Instance.MissionsCompletedYesterday = new List<Mission>();
         Mission.OnMissionCompleted += (mission) => 
             MissionsCompletedYesterday.Add(mission);
     }

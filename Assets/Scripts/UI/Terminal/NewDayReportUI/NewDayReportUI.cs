@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NewDayReportUI : MonoBehaviour
 {
@@ -7,6 +8,8 @@ public class NewDayReportUI : MonoBehaviour
     private GameObject reportCardInstance; 
     private NewDayReportCard reportCard;
     private int currentReportIndex;
+
+    public GameObject missionsPanel;
 
     public Mission CurrentMissionToReport 
     {
@@ -31,8 +34,20 @@ public class NewDayReportUI : MonoBehaviour
             if (currentReportIndex < MissionsManager.Instance.MissionsCompletedYesterday.Count - 1)
             {
                 currentReportIndex++;
+                reportCard.SetupNextCardListener(CurrentMissionToReport);
             }
-            reportCard.SetupNextCardListener(CurrentMissionToReport);
+            else
+            {
+                reportCard.nextCardButton.SetText("Close");
+                reportCard.nextCardButton.AddOnClick(CloseReport);
+            }
         }
+    }
+
+    private void CloseReport()
+    {
+        Destroy(reportCardInstance);
+        gameObject.SetActive(false);
+        missionsPanel.SetActive(true);
     }
 }

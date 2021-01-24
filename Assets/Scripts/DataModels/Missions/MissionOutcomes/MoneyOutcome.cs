@@ -6,7 +6,7 @@ public class MoneyOutcome : MissionOutcome
     [SerializeField] private long moneyMin;
     [SerializeField] private long moneyMax;
 
-    public new MoneyOutcomeSaveData saveData;
+    public MoneyOutcomeSaveData moneySaveData;
 
     [System.Serializable]
     public class MoneyOutcomeSaveData : MissionOutcomeSaveData
@@ -16,7 +16,7 @@ public class MoneyOutcome : MissionOutcome
 
     public long MoneyReceived
     {
-        get => saveData.moneyReceived; set => saveData.moneyReceived = value;
+        get => moneySaveData.moneyReceived; set => moneySaveData.moneyReceived = value;
     }
 
     public override void Process(Mission mission)

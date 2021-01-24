@@ -19,7 +19,7 @@ public class TerminalUIManager : MonoBehaviour
 
     public enum Tab
     {
-        Missions, Messages, Analytics, Crew, Upgrades, NewDayReport
+        Missions, Messages, Analytics, Crew, Upgrades
     }
 
     void Start()
@@ -27,7 +27,7 @@ public class TerminalUIManager : MonoBehaviour
         SetupButtonListeners();
         if (MissionsManager.MissionsWereCompletedYesterday())
         {
-            TabButtonClicked(Tab.NewDayReport);
+            newDayReportPanel.SetActive(true);
         }
         else
         {
@@ -65,9 +65,6 @@ public class TerminalUIManager : MonoBehaviour
                 break;
             case Tab.Upgrades:
                 upgradesPanel.SetActive(true);
-                break;
-            case Tab.NewDayReport:
-                newDayReportPanel.SetActive(true);
                 break;
         }
     }
