@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class PodController : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class PodController : MonoBehaviour
     private float currentFlightSpeed;
     private float defaultFallSpeed = 1f;
     private float currentFallSpeed;
+
+    private float transitionTime = 2f;
+    private bool directionIsTransitioning; 
 
     private Direction direction; 
 
@@ -56,13 +60,32 @@ public class PodController : MonoBehaviour
 
     private void DetermineDirection()
     {
-        if (IsAboveMidpoint())
+        if (directionIsTransitioning)
         {
-            direction = Direction.Up;
+            return;
         }
-        else
+
+        if (IsAboveMidpoint() && direction == Direction.Up)
         {
             direction = Direction.Down;
+            BeginDirectionTransition();
+        }
+        else if (!IsAboveMidpoint() && direction == Direction.Down)
+        {
+            direction = Direction.Up;
+            BeginDirectionTransition();
+        }
+    }
+
+    private void BeginDirectionTransition()
+    {
+        directionIsTransitioning = true;
+        StartCoroutine(WaitForTransition());
+
+        IEnumerator WaitForTransition()
+        {
+            yield return new WaitForSeconds(transitionTime);
+            directionIsTransitioning = false;
         }
     }
 
