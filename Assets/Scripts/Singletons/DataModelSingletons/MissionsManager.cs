@@ -9,13 +9,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
     [SerializeField] private MissionContainer missionContainer;
     public Mission[] Missions { get => missionContainer.missions; }
 
-    /// <summary>
-    /// Stores the missions that were completed the day before
-    /// as well as money they yielded, which is determined by a dice roll
-    /// </summary>
-    public Dictionary<Mission, long> RecentlyCompletedMissions { get; private set; }
-
-    void Awake()
+    private void Awake()
     {
         if (Instance == null)
         {
@@ -40,7 +34,6 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         {
             DataModelsUtils.CreateSaveFolder(Mission.FOLDER_NAME);
         }
-        MoneyOutcome.OnMoneyOutcome += AddRecentlyCompletedMission;
     }
 
     public static List<Mission> GetAcceptedMissions()
@@ -59,6 +52,11 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
             .ToList();
     }
 
+    public static Mission GetMissionByFileName(string fileName)
+    {
+        return Instance.Missions.FirstOrDefault(x => x.name == fileName);
+    }
+
     public static void UpdateMissionSchedule()
     {
         foreach(Mission mission in Instance.Missions)
@@ -73,11 +71,6 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
                 }
             }
         }
-    }
-
-    private void AddRecentlyCompletedMission(Mission mission, long moneyReceived)
-    {
-        Instance.RecentlyCompletedMissions.Add(mission, moneyReceived);
     }
 
     public void SaveData()
