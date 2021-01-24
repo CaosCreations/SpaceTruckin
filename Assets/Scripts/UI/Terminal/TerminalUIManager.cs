@@ -14,38 +14,36 @@ public class TerminalUIManager : MonoBehaviour
     public GameObject messagesPanel;
     public GameObject analyticsPanel;
     public GameObject crewPanel;
-    public PilotsUI pilotsUI;
     public GameObject upgradesPanel;
+    public GameObject newDayReportPanel;
 
     public enum Tab
     {
-        Missions, Messages, Analytics, Crew, Upgrades
+        Missions, Messages, Analytics, Crew, Upgrades, NewDayReport
     }
 
     void Start()
     {
         SetupButtonListeners();
-        TabButtonClicked(Tab.Missions);
+        if (MissionsManager.MissionsWereCompletedYesterday())
+        {
+            TabButtonClicked(Tab.NewDayReport);
+        }
+        else
+        {
+            TabButtonClicked(Tab.Missions);
+        }
         UpdateMoneyText();
         PlayerManager.onFinancialTransaction += UpdateMoneyText;
     }
 
     private void SetupButtonListeners()
     {
-        missionsButton.onClick.RemoveAllListeners();
-        missionsButton.onClick.AddListener(delegate { TabButtonClicked(Tab.Missions); });
-
-        messagesButton.onClick.RemoveAllListeners();
-        messagesButton.onClick.AddListener(delegate { TabButtonClicked(Tab.Messages); });
-
-        analyticsButton.onClick.RemoveAllListeners();
-        analyticsButton.onClick.AddListener(delegate { TabButtonClicked(Tab.Analytics); });
-
-        crewButton.onClick.RemoveAllListeners();
-        crewButton.onClick.AddListener(delegate { TabButtonClicked(Tab.Crew); });
-
-        upgradesButton.onClick.RemoveAllListeners();
-        upgradesButton.onClick.AddListener(delegate { TabButtonClicked(Tab.Upgrades); });
+        missionsButton.AddOnClick(() => TabButtonClicked(Tab.Missions));
+        messagesButton.AddOnClick(() => TabButtonClicked(Tab.Messages));
+        analyticsButton.AddOnClick(() => TabButtonClicked(Tab.Analytics));
+        crewButton.AddOnClick(() => TabButtonClicked(Tab.Crew));
+        upgradesButton.AddOnClick(() => TabButtonClicked(Tab.Upgrades));
     }
 
     private void TabButtonClicked(Tab tabClicked)
@@ -68,6 +66,9 @@ public class TerminalUIManager : MonoBehaviour
             case Tab.Upgrades:
                 upgradesPanel.SetActive(true);
                 break;
+            case Tab.NewDayReport:
+                newDayReportPanel.SetActive(true);
+                break;
         }
     }
 
@@ -78,6 +79,7 @@ public class TerminalUIManager : MonoBehaviour
         analyticsPanel.SetActive(false);
         crewPanel.SetActive(false);
         upgradesPanel.SetActive(false);
+        newDayReportPanel.SetActive(false);
     }
 
     private void UpdateMoneyText()
