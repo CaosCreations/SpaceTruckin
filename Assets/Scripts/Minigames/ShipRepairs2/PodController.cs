@@ -5,8 +5,13 @@ public class PodController : MonoBehaviour
     private float yMin, yMax;
     private float midpointY = 0f;
     private float screenBorder = 2f;
-    private float flightSpeed = 3.5f;
-    private float fallSpeed = 1f;
+
+    private float defaultFlightSpeed = 3.5f;
+    private float currentFlightSpeed;
+    private float defaultFallSpeed = 1f;
+    private float currentFallSpeed;
+
+    private Direction direction; 
 
     public Vector3 Position 
     {
@@ -19,26 +24,64 @@ public class PodController : MonoBehaviour
         yMax = Camera.main.orthographicSize/* - screenBorder*/;
         Debug.Log("Y min: " + yMin);
         Debug.Log("Y max: " + yMax);
+        currentFlightSpeed = defaultFlightSpeed;
+        direction = Direction.Up;
     }
 
     private void Update()
     {
-        flightSpeed = IsAboveMidpoint() ? flightSpeed : flightSpeed * -1;
-        Debug.Log("Flight speed = " + flightSpeed);
+        Debug.Log("Flight speed = " + currentFlightSpeed);
+
+        DeterminePosition();
+    }
+
+    private void DeterminePosition()
+    {
+        DetermineDirection();
+        DetermineSpeed();
 
         float newY;
         if (Input.GetMouseButton(0))
         {
             newY = Mathf.Clamp(
-                Position.y + flightSpeed * Time.deltaTime, yMin, yMax);
+                Position.y + currentFlightSpeed * Time.deltaTime, yMin, yMax);
         }
         else
         {
             newY = Mathf.Clamp(
-                Position.y - fallSpeed * Time.deltaTime, yMin, yMax);
+                Position.y - currentFallSpeed * Time.deltaTime, yMin, yMax);
         }
         Position = new Vector3(Position.x, newY, Position.z);
     }
 
+    private void DetermineDirection()
+    {
+        if (IsAboveMidpoint())
+        {
+            direction = Direction.Up;
+        }
+        else
+        {
+            direction = Direction.Down;
+        }
+    }
+
     private bool IsAboveMidpoint() => Position.y > midpointY;
+
+    private void  DetermineSpeed()
+    {
+        switch (direction)
+        {
+            case Direction.Up:
+                currentFlightSpeed = defaultFlightSpeed;
+                currentFallSpeed = defaultFallSpeed;
+                break;
+            case Direction.Down:
+                currentFlightSpeed = defaultFlightSpeed * -1f;
+                currentFallSpeed = defaultFallSpeed * -1f;
+                break;
+        }
+    }
+
+
 }
