@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public class NewDayReportUI : MonoBehaviour
 {
@@ -11,21 +12,26 @@ public class NewDayReportUI : MonoBehaviour
     {
         get => MissionsManager.Instance.MissionsCompletedToday[currentReportIndex];
     }
-    public Mission NextMission { get; set; }
 
     private void Start()
     {
         reportCardInstance = Instantiate(reportCardPrefab, transform);
         currentReportIndex = 0;
+        ShowNextReport();
     }
 
     private void ShowNextReport()
     {
-        reportCard.ShowReport(CurrentMissionToReport);
-
-        if (currentReportIndex < MissionsManager.Instance.MissionsCompletedToday.Count - 1)
+        if (MissionsManager.Instance.MissionsCompletedToday != null 
+            && MissionsManager.Instance.MissionsCompletedToday.Any())
         {
-            currentReportIndex++;
+            reportCard.ShowReport(CurrentMissionToReport);
+
+            if (currentReportIndex < MissionsManager.Instance.MissionsCompletedToday.Count - 1)
+            {
+                currentReportIndex++;
+            }
+            reportCard.SetupNextCardListener(CurrentMissionToReport);
         }
     }
 }
