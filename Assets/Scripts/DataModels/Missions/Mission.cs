@@ -16,6 +16,9 @@ public partial class Mission : ScriptableObject, IDataModel
     [Header("Data to update IN GAME")] 
     public MissionSaveData saveData;
 
+    [HideInInspector]
+    public long moneyEarnedLastCompletion;
+
     public static event Action<Mission> OnMissionCompleted;
     public static string FOLDER_NAME = "MissionSaveData";
 

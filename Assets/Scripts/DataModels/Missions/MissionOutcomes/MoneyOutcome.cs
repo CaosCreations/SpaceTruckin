@@ -21,7 +21,10 @@ public class MoneyOutcome : MissionOutcome
 
     public override void Process(Mission mission)
     {
-        MoneyReceived = (long)Random.Range(moneyMin, moneyMax);
+        //MoneyReceived = (long)Random.Range(moneyMin, moneyMax);
+
+        long moneyEarned = (long)Random.Range(moneyMin, moneyMax);
+        mission.moneyEarnedLastCompletion += moneyEarned; 
         PlayerManager.Instance.ReceiveMoney(MoneyReceived);
     }
 }
