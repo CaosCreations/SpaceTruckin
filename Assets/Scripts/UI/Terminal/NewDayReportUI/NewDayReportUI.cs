@@ -11,7 +11,7 @@ public class NewDayReportUI : MonoBehaviour
 
     public GameObject missionsPanel;
 
-    public Mission CurrentMissionToReport 
+    public (Mission, Ship) CurrentMissionToReport 
     {
         get => MissionsManager.Instance.MissionsCompletedYesterday[currentReportIndex];
     }

@@ -7,36 +7,36 @@ using UnityEngine.UI;
 /// </summary>
 public class NewDayReportCard : MonoBehaviour
 {
-    private Image shipAvatar;
-    private Text detailsText;
+    public Image shipAvatar;
+    public Text detailsText;
     public Button nextCardButton; 
 
     private void Start()
     {
-        shipAvatar = GetComponentInChildren<Image>();
-        detailsText = GetComponentInChildren<Text>();
-        nextCardButton = GetComponentInChildren<Button>();
+        //shipAvatar = GetComponent<Image>();
+        //detailsText = GetComponentInChildren<Text>();
+        //nextCardButton = GetComponentInChildren<Button>();
     }
 
-    public void ShowReport(Mission mission)
+    public void ShowReport((Mission mission, Ship ship) missionToReport)
     {
-        shipAvatar.sprite = mission.Ship.Avatar;
-        detailsText.text = BuildReportDetails(mission);
+        shipAvatar.sprite = missionToReport.ship.Avatar;
+        detailsText.text = BuildReportDetails(missionToReport);
     }
 
-    public void SetupNextCardListener(Mission nextMission)
+    public void SetupNextCardListener((Mission mission, Ship ship) nextMissionToReport)
     {
-        nextCardButton.AddOnClick(() => ShowReport(nextMission));
+        nextCardButton.AddOnClick(() => ShowReport(nextMissionToReport));
     }
 
-    public string BuildReportDetails(Mission mission)
+    public string BuildReportDetails((Mission mission, Ship ship) missionToReport)
     {
         StringBuilder builder = new StringBuilder();
-        string moneyText = $"{mission.Ship} earned $";
-        string damageText = $"{mission.Ship} took ";
-        string xpText = $"{mission.Ship.Pilot} gained ";
+        string moneyText = $"{missionToReport.ship} earned $";
+        string damageText = $"{missionToReport.ship} took ";
+        string xpText = $"{missionToReport.ship.Pilot} gained ";
 
-        foreach (MissionOutcome outcome in mission.Outcomes)
+        foreach (MissionOutcome outcome in missionToReport.mission.Outcomes)
         {
             // Todo: Flavour text
 
@@ -56,9 +56,6 @@ public class NewDayReportCard : MonoBehaviour
                 {
                     var xpOutcome = outcome as PilotXpOutcome;
                     xpText += $"{xpOutcome.xpMax} experience";
-                }
-                else
-                {
                 }
                 if (!string.IsNullOrEmpty(moneyText)) builder.AppendLine(moneyText);
                 if (!string.IsNullOrEmpty(damageText)) builder.AppendLine(damageText);

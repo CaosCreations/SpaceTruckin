@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class MissionsManager : MonoBehaviour, IDataModelManager
 {
@@ -8,7 +9,8 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
 
     [SerializeField] private MissionContainer missionContainer;
     public Mission[] Missions { get => missionContainer.missions; }
-    public List<Mission> MissionsCompletedYesterday { get; set; } 
+    //public List<Mission> MissionsCompletedYesterday { get; set; } 
+    public List<(Mission mission, Ship ship)> MissionsCompletedYesterday { get; set; }
 
     private void Awake()
     {
@@ -35,9 +37,9 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         {
             DataModelsUtils.CreateSaveFolder(Mission.FOLDER_NAME);
         }
-        Instance.MissionsCompletedYesterday = new List<Mission>();
+        Instance.MissionsCompletedYesterday = new List<(Mission mission, Ship ship)>();
         Mission.OnMissionCompleted += (mission) => 
-            MissionsCompletedYesterday.Add(mission);
+            MissionsCompletedYesterday.Add((mission, mission.Ship));
     }
 
     public static List<Mission> GetAcceptedMissions()
@@ -63,8 +65,10 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
 
     public static void UpdateMissionSchedule()
     {
-        Instance.MissionsCompletedYesterday = new List<Mission>();
-        foreach(Mission mission in Instance.Missions)
+        //Instance.MissionsCompletedYesterday = new List<Mission>();
+        Instance.MissionsCompletedYesterday = new List<(Mission mission, Ship ship)>();
+
+        foreach (Mission mission in Instance.Missions)
         {
             if(mission.IsInProgress())
             {

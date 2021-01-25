@@ -22,19 +22,20 @@ public class TerminalUIManager : MonoBehaviour
         Missions, Messages, Analytics, Crew, Upgrades
     }
 
-    void Start()
+    private void Start()
     {
         SetupButtonListeners();
+        TabButtonClicked(Tab.Missions);
+        UpdateMoneyText();
+        PlayerManager.onFinancialTransaction += UpdateMoneyText;
+    }
+
+    private void OnEnable()
+    {
         if (MissionsManager.MissionsWereCompletedYesterday())
         {
             newDayReportPanel.SetActive(true);
         }
-        else
-        {
-            TabButtonClicked(Tab.Missions);
-        }
-        UpdateMoneyText();
-        PlayerManager.onFinancialTransaction += UpdateMoneyText;
     }
 
     private void SetupButtonListeners()
