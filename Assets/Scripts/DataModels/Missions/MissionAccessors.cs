@@ -6,7 +6,7 @@ public partial class Mission
     // This class is just for property accessors. 
     // The fields are all located in Mission.cs. 
 
-    public string MissionName { get => missionName; set => missionName = value; }
+    public string Name { get => missionName; set => missionName = value; }
 
     public string Customer { get => customer; set => customer = value; }
 
@@ -26,6 +26,12 @@ public partial class Mission
     {
         get => saveData.daysLeftToComplete;
         set => saveData.daysLeftToComplete = value;
+    }
+
+    public int NumberOfCompletions
+    {
+        get => saveData.numberOfCompletions;
+        set => saveData.numberOfCompletions = value;
     }
 
     public int FuelCost { get => fuelCost; set => fuelCost = value; }

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Message", menuName = "ScriptableObjects/Message", order = 1)]
+[CreateAssetMenu(fileName = "Message", menuName = "ScriptableObjects/Messages/Message", order = 1)]
 public partial class Message : ScriptableObject, IDataModel
 {
     [Header("Set in Editor")]
@@ -9,7 +9,7 @@ public partial class Message : ScriptableObject, IDataModel
     public int condition;
 
     // The mission offered in the email
-    public Mission mission;
+    [SerializeField] private Mission mission;
 
     [Header("Data to update IN GAME")]
     public MessageSaveData saveData;

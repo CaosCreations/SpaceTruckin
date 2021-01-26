@@ -24,7 +24,7 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        if (DataModelsUtils.SaveDataExists(Message.FOLDER_NAME))
+        if (DataModelsUtils.SaveFolderExists(Message.FOLDER_NAME))
         {
             LoadDataAsync();
         }

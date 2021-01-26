@@ -6,10 +6,11 @@ using UnityEngine;
 public partial class Mission : ScriptableObject, IDataModel
 {
     [Header("Set in Editor")]
-    public int missionDurationInDays;
-    public string missionName, customer, cargo, description;
-    public int fuelCost, reward, moneyNeededToUnlock; // may need to be longs later
-    public MissionOutcome[] outcomes;
+    [SerializeField] private int missionDurationInDays;
+    [SerializeField] private string missionName, customer, cargo, description;
+    [SerializeField] private int fuelCost, reward, moneyNeededToUnlock; // may need to be longs later
+    [SerializeField] private MissionOutcome[] outcomes;
+    [SerializeField] private ThankYouMessage thankYouMessage;
 
     [Header("Data to update IN GAME")] 
     public MissionSaveData saveData;
@@ -19,9 +20,9 @@ public partial class Mission : ScriptableObject, IDataModel
     [Serializable]
     public class MissionSaveData
     {
-        [SerializeField] public bool hasBeenAccepted = false;
-        [SerializeField] public int daysLeftToComplete;
-        [SerializeField] public Ship ship = null;
+        public bool hasBeenAccepted = false;
+        public int daysLeftToComplete, numberOfCompletions;
+        public Ship ship = null;
     }
 
     public void SaveData()
@@ -49,7 +50,7 @@ public partial class Mission : ScriptableObject, IDataModel
         return saveData.daysLeftToComplete > 0;
     }
 
-    public void ProcessOutcomes()
+    private void ProcessOutcomes()
     {
         foreach (MissionOutcome outcome in outcomes)
         {
@@ -58,5 +59,21 @@ public partial class Mission : ScriptableObject, IDataModel
                 outcome.Process(this);
             }
         }
+    }
+
+    public void CompleteMission()
+    {
+        ProcessOutcomes();
+        Ship.DeductFuel();
+        Ship.IsLaunched = false;
+        Ship.CurrentMission = null;
+        Ship = null;
+
+        // Send a thank you email on first completion of the mission
+        if (thankYouMessage != null && NumberOfCompletions <= 0)
+        {
+            thankYouMessage.IsUnlocked = true; 
+        }
+        NumberOfCompletions++;
     }
 }

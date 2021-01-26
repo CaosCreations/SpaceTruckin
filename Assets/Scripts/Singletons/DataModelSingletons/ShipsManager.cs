@@ -33,7 +33,7 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        if (DataModelsUtils.SaveDataExists(Ship.FOLDER_NAME))
+        if (DataModelsUtils.SaveFolderExists(Ship.FOLDER_NAME))
         {
             LoadDataAsync();
         }

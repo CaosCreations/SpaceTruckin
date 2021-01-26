@@ -82,7 +82,7 @@ public static class DataModelsUtils
         }
     }
 
-    public static bool SaveDataExists(string folderName)
+    public static bool SaveFolderExists(string folderName)
     {
         string folderPath = GetSaveFolderPath(folderName);
         if (Directory.Exists(folderPath)) 

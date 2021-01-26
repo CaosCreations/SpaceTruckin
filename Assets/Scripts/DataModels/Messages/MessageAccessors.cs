@@ -2,7 +2,10 @@
 {
     // This class is just for property accessors. 
     // The fields are all located in Message.cs. 
-
+    
+    /// <summary>
+    /// The name of the message, not the object itself.
+    /// </summary>
     public string Name
     {
         get => messageName; set => messageName = value;

@@ -22,7 +22,8 @@ public class MessageDetailView : MonoBehaviour
         rectTransform.Stretch();
 
         Text messageBodyText = messageBody.GetComponent<Text>();
-        if (string.IsNullOrEmpty(message.Body))
+        messageBodyText.text = message.body;
+        if (string.IsNullOrEmpty(messageBodyText.text))
         {
             messageBodyText.text = PlaceholderUtils.GenerateLoremIpsum(16);
 
@@ -39,7 +40,7 @@ public class MessageDetailView : MonoBehaviour
     public void SetMissionAcceptButton(Mission mission)
     {
         Text buttonText = missionAcceptButton.GetComponentInChildren<Text>();
-        buttonText.text = "Accept " + mission.MissionName;
+        buttonText.text = "Accept " + mission.Name;
 
         missionAcceptButton.interactable = !mission.HasBeenAccepted;
         missionAcceptButton.AddOnClick(() =>
