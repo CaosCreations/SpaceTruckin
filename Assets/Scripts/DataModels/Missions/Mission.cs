@@ -17,7 +17,7 @@ public partial class Mission : ScriptableObject, IDataModel
     public MissionSaveData saveData;
 
     [HideInInspector]
-    private ArchivedMission archivedMission; 
+    private ArchivedMission archivedMission; // rename: missionToArchive 
 
     public static event Action<Mission> OnMissionCompleted;
     public static string FOLDER_NAME = "MissionSaveData";
@@ -70,6 +70,8 @@ public partial class Mission : ScriptableObject, IDataModel
 
     public void CompleteMission()
     {
+        LatestArchivedMission = new ArchivedMission();
+
         ProcessOutcomes();
         Ship.DeductFuel();
         Ship.IsLaunched = false;

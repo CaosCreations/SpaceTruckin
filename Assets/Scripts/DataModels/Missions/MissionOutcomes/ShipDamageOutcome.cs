@@ -11,5 +11,6 @@ public class ShipDamageOutcome : MissionOutcome
     public override void Process(Mission mission)
     {
         ShipsManager.DamageShip(mission.Ship, shipDamage);
+        mission.LatestArchivedMission.TotalDamageTaken += shipDamage;
     }
 }

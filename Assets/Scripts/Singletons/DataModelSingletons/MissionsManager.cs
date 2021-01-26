@@ -68,6 +68,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         //Instance.MissionsCompletedYesterday = new List<Mission>();
         Instance.MissionsCompletedYesterday = new List<(Mission mission, Ship ship)>();
 
+
         foreach (Mission mission in Instance.Missions)
         {
             if(mission.IsInProgress())

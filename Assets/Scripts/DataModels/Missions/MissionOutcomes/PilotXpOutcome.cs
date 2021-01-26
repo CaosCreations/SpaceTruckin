@@ -8,11 +8,18 @@ public class PilotXpOutcome : MissionOutcome
 	
 	public override void Process(Mission mission) 
 	{
-		PilotsManager.Instance.AwardXp(
-            mission.Ship, Mathf.FloorToInt(Random.Range(xpMin, xpMax) * ApplyOmens(mission)));
+        int xpGained = Mathf.FloorToInt(Random.Range(xpMin, xpMax) * ApplyOmens(mission));
+        PilotsManager.Instance.AwardXp(mission.Ship, xpGained);
+        mission.LatestArchivedMission.TotalPilotXpGained += xpGained;
+
 	}
 
-    // A mission can have multiple omens attached to it.
+    /// <summary>
+    /// Calculate the xp multiplier based on probability. 
+    /// It can be below 1, resulting in an xp debuff. 
+    /// </summary>
+    /// <param name="mission"></param>
+    /// <returns>A number by which the xp gained will be multiplied</returns>
     private float ApplyOmens(Mission mission)
     {
         float coefficient = 1f;
