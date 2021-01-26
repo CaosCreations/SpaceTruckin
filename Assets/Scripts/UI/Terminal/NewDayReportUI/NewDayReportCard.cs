@@ -18,50 +18,30 @@ public class NewDayReportCard : MonoBehaviour
         //nextCardButton = GetComponentInChildren<Button>();
     }
 
-    public void ShowReport((Mission mission, Ship ship) missionToReport)
+    public void ShowReport(ArchivedMission mission)
     {
-        shipAvatar.sprite = missionToReport.ship.Avatar;
-        detailsText.text = BuildReportDetails(missionToReport);
+        shipAvatar.sprite = mission.ShipUsed.Avatar;
+        detailsText.text = BuildReportDetails(mission);
     }
 
-    public void SetupNextCardListener((Mission mission, Ship ship) nextMissionToReport)
+    public void SetupNextCardListener(ArchivedMission mission)
     {
-        nextCardButton.AddOnClick(() => ShowReport(nextMissionToReport));
+        nextCardButton.AddOnClick(() => ShowReport(mission));
     }
 
-    public string BuildReportDetails((Mission mission, Ship ship) missionToReport)
+    public string BuildReportDetails(ArchivedMission mission)
     {
         StringBuilder builder = new StringBuilder();
-        string moneyText = $"{missionToReport.ship} earned $";
-        string damageText = $"{missionToReport.ship} took ";
-        string xpText = $"{missionToReport.ship.Pilot} gained ";
+        string moneyText = $"{mission.ShipUsed} earned ${mission.TotalMoneyEarned}";
+        string damageText = $"{mission.ShipUsed} took {mission.TotalDamageTaken}";
+        string fuelText = $"{mission.ShipUsed} lost {mission.TotalFuelLost} fuel";
+        string xpText = $"{mission.ShipUsed.Pilot} gained {mission.TotalPilotXpGained}";
 
-        foreach (MissionOutcome outcome in missionToReport.mission.Outcomes)
-        {
-            // Todo: Flavour text
+        if (!string.IsNullOrEmpty(moneyText)) builder.AppendLine(moneyText);
+        if (!string.IsNullOrEmpty(damageText)) builder.AppendLine(damageText);
+        if (!string.IsNullOrEmpty(fuelText)) builder.AppendLine(fuelText);
+        if (!string.IsNullOrEmpty(xpText)) builder.AppendLine(xpText);
 
-            if (outcome != null)
-            {
-                if (outcome is MoneyOutcome)
-                {
-                    var moneyOutcome = outcome as MoneyOutcome;
-                    moneyText += moneyOutcome.MoneyReceived;
-                }
-                else if (outcome is ShipDamageOutcome)
-                {
-                    var damageOutcome = outcome as ShipDamageOutcome;
-                    damageText += $"{damageOutcome.Damage} damage";
-                }
-                else if (outcome is PilotXpOutcome)
-                {
-                    var xpOutcome = outcome as PilotXpOutcome;
-                    xpText += $"{xpOutcome.xpMax} experience";
-                }
-                if (!string.IsNullOrEmpty(moneyText)) builder.AppendLine(moneyText);
-                if (!string.IsNullOrEmpty(damageText)) builder.AppendLine(damageText);
-                if (!string.IsNullOrEmpty(xpText)) builder.AppendLine(xpText);
-            }
-        }
         return builder.ToString();
     }
 }

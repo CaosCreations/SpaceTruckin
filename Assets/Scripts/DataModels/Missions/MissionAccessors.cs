@@ -44,4 +44,9 @@ public partial class Mission
     public Ship Ship { get => saveData.ship; set => saveData.ship = value; }
 
     public MissionOutcome[] Outcomes { get => outcomes; }
+
+    public ArchivedMission LatestArchivedMission 
+    {
+        get => archivedMission; set => archivedMission = value; 
+    }
 }

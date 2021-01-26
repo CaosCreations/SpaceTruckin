@@ -17,7 +17,7 @@ public partial class Mission : ScriptableObject, IDataModel
     public MissionSaveData saveData;
 
     [HideInInspector]
-    public long moneyEarnedLastCompletion;
+    private ArchivedMission archivedMission; 
 
     public static event Action<Mission> OnMissionCompleted;
     public static string FOLDER_NAME = "MissionSaveData";
@@ -57,6 +57,8 @@ public partial class Mission : ScriptableObject, IDataModel
 
     private void ProcessOutcomes()
     {
+        LatestArchivedMission = new ArchivedMission();
+
         foreach (MissionOutcome outcome in outcomes)
         {
             if (outcome != null)
