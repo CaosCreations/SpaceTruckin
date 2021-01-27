@@ -49,4 +49,9 @@ public partial class Mission
     {
         get => archivedMission; set => archivedMission = value; 
     }
+
+    public ThankYouMessage ThankYouMessage 
+    { 
+        get => thankYouMessage; set => thankYouMessage = value; 
+    }
 }

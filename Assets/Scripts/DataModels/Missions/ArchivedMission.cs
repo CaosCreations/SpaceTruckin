@@ -2,13 +2,18 @@
 using UnityEngine;
 
 /// <summary>
-/// This holds data about mission gains/losses.
+/// This model holds data about mission statistics.
 /// The fields of this class/subclass will be set 
 /// during the processing of the mission outcomes.
 /// </summary>
 public class ArchivedMission : IDataModel
 {
+    /// <summary>
+    /// We build the file name based on the mission's name and its completion number.
+    /// e.g. 'Smash_69' would be the 69th completion of the mission 'Smash' 
+    /// </summary>
     private string fileName;
+    public string FileName { get => fileName; set => fileName = value; }
 
     public ArchivedMission(string fileName)
     {
@@ -19,7 +24,6 @@ public class ArchivedMission : IDataModel
     private ArchivedMissionSaveData saveData;
 
     public static string FOLDER_NAME = "ArchivedMissionSaveData";
-    public string FileName { get => fileName; set => fileName = value; }
 
     public async Task LoadDataAsync()
     {

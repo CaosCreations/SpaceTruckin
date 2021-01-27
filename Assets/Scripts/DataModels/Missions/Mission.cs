@@ -18,6 +18,7 @@ public partial class Mission : ScriptableObject, IDataModel
 
     [HideInInspector]
     private ArchivedMission archivedMission; // rename: missionToArchive 
+    private ArchivedMission dataToArchive;
 
     public static event Action<Mission> OnMissionCompleted;
     public static string FOLDER_NAME = "MissionSaveData";
@@ -57,7 +58,7 @@ public partial class Mission : ScriptableObject, IDataModel
 
     private void ProcessOutcomes()
     {
-        LatestArchivedMission = new ArchivedMission();
+        //LatestArchivedMission = new ArchivedMission($"{Name}_{NumberOfCompletions}");
 
         foreach (MissionOutcome outcome in outcomes)
         {
@@ -70,7 +71,7 @@ public partial class Mission : ScriptableObject, IDataModel
 
     public void CompleteMission()
     {
-        LatestArchivedMission = new ArchivedMission();
+        LatestArchivedMission = new ArchivedMission($"{Name}_{NumberOfCompletions}");
 
         ProcessOutcomes();
         Ship.DeductFuel();
@@ -79,9 +80,9 @@ public partial class Mission : ScriptableObject, IDataModel
         Ship = null;
 
         // Send a thank you email on first completion of the mission
-        if (thankYouMessage != null && NumberOfCompletions <= 0)
+        if (ThankYouMessage != null && NumberOfCompletions <= 0)
         {
-            thankYouMessage.IsUnlocked = true; 
+            ThankYouMessage.IsUnlocked = true; 
         }
         NumberOfCompletions++;
         OnMissionCompleted?.Invoke(this);
