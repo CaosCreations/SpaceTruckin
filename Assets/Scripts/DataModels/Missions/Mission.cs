@@ -17,8 +17,7 @@ public partial class Mission : ScriptableObject, IDataModel
     public MissionSaveData saveData;
 
     [HideInInspector]
-    private ArchivedMission archivedMission; // rename: missionToArchive 
-    private ArchivedMission dataToArchive;
+    private ArchivedMission missionToArchive;
 
     public static event Action<Mission> OnMissionCompleted;
     public static string FOLDER_NAME = "MissionSaveData";
@@ -58,8 +57,6 @@ public partial class Mission : ScriptableObject, IDataModel
 
     private void ProcessOutcomes()
     {
-        //LatestArchivedMission = new ArchivedMission($"{Name}_{NumberOfCompletions}");
-
         foreach (MissionOutcome outcome in outcomes)
         {
             if (outcome != null)
@@ -71,20 +68,27 @@ public partial class Mission : ScriptableObject, IDataModel
 
     public void CompleteMission()
     {
-        LatestArchivedMission = new ArchivedMission($"{Name}_{NumberOfCompletions}");
+        // Send a thank you email on first completion of the mission.
+        if (ThankYouMessage != null && NumberOfCompletions <= 0)
+        {
+            ThankYouMessage.IsUnlocked = true;
+        }
+        NumberOfCompletions++;
 
-        ProcessOutcomes();
+        // Instantiate an archived mission object to store the results of the completed mission.
+        MissionToArchive = new ArchivedMission(this);
+
+        // We will set the archived mission fields throughout the outcome processing. 
+        ProcessOutcomes(); // could we make the archived mission setters a return value? (override)
+        
         Ship.DeductFuel();
         Ship.IsLaunched = false;
         Ship.CurrentMission = null;
         Ship = null;
 
-        // Send a thank you email on first completion of the mission
-        if (ThankYouMessage != null && NumberOfCompletions <= 0)
-        {
-            ThankYouMessage.IsUnlocked = true; 
-        }
-        NumberOfCompletions++;
-        OnMissionCompleted?.Invoke(this);
+        OnMissionCompleted?.Invoke(this); // might be unneeded
+
+        // Add the object to the archive once all results have been processed. 
+        ArchivedMissionsManager.AddToArchive(MissionToArchive);
     }
 }

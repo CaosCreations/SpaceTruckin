@@ -11,13 +11,6 @@ public class NewDayReportCard : MonoBehaviour
     public Text detailsText;
     public Button nextCardButton; 
 
-    private void Start()
-    {
-        //shipAvatar = GetComponent<Image>();
-        //detailsText = GetComponentInChildren<Text>();
-        //nextCardButton = GetComponentInChildren<Button>();
-    }
-
     public void ShowReport(ArchivedMission mission)
     {
         shipAvatar.sprite = mission.ShipUsed.Avatar;
@@ -32,9 +25,9 @@ public class NewDayReportCard : MonoBehaviour
     public string BuildReportDetails(ArchivedMission mission)
     {
         StringBuilder builder = new StringBuilder();
-        string moneyText = $"{mission.ShipUsed} earned ${mission.TotalMoneyEarned}";
-        string damageText = $"{mission.ShipUsed} took {mission.TotalDamageTaken}";
-        string fuelText = $"{mission.ShipUsed} lost {mission.TotalFuelLost} fuel";
+        string moneyText = $"{mission.ShipUsed.Name} earned ${mission.TotalMoneyEarned}";
+        string damageText = $"{mission.ShipUsed.Name} took {mission.TotalDamageTaken} damage.";
+        string fuelText = $"{mission.ShipUsed.Name} lost {mission.TotalFuelLost} fuel";
         string xpText = $"{mission.ShipUsed.Pilot} gained {mission.TotalPilotXpGained}";
 
         if (!string.IsNullOrEmpty(moneyText)) builder.AppendLine(moneyText);

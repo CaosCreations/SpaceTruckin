@@ -9,21 +9,36 @@ using UnityEngine;
 public class ArchivedMission : IDataModel
 {
     /// <summary>
-    /// We build the file name based on the mission's name and its completion number.
+    /// We set the file name based on the mission's name and its completion number.
     /// e.g. 'Smash_69' would be the 69th completion of the mission 'Smash' 
     /// </summary>
-    private string fileName;
-    public string FileName { get => fileName; set => fileName = value; }
-
-    public ArchivedMission(string fileName)
-    {
-        this.fileName = fileName; // pass in missionname and completionnumber 
-    }
+    public string FileName { get; private set; } // is saved or not?
+    public static string FOLDER_NAME { get; } = "ArchivedMissionSaveData";
 
     [HideInInspector]
     private ArchivedMissionSaveData saveData;
 
-    public static string FOLDER_NAME = "ArchivedMissionSaveData";
+    public ArchivedMission(Mission mission)
+    {
+        saveData = new ArchivedMissionSaveData();
+        MissionName = mission.Name;
+        CompletionNumber = mission.NumberOfCompletions;
+        FileName = $"{MissionName}_{CompletionNumber}";
+        ShipUsed = mission.Ship;
+        TotalFuelLost = mission.FuelCost;
+    }
+
+    [System.Serializable]
+    public class ArchivedMissionSaveData
+    {
+        public string missionName;
+        public int completionNumber;
+        public long totalMoneyEarned;
+        public int totalDamageTaken;
+        public int totalFuelLost;
+        public int totalPilotXpGained;
+        public Ship shipUsed; // might need to be id (not instance id)
+    }
 
     public async Task LoadDataAsync()
     {
@@ -32,19 +47,7 @@ public class ArchivedMission : IDataModel
 
     public void SaveData()
     {
-        //string fileName = $"MissionName_{CompletionNumber}";
         DataModelsUtils.SaveFileAsync(FileName, FOLDER_NAME, saveData);
-    }
-
-    public class ArchivedMissionSaveData
-    {
-        public string missionName;
-        public int completionNumber; 
-        public long totalMoneyEarned;
-        public int totalDamageTaken;
-        public int totalFuelLost;
-        public int totalPilotXpGained;
-        public Ship shipUsed; // might need to be id (not instance id)
     }
 
     public string MissionName { get => saveData.missionName; set => saveData.missionName = value; }

@@ -16,7 +16,7 @@ public class TerminalUIManager : MonoBehaviour
     public GameObject crewPanel;
     public GameObject upgradesPanel;
     public GameObject newDayReportPanel;
-
+    
     public enum Tab
     {
         Missions, Messages, Analytics, Crew, Upgrades
@@ -32,7 +32,7 @@ public class TerminalUIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        if (MissionsManager.MissionsWereCompletedYesterday())
+        if (ArchivedMissionsManager.WereMissionsCompletedYesterday())
         {
             newDayReportPanel.SetActive(true);
         }

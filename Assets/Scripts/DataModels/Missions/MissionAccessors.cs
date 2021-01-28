@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
-
-public partial class Mission
+﻿public partial class Mission
 {
     // This class is just for property accessors. 
     // The fields are all located in Mission.cs. 
@@ -45,9 +42,9 @@ public partial class Mission
 
     public MissionOutcome[] Outcomes { get => outcomes; }
 
-    public ArchivedMission LatestArchivedMission 
+    public ArchivedMission MissionToArchive 
     {
-        get => archivedMission; set => archivedMission = value; 
+        get => missionToArchive; set => missionToArchive = value; 
     }
 
     public ThankYouMessage ThankYouMessage 

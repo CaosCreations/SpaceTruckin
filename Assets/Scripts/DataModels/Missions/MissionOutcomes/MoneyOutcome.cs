@@ -6,24 +6,28 @@ public class MoneyOutcome : MissionOutcome
     [SerializeField] private long moneyMin;
     [SerializeField] private long moneyMax;
 
-    public MoneyOutcomeSaveData moneySaveData;
+    //public MoneyOutcomeSaveData moneySaveData;
 
-    [System.Serializable]
-    public class MoneyOutcomeSaveData : MissionOutcomeSaveData
-    {
-        public long moneyReceived;
-    }
+    //[System.Serializable]
+    //public class MoneyOutcomeSaveData : MissionOutcomeSaveData
+    //{
+    //    public long moneyReceived;
+    //}
 
-    public long MoneyReceived
-    {
-        get => moneySaveData.moneyReceived; set => moneySaveData.moneyReceived = value;
-    }
+    //public long MoneyReceived
+    //{
+    //    get => moneySaveData.moneyReceived; set => moneySaveData.moneyReceived = value;
+    //}
 
     public override void Process(Mission mission)
     {
         long moneyEarned = (long)Random.Range(moneyMin, moneyMax);
-        PlayerManager.Instance.ReceiveMoney(MoneyReceived);
+        PlayerManager.Instance.ReceiveMoney(moneyEarned);
 
-        mission.LatestArchivedMission.TotalMoneyEarned += moneyEarned;
+        if (mission.MissionToArchive != null)
+        {
+            mission.MissionToArchive.TotalMoneyEarned += moneyEarned;
+            Debug.Log("MTA Money: " + mission.MissionToArchive.TotalMoneyEarned);
+        }
     }
 }

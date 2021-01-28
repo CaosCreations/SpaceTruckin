@@ -10,7 +10,7 @@ public class PilotXpOutcome : MissionOutcome
 	{
         int xpGained = Mathf.FloorToInt(Random.Range(xpMin, xpMax) * ApplyOmens(mission));
         PilotsManager.Instance.AwardXp(mission.Ship, xpGained);
-        mission.LatestArchivedMission.TotalPilotXpGained += xpGained;
+        mission.MissionToArchive.TotalPilotXpGained += xpGained;
 
 	}
 

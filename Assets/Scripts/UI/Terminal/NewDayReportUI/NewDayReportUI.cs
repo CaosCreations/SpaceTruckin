@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class NewDayReportUI : MonoBehaviour
 {
@@ -11,9 +10,9 @@ public class NewDayReportUI : MonoBehaviour
 
     public GameObject missionsPanel;
 
-    public (Mission, Ship) CurrentMissionToReport 
+    public ArchivedMission CurrentMissionToReport 
     {
-        get => MissionsManager.Instance.MissionsCompletedYesterday[currentReportIndex];
+        get => ArchivedMissionsManager.Instance.MissionsCompletedYesterday[currentReportIndex];
     }
 
     private void Start()
@@ -26,12 +25,12 @@ public class NewDayReportUI : MonoBehaviour
 
     private void ShowNextReport()
     {
-        if (MissionsManager.Instance.MissionsCompletedYesterday != null 
-            && MissionsManager.Instance.MissionsCompletedYesterday.Any())
+        if (ArchivedMissionsManager.WereMissionsCompletedYesterday())
         {
             reportCard.ShowReport(CurrentMissionToReport);
 
-            if (currentReportIndex < MissionsManager.Instance.MissionsCompletedYesterday.Count - 1)
+            if (currentReportIndex < ArchivedMissionsManager.Instance
+                .MissionsCompletedYesterday.Count - 1)
             {
                 currentReportIndex++;
                 reportCard.SetupNextCardListener(CurrentMissionToReport);
