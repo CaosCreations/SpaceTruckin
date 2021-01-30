@@ -19,11 +19,22 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
-        Init();
+        //Init();
     }
 
     public void Init()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         if (DataModelsUtils.SaveFolderExists(Message.FOLDER_NAME))
         {
             LoadDataAsync();

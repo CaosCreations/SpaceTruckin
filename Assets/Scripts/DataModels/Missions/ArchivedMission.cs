@@ -12,7 +12,7 @@ public class ArchivedMission : IDataModel
     /// We set the file name based on the mission's name and its completion number.
     /// e.g. 'Smash_69' would be the 69th completion of the mission 'Smash' 
     /// </summary>
-    public string FileName { get; private set; } // is saved or not?
+    public string FileName { get; private set; }
     public static string FOLDER_NAME { get; } = "ArchivedMissionSaveData";
 
     [HideInInspector]
@@ -57,5 +57,4 @@ public class ArchivedMission : IDataModel
     public int TotalPilotXpGained { get => saveData.totalPilotXpGained; set => saveData.totalPilotXpGained = value; }
     public int TotalFuelLost { get => saveData.totalFuelLost; set => saveData.totalFuelLost = value; }
     public Ship ShipUsed { get => saveData.shipUsed; set => saveData.shipUsed = value; }
-
 }

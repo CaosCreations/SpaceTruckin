@@ -30,7 +30,7 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
-        Init();
+        //Init();
     }
 
     public void Init()
@@ -61,16 +61,23 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
 
     public async void LoadDataAsync()
     {
-        foreach (Mission mission in MissionsManager.Instance.Missions
-            .Where(m => m.NumberOfCompletions > 0))
+        ArchivedMissions = new List<ArchivedMission>();
+        MissionsCompletedYesterday = new List<ArchivedMission>();
+
+        if (MissionsManager.Instance.Missions != null)
         {
-            // A mission has been completed n times, 
-            // so we create n archived missions.
-            for (int i = 1; i < mission.NumberOfCompletions + 1; i++)
+            foreach (Mission mission in MissionsManager.Instance.Missions
+                .Where(m => m.NumberOfCompletions > 0))
             {
-                ArchivedMission newArchivedMission = new ArchivedMission(mission);
-                await newArchivedMission.LoadDataAsync();
-                ArchivedMissions.Add(newArchivedMission);
+                // A mission has been completed n times, 
+                // so we create n archived missions.
+                for (int i = 0; i < mission.NumberOfCompletions; i++)
+                {
+                    ArchivedMission newArchivedMission = new ArchivedMission(mission);
+                    await newArchivedMission.LoadDataAsync();
+                    ArchivedMissions.Add(newArchivedMission);
+
+                }
             }
         }
     }

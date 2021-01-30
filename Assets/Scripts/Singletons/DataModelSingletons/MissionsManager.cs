@@ -22,11 +22,14 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
-        Init();
+        //Init();
     }
 
     public void Init()
     {
+        Init();
+
+
         if (DataModelsUtils.SaveFolderExists(Mission.FOLDER_NAME))
         {
             LoadDataAsync();

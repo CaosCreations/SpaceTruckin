@@ -9,6 +9,7 @@ public class NewDayReportUI : MonoBehaviour
     private int currentReportIndex;
 
     public GameObject missionsPanel;
+    public bool HasBeenViewed { get; private set; }
 
     public ArchivedMission CurrentMissionToReport 
     {
@@ -17,6 +18,7 @@ public class NewDayReportUI : MonoBehaviour
 
     private void Start()
     {
+        HasBeenViewed = true;
         reportCardInstance = Instantiate(reportCardPrefab, transform);
         reportCard = reportCardInstance.GetComponent<NewDayReportCard>();
         currentReportIndex = 0;

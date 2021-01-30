@@ -15,7 +15,8 @@ public class TerminalUIManager : MonoBehaviour
     public GameObject analyticsPanel;
     public GameObject crewPanel;
     public GameObject upgradesPanel;
-    public GameObject newDayReportPanel;
+    public GameObject newDayReportPanel; 
+    private NewDayReportUI newDayReportUI;
     
     public enum Tab
     {
@@ -26,13 +27,15 @@ public class TerminalUIManager : MonoBehaviour
     {
         SetupButtonListeners();
         TabButtonClicked(Tab.Missions);
+        newDayReportUI = newDayReportPanel.GetComponent<NewDayReportUI>();
+
         UpdateMoneyText();
         PlayerManager.onFinancialTransaction += UpdateMoneyText;
     }
 
     private void OnEnable()
     {
-        if (ArchivedMissionsManager.WereMissionsCompletedYesterday())
+        if (newDayReportUI != null && !newDayReportUI.HasBeenViewed)
         {
             newDayReportPanel.SetActive(true);
         }

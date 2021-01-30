@@ -37,6 +37,14 @@ public partial class Ship : ScriptableObject, IDataModel
         return (float)saveData.currentFuel / maxFuel;
     }
 
+    public void DeductFuel()
+    {
+        if (CurrentMission != null)
+        {
+            CurrentFuel = Math.Max(0, CurrentFuel - CurrentMission.FuelCost);
+        }
+    }
+
     public void SaveData()
     {
         DataModelsUtils.SaveFileAsync(name, FOLDER_NAME, saveData);

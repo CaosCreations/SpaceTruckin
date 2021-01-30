@@ -35,7 +35,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
-        Init();
+        //Init();
     }
 
     private void Start()
@@ -48,6 +48,17 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         if (DataModelsUtils.SaveFolderExists(PlayerData.FOLDER_NAME))
         {
             LoadDataAsync();
