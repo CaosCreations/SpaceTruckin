@@ -5,7 +5,6 @@ using UnityEngine;
 public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
 {
     public static ArchivedMissionsManager Instance { get; private set; }
-
     public List<ArchivedMission> ArchivedMissions { get; set; } // field vs. prop auto-imp
 
     /// <summary>
@@ -43,7 +42,6 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
         {
             DataModelsUtils.CreateSaveFolder(ArchivedMission.FOLDER_NAME);
         }
-        ArchivedMissions = new List<ArchivedMission>();
         MissionsCompletedYesterday = new List<ArchivedMission>();
     }
 
@@ -62,7 +60,6 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
     public async void LoadDataAsync()
     {
         ArchivedMissions = new List<ArchivedMission>();
-        MissionsCompletedYesterday = new List<ArchivedMission>();
 
         if (MissionsManager.Instance.Missions != null)
         {
@@ -73,10 +70,14 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
                 // so we create n archived missions.
                 for (int i = 0; i < mission.NumberOfCompletions; i++)
                 {
-                    ArchivedMission newArchivedMission = new ArchivedMission(mission);
+                    // We use the loop counter to construct the file name, 
+                    // which is determined by the number of completions
+                    // that mission had at the time of completion.
+                    ArchivedMission newArchivedMission = new ArchivedMission(
+                        mission, completionNumber: i + 1);
+                    
                     await newArchivedMission.LoadDataAsync();
                     ArchivedMissions.Add(newArchivedMission);
-
                 }
             }
         }
