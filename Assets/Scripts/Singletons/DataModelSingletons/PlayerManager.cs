@@ -35,30 +35,10 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
-        //Init();
-    }
-
-    private void Start()
-    {
-        if (playerData == null)
-        {
-            Debug.LogError("No player data found");
-        }
     }
 
     public void Init()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-
         if (DataModelsUtils.SaveFolderExists(PlayerData.FOLDER_NAME))
         {
             LoadDataAsync();
@@ -68,6 +48,11 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
             DataModelsUtils.CreateSaveFolder(PlayerData.FOLDER_NAME);
         }
         playerMovement = FindObjectOfType<PlayerMovement>();
+
+        if (playerData == null)
+        {
+            Debug.LogError("No player data found");
+        }
     }
 
     public bool CanSpendMoney(long amount)

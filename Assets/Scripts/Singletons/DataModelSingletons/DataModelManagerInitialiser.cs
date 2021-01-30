@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
 
-// Rename: DataModelsLoader?
-public class DataModelsManagerManager : MonoBehaviour
+public class DataModelManagerInitialiser : MonoBehaviour
 {
-    private void Awake()
+    private void Start()
     {
-        InitDataModelsManagers();
+        InitDataModelManagers();
     }
 
-    // What is the correct order?
-    private void InitDataModelsManagers()
+    private void InitDataModelManagers()
     {
+        // MissionsManager must exist before ArchivedMissionsManager.
         MissionsManager.Instance.Init();
         ArchivedMissionsManager.Instance.Init();
+
         ShipsManager.Instance.Init();
         PilotsManager.Instance.Init();
         MessagesManager.Instance.Init();

@@ -5,17 +5,13 @@ using UnityEngine;
 public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
 {
     public static ArchivedMissionsManager Instance { get; private set; }
-    public List<ArchivedMission> ArchivedMissions { get; set; } // field vs. prop auto-imp
+    public List<ArchivedMission> ArchivedMissions { get; set; }
 
     /// <summary>
     /// Missions that were completed yesterday.
-    /// These are ready to displayed in the daily mission report.
+    /// These are ready to be displayed in the daily mission report.
     /// </summary>
     public List<ArchivedMission> MissionsCompletedYesterday { get; set; }
-    //
-    // but these will be overwritten if the player doesn't check the terminal immediately.
-    // is that a problem?
-    // i.e. do they need to remain in the terminal and build up if the player doesn't check?
 
     private void Awake()
     {
@@ -29,7 +25,6 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
-        //Init();
     }
 
     public void Init()

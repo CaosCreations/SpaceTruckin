@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PilotsManager : MonoBehaviour, IDataModelManager
 {   
-    public static PilotsManager Instance;
+    public static PilotsManager Instance { get; private set; }
 
     public PilotsContainer pilotsContainer;
     public Pilot[] Pilots { get => pilotsContainer.pilots; }
@@ -20,22 +20,10 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
-        //Init();
     }
 
     public void Init()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-
         if (DataModelsUtils.SaveFolderExists(Pilot.FOLDER_NAME))
         {
             LoadDataAsync();

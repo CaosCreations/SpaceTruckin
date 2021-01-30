@@ -22,14 +22,10 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
-        //Init();
     }
 
     public void Init()
     {
-        Init();
-
-
         if (DataModelsUtils.SaveFolderExists(Mission.FOLDER_NAME))
         {
             LoadDataAsync();
@@ -38,8 +34,6 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         {
             DataModelsUtils.CreateSaveFolder(Mission.FOLDER_NAME);
         }
-        //Mission.OnMissionCompleted += (mission) => 
-        //    MissionsCompletedYesterday.Add((mission, mission.Ship));
     }
 
     public static List<Mission> GetAcceptedMissions()
@@ -65,6 +59,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
 
     public static void UpdateMissionSchedule()
     {
+        // Reset yesterday's missions, so today's will take their place. 
         ArchivedMissionsManager.Instance.MissionsCompletedYesterday.Clear();
 
         foreach (Mission mission in Instance.Missions)

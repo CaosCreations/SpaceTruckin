@@ -2,8 +2,8 @@
 using UnityEngine;
 
 /// <summary>
-/// This model holds data about mission statistics.
-/// The fields of this class/subclass will be set 
+/// This model holds data about past missions.
+/// The fields of this class will be set 
 /// during the processing of the mission outcomes.
 /// </summary>
 public class ArchivedMission : IDataModel
@@ -37,7 +37,7 @@ public class ArchivedMission : IDataModel
         public int totalDamageTaken;
         public int totalFuelLost;
         public int totalPilotXpGained;
-        public Ship shipUsed; // might need to be id (not instance id)
+        public Ship shipUsed;
     }
 
     public async Task LoadDataAsync()
