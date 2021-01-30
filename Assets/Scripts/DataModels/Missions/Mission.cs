@@ -19,7 +19,6 @@ public partial class Mission : ScriptableObject, IDataModel
     [HideInInspector]
     private ArchivedMission missionToArchive;
 
-    public static event Action<Mission> OnMissionCompleted;
     public static string FOLDER_NAME = "MissionSaveData";
 
     [Serializable]
@@ -75,20 +74,18 @@ public partial class Mission : ScriptableObject, IDataModel
         }
         NumberOfCompletions++;
 
-        // Instantiate an archived mission object to store the results of the completed mission.
-        MissionToArchive = new ArchivedMission(this);
+        // Instantiate an archived mission object to store the stats of the completed mission.
+        MissionToArchive = new ArchivedMission(this, NumberOfCompletions);
 
         // We will set the archived mission fields throughout the outcome processing. 
-        ProcessOutcomes(); // could we make the archived mission setters a return value? (override)
+        ProcessOutcomes();
         
         Ship.DeductFuel();
         Ship.IsLaunched = false;
         Ship.CurrentMission = null;
         Ship = null;
 
-        OnMissionCompleted?.Invoke(this); // might be unneeded
-
-        // Add the object to the archive once all results have been processed. 
+        // Add the object to the archive once all outcomes have been processed. 
         ArchivedMissionsManager.AddToArchive(MissionToArchive);
     }
 }

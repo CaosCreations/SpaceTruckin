@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class NewDayReportUI : MonoBehaviour
 {
@@ -9,16 +8,18 @@ public class NewDayReportUI : MonoBehaviour
     private int currentReportIndex;
 
     public GameObject missionsPanel;
-    public bool HasBeenViewed { get; private set; }
+    public bool HasBeenViewed { get; set; }
 
     public ArchivedMission CurrentMissionToReport 
     {
         get => ArchivedMissionsManager.Instance.MissionsCompletedYesterday[currentReportIndex];
     }
 
-    private void Start()
+    private void Start() => BedCanvasUI.OnEndOfDay += () => HasBeenViewed = false;
+    private void OnDisable() => HasBeenViewed = true;
+
+    public void Init()
     {
-        HasBeenViewed = true;
         reportCardInstance = Instantiate(reportCardPrefab, transform);
         reportCard = reportCardInstance.GetComponent<NewDayReportCard>();
         currentReportIndex = 0;

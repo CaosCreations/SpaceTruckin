@@ -42,6 +42,7 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
         {
             DataModelsUtils.CreateSaveFolder(ArchivedMission.FOLDER_NAME);
         }
+        ArchivedMissions = new List<ArchivedMission>();
         MissionsCompletedYesterday = new List<ArchivedMission>();
     }
 
@@ -72,7 +73,7 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
                 {
                     // We use the loop counter to construct the file name, 
                     // which is determined by the number of completions
-                    // that mission had at the time of completion.
+                    // that mission had at the time it was completed.
                     ArchivedMission newArchivedMission = new ArchivedMission(
                         mission, completionNumber: i + 1);
                     

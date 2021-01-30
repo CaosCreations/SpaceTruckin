@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class BedCanvasUI : MonoBehaviour
@@ -9,6 +10,8 @@ public class BedCanvasUI : MonoBehaviour
     private float timer;
     private const float timeToSleep = 4;
     private float opacity;
+
+    public static UnityAction OnEndOfDay; 
 
     private void Awake()
     {
@@ -54,5 +57,7 @@ public class BedCanvasUI : MonoBehaviour
         PilotsManager.Instance.SaveData();
         ShipsManager.Instance.SaveData();
         MessagesManager.Instance.SaveData();
+
+        OnEndOfDay?.Invoke();
     }
 }

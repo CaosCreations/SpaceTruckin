@@ -35,9 +35,11 @@ public class TerminalUIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        if (newDayReportUI != null && !newDayReportUI.HasBeenViewed)
+        if (ArchivedMissionsManager.WereMissionsCompletedYesterday() 
+            && !newDayReportUI.HasBeenViewed)
         {
             newDayReportPanel.SetActive(true);
+            newDayReportUI.Init();
         }
     }
 
