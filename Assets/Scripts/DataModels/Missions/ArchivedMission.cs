@@ -10,7 +10,7 @@ public class ArchivedMission : IDataModel
 {
     /// <summary>
     /// We set the file name based on the mission's name and its completion number.
-    /// e.g. 'Smash_69' would be the 69th completion of the mission 'Smash' 
+    /// e.g. 'Smash_69' would be the 69th completion of the mission 'Smash.' 
     /// </summary>
     public string FileName { get; private set; }
     public static string FOLDER_NAME { get; } = "ArchivedMissionSaveData";
@@ -28,6 +28,11 @@ public class ArchivedMission : IDataModel
         TotalFuelLost = mission.FuelCost;
     }
 
+    /// <summary>
+    /// We are only interested in storing the totals.
+    /// We can look up the rest of the mission fields 
+    /// by the mission's name if needed.
+    /// </summary>
     [System.Serializable]
     public class ArchivedMissionSaveData
     {

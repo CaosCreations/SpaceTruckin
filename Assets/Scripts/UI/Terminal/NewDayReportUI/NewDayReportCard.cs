@@ -28,13 +28,12 @@ public class NewDayReportCard : MonoBehaviour
         string moneyText = $"{mission.ShipUsed.Name} earned ${mission.TotalMoneyEarned}";
         string damageText = $"{mission.ShipUsed.Name} took {mission.TotalDamageTaken} damage.";
         string fuelText = $"{mission.ShipUsed.Name} lost {mission.TotalFuelLost} fuel";
-        string xpText = $"{mission.ShipUsed.Pilot} gained {mission.TotalPilotXpGained}";
+        string xpText = $"{mission.ShipUsed.Pilot.Name} gained {mission.TotalPilotXpGained}";
 
-        if (!string.IsNullOrEmpty(moneyText)) builder.AppendLine(moneyText);
-        if (!string.IsNullOrEmpty(damageText)) builder.AppendLine(damageText);
-        if (!string.IsNullOrEmpty(fuelText)) builder.AppendLine(fuelText);
-        if (!string.IsNullOrEmpty(xpText)) builder.AppendLine(xpText);
-
+        builder.AppendLine(moneyText);
+        builder.AppendLine(damageText);
+        builder.AppendLine(fuelText);
+        builder.AppendLine(xpText);
         return builder.ToString();
     }
 }

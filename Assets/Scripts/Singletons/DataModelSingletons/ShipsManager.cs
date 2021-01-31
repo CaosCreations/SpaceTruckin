@@ -16,7 +16,7 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
 
     public HangarSlot[] hangarSlots;
 
-    void Awake()
+    private void Awake()
     {
         if (Instance == null)
         {

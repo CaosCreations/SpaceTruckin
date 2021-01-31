@@ -28,7 +28,7 @@ public class NewDayReportUI : MonoBehaviour
 
     private void ShowNextReport()
     {
-        if (ArchivedMissionsManager.WereMissionsCompletedYesterday())
+        if (CurrentMissionToReport != null)
         {
             reportCard.ShowReport(CurrentMissionToReport);
 
