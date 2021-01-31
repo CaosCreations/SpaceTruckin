@@ -13,7 +13,10 @@ public class NewDayReportCard : MonoBehaviour
 
     public void ShowReport(ArchivedMission mission)
     {
-        shipAvatar.sprite = mission.ShipUsed.Avatar;
+        if (mission.ShipUsed.Avatar != null)
+        {
+            shipAvatar.sprite = mission.ShipUsed.Avatar;
+        }
         detailsText.text = BuildReportDetails(mission);
     }
 
@@ -25,11 +28,15 @@ public class NewDayReportCard : MonoBehaviour
     public string BuildReportDetails(ArchivedMission mission)
     {
         StringBuilder builder = new StringBuilder();
+        string missionIdentifierText = $@"{mission.ShipUsed.Pilot.Name} of the {mission.ShipUsed.Name}
+            completed the mission {mission.MissionName}";
+
         string moneyText = $"{mission.ShipUsed.Name} earned ${mission.TotalMoneyEarned}";
         string damageText = $"{mission.ShipUsed.Name} took {mission.TotalDamageTaken} damage.";
         string fuelText = $"{mission.ShipUsed.Name} lost {mission.TotalFuelLost} fuel";
         string xpText = $"{mission.ShipUsed.Pilot.Name} gained {mission.TotalPilotXpGained}";
 
+        builder.AppendLine(missionIdentifierText);
         builder.AppendLine(moneyText);
         builder.AppendLine(damageText);
         builder.AppendLine(fuelText);
