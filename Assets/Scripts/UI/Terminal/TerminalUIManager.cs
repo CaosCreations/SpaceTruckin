@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Reflection;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class TerminalUIManager : MonoBehaviour
@@ -51,24 +52,8 @@ public class TerminalUIManager : MonoBehaviour
     private void TabButtonClicked(Tab tabClicked)
     {
         ClearPanels();
-        switch (tabClicked)
-        {
-            case Tab.Missions:
-                missionsPanel.SetActive(true);
-                break;
-            case Tab.Messages:
-                messagesPanel.SetActive(true);
-                break;
-            case Tab.Analytics:
-                analyticsPanel.SetActive(true);
-                break;
-            case Tab.Crew:
-                crewPanel.SetActive(true);
-                break;
-            case Tab.Upgrades:
-                upgradesPanel.SetActive(true);
-                break;
-        }
+        GetPanelByTabClicked(tabClicked).SetActive(true);
+        SetTabButtonColours(tabClicked);
     }
 
     private void ClearPanels()
@@ -78,6 +63,54 @@ public class TerminalUIManager : MonoBehaviour
         analyticsPanel.SetActive(false);
         crewPanel.SetActive(false);
         upgradesPanel.SetActive(false);
+    }
+
+    private GameObject GetPanelByTabClicked(Tab tabClicked)
+    {
+        switch (tabClicked)
+        {
+            case Tab.Missions:
+                return missionsPanel;
+            case Tab.Messages:
+                return messagesPanel;
+            case Tab.Analytics:
+                return analyticsPanel;
+            case Tab.Crew:
+                return crewPanel;
+            case Tab.Upgrades:
+                return upgradesPanel;
+            default:
+                return null;
+        }
+    }
+
+    private void SetTabButtonColours(Tab tabClicked)
+    {
+        missionsButton.SetColour(UIConstants.InactiveTabButtonColour);
+        messagesButton.SetColour(UIConstants.InactiveTabButtonColour);
+        analyticsButton.SetColour(UIConstants.InactiveTabButtonColour);
+        crewButton.SetColour(UIConstants.InactiveTabButtonColour);
+        upgradesButton.SetColour(UIConstants.InactiveTabButtonColour);
+        GetTabButtonByTabClicked(tabClicked).SetColour(UIConstants.ActiveTabButtonColour);
+    }
+
+    private Button GetTabButtonByTabClicked(Tab tabClicked)
+    {
+        switch (tabClicked)
+        {
+            case Tab.Missions:
+                return missionsButton;
+            case Tab.Messages:
+                return messagesButton;
+            case Tab.Analytics:
+                return analyticsButton;
+            case Tab.Crew:
+                return crewButton;
+            case Tab.Upgrades:
+                return upgradesButton;
+            default:
+                return null;
+        }
     }
 
     private void UpdateMoneyText()
