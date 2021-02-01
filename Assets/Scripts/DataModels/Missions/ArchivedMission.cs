@@ -41,7 +41,7 @@ public class ArchivedMission : IDataModel
         public long totalMoneyEarned;
         public int totalDamageTaken;
         public int totalFuelLost;
-        public int totalPilotXpGained;
+        public double totalPilotXpGained;
         public Ship shipUsed;
     }
 
@@ -59,7 +59,7 @@ public class ArchivedMission : IDataModel
     public int CompletionNumber { get => saveData.completionNumber; set => saveData.completionNumber = value; }
     public long TotalMoneyEarned { get => saveData.totalMoneyEarned; set => saveData.totalMoneyEarned = value; }
     public int TotalDamageTaken { get => saveData.totalDamageTaken; set => saveData.totalDamageTaken = value; }
-    public int TotalPilotXpGained { get => saveData.totalPilotXpGained; set => saveData.totalPilotXpGained = value; }
+    public double TotalPilotXpGained { get => saveData.totalPilotXpGained; set => saveData.totalPilotXpGained = value; }
     public int TotalFuelLost { get => saveData.totalFuelLost; set => saveData.totalFuelLost = value; }
     public Ship ShipUsed { get => saveData.shipUsed; set => saveData.shipUsed = value; }
 }

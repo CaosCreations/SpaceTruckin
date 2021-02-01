@@ -39,6 +39,7 @@ public partial class Pilot : ScriptableObject
         saveData = await DataModelsUtils.LoadFileAsync<PilotSaveData>(name, FOLDER_NAME);
     }
 
+    public double GainXp(double xpGained) => CurrentXp += xpGained;
     public bool CanLevelUp() => CurrentXp >= RequiredXp;
 
     public void LevelUp()

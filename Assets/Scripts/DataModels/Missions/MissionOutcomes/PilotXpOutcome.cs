@@ -8,10 +8,16 @@ public class PilotXpOutcome : MissionOutcome
 	
 	public override void Process(Mission mission) 
 	{
-        int xpGained = Mathf.FloorToInt(Random.Range(xpMin, xpMax) * ApplyOmens(mission));
-        PilotsManager.Instance.AwardXp(mission.Ship, xpGained);
-        mission.MissionToArchive.TotalPilotXpGained += xpGained;
+        double xpGained = Mathf.FloorToInt(Random.Range(xpMin, xpMax) * ApplyOmens(mission));
+        mission.MissionToArchive.TotalPilotXpGained += mission.Pilot.GainXp(xpGained);
 
+        // Todo: report whether pilot levelled up yesterday.
+        // Store flag on archived model.
+
+        // Compare current mission (lookup first) with archived mission field
+            // Might need to store the pilot's current level on the archived mission too
+
+        // So when to call LevelUp?
 	}
 
     /// <summary>
@@ -19,7 +25,7 @@ public class PilotXpOutcome : MissionOutcome
     /// It can be below 1, resulting in an xp debuff. 
     /// </summary>
     /// <param name="mission"></param>
-    /// <returns>A number by which the xp gained will be multiplied</returns>
+    /// <returns>A number by which the xp gained will be multiplied.</returns>
     private float ApplyOmens(Mission mission)
     {
         float coefficient = 1f;
