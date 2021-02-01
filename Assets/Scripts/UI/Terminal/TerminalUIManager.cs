@@ -55,7 +55,7 @@ public class TerminalUIManager : MonoBehaviour
     private void TabButtonClicked(Tab tabClicked)
     {
         SetActivePanel(tabClicked);
-        SetTabButtonInteractability(tabClicked);
+        SetTabButtonColours(tabClicked);
     }
 
     private void SetActivePanel(Tab tabClicked)
@@ -93,14 +93,16 @@ public class TerminalUIManager : MonoBehaviour
         }
     }
 
-    private void SetTabButtonInteractability(Tab tabClicked)
+    private void SetTabButtonColours(Tab tabClicked)
     {
-        missionsButton.interactable = true;
-        messagesButton.interactable = true;
-        analyticsButton.interactable = true;
-        crewButton.interactable = true;
-        upgradesButton.interactable = true;
-        GetTabButtonByTabClicked(tabClicked).interactable = false;
+        missionsButton.SetColour(UIConstants.InactiveTabButtonColour);
+        messagesButton.SetColour(UIConstants.InactiveTabButtonColour);
+        analyticsButton.SetColour(UIConstants.InactiveTabButtonColour);
+        crewButton.SetColour(UIConstants.InactiveTabButtonColour);
+        upgradesButton.SetColour(UIConstants.InactiveTabButtonColour);
+
+        Color tabButtonColour = GetPanelByTabClicked(tabClicked).GetComponent<Image>().color;
+        GetTabButtonByTabClicked(tabClicked).SetColour(tabButtonColour);
     }
 
     private Button GetTabButtonByTabClicked(Tab tabClicked)
