@@ -10,20 +10,22 @@ public enum Species
 public partial class Pilot : ScriptableObject
 {
     [Header("Set in Editor")]
-    public string pilotName, shipName, description;
-    public int hireCost;
-    public Species species;
-    public Sprite avatar;
+    [SerializeField] private string pilotName, description;
+    [SerializeField] private int hireCost;
+    [SerializeField] private double xpThresholdExponent = 1.5d;
+    [SerializeField] private Species species;
+    [SerializeField] private Sprite avatar;
 
     [Header("Data to update IN GAME")]
-    public PilotSaveData saveData;
+    [SerializeField] private PilotSaveData saveData;
 
     public static string FOLDER_NAME = "PilotSaveData";
 
     [Serializable]
     public class PilotSaveData
     {
-        [SerializeField] public int xp, level, missionsCompleted;
+        [SerializeField] public int level, missionsCompleted;
+        [SerializeField] public double currentXp, requiredXp;
         [SerializeField] public bool isHired, isOnMission, isAssignedToShip;
     }
 
@@ -36,4 +38,14 @@ public partial class Pilot : ScriptableObject
     {
         saveData = await DataModelsUtils.LoadFileAsync<PilotSaveData>(name, FOLDER_NAME);
     }
+
+    public bool CanLevelUp() => CurrentXp >= RequiredXp;
+
+    public void LevelUp()
+    {
+        Level++;
+        RequiredXp = Math.Pow(RequiredXp, XpThresholdExponent);  
+        
+    }
+    
 }
