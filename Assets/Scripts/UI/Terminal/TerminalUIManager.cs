@@ -54,25 +54,14 @@ public class TerminalUIManager : MonoBehaviour
 
     private void TabButtonClicked(Tab tabClicked)
     {
+        SetActivePanel(tabClicked);
+        SetTabButtonInteractability(tabClicked);
+    }
+
+    private void SetActivePanel(Tab tabClicked)
+    {
         ClearPanels();
-        switch (tabClicked)
-        {
-            case Tab.Missions:
-                missionsPanel.SetActive(true);
-                break;
-            case Tab.Messages:
-                messagesPanel.SetActive(true);
-                break;
-            case Tab.Analytics:
-                analyticsPanel.SetActive(true);
-                break;
-            case Tab.Crew:
-                crewPanel.SetActive(true);
-                break;
-            case Tab.Upgrades:
-                upgradesPanel.SetActive(true);
-                break;
-        }
+        GetPanelByTabClicked(tabClicked).SetActive(true);
     }
 
     private void ClearPanels()
@@ -83,6 +72,54 @@ public class TerminalUIManager : MonoBehaviour
         crewPanel.SetActive(false);
         upgradesPanel.SetActive(false);
         newDayReportPanel.SetActive(false);
+    }
+
+    private GameObject GetPanelByTabClicked(Tab tabClicked)
+    {
+        switch (tabClicked)
+        {
+            case Tab.Missions:
+                return missionsPanel;
+            case Tab.Messages:
+                return messagesPanel;
+            case Tab.Analytics:
+                return analyticsPanel;
+            case Tab.Crew:
+                return crewPanel;
+            case Tab.Upgrades:
+                return upgradesPanel;
+            default:
+                return null;
+        }
+    }
+
+    private void SetTabButtonInteractability(Tab tabClicked)
+    {
+        missionsButton.interactable = true;
+        messagesButton.interactable = true;
+        analyticsButton.interactable = true;
+        crewButton.interactable = true;
+        upgradesButton.interactable = true;
+        GetTabButtonByTabClicked(tabClicked).interactable = false;
+    }
+
+    private Button GetTabButtonByTabClicked(Tab tabClicked)
+    {
+        switch (tabClicked)
+        {
+            case Tab.Missions:
+                return missionsButton;
+            case Tab.Messages:
+                return messagesButton;
+            case Tab.Analytics:
+                return analyticsButton;
+            case Tab.Crew:
+                return crewButton;
+            case Tab.Upgrades:
+                return upgradesButton;
+            default:
+                return null;
+        }
     }
 
     private void UpdateMoneyText()
