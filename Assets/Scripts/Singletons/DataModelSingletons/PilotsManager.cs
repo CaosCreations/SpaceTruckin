@@ -34,14 +34,6 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    public void AwardXp(Ship ship, int xp)
-    {
-        if (ship != null && ship.Pilot != null)
-        {
-            ship.Pilot.Xp += xp;
-        }
-    }
-
     public void HirePilot(Pilot pilot)
     {
         pilot.IsHired = true;
@@ -56,6 +48,17 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
     public Pilot[] GetPilotsForHire()
     {
         return Instance.Pilots.Where(p => !p.IsHired) as Pilot[];
+    }
+
+    public void LevelUpPilots()
+    {
+        foreach (Pilot pilot in Instance.Pilots)
+        {
+            if (pilot != null && pilot.CanLevelUp())
+            {
+                pilot.LevelUp();
+            }
+        }
     }
 
     public void SaveData()

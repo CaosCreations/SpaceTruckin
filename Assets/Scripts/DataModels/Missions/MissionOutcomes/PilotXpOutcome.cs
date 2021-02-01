@@ -8,7 +8,11 @@ public class PilotXpOutcome : MissionOutcome
 	
 	public override void Process(Mission mission) 
 	{
-        double xpGained = Mathf.FloorToInt(Random.Range(xpMin, xpMax) * ApplyOmens(mission));
+        // Store the pilot's level before the xp is awarded.
+        // Then we can check if they levelled up as a result of the mission.
+        mission.MissionToArchive.ContemporaneousPilotLevel = mission.Pilot.Level;
+
+        double xpGained = Random.Range(xpMin, xpMax) * ApplyOmens(mission);
         mission.MissionToArchive.TotalPilotXpGained += mission.Pilot.GainXp(xpGained);
 
         // Todo: report whether pilot levelled up yesterday.
@@ -17,7 +21,7 @@ public class PilotXpOutcome : MissionOutcome
         // Compare current mission (lookup first) with archived mission field
             // Might need to store the pilot's current level on the archived mission too
 
-        // So when to call LevelUp?
+        // Call LevelUp at the end of the day, after storing the current level
 	}
 
     /// <summary>
