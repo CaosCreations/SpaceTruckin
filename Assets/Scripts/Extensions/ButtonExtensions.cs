@@ -1,4 +1,5 @@
-﻿using UnityEngine.Events;
+﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public static class ButtonExtensions
@@ -15,6 +16,15 @@ public static class ButtonExtensions
         if (buttonText != null)
         {
             buttonText.text = text; 
+        }
+    }
+
+    public static void SetColour(this Button self, Color newColour)
+    {
+        Image image = self.GetComponent<Image>();
+        if (image != null)
+        {
+            image.color = newColour;
         }
     }
 }
