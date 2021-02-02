@@ -40,6 +40,7 @@ public class TerminalUIManager : MonoBehaviour
         {
             newDayReportPanel.SetActive(true);
             newDayReportUI.Init();
+            missionsButton.SetColour(UIConstants.InactiveTabButtonColour);
         }
     }
 

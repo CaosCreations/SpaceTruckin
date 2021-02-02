@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class NewDayReportUI : MonoBehaviour
 {
@@ -7,15 +8,18 @@ public class NewDayReportUI : MonoBehaviour
     private NewDayReportCard reportCard;
     private int currentReportIndex;
 
-    public GameObject missionsPanel;
+    private TerminalUIManager terminalManager;
     public bool HasBeenViewed { get; set; }
-
     public ArchivedMission CurrentMissionToReport 
     {
         get => ArchivedMissionsManager.Instance.MissionsCompletedYesterday[currentReportIndex];
     }
 
-    private void Start() => BedCanvasUI.OnEndOfDay += () => HasBeenViewed = false;
+    private void Start()
+    {
+        BedCanvasUI.OnEndOfDay += () => HasBeenViewed = false;
+        terminalManager = GetComponentInParent<TerminalUIManager>();
+    } 
     private void OnDisable() => HasBeenViewed = true;
 
     public void Init()
@@ -50,6 +54,8 @@ public class NewDayReportUI : MonoBehaviour
     {
         Destroy(reportCardInstance);
         gameObject.SetActive(false);
-        missionsPanel.SetActive(true);
+        terminalManager.missionsPanel.SetActive(true);
+        Color missionsButtonColour = terminalManager.missionsPanel.GetComponent<Image>().color;
+        terminalManager.missionsButton.SetColour(missionsButtonColour);
     }
 }
