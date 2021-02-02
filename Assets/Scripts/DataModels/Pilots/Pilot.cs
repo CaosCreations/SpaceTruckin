@@ -12,11 +12,15 @@ public partial class Pilot : ScriptableObject
     [Header("Set in Editor")]
     [SerializeField] private string pilotName;
     [SerializeField] private string description;
-    [SerializeField] private int hireCost; 
-    [SerializeField] private float xpThresholdExponent = 1.5f;
+    [SerializeField] private int hireCost;
+    /// <summary>
+    /// Raise the required xp to this power on level up.
+    /// Different pilots can have different progressions.
+    /// </summary>
+    [SerializeField] private float xpThresholdExponent;
+    
     [SerializeField] private Species species;
     [SerializeField] private Sprite avatar;
-
     [SerializeField] private PilotSaveData saveData;
     public static string FOLDER_NAME = "PilotSaveData";
 
