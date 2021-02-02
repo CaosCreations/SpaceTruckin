@@ -14,14 +14,6 @@ public class PilotXpOutcome : MissionOutcome
 
         double xpGained = Random.Range(xpMin, xpMax) * ApplyOmens(mission);
         mission.MissionToArchive.TotalPilotXpGained += mission.Pilot.GainXp(xpGained);
-
-        // Todo: report whether pilot levelled up yesterday.
-        // Store flag on archived model.
-
-        // Compare current mission (lookup first) with archived mission field
-            // Might need to store the pilot's current level on the archived mission too
-
-        // Call LevelUp at the end of the day, after storing the current level
 	}
 
     /// <summary>

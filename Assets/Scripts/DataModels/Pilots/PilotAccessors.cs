@@ -13,9 +13,8 @@ public partial class Pilot
     }
     public int HireCost { get => hireCost; }
     public double CurrentXp { get => saveData.currentXp; set => saveData.currentXp = value; }
-    public double InitialRequiredXp { get => initialRequiredXp; set => initialRequiredXp = value; }
     public double RequiredXp { get => saveData.requiredXp; set => saveData.requiredXp = value; }
-    public double XpThresholdExponent 
+    public float XpThresholdExponent 
     {
         get => xpThresholdExponent; set => xpThresholdExponent = value; 
     }

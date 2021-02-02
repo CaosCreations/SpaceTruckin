@@ -10,32 +10,27 @@ public enum Species
 public partial class Pilot : ScriptableObject
 {
     [Header("Set in Editor")]
-    [SerializeField] private string pilotName, description;
-    [SerializeField] private int hireCost;
-
-    /// <summary>
-    /// The xp required to reach level 2.
-    /// This will go up exponentially each level.
-    /// Set this along with the exponent in editor 
-    /// so pilots can level up at different rates.
-    /// </summary>
-    [SerializeField] private double initialRequiredXp; 
-    
-    [SerializeField] private double xpThresholdExponent = 1.5d;
+    [SerializeField] private string pilotName;
+    [SerializeField] private string description;
+    [SerializeField] private int hireCost; 
+    [SerializeField] private float xpThresholdExponent = 1.5f;
     [SerializeField] private Species species;
     [SerializeField] private Sprite avatar;
 
-    [Header("Data to update IN GAME")]
     [SerializeField] private PilotSaveData saveData;
-
     public static string FOLDER_NAME = "PilotSaveData";
 
     [Serializable]
     public class PilotSaveData
     {
-        [SerializeField] public int level, missionsCompleted;
-        [SerializeField] public double currentXp, requiredXp;
-        [SerializeField] public bool isHired, isOnMission, isAssignedToShip;
+        [Header("Set in Editor")]
+        public int level;
+        public double requiredXp;
+
+        [Header("Data to update IN GAME")]
+        public int missionsCompleted;
+        public double currentXp;
+        public bool isHired, isOnMission, isAssignedToShip;
     }
 
     public void SaveData()
@@ -49,16 +44,20 @@ public partial class Pilot : ScriptableObject
     }
 
     public double GainXp(double xpGained) => CurrentXp += xpGained;
+    public bool CanLevelUp() => CurrentXp >= RequiredXp;
 
-    public bool CanLevelUp()
-    {
-        return Level <= 1 ? CurrentXp >= InitialRequiredXp : CurrentXp >= RequiredXp;
-    }
+    //public bool CanLevelUp()
+    //{
+    //    return Level <= 1 ? CurrentXp >= InitialRequiredXp : CurrentXp >= RequiredXp;
+    //}
 
     public void LevelUp()
     {
         Level++;
+        //if (Level <= 1)
+        //{
+        //    RequiredXp = InitialRequiredXp;
+        //}
         RequiredXp = Math.Pow(RequiredXp, XpThresholdExponent);  
     }
-    
 }
