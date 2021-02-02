@@ -12,6 +12,15 @@ public partial class Pilot : ScriptableObject
     [Header("Set in Editor")]
     [SerializeField] private string pilotName, description;
     [SerializeField] private int hireCost;
+
+    /// <summary>
+    /// The xp required to reach level 2.
+    /// This will go up exponentially each level.
+    /// Set this along with the exponent in editor 
+    /// so pilots can level up at different rates.
+    /// </summary>
+    [SerializeField] private double initialRequiredXp; 
+    
     [SerializeField] private double xpThresholdExponent = 1.5d;
     [SerializeField] private Species species;
     [SerializeField] private Sprite avatar;
@@ -40,13 +49,16 @@ public partial class Pilot : ScriptableObject
     }
 
     public double GainXp(double xpGained) => CurrentXp += xpGained;
-    public bool CanLevelUp() => CurrentXp >= RequiredXp;
+
+    public bool CanLevelUp()
+    {
+        return Level <= 1 ? CurrentXp >= InitialRequiredXp : CurrentXp >= RequiredXp;
+    }
 
     public void LevelUp()
     {
         Level++;
         RequiredXp = Math.Pow(RequiredXp, XpThresholdExponent);  
-        
     }
     
 }

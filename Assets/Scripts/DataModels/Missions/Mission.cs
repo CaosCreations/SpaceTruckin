@@ -79,7 +79,11 @@ public partial class Mission : ScriptableObject, IDataModel
 
         // We will set the archived mission fields throughout the outcome processing. 
         ProcessOutcomes();
-        
+
+        if (Pilot.CanLevelUp()) 
+        { 
+            Pilot.LevelUp(); 
+        } 
         Ship.DeductFuel();
         Ship.IsLaunched = false;
         Ship.CurrentMission = null;
