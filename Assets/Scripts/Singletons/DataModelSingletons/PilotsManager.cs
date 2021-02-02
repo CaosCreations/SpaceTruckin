@@ -50,17 +50,6 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         return Instance.Pilots.Where(p => !p.IsHired) as Pilot[];
     }
 
-    public void LevelUpPilots()
-    {
-        foreach (Pilot pilot in Instance.Pilots)
-        {
-            if (pilot != null && pilot.CanLevelUp())
-            {
-                pilot.LevelUp();
-            }
-        }
-    }
-
     public void SaveData()
     {
         foreach (Pilot pilot in Instance.Pilots)

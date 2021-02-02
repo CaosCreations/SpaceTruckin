@@ -50,18 +50,9 @@ public partial class Pilot : ScriptableObject
     public double GainXp(double xpGained) => CurrentXp += xpGained;
     public bool CanLevelUp() => CurrentXp >= RequiredXp;
 
-    //public bool CanLevelUp()
-    //{
-    //    return Level <= 1 ? CurrentXp >= InitialRequiredXp : CurrentXp >= RequiredXp;
-    //}
-
     public void LevelUp()
     {
         Level++;
-        //if (Level <= 1)
-        //{
-        //    RequiredXp = InitialRequiredXp;
-        //}
         RequiredXp = Math.Pow(RequiredXp, XpThresholdExponent);  
     }
 }
