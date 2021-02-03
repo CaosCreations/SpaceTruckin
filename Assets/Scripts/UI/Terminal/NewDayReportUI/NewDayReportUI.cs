@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 public class NewDayReportUI : MonoBehaviour
 {
@@ -55,7 +54,7 @@ public class NewDayReportUI : MonoBehaviour
         Destroy(reportCardInstance);
         gameObject.SetActive(false);
         terminalManager.missionsPanel.SetActive(true);
-        Color missionsButtonColour = terminalManager.missionsPanel.GetComponent<Image>().color;
-        terminalManager.missionsButton.SetColour(missionsButtonColour);
+        terminalManager.missionsButton.SetColour
+            (terminalManager.missionsPanel.GetImageColour());
     }
 }

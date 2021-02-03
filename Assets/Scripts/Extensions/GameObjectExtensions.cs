@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public static class GameObjectExtensions 
 {
@@ -24,5 +25,15 @@ public static class GameObjectExtensions
         rectTransform.Reset();
         rectTransform.SetAnchors(anchors);
         return self; 
+    }
+
+    public static Color GetImageColour(this GameObject self)
+    {
+        Image image = self.GetComponent<Image>();
+        if (image != null)
+        {
+            return image.color;
+        }
+        return Color.white;
     }
 }
