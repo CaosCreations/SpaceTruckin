@@ -40,7 +40,8 @@ public class TerminalUIManager : MonoBehaviour
         {
             newDayReportPanel.SetActive(true);
             newDayReportUI.Init();
-            missionsButton.SetColour(UIConstants.InactiveTabButtonColour);
+            ClearPanels();
+            ResetTabButtonColours();
         }
     }
 
@@ -96,14 +97,18 @@ public class TerminalUIManager : MonoBehaviour
 
     private void SetTabButtonColours(Tab tabClicked)
     {
+        ResetTabButtonColours();
+        Color tabButtonColour = GetPanelByTabClicked(tabClicked).GetImageColour();
+        GetTabButtonByTabClicked(tabClicked).SetColour(tabButtonColour);
+    }
+
+    public void ResetTabButtonColours()
+    {
         missionsButton.SetColour(UIConstants.InactiveTabButtonColour);
         messagesButton.SetColour(UIConstants.InactiveTabButtonColour);
         analyticsButton.SetColour(UIConstants.InactiveTabButtonColour);
         crewButton.SetColour(UIConstants.InactiveTabButtonColour);
         upgradesButton.SetColour(UIConstants.InactiveTabButtonColour);
-
-        Color tabButtonColour = GetPanelByTabClicked(tabClicked).GetComponent<Image>().color;
-        GetTabButtonByTabClicked(tabClicked).SetColour(tabButtonColour);
     }
 
     private Button GetTabButtonByTabClicked(Tab tabClicked)
