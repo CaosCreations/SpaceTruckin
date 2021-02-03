@@ -1279,25 +1279,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 490502687}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &572031788 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5745358076465076624, guid: fd1f7cd9cb681f74aa0d051027142d87,
-    type: 3}
-  m_PrefabInstance: {fileID: 320322921}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &572031789
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 572031788}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74ca5a61a9ef9e944b38e5c8922ed28d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pilotsContainer: {fileID: 0}
 --- !u!1001 &675955222
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3840,6 +3821,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 134815817375971624, guid: d84bb0f39e8541f4f9524a9df8df9b87,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 800
+      objectReference: {fileID: 0}
     - target: {fileID: 310781573625549098, guid: d84bb0f39e8541f4f9524a9df8df9b87,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -4704,6 +4690,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5127971305825338221, guid: d84bb0f39e8541f4f9524a9df8df9b87,
+        type: 3}
+      propertyPath: m_MovementType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5127971305825338221, guid: d84bb0f39e8541f4f9524a9df8df9b87,
+        type: 3}
+      propertyPath: m_ScrollSensitivity
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 5429714492542327374, guid: d84bb0f39e8541f4f9524a9df8df9b87,
         type: 3}
