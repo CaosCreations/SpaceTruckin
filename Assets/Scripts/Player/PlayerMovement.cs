@@ -96,14 +96,81 @@ public class PlayerMovement : MonoBehaviour
         else if (movementVector == Vector2.one)
         {
             animator.SetBool("Right", true);
+            
         }
         else
         {
+
             animator.SetBool("Up", false);
             animator.SetBool("Down", false);
             animator.SetBool("Right", false);
             animator.SetBool("Left", false);
         }
+
+
+
+
+
+
+
+        			 
+			   if (Input.GetKey(KeyCode.W)){ animator.SetBool("KeyUp",true);  }
+			      if (!Input.GetKey(KeyCode.W)){ animator.SetBool("KeyUp",false);  }
+
+				     if (Input.GetKey(KeyCode.S)){ animator.SetBool("KeyDown",true);    }
+					 if (!Input.GetKey(KeyCode.S)){ animator.SetBool("KeyDown",false);  }
+
+					 
+
+			   if (Input.GetKey(KeyCode.D)){ animator.SetBool("KeyRight",true);  }
+			      if (!Input.GetKey(KeyCode.D)){ animator.SetBool("KeyRight",false);  }
+
+				  
+
+				     if (Input.GetKey(KeyCode.A)){ animator.SetBool("KeyLeft",true);  }
+					 if (!Input.GetKey(KeyCode.A)){ animator.SetBool("KeyLeft",false);  }
+
+
+                      if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S))
+                      {
+                          animator.SetBool("KeyUp",false);
+                          animator.SetBool("KeyDown",false);
+
+                      }
+
+                      if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
+                      {
+                          animator.SetBool("KeyRight",false);
+                          animator.SetBool("KeyLeft",false);
+
+                      }
+
+
+
+                    if (Input.GetKey(KeyCode.K))
+                    {
+                         animator.SetBool("RUN",true);
+                         currentSpeed=7;
+                           }
+					if (!Input.GetKey(KeyCode.K))
+                    { 
+                        
+                        animator.SetBool("RUN",false);
+                        currentSpeed=3;
+                      }
+
+
+    
+    
+
+
+
+
+        
+
+
+
+
     }
 
     private void ApplyGravity()
