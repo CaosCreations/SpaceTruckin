@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class UIActivator : MonoBehaviour
 {
@@ -8,7 +6,7 @@ public class UIActivator : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == PlayerConstants.objectTag)
+        if(other.CompareTag(PlayerConstants.objectTag))
         {
             UIManager.SetCanInteract(type, true);
         }
@@ -16,7 +14,7 @@ public class UIActivator : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if(other.tag == PlayerConstants.objectTag)
+        if(other.CompareTag(PlayerConstants.objectTag))
         {
             UIManager.SetCanInteract(type, false);
         }
