@@ -52,4 +52,12 @@ public class NewDayReportUI : MonoBehaviour
         gameObject.SetActive(false);
         missionsPanel.SetActive(true);
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(PlayerConstants.exit))
+        {
+            CloseReport();
+        }
+    }
 }
