@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -59,7 +57,7 @@ public class BlackjackUtils : MonoBehaviour
 	
 	public static GameObject InitCardContainer(GameObject parentObject, BlackjackPlayer blackjackPlayer) 
 	{
-		string cardContainerName = $"{GetObjectName(blackjackPlayer)}CardContainer";
+		string cardContainerName = GetObjectName(blackjackPlayer, "CardContainer");
 		GameObject cardContainer = new GameObject(cardContainerName); 
 		cardContainer.transform.parent = parentObject.transform;
 		
@@ -69,7 +67,7 @@ public class BlackjackUtils : MonoBehaviour
 
 	public static Text InitTotalText(GameObject parentObject, BlackjackPlayer blackjackPlayer)
     {
-		string totalObjectName = $"{GetObjectName(blackjackPlayer)}TotalText";
+		string totalObjectName = GetObjectName(blackjackPlayer, "TotalText");
 		GameObject totalObject = new GameObject(totalObjectName);
 		totalObject.transform.parent = parentObject.transform;
 		Text totalText = totalObject.ScaffoldTextComponent();
@@ -84,8 +82,17 @@ public class BlackjackUtils : MonoBehaviour
 		return blackjackButtonContainer;
 	}
 
-	private static string GetObjectName(BlackjackPlayer blackjackPlayer)
+	public static GameObject InitDrawnCardObject(BlackjackPlayer blackjackPlayer, Card drawnCard)
+    {
+		GameObject drawnCardObject = new GameObject("CardObject");
+		//drawnCardObject.transform.parent = _blackjackPlayer.IsDealer ? dealerCardContainer.transform : playerCardContainer.transform;
+		drawnCardObject.transform.parent = blackjackPlayer.parentTransform;
+		drawnCardObject.AddComponent<Image>().sprite = !blackjackPlayer.IsDealer ? drawnCard.sprite : Deck.cardbackSprite;
+		return drawnCardObject;
+	}
+
+	private static string GetObjectName(BlackjackPlayer blackjackPlayer, string text)
 	{
-		return Enum.GetName(typeof(BlackjackPlayer), blackjackPlayer.type);
+		return $"{Enum.GetName(typeof(BlackjackPlayer), blackjackPlayer.type)}{text}";
 	}
 }
