@@ -43,44 +43,36 @@ public class BlackjackUtils : MonoBehaviour
 	{
 		GameObject headerTextObject = new GameObject(BlackjackConstants.headerName); 
         headerTextObject.transform.parent = parentObject.transform;
-        Text headerText = headerTextObject.AddComponent<Text>();
-		headerText.color = Color.black; 
+		Text headerText = headerTextObject.ScaffoldTextComponent();
         headerText.text = BlackjackConstants.headerText;
-		SetFont(headerText);
 	}
 	
 	public static Text InitGameInfo(GameObject parentObject, BlackjackPlayer blackjackPlayer) 
 	{
 		GameObject gameInfoObject = new GameObject(BlackjackConstants.gameInfoName);
-        gameInfoObject.transform.parent = parentObject.transform; 
-		Text gameInfoText = gameInfoObject.AddComponent<Text>(); 
-		gameInfoText.color = Color.black;
-		SetFont(gameInfoText); 
+        gameInfoObject.transform.parent = parentObject.transform;
+		Text gameInfoText = gameInfoObject.ScaffoldTextComponent();
 		gameInfoText.text = $"You have {blackjackPlayer.chips} chips. Place a bet to begin the game!";
 
 		return gameInfoText;
 	}
 	
-	public static GameObject InitCardContainer(GameObject parentObject, bool isDealer) 
+	public static GameObject InitCardContainer(GameObject parentObject, BlackjackPlayer blackjackPlayer) 
 	{
-		string cardContainerName = isDealer ? BlackjackConstants.dealerContainerName : BlackjackConstants.playerContainerName;
+		string cardContainerName = $"{GetObjectName(blackjackPlayer)}CardContainer";
 		GameObject cardContainer = new GameObject(cardContainerName); 
-		
 		cardContainer.transform.parent = parentObject.transform;
 		
         cardContainer.AddComponent<GridLayoutGroup>().cellSize = BlackjackConstants.cardCellSize;
 		return cardContainer;
 	}
 
-	public static Text InitTotalText(GameObject parentObject, bool isDealer)
+	public static Text InitTotalText(GameObject parentObject, BlackjackPlayer blackjackPlayer)
     {
-		string totalObjectName = isDealer ? BlackjackConstants.dealerTotalName : BlackjackConstants.playerTotalName;
+		string totalObjectName = $"{GetObjectName(blackjackPlayer)}TotalText";
 		GameObject totalObject = new GameObject(totalObjectName);
 		totalObject.transform.parent = parentObject.transform;
-
-		Text totalText = totalObject.AddComponent<Text>();
-		SetFont(totalText);
-		totalText.color = Color.black;
+		Text totalText = totalObject.ScaffoldTextComponent();
 		return totalText;
 	}
 	
@@ -92,8 +84,8 @@ public class BlackjackUtils : MonoBehaviour
 		return blackjackButtonContainer;
 	}
 
-	public static void SetFont(Text textComponent) 
+	private static string GetObjectName(BlackjackPlayer blackjackPlayer)
 	{
-		textComponent.font = Resources.GetBuiltinResource(typeof(Font), BlackjackConstants.fontName) as Font;
+		return Enum.GetName(typeof(BlackjackPlayer), blackjackPlayer.type);
 	}
 }

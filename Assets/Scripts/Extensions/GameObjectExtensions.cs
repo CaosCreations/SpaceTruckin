@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public static class GameObjectExtensions 
@@ -24,5 +25,14 @@ public static class GameObjectExtensions
         rectTransform.Reset();
         rectTransform.SetAnchors(anchors);
         return self; 
+    }
+
+    public static Text ScaffoldTextComponent(this GameObject self)
+    {
+        Text text = self.AddComponent<Text>();
+        text.SetDefaultFont();
+        text.color = Color.black;
+        text.resizeTextForBestFit = true;
+        return text; 
     }
 }
