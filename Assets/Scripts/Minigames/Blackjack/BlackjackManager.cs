@@ -144,12 +144,13 @@ public class BlackjackManager : MonoBehaviour
         dealerTotal.text = BlackjackConstants.dealerUnknownTotalText;
     }
 
+	// give generic name? 
 	private void DealCard(BlackjackPlayer _blackjackPlayer, bool faceUp)
     {
 		Card drawnCard = Deck.GetRandomCard();
-
 		_blackjackPlayer.AddCardToHand(drawnCard);
 
+		// util for creating cards.
         GameObject drawnCardObject = new GameObject("CardObject");
         drawnCardObject.transform.parent = _blackjackPlayer.IsDealer ? dealerCardContainer.transform : playerCardContainer.transform;
         drawnCardObject.AddComponent<Image>().sprite = faceUp ? drawnCard.sprite : Deck.cardbackSprite;
@@ -160,23 +161,30 @@ public class BlackjackManager : MonoBehaviour
             playerTotal.text = $"Your total: {blackjackPlayer.handTotal}";
         }
 
-        // Automatically stand the player if they get blackjack 
-        if (_blackjackPlayer.handTotal == 21)
+		// Check if bust 
+		if (_blackjackPlayer.handTotal > 21)
+		{
+			_blackjackPlayer.GoBust();
+		}
+
+		// Automatically stand the player if they get blackjack 
+		else if (_blackjackPlayer.handTotal == 21)
         {
 			// _ or p
 			_blackjackPlayer.Stand(); // rename... or get based on BJPType
         }
 
 		// Automatically stand the player if they are not willing to take the risk
-		if (_blackjackPlayer.IsNPC_Player && !PlayerWillTakeRisk(_blackjackPlayer))
+		else if (_blackjackPlayer.IsNPC_Player 
+			&& _blackjackPlayer.IsOverStandingThreshold && !PlayerWillTakeRisk(_blackjackPlayer))
         {
 			_blackjackPlayer.Stand();
         }
 
-        // Check if bust 
-        if (_blackjackPlayer.handTotal > 21)
+		// Dealer must stand if his total is 17 or over
+		else if (_blackjackPlayer.IsDealer && _blackjackPlayer.handTotal >= 17)
         {
-			_blackjackPlayer.GoBust();
+			_blackjackPlayer.Stand();
         }
 
 		// End the game when all players are bust or standing
@@ -254,10 +262,12 @@ public class BlackjackManager : MonoBehaviour
 		if (AllPlayersAreOut())
 		{
 			DealCard(blackjackDealer, faceUp: true);
-			if (blackjackDealer.handTotal >= 17 && blackjackDealer.handTotal <= 21)
-			{
-				blackjackDealer.Stand();
-			}
+
+			//// put this elsewhere? (dealcard)
+			//if (blackjackDealer.handTotal >= 17 && blackjackDealer.handTotal <= 21)
+			//{
+			//	blackjackDealer.Stand();
+			//}
 		}
 	}
 

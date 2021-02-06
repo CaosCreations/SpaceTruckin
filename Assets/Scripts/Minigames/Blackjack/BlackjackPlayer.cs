@@ -10,16 +10,24 @@ public class BlackjackPlayer : ScriptableObject
     public BlackjackPlayerType type;
     public List<Card> hand = new List<Card>(); 
     public int handTotal;
+    public int lowestTotalWillStandOn;
     public int chips; 
-    public int wager; 
+    public int wager;
+
+    /// <summary>
+    /// Some NPC_Players have a riskier playstyle than others, 
+    /// i.e. they are more likely to hit on higher hand totals.
+    /// </summary>
     public float riskTakingProbability;
-	public bool hasWagered; 
+	
+    public bool hasWagered; 
     public bool isStanding;
     public bool isBust;
 
     public bool IsPlayer { get => type == BlackjackPlayerType.Player; }
     public bool IsNPC_Player { get => type == BlackjackPlayerType.NPC_Player; }
     public bool IsDealer { get => type == BlackjackPlayerType.Dealer; }
+    public bool IsOverStandingThreshold { get => handTotal >= lowestTotalWillStandOn; }
 
     public void Init()
     {
