@@ -8,6 +8,7 @@ using UnityEngine;
 public class BlackjackPlayer : ScriptableObject
 {
     public BlackjackPlayerType type;
+    public Transform parentTransform; // set this in init. 
     public List<Card> hand = new List<Card>(); 
     public int handTotal;
     public int lowestTotalWillStandOn;
@@ -29,12 +30,13 @@ public class BlackjackPlayer : ScriptableObject
     public bool IsDealer { get => type == BlackjackPlayerType.Dealer; }
     public bool IsOverStandingThreshold { get => handTotal >= lowestTotalWillStandOn; }
 
-    public void Init()
+    public BlackjackPlayer Init()
     {
         handTotal = 0;
         hand = new List<Card>();
         isStanding = false;
         isBust = false;
+        return this;
     }
 
     public void AddCardToHand(Card cardToAdd)

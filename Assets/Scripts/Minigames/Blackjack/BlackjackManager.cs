@@ -129,31 +129,47 @@ public class BlackjackManager : MonoBehaviour
 		DestroyChildCardObjects(playerCardContainer.transform);
         DestroyChildCardObjects(dealerCardContainer.transform);
 
-        blackjackPlayer.Init();
-		blackjackDealer.Init();
+		//blackjackPlayer.Init();
+		//blackjackDealer.Init();
+		blackjackPlayers.Select(x => x.Init());
 
 		TogglePlayButtons(inGame: true);
 
-		// Deal starting hands 
-		DealCard(blackjackPlayer, faceUp: true);
-		DealCard(blackjackDealer, faceUp: false);
-		DealCard(blackjackPlayer, faceUp: true);
-		DealCard(blackjackDealer, faceUp: true);
+		//// Deal starting hands 
+		//DealCard(blackjackPlayer, faceUp: true);
+		//DealCard(blackjackDealer, faceUp: false);
+		//DealCard(blackjackPlayer, faceUp: true);
+		//DealCard(blackjackDealer, faceUp: true);
+		DealStartingHands();
 
         gameInfo.GetComponent<Text>().text = $"Current chips: {blackjackPlayer.chips} | Current wager: {blackjackPlayer.wager}";
         dealerTotal.text = BlackjackConstants.dealerUnknownTotalText;
     }
 
+	private void DealStartingHands()
+    {
+		// Deal cards in sequence
+		blackjackPlayers.Select(x => DealCard(x, faceUp: !x.IsDealer));
+		blackjackPlayers.Select(x => DealCard(x, faceUp: !x.IsDealer));
+
+		// Left of dealer?
+    }
+
 	// give generic name? 
-	private void DealCard(BlackjackPlayer _blackjackPlayer, bool faceUp)
+	private Card DealCard(BlackjackPlayer _blackjackPlayer)
     {
 		Card drawnCard = Deck.GetRandomCard();
 		_blackjackPlayer.AddCardToHand(drawnCard);
 
-		// util for creating cards.
-        GameObject drawnCardObject = new GameObject("CardObject");
-        drawnCardObject.transform.parent = _blackjackPlayer.IsDealer ? dealerCardContainer.transform : playerCardContainer.transform;
-        drawnCardObject.AddComponent<Image>().sprite = faceUp ? drawnCard.sprite : Deck.cardbackSprite;
+		// void no declaration?
+		// make sure to assign parent trans. 
+		GameObject drawnCardObject = BlackjackUtils.InitDrawnCardObject(_blackjackPlayer, drawnCard);
+
+
+		//// util for creating cards.
+  //      GameObject drawnCardObject = new GameObject("CardObject");
+  //      drawnCardObject.transform.parent = _blackjackPlayer.IsDealer ? dealerCardContainer.transform : playerCardContainer.transform;
+  //      drawnCardObject.AddComponent<Image>().sprite = faceUp ? drawnCard.sprite : Deck.cardbackSprite;
 
 		// Don't show the dealer's total  
 		if (!_blackjackPlayer.IsDealer) 
@@ -192,6 +208,9 @@ public class BlackjackManager : MonoBehaviour
         {
 			PostGame();
         }
+
+		// encapsulate the above logic...
+		return drawnCard;
     }
 
 	private bool PlayerWillTakeRisk(BlackjackPlayer _blackjackPlayer)
