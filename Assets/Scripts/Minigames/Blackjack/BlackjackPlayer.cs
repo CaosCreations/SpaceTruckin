@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 // This SO allows for multiple players if a container object is added 
@@ -8,7 +7,7 @@ using UnityEngine;
 public class BlackjackPlayer : ScriptableObject
 {
     public BlackjackPlayerType type;
-    public Transform parentTransform; // set this in init. 
+    public CardContainer cardContainer; // set this in init. 
     public List<Card> hand = new List<Card>(); 
     public int handTotal;
     public int lowestTotalWillStandOn;
@@ -30,12 +29,14 @@ public class BlackjackPlayer : ScriptableObject
     public bool IsDealer { get => type == BlackjackPlayerType.Dealer; }
     public bool IsOverStandingThreshold { get => handTotal >= lowestTotalWillStandOn; }
 
-    public BlackjackPlayer Init()
+    public BlackjackPlayer Init(GameObject cardContainer)
     {
+        // this.type = type;
         handTotal = 0;
         hand = new List<Card>();
         isStanding = false;
         isBust = false;
+        this.cardContainer = cardContainer;
         return this;
     }
 

@@ -19,6 +19,8 @@ public class BlackjackManager : MonoBehaviour
     private GameObject blackjackButtonContainer;  
     private GameObject blackjackTableContainer;
 	private GameObject playerCardContainer;
+	private GameObject npcPlayer1CardContainer;
+	private GameObject npcPlayer2CardContainer;
 	private GameObject dealerCardContainer;
 
 	// Play buttons
@@ -74,7 +76,7 @@ public class BlackjackManager : MonoBehaviour
         BlackjackUtils.InitHeader(blackjackTableContainer);
 		gameInfo = BlackjackUtils.InitGameInfo(blackjackTableContainer, blackjackPlayer);
 
-		playerCardContainer = BlackjackUtils.InitCardContainer(blackjackTableContainer, isDealer: false);
+		playerCardContainer = BlackjackUtils.InitCardContainer(blackjackTableContainer, blackjackPlayers.FirstOrDefault(isplayer);
 		playerTotal = BlackjackUtils.InitTotalText(playerCardContainer, isDealer: false);
 		dealerCardContainer = BlackjackUtils.InitCardContainer(blackjackTableContainer, isDealer: true);
 		dealerTotal = BlackjackUtils.InitTotalText(dealerCardContainer, isDealer: true);
@@ -127,19 +129,20 @@ public class BlackjackManager : MonoBehaviour
 		Deck.Shuffle();
 
 		DestroyChildCardObjects(playerCardContainer.transform);
+		DestroyChildCardObjects(npcPlayer1CardContainer.transform);
+		DestroyChildCardObjects(npcPlayer2CardContainer.transform);
         DestroyChildCardObjects(dealerCardContainer.transform);
 
-		//blackjackPlayer.Init();
-		//blackjackDealer.Init();
-		blackjackPlayers.Select(x => x.Init());
+        // encap this. and simplify 
+		// change to void if no need to .select
+        blackjackPlayers.FirstOrDefault(x => x.IsDealer)?.Init(dealerCardContainer);
+		blackjackPlayers.FirstOrDefault(x => x.IsPlayer)?.Init(playerCardContainer);
+		blackjackPlayers.FirstOrDefault(x => x.IsNPC_Player)?.Init(npcPlayer1CardContainer);
+		blackjackPlayers.LastOrDefault(x => x.IsNPC_Player)?.Init(npcPlayer2CardContainer);
+		//blackjackPlayers.Select(x => x.Init());
+
 
 		TogglePlayButtons(inGame: true);
-
-		//// Deal starting hands 
-		//DealCard(blackjackPlayer, faceUp: true);
-		//DealCard(blackjackDealer, faceUp: false);
-		//DealCard(blackjackPlayer, faceUp: true);
-		//DealCard(blackjackDealer, faceUp: true);
 		DealStartingHands();
 
         gameInfo.GetComponent<Text>().text = $"Current chips: {blackjackPlayer.chips} | Current wager: {blackjackPlayer.wager}";
@@ -148,35 +151,34 @@ public class BlackjackManager : MonoBehaviour
 
 	private void DealStartingHands()
     {
-		// Deal cards in sequence
-		blackjackPlayers.Select(x => DealCard(x, faceUp: !x.IsDealer));
-		blackjackPlayers.Select(x => DealCard(x, faceUp: !x.IsDealer));
-
-		// Left of dealer?
+		// Deal two cards to each player in sequence
+		blackjackPlayers.Select(x => DealCard(x));
+		blackjackPlayers.Select(x => DealCard(x));
     }
 
-	// give generic name? 
 	private Card DealCard(BlackjackPlayer _blackjackPlayer)
     {
 		Card drawnCard = Deck.GetRandomCard();
 		_blackjackPlayer.AddCardToHand(drawnCard);
-
-		// void no declaration?
-		// make sure to assign parent trans. 
-		GameObject drawnCardObject = BlackjackUtils.InitDrawnCardObject(_blackjackPlayer, drawnCard);
-
-
-		//// util for creating cards.
-  //      GameObject drawnCardObject = new GameObject("CardObject");
-  //      drawnCardObject.transform.parent = _blackjackPlayer.IsDealer ? dealerCardContainer.transform : playerCardContainer.transform;
-  //      drawnCardObject.AddComponent<Image>().sprite = faceUp ? drawnCard.sprite : Deck.cardbackSprite;
+		BlackjackUtils.InitDrawnCardObject(_blackjackPlayer, drawnCard);
 
 		// Don't show the dealer's total  
 		if (!_blackjackPlayer.IsDealer) 
 		{
-            playerTotal.text = $"Your total: {blackjackPlayer.handTotal}";
+			_blackjackPlayer.cardContainer.SetTotalText(_blackjackPlayer.handTotal);
         }
 
+		CheckHandTotal(_blackjackPlayer);
+		return drawnCard;
+    }
+
+	/// <summary>
+	/// Determine whether a player stands or goes bust.
+	/// Then determine whether the game has ended.
+	/// </summary>
+	/// <param name="_blackjackPlayer"></param>
+	private void CheckHandTotal(BlackjackPlayer _blackjackPlayer)
+    {
 		// Check if bust 
 		if (_blackjackPlayer.handTotal > 21)
 		{
@@ -185,40 +187,37 @@ public class BlackjackManager : MonoBehaviour
 
 		// Automatically stand the player if they get blackjack 
 		else if (_blackjackPlayer.handTotal == 21)
-        {
+		{
 			// _ or p
 			_blackjackPlayer.Stand(); // rename... or get based on BJPType
-        }
+		}
 
 		// Automatically stand the player if they are not willing to take the risk
-		else if (_blackjackPlayer.IsNPC_Player 
+		else if (_blackjackPlayer.IsNPC_Player
 			&& _blackjackPlayer.IsOverStandingThreshold && !PlayerWillTakeRisk(_blackjackPlayer))
-        {
+		{
 			_blackjackPlayer.Stand();
-        }
+		}
 
 		// Dealer must stand if his total is 17 or over
 		else if (_blackjackPlayer.IsDealer && _blackjackPlayer.handTotal >= 17)
-        {
+		{
 			_blackjackPlayer.Stand();
-        }
+		}
 
-		// End the game when all players are bust or standing
+		// End the game when all players are either bust or standing
 		if (AllPlayersAreOut() && DealerIsOut())
-        {
+		{
 			PostGame();
-        }
-
-		// encapsulate the above logic...
-		return drawnCard;
-    }
+		}
+	}
 
 	private bool PlayerWillTakeRisk(BlackjackPlayer _blackjackPlayer)
 	{
 		return RNG.NextDouble() <= _blackjackPlayer.riskTakingProbability;
 	}
 
-	private bool AllPlayersAreOut()
+	private bool AllPlayersAreOut() // redundant?
     {
 		return blackjackPlayers.Any(x => x.isBust || x.isStanding);
     }
@@ -280,7 +279,7 @@ public class BlackjackManager : MonoBehaviour
 		// Check if it's the dealer's turn to draw cards 
 		if (AllPlayersAreOut())
 		{
-			DealCard(blackjackDealer, faceUp: true);
+			DealCard(blackjackDealer);
 
 			//// put this elsewhere? (dealcard)
 			//if (blackjackDealer.handTotal >= 17 && blackjackDealer.handTotal <= 21)
@@ -341,7 +340,7 @@ public class BlackjackManager : MonoBehaviour
 
 	private int Hit(BlackjackPlayer _blackjackPlayer)
     {
-		DealCard(_blackjackPlayer, faceUp: _blackjackPlayer.type != BlackjackPlayerType.Dealer);
+		DealCard(_blackjackPlayer);
 		return _blackjackPlayer.handTotal;
     }
 
