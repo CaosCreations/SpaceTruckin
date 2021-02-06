@@ -1,8 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+
+public enum BlackjackPlayerType
+{
+	Player, NPC_Player, Dealer
+}
 
 public class BlackjackManager : MonoBehaviour
 {
@@ -37,6 +41,9 @@ public class BlackjackManager : MonoBehaviour
     public BlackjackPlayer blackjackPlayer;
     public BlackjackPlayer blackjackDealer;
 
+	public BlackjackPlayer[] blackjackPlayers; // does this include dealer?
+	private int currentPlayerIndex; 
+
 	public enum PlayButtonType
 	{
 		Hit, Stand, NewGame, QuitGame
@@ -44,11 +51,11 @@ public class BlackjackManager : MonoBehaviour
 
 	private void Start()
     {
-        InitialiseNewSessionButton(); 
+        InitNewSessionButton(); 
 		blackjackPlayer.chips = BlackjackConstants.playerStartingChips;
     }
 
-	public void InitialiseNewSessionButton()
+	public void InitNewSessionButton()
 	{
 		GameObject newSessionButtonObject = Instantiate(blackjackButtonPrefab);
 		newSessionButtonObject.name = BlackjackConstants.newSessionButtonName;
@@ -57,38 +64,37 @@ public class BlackjackManager : MonoBehaviour
 
 		Button newSessionButton = newSessionButtonObject.GetComponent<Button>();
 		newSessionButton.GetComponentInChildren<Text>().text = BlackjackConstants.newSessionButtonText;
-		newSessionButton.onClick.RemoveAllListeners();
-		newSessionButton.onClick.AddListener(delegate { SetupTable(); });
+		newSessionButton.AddOnClick(SetupTable);
 	}
 	private void SetupTable()
 	{
-		blackjackTableContainer = BlackjackUtils.InitialiseTableContainer(parentContainer);
+		blackjackTableContainer = BlackjackUtils.InitTableContainer(parentContainer);
 
-        BlackjackUtils.InitialiseHeader(blackjackTableContainer);
-		gameInfo = BlackjackUtils.InitialiseGameInfo(blackjackTableContainer, blackjackPlayer);
+        BlackjackUtils.InitHeader(blackjackTableContainer);
+		gameInfo = BlackjackUtils.InitGameInfo(blackjackTableContainer, blackjackPlayer);
 
-		playerCardContainer = BlackjackUtils.InitialiseCardContainer(blackjackTableContainer, isDealer: false);
-		playerTotal = BlackjackUtils.InitializeTotalText(playerCardContainer, isDealer: false);
-		dealerCardContainer = BlackjackUtils.InitialiseCardContainer(blackjackTableContainer, isDealer: true);
-		dealerTotal = BlackjackUtils.InitializeTotalText(dealerCardContainer, isDealer: true);
+		playerCardContainer = BlackjackUtils.InitCardContainer(blackjackTableContainer, isDealer: false);
+		playerTotal = BlackjackUtils.InitTotalText(playerCardContainer, isDealer: false);
+		dealerCardContainer = BlackjackUtils.InitCardContainer(blackjackTableContainer, isDealer: true);
+		dealerTotal = BlackjackUtils.InitTotalText(dealerCardContainer, isDealer: true);
 
-		blackjackButtonContainer = BlackjackUtils.InitialiseButtonContainer(blackjackTableContainer);
+		blackjackButtonContainer = BlackjackUtils.InitButtonContainer(blackjackTableContainer);
 
-		lowWagerObject = InitialiseWagerButtonObject(BlackjackConstants.lowWager);
-		mediumWagerObject = InitialiseWagerButtonObject(BlackjackConstants.mediumWager);
-		highWagerObject = InitialiseWagerButtonObject(BlackjackConstants.highWager);
+		lowWagerObject = InitWagerButtonObject(BlackjackConstants.lowWager);
+		mediumWagerObject = InitWagerButtonObject(BlackjackConstants.mediumWager);
+		highWagerObject = InitWagerButtonObject(BlackjackConstants.highWager);
 
-        hitButtonObject = InitializePlayButton(blackjackButtonContainer, blackjackButtonPrefab, PlayButtonType.Hit);
-        standButtonObject = InitializePlayButton(blackjackButtonContainer, blackjackButtonPrefab, PlayButtonType.Stand);
-        newGameButtonObject = InitializePlayButton(blackjackButtonContainer, blackjackButtonPrefab, PlayButtonType.NewGame);
-        quitGameButtonObject = InitializePlayButton(blackjackButtonContainer, blackjackButtonPrefab, PlayButtonType.QuitGame);
+        hitButtonObject = InitPlayButton(blackjackButtonContainer, blackjackButtonPrefab, PlayButtonType.Hit);
+        standButtonObject = InitPlayButton(blackjackButtonContainer, blackjackButtonPrefab, PlayButtonType.Stand);
+        newGameButtonObject = InitPlayButton(blackjackButtonContainer, blackjackButtonPrefab, PlayButtonType.NewGame);
+        quitGameButtonObject = InitPlayButton(blackjackButtonContainer, blackjackButtonPrefab, PlayButtonType.QuitGame);
 
-        blackjackDealer.isDealer = true;
-        Deck.InitialiseDeck();
-        Deck.ShuffleDeck();
+		blackjackDealer.type = BlackjackPlayerType.Dealer;
+        Deck.Init();
+        Deck.Shuffle();
     }
 
-	private GameObject InitialiseWagerButtonObject(int wager)
+	private GameObject InitWagerButtonObject(int wager)
 	{
 		GameObject buttonObject = Instantiate(blackjackButtonPrefab, blackjackButtonContainer.transform);
 		buttonObject.name = $"Wager{wager}Button";
@@ -117,7 +123,7 @@ public class BlackjackManager : MonoBehaviour
 
 	private void NewGame()
 	{
-		Deck.ShuffleDeck();
+		Deck.Shuffle();
 
 		DestroyChildCardObjects(playerCardContainer.transform);
         DestroyChildCardObjects(dealerCardContainer.transform);
@@ -144,11 +150,11 @@ public class BlackjackManager : MonoBehaviour
 		_blackjackPlayer.AddCardToHand(drawnCard);
 
         GameObject drawnCardObject = new GameObject("CardObject");
-        drawnCardObject.transform.parent = _blackjackPlayer.isDealer ? dealerCardContainer.transform : playerCardContainer.transform;
+        drawnCardObject.transform.parent = _blackjackPlayer.IsDealer ? dealerCardContainer.transform : playerCardContainer.transform;
         drawnCardObject.AddComponent<Image>().sprite = faceUp ? drawnCard.sprite : Deck.cardbackSprite;
 
 		// Don't show the dealer's total  
-		if (!_blackjackPlayer.isDealer) 
+		if (!_blackjackPlayer.IsDealer) 
 		{
             playerTotal.text = $"Your total: {blackjackPlayer.handTotal}";
         }
@@ -156,7 +162,7 @@ public class BlackjackManager : MonoBehaviour
         // Automatically stand the player if they get blackjack 
         if (_blackjackPlayer.handTotal == 21)
         {
-            StandPlayer();
+			blackjackPlayer.Stand(); // rename... or get based on BJPType
         }
 
         // Check if bust 
@@ -238,7 +244,7 @@ public class BlackjackManager : MonoBehaviour
 		}
 	}
 
-	public GameObject InitializePlayButton(GameObject parentObject, GameObject blackjackButtonPrefab, PlayButtonType buttonType)
+	public GameObject InitPlayButton(GameObject parentObject, GameObject blackjackButtonPrefab, PlayButtonType buttonType)
 	{
 		GameObject gameObject = Instantiate(blackjackButtonPrefab);
 		gameObject.name = GetButtonName(buttonType);
@@ -260,9 +266,13 @@ public class BlackjackManager : MonoBehaviour
 		switch (buttonType)
 		{
 			case PlayButtonType.Hit:
-				return Hit;
+				return () =>
+				{
+					Hit(blackjackPlayer);
+					TakeNPC_PlayerTurns();
+				};
 			case PlayButtonType.Stand:
-				return StandPlayer;
+				return blackjackPlayer.Stand;
 			case PlayButtonType.NewGame:
 				return NewGame;
 			case PlayButtonType.QuitGame:
@@ -272,14 +282,29 @@ public class BlackjackManager : MonoBehaviour
 		}
 	}
 
-	private void Hit()
+	private int Hit(BlackjackPlayer _blackjackPlayer)
     {
-		DealCard(blackjackPlayer, true);
+		DealCard(_blackjackPlayer, faceUp: _blackjackPlayer.type != BlackjackPlayerType.Dealer);
+		return _blackjackPlayer.handTotal;
     }
 
-	private void StandPlayer()
-	{
-		blackjackPlayer.isStanding = true;
+	private void TakeNPC_PlayerTurns() // rename
+    {
+		SetButtonInteractability(false);
+
+		// Hit all players of NPC_Player type 
+		blackjackPlayers.Where(x => x.type == BlackjackPlayerType.NPC_Player)
+			.Select(x => Hit(x));
+
+		SetButtonInteractability(true);
+    }
+
+	private void SetButtonInteractability(bool areActive)
+    {
+		hitButtonObject.SetActive(areActive);
+		standButtonObject.SetActive(areActive);
+		newGameButtonObject.SetActive(areActive);
+		quitGameButtonObject.SetActive(areActive);
 	}
 
 	private void QuitGame()
