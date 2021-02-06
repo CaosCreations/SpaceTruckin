@@ -12,10 +12,13 @@ public class BlackjackPlayer : ScriptableObject
     public int handTotal;
     public int chips; 
     public int wager; 
+    public float riskTakingProbability;
 	public bool hasWagered; 
     public bool isStanding;
     public bool isBust;
 
+    public bool IsPlayer { get => type == BlackjackPlayerType.Player; }
+    public bool IsNPC_Player { get => type == BlackjackPlayerType.NPC_Player; }
     public bool IsDealer { get => type == BlackjackPlayerType.Dealer; }
 
     public void Init()
@@ -51,4 +54,5 @@ public class BlackjackPlayer : ScriptableObject
     }
 
     public void Stand() => isStanding = true;
+    public void GoBust() => isBust = true;
 }

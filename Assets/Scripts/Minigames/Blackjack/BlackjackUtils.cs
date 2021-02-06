@@ -18,7 +18,7 @@ public class BlackjackUtils : MonoBehaviour
 		GameObject blackjackTableContainer = new GameObject(BlackjackConstants.tableContainerName);
 		blackjackTableContainer.transform.parent = parentObject.transform;
 
-		LayoutElement layoCutElement = blackjackTableContainer.AddComponent<LayoutElement>();
+		blackjackTableContainer.AddComponent<LayoutElement>();
         VerticalLayoutGroup verticalLayoutGroup = blackjackTableContainer.AddComponent<VerticalLayoutGroup>();
         verticalLayoutGroup.childControlWidth = true;
         verticalLayoutGroup.childControlHeight = true;

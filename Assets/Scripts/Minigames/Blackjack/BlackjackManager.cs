@@ -42,7 +42,8 @@ public class BlackjackManager : MonoBehaviour
     public BlackjackPlayer blackjackDealer;
 
 	public BlackjackPlayer[] blackjackPlayers; // does this include dealer?
-	private int currentPlayerIndex; 
+
+	private readonly System.Random RNG = new System.Random();
 
 	public enum PlayButtonType
 	{
@@ -162,16 +163,44 @@ public class BlackjackManager : MonoBehaviour
         // Automatically stand the player if they get blackjack 
         if (_blackjackPlayer.handTotal == 21)
         {
-			blackjackPlayer.Stand(); // rename... or get based on BJPType
+			// _ or p
+			_blackjackPlayer.Stand(); // rename... or get based on BJPType
+        }
+
+		// Automatically stand the player if they are not willing to take the risk
+		if (_blackjackPlayer.IsNPC_Player && !PlayerWillTakeRisk(_blackjackPlayer))
+        {
+			_blackjackPlayer.Stand();
         }
 
         // Check if bust 
         if (_blackjackPlayer.handTotal > 21)
         {
-            _blackjackPlayer.isBust = true;
-            PostGame();
+			_blackjackPlayer.GoBust();
+        }
+
+		// End the game when all players are bust or standing
+		if (AllPlayersAreOut() && DealerIsOut())
+        {
+			PostGame();
         }
     }
+
+	private bool PlayerWillTakeRisk(BlackjackPlayer _blackjackPlayer)
+	{
+		return RNG.NextDouble() <= _blackjackPlayer.riskTakingProbability;
+	}
+
+	private bool AllPlayersAreOut()
+    {
+		return blackjackPlayers.Any(x => x.isBust || x.isStanding);
+    }
+
+	private bool DealerIsOut()
+    {
+		return blackjackDealer.isBust || blackjackDealer.isStanding;
+
+	}
 
 	private void PostGame()
 	{
@@ -222,13 +251,12 @@ public class BlackjackManager : MonoBehaviour
 	private void Update()
 	{
 		// Check if it's the dealer's turn to draw cards 
-		if (blackjackPlayer.isStanding && !blackjackDealer.isBust)
+		if (AllPlayersAreOut())
 		{
-			DealCard(blackjackDealer, true);
+			DealCard(blackjackDealer, faceUp: true);
 			if (blackjackDealer.handTotal >= 17 && blackjackDealer.handTotal <= 21)
 			{
-				blackjackDealer.isStanding = true;
-				PostGame();
+				blackjackDealer.Stand();
 			}
 		}
 	}
