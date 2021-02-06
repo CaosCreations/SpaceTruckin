@@ -7,6 +7,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "BlackjackPlayer", menuName = "ScriptableObjects/BlackjackPlayer", order = 1)]
 public class BlackjackPlayer : ScriptableObject
 {
+    public BlackjackPlayerType type;
     public List<Card> hand = new List<Card>(); 
     public int handTotal;
     public int chips; 
@@ -14,7 +15,8 @@ public class BlackjackPlayer : ScriptableObject
 	public bool hasWagered; 
     public bool isStanding;
     public bool isBust;
-    public bool isDealer;
+
+    public bool IsDealer { get => type == BlackjackPlayerType.Dealer; }
 
     public void Init()
     {
@@ -47,4 +49,6 @@ public class BlackjackPlayer : ScriptableObject
             }
         }
     }
+
+    public void Stand() => isStanding = true;
 }
