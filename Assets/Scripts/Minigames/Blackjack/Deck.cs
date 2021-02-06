@@ -11,7 +11,7 @@ public static class Deck
     public static Sprite cardbackSprite;
     public static Sprite[] cardSprites;
 
-    public static void InitialiseDeck()
+    public static void Init()
     {
         cardbackSprite = Resources.Load<Sprite>(BlackjackConstants.cardbackPath);
 
@@ -36,17 +36,11 @@ public static class Deck
 
     private static void DeepCopyDefaultDeck()
     {
-        // Can we do this without re-declaring the non-default deck?
-        // Tried for loop with deck.Insert(i, defaultDeck[i]) but got weird result
-        deck = new List<Card>();
-
-        foreach (Card card in defaultDeck)
-        {
-            deck.Add(card);
-        }
+        deck.Clear();
+        defaultDeck.ForEach(x => deck.Add(x));
     }
 
-    public static void ShuffleDeck()
+    public static void Shuffle()
     {
         DeepCopyDefaultDeck(); 
 
