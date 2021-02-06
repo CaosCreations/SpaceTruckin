@@ -13,7 +13,7 @@ public class BlackjackUtils : MonoBehaviour
         button.onClick.AddListener(handler);
     }
 
-    public static GameObject InitialiseTableContainer(GameObject parentObject) 
+    public static GameObject InitTableContainer(GameObject parentObject) 
 	{
 		GameObject blackjackTableContainer = new GameObject(BlackjackConstants.tableContainerName);
 		blackjackTableContainer.transform.parent = parentObject.transform;
@@ -39,7 +39,7 @@ public class BlackjackUtils : MonoBehaviour
 		return blackjackTableContainer;
 	}
 	
-	public static void InitialiseHeader(GameObject parentObject) 
+	public static void InitHeader(GameObject parentObject) 
 	{
 		GameObject headerTextObject = new GameObject(BlackjackConstants.headerName); 
         headerTextObject.transform.parent = parentObject.transform;
@@ -49,7 +49,7 @@ public class BlackjackUtils : MonoBehaviour
 		SetFont(headerText);
 	}
 	
-	public static Text InitialiseGameInfo(GameObject parentObject, BlackjackPlayer blackjackPlayer) 
+	public static Text InitGameInfo(GameObject parentObject, BlackjackPlayer blackjackPlayer) 
 	{
 		GameObject gameInfoObject = new GameObject(BlackjackConstants.gameInfoName);
         gameInfoObject.transform.parent = parentObject.transform; 
@@ -61,7 +61,7 @@ public class BlackjackUtils : MonoBehaviour
 		return gameInfoText;
 	}
 	
-	public static GameObject InitialiseCardContainer(GameObject parentObject, bool isDealer) 
+	public static GameObject InitCardContainer(GameObject parentObject, bool isDealer) 
 	{
 		string cardContainerName = isDealer ? BlackjackConstants.dealerContainerName : BlackjackConstants.playerContainerName;
 		GameObject cardContainer = new GameObject(cardContainerName); 
@@ -72,7 +72,7 @@ public class BlackjackUtils : MonoBehaviour
 		return cardContainer;
 	}
 
-	public static Text InitializeTotalText(GameObject parentObject, bool isDealer)
+	public static Text InitTotalText(GameObject parentObject, bool isDealer)
     {
 		string totalObjectName = isDealer ? BlackjackConstants.dealerTotalName : BlackjackConstants.playerTotalName;
 		GameObject totalObject = new GameObject(totalObjectName);
@@ -84,7 +84,7 @@ public class BlackjackUtils : MonoBehaviour
 		return totalText;
 	}
 	
-	public static GameObject InitialiseButtonContainer(GameObject parentObject)  
+	public static GameObject InitButtonContainer(GameObject parentObject)  
 	{
 		GameObject blackjackButtonContainer = new GameObject(BlackjackConstants.buttonContainerName);
         blackjackButtonContainer.transform.parent = parentObject.transform;
