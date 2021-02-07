@@ -7,4 +7,15 @@ public class CardContainer : MonoBehaviour
     // make private if poss 
 
     public void SetTotalText(int handTotal) => totalText.text = handTotal.ToString();
+
+    public void DestroyCards()
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.GetComponent<Image>())
+            {
+                Destroy(child.gameObject);
+            }
+        }
+    }
 }
