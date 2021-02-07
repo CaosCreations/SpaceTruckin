@@ -51,25 +51,27 @@ public class BlackjackUtils : MonoBehaviour
         gameInfoObject.transform.parent = parentObject.transform;
 		Text gameInfoText = gameInfoObject.ScaffoldTextComponent();
 		gameInfoText.text = $"You have {blackjackPlayer.chips} chips. Place a bet to begin the game!";
-
 		return gameInfoText;
 	}
 	
 	public static GameObject InitCardContainer(GameObject parentObject, BlackjackPlayer blackjackPlayer) 
 	{
 		string cardContainerName = GetObjectName(blackjackPlayer, "CardContainer");
-		GameObject cardContainer = new GameObject(cardContainerName); 
-		cardContainer.transform.parent = parentObject.transform;
-		
-        cardContainer.AddComponent<GridLayoutGroup>().cellSize = BlackjackConstants.cardCellSize;
-		return cardContainer;
+		GameObject cardContainerObject = new GameObject(cardContainerName); 
+		cardContainerObject.transform.parent = parentObject.transform;
+
+		CardContainer cardContainer = cardContainerObject.AddComponent<CardContainer>();
+		blackjackPlayer.cardContainer = cardContainer;
+
+        cardContainerObject.AddComponent<GridLayoutGroup>().cellSize = BlackjackConstants.cardCellSize;
+		return cardContainerObject;
 	}
 
-	public static Text InitTotalText(GameObject parentObject, BlackjackPlayer blackjackPlayer)
+	public static Text InitTotalText(BlackjackPlayer blackjackPlayer)
     {
 		string totalObjectName = GetObjectName(blackjackPlayer, "TotalText");
 		GameObject totalObject = new GameObject(totalObjectName);
-		totalObject.transform.parent = parentObject.transform;
+		totalObject.transform.parent = blackjackPlayer.cardContainer.transform;
 		Text totalText = totalObject.ScaffoldTextComponent();
 		return totalText;
 	}
@@ -85,8 +87,7 @@ public class BlackjackUtils : MonoBehaviour
 	public static GameObject InitDrawnCardObject(BlackjackPlayer blackjackPlayer, Card drawnCard)
     {
 		GameObject drawnCardObject = new GameObject("CardObject");
-		//drawnCardObject.transform.parent = _blackjackPlayer.IsDealer ? dealerCardContainer.transform : playerCardContainer.transform;
-		drawnCardObject.transform.parent = blackjackPlayer.parentTransform;
+		drawnCardObject.transform.parent = blackjackPlayer.cardContainer.transform;
 		drawnCardObject.AddComponent<Image>().sprite = !blackjackPlayer.IsDealer ? drawnCard.sprite : Deck.cardbackSprite;
 		return drawnCardObject;
 	}

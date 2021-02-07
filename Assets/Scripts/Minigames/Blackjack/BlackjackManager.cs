@@ -44,8 +44,13 @@ public class BlackjackManager : MonoBehaviour
     public BlackjackPlayer blackjackDealer;
 
 	public BlackjackPlayer[] blackjackPlayers; // does this include dealer?
+	private BlackjackPlayer Dealer { get => blackjackPlayers.FirstOrDefault(x => x.IsDealer); }
 
 	private readonly System.Random RNG = new System.Random();
+
+	// Multiple by these numbers to calculate winnings 
+	private float winCoefficient = 1.5f;
+	private float blackjackCoefficient = 2f;
 
 	public enum PlayButtonType
 	{
@@ -76,8 +81,8 @@ public class BlackjackManager : MonoBehaviour
         BlackjackUtils.InitHeader(blackjackTableContainer);
 		gameInfo = BlackjackUtils.InitGameInfo(blackjackTableContainer, blackjackPlayer);
 
-		playerCardContainer = BlackjackUtils.InitCardContainer(blackjackTableContainer, blackjackPlayers.FirstOrDefault(isplayer);
-		playerTotal = BlackjackUtils.InitTotalText(playerCardContainer, isDealer: false);
+		playerCardContainer = BlackjackUtils.InitCardContainer(blackjackTableContainer, blackjackPlayers.FirstOrDefault(x => x.IsPlayer));
+		playerTotal = BlackjackUtils.InitTotalText(blackjackPlayer);
 		dealerCardContainer = BlackjackUtils.InitCardContainer(blackjackTableContainer, isDealer: true);
 		dealerTotal = BlackjackUtils.InitTotalText(dealerCardContainer, isDealer: true);
 
@@ -141,7 +146,6 @@ public class BlackjackManager : MonoBehaviour
 		blackjackPlayers.LastOrDefault(x => x.IsNPC_Player)?.Init(npcPlayer2CardContainer);
 		//blackjackPlayers.Select(x => x.Init());
 
-
 		TogglePlayButtons(inGame: true);
 		DealStartingHands();
 
@@ -168,7 +172,7 @@ public class BlackjackManager : MonoBehaviour
 			_blackjackPlayer.cardContainer.SetTotalText(_blackjackPlayer.handTotal);
         }
 
-		CheckHandTotal(_blackjackPlayer);
+		CheckHandTotal(_blackjackPlayer); // move this outside? 
 		return drawnCard;
     }
 
@@ -200,7 +204,7 @@ public class BlackjackManager : MonoBehaviour
 		}
 
 		// Dealer must stand if his total is 17 or over
-		else if (_blackjackPlayer.IsDealer && _blackjackPlayer.handTotal >= 17)
+		else if (_blackjackPlayer.IsDealer && _blackjackPlayer.handTotal >= 17) // could set threshold to 17 alternatively
 		{
 			_blackjackPlayer.Stand();
 		}
@@ -219,19 +223,21 @@ public class BlackjackManager : MonoBehaviour
 
 	private bool AllPlayersAreOut() // redundant?
     {
-		return blackjackPlayers.Any(x => x.isBust || x.isStanding);
+		return blackjackPlayers.Where(x => !x.IsDealer).Any(x => x.isBust || x.isStanding);
     }
 
 	private bool DealerIsOut()
     {
-		return blackjackDealer.isBust || blackjackDealer.isStanding;
+		//return blackjackDealer.isBust || blackjackDealer.isStanding;
 
+		var dealer = blackjackPlayers.FirstOrDefault(x => x.IsDealer); // encap with prop accessor. 
+		return dealer.isBust || dealer.isStanding;
 	}
 
 	private void PostGame()
 	{
-        dealerTotal.text = $"Dealer's total: {blackjackDealer.handTotal}";
-        bool playerWins  = false;
+        dealerTotal.text = $"Dealer's total: {blackjackDealer.handTotal}"; // change to cardcontainer
+        //bool playerWins  = false;
 
 		if (!blackjackPlayer.isBust)
 		{
@@ -262,7 +268,26 @@ public class BlackjackManager : MonoBehaviour
 		{
             gameInfo.text = $"Player loses {blackjackPlayer.wager} chips! Current stack: {blackjackPlayer.chips}";
         }
+
+		// new logic: 
+		foreach (BlackjackPlayer blackjackPlayer in blackjackPlayers.Where(x => !x.IsDealer))
+        {
+			if (PlayerHasWon(blackjackPlayer))
+            {
+				blackjackPlayer.chips += 2 * blackjackPlayer.wager; // encap. and make coefficient dynamic.
+
+				// update game info text (for each player or just player?)
+
+            }
+        }
+
 	}
+
+	private bool PlayerHasWon(BlackjackPlayer blackjackPlayer)
+    {
+		return Dealer.isBust 
+			|| !Dealer.isBust && blackjackPlayer.handTotal > Dealer.handTotal;
+    }
 
 	private void TogglePlayButtons(bool inGame)
     {
