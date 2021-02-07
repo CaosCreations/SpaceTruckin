@@ -197,60 +197,7 @@ public class BlackjackManager : MonoBehaviour
         {
             _blackjackPlayer.cardContainer.SetTotalText(_blackjackPlayer.handTotal);
         }
-
-        CheckHandTotal(_blackjackPlayer); // move this outside? 
         return drawnCard;
-    }
-
-    /// <summary>
-    /// Determine whether a player stands or goes bust.
-    /// Then determine whether the game has ended.
-    /// </summary>
-    /// <param name="_blackjackPlayer"></param>
-    private void CheckHandTotal(BlackjackPlayer _blackjackPlayer) // override in subclass..
-    {
-        // Check if bust 
-        if (_blackjackPlayer.handTotal > 21)
-        {
-            _blackjackPlayer.GoBust();
-        }
-
-        // Automatically stand the player if they get blackjack 
-        else if (_blackjackPlayer.handTotal == 21)
-        {
-            _blackjackPlayer.Stand();
-        }
-
-        if (!_blackjackPlayer.isStanding)
-        {
-            if (_blackjackPlayer is BlackjackNPC)
-            {
-                BlackjackNPC npc = _blackjackPlayer as BlackjackNPC;
-
-                // Automatically stand the NPC if they are not willing to take the risk
-                if (npc.IsOverStandingThreshold && !npc.WillTakeRisk)
-                {
-                    npc.Stand();
-                }
-            }
-            else if (_blackjackPlayer is BlackjackDealer)
-            {
-                BlackjackDealer dealer = _blackjackPlayer as BlackjackDealer;
-
-                // Dealer must stand if his total is 17 or over
-                // encap. as property in subclass*
-                if (dealer.IsForcedToStand) // could set threshold to 17 alternatively
-                {
-                    _blackjackPlayer.Stand();
-                }
-            }
-        }
-
-        // End the game when all players are either bust or standing
-        if (AllPlayersAreOut() && DealerIsOut())
-        {
-            PostGame();
-        }
     }
 
     //private bool PlayerWillTakeRisk(BlackjackPlayer _blackjackPlayer)
@@ -260,21 +207,28 @@ public class BlackjackManager : MonoBehaviour
 
     private bool AllPlayersAreOut() // redundant?
     {
-        return blackjackPlayers.Where(x => !x.IsDealer).Any(x => x.isBust || x.isStanding);
+        //return blackjackPlayers.Where(x => !x.IsDealer).Any(x => x.isBust || x.isStanding);
+        return blackjackPlayers.Any(x => !(x.IsBust || x.isStanding));
     }
 
     private bool DealerIsOut()
     {
-        //return blackjackDealer.isBust || blackjackDealer.isStanding;
-
-        var dealer = blackjackPlayers.FirstOrDefault(x => x.IsDealer); // encap with prop accessor. 
-        return dealer.isBust || dealer.isStanding;
+        // could prop encap.
+        return !(blackjackDealer.isStanding || blackjackDealer.isBust);
     }
 
     private void PostGame()
     {
         dealerTotal.text = $"Dealer's total: {blackjackDealer.handTotal}"; // change to cardcontainer
-                                                                           //bool playerWins  = false;
+
+        // Reset hand totals and cards to starting values
+        //blackjackPlayer.ResetHand();
+        //blackjackNPC1.ResetHand();
+        //blackjackNPC2.ResetHand();
+        //blackjackDealer.ResetHand();
+
+        //if ()
+
 
         if (!blackjackPlayer.isBust)
         {
@@ -322,8 +276,9 @@ public class BlackjackManager : MonoBehaviour
 
     private bool PlayerHasWon(BlackjackPlayer blackjackPlayer)
     {
-        return Dealer.isBust
-            || !Dealer.isBust && blackjackPlayer.handTotal > Dealer.handTotal;
+        // wrong - BJD could be bust as well as player (after - time makes sense?)
+        return blackjackDealer.IsBust
+            || !blackjackDealer.IsBust && blackjackPlayer.handTotal > blackjackDealer.handTotal;
     }
 
     private void TogglePlayButtons(bool inGame)
@@ -339,16 +294,33 @@ public class BlackjackManager : MonoBehaviour
     private void Update()
     {
         // Check if it's the dealer's turn to draw cards 
-        if (AllPlayersAreOut())
+        if (AllPlayersAreOut() && !DealerIsOut())
         {
             DealCard(blackjackDealer);
-
-            //// put this elsewhere? (dealcard)
-            //if (blackjackDealer.handTotal >= 17 && blackjackDealer.handTotal <= 21)
-            //{
-            //	blackjackDealer.Stand();
-            //}
+            // wait delay WFS
         }
+
+        CheckGameStatus();
+    }
+
+    private void DealToDealer()
+    {
+        while (!DealerIsOut())
+        {
+            DealCard(blackjackDealer);
+        }
+    }
+
+    private void CheckGameStatus()
+    {
+        // set button inter too?
+        // determine other stuff taht can be abastracted
+
+        if (AllPlayersAreOut() && DealerIsOut())
+        {
+            PostGame(); // rename
+        }
+
     }
 
     public GameObject InitPlayButton(GameObject parentObject, GameObject blackjackButtonPrefab, PlayButtonType buttonType)
@@ -377,10 +349,11 @@ public class BlackjackManager : MonoBehaviour
                 return () =>
                 {
                     Hit(blackjackPlayer);
-                    TakeNPC_PlayerTurns();
+                    DealToNPCs();
                 };
             case PlayButtonType.Stand:
-                return blackjackPlayer.Stand;
+                //return blackjackPlayer.Stand;
+                return () => blackjackPlayer.isStanding = true;
             case PlayButtonType.NewGame:
                 return NewGame;
             case PlayButtonType.QuitGame:
@@ -390,20 +363,23 @@ public class BlackjackManager : MonoBehaviour
         }
     }
 
-    private int Hit(BlackjackPlayer _blackjackPlayer)
+    private void Hit(BlackjackPlayer _blackjackPlayer)
     {
         DealCard(_blackjackPlayer);
         return _blackjackPlayer.handTotal;
     }
 
-    private void TakeNPC_PlayerTurns() // rename
+    private void DealToNPCs()
     {
         SetButtonInteractability(false);
-
-        // Hit all players of NPC_Player type 
-        blackjackPlayers.Where(x => x.type == BlackjackPlayerType.NPC_Player)
-            .Select(x => Hit(x));
-
+        if (!blackjackNPC1.IsOut)
+        {
+            Hit(blackjackNPC1); // make void 
+        }
+        if (!blackjackNPC2.IsOut)
+        {
+            Hit(blackjackNPC2);
+        }
         SetButtonInteractability(true);
     }
 

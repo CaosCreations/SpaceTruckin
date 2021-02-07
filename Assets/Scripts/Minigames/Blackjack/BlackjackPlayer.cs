@@ -4,10 +4,13 @@ using UnityEngine;
 public interface IBlackjackPlayer
 {
     // dealstartinghands solution
+    // checkhandtotal 
+
+    void CheckHandTotal(); // rename (it determines outcome)
 }
 
 [CreateAssetMenu(fileName = "BlackjackPlayer", menuName = "ScriptableObjects/BlackjackPlayer", order = 1)]
-public class BlackjackPlayer : ScriptableObject
+public class BlackjackPlayer : ScriptableObject, IBlackjackPlayer
 {
     public BlackjackPlayerType type;
     public CardContainer cardContainer; // set this in init. 
@@ -19,16 +22,34 @@ public class BlackjackPlayer : ScriptableObject
     public bool isStanding;
     public bool isBust;
 
+    // replaces checkhand duplication
+    public bool IsBust { get => handTotal >= BlackjackConstants.bustThreshold; }
+    public bool IsStanding { get => isStanding; set => isStanding = value; }
+    public bool IsOut { get => !(isStanding || isBust); }
+
     public bool IsPlayer { get => type == BlackjackPlayerType.Player; }
     public bool IsNPC_Player { get => type == BlackjackPlayerType.NPC_Player; }
     public bool IsDealer { get => type == BlackjackPlayerType.Dealer; }
 
+    // ? 
+    public bool HasBlackjack { get => handTotal == BlackjackConstants.atBlackjackValue; }
+    
+    // needs to be a method (dont have access to dealer)
+    //public bool HasBeatenTheDealer { get => !HasBlackjack && handTotal > dealer }
+
+    public bool HasBeatenTheDealer(int dealerHandTotal)
+    {
+        return !IsBust && handTotal > dealerHandTotal;
+        // draws?
+        // support draw with generic player vs. dealer method*
+    }
+
     public BlackjackPlayer Init(CardContainer cardContainer)
     {
-        handTotal = 0;
-        hand = new List<Card>();
-        isStanding = false;
-        isBust = false;
+        //handTotal = 0;
+        //hand = new List<Card>();
+        //isStanding = false;
+        //isBust = false;
         this.cardContainer = cardContainer;
         return this;
     }
@@ -63,5 +84,27 @@ public class BlackjackPlayer : ScriptableObject
     public void ClearCards()
     {
         cardContainer.DestroyCards();
+    }
+
+    // rename - determinestatus? 
+    public virtual void CheckHandTotal() // return bool for better sense in manager
+    {
+        //if (handTotal >= BlackjackConstants.bustThreshold)
+        //{
+        //    isBust = true;
+        //    return;
+        //}
+
+        if (handTotal == BlackjackConstants.atBlackjackValue)
+        {
+            isStanding = true;
+        }
+    }
+
+    public void ResetHand()
+    {
+        ClearCards();
+        handTotal = 0;
+        hand = new List<Card>();
     }
 }

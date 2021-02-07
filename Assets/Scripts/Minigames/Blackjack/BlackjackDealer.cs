@@ -6,5 +6,17 @@ public class BlackjackDealer : BlackjackPlayer
 {
     private int forcedToStandThreshold = 17;
 
-    public bool IsForcedToStand { get => handTotal >= forcedToStandThreshold; }
+    //private bool IsForcedToStand { get => handTotal >= forcedToStandThreshold; }
+
+    public bool IsStanding { get => handTotal >= forcedToStandThreshold && !IsBust; }
+
+    public override void CheckHandTotal()
+    {
+        //if (handTotal >= )
+
+        //if (IsForcedToStand)
+        //{
+        //    isStanding = true;
+        //}
+    }
 }
