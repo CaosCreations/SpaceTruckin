@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -47,17 +48,6 @@ public class BlackjackManager : MonoBehaviour
 
     private BlackjackPlayer[] blackjackPlayers;
 
-    //public BlackjackPlayer[] blackjackPlayers; // does this include dealer?
-    //private BlackjackPlayer Dealer { get => blackjackPlayers.FirstOrDefault(x => x.IsDealer); }
-
-    //private readonly System.Random RNG = new System.Random();
-
-    // Multiple by these numbers to calculate winnings 
-    // Win gives 1.5 times your wager back
-    // Blackjack doubles your money 
-    private float winCoefficient = 1.5f;
-    private float blackjackCoefficient = 2f;
-
     public enum PlayButtonType
     {
         Hit, Stand, NewGame, QuitGame
@@ -69,7 +59,7 @@ public class BlackjackManager : MonoBehaviour
         blackjackPlayer.chips = BlackjackConstants.playerStartingChips;
         blackjackPlayers = new BlackjackPlayer[] 
         { 
-            blackjackPlayer, blackjackDealer, blackjackNPC1, blackjackNPC2 
+            blackjackPlayer, /*blackjackDealer,*/ blackjackNPC1, blackjackNPC2 
         };
     }
 
@@ -173,14 +163,16 @@ public class BlackjackManager : MonoBehaviour
     private void DealStartingHands()
     {
         // Deal two cards to each player 
-        DealCard(blackjackPlayer);
-        DealCard(blackjackPlayer);
-        DealCard(blackjackNPC1);
-        DealCard(blackjackNPC1);
-        DealCard(blackjackNPC2);
-        DealCard(blackjackNPC2);
+        blackjackPlayers.Select(x => DealCard(x));
         DealCard(blackjackDealer);
         DealCard(blackjackDealer);
+
+        //DealCard(blackjackPlayer);
+        //DealCard(blackjackPlayer);
+        //DealCard(blackjackNPC1);
+        //DealCard(blackjackNPC1);
+        //DealCard(blackjackNPC2);
+        //DealCard(blackjackNPC2);
 
         //blackjackPlayers.Select(x => { DealCard(x); DealCard(x); });
     }
@@ -208,70 +200,37 @@ public class BlackjackManager : MonoBehaviour
     private bool AllPlayersAreOut() // redundant?
     {
         //return blackjackPlayers.Where(x => !x.IsDealer).Any(x => x.isBust || x.isStanding);
-        return blackjackPlayers.Any(x => !(x.IsBust || x.isStanding));
+        return blackjackPlayers.Any(x => !(x.IsBust || x.IsStanding));
     }
 
     private bool DealerIsOut()
     {
         // could prop encap.
-        return !(blackjackDealer.isStanding || blackjackDealer.isBust);
+        return !(blackjackDealer.IsStanding || blackjackDealer.IsBust);
     }
 
     private void PostGame()
     {
         dealerTotal.text = $"Dealer's total: {blackjackDealer.handTotal}"; // change to cardcontainer
 
-        // Reset hand totals and cards to starting values
-        //blackjackPlayer.ResetHand();
-        //blackjackNPC1.ResetHand();
-        //blackjackNPC2.ResetHand();
-        //blackjackDealer.ResetHand();
-
-        //if ()
-
-
-        if (!blackjackPlayer.isBust)
-        {
-            if (blackjackDealer.isBust)
-            {
-                playerWins = true;
-            }
-            else
-            {
-                if (blackjackPlayer.handTotal > blackjackDealer.handTotal)
-                {
-                    playerWins = true;
-                }
-            }
-        }
-
+        blackjackPlayers.Select(x => SetChipsAfterGame(x));
         TogglePlayButtons(inGame: false);
 
-        if (playerWins)
+    }
+
+    private int SetChipsAfterGame(BlackjackPlayer _blackjackPlayer)
+    {
+        float coefficient = 1f;
+        if (_blackjackPlayer.HasBlackjack)
         {
-            blackjackPlayer.chips += 2 * blackjackPlayer.wager;
-
-            // Since the player has to wager after each round now, 
-            // we need to display their available chips 
-            gameInfo.text = $"Player wins {blackjackPlayer.wager} chips! Current stack: {blackjackPlayer.chips}";
+            coefficient = BlackjackConstants.blackjackCoefficient;
         }
-        else
+        else if (_blackjackPlayer.HasBeatenTheDealer(blackjackDealer.handTotal))
         {
-            gameInfo.text = $"Player loses {blackjackPlayer.wager} chips! Current stack: {blackjackPlayer.chips}";
+            coefficient = BlackjackConstants.winCoefficient;
         }
-
-        // new logic: 
-        foreach (BlackjackPlayer blackjackPlayer in blackjackPlayers.Where(x => !x.IsDealer))
-        {
-            if (PlayerHasWon(blackjackPlayer))
-            {
-                blackjackPlayer.chips += 2 * blackjackPlayer.wager; // encap. and make coefficient dynamic.
-
-                // update game info text (for each player or just player?)
-
-            }
-        }
-
+        _blackjackPlayer.chips = Mathf.RoundToInt(_blackjackPlayer.chips * coefficient);
+        return _blackjackPlayer.chips;  
     }
 
     private bool PlayerHasWon(BlackjackPlayer blackjackPlayer)
@@ -293,13 +252,12 @@ public class BlackjackManager : MonoBehaviour
 
     private void Update()
     {
-        // Check if it's the dealer's turn to draw cards 
-        if (AllPlayersAreOut() && !DealerIsOut())
-        {
-            DealCard(blackjackDealer);
-            // wait delay WFS
-        }
-
+        //// Check if it's the dealer's turn to draw cards 
+        //if (AllPlayersAreOut() && !DealerIsOut())
+        //{
+        //    DealCard(blackjackDealer);
+        //    // wait delay WFS
+        //}
         CheckGameStatus();
     }
 
@@ -316,11 +274,25 @@ public class BlackjackManager : MonoBehaviour
         // set button inter too?
         // determine other stuff taht can be abastracted
 
-        if (AllPlayersAreOut() && DealerIsOut())
-        {
-            PostGame(); // rename
-        }
+        //if (AllPlayersAreOut() && DealerIsOut())
+        //{
+        //    PostGame(); // rename
+        //}
 
+        if (AllPlayersAreOut())
+        {
+            if (DealerIsOut())
+            {
+                PostGame();
+            }
+            else
+            {
+                // make sure to only call once..
+                //DealToDealer();
+
+                DealCard(blackjackDealer);
+            }
+        }
     }
 
     public GameObject InitPlayButton(GameObject parentObject, GameObject blackjackButtonPrefab, PlayButtonType buttonType)
@@ -332,12 +304,7 @@ public class BlackjackManager : MonoBehaviour
 
         Button button = gameObject.GetComponent<Button>();
         button.GetComponentInChildren<Text>().text = GetButtonText(buttonType);
-        button.onClick.RemoveAllListeners();
-        button.onClick.AddListener(delegate
-        {
-            GetPlayButtonHandler(buttonType).Invoke();
-        });
-
+        button.AddOnClick(() => GetPlayButtonHandler(buttonType).Invoke());
         return gameObject;
     }
 
@@ -363,7 +330,7 @@ public class BlackjackManager : MonoBehaviour
         }
     }
 
-    private void Hit(BlackjackPlayer _blackjackPlayer)
+    private int Hit(BlackjackPlayer _blackjackPlayer)
     {
         DealCard(_blackjackPlayer);
         return _blackjackPlayer.handTotal;

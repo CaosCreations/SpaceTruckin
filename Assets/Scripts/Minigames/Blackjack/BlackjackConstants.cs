@@ -43,6 +43,8 @@ public static class BlackjackConstants
 	public static int atBlackjackValue = 21;
 	public static int bustThreshold = 22;
 	public static int atDealerForcedToStandValue = 17;
+	public static float winCoefficient = 1.5f;
+	public static float blackjackCoefficient = 2f;
 
 	// Sprite paths 
 	public static string cardsFolderPath = "Sprites/Minigames/Blackjack/PlayingCards";
