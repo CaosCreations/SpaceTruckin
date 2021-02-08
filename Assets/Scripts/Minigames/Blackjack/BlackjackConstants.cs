@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI; 
 
 public static class BlackjackConstants 
@@ -10,7 +8,11 @@ public static class BlackjackConstants
 	public static int tablePaddingLeft = 32;
 	public static Vector2 cardCellSize = new Vector2(60f, 84f); 
 	public static Vector2 buttonCellSize = new Vector2(128f, 32f);
-	
+	public static (Vector2, Vector2) playerCardContainerAnchors = (new Vector2(0.25f, 0.05f), new Vector2(0.75f, 0.25f));
+	public static (Vector2, Vector2) npcPlayer1CardContainerAnchors = (new Vector2(0.05f, 0.25f), new Vector2(0.25f, 0.75f));
+	public static (Vector2, Vector2) npcPlayer2CardContainerAnchors = (new Vector2(0.75f, 0.25f), new Vector2(0.95f, 0.75f));
+	public static (Vector2, Vector2) dealerCardContainerAnchors = (new Vector2(0.25f, 0.75f), new Vector2(0.75f, 0.95f));
+
 	// GameObject names 
 	public static string headerName = "BlackjackHeader"; 
 	public static string gameInfoName = "BlackjackGameInfo"; 
