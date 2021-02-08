@@ -11,6 +11,8 @@ public static class BlackjackConstants
 	public static (Vector2, Vector2) npcPlayer1CardContainerAnchors = (new Vector2(0.05f, 0.25f), new Vector2(0.25f, 0.75f));
 	public static (Vector2, Vector2) npcPlayer2CardContainerAnchors = (new Vector2(0.75f, 0.25f), new Vector2(0.95f, 0.75f));
 	public static (Vector2, Vector2) dealerCardContainerAnchors = (new Vector2(0.25f, 0.75f), new Vector2(0.75f, 0.95f));
+	public static (Vector2, Vector2) gameInfoAnchors = (new Vector2(0.25f, 0.95f), new Vector2(0.75f, 1f));
+	public static (Vector2, Vector2) buttonContainerAnchors = (new Vector2(0.35f, 0.35f), new Vector2(0.65f, 0.5f));
 
 	// GameObject names 
 	public static string headerName = "BlackjackHeader"; 
