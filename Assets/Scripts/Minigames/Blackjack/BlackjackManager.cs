@@ -79,20 +79,30 @@ public class BlackjackManager : MonoBehaviour
     // or handle this at newgame time so they can get up and leave/join 
     private void SetupTable()
     {
-        blackjackTableContainer = BlackjackUtils.InitTableContainer(parentContainer);
-
         BlackjackUtils.InitHeader(blackjackTableContainer);
         gameInfo = BlackjackUtils.InitGameInfo(blackjackTableContainer, blackjackPlayer);
 
-        // encap. this 
-        playerCardContainer = BlackjackUtils.InitCardContainer(blackjackTableContainer, blackjackPlayer);
-        playerTotal = BlackjackUtils.InitTotalText(blackjackPlayer);
-        dealerCardContainer = BlackjackUtils.InitCardContainer(blackjackTableContainer, blackjackDealer);
-        dealerTotal = BlackjackUtils.InitTotalText(blackjackDealer);
-        npc1CardContainer = BlackjackUtils.InitCardContainer(blackjackTableContainer, blackjackNPC1);
-        playerTotal = BlackjackUtils.InitTotalText(blackjackNPC1);
-        npc2CardContainer = BlackjackUtils.InitCardContainer(blackjackTableContainer, blackjackNPC2);
-        dealerTotal = BlackjackUtils.InitTotalText(blackjackNPC2);
+        playerCardContainer = BlackjackUtils.InitCardContainer(
+            gameObject, blackjackPlayer, BlackjackConstants.playerCardContainerAnchors, isHorizontal: true);
+
+        npc1CardContainer = BlackjackUtils.InitCardContainer(
+            gameObject, blackjackNPC1, BlackjackConstants.npcPlayer1CardContainerAnchors, isHorizontal: false);
+
+        npc2CardContainer = BlackjackUtils.InitCardContainer(
+            gameObject, blackjackNPC2, BlackjackConstants.npcPlayer2CardContainerAnchors, isHorizontal: false);
+
+        dealerCardContainer = BlackjackUtils.InitCardContainer(
+            gameObject, blackjackDealer, BlackjackConstants.dealerCardContainerAnchors, isHorizontal: true);
+
+        //// encap. this 
+        //playerCardContainer = BlackjackUtils.InitCardContainer(blackjackTableContainer, blackjackPlayer);
+        //playerTotal = BlackjackUtils.InitTotalText(blackjackPlayer);
+        //dealerCardContainer = BlackjackUtils.InitCardContainer(blackjackTableContainer, blackjackDealer);
+        //dealerTotal = BlackjackUtils.InitTotalText(blackjackDealer);
+        //npc1CardContainer = BlackjackUtils.InitCardContainer(blackjackTableContainer, blackjackNPC1);
+        //playerTotal = BlackjackUtils.InitTotalText(blackjackNPC1);
+        //npc2CardContainer = BlackjackUtils.InitCardContainer(blackjackTableContainer, blackjackNPC2);
+        //dealerTotal = BlackjackUtils.InitTotalText(blackjackNPC2);
 
         blackjackButtonContainer = BlackjackUtils.InitButtonContainer(blackjackTableContainer);
 

@@ -11,31 +11,12 @@ public class BlackjackUtils : MonoBehaviour
         button.onClick.AddListener(handler);
     }
 
-    public static GameObject InitTableContainer(GameObject parentObject)
-    {
-        GameObject blackjackTableContainer = new GameObject(BlackjackConstants.tableContainerName);
-        blackjackTableContainer.transform.parent = parentObject.transform;
+    //public static GameObject InitTable/*Container*/(GameObject parentObject, Dictionary<BlackjackPlayer, GameObject>)
+    //{
+    //    playerContainer = InitCardContainer(parentObject,)
 
-        blackjackTableContainer.AddComponent<LayoutElement>();
-        VerticalLayoutGroup verticalLayoutGroup = blackjackTableContainer.AddComponent<VerticalLayoutGroup>();
-        verticalLayoutGroup.childControlWidth = true;
-        verticalLayoutGroup.childControlHeight = true;
-        verticalLayoutGroup.childForceExpandWidth = true;
-        verticalLayoutGroup.childForceExpandHeight = true;
-        verticalLayoutGroup.spacing = BlackjackConstants.tableSpacing;
-        verticalLayoutGroup.padding.left = BlackjackConstants.tablePaddingLeft;
-
-        blackjackTableContainer.AddComponent<Image>().color = BlackjackConstants.tableColor;
-
-        RectTransform rectTransform = blackjackTableContainer.GetComponent<RectTransform>();
-        rectTransform.anchorMin = Vector2.zero;
-        rectTransform.anchorMax = Vector2.one;
-        rectTransform.localScale = Vector3.one;
-        rectTransform.offsetMin = Vector2.zero;
-        rectTransform.offsetMax = Vector2.zero;
-
-        return blackjackTableContainer;
-    }
+    //    return blackjackTableContainer;
+    //}
 
     public static void InitHeader(GameObject parentObject)
     {
@@ -54,16 +35,26 @@ public class BlackjackUtils : MonoBehaviour
         return gameInfoText;
     }
 
-    public static GameObject InitCardContainer(GameObject parentObject, BlackjackPlayer blackjackPlayer)
+    public static GameObject InitCardContainer(GameObject parentObject, BlackjackPlayer blackjackPlayer, (Vector2, Vector2) anchors, bool isHorizontal)
     {
         string cardContainerName = GetObjectName(blackjackPlayer, "CardContainer");
-        GameObject cardContainerObject = new GameObject(cardContainerName);
-        cardContainerObject.transform.parent = parentObject.transform;
+        GameObject cardContainerObject = new GameObject().ScaffoldUI(cardContainerName, parentObject, anchors);
+
+        HorizontalOrVerticalLayoutGroup layoutGroup;
+        if (isHorizontal)
+        {
+            layoutGroup = cardContainerObject.AddComponent<HorizontalLayoutGroup>();
+        }
+        else
+        {
+            layoutGroup = cardContainerObject.AddComponent<VerticalLayoutGroup>();
+        }
+        layoutGroup.childForceExpandWidth = true;
+        layoutGroup.childForceExpandHeight = true;
 
         CardContainer cardContainer = cardContainerObject.AddComponent<CardContainer>();
         blackjackPlayer.cardContainer = cardContainer;
 
-        cardContainerObject.AddComponent<GridLayoutGroup>().cellSize = BlackjackConstants.cardCellSize;
         return cardContainerObject;
     }
 
