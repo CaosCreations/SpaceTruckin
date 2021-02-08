@@ -3,10 +3,15 @@ using UnityEngine.UI;
 
 public class CardContainer : MonoBehaviour
 {
-    public Text totalText; // need to assign this during init 
-    // make private if poss 
+    private BlackjackPlayer blackjackPlayer;
+    private Text totalText;
+    public void SetTotalText() 
+        => totalText.text = $"{blackjackPlayer.playerName} total: {blackjackPlayer.handTotal}";
 
-    public void SetTotalText(int handTotal) => totalText.text = handTotal.ToString();
+    private void Start()
+    {
+        blackjackPlayer = GetComponent<BlackjackPlayer>();
+    }
 
     public void DestroyCards()
     {

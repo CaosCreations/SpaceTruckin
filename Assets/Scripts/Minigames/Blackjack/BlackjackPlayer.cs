@@ -12,8 +12,8 @@ public interface IBlackjackPlayer
 [CreateAssetMenu(fileName = "BlackjackPlayer", menuName = "ScriptableObjects/BlackjackPlayer", order = 1)]
 public class BlackjackPlayer : ScriptableObject, IBlackjackPlayer
 {
-    public BlackjackPlayerType type;
-    public CardContainer cardContainer; // set this in init. 
+    public string playerName;
+    public CardContainer cardContainer;
     public List<Card> hand = new List<Card>();
     public int handTotal;
     public int chips; 
@@ -26,10 +26,6 @@ public class BlackjackPlayer : ScriptableObject, IBlackjackPlayer
     public bool IsBust { get => handTotal >= BlackjackConstants.bustThreshold; }
     public bool IsStanding { get => isStanding; set => isStanding = value; }
     public bool IsOut { get => !(isStanding || isBust); }
-
-    public bool IsPlayer { get => type == BlackjackPlayerType.Player; }
-    public bool IsNPC_Player { get => type == BlackjackPlayerType.NPC_Player; }
-    public bool IsDealer { get => type == BlackjackPlayerType.Dealer; }
 
     // ? 
     public bool HasBlackjack { get => handTotal == BlackjackConstants.atBlackjackValue; }
@@ -106,5 +102,15 @@ public class BlackjackPlayer : ScriptableObject, IBlackjackPlayer
         ClearCards();
         handTotal = 0;
         hand = new List<Card>();
+        cardContainer.SetTotalText();
+    }
+
+    public void Wager(int chipsToWager)
+    {
+        if (chips >= chipsToWager)
+        {
+            wager = chipsToWager;
+            chips -= chipsToWager;
+        }
     }
 }
