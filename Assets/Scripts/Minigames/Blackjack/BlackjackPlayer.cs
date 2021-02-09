@@ -20,12 +20,12 @@ public class BlackjackPlayer : ScriptableObject, IBlackjackPlayer
     public int wager;
     public bool hasWagered;
     public bool isStanding;
-    public bool isBust;
+    //public bool isBust;
 
     // replaces checkhand duplication
     public bool IsBust { get => handTotal >= BlackjackConstants.bustThreshold; }
     public bool IsStanding { get => isStanding; set => isStanding = value; }
-    public bool IsOut { get => !(isStanding || isBust); }
+    public bool IsOut { get => IsStanding || IsBust; }
 
     // ? 
     public bool HasBlackjack { get => handTotal == BlackjackConstants.atBlackjackValue; }
@@ -74,8 +74,8 @@ public class BlackjackPlayer : ScriptableObject, IBlackjackPlayer
         }
     }
 
-    public void Stand() => isStanding = true;
-    public void GoBust() => isBust = true;
+    public void Stand() => isStanding = true; // just use the prop acc
+    //public void GoBust() => isBust = true;
 
     public void ClearCards()
     {

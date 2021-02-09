@@ -19,15 +19,15 @@ public class BlackjackManager : MonoBehaviour
     private GameObject dealerCardContainer; // remove?
 
     // Play buttons
-    private GameObject hitButtonObject;
-    private GameObject standButtonObject;
-    private GameObject newGameButtonObject;
-    private GameObject quitGameButtonObject;
+    private GameObject hitButton;
+    private GameObject standButton;
+    private GameObject newGameButton;
+    private GameObject quitGameButton;
 
     // Wager buttons
-    private GameObject lowWagerObject;
-    private GameObject mediumWagerObject;
-    private GameObject highWagerObject;
+    private GameObject lowWagerButton;
+    private GameObject mediumWagerButton;
+    private GameObject highWagerButton;
 
     // Game Info
     private Text gameInfo;
@@ -90,7 +90,6 @@ public class BlackjackManager : MonoBehaviour
 
         blackjackButtonContainer = BlackjackUtils.InitButtonContainer(gameObject);
         InitButtons();
-
         Deck.Init();
         Deck.Shuffle();
     }
@@ -130,9 +129,9 @@ public class BlackjackManager : MonoBehaviour
     private void ResetHands()
     {
         blackjackPlayer.ResetHand();
-        blackjackDealer.ResetHand();
         blackjackNPC1.ResetHand();
         blackjackNPC2.ResetHand();
+        blackjackDealer.ResetHand();
     }
 
     private void DealStartingHands()
@@ -141,30 +140,16 @@ public class BlackjackManager : MonoBehaviour
         blackjackPlayers.Select(x => DealCard(x));
         DealCard(blackjackDealer);
         DealCard(blackjackDealer);
-
-        //DealCard(blackjackPlayer);
-        //DealCard(blackjackPlayer);
-        //DealCard(blackjackNPC1);
-        //DealCard(blackjackNPC1);
-        //DealCard(blackjackNPC2);
-        //DealCard(blackjackNPC2);
-
-        //blackjackPlayers.Select(x => { DealCard(x); DealCard(x); });
     }
 
+    // faceup?
+    // end of game show dealer faceup 
     private Card DealCard(BlackjackPlayer _blackjackPlayer)
     {
         Card drawnCard = Deck.GetRandomCard();
         _blackjackPlayer.AddCardToHand(drawnCard);
         BlackjackUtils.InitDrawnCardObject(_blackjackPlayer, drawnCard);
         _blackjackPlayer.cardContainer.SetTotalText();
-
-        //// Don't show the dealer's total  
-        //// use interface here. ???
-        //if (_blackjackPlayer.Equals(blackjackDealer))
-        //{
-        //    _blackjackPlayer.cardContainer.SetTotalText($"{blackjackPlayer.handTotal} ");
-        //}
         return drawnCard;
     }
 
@@ -183,7 +168,7 @@ public class BlackjackManager : MonoBehaviour
     private void PostGame()
     {
         //dealerTotal.text = $"Dealer's total: {blackjackDealer.handTotal}";
-        blackjackDealer.cardContainer.SetTotalText($"Dealer's total: {blackjackDealer.handTotal}");
+        blackjackDealer.cardContainer.SetTotalText();
         blackjackPlayers.Select(x => SetChipsAfterGame(x));
         TogglePlayButtons(inGame: false);
     }
@@ -205,12 +190,12 @@ public class BlackjackManager : MonoBehaviour
 
     private void TogglePlayButtons(bool inGame)
     {
-        hitButtonObject.SetActive(inGame);
-        standButtonObject.SetActive(inGame);
-        lowWagerObject.SetActive(!inGame);
-        mediumWagerObject.SetActive(!inGame);
-        highWagerObject.SetActive(!inGame);
-        quitGameButtonObject.SetActive(!inGame);
+        hitButton.SetActive(inGame);
+        standButton.SetActive(inGame);
+        lowWagerButton.SetActive(!inGame);
+        mediumWagerButton.SetActive(!inGame);
+        highWagerButton.SetActive(!inGame);
+        quitGameButton.SetActive(!inGame);
     }
 
     private void Update()
@@ -220,9 +205,9 @@ public class BlackjackManager : MonoBehaviour
 
     private void CheckGameStatus()
     {
-        if (AllPlayersAreOut())
+        if (blackjackPlayers.Any(x => !x.IsOut))
         {
-            if (DealerIsOut())
+            if (blackjackDealer.IsOut)
             {
                 PostGame();
             }
@@ -300,27 +285,28 @@ public class BlackjackManager : MonoBehaviour
 
     private void SetButtonInteractability(bool areActive)
     {
-        hitButtonObject.SetActive(areActive);
-        standButtonObject.SetActive(areActive);
-        newGameButtonObject.SetActive(areActive);
-        quitGameButtonObject.SetActive(areActive);
+        hitButton.SetActive(areActive);
+        standButton.SetActive(areActive);
+        newGameButton.SetActive(areActive);
+        quitGameButton.SetActive(areActive);
     }
 
     private void QuitGame()
     {
         Destroy(blackjackTableContainer);
+        // deactivate canvas
     }
 
     private void InitButtons()
     {
-        lowWagerObject = InitWagerButton(gameObject, blackjackButtonPrefab, BlackjackConstants.lowWager);
-        mediumWagerObject = InitWagerButton(gameObject, blackjackButtonPrefab, BlackjackConstants.mediumWager);
-        highWagerObject = InitWagerButton(gameObject, blackjackButtonPrefab, BlackjackConstants.highWager);
+        lowWagerButton = InitWagerButton(gameObject, blackjackButtonPrefab, BlackjackConstants.lowWager);
+        mediumWagerButton = InitWagerButton(gameObject, blackjackButtonPrefab, BlackjackConstants.mediumWager);
+        highWagerButton= InitWagerButton(gameObject, blackjackButtonPrefab, BlackjackConstants.highWager);
 
-        hitButtonObject = InitPlayButton(blackjackButtonContainer, blackjackButtonPrefab, PlayButtonType.Hit);
-        standButtonObject = InitPlayButton(blackjackButtonContainer, blackjackButtonPrefab, PlayButtonType.Stand);
-        newGameButtonObject = InitPlayButton(blackjackButtonContainer, blackjackButtonPrefab, PlayButtonType.NewGame);
-        quitGameButtonObject = InitPlayButton(blackjackButtonContainer, blackjackButtonPrefab, PlayButtonType.QuitGame);
+        hitButton = InitPlayButton(blackjackButtonContainer, blackjackButtonPrefab, PlayButtonType.Hit);
+        standButton = InitPlayButton(blackjackButtonContainer, blackjackButtonPrefab, PlayButtonType.Stand);
+        newGameButton = InitPlayButton(blackjackButtonContainer, blackjackButtonPrefab, PlayButtonType.NewGame);
+        quitGameButton = InitPlayButton(blackjackButtonContainer, blackjackButtonPrefab, PlayButtonType.QuitGame);
     }
 
     private string GetButtonName(PlayButtonType buttonType)

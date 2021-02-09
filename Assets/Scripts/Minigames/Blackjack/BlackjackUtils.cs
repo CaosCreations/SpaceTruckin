@@ -37,15 +37,19 @@ public class BlackjackUtils : MonoBehaviour
         layoutGroup.childForceExpandHeight = true;
 
         CardContainer cardContainer = cardContainerObject.AddComponent<CardContainer>();
-        blackjackPlayer.cardContainer = cardContainer;
+        //cardContainer.totalText = 
+        Text totalText = 
 
+        blackjackPlayer.cardContainer = cardContainer;
+        
+        //InitTotalText(blackjackPlayer);
         return cardContainerObject;
     }
 
-    public static Text InitTotalText(BlackjackPlayer blackjackPlayer)
+    private static Text InitTotalText(GameObject parentObject, BlackjackPlayer blackjackPlayer)
     {
         GameObject totalText = new GameObject("TotalText");
-        totalText.transform.parent = blackjackPlayer.cardContainer.transform;
+        totalText.transform.parent = parentObject.transform;
         Text text = totalText.ScaffoldTextComponent();
         return text;
     }
@@ -63,7 +67,7 @@ public class BlackjackUtils : MonoBehaviour
     {
         GameObject drawnCardObject = new GameObject("CardObject");
         drawnCardObject.transform.parent = blackjackPlayer.cardContainer.transform;
-        drawnCardObject.AddComponent<Image>().sprite = !blackjackPlayer.IsDealer ? drawnCard.sprite : Deck.cardbackSprite;
+        drawnCardObject.AddComponent<Image>().sprite = !(blackjackPlayer.GetType() == typeof(BlackjackDealer)) ? drawnCard.sprite : Deck.cardbackSprite;
         return drawnCardObject;
     }
 }

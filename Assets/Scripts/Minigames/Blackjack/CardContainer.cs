@@ -3,14 +3,19 @@ using UnityEngine.UI;
 
 public class CardContainer : MonoBehaviour
 {
+    public Text totalText;
     private BlackjackPlayer blackjackPlayer;
-    private Text totalText;
     public void SetTotalText() 
         => totalText.text = $"{blackjackPlayer.playerName} total: {blackjackPlayer.handTotal}";
 
     private void Start()
     {
         blackjackPlayer = GetComponent<BlackjackPlayer>();
+    }
+
+    private void Init(GameObject parentObject)
+    {
+
     }
 
     public void DestroyCards()
