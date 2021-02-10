@@ -3,8 +3,8 @@
 public class NewDayReportUI : MonoBehaviour
 {
     public GameObject reportCardPrefab;
-    private GameObject reportCardInstance; 
-    private NewDayReportCard reportCard;
+    public GameObject reportCardInstance; 
+    public NewDayReportCard reportCard;
     private int currentReportIndex;
 
     private TerminalUIManager terminalManager;
@@ -19,12 +19,12 @@ public class NewDayReportUI : MonoBehaviour
         BedCanvasUI.OnEndOfDay += () => HasBeenViewed = false;
         terminalManager = GetComponentInParent<TerminalUIManager>();
     } 
+    
     private void OnDisable() => HasBeenViewed = true;
 
     public void Init()
     {
-        reportCardInstance = Instantiate(reportCardPrefab, transform);
-        reportCard = reportCardInstance.GetComponent<NewDayReportCard>();
+        reportCardInstance.SetActive(true);
         currentReportIndex = 0;
         ShowNextReport();
     }
@@ -51,10 +51,18 @@ public class NewDayReportUI : MonoBehaviour
 
     private void CloseReport()
     {
-        Destroy(reportCardInstance);
+        reportCardInstance.SetActive(false);
         gameObject.SetActive(false);
         terminalManager.missionsPanel.SetActive(true);
         terminalManager.missionsButton.SetColour
             (terminalManager.missionsPanel.GetImageColour());
+    }
+
+    private void Update()
+    {
+        if (reportCardInstance != null && Input.GetKeyDown(PlayerConstants.exit))
+        {
+            CloseReport();
+        }
     }
 }

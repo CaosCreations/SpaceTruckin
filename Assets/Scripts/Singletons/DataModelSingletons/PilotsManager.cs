@@ -34,11 +34,11 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    public void AwardXp(Ship ship, int xp)
+    public void AwardXp(Pilot pilot, int xp)
     {
-        if (ship != null && ship.Pilot != null)
+        if (pilot != null)
         {
-            ship.Pilot.Xp += xp;
+            pilot.Xp += xp;
         }
     }
 
