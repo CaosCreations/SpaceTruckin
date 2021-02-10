@@ -7,9 +7,8 @@ public class NewDayReportUI : MonoBehaviour
     public NewDayReportCard reportCard;
     private int currentReportIndex;
 
-    public GameObject missionsPanel;
+    private TerminalUIManager terminalManager;
     public bool HasBeenViewed { get; set; }
-
     public ArchivedMission CurrentMissionToReport 
     {
         get => ArchivedMissionsManager.Instance.MissionsCompletedYesterday[currentReportIndex];
@@ -18,9 +17,9 @@ public class NewDayReportUI : MonoBehaviour
     private void Start()
     {
         BedCanvasUI.OnEndOfDay += () => HasBeenViewed = false;
-        //reportCard = reportCardInstance.GetComponent<NewDayReportCard>();
-    }
-
+        terminalManager = GetComponentInParent<TerminalUIManager>();
+    } 
+    
     private void OnDisable() => HasBeenViewed = true;
 
     public void Init()
@@ -54,7 +53,9 @@ public class NewDayReportUI : MonoBehaviour
     {
         reportCardInstance.SetActive(false);
         gameObject.SetActive(false);
-        missionsPanel.SetActive(true);
+        terminalManager.missionsPanel.SetActive(true);
+        terminalManager.missionsButton.SetColour
+            (terminalManager.missionsPanel.GetImageColour());
     }
 
     private void Update()
