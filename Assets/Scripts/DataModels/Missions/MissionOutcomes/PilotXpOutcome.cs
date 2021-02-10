@@ -10,10 +10,10 @@ public class PilotXpOutcome : MissionOutcome
 	{
         // Store the pilot's level before the xp is awarded.
         // Then we can check if they levelled up as a result of the mission.
-        mission.MissionToArchive.ContemporaneousPilotLevel = mission.Pilot.Level;
+        mission.MissionToArchive.PilotLevelAtTimeOfMission = mission.Pilot.Level;
 
         double xpGained = Random.Range(xpMin, xpMax) * ApplyOmens(mission);
-        mission.MissionToArchive.TotalPilotXpGained += mission.Pilot.GainXp(xpGained);
+        mission.MissionToArchive.TotalPilotXpGained += PilotsManager.AwardXp(mission.Pilot, xpGained);
 	}
 
     /// <summary>

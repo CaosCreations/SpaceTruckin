@@ -41,11 +41,7 @@ public class ArchivedMission : IDataModel
         public long totalMoneyEarned;
         public double totalPilotXpGained;
         public Ship ship;
-
-        /// <summary>
-        /// The level of the pilot at the point in time that this archived mission was completed.
-        /// </summary>
-        public int contemporaneousPilotLevel; 
+        public int pilotLevelAtTimeOfMission;
     }
 
     public async Task LoadDataAsync()
@@ -62,9 +58,9 @@ public class ArchivedMission : IDataModel
     public int CompletionNumber { get => saveData.completionNumber; set => saveData.completionNumber = value; }
     public long TotalMoneyEarned { get => saveData.totalMoneyEarned; set => saveData.totalMoneyEarned = value; }
     public int TotalDamageTaken { get => saveData.totalDamageTaken; set => saveData.totalDamageTaken = value; }
-    public int ContemporaneousPilotLevel 
+    public int PilotLevelAtTimeOfMission 
     {
-        get => saveData.contemporaneousPilotLevel; set => saveData.contemporaneousPilotLevel = value; 
+        get => saveData.pilotLevelAtTimeOfMission; set => saveData.pilotLevelAtTimeOfMission = value; 
     }
     public double TotalPilotXpGained { get => saveData.totalPilotXpGained; set => saveData.totalPilotXpGained = value; }
     public int TotalFuelLost { get => saveData.totalFuelLost; set => saveData.totalFuelLost = value; }
