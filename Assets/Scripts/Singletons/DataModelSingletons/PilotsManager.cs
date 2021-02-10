@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 
 public class PilotsManager : MonoBehaviour, IDataModelManager
@@ -34,23 +35,36 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    public void AwardXp(Pilot pilot, int xp)
+    public static double AwardXp(Pilot pilot, double xpGained)
     {
         if (pilot != null)
         {
-            pilot.Xp += xp;
+            pilot.CurrentXp += xpGained;
+            if (pilot.CanLevelUp)
+            {
+                LevelUpPilot(pilot);
+            }
         }
+        return pilot.CurrentXp;
+    }
+
+    private static void LevelUpPilot(Pilot pilot)
+    {
+        pilot.Level++;
+        pilot.RequiredXp = Math.Pow(pilot.RequiredXp, pilot.XpThresholdExponent);
     }
 
     public void HirePilot(Pilot pilot)
     {
-        pilot.IsHired = true;
+        if (pilot != null)
+        {
+            pilot.IsHired = true;
+        }
     }
 
     public Pilot[] GetHiredPilots()
     {
         return Instance.Pilots.Where(p => p.IsHired) as Pilot[];
-        
     }
 
     public Pilot[] GetPilotsForHire()
