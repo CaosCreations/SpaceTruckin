@@ -34,6 +34,14 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         }
     }
 
+    public void AwardXp(Pilot pilot, int xp)
+    {
+        if (pilot != null)
+        {
+            pilot.Xp += xp;
+        }
+    }
+
     public void HirePilot(Pilot pilot)
     {
         pilot.IsHired = true;
