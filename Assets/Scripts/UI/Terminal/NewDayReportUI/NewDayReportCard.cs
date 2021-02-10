@@ -43,7 +43,7 @@ public class NewDayReportCard : MonoBehaviour
         builder.AppendLine(xpText);
 
         // Check if the pilot levelled up
-        if (mission.ContemporaneousPilotLevel < mission.Pilot.Level)
+        if (mission.PilotLevelAtTimeOfMission < mission.Pilot.Level)
         {
             builder.AppendLine($"{mission.Pilot.Name} has levelled up! (now level {mission.Pilot.Level})");
         }
