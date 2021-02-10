@@ -9,9 +9,8 @@ public class PilotXpOutcome : MissionOutcome
 	public override void Process(Mission mission) 
 	{
         int xpGained = Mathf.FloorToInt(Random.Range(xpMin, xpMax) * ApplyOmens(mission));
-        PilotsManager.Instance.AwardXp(mission.Ship, xpGained);
+        PilotsManager.Instance.AwardXp(mission.Ship.Pilot, xpGained);
         mission.MissionToArchive.TotalPilotXpGained += xpGained;
-
 	}
 
     /// <summary>
