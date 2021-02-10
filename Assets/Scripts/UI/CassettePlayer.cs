@@ -72,9 +72,28 @@ public class CassettePlayer : MonoBehaviour
 
 	private void ChangeTrack(bool goingForward) 
 	{
-		currentTrackIndex = goingForward 
-			? currentTrackIndex < tracks.Length - 1 ? currentTrackIndex + 1 : 0 
-			: currentTrackIndex >= 1 ? currentTrackIndex - 1 : tracks.Length - 1;
+		if (goingForward)
+        {
+			if (currentTrackIndex < tracks.Length - 1)
+            {
+				currentTrackIndex++;
+            }
+			else
+            {
+				currentTrackIndex = 0;
+            }
+        }
+		else
+        {
+			if (currentTrackIndex >= 1)
+            {
+				currentTrackIndex--;
+            }
+			else
+            {
+				currentTrackIndex = tracks.Length - 1;
+            }
+        }
 			
 		audioSource.clip = tracks[currentTrackIndex];
 		SetAllButtonsInteractable();
