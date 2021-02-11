@@ -7,33 +7,30 @@ public partial class Pilot
     // The fields are all located in Pilot.cs. 
 
     public string Name { get => pilotName; }
-
     public string Description
     {
         get => description; set => description = value;
     }
-
     public int HireCost { get => hireCost; }
-
-    public int Xp { get => saveData.xp; set => saveData.xp = value; }
-
+    public double CurrentXp { get => saveData.currentXp; set => saveData.currentXp = value; }
+    public double RequiredXp { get => saveData.requiredXp; set => saveData.requiredXp = value; }
+    public float XpThresholdExponent 
+    {
+        get => xpThresholdExponent; set => xpThresholdExponent = value; 
+    }
     public int Level { get => saveData.level; set => saveData.level = value; }
-
     public int MissionsCompleted
     {
         get => saveData.missionsCompleted; set { saveData.missionsCompleted = value; }
     }
-
     public bool IsHired
     {
         get => saveData.isHired; set { saveData.isHired = value; }
     }
-
     public bool IsOnMission
     {
         get => saveData.isOnMission; set { saveData.isOnMission = value; }
     }
-
     public bool IsAssignedToShip
     {
         get => saveData.isAssignedToShip; set { saveData.isAssignedToShip = value; }
@@ -43,6 +40,5 @@ public partial class Pilot
     {
         get => ShipsManager.Instance.Ships.FirstOrDefault(s => s.Pilot == this); 
     } 
-
     public Sprite Avatar { get => avatar; set => avatar = value; }
 }

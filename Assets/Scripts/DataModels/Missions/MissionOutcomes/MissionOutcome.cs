@@ -7,6 +7,7 @@ public interface IMissionOutcome
 
 public class MissionOutcome : ScriptableObject, IMissionOutcome
 {
+    [Range(0, 100)]
     public int probability;
     public string flavourText;
 

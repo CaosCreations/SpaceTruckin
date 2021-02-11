@@ -13,9 +13,9 @@ public class NewDayReportCard : MonoBehaviour
 
     public void ShowReport(ArchivedMission mission)
     {
-        if (mission.ShipUsed.Avatar != null)
+        if (mission.Ship.Avatar != null)
         {
-            shipAvatar.sprite = mission.ShipUsed.Avatar;
+            shipAvatar.sprite = mission.Ship.Avatar;
         }
         detailsText.text = BuildReportDetails(mission);
     }
@@ -28,19 +28,26 @@ public class NewDayReportCard : MonoBehaviour
     public string BuildReportDetails(ArchivedMission mission)
     {
         StringBuilder builder = new StringBuilder();
-        string missionIdentifierText = $@"{mission.ShipUsed.Pilot.Name} of the {mission.ShipUsed.Name}
+        string missionIdentifierText = $@"{mission.Pilot.Name} of the {mission.Ship.Name}
             completed the mission {mission.MissionName}";
 
-        string moneyText = $"{mission.ShipUsed.Name} earned ${mission.TotalMoneyEarned}";
-        string damageText = $"{mission.ShipUsed.Name} took {mission.TotalDamageTaken} damage.";
-        string fuelText = $"{mission.ShipUsed.Name} lost {mission.TotalFuelLost} fuel";
-        string xpText = $"{mission.ShipUsed.Pilot.Name} gained {mission.TotalPilotXpGained}";
+        string moneyText = $"{mission.Ship.Name} earned ${mission.TotalMoneyEarned}";
+        string damageText = $"{mission.Ship.Name} took {mission.TotalDamageTaken} damage.";
+        string fuelText = $"{mission.Ship.Name} lost {mission.TotalFuelLost} fuel";
+        string xpText = $"{mission.Pilot.Name} gained {mission.TotalPilotXpGained}";
 
         builder.AppendLine(missionIdentifierText);
         builder.AppendLine(moneyText);
         builder.AppendLine(damageText);
         builder.AppendLine(fuelText);
         builder.AppendLine(xpText);
+
+        // Check if the pilot levelled up
+        if (mission.PilotLevelAtTimeOfMission < mission.Pilot.Level)
+        {
+            builder.AppendLine($"{mission.Pilot.Name} has levelled up! (now level {mission.Pilot.Level})");
+        }
+
         return builder.ToString();
     }
 }

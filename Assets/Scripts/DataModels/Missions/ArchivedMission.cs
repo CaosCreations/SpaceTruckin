@@ -24,7 +24,7 @@ public class ArchivedMission : IDataModel
         MissionName = mission.Name;
         CompletionNumber = completionNumber;
         FileName = $"{MissionName}_{completionNumber}";
-        ShipUsed = mission.Ship;
+        Ship = mission.Ship;
         TotalFuelLost = mission.FuelCost;
     }
 
@@ -37,12 +37,11 @@ public class ArchivedMission : IDataModel
     public class ArchivedMissionSaveData
     {
         public string missionName;
-        public int completionNumber;
+        public int completionNumber, totalDamageTaken, totalFuelLost;
         public long totalMoneyEarned;
-        public int totalDamageTaken;
-        public int totalFuelLost;
-        public int totalPilotXpGained;
-        public Ship shipUsed;
+        public double totalPilotXpGained;
+        public Ship ship;
+        public int pilotLevelAtTimeOfMission;
     }
 
     public async Task LoadDataAsync()
@@ -59,7 +58,12 @@ public class ArchivedMission : IDataModel
     public int CompletionNumber { get => saveData.completionNumber; set => saveData.completionNumber = value; }
     public long TotalMoneyEarned { get => saveData.totalMoneyEarned; set => saveData.totalMoneyEarned = value; }
     public int TotalDamageTaken { get => saveData.totalDamageTaken; set => saveData.totalDamageTaken = value; }
-    public int TotalPilotXpGained { get => saveData.totalPilotXpGained; set => saveData.totalPilotXpGained = value; }
+    public int PilotLevelAtTimeOfMission 
+    {
+        get => saveData.pilotLevelAtTimeOfMission; set => saveData.pilotLevelAtTimeOfMission = value; 
+    }
+    public double TotalPilotXpGained { get => saveData.totalPilotXpGained; set => saveData.totalPilotXpGained = value; }
     public int TotalFuelLost { get => saveData.totalFuelLost; set => saveData.totalFuelLost = value; }
-    public Ship ShipUsed { get => saveData.shipUsed; set => saveData.shipUsed = value; }
+    public Ship Ship { get => saveData.ship; set => saveData.ship = value; }
+    public Pilot Pilot => Ship.Pilot; 
 }

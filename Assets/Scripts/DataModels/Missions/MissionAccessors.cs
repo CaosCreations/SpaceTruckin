@@ -39,6 +39,7 @@
     }
 
     public Ship Ship { get => saveData.ship; set => saveData.ship = value; }
+    public Pilot Pilot { get => saveData.ship.Pilot; }
 
     public MissionOutcome[] Outcomes { get => outcomes; }
 

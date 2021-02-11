@@ -171,7 +171,7 @@ public class PilotsUI : MonoBehaviour
 		builder.AppendLine("Name: " + pilot.Name);
 		builder.AppendLine("Ship: " + pilot.Ship.Name);
 		builder.AppendLine("Level: " + pilot.Level);
-		builder.AppendLine("Experience: " + pilot.Xp);
+		builder.AppendLine("Experience: " + pilot.CurrentXp);
 
 		if (string.IsNullOrEmpty(pilot.Description))
 		{
