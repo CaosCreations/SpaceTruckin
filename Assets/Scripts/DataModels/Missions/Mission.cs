@@ -54,7 +54,7 @@ public partial class Mission : ScriptableObject, IDataModel
         return saveData.daysLeftToComplete > 0;
     }
 
-    private void ProcessOutcomes()
+    public void ProcessOutcomes()
     {
         foreach (MissionOutcome outcome in outcomes)
         {
@@ -63,29 +63,5 @@ public partial class Mission : ScriptableObject, IDataModel
                 outcome.Process(this);
             }
         }
-    }
-
-    public void CompleteMission()
-    {
-        // Send a thank you email on first completion of the mission.
-        if (ThankYouMessage != null && NumberOfCompletions <= 0)
-        {
-            ThankYouMessage.IsUnlocked = true;
-        }
-        NumberOfCompletions++;
-
-        // Instantiate an archived mission object to store the stats of the completed mission.
-        MissionToArchive = new ArchivedMission(this, NumberOfCompletions);
-
-        // We will set the archived mission fields throughout the outcome processing. 
-        ProcessOutcomes();
-
-        Ship.DeductFuel();
-        Ship.IsLaunched = false;
-        Ship.CurrentMission = null;
-        Ship = null;
-
-        // Add the object to the archive once all outcomes have been processed. 
-        ArchivedMissionsManager.AddToArchive(MissionToArchive);
     }
 }

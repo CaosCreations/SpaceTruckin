@@ -76,6 +76,30 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         }
     }
 
+    private static void CompleteMission(Mission mission)
+    {
+        // Send a thank you email on first completion of the mission.
+        if (mission.ThankYouMessage != null && mission.NumberOfCompletions <= 0)
+        {
+            mission.ThankYouMessage.IsUnlocked = true;
+        }
+        mission.NumberOfCompletions++;
+
+        // Instantiate an archived mission object to store the stats of the completed mission.
+        mission.MissionToArchive = new ArchivedMission(mission, mission.NumberOfCompletions);
+
+        // We will set the archived mission fields throughout the outcome processing. 
+        mission.ProcessOutcomes();
+
+        mission.Ship.DeductFuel();
+        mission.Ship.IsLaunched = false;
+        mission.Ship.CurrentMission = null;
+        mission.Ship = null;
+
+        // Add the object to the archive once all outcomes have been processed. 
+        ArchivedMissionsManager.AddToArchive(mission.MissionToArchive);
+    }
+
     public void SaveData()
     {
         foreach (Mission mission in Instance.Missions)
