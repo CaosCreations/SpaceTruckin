@@ -40,6 +40,8 @@ public class BlackjackManager : MonoBehaviour
     public BlackjackNPC blackjackNPC1;
     public BlackjackNPC blackjackNPC2; // nullcheck so we can have fewer than 2 npcs at the table. 
 
+
+    // This doesn't include the dealer
     private BlackjackPlayer[] blackjackPlayers;
 
     public enum PlayButtonType
@@ -57,16 +59,17 @@ public class BlackjackManager : MonoBehaviour
         };
     }
 
-    public void InitNewSessionButton()
+    public void InitNewSessionButton() // open bjcanvas - but how to do when transform (not pcontainer)
     {
-        GameObject newSessionButtonObject = Instantiate(blackjackButtonPrefab);
-        newSessionButtonObject.name = BlackjackConstants.newSessionButtonName;
-        newSessionButtonObject.transform.parent = parentContainer.transform;
-        newSessionButtonObject.transform.localPosition = Vector2.one / 2f;
+        GameObject newSessionButton = Instantiate(blackjackButtonPrefab);
+        newSessionButton.name = BlackjackConstants.newSessionButtonName;
+        //newSessionButton.transform.parent = parentContainer.transform;
+        newSessionButton.transform.parent = transform;
+        newSessionButton.transform.localPosition = Vector2.one / 2f;
 
-        Button newSessionButton = newSessionButtonObject.GetComponent<Button>();
-        newSessionButton.GetComponentInChildren<Text>().text = BlackjackConstants.newSessionButtonText;
-        newSessionButton.AddOnClick(SetupTable);
+        Button button = newSessionButton.GetComponent<Button>();
+        button.GetComponentInChildren<Text>().text = BlackjackConstants.newSessionButtonText;
+        button.AddOnClick(SetupTable);
     }
 
     // if stmt for < 2 players? 
@@ -112,17 +115,20 @@ public class BlackjackManager : MonoBehaviour
 
     private void HandleNPCWagers()
     {
-
+        
     }
 
     private void NewGame()
     {
+        blackjackNPC1.Wager();
+        blackjackNPC2.Wager();
+
         ResetHands();
         Deck.Shuffle();
         DealStartingHands();
 
         TogglePlayButtons(inGame: true);
-        gameInfo.GetComponent<Text>().text = $"Current chips: {blackjackPlayer.chips} | Current wager: {blackjackPlayer.wager}";
+        gameInfo.text = $"Current chips: {blackjackPlayer.chips} | Current wager: {blackjackPlayer.wager}";
         dealerTotal.text = BlackjackConstants.dealerUnknownTotalText;
     }
 
@@ -151,18 +157,6 @@ public class BlackjackManager : MonoBehaviour
         BlackjackUtils.InitDrawnCardObject(_blackjackPlayer, drawnCard);
         _blackjackPlayer.cardContainer.SetTotalText();
         return drawnCard;
-    }
-
-    private bool AllPlayersAreOut() // redundant?
-    {
-        //return blackjackPlayers.Where(x => !x.IsDealer).Any(x => x.isBust || x.isStanding);
-        return blackjackPlayers.Any(x => !(x.IsBust || x.IsStanding));
-    }
-
-    private bool DealerIsOut()
-    {
-        // could prop encap.
-        return !(blackjackDealer.IsStanding || blackjackDealer.IsBust);
     }
 
     private void PostGame()

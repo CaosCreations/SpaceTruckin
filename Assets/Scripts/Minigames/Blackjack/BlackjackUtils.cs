@@ -37,12 +37,9 @@ public class BlackjackUtils : MonoBehaviour
         layoutGroup.childForceExpandHeight = true;
 
         CardContainer cardContainer = cardContainerObject.AddComponent<CardContainer>();
-        //cardContainer.totalText = 
-        Text totalText = 
-
+        cardContainer.totalText = InitTotalText(cardContainerObject, blackjackPlayer);
         blackjackPlayer.cardContainer = cardContainer;
         
-        //InitTotalText(blackjackPlayer);
         return cardContainerObject;
     }
 

@@ -113,4 +113,6 @@ public class BlackjackPlayer : ScriptableObject, IBlackjackPlayer
             chips -= chipsToWager;
         }
     }
+
+    public virtual void Wager() { }
 }
