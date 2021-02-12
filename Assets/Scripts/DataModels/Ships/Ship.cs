@@ -43,6 +43,10 @@ public partial class Ship : ScriptableObject, IDataModel
         {
             CurrentFuel = Math.Max(0, CurrentFuel - CurrentMission.FuelCost);
         }
+        else
+        {
+            Debug.Log($" {CurrentMission.Name} was null when calling Ship.DeductFuel (ln 40) at {DateTime.Now}");
+        }
     }
 
     public void SaveData()
