@@ -59,7 +59,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
     public static void UpdateMissionSchedule()
     {
         // Reset yesterday's missions, so today's will take their place. 
-        ArchivedMissionsManager.Instance.MissionsCompletedYesterday.Clear();
+        ArchivedMissionsManager.ResetMissionsCompletedYesterday();
 
         foreach (Mission mission in Instance.Missions)
         {
@@ -70,7 +70,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
                 // We just finished the mission
                 if (!mission.IsInProgress())
                 {
-                    mission.CompleteMission();
+                    CompleteMission(mission);
                 }
             }
         }

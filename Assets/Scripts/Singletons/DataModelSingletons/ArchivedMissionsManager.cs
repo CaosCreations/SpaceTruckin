@@ -47,6 +47,9 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
             && Instance.MissionsCompletedYesterday.Any();
     }
 
+    public static void ResetMissionsCompletedYesterday()
+        => Instance.MissionsCompletedYesterday.Clear();
+
     public static void AddToArchive(ArchivedMission archivedMission)
     {
         Instance.MissionsCompletedYesterday.Add(archivedMission);
@@ -81,6 +84,6 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
 
     public void SaveData() => ArchivedMissions.ForEach(a => a.SaveData());
 
-    public void DeleteData() =>
-        DataModelsUtils.RecursivelyDeleteSaveData(ArchivedMission.FOLDER_NAME);
+    public void DeleteData() 
+        => DataModelsUtils.RecursivelyDeleteSaveData(ArchivedMission.FOLDER_NAME);
 }
