@@ -48,7 +48,7 @@ public class SpriteAnimator : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (PlayerMovement.movementVector == Vector2.zero)
+        if (PlayerMovement.movementVector == Vector3.zero)
         {
             material.mainTexture = stationaryPosition.texture;
         }
