@@ -3888,6 +3888,16 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 360259632682160997, guid: d84bb0f39e8541f4f9524a9df8df9b87,
+        type: 3}
+      propertyPath: m_Name
+      value: VendingMachineCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 360259632682160997, guid: d84bb0f39e8541f4f9524a9df8df9b87,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 496780423736640438, guid: d84bb0f39e8541f4f9524a9df8df9b87,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -5310,6 +5320,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7513093811224638331, guid: d84bb0f39e8541f4f9524a9df8df9b87,
         type: 3}
+      propertyPath: vendingCanvas
+      value: 
+      objectReference: {fileID: 1895448682}
+    - target: {fileID: 7513093811224638331, guid: d84bb0f39e8541f4f9524a9df8df9b87,
+        type: 3}
       propertyPath: interactableType
       value: 6
       objectReference: {fileID: 0}
@@ -5467,6 +5482,11 @@ PrefabInstance:
         type: 3}
       propertyPath: hangarNode
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7919005534793070861, guid: d84bb0f39e8541f4f9524a9df8df9b87,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8232060004079489547, guid: d84bb0f39e8541f4f9524a9df8df9b87,
         type: 3}
@@ -5745,6 +5765,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d84bb0f39e8541f4f9524a9df8df9b87, type: 3}
+--- !u!1 &1895448682 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 360259632682160997, guid: d84bb0f39e8541f4f9524a9df8df9b87,
+    type: 3}
+  m_PrefabInstance: {fileID: 1895448681}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1905753326
 PrefabInstance:
   m_ObjectHideFlags: 0

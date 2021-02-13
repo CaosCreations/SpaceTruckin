@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class CassettePlayer : MonoBehaviour
@@ -32,17 +30,16 @@ public class CassettePlayer : MonoBehaviour
 	{
 		audioSource = FindObjectOfType<AudioSource>();
 		audioSource.clip = tracks[currentTrackIndex];
-		
 		AddListeners();
 	}
 
 	private void AddListeners()
 	{
-		playButton.onClick.AddListener(() => PlayTrack());
-		pauseButton.onClick.AddListener(() => PauseTrack());
-		stopButton.onClick.AddListener(() => StopTrack());
-		nextTrackButton.onClick.AddListener(() => ChangeTrack(next: true));
-		previousTrackButton.onClick.AddListener(() => ChangeTrack(next: false));
+		playButton.AddOnClick(() => PlayTrack());
+		pauseButton.AddOnClick(() => PauseTrack());
+		stopButton.AddOnClick(() => StopTrack());
+		nextTrackButton.AddOnClick(() => ChangeTrack(goingForward: true));
+		previousTrackButton.AddOnClick(() => ChangeTrack(goingForward: false));
 	}
 
 	private void PlayTrack() 
@@ -53,8 +50,6 @@ public class CassettePlayer : MonoBehaviour
 		trackPlaying = true; 
 		audioSource.clip = tracks[currentTrackIndex];
 		audioSource.Play();
-
-		Debug.Log("Current track playing: " + audioSource.clip.name); 
 	}
 
 	private void PauseTrack()
@@ -75,19 +70,32 @@ public class CassettePlayer : MonoBehaviour
 		audioSource.Stop();
 	}
 
-	private void ChangeTrack(bool next) 
+	private void ChangeTrack(bool goingForward) 
 	{
-		// We could wrap around to the first/last track, 
-		// but this may be less authentic (it's a cassette player) 
-		if (next && currentTrackIndex + 1 >= tracks.Length ||
-			!next && currentTrackIndex - 1 < 0)
-		{
-			return;
-		}
-
-		currentTrackIndex = next ? currentTrackIndex + 1 : currentTrackIndex - 1;
+		if (goingForward)
+        {
+			if (currentTrackIndex < tracks.Length - 1)
+            {
+				currentTrackIndex++;
+            }
+			else
+            {
+				currentTrackIndex = 0;
+            }
+        }
+		else
+        {
+			if (currentTrackIndex >= 1)
+            {
+				currentTrackIndex--;
+            }
+			else
+            {
+				currentTrackIndex = tracks.Length - 1;
+            }
+        }
+			
 		audioSource.clip = tracks[currentTrackIndex];
-
 		SetAllButtonsInteractable();
 
 		// Don't grey out the following buttons if they are active,

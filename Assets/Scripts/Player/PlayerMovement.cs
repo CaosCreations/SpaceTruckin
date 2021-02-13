@@ -7,7 +7,7 @@ public enum Direction
 
 public class PlayerMovement : MonoBehaviour
 {
-    public static Vector2 movementVector;
+    public static Vector3 movementVector;
     public float killFloorHeight = -25;
     public Vector3 playerResetPosition = new Vector3(8.5f, 0.8f, -10f);
 
@@ -20,14 +20,33 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController characterController;
     private float gravity = -9.81f;
 
+
+
+
+    //player movement relate to camera
+    public Transform CameraTransform;
+
+
+
+
+
+
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
+
+
+        // initialize the player's Camera
+		CameraTransform = Camera.main.transform;
+
+
+
     }
 
     // Get input in Update 
     private void Update()
     {
+
         if (PlayerManager.Instance.isPaused)
         {
             return;
@@ -42,7 +61,13 @@ public class PlayerMovement : MonoBehaviour
         movementVector.x = Input.GetAxisRaw("Horizontal");
         movementVector.y = Input.GetAxisRaw("Vertical");
 
+
         SetDirection();
+
+        RotateWithView(movementVector,CameraTransform);
+
+
+
     }
 
     // Move player in FixedUpdate 
@@ -65,45 +90,112 @@ public class PlayerMovement : MonoBehaviour
 
     private void SetDirection()
     {
-        if (movementVector == Vector2.up)
+        if (movementVector == Vector3.up)
         {
             animator.SetBool("Up", true);
         }
-        else if (movementVector == new Vector2(-1f, 1f))
+        else if (movementVector == new Vector3(-1f, 1f))
         {
             animator.SetBool("Up", true);
         }
-        else if (movementVector == Vector2.left)
+        else if (movementVector == Vector3.left)
         {
             animator.SetBool("Left", true);
         }
-        else if (movementVector == new Vector2(-1f, -1f))
+        else if (movementVector == new Vector3(-1f, -1f))
         {
             animator.SetBool("Left", true);
         }
-        else if (movementVector == Vector2.down)
+        else if (movementVector == Vector3.down)
         {
             animator.SetBool("Down", true);
         }
-        else if (movementVector == new Vector2(1f, -1f))
+        else if (movementVector == new Vector3(1f, -1f))
         {
             animator.SetBool("Down", true);
         }
-        else if (movementVector == Vector2.right)
+        else if (movementVector == Vector3.right)
         {
             animator.SetBool("Right", true);
         }
-        else if (movementVector == Vector2.one)
+        else if (movementVector == Vector3.one)
         {
             animator.SetBool("Right", true);
+            
         }
         else
         {
+
             animator.SetBool("Up", false);
             animator.SetBool("Down", false);
             animator.SetBool("Right", false);
             animator.SetBool("Left", false);
         }
+
+
+
+
+
+
+
+        			 
+			   if (Input.GetKey(KeyCode.W)){ animator.SetBool("KeyUp",true);  }
+			      if (!Input.GetKey(KeyCode.W)){ animator.SetBool("KeyUp",false);  }
+
+				     if (Input.GetKey(KeyCode.S)){ animator.SetBool("KeyDown",true);    }
+					 if (!Input.GetKey(KeyCode.S)){ animator.SetBool("KeyDown",false);  }
+
+					 
+
+			   if (Input.GetKey(KeyCode.D)){ animator.SetBool("KeyRight",true);  }
+			      if (!Input.GetKey(KeyCode.D)){ animator.SetBool("KeyRight",false);  }
+
+				  
+
+				     if (Input.GetKey(KeyCode.A)){ animator.SetBool("KeyLeft",true);  }
+					 if (!Input.GetKey(KeyCode.A)){ animator.SetBool("KeyLeft",false);  }
+
+
+                      if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S))
+                      {
+                          animator.SetBool("KeyUp",false);
+                          animator.SetBool("KeyDown",false);
+
+                      }
+
+                      if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
+                      {
+                          animator.SetBool("KeyRight",false);
+                          animator.SetBool("KeyLeft",false);
+
+                      }
+
+
+
+                    if (Input.GetKey(KeyCode.LeftShift))
+                    {
+                         animator.SetBool("RUN",true);
+                         currentSpeed=7;
+                           }
+					if (!Input.GetKey(KeyCode.LeftShift))
+                    { 
+                        
+                        animator.SetBool("RUN",false);
+                        currentSpeed=3;
+                      }
+
+
+    
+    
+
+
+
+
+        
+
+
+
+
     }
 
     private void ApplyGravity()
@@ -118,7 +210,7 @@ public class PlayerMovement : MonoBehaviour
             currentSpeed += acceleration; 
         }
 
-        if (movementVector == Vector2.zero)
+        if (movementVector == Vector3.zero)
         {
             currentSpeed = 0f;
         }
@@ -138,4 +230,23 @@ public class PlayerMovement : MonoBehaviour
         transform.position = playerResetPosition;
         characterController.enabled = true;
     }
+
+
+
+
+
+    	public static void RotateWithView(Vector3 vector,Transform cameraTransform)
+	{
+		
+		
+		Vector3 dir =cameraTransform.TransformDirection(vector);
+        dir.Set(dir.x, 0, dir.z);
+		vector = dir.normalized * vector.magnitude;
+	}
+
+
+
+
+
+
 }
