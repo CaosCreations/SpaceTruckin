@@ -30,7 +30,10 @@ public class PlayerMovement : MonoBehaviour
         characterController = GetComponent<CharacterController>();
 
         // Initialize the player's Camera
-        CameraTransform = GetComponentInChildren<Camera>().transform;
+        if (Camera.main != null)
+        {
+            CameraTransform = Camera.main.transform;
+        }
     }
 
     // Get input in Update 
@@ -187,7 +190,7 @@ public class PlayerMovement : MonoBehaviour
 
     public static void RotateWithView(Vector3 vector,Transform cameraTransform)
 	{
-		Vector3 dir =cameraTransform.TransformDirection(vector);
+		Vector3 dir = cameraTransform.TransformDirection(vector);
         dir.Set(dir.x, 0, dir.z);
 		vector = dir.normalized * vector.magnitude;
 	}
