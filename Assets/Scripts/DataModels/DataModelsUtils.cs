@@ -24,23 +24,23 @@ public static class DataModelsUtils
                 Debug.LogError($"{e.Message}\n{e.StackTrace}");
             }
         }
-
         string filePath = Path.Combine(folderPath, fileName + FILE_EXTENSION);
         string fileContents = JsonUtility.ToJson(dataModel);
 
         try
         {
             var buffer = Encoding.UTF8.GetBytes(fileContents);
-            
+
             using (var fileStream = new FileStream(filePath, FileMode.OpenOrCreate,
                 FileAccess.Write, FileShare.None, buffer.Length, true))
             {
+                fileStream.SetLength(0);
                 await fileStream.WriteAsync(buffer, 0, buffer.Length);
             }
         }
         catch (Exception e)
         {
-            Debug.LogError($"{e.Message}\n{e.StackTrace}");
+            LogIOError(e, filePath);
         }
     }
 
@@ -62,7 +62,7 @@ public static class DataModelsUtils
             }
             catch (Exception e)
             {
-                Debug.LogError($"{e.Message}\n{e.StackTrace}");
+                LogIOError(e, filePath);
             }
         }
         return new T();
@@ -101,5 +101,10 @@ public static class DataModelsUtils
     public static void CreateSaveFolder(string folderName)
     {
         Directory.CreateDirectory(GetSaveFolderPath(folderName));
+    }
+
+    public static void LogIOError(Exception e, string filePath)
+    {
+        Debug.LogError($"Message: {e.Message}\nTrace: {e.StackTrace}\nFile path: {filePath}");
     }
 }

@@ -10,21 +10,31 @@ public enum Species
 public partial class Pilot : ScriptableObject
 {
     [Header("Set in Editor")]
-    public string pilotName, shipName, description;
-    public int hireCost;
-    public Species species;
-    public Sprite avatar;
-
-    [Header("Data to update IN GAME")]
+    [SerializeField] private string pilotName;
+    [SerializeField] private string description;
+    [SerializeField] private int hireCost;
+    /// <summary>
+    /// Raise the required xp to this power on level up.
+    /// Different pilots can have different progressions.
+    /// </summary>
+    [SerializeField] private float xpThresholdExponent;
+    
+    [SerializeField] private Species species;
+    [SerializeField] private Sprite avatar;
     public PilotSaveData saveData;
-
     public static string FOLDER_NAME = "PilotSaveData";
 
     [Serializable]
     public class PilotSaveData
     {
-        [SerializeField] public int xp, level, missionsCompleted;
-        [SerializeField] public bool isHired, isOnMission, isAssignedToShip;
+        [Header("Set in Editor")]
+        public int level;
+        public double requiredXp;
+
+        [Header("Data to update IN GAME")]
+        public int missionsCompleted;
+        public double currentXp;
+        public bool isHired, isOnMission, isAssignedToShip;
     }
 
     public void SaveData()
@@ -35,5 +45,13 @@ public partial class Pilot : ScriptableObject
     public async System.Threading.Tasks.Task LoadDataAsync()
     {
         saveData = await DataModelsUtils.LoadFileAsync<PilotSaveData>(name, FOLDER_NAME);
+    }
+
+    public bool CanLevelUp { get => CurrentXp >= RequiredXp; }
+
+    public void LevelUp()
+    {
+        Level++;
+        RequiredXp = Math.Pow(RequiredXp, XpThresholdExponent);  
     }
 }

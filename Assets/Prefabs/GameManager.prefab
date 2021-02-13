@@ -11,9 +11,11 @@ GameObject:
   - component: {fileID: 5745358076465076626}
   - component: {fileID: 667742070}
   - component: {fileID: 5745358076465076627}
+  - component: {fileID: 7105066481962662059}
   - component: {fileID: 3197085279453762649}
   - component: {fileID: 7158868080756466719}
   - component: {fileID: 8710179870615699991}
+  - component: {fileID: 7084496073094469789}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -63,6 +65,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   missionContainer: {fileID: 11400000, guid: 6abb128be21441f4b80cc81980b3c565, type: 2}
+--- !u!114 &7105066481962662059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5745358076465076624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d3d9cc0d86a3094096446b7daaa9455, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3197085279453762649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,3 +119,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   messageContainer: {fileID: 11400000, guid: 17c0b5eb2d119eb478259e5c6fc60e76, type: 2}
+--- !u!114 &7084496073094469789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5745358076465076624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0c9dbc129c65004c894a0262b8acc21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

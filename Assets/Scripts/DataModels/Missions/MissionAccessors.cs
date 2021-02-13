@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
-
-public partial class Mission
+﻿public partial class Mission
 {
     // This class is just for property accessors. 
     // The fields are all located in Mission.cs. 
@@ -14,7 +11,7 @@ public partial class Mission
 
     public string Description { get => description; set => description = value; }
 
-    public int Reward { get => reward; set => reward = value; }
+    public long Reward { get => reward; set => reward = value; }
 
     public bool HasBeenAccepted
     {
@@ -36,12 +33,23 @@ public partial class Mission
 
     public int FuelCost { get => fuelCost; set => fuelCost = value; }
 
-    public int MoneyNeededToUnlock
+    public long MoneyNeededToUnlock
     {
         get => moneyNeededToUnlock; set => moneyNeededToUnlock = value;
     }
 
     public Ship Ship { get => saveData.ship; set => saveData.ship = value; }
+    public Pilot Pilot { get => saveData.ship.Pilot; }
 
     public MissionOutcome[] Outcomes { get => outcomes; }
+
+    public ArchivedMission MissionToArchive 
+    {
+        get => missionToArchive; set => missionToArchive = value; 
+    }
+
+    public ThankYouMessage ThankYouMessage 
+    { 
+        get => thankYouMessage; set => thankYouMessage = value; 
+    }
 }

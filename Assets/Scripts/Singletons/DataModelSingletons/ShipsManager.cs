@@ -16,7 +16,7 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
 
     public HangarSlot[] hangarSlots;
 
-    void Awake()
+    private void Awake()
     {
         if (Instance == null)
         {
@@ -28,7 +28,6 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
-        Init();
     }
 
     public void Init()
@@ -43,6 +42,11 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         }
         hangarSlots = FindObjectsOfType<HangarSlot>();
         UpdateHangarShips();
+
+        if (Ships == null)
+        {
+            Debug.LogError("No ship data");
+        }
     }
 
     public static void DamageShip(Ship ship, int damage)
@@ -66,6 +70,14 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
                 }
             }
         }
+    }
+
+    public static void DockShip(Ship ship)   
+    {
+        ship.DeductFuel();
+        ship.IsLaunched = false;
+        ship.CurrentMission.Ship = null;
+        ship.CurrentMission = null;
     }
 
     public static Ship GetShipForNode(HangarNode node)

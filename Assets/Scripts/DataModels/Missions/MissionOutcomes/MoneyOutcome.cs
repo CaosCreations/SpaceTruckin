@@ -3,11 +3,18 @@
 [CreateAssetMenu(fileName = "MoneyOutcome", menuName = "ScriptableObjects/Missions/Outcomes/MoneyOutcome", order = 1)]
 public class MoneyOutcome : MissionOutcome
 {
-    public float moneyMin;
-    public float moneyMax;
+    [SerializeField] private long moneyMin;
+    [SerializeField] private long moneyMax;
 
     public override void Process(Mission mission)
     {
-        PlayerManager.Instance.ReceiveMoney((long)Random.Range(moneyMin, moneyMax));
+        long moneyEarned = (long)Random.Range(moneyMin, moneyMax);
+        PlayerManager.Instance.ReceiveMoney(moneyEarned);
+
+        if (mission.MissionToArchive != null)
+        {
+            mission.MissionToArchive.TotalMoneyEarned += moneyEarned;
+            Debug.Log("MTA Money: " + mission.MissionToArchive.TotalMoneyEarned);
+        }
     }
 }

@@ -35,15 +35,6 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
-        Init();
-    }
-
-    private void Start()
-    {
-        if (playerData == null)
-        {
-            Debug.LogError("No player data found");
-        }
     }
 
     public void Init()
@@ -57,6 +48,11 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
             DataModelsUtils.CreateSaveFolder(PlayerData.FOLDER_NAME);
         }
         playerMovement = FindObjectOfType<PlayerMovement>();
+
+        if (playerData == null)
+        {
+            Debug.LogError("No player data found");
+        }
     }
 
     public bool CanSpendMoney(long amount)

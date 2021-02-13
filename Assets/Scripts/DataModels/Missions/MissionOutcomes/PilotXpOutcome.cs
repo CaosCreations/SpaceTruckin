@@ -8,11 +8,20 @@ public class PilotXpOutcome : MissionOutcome
 	
 	public override void Process(Mission mission) 
 	{
-		PilotsManager.Instance.AwardXp(
-            mission.Ship, Mathf.FloorToInt(Random.Range(xpMin, xpMax) * ApplyOmens(mission)));
+        // Store the pilot's level before the xp is awarded.
+        // Then we can check if they levelled up as a result of the mission.
+        mission.MissionToArchive.PilotLevelAtTimeOfMission = mission.Pilot.Level;
+
+        double xpGained = Random.Range(xpMin, xpMax) * ApplyOmens(mission);
+        mission.MissionToArchive.TotalPilotXpGained += PilotsManager.AwardXp(mission.Pilot, xpGained);
 	}
 
-    // A mission can have multiple omens attached to it.
+    /// <summary>
+    /// Calculate the xp multiplier based on probability. 
+    /// It can be below 1, resulting in an xp debuff. 
+    /// </summary>
+    /// <param name="mission"></param>
+    /// <returns>A number by which the xp gained will be multiplied.</returns>
     private float ApplyOmens(Mission mission)
     {
         float coefficient = 1f;

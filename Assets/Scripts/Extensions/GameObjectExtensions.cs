@@ -35,4 +35,14 @@ public static class GameObjectExtensions
             image.sprite = sprite; 
         }
     }
+
+    public static Color GetImageColour(this GameObject self)
+    {
+        Image image = self.GetComponent<Image>();
+        if (image != null)
+        {
+            return image.color;
+        }
+        return Color.white;
+    }
 }

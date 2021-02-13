@@ -9,7 +9,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
     [SerializeField] private MissionContainer missionContainer;
     public Mission[] Missions { get => missionContainer.missions; }
 
-    void Awake()
+    private void Awake()
     {
         if (Instance == null)
         {
@@ -21,7 +21,6 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
-        Init();
     }
 
     public void Init()
@@ -33,6 +32,11 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         else
         {
             DataModelsUtils.CreateSaveFolder(Mission.FOLDER_NAME);
+        }
+
+        if (Missions == null)
+        {
+            Debug.LogError("No mission data found");
         }
     }
 
@@ -52,20 +56,50 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
             .ToList();
     }
 
+    public static Mission GetMissionByFileName(string fileName)
+    {
+        return Instance.Missions.FirstOrDefault(x => x.name == fileName);
+    }
+
     public static void UpdateMissionSchedule()
     {
-        foreach(Mission mission in Instance.Missions)
+        // Reset yesterday's missions, so today's will take their place. 
+        ArchivedMissionsManager.ResetMissionsCompletedYesterday();
+
+        foreach (Mission mission in Instance.Missions)
         {
-            if(mission.IsInProgress()){
+            if(mission.IsInProgress())
+            {
                 mission.DaysLeftToComplete--;
 
                 // We just finished the mission
                 if (!mission.IsInProgress())
                 {
-                    mission.CompleteMission();
+                    CompleteMission(mission);
                 }
             }
         }
+    }
+
+    private static void CompleteMission(Mission mission)
+    {
+        // Send a thank you email on first completion of the mission.
+        if (mission.ThankYouMessage != null && mission.NumberOfCompletions <= 0)
+        {
+            mission.ThankYouMessage.IsUnlocked = true;
+        }
+        mission.NumberOfCompletions++;
+
+        // Instantiate an archived mission object to store the stats of the completed mission.
+        mission.MissionToArchive = new ArchivedMission(mission, mission.NumberOfCompletions);
+
+        // We will set the archived mission fields throughout the outcome processing. 
+        mission.ProcessOutcomes();
+
+        // Add the object to the archive once all outcomes have been processed. 
+        ArchivedMissionsManager.AddToArchive(mission.MissionToArchive);
+
+        ShipsManager.DockShip(mission.Ship);
     }
 
     public void SaveData()

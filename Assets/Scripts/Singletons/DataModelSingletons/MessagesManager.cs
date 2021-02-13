@@ -19,7 +19,6 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
-        Init();
     }
 
     public void Init()
@@ -31,6 +30,11 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
         else
         {
             DataModelsUtils.CreateSaveFolder(Message.FOLDER_NAME);
+        }
+
+        if (Messages == null)
+        {
+            Debug.LogError("No message data");
         }
     }
 
