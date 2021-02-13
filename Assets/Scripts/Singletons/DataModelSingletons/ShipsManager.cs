@@ -72,6 +72,14 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         }
     }
 
+    public static void DockShip(Ship ship)   
+    {
+        ship.DeductFuel();
+        ship.IsLaunched = false;
+        ship.CurrentMission.Ship = null;
+        ship.CurrentMission = null;
+    }
+
     public static Ship GetShipForNode(HangarNode node)
     {
         foreach(Ship ship in Instance.Ships)
