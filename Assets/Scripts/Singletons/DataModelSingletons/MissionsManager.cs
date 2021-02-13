@@ -33,6 +33,11 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         {
             DataModelsUtils.CreateSaveFolder(Mission.FOLDER_NAME);
         }
+
+        if (Missions == null)
+        {
+            Debug.LogError("No mission data found");
+        }
     }
 
     public static List<Mission> GetAcceptedMissions()
@@ -84,6 +89,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
             mission.ThankYouMessage.IsUnlocked = true;
         }
         mission.NumberOfCompletions++;
+        DockShip(mission);
 
         // Instantiate an archived mission object to store the stats of the completed mission.
         mission.MissionToArchive = new ArchivedMission(mission, mission.NumberOfCompletions);
@@ -91,13 +97,16 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         // We will set the archived mission fields throughout the outcome processing. 
         mission.ProcessOutcomes();
 
+        // Add the object to the archive once all outcomes have been processed. 
+        ArchivedMissionsManager.AddToArchive(mission.MissionToArchive);
+    }
+
+    private static void DockShip(Mission mission)
+    {
         mission.Ship.DeductFuel();
         mission.Ship.IsLaunched = false;
         mission.Ship.CurrentMission = null;
         mission.Ship = null;
-
-        // Add the object to the archive once all outcomes have been processed. 
-        ArchivedMissionsManager.AddToArchive(mission.MissionToArchive);
     }
 
     public void SaveData()

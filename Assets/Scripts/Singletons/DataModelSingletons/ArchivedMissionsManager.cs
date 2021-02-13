@@ -39,6 +39,11 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
         }
         ArchivedMissions = new List<ArchivedMission>();
         MissionsCompletedYesterday = new List<ArchivedMission>();
+
+        if (ArchivedMissions == null)
+        {
+            Debug.LogError("No archived mission data");
+        }
     }
 
     public static bool WereMissionsCompletedYesterday()

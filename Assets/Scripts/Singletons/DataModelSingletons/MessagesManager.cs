@@ -31,6 +31,11 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
         {
             DataModelsUtils.CreateSaveFolder(Message.FOLDER_NAME);
         }
+
+        if (Messages == null)
+        {
+            Debug.LogError("No message data");
+        }
     }
 
     public void UnlockMessages()

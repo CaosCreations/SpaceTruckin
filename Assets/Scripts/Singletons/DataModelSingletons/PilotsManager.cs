@@ -33,6 +33,11 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         {
             DataModelsUtils.CreateSaveFolder(Pilot.FOLDER_NAME);
         }
+
+        if (Pilots == null)
+        {
+            Debug.LogError("No pilot data");
+        }
     }
 
     public static double AwardXp(Pilot pilot, double xpGained)

@@ -42,6 +42,11 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         }
         hangarSlots = FindObjectsOfType<HangarSlot>();
         UpdateHangarShips();
+
+        if (Ships == null)
+        {
+            Debug.LogError("No ship data");
+        }
     }
 
     public static void DamageShip(Ship ship, int damage)
