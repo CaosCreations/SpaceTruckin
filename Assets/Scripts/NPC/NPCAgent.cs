@@ -16,6 +16,10 @@ public class NPCAgent: MonoBehaviour
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+
+        if (FindObjectOfType<NavMesh>() != null)
+{ 
+        }
         agent.SetDestination(destination.transform.position);
         timer = GetTimeToWait();
     }
