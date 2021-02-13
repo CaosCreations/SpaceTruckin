@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class VendingMachineManager : MonoBehaviour
 {
     // Items indices correspond to the keys on the keypad 
-    public VendingMachineItemContainer items;
+    public VendingMachineItemContainer vendingMachineItemContainer;
+    private VendingMachineItem[] Items { get => vendingMachineItemContainer.items; }
 
     public GameObject itemContainer;
     public GameObject keypadContainer;
@@ -25,7 +24,7 @@ public class VendingMachineManager : MonoBehaviour
 
     private void Start()
     {
-        itemObjects = new GameObject[items.items.Length];
+        itemObjects = new GameObject[Items.Length];
 
         InitialiseItems();
         InitialiseKeypad();
@@ -33,14 +32,12 @@ public class VendingMachineManager : MonoBehaviour
 
     private void InitialiseItems()
     {
-        for (int i = 0; i < items.items.Length; i++)
+        for (int i = 0; i < Items.Length; i++)
         {
             GameObject newItem = Instantiate(itemPrefab, itemContainer.transform);
             itemObjects[i] = newItem;
             newItem.name = "Item " + i.ToString();
-
-            Image image = newItem.GetComponent<Image>();
-            image.sprite = items.items[i].sprite;
+            newItem.SetSprite(Items[i].sprite);
         }
     }
 
@@ -48,28 +45,20 @@ public class VendingMachineManager : MonoBehaviour
     {
         AssignKeyCodes();
 
-        foreach (VendingMachineItem item in items.items)
+        foreach (VendingMachineItem item in Items)
         {
             GameObject key = Instantiate(keyPrefab, keypadContainer.transform);
             key.name = "Key " + item.keyCode;
-
-            Button button = key.GetComponent<Button>();
-            button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(delegate
-            {
-                AddPurchaseListener(item.keyCode);
-            });
-
-            Text text = key.GetComponentInChildren<Text>();
-            text.text = item.keyCode.ToString();
+            key.GetComponent<Button>().AddOnClick(() => AddPurchaseListener(item.keyCode));
+            key.GetComponentInChildren<Text>().text = item.keyCode.ToString();
         }
     }
 
     private void AssignKeyCodes()
     {
-        for (int i = 0; i < items.items.Length; i++)
+        for (byte i = 0; i < Items.Length; i++)
         {
-            items.items[i].keyCode = (byte)i;
+            Items[i].keyCode = i;
         }
     }
 
@@ -78,17 +67,22 @@ public class VendingMachineManager : MonoBehaviour
         Image image = itemObjects[itemIndex].GetComponent<Image>();
         ResetAllColours();
 
-        if (PlayerManager.Instance.CanSpendMoney(items.items[itemIndex].price))
+        if (PlayerManager.Instance.CanSpendMoney(Items[itemIndex].price))
         {
-            items.items[itemIndex].PurchaseItem();
+            Items[itemIndex].PurchaseItem();
             image.color = positiveFeedbackColour;
-            feedbackText.text = items.items[itemIndex].itemName + " has been purchased!";
+            feedbackText.text = Items[itemIndex].itemName + " has been purchased!";
         }
         else
         {
             image.color = negativeFeedbackColour;
             feedbackText.text = "Insufficient funds.";
         }
+    }
+
+    private void OnDisable()
+    {
+        CleanUI();
     }
 
     private void ResetAllColours()
@@ -99,7 +93,6 @@ public class VendingMachineManager : MonoBehaviour
         }
     }
     
-    // Call this in the trigger script when the player exists the machine 
     public void CleanUI()
     {
         feedbackText.text = string.Empty; 
