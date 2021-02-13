@@ -49,14 +49,22 @@ public class BlackjackManager : MonoBehaviour
         Hit, Stand, NewGame, QuitGame
     }
 
+    private void Awake()
+    {
+        blackjackPlayers = new BlackjackPlayer[]
+        {
+            blackjackPlayer, /*blackjackDealer,*/ blackjackNPC1, blackjackNPC2
+        };
+    }
+
     private void Start()
     {
         InitNewSessionButton();
         blackjackPlayer.chips = BlackjackConstants.playerStartingChips;
-        blackjackPlayers = new BlackjackPlayer[] 
-        { 
-            blackjackPlayer, /*blackjackDealer,*/ blackjackNPC1, blackjackNPC2 
-        };
+        //blackjackPlayers = new BlackjackPlayer[] 
+        //{ 
+        //    blackjackPlayer, /*blackjackDealer,*/ blackjackNPC1, blackjackNPC2 
+        //};
     }
 
     public void InitNewSessionButton() // open bjcanvas - but how to do when transform (not pcontainer)
@@ -148,8 +156,6 @@ public class BlackjackManager : MonoBehaviour
         DealCard(blackjackDealer);
     }
 
-    // faceup?
-    // end of game show dealer faceup 
     private Card DealCard(BlackjackPlayer _blackjackPlayer)
     {
         Card drawnCard = Deck.GetRandomCard();
@@ -161,7 +167,6 @@ public class BlackjackManager : MonoBehaviour
 
     private void PostGame()
     {
-        //dealerTotal.text = $"Dealer's total: {blackjackDealer.handTotal}";
         blackjackDealer.cardContainer.SetTotalText();
         blackjackPlayers.Select(x => SetChipsAfterGame(x));
         TogglePlayButtons(inGame: false);
@@ -246,7 +251,6 @@ public class BlackjackManager : MonoBehaviour
                     DealToNPCs();
                 };
             case PlayButtonType.Stand:
-                //return blackjackPlayer.Stand;
                 return () => blackjackPlayer.IsStanding = true;
             case PlayButtonType.NewGame:
                 return NewGame;
@@ -268,7 +272,7 @@ public class BlackjackManager : MonoBehaviour
         SetButtonInteractability(false);
         if (!blackjackNPC1.IsOut)
         {
-            Hit(blackjackNPC1); // make void 
+            Hit(blackjackNPC1);
         }
         if (!blackjackNPC2.IsOut)
         {
@@ -289,6 +293,7 @@ public class BlackjackManager : MonoBehaviour
     {
         Destroy(blackjackTableContainer);
         // deactivate canvas
+
     }
 
     private void InitButtons()

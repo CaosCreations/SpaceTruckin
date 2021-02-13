@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum UICanvasType
 {
-    Bed, Terminal, Vending, Hangar, Cassette, NoticeBoard, None
+    Bed, Terminal, Vending, Hangar, Cassette, NoticeBoard, Blackjack, None
 }
 
 public class UIManager : MonoBehaviour
@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
     public GameObject hangarNodeCanvas;
     public GameObject casetteCanvas;
     public GameObject noticeBoardCanvas;
+    public GameObject blackjackCanvas;
     public bool currentMenuOverridesEscape;
     public TextMeshPro interactionTextMesh;
 
@@ -44,6 +45,8 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         ClearCanvases();
+        Instance.interactableType = UICanvasType.Blackjack;
+        ShowCanvas();
     }
 
     private void Update()
@@ -78,6 +81,7 @@ public class UIManager : MonoBehaviour
         Instance.vendingCanvas.SetActive(false);
         Instance.casetteCanvas.SetActive(false);
         Instance.noticeBoardCanvas.SetActive(false);
+        Instance.blackjackCanvas.SetActive(false);
     }
 
     public static void ShowCanvas()
@@ -104,6 +108,9 @@ public class UIManager : MonoBehaviour
                 break;
             case UICanvasType.Bed:
                 Instance.bedCanvas.SetActive(true);
+                break;
+            case UICanvasType.Blackjack:
+                Instance.blackjackCanvas.SetActive(true);
                 break;
         }
     }
@@ -156,6 +163,9 @@ public class UIManager : MonoBehaviour
                 break;
             case UICanvasType.Vending:
                 interaction += "Buy Snax";
+                break;
+            case UICanvasType.Blackjack:
+                interaction += "Play Blackjack";
                 break;
         }
 
