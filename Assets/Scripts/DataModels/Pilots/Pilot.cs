@@ -21,7 +21,7 @@ public partial class Pilot : ScriptableObject
     
     [SerializeField] private Species species;
     [SerializeField] private Sprite avatar;
-    [SerializeField] private PilotSaveData saveData;
+    public PilotSaveData saveData;
     public static string FOLDER_NAME = "PilotSaveData";
 
     [Serializable]
