@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "VendingMachineItem", menuName = "ScriptableObjects/VendingMachineItem", order = 1)]
 public class VendingMachineItem : ScriptableObject

@@ -7,8 +7,8 @@ public class NPCAgent: MonoBehaviour
     private NavMeshAgent agent;
     
     public bool isWaiting;
-    private float waitTimeLowerBound = 1f;
-    private float waitTimeUpperBound = 4f;
+    public float waitTimeLowerBound = 2;
+    public float waitTimeUpperBound = 7; 
     private float timer;
     
     public Color gizmoColour; 
@@ -48,4 +48,8 @@ public class NPCAgent: MonoBehaviour
             }
         }
     }
+
+
+
+
 }

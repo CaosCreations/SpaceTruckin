@@ -27,15 +27,6 @@ public static class GameObjectExtensions
         return self; 
     }
 
-    public static void SetSprite(this GameObject self, Sprite sprite)
-    {
-        Image image = self.GetComponent<Image>();
-        if (image != null)
-        {
-            image.sprite = sprite; 
-        }
-    }
-
     public static Color GetImageColour(this GameObject self)
     {
         Image image = self.GetComponent<Image>();
