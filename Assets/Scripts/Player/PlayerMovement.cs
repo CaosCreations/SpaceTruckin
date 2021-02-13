@@ -14,8 +14,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Animator animator;
 
     private float currentSpeed;
-    private float walkSpeed = 3f;
-    private float runSpeed = 7f;
+    private readonly float walkSpeed = 3f;
+    private readonly float runSpeed = 7f;
     [SerializeField] private float maximumSpeed; 
     [SerializeField] private float acceleration;
 
