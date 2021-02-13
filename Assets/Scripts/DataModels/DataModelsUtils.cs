@@ -29,14 +29,12 @@ public static class DataModelsUtils
 
         try
         {
-            // Clear the file before saving new data 
-            File.WriteAllText(filePath, string.Empty);
-
             var buffer = Encoding.UTF8.GetBytes(fileContents);
 
             using (var fileStream = new FileStream(filePath, FileMode.OpenOrCreate,
                 FileAccess.Write, FileShare.None, buffer.Length, true))
             {
+                fileStream.SetLength(0);
                 await fileStream.WriteAsync(buffer, 0, buffer.Length);
             }
         }
