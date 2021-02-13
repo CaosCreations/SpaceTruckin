@@ -9,7 +9,7 @@ public class BlackjackManager : MonoBehaviour
     public GameObject blackjackButtonPrefab;
 
     // Container objects 
-    [SerializeField]
+    public GameObject blackjackCanvas;
     private GameObject parentContainer;
     private GameObject blackjackButtonContainer;
     private GameObject blackjackTableContainer;
@@ -84,8 +84,7 @@ public class BlackjackManager : MonoBehaviour
     // or handle this at newgame time so they can get up and leave/join 
     private void SetupTable()
     {
-        BlackjackUtils.InitHeader(gameObject/*blackjackTableContainer*/);
-        gameInfo = BlackjackUtils.InitGameInfo(blackjackTableContainer, blackjackPlayer);
+        gameInfo = BlackjackUtils.InitGameInfo(gameObject, blackjackPlayer);
 
         playerCardContainer = BlackjackUtils.InitCardContainer(
             gameObject, blackjackPlayer, BlackjackConstants.playerCardContainerAnchors, isHorizontal: true);
@@ -161,13 +160,13 @@ public class BlackjackManager : MonoBehaviour
         Card drawnCard = Deck.GetRandomCard();
         _blackjackPlayer.AddCardToHand(drawnCard);
         BlackjackUtils.InitDrawnCardObject(_blackjackPlayer, drawnCard);
-        _blackjackPlayer.cardContainer.SetTotalText();
+        _blackjackPlayer.SetTotalText();
         return drawnCard;
     }
 
     private void PostGame()
     {
-        blackjackDealer.cardContainer.SetTotalText();
+        blackjackDealer.SetTotalText();
         blackjackPlayers.Select(x => SetChipsAfterGame(x));
         TogglePlayButtons(inGame: false);
     }
@@ -194,7 +193,6 @@ public class BlackjackManager : MonoBehaviour
         lowWagerButton.SetActive(!inGame);
         mediumWagerButton.SetActive(!inGame);
         highWagerButton.SetActive(!inGame);
-        quitGameButton.SetActive(!inGame);
     }
 
     private void Update()
@@ -305,7 +303,6 @@ public class BlackjackManager : MonoBehaviour
         hitButton = InitPlayButton(blackjackButtonContainer, blackjackButtonPrefab, PlayButtonType.Hit);
         standButton = InitPlayButton(blackjackButtonContainer, blackjackButtonPrefab, PlayButtonType.Stand);
         newGameButton = InitPlayButton(blackjackButtonContainer, blackjackButtonPrefab, PlayButtonType.NewGame);
-        quitGameButton = InitPlayButton(blackjackButtonContainer, blackjackButtonPrefab, PlayButtonType.QuitGame);
     }
 
     private string GetButtonName(PlayButtonType buttonType)

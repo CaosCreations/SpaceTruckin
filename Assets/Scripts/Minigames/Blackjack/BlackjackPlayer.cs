@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BlackjackPlayer", menuName = "ScriptableObjects/BlackjackPlayer", order = 1)]
+[CreateAssetMenu(fileName = "BlackjackPlayer", menuName = "ScriptableObjects/Blackjack/BlackjackPlayer", order = 1)]
 public class BlackjackPlayer : ScriptableObject
 {
     public string playerName;
@@ -57,8 +57,11 @@ public class BlackjackPlayer : ScriptableObject
         ClearCards();
         handTotal = 0;
         hand = new List<Card>();
-        cardContainer.SetTotalText();
+        SetTotalText();
     }
+
+    public void SetTotalText()
+        => cardContainer.TotalText = $"{playerName} total: {handTotal}";
 
     public void Wager(int chipsToWager)
     {

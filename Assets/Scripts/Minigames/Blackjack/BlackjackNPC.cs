@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[CreateAssetMenu(fileName = "BlackjackPlayer", menuName = "ScriptableObjects/Blackjack/BlackjackNPC", order = 1)]
 public class BlackjackNPC : BlackjackPlayer
 {
     /// <summary>
@@ -8,8 +9,6 @@ public class BlackjackNPC : BlackjackPlayer
     /// </summary>
     public float riskTakingProbability;
     public int lowestTotalWillStandOn;
-
-    //private float wagerProbability = 1f;
 
     public bool WillTakeRisk { get => Random.Range(0f, 1f) <= riskTakingProbability; }
     public bool IsOverStandingThreshold { get => handTotal >= lowestTotalWillStandOn; }
