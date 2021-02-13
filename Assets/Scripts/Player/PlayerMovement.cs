@@ -13,34 +13,24 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private Animator animator;
 
-    private float currentSpeed; 
+    private float currentSpeed;
+    private float walkSpeed = 3f;
+    private float runSpeed = 7f;
     [SerializeField] private float maximumSpeed; 
     [SerializeField] private float acceleration;
 
     private CharacterController characterController;
     private float gravity = -9.81f;
 
-
-
-
-    //player movement relate to camera
+    // Player movement relates to camera
     public Transform CameraTransform;
-
-
-
-
-
 
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
 
-
-        // initialize the player's Camera
-		CameraTransform = Camera.main.transform;
-
-
-
+        // Initialize the player's Camera
+        CameraTransform = GetComponentInChildren<Camera>().transform;
     }
 
     // Get input in Update 
@@ -61,13 +51,8 @@ public class PlayerMovement : MonoBehaviour
         movementVector.x = Input.GetAxisRaw("Horizontal");
         movementVector.y = Input.GetAxisRaw("Vertical");
 
-
         SetDirection();
-
         RotateWithView(movementVector,CameraTransform);
-
-
-
     }
 
     // Move player in FixedUpdate 
@@ -125,77 +110,46 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-
             animator.SetBool("Up", false);
             animator.SetBool("Down", false);
             animator.SetBool("Right", false);
             animator.SetBool("Left", false);
         }
 
+        if (Input.GetKey(KeyCode.W)) animator.SetBool("KeyUp", true);
+        else animator.SetBool("KeyUp", false);
 
+        if (Input.GetKey(KeyCode.S)) animator.SetBool("KeyDown", true);
+        else animator.SetBool("KeyDown", false);
 
+        if (Input.GetKey(KeyCode.D)) animator.SetBool("KeyRight", true);
+        else animator.SetBool("KeyRight", false);
 
+        if (Input.GetKey(KeyCode.A)) animator.SetBool("KeyLeft", true);
+        else animator.SetBool("KeyLeft", false);
 
+        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S))
+        {
+            animator.SetBool("KeyUp", false);
+            animator.SetBool("KeyDown", false);
+        }
 
+        if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
+        {
+            animator.SetBool("KeyRight", false);
+            animator.SetBool("KeyLeft", false);
+        }
 
-        			 
-			   if (Input.GetKey(KeyCode.W)){ animator.SetBool("KeyUp",true);  }
-			      if (!Input.GetKey(KeyCode.W)){ animator.SetBool("KeyUp",false);  }
-
-				     if (Input.GetKey(KeyCode.S)){ animator.SetBool("KeyDown",true);    }
-					 if (!Input.GetKey(KeyCode.S)){ animator.SetBool("KeyDown",false);  }
-
-					 
-
-			   if (Input.GetKey(KeyCode.D)){ animator.SetBool("KeyRight",true);  }
-			      if (!Input.GetKey(KeyCode.D)){ animator.SetBool("KeyRight",false);  }
-
-				  
-
-				     if (Input.GetKey(KeyCode.A)){ animator.SetBool("KeyLeft",true);  }
-					 if (!Input.GetKey(KeyCode.A)){ animator.SetBool("KeyLeft",false);  }
-
-
-                      if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S))
-                      {
-                          animator.SetBool("KeyUp",false);
-                          animator.SetBool("KeyDown",false);
-
-                      }
-
-                      if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
-                      {
-                          animator.SetBool("KeyRight",false);
-                          animator.SetBool("KeyLeft",false);
-
-                      }
-
-
-
-                    if (Input.GetKey(KeyCode.LeftShift))
-                    {
-                         animator.SetBool("RUN",true);
-                         currentSpeed=7;
-                           }
-					if (!Input.GetKey(KeyCode.LeftShift))
-                    { 
-                        
-                        animator.SetBool("RUN",false);
-                        currentSpeed=3;
-                      }
-
-
-    
-    
-
-
-
-
-        
-
-
-
-
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            animator.SetBool("RUN", true);
+            currentSpeed = runSpeed;
+        }
+        else
+        { 
+            animator.SetBool("RUN",false);
+            currentSpeed = walkSpeed;
+        }
     }
 
     private void ApplyGravity()
@@ -231,22 +185,10 @@ public class PlayerMovement : MonoBehaviour
         characterController.enabled = true;
     }
 
-
-
-
-
-    	public static void RotateWithView(Vector3 vector,Transform cameraTransform)
+    public static void RotateWithView(Vector3 vector,Transform cameraTransform)
 	{
-		
-		
 		Vector3 dir =cameraTransform.TransformDirection(vector);
         dir.Set(dir.x, 0, dir.z);
 		vector = dir.normalized * vector.magnitude;
 	}
-
-
-
-
-
-
 }
