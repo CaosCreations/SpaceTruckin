@@ -35,13 +35,13 @@ public class TerminalUIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        if (ArchivedMissionsManager.WereMissionsCompletedYesterday() 
+        if (ArchivedMissionsManager.WereMissionsCompletedYesterday()
             && !newDayReportUI.HasBeenViewed)
         {
-            newDayReportPanel.SetActive(true);
-            newDayReportUI.Init();
             ClearPanels();
             ResetTabButtonColours();
+            newDayReportPanel.SetActive(true);
+            newDayReportUI.Init();
         }
     }
 
