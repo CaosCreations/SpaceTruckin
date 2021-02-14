@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum UICanvasType
 {
-    Bed, Terminal, Vending, Hangar, Cassette, NoticeBoard, None
+    Bed, Terminal, Vending, Hangar, Cassette, NoticeBoard, Customisation, None
 }
 
 public class UIManager : MonoBehaviour
@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
     public GameObject hangarNodeCanvas;
     public GameObject casetteCanvas;
     public GameObject noticeBoardCanvas;
+    public GameObject customisationCanvas;
     public bool currentMenuOverridesEscape;
     public TextMeshPro interactionTextMesh;
 
@@ -57,7 +58,7 @@ public class UIManager : MonoBehaviour
             ClearCanvases();
         }
         
-        if(interactableType != UICanvasType.None)
+        if (interactableType != UICanvasType.None)
         {
             interactionTextMesh.gameObject.SetActive(true);
             interactionTextMesh.text = GetInteractionString();
@@ -78,6 +79,7 @@ public class UIManager : MonoBehaviour
         Instance.vendingCanvas.SetActive(false);
         Instance.casetteCanvas.SetActive(false);
         Instance.noticeBoardCanvas.SetActive(false);
+        Instance.customisationCanvas.SetActive(false);
     }
 
     public static void ShowCanvas()
@@ -104,6 +106,9 @@ public class UIManager : MonoBehaviour
                 break;
             case UICanvasType.Bed:
                 Instance.bedCanvas.SetActive(true);
+                break;
+            case UICanvasType.Customisation:
+                Instance.customisationCanvas.SetActive(true);
                 break;
         }
     }
