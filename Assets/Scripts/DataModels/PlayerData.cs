@@ -14,6 +14,7 @@ public class PlayerData : ScriptableObject, IDataModel
     {
         [SerializeField] public long playerMoney;
         [SerializeField] public long playerTotalMoneyAcquired; //Used to unlock missions
+        [SerializeField] public Color spriteColour;
     }
 
     public long PlayerMoney
@@ -25,6 +26,11 @@ public class PlayerData : ScriptableObject, IDataModel
     {
         get => saveData.playerTotalMoneyAcquired; 
         set => saveData.playerTotalMoneyAcquired = value;
+    }
+
+    public Color SpriteColour 
+    { 
+        get => saveData.spriteColour; set => saveData.spriteColour = value; 
     }
 
     public void SaveData()

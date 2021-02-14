@@ -162,6 +162,9 @@ public class UIManager : MonoBehaviour
             case UICanvasType.Vending:
                 interaction += "Buy Snax";
                 break;
+            case UICanvasType.Customisation:
+                interaction += "Customise Appearance";
+                break;
         }
 
         return interaction;

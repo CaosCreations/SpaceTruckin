@@ -6,6 +6,8 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
 
     [Header("Set In Editor")]
     [SerializeField] private PlayerData playerData;
+    [SerializeField] private PlayerCustomisation playerCustomisation;
+
     public long Money
     {
         get => playerData.PlayerMoney;
@@ -16,6 +18,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         get => playerData.PlayerTotalMoneyAcquired; 
         set => playerData.PlayerTotalMoneyAcquired = value;
     }
+    public Color SpriteColour { get => playerData.SpriteColour; }
 
     [Header("Set at Runtime")]
     public bool isPaused;
@@ -48,6 +51,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
             DataModelsUtils.CreateSaveFolder(PlayerData.FOLDER_NAME);
         }
         playerMovement = FindObjectOfType<PlayerMovement>();
+        playerCustomisation.SetSpriteRendererColour(playerData.SpriteColour);
 
         if (playerData == null)
         {
@@ -90,5 +94,11 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     public void DeleteData()
     {
         DataModelsUtils.RecursivelyDeleteSaveData(PlayerData.FOLDER_NAME);
+    }
+
+    public void SetSpriteColour(Color newColour)
+    {
+        playerData.SpriteColour = newColour;
+        playerCustomisation.SetSpriteRendererColour(newColour);
     }
 }

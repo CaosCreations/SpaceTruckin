@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Net.Mail;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,38 +9,39 @@ public class ColourSliders : MonoBehaviour
 {
     public GameObject colourSliderPrefab; 
     private GameObject sliderContainer;
-    private GameObject imageObject;
-
-    private Image sliderImage; 
-    private Color startingColor = Color.black;
-
+    public Image sliderImage; 
     private GameObject redSlider;
     private GameObject greenSlider;
     private GameObject blueSlider;
 
-    private void Start()
+    public void Init(Color startingColour)
     {
-		
+        sliderContainer = InitSliderContainer();
+        sliderImage = InitImage(startingColour);
+        redSlider = InitSlider(Channel.Red);
+        greenSlider = InitSlider(Channel.Green);
+        blueSlider = InitSlider(Channel.Blue);
     }
 
-    private void InitialiseSliderContainer()
+    private GameObject InitSliderContainer()
     {
-        sliderContainer = new GameObject("SliderContainer");
+        GameObject sliderContainer = new GameObject("SliderContainer");
         sliderContainer.transform.parent = transform;
         sliderContainer.transform.localPosition = Vector2.zero;
         sliderContainer.AddComponent<VerticalLayoutGroup>();
+        return sliderContainer;
     }
 
-    private void InitialiseImageObject()
+    private Image InitImage(Color startingColour)
     {
-        imageObject = new GameObject("SliderImage");
+        GameObject imageObject = new GameObject("SliderImage");
         imageObject.transform.parent = sliderContainer.transform;
-        sliderImage = imageObject.AddComponent<Image>();
-        sliderImage.color = startingColor;
-
+        Image sliderImage = imageObject.AddComponent<Image>();
+        sliderImage.color = startingColour;
+        return sliderImage;
     }
 
-    private GameObject InitialiseSlider(Channel channel)
+    private GameObject InitSlider(Channel channel)
     {
         GameObject sliderObject = Instantiate(colourSliderPrefab);  
         sliderObject.transform.parent = sliderContainer.transform; 
@@ -68,7 +68,6 @@ public class ColourSliders : MonoBehaviour
             case Channel.Blue:
                 sliderImage.color = new Color(sliderImage.color.r, sliderImage.color.g, value / 225f);
                 break; 
-
         }
     }
 
