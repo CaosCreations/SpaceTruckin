@@ -39,7 +39,6 @@ public class PlayerMovement : MonoBehaviour
     // Get input in Update 
     private void Update()
     {
-
         if (PlayerManager.Instance.isPaused)
         {
             return;
@@ -194,4 +193,12 @@ public class PlayerMovement : MonoBehaviour
         dir.Set(dir.x, 0, dir.z);
 		vector = dir.normalized * vector.magnitude;
 	}
+
+    public void ResetAnimator()
+    {
+        animator.SetBool("KeyUp", false);
+        animator.SetBool("KeyDown", false);
+        animator.SetBool("KeyRight", false);
+        animator.SetBool("KeyLeft", false);
+    }
 }
