@@ -77,6 +77,12 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         onFinancialTransaction?.Invoke();
     }
 
+    public void EnterMenuState()
+    {
+        playerMovement.ResetAnimator();
+        Instance.isPaused = true;
+    }
+
     public void SaveData()
     {
         playerData.SaveData();

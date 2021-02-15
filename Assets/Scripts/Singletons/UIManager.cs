@@ -83,7 +83,7 @@ public class UIManager : MonoBehaviour
     public static void ShowCanvas()
     {
         ClearCanvases();
-        PlayerManager.Instance.isPaused = true;
+        PlayerManager.Instance.EnterMenuState();
 
         switch (Instance.interactableType)
         {
