@@ -42,7 +42,7 @@ public class ColourSliders : MonoBehaviour
 
     private Slider InitSlider(Channel channel)
     {
-        GameObject sliderObject = Instantiate(colourSliderPrefab);  
+        GameObject sliderObject = Instantiate(colourSliderPrefab);
         sliderObject.transform.parent = sliderContainer.transform; 
 
         Slider slider = sliderObject.GetComponent<Slider>();
@@ -50,6 +50,13 @@ public class ColourSliders : MonoBehaviour
         slider.maxValue = 255f;
         slider.onValueChanged.AddListener(delegate { UpdateImageColour(channel, slider.value); });
         return slider;
+    }
+
+    private void SetSliderStartingValues(Color startingColour)
+    {
+        redSlider.value = startingColour.r * 255;
+        greenSlider.value = startingColour.g * 255;
+        blueSlider.value = startingColour.b * 255;
     }
 
     private void UpdateImageColour(Channel channel, float value)
@@ -67,27 +74,5 @@ public class ColourSliders : MonoBehaviour
                 sliderImage.color = new Color(sliderImage.color.r, sliderImage.color.g, value / 225f);
                 break; 
         }
-    }
-
-    private void ResetSliders()
-    {
-        redSlider.value = 0f;
-        greenSlider.value = 0f;
-        blueSlider.value = 0f;
-
-    }
-
-    private void SetSliderStartingValues(Color startingColour)
-    {
-        redSlider.value = startingColour.r * 255;
-        greenSlider.value = startingColour.g * 255;
-        blueSlider.value = startingColour.b * 255;
-    }
-
-    private void LogSliderValues()
-    {
-        Debug.Log("Red slider value: " + redSlider.GetComponent<Slider>().value);
-        Debug.Log("Green slider value: " + greenSlider.GetComponent<Slider>().value);
-        Debug.Log("Blue slider value: " + blueSlider.GetComponent<Slider>().value);
     }
 }

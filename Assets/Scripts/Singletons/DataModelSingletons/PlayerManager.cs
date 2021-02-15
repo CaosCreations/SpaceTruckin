@@ -53,14 +53,17 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         }
 
         GetPlayerReferences();
-        if (playerCustomisation != null)
+        if (playerData != null)
         {
-            playerCustomisation.SetSpriteRendererColour(playerData.SpriteColour);
+            if (playerCustomisation != null)
+            {
+                playerCustomisation.Init(playerData.SpriteColour);
+            }
         }
-
-        if (playerData == null)
+        else
         {
             Debug.LogError("No player data found");
+
         }
     }
 
