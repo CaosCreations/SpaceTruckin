@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public enum Channel { Red = 0, Green = 1, Blue = 2 }; 
@@ -10,9 +8,9 @@ public class ColourSliders : MonoBehaviour
     public GameObject colourSliderPrefab; 
     private GameObject sliderContainer;
     public Image sliderImage; 
-    private GameObject redSlider;
-    private GameObject greenSlider;
-    private GameObject blueSlider;
+    private Slider redSlider;
+    private Slider greenSlider;
+    private Slider blueSlider;
 
     public void Init(Color startingColour)
     {
@@ -21,6 +19,7 @@ public class ColourSliders : MonoBehaviour
         redSlider = InitSlider(Channel.Red);
         greenSlider = InitSlider(Channel.Green);
         blueSlider = InitSlider(Channel.Blue);
+        SetSliderStartingValues(startingColour);
     }
 
     private GameObject InitSliderContainer()
@@ -41,7 +40,7 @@ public class ColourSliders : MonoBehaviour
         return sliderImage;
     }
 
-    private GameObject InitSlider(Channel channel)
+    private Slider InitSlider(Channel channel)
     {
         GameObject sliderObject = Instantiate(colourSliderPrefab);  
         sliderObject.transform.parent = sliderContainer.transform; 
@@ -50,8 +49,7 @@ public class ColourSliders : MonoBehaviour
         slider.minValue = 0f; 
         slider.maxValue = 255f;
         slider.onValueChanged.AddListener(delegate { UpdateImageColour(channel, slider.value); });
-
-        return sliderObject;
+        return slider;
     }
 
     private void UpdateImageColour(Channel channel, float value)
@@ -69,6 +67,21 @@ public class ColourSliders : MonoBehaviour
                 sliderImage.color = new Color(sliderImage.color.r, sliderImage.color.g, value / 225f);
                 break; 
         }
+    }
+
+    private void ResetSliders()
+    {
+        redSlider.value = 0f;
+        greenSlider.value = 0f;
+        blueSlider.value = 0f;
+
+    }
+
+    private void SetSliderStartingValues(Color startingColour)
+    {
+        redSlider.value = startingColour.r * 255;
+        greenSlider.value = startingColour.g * 255;
+        blueSlider.value = startingColour.b * 255;
     }
 
     private void LogSliderValues()

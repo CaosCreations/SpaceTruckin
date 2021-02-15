@@ -11,6 +11,6 @@ public class PlayerCustomisation : MonoBehaviour
 
     public void SetSpriteRendererColour(Color newColour)
     {
-        spriteRenderer.color = newColour;
+        spriteRenderer.material.color = newColour;
     }
 }

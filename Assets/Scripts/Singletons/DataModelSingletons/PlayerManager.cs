@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public class PlayerManager : MonoBehaviour, IDataModelManager
 {
@@ -6,7 +7,6 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
 
     [Header("Set In Editor")]
     [SerializeField] private PlayerData playerData;
-    [SerializeField] private PlayerCustomisation playerCustomisation;
 
     public long Money
     {
@@ -23,6 +23,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     [Header("Set at Runtime")]
     public bool isPaused;
     public PlayerMovement playerMovement;
+    public PlayerCustomisation playerCustomisation;
 
     public static event System.Action onFinancialTransaction;
 
@@ -50,12 +51,28 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         {
             DataModelsUtils.CreateSaveFolder(PlayerData.FOLDER_NAME);
         }
-        playerMovement = FindObjectOfType<PlayerMovement>();
-        playerCustomisation.SetSpriteRendererColour(playerData.SpriteColour);
+
+        GetPlayerReferences();
+        if (playerCustomisation != null)
+        {
+            playerCustomisation.SetSpriteRendererColour(playerData.SpriteColour);
+        }
 
         if (playerData == null)
         {
             Debug.LogError("No player data found");
+        }
+    }
+
+    private static void GetPlayerReferences()
+    {
+        GameObject playerObject = GameObject.FindGameObjectsWithTag(PlayerConstants.objectTag)
+            .FirstOrDefault();
+
+        if (playerObject != null)
+        {
+            Instance.playerMovement = playerObject.GetComponent<PlayerMovement>();
+            Instance.playerCustomisation = playerObject.GetComponent<PlayerCustomisation>();
         }
     }
 

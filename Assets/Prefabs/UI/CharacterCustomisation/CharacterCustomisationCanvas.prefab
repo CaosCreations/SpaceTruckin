@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1278560245346013573}
+  - component: {fileID: 1672705776136222742}
+  - component: {fileID: 3314219470680550895}
   - component: {fileID: 1601866371605303650}
   - component: {fileID: 7739514780212613255}
   - component: {fileID: 5228494504617771015}
@@ -40,6 +42,36 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1672705776136222742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2767419402797674120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e4310678ec7be941b662d21aafa8d1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customisationCanvas: {fileID: 2767419402797674120}
+  saveButtonPrefab: {fileID: 5467296406111364438, guid: 237b46443cdb0de41b847ee78531f83a,
+    type: 3}
+--- !u!114 &3314219470680550895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2767419402797674120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e6d8540c5028a34981614d937b627a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colourSliderPrefab: {fileID: 1828106519801299645, guid: 6cd73c1a708664a44ac4c28739dd83b4,
+    type: 3}
+  sliderImage: {fileID: 0}
 --- !u!223 &1601866371605303650
 Canvas:
   m_ObjectHideFlags: 0
@@ -129,7 +161,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4

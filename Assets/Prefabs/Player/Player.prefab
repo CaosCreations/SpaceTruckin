@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1972979662120986136}
   - component: {fileID: 1972979662120986133}
+  - component: {fileID: 7407346052565551345}
   - component: {fileID: 1930419353}
   - component: {fileID: 6316198362758017279}
   - component: {fileID: 1389270015817412045}
@@ -47,9 +48,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32efae1bbf32a9c4b9f9313206942c04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  killFloorHeight: -25
+  playerResetPosition: {x: 8.5, y: 0.8, z: -10}
   animator: {fileID: 6316198362758017279}
   maximumSpeed: 8
   acceleration: 0.5
+  CameraTransform: {fileID: 0}
+--- !u!114 &7407346052565551345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1972979662120986132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8efd5e43620cdd14bbb181129a8d87d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!143 &1930419353
 CharacterController:
   m_ObjectHideFlags: 0

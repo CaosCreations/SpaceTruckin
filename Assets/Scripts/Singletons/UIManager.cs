@@ -40,6 +40,7 @@ public class UIManager : MonoBehaviour
             return;
         }
         interactionTextMesh = GetComponentInChildren<TextMeshPro>();
+        //interactableType = UICanvasType.None; 
     }
 
     private void Start()
