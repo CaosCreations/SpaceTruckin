@@ -93,14 +93,29 @@ public class PilotsUI : MonoBehaviour
 	{
 		SetPilotListVisibility(visible: false);
 
-		if (pilot.Ship != null && pilot.Ship.Avatar != null)
+		if (pilot.Ship != null)
         {
-			shipAvatar.sprite = pilot.Ship.Avatar;
+			if (pilot.Ship.Avatar != null)
+            {
+				shipAvatar.sprite = pilot.Ship.Avatar;
+			}
+			else
+            {
+				Debug.Log($"{pilot}'s ship avatar is null");
+            }
+		}
+		else
+        {
+			Debug.Log($"{pilot}'s ship is null");
         }
 
 		if (pilot.Avatar != null)
         {
 			pilotAvatar.sprite = pilot.Avatar;
+        }
+		else
+        {
+			Debug.Log($"{pilot}'s avatar is null");
         }
 		pilotDetailsText.text = BuildDetailsString(pilot);
 
