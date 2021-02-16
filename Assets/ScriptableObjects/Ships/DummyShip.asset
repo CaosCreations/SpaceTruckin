@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65c61d5d74a340740ad66c5ce01d5754, type: 3}
   m_Name: DummyShip
   m_EditorClassIdentifier: 
-  id: 0
   shipName: Lorem Ipsum
   maxHullIntegrity: 100
   maxFuel: 100
   shipPrefab: {fileID: 0}
   shipAvatar: {fileID: 21300000, guid: 96c9ce1d9e3993243af287359acea75d, type: 3}
-  pilot: {fileID: 0}
-  isOwned: 1
-  isLaunched: 0
-  hangarNode: 0
-  currentMission: {fileID: 0}
-  currentFuel: 100
-  currenthullIntegrity: 100
+  pilot: {fileID: 11400000, guid: 83ad1ba972968de448d603d2183e82c9, type: 2}
+  saveData:
+    isOwned: 0
+    isLaunched: 0
+    currentFuel: 0
+    currenthullIntegrity: 0
+    hangarNode: 0
+    currentMission: {fileID: 0}
