@@ -92,8 +92,16 @@ public class PilotsUI : MonoBehaviour
 	private void ShowPilotProfilePanel(Pilot pilot)
 	{
 		SetPilotListVisibility(visible: false);
-		shipAvatar.sprite = pilot.Ship.Avatar;
-		pilotAvatar.sprite = pilot.Avatar;
+
+		if (pilot.Ship != null && pilot.Ship.Avatar != null)
+        {
+			shipAvatar.sprite = pilot.Ship.Avatar;
+        }
+
+		if (pilot.Avatar != null)
+        {
+			pilotAvatar.sprite = pilot.Avatar;
+        }
 		pilotDetailsText.text = BuildDetailsString(pilot);
 
 		// If the pilot doesn't already work for us, then set up a button to handle hiring him 

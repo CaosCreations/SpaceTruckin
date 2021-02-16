@@ -69,12 +69,12 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
 
     public Pilot[] GetHiredPilots()
     {
-        return Instance.Pilots.Where(p => p.IsHired) as Pilot[];
+        return Instance.Pilots.Where(p => p.IsHired).ToArray();
     }
 
     public Pilot[] GetPilotsForHire()
     {
-        return Instance.Pilots.Where(p => !p.IsHired) as Pilot[];
+        return Instance.Pilots.Where(p => !p.IsHired).ToArray();
     }
 
     public void SaveData()
