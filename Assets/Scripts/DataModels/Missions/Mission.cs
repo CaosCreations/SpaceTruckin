@@ -56,6 +56,8 @@ public partial class Mission : ScriptableObject, IDataModel
 
     public void ProcessOutcomes()
     {
+
+
         foreach (MissionOutcome outcome in outcomes)
         {
             if (outcome != null)
