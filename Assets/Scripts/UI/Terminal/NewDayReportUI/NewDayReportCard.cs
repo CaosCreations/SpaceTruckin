@@ -36,16 +36,16 @@ public class NewDayReportCard : MonoBehaviour
         string fuelText = $"{mission.Ship.Name} lost {mission.TotalFuelLost} fuel.";
         string xpText = $"{mission.Pilot.Name} gained {mission.TotalPilotXpGained} xp.";
 
-        builder.AppendLine(missionIdentifierText);
-        builder.AppendLine(moneyText);
-        builder.AppendLine(damageText);
-        builder.AppendLine(fuelText);
-        builder.AppendLine(xpText);
+        builder.AppendLineWithBreaks(missionIdentifierText);
+        builder.AppendLineWithBreaks(moneyText);
+        builder.AppendLineWithBreaks(damageText);
+        builder.AppendLineWithBreaks(fuelText);
+        builder.AppendLineWithBreaks(xpText);
 
         // Check if the pilot levelled up
         if (mission.PilotLevelAtTimeOfMission < mission.Pilot.Level)
         {
-            builder.AppendLine($"{mission.Pilot.Name} has levelled up! (now level {mission.Pilot.Level}).");
+            builder.AppendLineWithBreaks($"{mission.Pilot.Name} has levelled up! (now level {mission.Pilot.Level}).");
         }
 
         return builder.ToString();
