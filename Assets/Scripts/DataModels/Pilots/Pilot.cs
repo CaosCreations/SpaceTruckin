@@ -20,6 +20,7 @@ public partial class Pilot : ScriptableObject
     [SerializeField] private float xpThresholdExponent;
     
     [SerializeField] private Species species;
+    [SerializeField] private Ship ship;
     [SerializeField] private Sprite avatar;
     public PilotSaveData saveData;
     public static string FOLDER_NAME = "PilotSaveData";
