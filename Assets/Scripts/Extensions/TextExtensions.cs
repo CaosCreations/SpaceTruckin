@@ -7,4 +7,9 @@ public static class TextExtensions
     {
         self.font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
     }
+
+    public static string SetText(this Text self, string value)
+    {
+        return self.text = value.InsertNewLines();
+    }
 }
