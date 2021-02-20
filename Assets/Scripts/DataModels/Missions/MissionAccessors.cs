@@ -11,8 +11,6 @@
 
     public string Description { get => description; set => description = value; }
 
-    public long Reward { get => reward; set => reward = value; }
-
     public bool HasBeenAccepted
     {
         get => saveData.hasBeenAccepted;

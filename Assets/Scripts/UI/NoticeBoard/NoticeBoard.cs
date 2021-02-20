@@ -79,6 +79,5 @@ public class NoticeBoard : MonoBehaviour
         jobNameText.text = selectedMission.Name;
         customerNameText.text = selectedMission.Customer;
         cargoText.text = selectedMission.Cargo;
-        rewardText.text = $"${selectedMission.Reward}";
     }
 }

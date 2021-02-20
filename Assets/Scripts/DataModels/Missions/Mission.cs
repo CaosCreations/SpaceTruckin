@@ -9,7 +9,7 @@ public partial class Mission : ScriptableObject, IDataModel
     [SerializeField] private int missionDurationInDays;
     [SerializeField] private string missionName, customer, cargo, description;
     [SerializeField] private int fuelCost;
-    [SerializeField] private long reward, moneyNeededToUnlock;
+    [SerializeField] private long moneyNeededToUnlock;
     [SerializeField] private MissionOutcome[] outcomes;
     [SerializeField] private ThankYouMessage thankYouMessage;
 

@@ -96,7 +96,6 @@ public class MissionDetailsUI : MonoBehaviour
 
         builder.AppendLine("Description: " + mission.Description);
         builder.AppendLine("Fuel cost: " + mission.FuelCost);
-        builder.AppendLine("Reward: " + mission.Reward);
         return builder.ToString();
     }
 }
