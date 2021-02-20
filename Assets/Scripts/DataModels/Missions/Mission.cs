@@ -10,6 +10,7 @@ public partial class Mission : ScriptableObject, IDataModel
     [SerializeField] private string missionName, customer, cargo, description;
     [SerializeField] private int fuelCost;
     [SerializeField] private long moneyNeededToUnlock;
+    [SerializeField] private bool hasRandomOutcomes;
     [SerializeField] private MissionOutcome[] outcomes;
     [SerializeField] private ThankYouMessage thankYouMessage;
 
@@ -56,8 +57,6 @@ public partial class Mission : ScriptableObject, IDataModel
 
     public void ProcessOutcomes()
     {
-
-
         foreach (MissionOutcome outcome in outcomes)
         {
             if (outcome != null)

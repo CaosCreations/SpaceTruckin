@@ -95,7 +95,8 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         // Instantiate an archived mission object to store the stats of the completed mission.
         mission.MissionToArchive = new ArchivedMission(mission, mission.NumberOfCompletions);
 
-        if (mission.Outcomes == null || mission.Outcomes.Length <= 0)
+        // Randomise the mission's outcomes if flag is set or they are missing. 
+        if (mission.HasRandomOutcomes || mission.Outcomes == null || mission.Outcomes.Length <= 0)
         {
             AssignRandomOutcomes(mission);
         }
