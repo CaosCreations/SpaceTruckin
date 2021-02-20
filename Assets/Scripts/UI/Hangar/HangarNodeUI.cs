@@ -76,7 +76,7 @@ public class HangarNodeUI : MonoBehaviour
         CheckFueling();
     }
 
-    void PopulateUI()
+    private void PopulateUI()
     {
         SwitchPanel(HangarPanel.Main);
         SetupShipPreview();
@@ -100,8 +100,11 @@ public class HangarNodeUI : MonoBehaviour
     private void SetupShipPreview()
     {
         shipPreview = Instantiate(shipToInspect.ShipPrefab, transform);
-        SetLayerRecursively(shipPreview, UIConstants.UIObjectLayer);
+        shipPreview.transform.localScale = shipPreview.transform.localScale
+            .ApplyScaleFactor(UIConstants.ShipPreviewScaleFactor);
+        
         shipPreview.transform.position += UIConstants.ShipPreviewOffset;
+        SetLayerRecursively(shipPreview, UIConstants.UIObjectLayer);
     }
 
     private void CheckFueling()
