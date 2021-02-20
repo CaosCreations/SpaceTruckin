@@ -85,17 +85,18 @@ public class MissionDetailsUI : MonoBehaviour
     public string BuildDetailsString(Mission mission)
     {
         StringBuilder builder = new StringBuilder();
-        builder.AppendLine("Name: " + mission.Name);
-        builder.AppendLine("Customer: " + mission.Customer);
-        builder.AppendLine("Cargo: " + mission.Cargo);
+        builder.AppendLineWithBreaks("Name: " + mission.Name);
+        builder.AppendLineWithBreaks("Customer: " + mission.Customer);
+        builder.AppendLineWithBreaks("Cargo: " + mission.Cargo);
 
         if (string.IsNullOrEmpty(mission.Description))
         {
             mission.Description = PlaceholderUtils.GenerateLoremIpsum();
         }
 
-        builder.AppendLine("Description: " + mission.Description);
-        builder.AppendLine("Fuel cost: " + mission.FuelCost);
+        builder.AppendLineWithBreaks("Description: " + mission.Description);
+        builder.AppendLineWithBreaks("Fuel cost: " + mission.FuelCost);
+        builder.AppendLineWithBreaks("Reward: " + mission.Reward);
         return builder.ToString();
     }
 }
