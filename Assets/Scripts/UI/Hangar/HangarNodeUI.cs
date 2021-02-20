@@ -69,7 +69,7 @@ public class HangarNodeUI : MonoBehaviour
         {
             if (shipPreview != null)
             {
-                shipPreview.transform.Rotate(new Vector3(0, 0.01f, 0));
+                shipPreview.transform.Rotate(UIConstants.ShipPreviewRotationSpeed);
             }
         }
 
@@ -79,8 +79,7 @@ public class HangarNodeUI : MonoBehaviour
     void PopulateUI()
     {
         SwitchPanel(HangarPanel.Main);
-        shipPreview = Instantiate(shipToInspect.ShipPrefab, transform);
-        SetLayerRecursively(shipPreview, 9);
+        SetupShipPreview();
 
         fuelSlider.value = shipToInspect.GetFuelPercent();
 
@@ -96,6 +95,13 @@ public class HangarNodeUI : MonoBehaviour
 
         launchButton.onClick.RemoveAllListeners();
         launchButton.onClick.AddListener(Launch);
+    }
+
+    private void SetupShipPreview()
+    {
+        shipPreview = Instantiate(shipToInspect.ShipPrefab, transform);
+        SetLayerRecursively(shipPreview, UIConstants.UIObjectLayer);
+        shipPreview.transform.position += UIConstants.ShipPreviewOffset;
     }
 
     private void CheckFueling()
@@ -159,7 +165,7 @@ public class HangarNodeUI : MonoBehaviour
         
     }
 
-    void SetLayerRecursively(GameObject gameObject, int newLayer)
+    private void SetLayerRecursively(GameObject gameObject, int newLayer)
     {
         gameObject.layer = newLayer;
 
