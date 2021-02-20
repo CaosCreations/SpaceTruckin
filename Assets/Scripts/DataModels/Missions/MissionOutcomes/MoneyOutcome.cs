@@ -14,7 +14,6 @@ public class MoneyOutcome : MissionOutcome
         if (mission.MissionToArchive != null)
         {
             mission.MissionToArchive.TotalMoneyEarned += moneyEarned;
-            Debug.Log("MTA Money: " + mission.MissionToArchive.TotalMoneyEarned);
         }
     }
 }

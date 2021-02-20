@@ -3,9 +3,18 @@ using System;
 
 public static class ArrayExtensions
 {
-    public static object[] Shuffle(this object[] self)
+    public static T[] Shuffle<T>(this T[] self)
     {
         Random random = new Random();
-        return self.OrderBy(x => random.Next()).ToArray();
+        int n = self.Length;
+        while (n > 1)
+        {
+            int k = random.Next(n);
+            n--;
+            T temp = self[n];
+            self[n] = self[k];
+            self[k] = temp;
+        }
+        return self; 
     }
 }
