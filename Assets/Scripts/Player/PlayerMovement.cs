@@ -20,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float acceleration;
 
     private CharacterController characterController;
-    private float gravity = -9.81f;
+    private readonly float gravity = -9.81f;
 
     // Player movement relates to camera
     public Transform CameraTransform;
