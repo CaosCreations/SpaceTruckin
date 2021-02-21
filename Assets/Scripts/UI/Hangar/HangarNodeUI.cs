@@ -100,9 +100,7 @@ public class HangarNodeUI : MonoBehaviour
     private void SetupShipPreview()
     {
         shipPreview = Instantiate(shipToInspect.ShipPrefab, transform);
-        shipPreview.transform.localScale = shipPreview.transform.localScale
-            .ApplyScaleFactor(UIConstants.ShipPreviewScaleFactor);
-        
+        shipPreview.transform.localScale *= UIConstants.ShipPreviewScaleFactor;
         shipPreview.transform.position += UIConstants.ShipPreviewOffset;
         SetLayerRecursively(shipPreview, UIConstants.UIObjectLayer);
     }
