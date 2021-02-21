@@ -2,5 +2,5 @@
 
 public class UIConstants : MonoBehaviour
 {
-    public static Color InactiveTabButtonColour = new Color(242, 240, 229); // Off-white 
+    public static Color InactiveTabButtonColour = new Color(0.949f, 0.941f, 0.898f); // Off-white 
 }
