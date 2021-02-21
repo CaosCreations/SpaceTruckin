@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -9,9 +10,10 @@ public class BedCanvasUI : MonoBehaviour
 
     private float timer;
     private const float timeToSleep = 4;
+    private const float timeToDock = 2; 
     private float opacity;
 
-    public static UnityAction OnEndOfDay; 
+    public static UnityAction OnEndOfDay;
 
     private void Awake()
     {
@@ -48,8 +50,9 @@ public class BedCanvasUI : MonoBehaviour
 
     private void EndDay()
     {
+        StartCoroutine(WaitForShipsToDock());
         MissionsManager.UpdateMissionSchedule();
-        ShipsManager.UpdateHangarShips();
+        OnEndOfDay?.Invoke();
 
         PlayerManager.Instance.SaveData();
         MissionsManager.Instance.SaveData();
@@ -57,7 +60,11 @@ public class BedCanvasUI : MonoBehaviour
         PilotsManager.Instance.SaveData();
         ShipsManager.Instance.SaveData();
         MessagesManager.Instance.SaveData();
+    }
 
-        OnEndOfDay?.Invoke();
+    private IEnumerator WaitForShipsToDock()
+    {
+        yield return new WaitForSeconds(timeToDock);
+        ShipsManager.UpdateHangarShips();
     }
 }
