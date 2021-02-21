@@ -7,7 +7,9 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
     public static MissionsManager Instance { get; private set; }
 
     [SerializeField] private MissionContainer missionContainer;
+    [SerializeField] private MissionOutcomeContainer missionOutcomeContainer;
     public Mission[] Missions { get => missionContainer.missions; }
+    public MissionOutcome[] Outcomes { get => missionOutcomeContainer.missionOutcomes; }
 
     private void Awake()
     {
@@ -93,6 +95,12 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         // Instantiate an archived mission object to store the stats of the completed mission.
         mission.MissionToArchive = new ArchivedMission(mission, mission.NumberOfCompletions);
 
+        // Randomise the mission's outcomes if flag is set or they are missing. 
+        if (mission.HasRandomOutcomes || mission.Outcomes == null || mission.Outcomes.Length <= 0)
+        {
+            AssignRandomOutcomes(mission);
+        }
+
         // We will set the archived mission fields throughout the outcome processing. 
         mission.ProcessOutcomes();
 
@@ -100,6 +108,24 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         ArchivedMissionsManager.AddToArchive(mission.MissionToArchive);
 
         ShipsManager.DockShip(mission.Ship);
+    }
+
+    private static void AssignRandomOutcomes(Mission mission)
+    {
+        var randomOutcomes = new List<MissionOutcome>();
+        Instance.Outcomes.Shuffle();
+
+        MoneyOutcome moneyOutcome = MissionUtils.GetOutcomeByType<MoneyOutcome>(Instance.Outcomes);
+        PilotXpOutcome pilotXpOutcome = MissionUtils.GetOutcomeByType<PilotXpOutcome>(Instance.Outcomes);
+        OmenOutcome omenOutcome = MissionUtils.GetOutcomeByType<OmenOutcome>(Instance.Outcomes);
+        ShipDamageOutcome shipDamageOutcome = MissionUtils.GetOutcomeByType<ShipDamageOutcome>(Instance.Outcomes);
+
+        if (moneyOutcome != null) randomOutcomes.Add(moneyOutcome);
+        if (pilotXpOutcome != null) randomOutcomes.Add(pilotXpOutcome);
+        if (omenOutcome != null) randomOutcomes.Add(omenOutcome);
+        if (shipDamageOutcome != null) randomOutcomes.Add(shipDamageOutcome);
+
+        mission.Outcomes = randomOutcomes.ToArray();
     }
 
     public void SaveData()

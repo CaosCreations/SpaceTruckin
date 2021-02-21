@@ -191,18 +191,18 @@ public class PilotsUI : MonoBehaviour
 	private string BuildDetailsString(Pilot pilot)
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.AppendLine("Name: " + pilot.Name);
-		builder.AppendLine("Ship: " + pilot.Ship.Name);
-		builder.AppendLine("Level: " + pilot.Level);
-		builder.AppendLine("Experience: " + pilot.CurrentXp);
+		builder.AppendLineWithBreaks("Name: " + pilot.Name);
+		builder.AppendLineWithBreaks("Ship: " + pilot.Ship.Name);
+		builder.AppendLineWithBreaks("Level: " + pilot.Level);
+		builder.AppendLineWithBreaks("Experience: " + pilot.CurrentXp);
 
 		if (string.IsNullOrEmpty(pilot.Description))
 		{
 			pilot.Description = PlaceholderUtils.GenerateLoremIpsum();
 		}
 
-		builder.AppendLine("Description: " + pilot.Description);
-		builder.AppendLine("Missions completed: " + pilot.MissionsCompleted);
+		builder.AppendLineWithBreaks("Description: " + pilot.Description);
+		builder.AppendLineWithBreaks("Missions completed: " + pilot.MissionsCompleted);
 		return builder.ToString();
 	}
 
