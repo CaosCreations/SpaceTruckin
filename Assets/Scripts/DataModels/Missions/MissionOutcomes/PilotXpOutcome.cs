@@ -3,10 +3,12 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PilotXpOutcome", menuName = "ScriptableObjects/Missions/Outcomes/PilotXpOutcome", order = 1)]
 public class PilotXpOutcome : MissionOutcome
 {
-    public int xpMin;
-    public int xpMax;
-	
-	public override void Process(Mission mission) 
+    [SerializeField] private int xpMin;
+    [SerializeField] private int xpMax;
+    public int XpMin { get => xpMin; set => xpMin = value; }
+    public int XpMax { get => xpMax; set => xpMax = value; }
+
+    public override void Process(Mission mission) 
 	{
         // Store the pilot's level before the xp is awarded.
         // Then we can check if they levelled up as a result of the mission.

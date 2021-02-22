@@ -79,5 +79,6 @@ public class NoticeBoard : MonoBehaviour
         jobNameText.SetText(selectedMission.Name);
         customerNameText.SetText(selectedMission.Customer);
         cargoText.SetText(selectedMission.Cargo);
+        rewardText.SetText(MissionDetailsUI.BuildRewardString(missionToSelect));
     }
 }
