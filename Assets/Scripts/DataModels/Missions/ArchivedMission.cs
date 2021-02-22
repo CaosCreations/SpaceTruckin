@@ -6,7 +6,7 @@ using UnityEngine;
 /// The fields of this class will be set 
 /// during the processing of the mission outcomes.
 /// </summary>
-public class ArchivedMission : IDataModel
+public partial class ArchivedMission : IDataModel
 {
     /// <summary>
     /// We set the file name based on the mission's name and its completion number.
@@ -61,22 +61,4 @@ public class ArchivedMission : IDataModel
     {
         DataModelsUtils.SaveFileAsync(FileName, FOLDER_NAME, saveData);
     }
-
-    public string MissionName { get => saveData.missionName; set => saveData.missionName = value; }
-    public int CompletionNumber { get => saveData.completionNumber; set => saveData.completionNumber = value; }
-    public long TotalMoneyEarned { get => saveData.totalMoneyEarned; set => saveData.totalMoneyEarned = value; }
-    public int TotalDamageTaken { get => saveData.totalDamageTaken; set => saveData.totalDamageTaken = value; }
-    public int PilotLevelAtTimeOfMission 
-    {
-        get => saveData.pilotLevelAtTimeOfMission; set => saveData.pilotLevelAtTimeOfMission = value; 
-    }
-    public int MissionsCompletedByPilotAtTimeOfMission
-    {
-        get => saveData.missionsCompletedByPilotAtTimeOfMission; 
-        set => saveData.missionsCompletedByPilotAtTimeOfMission= value;
-    }
-    public double TotalPilotXpGained { get => saveData.totalPilotXpGained; set => saveData.totalPilotXpGained = value; }
-    public int TotalFuelLost { get => saveData.totalFuelLost; set => saveData.totalFuelLost = value; }
-    public Ship Ship { get => saveData.ship; set => saveData.ship = value; }
-    public Pilot Pilot => Ship.Pilot; 
 }
