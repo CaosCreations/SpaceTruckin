@@ -96,6 +96,7 @@ public class MissionDetailsUI : MonoBehaviour
 
         builder.AppendLineWithBreaks("Description: " + mission.Description);
         builder.AppendLineWithBreaks("Fuel cost: " + mission.FuelCost);
+        builder.AppendLineWithBreaks("Reward: " + BuildRewardString(mission));
         return builder.ToString();
     }
 
@@ -111,11 +112,11 @@ public class MissionDetailsUI : MonoBehaviour
         PilotXpOutcome pilotXpOutcome = MissionUtils.GetOutcomeByType<PilotXpOutcome>(mission.Outcomes);
         if (moneyOutcome != null)
         {
-            builder.AppendLine($"Money: ${moneyOutcome.MoneyMin} - {moneyOutcome.MoneyMax}");
+            builder.AppendLineWithBreaks($"Money: ${moneyOutcome.MoneyMin} - {moneyOutcome.MoneyMax}");
         }
         if (pilotXpOutcome != null)
         {
-            builder.AppendLine($"Pilot xp: {pilotXpOutcome.XpMin} - {pilotXpOutcome.XpMax}");
+            builder.AppendLineWithBreaks($"Pilot xp: {pilotXpOutcome.XpMin} - {pilotXpOutcome.XpMax}");
         }
         return builder.ToString();
     }
