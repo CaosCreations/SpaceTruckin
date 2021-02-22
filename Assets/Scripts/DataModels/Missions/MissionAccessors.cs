@@ -31,7 +31,8 @@
     public Pilot Pilot { get => saveData.ship.Pilot; }
     public bool HasRandomOutcomes 
     { 
-        get => hasRandomOutcomes; set => hasRandomOutcomes = value; 
+        get => hasRandomOutcomes || Outcomes == null || Outcomes.Length <= 0;
+        set => hasRandomOutcomes = value; 
     }
     public MissionOutcome[] Outcomes { get => outcomes; set => outcomes = value; }
     public ArchivedMission MissionToArchive 

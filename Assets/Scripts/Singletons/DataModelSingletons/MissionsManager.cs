@@ -97,7 +97,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         mission.MissionToArchive = new ArchivedMission(mission, mission.NumberOfCompletions);
 
         // Randomise the mission's outcomes if flag is set or they are missing. 
-        if (mission.HasRandomOutcomes || mission.Outcomes == null || mission.Outcomes.Length <= 0)
+        if (mission.HasRandomOutcomes)
         {
             AssignRandomOutcomes(mission);
         }
