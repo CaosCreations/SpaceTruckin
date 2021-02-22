@@ -5,6 +5,8 @@ public class MoneyOutcome : MissionOutcome
 {
     [SerializeField] private long moneyMin;
     [SerializeField] private long moneyMax;
+    public long MoneyMin { get => moneyMin; set => moneyMin = value; }
+    public long MoneyMax { get => moneyMax; set => moneyMax = value; }
 
     public override void Process(Mission mission)
     {
