@@ -43,7 +43,7 @@ public class NewDayReportUI : MonoBehaviour
             }
             else
             {
-                reportCard.nextCardButton.SetText("Close");
+                reportCard.nextCardButton.SetText("Close", FontManager.Instance.Optimus);
                 reportCard.nextCardButton.AddOnClick(CloseReport);
             }
         }

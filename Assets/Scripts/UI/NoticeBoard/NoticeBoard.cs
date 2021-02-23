@@ -76,9 +76,9 @@ public class NoticeBoard : MonoBehaviour
     public void SelectItem(Mission missionToSelect)
     {
         selectedMission = missionToSelect;
-        jobNameText.SetText(selectedMission.Name);
-        customerNameText.SetText(selectedMission.Customer);
-        cargoText.SetText(selectedMission.Cargo);
-        rewardText.SetText(MissionDetailsUI.BuildRewardString(missionToSelect));
+        jobNameText.SetText(selectedMission.Name, FontManager.Instance.Aero);
+        customerNameText.SetText(selectedMission.Customer, FontManager.Instance.Aero);
+        cargoText.SetText(selectedMission.Cargo, FontManager.Instance.Aero);
+        rewardText.SetText(MissionDetailsUI.BuildRewardString(missionToSelect), FontManager.Instance.Aero);
     }
 }
