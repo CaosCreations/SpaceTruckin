@@ -3,10 +3,12 @@
 public class FontManager : MonoBehaviour
 {
     public static FontManager Instance { get; private set; }
+
     public Font Aero;
     public Font AlienLeague;
     public Font HemiHead;
     public Font Optimus;
+    public Font MonkirtaPursuit;
 
     private void Awake()
     {

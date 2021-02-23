@@ -22,19 +22,23 @@ public class MessageDetailView : MonoBehaviour
         rectTransform.Stretch();
 
         Text messageBodyText = messageBody.GetComponent<Text>();
-        messageBodyText.text = message.body;
-        if (string.IsNullOrEmpty(messageBodyText.text))
+        string messageBodyContent;
+        if (string.IsNullOrEmpty(message.body))
         {
-            messageBodyText.text = PlaceholderUtils.GenerateLoremIpsum(16);
-
+            messageBodyContent = PlaceholderUtils.GenerateLoremIpsum(16);
         }
-        messageBodyText.text = messageBodyText.text.InsertNewLines();
+        else
+        {
+            messageBodyContent = message.body;
+        }
 
+        // Add mission information if a mission is offered in the message 
         if (message.Mission != null)
         {
-            messageBodyText.text += "\n\nI've got a mission for you. See the details below:";
-            messageBodyText.text += "\n\n" + missionDetailsUI.BuildDetailsString(message.Mission);
+            messageBodyContent += "\n\nI've got a mission for you. See the details below:";
+            messageBodyContent += "\n\n" + missionDetailsUI.BuildDetailsString(message.Mission);
         }
+        messageBodyText.SetText(messageBodyContent, FontManager.Instance.Aero);
     }
 
     public void SetMissionAcceptButton(Mission mission)
