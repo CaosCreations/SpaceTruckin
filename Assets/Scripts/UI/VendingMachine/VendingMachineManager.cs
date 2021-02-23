@@ -49,8 +49,8 @@ public class VendingMachineManager : MonoBehaviour
         {
             GameObject key = Instantiate(keyPrefab, keypadContainer.transform);
             key.name = "Key " + item.keyCode;
-            key.GetComponent<Button>().AddOnClick(() => AddPurchaseListener(item.keyCode));
-            key.GetComponentInChildren<Text>().text = item.keyCode.ToString();
+            Button keyButton = key.GetComponent<Button>();
+            keyButton.AddOnClick(() => AddPurchaseListener(item.keyCode)).SetText(item.keyCode.ToString());
         }
     }
 
@@ -71,12 +71,12 @@ public class VendingMachineManager : MonoBehaviour
         {
             Items[itemIndex].PurchaseItem();
             image.color = positiveFeedbackColour;
-            feedbackText.text = Items[itemIndex].itemName + " has been purchased!";
+            feedbackText.SetText(Items[itemIndex].itemName + " has been purchased!");
         }
         else
         {
             image.color = negativeFeedbackColour;
-            feedbackText.text = "Insufficient funds.";
+            feedbackText.SetText("Insufficient funds.");
         }
     }
 

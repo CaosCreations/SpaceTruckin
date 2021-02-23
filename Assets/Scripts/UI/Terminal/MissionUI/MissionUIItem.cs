@@ -28,7 +28,7 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     public void Init(Mission mission, Transform scrollViewContent)
     {
         this.mission = mission;
-        missionNameText.text = mission.Name;
+        missionNameText.SetText(mission.Name, FontType.ListItem);
         this.scrollViewContent = scrollViewContent;
     }
 

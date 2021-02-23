@@ -17,7 +17,7 @@ public class NewDayReportCard : MonoBehaviour
         {
             shipAvatar.sprite = mission.Ship.Avatar;
         }
-        detailsText.text = BuildReportDetails(mission);
+        detailsText.SetText(BuildReportDetails(mission));
     }
 
     public void SetupNextCardListener(ArchivedMission mission)

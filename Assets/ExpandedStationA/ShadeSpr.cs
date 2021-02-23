@@ -1,31 +1,24 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class ShadeSpr : MonoBehaviour {
+public class ShadeSpr : MonoBehaviour 
+{
+	public Renderer _renderer;
+	public bool shadowOnly;
 
-	 public Renderer renderer;
-	 public bool shadowOnly;
+	void Start () 
+	{
+		if (_renderer == null) 
+		{
+			Debug.Log("Renderer is empty");
+		} 
 
-	// Use this for initialization
-	void Start () {
-
-		if (renderer == null) Debug.Log("Renderer is empty"); 
-			GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On; 
-			GetComponent<Renderer>().receiveShadows = true;
-			//TESTE
-			if(shadowOnly==true)
-			{GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;}
-
-			
-
-
-			
+		GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On; 
+		GetComponent<Renderer>().receiveShadows = true;
 		
+		//TESTE
+		if (shadowOnly == true)
+        {
+			GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
+        }
 	}
-	
-	// Update is called once per frame
-	
-
-	
 }
