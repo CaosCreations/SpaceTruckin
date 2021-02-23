@@ -16,7 +16,7 @@ public class ShadeSpr : MonoBehaviour
 		GetComponent<Renderer>().receiveShadows = true;
 		
 		//TESTE
-		if(shadowOnly == true)
+		if (shadowOnly == true)
         {
 			GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
         }

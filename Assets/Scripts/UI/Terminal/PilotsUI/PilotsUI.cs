@@ -117,7 +117,7 @@ public class PilotsUI : MonoBehaviour
         {
 			Debug.Log($"{pilot}'s avatar is null");
         }
-		pilotDetailsText.SetText(BuildDetailsString(pilot), FontType.Paragraph);
+		pilotDetailsText.SetText(BuildDetailsString(pilot));
 
 		// If the pilot doesn't already work for us, then set up a button to handle hiring him 
 		if (!pilot.IsHired)

@@ -32,7 +32,7 @@ public class MessageDetailView : MonoBehaviour
             messageBodyContent += "\n\nI've got a mission for you. See the details below:";
             messageBodyContent += "\n\n" + missionDetailsUI.BuildDetailsString(message.Mission);
         }
-        messageBodyText.SetText(messageBodyContent, FontType.Paragraph);
+        messageBodyText.SetText(messageBodyContent);
     }
 
     public void SetMissionAcceptButton(Mission mission)

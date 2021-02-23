@@ -71,12 +71,12 @@ public class VendingMachineManager : MonoBehaviour
         {
             Items[itemIndex].PurchaseItem();
             image.color = positiveFeedbackColour;
-            feedbackText.SetText(Items[itemIndex].itemName + " has been purchased!", FontType.Paragraph);
+            feedbackText.SetText(Items[itemIndex].itemName + " has been purchased!");
         }
         else
         {
             image.color = negativeFeedbackColour;
-            feedbackText.SetText("Insufficient funds.", FontType.Paragraph);
+            feedbackText.SetText("Insufficient funds.");
         }
     }
 

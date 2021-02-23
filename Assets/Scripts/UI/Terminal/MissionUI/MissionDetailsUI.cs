@@ -76,7 +76,7 @@ public class MissionDetailsUI : MonoBehaviour
         RectTransform textRect = textContainer.GetComponent<RectTransform>();
         textRect.Reset();
         textRect.Stretch();
-        detailsText.SetText(BuildDetailsString(missionBeingDisplayed), FontType.Paragraph);
+        detailsText.SetText(BuildDetailsString(missionBeingDisplayed));
         detailsText.resizeTextForBestFit = true;
         detailsText.color = Color.black;
     }
