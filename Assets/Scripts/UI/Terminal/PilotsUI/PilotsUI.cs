@@ -75,8 +75,8 @@ public class PilotsUI : MonoBehaviour
 			foreach (Pilot pilot in pilots)
 			{
 				GameObject crewItem = Instantiate(crewItemPrefab, scrollViewContent);
-				Button button = crewItem.GetComponent<Button>(); 
-				button.AddOnClick(() => ShowPilotProfilePanel(pilot)).SetText(pilot.Name);
+				crewItem.GetComponent<Button>().AddOnClick(() => ShowPilotProfilePanel(pilot));
+				crewItem.GetComponentInChildren<Text>().SetText(pilot.Name, FontType.ListItem);
 			}
         }
 	}
