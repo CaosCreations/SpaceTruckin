@@ -10,12 +10,12 @@ public static class ButtonExtensions
         self.onClick.AddListener(callback);
     }
 
-    public static void SetText(this Button self, string text)
+    public static void SetText(this Button self, string text, Font font = null)
     {
         Text buttonText = self.GetComponentInChildren<Text>();
         if (buttonText != null)
         {
-            buttonText.text = text; 
+            buttonText.SetText(text, font);
         }
     }
 
