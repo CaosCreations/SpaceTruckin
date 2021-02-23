@@ -9,12 +9,6 @@ public class FontManager : MonoBehaviour
 {
     public static FontManager Instance { get; private set; }
 
-    public Font Aero;
-    public Font AlienLeague;
-    public Font HemiHead;
-    public Font Optimus;
-    public Font MonkirtaPursuit;
-
     [SerializeField] private Font titleFont;
     [SerializeField] private Font subtitleFont;
     [SerializeField] private Font listItemFont;
