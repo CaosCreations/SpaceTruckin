@@ -13,8 +13,8 @@ public class MessageDetailView : MonoBehaviour
 
     public void SetMessageDetails(Message message)
     {
-        messageSubjectText.text = message.Subject;
-        messageSenderText.text = message.Sender;
+        messageSubjectText.SetText(message.Subject, FontType.Title);
+        messageSenderText.SetText(message.Sender, FontType.Subtitle);
 
         GameObject messageBody = Instantiate(messageBodyPrefab, messageBodyScrollViewContent.transform);
         RectTransform rectTransform = messageBody.GetComponent<RectTransform>();
@@ -23,14 +23,8 @@ public class MessageDetailView : MonoBehaviour
 
         Text messageBodyText = messageBody.GetComponent<Text>();
         string messageBodyContent;
-        if (string.IsNullOrEmpty(message.body))
-        {
-            messageBodyContent = PlaceholderUtils.GenerateLoremIpsum(16);
-        }
-        else
-        {
-            messageBodyContent = message.body;
-        }
+        messageBodyContent = string.IsNullOrEmpty(message.body) ? PlaceholderUtils.GenerateLoremIpsum(16)
+            : message.body;
 
         // Add mission information if a mission is offered in the message 
         if (message.Mission != null)
@@ -38,18 +32,17 @@ public class MessageDetailView : MonoBehaviour
             messageBodyContent += "\n\nI've got a mission for you. See the details below:";
             messageBodyContent += "\n\n" + missionDetailsUI.BuildDetailsString(message.Mission);
         }
-        messageBodyText.SetText(messageBodyContent, FontManager.Instance.Aero);
+        messageBodyText.SetText(messageBodyContent, FontType.Paragraph);
     }
 
     public void SetMissionAcceptButton(Mission mission)
     {
-        Text buttonText = missionAcceptButton.GetComponentInChildren<Text>();
-        buttonText.text = "Accept " + mission.Name;
+        missionAcceptButton.SetText("Accept " + mission.Name);
 
         missionAcceptButton.interactable = !mission.HasBeenAccepted;
         missionAcceptButton.AddOnClick(() =>
         {
-            buttonText.text = "Mission Accepted!";
+            missionAcceptButton.SetText("Mission Accepted!");
             missionAcceptButton.interactable = false;
             mission.HasBeenAccepted = true;
         });

@@ -94,9 +94,9 @@ public class MissionsUI : MonoBehaviour
     private void ShowMissionProgress(MissionUIItem missionItem)
     {
         string substring = missionItem.mission.DaysLeftToComplete > 1 ? "days" : "day";
-        
-        missionItem.missionNameText.text = missionItem.mission.Name 
-            + $"\n({missionItem.mission.DaysLeftToComplete} {substring} remaining)";
+
+        missionItem.missionNameText.SetText(missionItem.mission.Name 
+            + $"\n({missionItem.mission.DaysLeftToComplete} {substring} remaining)", FontType.ListItem);
     }
 
     public MissionScheduleSlot GetSlotForMissionDrag(Vector2 position)

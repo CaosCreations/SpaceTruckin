@@ -132,6 +132,6 @@ public class TerminalUIManager : MonoBehaviour
 
     private void UpdateMoneyText()
     {
-        moneyText.text = "$ " + PlayerManager.Instance.Money;
+        moneyText.SetText("$ " + PlayerManager.Instance.Money, FontType.Title);
     }
 }

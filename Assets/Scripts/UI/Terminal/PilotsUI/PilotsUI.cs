@@ -75,8 +75,8 @@ public class PilotsUI : MonoBehaviour
 			foreach (Pilot pilot in pilots)
 			{
 				GameObject crewItem = Instantiate(crewItemPrefab, scrollViewContent);
-				crewItem.GetComponent<Button>().AddOnClick(() => ShowPilotProfilePanel(pilot));
-				crewItem.GetComponentInChildren<Text>().text = pilot.Name;
+				Button button = crewItem.GetComponent<Button>(); 
+				button.AddOnClick(() => ShowPilotProfilePanel(pilot)).SetText(pilot.Name);
 			}
         }
 	}
@@ -117,7 +117,7 @@ public class PilotsUI : MonoBehaviour
         {
 			Debug.Log($"{pilot}'s avatar is null");
         }
-		pilotDetailsText.text = BuildDetailsString(pilot);
+		pilotDetailsText.SetText(BuildDetailsString(pilot), FontType.Paragraph);
 
 		// If the pilot doesn't already work for us, then set up a button to handle hiring him 
 		if (!pilot.IsHired)
@@ -213,7 +213,7 @@ public class PilotsUI : MonoBehaviour
 			PlayerManager.Instance.SpendMoney(pilot.HireCost);
 			PilotsManager.Instance.HirePilot(pilot);
 			hireButton.interactable = false;
-			hireButton.GetComponentInChildren<Text>().text = "Pilot Hired!";
+			hireButton.SetText("Pilot Hired!");
 			PopulateScrollViews();
         }
     }

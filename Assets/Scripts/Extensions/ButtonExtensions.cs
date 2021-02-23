@@ -4,18 +4,19 @@ using UnityEngine.UI;
 
 public static class ButtonExtensions
 {
-    public static void AddOnClick(this Button self, UnityAction callback)
+    public static Button AddOnClick(this Button self, UnityAction callback)
     {
         self.onClick.RemoveAllListeners();
         self.onClick.AddListener(callback);
+        return self;
     }
 
-    public static void SetText(this Button self, string text, Font font = null)
+    public static void SetText(this Button self, string text)
     {
         Text buttonText = self.GetComponentInChildren<Text>();
         if (buttonText != null)
         {
-            buttonText.SetText(text, font);
+            buttonText.SetText(text, FontType.Button);
         }
     }
 
