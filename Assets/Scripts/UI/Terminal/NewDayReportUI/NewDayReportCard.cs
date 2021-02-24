@@ -33,7 +33,7 @@ public class NewDayReportCard : MonoBehaviour
         string damageText = $"{mission.Ship.Name} took {mission.TotalDamageTaken} damage.";
         string fuelText = $"{mission.Ship.Name} lost {mission.TotalFuelLost} fuel.";
         string xpText = $"{mission.Pilot.Name} gained {mission.TotalPilotXpGained} xp.";
-        string missionsCompletedText = $"{mission.Pilot.Name} has now completed {mission.Pilot.MissionsCompleted} missions.";
+        string missionsCompletedText = $"{mission.Pilot.Name} has now completed {mission.MissionsCompletedByPilotAtTimeOfMission} missions.";
 
         builder.AppendLineWithBreaks(missionIdentifierText);
         builder.AppendLineWithBreaks(moneyText);
