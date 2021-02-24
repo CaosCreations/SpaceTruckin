@@ -77,6 +77,20 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         return Instance.Pilots.Where(p => !p.IsHired).ToArray();
     }
 
+    public void RandomisePilots()
+    {
+        foreach (Pilot pilot in Pilots)
+        {
+            if (pilot.isRandom)
+            {
+                pilot.Name = PilotNameManager.Instance.GetRandomName(pilot.Species);
+                pilot.Species = PilotUtils.GetRandomSpecies();
+
+                // Other random stats logic here
+            }
+        }
+    }
+
     public void SaveData()
     {
         foreach (Pilot pilot in Instance.Pilots)
