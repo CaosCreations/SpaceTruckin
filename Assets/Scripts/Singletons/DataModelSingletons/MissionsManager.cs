@@ -91,6 +91,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
             mission.ThankYouMessage.IsUnlocked = true;
         }
         mission.NumberOfCompletions++;
+        mission.Pilot.MissionsCompleted++;
 
         // Instantiate an archived mission object to store the stats of the completed mission.
         mission.MissionToArchive = new ArchivedMission(mission, mission.NumberOfCompletions);

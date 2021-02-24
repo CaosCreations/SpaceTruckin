@@ -11,4 +11,6 @@ public class UIConstants : MonoBehaviour
     // Layers 
     public static int UILayer = 5;
     public static int UIObjectLayer = 9;
+
+    public static string CloseReportButtonText = "Close";
 }
