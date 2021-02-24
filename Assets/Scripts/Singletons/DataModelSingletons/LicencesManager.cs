@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Linq;
+using System.Collections.Generic;
 
 public enum LicenceEffectType
 {
@@ -10,13 +11,18 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
 {
     public static LicencesManager Instance { get; private set; }
 
+    [SerializeField] private LicenceContainer licenceContainer;
+    public Licence[] Licences { get => licenceContainer.licences; }
+
     public MoneyEffect[] moneyEffects;
     public PilotXpEffect[] pilotXpEffects;
     public ShipDamageEffect[] shipDamageEffects;
+    public FuelDiscountEffect[] fuelDiscountEffects;
 
     public static double MoneyEffect => Instance.moneyEffects.ToList().Sum(x => x.effect);
     public static double PilotXpEffect => Instance.pilotXpEffects.ToList().Sum(x => x.effect);
     public static float ShipDamageEffect => Instance.shipDamageEffects.ToList().Sum(x => x.effect);
+    public static float FuelDiscountEffect => Instance.fuelDiscountEffects.ToList().Sum(x => x.effect);
 
     private void Awake()
     {
@@ -30,6 +36,21 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
+    }
+
+    private T[] GetLicenceEffectsByType<T>(Licence[] licences) where T : class, new()
+    {
+        List<T> licenceEffects; 
+        IEnumerable<Licence> matchingLicences = licences.Where(x => x.effect.GetType() == typeof(T));
+        matchingLicences.ToList().ForEach(x => licenceEffects.Add(x.effect));
+
+        //licences.Select<Licence, T>(x =>
+        //{
+        //    if (x.effect.GetType() == typeof(T))
+        //    {
+        //        licenceEffects.Add(x.effect as T);
+        //    }
+        //});
     }
 
     public void DeleteData()

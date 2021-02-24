@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class HangarNodeUI : MonoBehaviour
@@ -82,19 +83,12 @@ public class HangarNodeUI : MonoBehaviour
         SetupShipPreview();
 
         fuelSlider.value = shipToInspect.GetFuelPercent();
-
         hullSlider.value = shipToInspect.GetHullPercent();
-        hullButton.onClick.RemoveAllListeners();
-        hullButton.onClick.AddListener(() => SwitchPanel(HangarPanel.Repair));
 
-        upgradeButton.onClick.RemoveAllListeners();
-        upgradeButton.onClick.AddListener(() => SwitchPanel(HangarPanel.Upgrade));
-
-        customizationButton.onClick.RemoveAllListeners();
-        customizationButton.onClick.AddListener(() => SwitchPanel(HangarPanel.Customization));
-
-        launchButton.onClick.RemoveAllListeners();
-        launchButton.onClick.AddListener(Launch);
+        hullButton.AddOnClick(() => SwitchPanel(HangarPanel.Repair));
+        upgradeButton.AddOnClick(() => SwitchPanel(HangarPanel.Upgrade));
+        customizationButton.AddOnClick(() => SwitchPanel(HangarPanel.Customization));
+        launchButton.AddOnClick(Launch);
     }
 
     private void SetupShipPreview()
@@ -115,7 +109,7 @@ public class HangarNodeUI : MonoBehaviour
             && PlayerManager.Instance.CanSpendMoney(fuelCostPerUnit)
             )
         {
-            PlayerManager.Instance.SpendMoney(fuelCostPerUnit);
+            PlayerManager.Instance.SpendMoney(Convert.ToInt64(fuelCostPerUnit * LicencesManager.FuelDiscountEffect));
             shipToInspect.CurrentFuel++;
             fuelSlider.value = shipToInspect.GetFuelPercent();
             fuelTimer = 0;

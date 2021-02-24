@@ -14,7 +14,7 @@ public class PilotXpOutcome : MissionOutcome
         // Then we can check if they levelled up as a result of the mission.
         mission.MissionToArchive.PilotLevelAtTimeOfMission = mission.Pilot.Level;
 
-        double xpGained = Random.Range(xpMin, xpMax) * ApplyOmens(mission);
+        double xpGained = Random.Range(xpMin, xpMax) * ApplyOmens(mission) * LicencesManager.PilotXpEffect;
         mission.MissionToArchive.TotalPilotXpGained += PilotsManager.AwardXp(mission.Pilot, xpGained);
 	}
 

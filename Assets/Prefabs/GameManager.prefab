@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 3197085279453762649}
   - component: {fileID: 7158868080756466719}
   - component: {fileID: 8710179870615699991}
+  - component: {fileID: 4405286008225480704}
   - component: {fileID: 7084496073094469789}
   - component: {fileID: 8553136933094880774}
-  - component: {fileID: 4405286008225480704}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -123,6 +123,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   messageContainer: {fileID: 11400000, guid: 17c0b5eb2d119eb478259e5c6fc60e76, type: 2}
+--- !u!114 &4405286008225480704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5745358076465076624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 113c24e3e63aeac46b653cdaf8c6a7c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  licenceContainer: {fileID: 11400000, guid: 913043d08d8a65841aaf14b6e20dd87c, type: 2}
+  moneyEffects: []
+  pilotXpEffects: []
+  shipDamageEffects: []
+  fuelDiscountEffects: []
 --- !u!114 &7084496073094469789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,17 +169,3 @@ MonoBehaviour:
   listItemFont: {fileID: 12800000, guid: 63317de6cd89e6a46b9f85c06c54b0ec, type: 3}
   paragraphFont: {fileID: 12800000, guid: af7b15c4697239044be2b82a00690cb7, type: 3}
   buttonFont: {fileID: 12800000, guid: 75e427007e42f1d4b9bc5e21ba864cd9, type: 3}
---- !u!114 &4405286008225480704
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5745358076465076624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 113c24e3e63aeac46b653cdaf8c6a7c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moneyEffects: []
-  pilotEffects: []
