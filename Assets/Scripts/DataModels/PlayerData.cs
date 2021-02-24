@@ -29,11 +29,11 @@ public class PlayerData : ScriptableObject, IDataModel
 
     public void SaveData()
     {
-        DataModelsUtils.SaveFileAsync(name, FOLDER_NAME, saveData); 
+        DataUtils.SaveFileAsync(name, FOLDER_NAME, saveData); 
     }
 
     public async System.Threading.Tasks.Task LoadDataAsync()
     {
-        saveData = await DataModelsUtils.LoadFileAsync<PlayerSaveData>(name, FOLDER_NAME);
+        saveData = await DataUtils.LoadFileAsync<PlayerSaveData>(name, FOLDER_NAME);
     }
 }

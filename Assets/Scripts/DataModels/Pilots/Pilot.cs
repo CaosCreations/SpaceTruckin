@@ -40,12 +40,12 @@ public partial class Pilot : ScriptableObject
 
     public void SaveData()
     {
-        DataModelsUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
+        DataUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
     }
 
     public async System.Threading.Tasks.Task LoadDataAsync()
     {
-        saveData = await DataModelsUtils.LoadFileAsync<PilotSaveData>(name, FOLDER_NAME);
+        saveData = await DataUtils.LoadFileAsync<PilotSaveData>(name, FOLDER_NAME);
     }
 
     public bool CanLevelUp { get => CurrentXp >= RequiredXp; }

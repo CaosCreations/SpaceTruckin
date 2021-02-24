@@ -32,12 +32,12 @@ public partial class Mission : ScriptableObject, IDataModel
 
     public void SaveData()
     {
-        DataModelsUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
+        DataUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
     }
 
     public async Task LoadDataAsync()
     {
-        saveData = await DataModelsUtils.LoadFileAsync<MissionSaveData>(name, FOLDER_NAME);
+        saveData = await DataUtils.LoadFileAsync<MissionSaveData>(name, FOLDER_NAME);
     }   
 
     public void ScheduleMission(Ship ship)

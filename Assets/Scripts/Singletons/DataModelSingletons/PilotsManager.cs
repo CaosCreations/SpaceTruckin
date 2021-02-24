@@ -25,13 +25,13 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        if (DataModelsUtils.SaveFolderExists(Pilot.FOLDER_NAME))
+        if (DataUtils.SaveFolderExists(Pilot.FOLDER_NAME))
         {
             LoadDataAsync();
         }
         else
         {
-            DataModelsUtils.CreateSaveFolder(Pilot.FOLDER_NAME);
+            DataUtils.CreateSaveFolder(Pilot.FOLDER_NAME);
         }
 
         if (Pilots == null)

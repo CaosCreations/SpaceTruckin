@@ -27,13 +27,13 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        if (DataModelsUtils.SaveFolderExists(Mission.FOLDER_NAME))
+        if (DataUtils.SaveFolderExists(Mission.FOLDER_NAME))
         {
             LoadDataAsync();
         }
         else
         {
-            DataModelsUtils.CreateSaveFolder(Mission.FOLDER_NAME);
+            DataUtils.CreateSaveFolder(Mission.FOLDER_NAME);
         }
 
         if (Missions == null)
@@ -146,6 +146,6 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
     
     public void DeleteData()
     {
-        DataModelsUtils.RecursivelyDeleteSaveData(Mission.FOLDER_NAME);
+        DataUtils.RecursivelyDeleteSaveData(Mission.FOLDER_NAME);
     }
 }
