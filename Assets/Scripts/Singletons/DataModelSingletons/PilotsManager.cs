@@ -32,6 +32,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         else
         {
             DataUtils.CreateSaveFolder(Pilot.FOLDER_NAME);
+            RandomisePilots();
         }
 
         if (Pilots == null)

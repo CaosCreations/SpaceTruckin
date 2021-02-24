@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class PilotNameManager : MonoBehaviour
@@ -12,18 +13,24 @@ public class PilotNameManager : MonoBehaviour
 	public string[] VestaPrefixes { get; private set; }
 	public string[] VestaNames { get; private set; }
 
+	public static event Action OnPilotNamesLoaded;
+
 	private void Awake()
 	{
 		if (Instance == null)
 		{
 			Instance = this;
 			DontDestroyOnLoad(gameObject);
-			LoadNamePoolsAsync();
         }
 		else
 		{
 			Destroy(gameObject);
 		}
+	}
+
+	public void Init()
+    {
+		LoadNamePoolsAsync();
 	}
 
 	private async void LoadNamePoolsAsync()
@@ -35,6 +42,7 @@ public class PilotNameManager : MonoBehaviour
 		OshunianTitles = await LoadNamePoolAsync(PilotsConstants.oshunianTitlesPath);
 		VestaPrefixes = await LoadNamePoolAsync(PilotsConstants.vestaPrefixesPath);
 		VestaNames = await LoadNamePoolAsync(PilotsConstants.vestaNamesPath);
+		OnPilotNamesLoaded?.Invoke();
 	}
 
 	private async Task<string[]> LoadNamePoolAsync(string fileName)
@@ -58,17 +66,17 @@ public class PilotNameManager : MonoBehaviour
 	// Combine the value returned with an initial, digit, or second portion
 	private string GenerateNamePortion(string[] namePool)
 	{
-		return namePool[Random.Range(0, namePool.Length)];
+		return namePool[UnityEngine.Random.Range(0, namePool.Length)];
 	}
 
 	private char GenerateInitial()
 	{
-		return char.ToUpper((char)('a' + Random.Range(0, 26)));
+		return char.ToUpper((char)('a' + UnityEngine.Random.Range(0, 26)));
 	}
 
 	private int GenerateDigit()
 	{
-		return Random.Range(0, 9);
+		return UnityEngine.Random.Range(0, 9);
 	}
 
 	public string GetRandomName(Species species)

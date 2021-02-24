@@ -22,16 +22,16 @@ public partial class Pilot
     }
     public Species Species
     {
-        get => isRandom ? saveData.randomName : pilotName;
+        get => isRandom ? saveData.randomSpecies : species;
         set
         {
             if (isRandom)
             {
-                saveData.randomName = value;
+                saveData.randomSpecies = value;
             }
             else
             {
-                pilotName = value;
+                species = value;
             }
         }
     }
