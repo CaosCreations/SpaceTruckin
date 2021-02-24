@@ -8,9 +8,9 @@ public class PilotNameManager : MonoBehaviour
 	public string[] HumanFemaleNames { get; private set; }
 	public string[] HelicidNames { get; private set; }
 	public string[] OshunianNames { get; private set; }
-	public string[] OshunianTitles { get; set; }
-	public string[] VestaPrefixes { get; set; }
-	public string[] VestaNames { get; set; }
+	public string[] OshunianTitles { get; private set; }
+	public string[] VestaPrefixes { get; private set; }
+	public string[] VestaNames { get; private set; }
 
 	private void Awake()
 	{
@@ -39,23 +39,18 @@ public class PilotNameManager : MonoBehaviour
 
 	private async Task<string[]> LoadNamePoolAsync(string fileName)
     {
-		string namePool = await DataUtils.ReadTextFileAsync(fileName);
+		string namePool = await DataUtils.ReadListOfTextAsync(fileName);
 		return namePool.Split('\n');
     }
 
 	/// <summary>
-	/// Name formats:
+	/// Species name formats:
 	///		Human: [FirstName] [Initial].
 	///		Helicid: [LastName] [Initial]. 
 	///		Oshunian: [FirstName] [Title]
 	///		Vesta: [Prefix-[Name]
 	///		Robot: [Alphabetical prefix]-[Numerical suffix]
 	/// </summary>
-
-	private enum NameCategory
-	{
-		HumanMale, HumanFemale, Helicid, Oshunian, Vesta, Robot
-	};
 
 	private readonly int robotPrefixLength = 3;
 	private readonly int robotSuffixLength = 4;
@@ -76,40 +71,40 @@ public class PilotNameManager : MonoBehaviour
 		return Random.Range(0, 9);
 	}
 
-	private string GetRandomName(NameCategory nameCategory)
+	public string GetRandomName(Species species)
 	{
-		switch (nameCategory)
+		switch (species)
 		{
-			case NameCategory.HumanMale:
+			case Species.HumanMale:
 				var maleFirstName = GenerateNamePortion(Instance.HumanMaleNames);
 				var maleSurname = GenerateInitial();
 				return $"{maleFirstName} {maleSurname}.";
 
-			case NameCategory.HumanFemale:
+			case Species.HumanFemale:
 				var femaleFirstName = GenerateNamePortion(Instance.HumanFemaleNames);
 				var femaleSurname = GenerateInitial();
 				return $"{femaleFirstName} {femaleSurname}.";
 
-			case NameCategory.Helicid:
+			case Species.Helicid:
 				var helicidSurname = GenerateNamePortion(Instance.HelicidNames);
 				var helicidFirstName = GenerateInitial();
 
 				// Helicid surnames come first 
 				return $"{helicidSurname} {helicidFirstName}.";
 
-			case NameCategory.Oshunian:
+			case Species.Oshunian:
 				var oshunianFirstName = GenerateNamePortion(Instance.OshunianNames);
 				var oshunianSurname = GenerateNamePortion(Instance.OshunianTitles);
 
 				// No space required since the surname is a title with a space built in
 				return $"{oshunianFirstName}{oshunianSurname}";
 
-			case NameCategory.Vesta:
+			case Species.Vesta:
 				var vestaPefix = GenerateNamePortion(Instance.VestaPrefixes);
 				var vestaName = GenerateNamePortion(Instance.VestaNames);
 				return $"{vestaPefix}-{vestaName}";
 
-			case NameCategory.Robot:
+			case Species.Robot:
 				string prefix = string.Empty;
 				string suffix = string.Empty;
 

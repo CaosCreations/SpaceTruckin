@@ -3,13 +3,14 @@ using UnityEngine;
 
 public enum Species
 {
-    Human, Helicid, Myorijiin, Oshunian, HelmetGuy, Vesta
+    HumanMale, HumanFemale, Helicid, Myorijiin, Oshunian, Vesta, Robot, HelmetGuy
 }
 
 [CreateAssetMenu(fileName = "Pilot", menuName = "ScriptableObjects/Pilot", order = 1)]
 public partial class Pilot : ScriptableObject
 {
     [Header("Set in Editor")]
+    public bool isRandom;
     [SerializeField] private string pilotName;
     [SerializeField] private string description;
     [SerializeField] private int hireCost;
@@ -29,6 +30,8 @@ public partial class Pilot : ScriptableObject
     public class PilotSaveData
     {
         [Header("Set in Editor")]
+        public string randomName;
+        public Species randomSpecies;
         public int level;
         public double requiredXp;
 

@@ -9,7 +9,7 @@ public class NewDayReportCard : MonoBehaviour
 {
     public Image shipAvatar;
     public Text detailsText;
-    public Button nextCardButton; 
+    public Button nextCardButton;
 
     public void ShowReport(ArchivedMission mission)
     {
