@@ -103,12 +103,19 @@ public static class DataUtils
         Directory.CreateDirectory(GetSaveFolderPath(folderName));
     }
 
-    public async static Task<string> ReadTextFileAsync(string fileName)
+    public async static Task<string> ReadTextFileAsync(string filePath)
     {
-        string text;
-        using (StreamReader reader = File.OpenText(fileName))
+        string text = string.Empty;
+        if (File.Exists(filePath))
         {
-            text = await reader.ReadToEndAsync();
+            using (StreamReader reader = File.OpenText(filePath))
+            {
+                text = await reader.ReadToEndAsync();
+            }
+        }
+        else
+        {
+            Debug.Log($"Text file at path {filePath} does not exist");
         }
         return text;
     }
