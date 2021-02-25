@@ -29,13 +29,13 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        if (DataModelsUtils.SaveFolderExists(ArchivedMission.FOLDER_NAME))
+        if (DataUtils.SaveFolderExists(ArchivedMission.FOLDER_NAME))
         {
             LoadDataAsync();
         }
         else
         {
-            DataModelsUtils.CreateSaveFolder(ArchivedMission.FOLDER_NAME);
+            DataUtils.CreateSaveFolder(ArchivedMission.FOLDER_NAME);
         }
         ArchivedMissions = new List<ArchivedMission>();
         MissionsCompletedYesterday = new List<ArchivedMission>();
@@ -90,5 +90,5 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
     public void SaveData() => ArchivedMissions.ForEach(a => a.SaveData());
 
     public void DeleteData() 
-        => DataModelsUtils.RecursivelyDeleteSaveData(ArchivedMission.FOLDER_NAME);
+        => DataUtils.RecursivelyDeleteSaveData(ArchivedMission.FOLDER_NAME);
 }

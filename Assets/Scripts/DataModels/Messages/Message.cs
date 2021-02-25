@@ -25,11 +25,11 @@ public partial class Message : ScriptableObject, IDataModel
 
     public void SaveData()
     {
-        DataModelsUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
+        DataUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
     }
 
     public async System.Threading.Tasks.Task LoadDataAsync()
     {
-        saveData = await DataModelsUtils.LoadFileAsync<MessageSaveData>(name, FOLDER_NAME);
+        saveData = await DataUtils.LoadFileAsync<MessageSaveData>(name, FOLDER_NAME);
     }
 }

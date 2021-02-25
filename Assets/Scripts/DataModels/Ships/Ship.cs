@@ -51,11 +51,11 @@ public partial class Ship : ScriptableObject, IDataModel
 
     public void SaveData()
     {
-        DataModelsUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
+        DataUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
     }
 
     public async System.Threading.Tasks.Task LoadDataAsync()
     {
-        saveData = await DataModelsUtils.LoadFileAsync<ShipSaveData>(name, FOLDER_NAME);
+        saveData = await DataUtils.LoadFileAsync<ShipSaveData>(name, FOLDER_NAME);
     }
 }

@@ -9,12 +9,11 @@ public class DataModelManagerInitialiser : MonoBehaviour
 
     private void InitDataModelManagers()
     {
-        // MissionsManager must exist before ArchivedMissionsManager.
         MissionsManager.Instance.Init();
         ArchivedMissionsManager.Instance.Init();
-
-        ShipsManager.Instance.Init();
+        PilotNameManager.Instance.Init();
         PilotsManager.Instance.Init();
+        ShipsManager.Instance.Init();
         MessagesManager.Instance.Init();
         PlayerManager.Instance.Init();
     }

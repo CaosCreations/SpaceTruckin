@@ -47,12 +47,12 @@ public class ArchivedMission : IDataModel
 
     public async Task LoadDataAsync()
     {
-        saveData = await DataModelsUtils.LoadFileAsync<ArchivedMissionSaveData>(FileName, FOLDER_NAME);
+        saveData = await DataUtils.LoadFileAsync<ArchivedMissionSaveData>(FileName, FOLDER_NAME);
     }
 
     public void SaveData()
     {
-        DataModelsUtils.SaveFileAsync(FileName, FOLDER_NAME, saveData);
+        DataUtils.SaveFileAsync(FileName, FOLDER_NAME, saveData);
     }
 
     public string MissionName { get => saveData.missionName; set => saveData.missionName = value; }

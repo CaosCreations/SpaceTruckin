@@ -39,13 +39,13 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        if (DataModelsUtils.SaveFolderExists(PlayerData.FOLDER_NAME))
+        if (DataUtils.SaveFolderExists(PlayerData.FOLDER_NAME))
         {
             LoadDataAsync();
         }
         else
         {
-            DataModelsUtils.CreateSaveFolder(PlayerData.FOLDER_NAME);
+            DataUtils.CreateSaveFolder(PlayerData.FOLDER_NAME);
         }
         playerMovement = FindObjectOfType<PlayerMovement>();
 
@@ -95,6 +95,6 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
 
     public void DeleteData()
     {
-        DataModelsUtils.RecursivelyDeleteSaveData(PlayerData.FOLDER_NAME);
+        DataUtils.RecursivelyDeleteSaveData(PlayerData.FOLDER_NAME);
     }
 }
