@@ -25,6 +25,11 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
+        if (Pilots == null)
+        {
+            Debug.LogError("No pilot data");
+        }
+
         if (DataUtils.SaveFolderExists(Pilot.FOLDER_NAME))
         {
             LoadDataAsync();
@@ -32,12 +37,6 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         else
         {
             DataUtils.CreateSaveFolder(Pilot.FOLDER_NAME);
-            RandomisePilots();
-        }
-
-        if (Pilots == null)
-        {
-            Debug.LogError("No pilot data");
         }
     }
 
@@ -80,14 +79,21 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
 
     public void RandomisePilots()
     {
-        foreach (Pilot pilot in Pilots)
+        if (Pilots != null)
         {
-            if (pilot.isRandom)
+            foreach (Pilot pilot in Pilots)
             {
-                pilot.Name = PilotNameManager.Instance.GetRandomName(pilot.Species);
-                pilot.Species = PilotUtils.GetRandomSpecies();
+                if (pilot == null)
+                {
+                    continue;
+                }
+                else if (pilot.IsRandom && string.IsNullOrEmpty(pilot.Name))
+                {
+                    pilot.Species = PilotUtils.GetRandomSpecies();
+                    pilot.Name = PilotNameManager.Instance.GetRandomName(pilot.Species);
 
-                // Other random stats logic here
+                    // Other random stats logic here
+                }
             }
         }
     }

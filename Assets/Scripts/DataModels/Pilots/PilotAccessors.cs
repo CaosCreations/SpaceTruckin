@@ -63,6 +63,7 @@ public partial class Pilot
     {
         get => saveData.isAssignedToShip; set { saveData.isAssignedToShip = value; }
     }
+    public bool IsRandom => isRandom; 
     public Ship Ship { get => ship; } 
     public Sprite Avatar { get => avatar; set => avatar = value; }
 }

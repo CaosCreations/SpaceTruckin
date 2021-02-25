@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -13,43 +13,8 @@ public class PilotNameManager : MonoBehaviour
 	public string[] VestaPrefixes { get; private set; }
 	public string[] VestaNames { get; private set; }
 
-	public static event Action OnPilotNamesLoaded;
-
-	private void Awake()
-	{
-		if (Instance == null)
-		{
-			Instance = this;
-			DontDestroyOnLoad(gameObject);
-        }
-		else
-		{
-			Destroy(gameObject);
-		}
-	}
-
-	public void Init()
-    {
-		LoadNamePoolsAsync();
-	}
-
-	private async void LoadNamePoolsAsync()
-	{
-		HumanMaleNames = await LoadNamePoolAsync(PilotsConstants.humanMaleNamesPath);
-		HumanFemaleNames = await LoadNamePoolAsync(PilotsConstants.humanFemaleNamesPath);
-		HelicidNames = await LoadNamePoolAsync(PilotsConstants.helicidNamesPath);
-		OshunianNames = await LoadNamePoolAsync(PilotsConstants.oshunianNamesPath);
-		OshunianTitles = await LoadNamePoolAsync(PilotsConstants.oshunianTitlesPath);
-		VestaPrefixes = await LoadNamePoolAsync(PilotsConstants.vestaPrefixesPath);
-		VestaNames = await LoadNamePoolAsync(PilotsConstants.vestaNamesPath);
-		OnPilotNamesLoaded?.Invoke();
-	}
-
-	private async Task<string[]> LoadNamePoolAsync(string fileName)
-    {
-		string namePool = await DataUtils.ReadListOfTextAsync(fileName);
-		return namePool.Split('\n');
-    }
+	private readonly int robotPrefixLength = 3;
+	private readonly int robotSuffixLength = 4;
 
 	/// <summary>
 	/// Species name formats:
@@ -60,23 +25,58 @@ public class PilotNameManager : MonoBehaviour
 	///		Robot: [Alphabetical prefix]-[Numerical suffix]
 	/// </summary>
 
-	private readonly int robotPrefixLength = 3;
-	private readonly int robotSuffixLength = 4;
+	private static System.Random random;
+
+	private void Awake()
+	{
+		if (Instance == null)
+		{
+			Instance = this;
+			random = new System.Random();
+			DontDestroyOnLoad(gameObject);
+        }
+		else
+		{
+			Destroy(gameObject);
+			return;
+		}
+	}
+
+	public async void Init()
+	{
+        List<Task> pilotNameTasks = new List<Task>
+        {
+            Task.Factory.StartNew(() => HumanMaleNames = LoadNamePoolAsync(PilotsConstants.humanMaleNamesPath).Result),
+            Task.Factory.StartNew(() => HumanFemaleNames = LoadNamePoolAsync(PilotsConstants.humanFemaleNamesPath).Result),
+            Task.Factory.StartNew(() => HelicidNames = LoadNamePoolAsync(PilotsConstants.helicidNamesPath).Result),
+            Task.Factory.StartNew(() => OshunianNames = LoadNamePoolAsync(PilotsConstants.oshunianNamesPath).Result),
+            Task.Factory.StartNew(() => OshunianTitles = LoadNamePoolAsync(PilotsConstants.oshunianTitlesPath).Result),
+            Task.Factory.StartNew(() => VestaPrefixes = LoadNamePoolAsync(PilotsConstants.vestaPrefixesPath).Result),
+            Task.Factory.StartNew(() => VestaNames = LoadNamePoolAsync(PilotsConstants.vestaNamesPath).Result)
+        };
+		await Task.WhenAll(pilotNameTasks).ContinueWith(x => PilotsManager.Instance.RandomisePilots());
+	}
+
+	private async Task<string[]> LoadNamePoolAsync(string fileName)
+    {
+		string namePool = await DataUtils.ReadListOfTextAsync(fileName);
+		return namePool.Split('\n');
+    }
 
 	// Combine the value returned with an initial, digit, or second portion
 	private string GenerateNamePortion(string[] namePool)
 	{
-		return namePool[UnityEngine.Random.Range(0, namePool.Length)];
+		return namePool[random.Next(0, namePool.Length)];
 	}
 
 	private char GenerateInitial()
 	{
-		return char.ToUpper((char)('a' + UnityEngine.Random.Range(0, 26)));
+		return char.ToUpper((char)('a' + random.Next(0, 26)));
 	}
 
 	private int GenerateDigit()
 	{
-		return UnityEngine.Random.Range(0, 9);
+		return random.Next(0, 9);
 	}
 
 	public string GetRandomName(Species species)

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum Species
 {
-    HumanMale, HumanFemale, Helicid, Myorijiin, Oshunian, Vesta, Robot, HelmetGuy
+    HumanMale, HumanFemale, Helicid, Oshunian, Vesta, Robot
 }
 
 [CreateAssetMenu(fileName = "Pilot", menuName = "ScriptableObjects/Pilot", order = 1)]
