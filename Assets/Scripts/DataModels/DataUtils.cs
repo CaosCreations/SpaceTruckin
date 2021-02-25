@@ -103,7 +103,7 @@ public static class DataUtils
         Directory.CreateDirectory(GetSaveFolderPath(folderName));
     }
 
-    public async static Task<string> ReadListOfTextAsync(string fileName)
+    public async static Task<string> ReadTextFileAsync(string fileName)
     {
         string text;
         using (StreamReader reader = File.OpenText(fileName))
