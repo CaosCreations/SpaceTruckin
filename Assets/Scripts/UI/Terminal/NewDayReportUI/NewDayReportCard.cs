@@ -28,19 +28,19 @@ public class NewDayReportCard : MonoBehaviour
     public string BuildReportDetails(ArchivedMission mission)
     {
         StringBuilder builder = new StringBuilder();
-        string missionIdentifierText = $@"{mission.Pilot.Name} of the {mission.Ship.Name}
-            completed the mission {mission.MissionName}.";
-
+        string missionIdentifierText = $"{mission.Pilot.Name} of the {mission.Ship.Name} completed the mission {mission.MissionName}.";
         string moneyText = $"{mission.Ship.Name} earned ${mission.TotalMoneyEarned}.";
         string damageText = $"{mission.Ship.Name} took {mission.TotalDamageTaken} damage.";
         string fuelText = $"{mission.Ship.Name} lost {mission.TotalFuelLost} fuel.";
         string xpText = $"{mission.Pilot.Name} gained {mission.TotalPilotXpGained} xp.";
+        string missionsCompletedText = $"{mission.Pilot.Name} has now completed {mission.MissionsCompletedByPilotAtTimeOfMission} missions.";
 
         builder.AppendLineWithBreaks(missionIdentifierText);
         builder.AppendLineWithBreaks(moneyText);
         builder.AppendLineWithBreaks(damageText);
         builder.AppendLineWithBreaks(fuelText);
         builder.AppendLineWithBreaks(xpText);
+        builder.AppendLineWithBreaks(missionsCompletedText);
 
         // Check if the pilot levelled up
         if (mission.PilotLevelAtTimeOfMission < mission.Pilot.Level)
