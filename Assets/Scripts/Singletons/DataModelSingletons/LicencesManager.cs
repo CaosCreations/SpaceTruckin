@@ -38,21 +38,6 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    private T[] GetLicenceEffectsByType<T>(Licence[] licences) where T : class, new()
-    {
-        List<T> licenceEffects; 
-        IEnumerable<Licence> matchingLicences = licences.Where(x => x.effect.GetType() == typeof(T));
-        matchingLicences.ToList().ForEach(x => licenceEffects.Add(x.effect));
-
-        //licences.Select<Licence, T>(x =>
-        //{
-        //    if (x.effect.GetType() == typeof(T))
-        //    {
-        //        licenceEffects.Add(x.effect as T);
-        //    }
-        //});
-    }
-
     public void DeleteData()
     {
         throw new System.NotImplementedException();
