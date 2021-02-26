@@ -31,8 +31,39 @@ public class LicenceDetailsUI : MonoBehaviour
         StringBuilder builder = new StringBuilder();
         builder.AppendLineWithBreaks($"Name: {licence.Name}");
         builder.AppendLineWithBreaks($"Description: {licence.Description}");
-        builder.AppendLineWithBreaks($"Points invested: {licence.PointsInvested} out of {licence.MaximumPoints}");
+        builder.AppendLineWithBreaks($"Effect: {GetEffectDetails(licence.Effect)}");
+        builder.AppendLineWithBreaks($"Owned? {licence.IsOwned}");
         
         return builder.ToString();
+    }
+
+    private static string GetEffectDetails(LicenceEffect effect)
+    {
+        string effectDetails = string.Empty;
+        if (effect is MoneyEffect)
+        {
+            MoneyEffect moneyEffect = effect as MoneyEffect;
+            effectDetails = $"{LicenceUtils.CoefficientToPercentage(moneyEffect.effect)}% increased money from missions";
+        }
+        else if (effect is PilotXpEffect)
+        {
+            PilotXpEffect pilotXpEffect = effect as PilotXpEffect;
+            effectDetails = $"{LicenceUtils.CoefficientToPercentage(pilotXpEffect.effect)}% increased pilot XP from missions";
+        }
+        else if (effect is ShipDamageEffect)
+        {
+            ShipDamageEffect shipDamageEffect = effect as ShipDamageEffect;
+            effectDetails = $"{LicenceUtils.CoefficientToPercentage(shipDamageEffect.effect)}";
+        }
+        else if (effect is FuelDiscountEffect)
+        {
+            FuelDiscountEffect fuelDiscountEffect = effect as FuelDiscountEffect;
+            effectDetails = $"{LicenceUtils.CoefficientToPercentage(fuelDiscountEffect.effect)}";
+        }
+        else
+        {
+            Debug.Log($"Licence effect {effect} is not of a recognised effect type");
+        }
+        return effectDetails;
     }
 }
