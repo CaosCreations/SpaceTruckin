@@ -17,6 +17,4 @@ public class UIConstants : MonoBehaviour
     public static Color LightGrey = new Color(184, 181, 185);
     public static Color MediumGrey = new Color(134, 129, 136);
     public static Color DarkGrey = new Color(100, 99, 101);
-
-
 }

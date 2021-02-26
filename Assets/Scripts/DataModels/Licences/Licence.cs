@@ -12,6 +12,7 @@ public partial class Licence : ScriptableObject
     [SerializeField] private int maximumPoints; 
     [SerializeField] private LicenceEffect effect;
 
+    [Header("Data to update IN GAME")]
     public LicenceSaveData saveData;
 
     [Serializable]

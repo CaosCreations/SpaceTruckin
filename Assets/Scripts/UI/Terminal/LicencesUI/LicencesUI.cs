@@ -11,8 +11,15 @@ public class LicencesUI : MonoBehaviour
     {
         foreach (Licence licence in LicencesManager.GetLicencesInTierOrder())
         {
+            // Every tier, make a new HLG 
 
+            // Or Make 2D 
         }
+    }
+
+    private void HandlePointInvestment(Licence licence)
+    {
+
     }
 
 

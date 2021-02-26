@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Linq;
+using System.Collections.Generic;
 
 public enum LicenceEffectType
 {
@@ -17,6 +18,8 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
     public PilotXpEffect[] pilotXpEffects;
     public ShipDamageEffect[] shipDamageEffects;
     public FuelDiscountEffect[] fuelDiscountEffects;
+
+    private Dictionary<int, int> PointRequirementsPerTier;
 
     public static double MoneyEffect => Instance.moneyEffects.ToList().Sum(x => x.effect);
     public static double PilotXpEffect => Instance.pilotXpEffects.ToList().Sum(x => x.effect);
@@ -42,10 +45,10 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
         return Instance.Licences.OrderBy(x => x.Tier).ToArray();
     }
 
-    public static void InvestLicencePoint(Licence licence)
+    public static bool IsTierUnlocked(Licence licence)
     {
-        licence.PointsInvested++;
-        PlayerManager.Instance.InvestLicencePoint();
+        return PlayerManager.Instance.TotalLicencePointsAcquired
+            >= Instance.PointRequirementsPerTier[key: licence.Tier];
     }
 
     public void DeleteData()

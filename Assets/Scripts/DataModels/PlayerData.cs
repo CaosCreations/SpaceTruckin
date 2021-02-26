@@ -16,7 +16,7 @@ public class PlayerData : ScriptableObject, IDataModel
         public long playerTotalMoneyAcquired; //Used to unlock missions
         
         public int playerLicencePoints;
-        public int playerTotalLicencePointsAcquired;
+        public int playerTotalLicencePointsAcquired; //Used to unlock licence tiers
     }
 
     public long PlayerMoney

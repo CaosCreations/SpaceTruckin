@@ -16,6 +16,10 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         get => playerData.PlayerTotalMoneyAcquired; 
         set => playerData.PlayerTotalMoneyAcquired = value;
     }
+    public int TotalLicencePointsAcquired
+    {
+        get => playerData.PlayerTotalLicencePointsAcquired;
+    }
 
     [Header("Set at Runtime")]
     public bool isPaused;
@@ -77,16 +81,27 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         onFinancialTransaction?.Invoke();
     }
 
+    public bool CanInvestLicencePoint() => playerData.PlayerLicencePoints > 0;
+
+    public void InvestLicencePoint(Licence licence)
+    {
+        if (CanInvestLicencePoint())
+        {
+            playerData.PlayerLicencePoints--;
+            playerData.PlayerTotalLicencePointsAcquired++;
+            licence.PointsInvested++;
+            Debug.Log($"{licence.Name} invested into (+1 LP)\nRemaining LP: {playerData.PlayerLicencePoints}");
+        }
+        else
+        {
+            Debug.Log($"Player has insufficient LP to invest into {licence.Name}");
+        }
+    }
+
     public void EnterMenuState()
     {
         playerMovement.ResetAnimator();
         Instance.isPaused = true;
-    }
-
-    public void InvestLicencePoint()
-    {
-        playerData.PlayerLicencePoints--;
-        playerData.PlayerTotalLicencePointsAcquired++;
     }
 
     public void SaveData()

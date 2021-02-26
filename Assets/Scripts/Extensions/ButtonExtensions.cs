@@ -28,4 +28,10 @@ public static class ButtonExtensions
             image.color = newColour;
         }
     }
+
+    public static Button SetInteractable(this Button self, bool value)
+    {
+        self.interactable = value;
+        return self;
+    }
 }
