@@ -53,12 +53,12 @@ public class LicenceDetailsUI : MonoBehaviour
         else if (effect is ShipDamageEffect)
         {
             ShipDamageEffect shipDamageEffect = effect as ShipDamageEffect;
-            effectDetails = $"{LicenceUtils.CoefficientToPercentage(shipDamageEffect.effect)}";
+            effectDetails = $"{LicenceUtils.CoefficientToPercentage(shipDamageEffect.effect)}% reduced damage to ships";
         }
         else if (effect is FuelDiscountEffect)
         {
             FuelDiscountEffect fuelDiscountEffect = effect as FuelDiscountEffect;
-            effectDetails = $"{LicenceUtils.CoefficientToPercentage(fuelDiscountEffect.effect)}";
+            effectDetails = $"{LicenceUtils.CoefficientToPercentage(fuelDiscountEffect.effect)}% discount on fuel";
         }
         else
         {

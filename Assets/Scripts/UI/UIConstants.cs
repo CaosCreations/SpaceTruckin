@@ -2,8 +2,6 @@
 
 public class UIConstants : MonoBehaviour
 {
-    public static Color InactiveTabButtonColour = OffWhite; // Off-white 
-
     public static Vector3 ShipPreviewOffset = new Vector3(-3f, 0f, 0f);
     public static Vector3 ShipPreviewRotationSpeed = new Vector3(0f, 0.15f, 0f);
     public static float ShipPreviewScaleFactor = 0.85f;
@@ -17,4 +15,6 @@ public class UIConstants : MonoBehaviour
     public static Color LightGrey = new Color(184, 181, 185);
     public static Color MediumGrey = new Color(134, 129, 136);
     public static Color DarkGrey = new Color(100, 99, 101);
+
+    public static Color InactiveTabButtonColour = OffWhite;
 }

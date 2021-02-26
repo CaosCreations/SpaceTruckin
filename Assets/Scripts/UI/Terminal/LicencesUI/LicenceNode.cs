@@ -5,21 +5,23 @@ using UnityEngine.UI;
 public class LicenceNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Licence licence;
+    private Text nodeText;
     private Button nodeButton;
 
     public void Init(Licence licence)
     {
         this.licence = licence;
+        nodeText = GetComponentInChildren<Text>().SetText(licence.PointsCost.ToString());
         nodeButton = GetComponent<Button>();
-        SetInteractability();
 
+        SetInteractability();
         if (nodeButton.interactable)
         {
             nodeButton.AddOnClick(HandleLicenceAcquisition);
         }
     }
 
-    private bool SetInteractability()
+    private void SetInteractability()
     {
         bool interactable = true;
         if (licence.PrerequisiteLicence != null)
@@ -29,7 +31,7 @@ public class LicenceNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             interactable = licence.PrerequisiteLicence.IsOwned;
         }
         // Grey out licences that are locked or have already been purchased.
-        return interactable && licence.IsUnlocked && !licence.IsOwned;
+        nodeButton.interactable = interactable && licence.IsUnlocked && !licence.IsOwned;
     }
 
     private void HandleLicenceAcquisition()
