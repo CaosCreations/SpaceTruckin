@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class LicenceConstants : MonoBehaviour
 {
-    public static int numberOfTiers;
+    public static int NumberOfTiers;
+
 }

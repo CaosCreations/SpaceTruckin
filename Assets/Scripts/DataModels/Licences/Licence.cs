@@ -8,8 +8,8 @@ public partial class Licence : ScriptableObject
     [SerializeField] private string licenceName;
     [SerializeField] private string description;
     [SerializeField] private int tier;
-    [SerializeField] private int[] costs;
-    [SerializeField] private int maximumPoints; 
+    [SerializeField] private int pointsCost;
+    [SerializeField] private Licence prerequisiteLicence;
     [SerializeField] private LicenceEffect effect;
 
     [Header("Data to update IN GAME")]
@@ -18,7 +18,7 @@ public partial class Licence : ScriptableObject
     [Serializable]
     public class LicenceSaveData
     {
-        public int pointsInvested;
-
+        public bool isUnlocked; //Some become available through external factors
+        public bool isOwned;
     }
 }

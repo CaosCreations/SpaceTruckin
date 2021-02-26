@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-public partial class Licence
+﻿public partial class Licence
 {
     public string Name { get => licenceName; set => licenceName = value; }
     public string Description { get => description; }
     public int Tier { get => tier; set => tier = value; }
-    public int[] Costs { get => costs; }
-    public int MaximumPoints { get => maximumPoints; }
-    public int PointsInvested { get => saveData.pointsInvested; set => saveData.pointsInvested = value; }
+    public int PointsCost { get => pointsCost; }
+    public bool IsOwned { get => saveData.isOwned; set => saveData.isOwned = value; }
+    public bool IsUnlocked { get => saveData.isUnlocked; set => saveData.isUnlocked = value; }
+    public Licence PrerequisiteLicence { get; set; }
     public LicenceEffect Effect { get => effect; }
-}   
+}

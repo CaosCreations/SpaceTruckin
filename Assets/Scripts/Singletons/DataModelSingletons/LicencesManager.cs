@@ -19,8 +19,6 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
     public ShipDamageEffect[] shipDamageEffects;
     public FuelDiscountEffect[] fuelDiscountEffects;
 
-    private Dictionary<int, int> PointRequirementsPerTier;
-
     public static double MoneyEffect => Instance.moneyEffects.ToList().Sum(x => x.effect);
     public static double PilotXpEffect => Instance.pilotXpEffects.ToList().Sum(x => x.effect);
     public static float ShipDamageEffect => Instance.shipDamageEffects.ToList().Sum(x => x.effect);
@@ -43,6 +41,19 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
     public static Licence[] GetLicencesInTierOrder()
     {
         return Instance.Licences.OrderBy(x => x.Tier).ToArray();
+    }
+
+    public static Dictionary<int, Licence> GetLicencesGroupedByTiers()
+    {
+        // Needs to be 2D
+        // <int, List<Licence>> 
+
+        var licenceGroups = new Dictionary<int, Licence>();
+        for (int i = 1; i <= LicenceConstants.NumberOfTiers; i++)
+        {
+            Instance.Licences.Where(x => x.Tier == i).ToList().ForEach(y => licenceGroups.Add(i, y));
+        }
+        return licenceGroups;
     }
 
     public static bool IsTierUnlocked(Licence licence)

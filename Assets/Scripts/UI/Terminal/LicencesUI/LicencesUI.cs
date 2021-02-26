@@ -14,13 +14,10 @@ public class LicencesUI : MonoBehaviour
             // Every tier, make a new HLG 
 
             // Or Make 2D 
+
+
+
         }
     }
-
-    private void HandlePointInvestment(Licence licence)
-    {
-
-    }
-
 
 }
