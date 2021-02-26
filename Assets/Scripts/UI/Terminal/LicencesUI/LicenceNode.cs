@@ -5,30 +5,36 @@ using UnityEngine.UI;
 public class LicenceNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Licence licence;
-    private Button investButton;
+    private Button nodeButton;
 
     public void Init(Licence licence)
     {
         this.licence = licence;
-        investButton = GetComponentInChildren<Button>();
+        nodeButton = GetComponent<Button>();
         SetInteractability();
 
-        if (investButton.interactable)
+        if (nodeButton.interactable)
         {
-            investButton.AddOnClick(HandlePointInvestment);
+            nodeButton.AddOnClick(HandleLicenceAcquisition);
         }
     }
 
     private bool SetInteractability()
     {
-        return investButton.interactable = LicencesManager.IsTierUnlocked(licence)
-            && licence.PointsInvested < licence.MaximumPoints;
-
+        bool interactable = true;
+        if (licence.PrerequisiteLicence != null)
+        {
+            // Unless the licence has no prerequisite (is on tier 1),
+            // the prerequisite licence must be owned in order to get the licence.
+            interactable = licence.PrerequisiteLicence.IsOwned;
+        }
+        // Grey out licences that are locked or have already been purchased.
+        return interactable && licence.IsUnlocked && !licence.IsOwned;
     }
 
-    private void HandlePointInvestment()
+    private void HandleLicenceAcquisition()
     {
-        PlayerManager.Instance.InvestLicencePoint(licence);
+        PlayerManager.Instance.AcquireLicence(licence);
         SetInteractability();
     }
 

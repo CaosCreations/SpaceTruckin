@@ -8,28 +8,25 @@ public class LicencesUI : MonoBehaviour
     public GameObject detailsContainer; 
     public GameObject nodePrefab;
 
+    private void Start()
+    {
+        PopulateTree();
+    }
 
-    //TC with VLG
     private void PopulateTree()
     {
         var licenceGroups = LicencesManager.GetLicencesGroupedByTiers();
-
-        for (int i = 0; i < licenceGroups.Count; i++)
+        
+        if (licenceGroups != null)
         {
-            // Init tier 
-
-        }
-        
-        
-        
-        foreach (Licence licence in LicencesManager.GetLicencesInTierOrder())
-        {
-            // Every tier, make a new HLG 
-
-            // Or Make 2D 
-
-
-
+            for (int i = 1; i <= licenceGroups.Count; i++)
+            {
+                if (licenceGroups[i] == null)
+                {
+                    continue;
+                }
+                InitTier(licenceGroups[i]);
+            }
         }
     }
 
@@ -39,6 +36,14 @@ public class LicencesUI : MonoBehaviour
         tier.transform.parent = treeContainer.transform;
         tier.AddComponent<HorizontalLayoutGroup>();
 
+        foreach (Licence licence in licences)
+        {
+            if (licence == null)
+            {
+                continue;
+            }
+            GameObject node = Instantiate(nodePrefab, tier.transform);
+            node.GetComponent<LicenceNode>().Init(licence);
+        }
     }
-
 }

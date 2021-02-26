@@ -12,8 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9adadca2c03c576429bd49e1c5c9a2e3, type: 3}
   m_Name: ShipDamageLicence
   m_EditorClassIdentifier: 
-  licenceName: 
-  tier: 0
-  pointsInvested: 0
-  costs: 0100000002000000
+  licenceName: sadasd
+  description: asdasd
+  tier: 3
+  pointsCost: 1
+  prerequisiteLicence: {fileID: 11400000, guid: 8b96b8ec5cf0a45438b8d1840ef97d55,
+    type: 2}
   effect: {fileID: 11400000, guid: 3044469899b9fe04a8409732e18c1595, type: 2}
+  saveData:
+    isUnlocked: 0
+    isOwned: 0

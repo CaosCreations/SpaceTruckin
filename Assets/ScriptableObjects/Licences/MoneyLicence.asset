@@ -12,8 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9adadca2c03c576429bd49e1c5c9a2e3, type: 3}
   m_Name: MoneyLicence
   m_EditorClassIdentifier: 
-  licenceName: 
-  tier: 0
-  pointsInvested: 0
-  costs: 0100000002000000
+  licenceName: sadas
+  description: asdasd
+  tier: 2
+  pointsCost: 0
+  prerequisiteLicence: {fileID: 11400000, guid: e6636acfdf8e91642a14034e9b4fdbe9,
+    type: 2}
   effect: {fileID: 11400000, guid: 88d0cc454a48d03489f142a7503a75c6, type: 2}
+  saveData:
+    isUnlocked: 0
+    isOwned: 0

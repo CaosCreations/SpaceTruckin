@@ -81,20 +81,18 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         onFinancialTransaction?.Invoke();
     }
 
-    public bool CanInvestLicencePoint() => playerData.PlayerLicencePoints > 0;
-
-    public void InvestLicencePoint(Licence licence)
+    public void AcquireLicence(Licence licence)
     {
-        if (CanInvestLicencePoint())
+        if (playerData.PlayerLicencePoints > 0)
         {
             playerData.PlayerLicencePoints--;
             playerData.PlayerTotalLicencePointsAcquired++;
-            licence.PointsInvested++;
-            Debug.Log($"{licence.Name} invested into (+1 LP)\nRemaining LP: {playerData.PlayerLicencePoints}");
+            licence.IsOwned = true;
+            Debug.Log($"{licence.Name} has been acquired\nRemaining LP: {playerData.PlayerLicencePoints}");
         }
         else
         {
-            Debug.Log($"Player has insufficient LP to invest into {licence.Name}");
+            Debug.Log($"Player has insufficient LP to acquire {licence.Name}");
         }
     }
 
