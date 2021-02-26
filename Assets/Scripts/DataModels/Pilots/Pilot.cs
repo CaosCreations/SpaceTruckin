@@ -13,16 +13,14 @@ public partial class Pilot : ScriptableObject
     [SerializeField] private string pilotName;
     [SerializeField] private string description;
     [SerializeField] private int hireCost;
-    /// <summary>
-    /// Raise the required xp to this power on level up.
-    /// Different pilots can have different progressions.
-    /// </summary>
     [SerializeField] private float xpThresholdExponent;
-    
     [SerializeField] private Species species;
     [SerializeField] private Ship ship;
     [SerializeField] private Sprite avatar;
+
+    [Header("Data to update IN GAME")]
     public PilotSaveData saveData;
+
     public static string FOLDER_NAME = "PilotSaveData";
 
     [Serializable]

@@ -29,9 +29,9 @@ public class LicenceDetailsUI : MonoBehaviour
     private static string BuildDetailsString(Licence licence)
     {
         StringBuilder builder = new StringBuilder();
-        builder.AppendLineWithBreaks($"Name: {licence.licenceName}");
-        builder.AppendLineWithBreaks($"Description: {licence.description}");
-        builder.AppendLineWithBreaks($"Points invested: {licence.pointsInvested} out of {licence.maximumPoints}");
+        builder.AppendLineWithBreaks($"Name: {licence.Name}");
+        builder.AppendLineWithBreaks($"Description: {licence.Description}");
+        builder.AppendLineWithBreaks($"Points invested: {licence.PointsInvested} out of {licence.MaximumPoints}");
         
         return builder.ToString();
     }

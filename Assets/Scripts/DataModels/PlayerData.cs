@@ -12,8 +12,11 @@ public class PlayerData : ScriptableObject, IDataModel
     [Serializable]
     public class PlayerSaveData
     {
-        [SerializeField] public long playerMoney;
-        [SerializeField] public long playerTotalMoneyAcquired; //Used to unlock missions
+        public long playerMoney;
+        public long playerTotalMoneyAcquired; //Used to unlock missions
+        
+        public int playerLicencePoints;
+        public int playerTotalLicencePointsAcquired;
     }
 
     public long PlayerMoney
@@ -25,6 +28,18 @@ public class PlayerData : ScriptableObject, IDataModel
     {
         get => saveData.playerTotalMoneyAcquired; 
         set => saveData.playerTotalMoneyAcquired = value;
+    }
+
+    public int PlayerLicencePoints
+    {
+        get => saveData.playerLicencePoints; set => saveData.playerLicencePoints = value;
+
+    }
+
+    public int PlayerTotalLicencePointsAcquired
+    {
+        get => saveData.playerTotalLicencePointsAcquired;
+        set => saveData.playerTotalLicencePointsAcquired = value;
     }
 
     public void SaveData()

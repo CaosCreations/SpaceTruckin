@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Linq;
-using System.Collections.Generic;
 
 public enum LicenceEffectType
 {
@@ -36,6 +35,17 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
+    }
+
+    public static Licence[] GetLicencesInTierOrder()
+    {
+        return Instance.Licences.OrderBy(x => x.Tier).ToArray();
+    }
+
+    public static void InvestLicencePoint(Licence licence)
+    {
+        licence.PointsInvested++;
+        PlayerManager.Instance.InvestLicencePoint();
     }
 
     public void DeleteData()

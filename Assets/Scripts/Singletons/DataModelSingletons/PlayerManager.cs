@@ -83,6 +83,12 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         Instance.isPaused = true;
     }
 
+    public void InvestLicencePoint()
+    {
+        playerData.PlayerLicencePoints--;
+        playerData.PlayerTotalLicencePointsAcquired++;
+    }
+
     public void SaveData()
     {
         playerData.SaveData();
