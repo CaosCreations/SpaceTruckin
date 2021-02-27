@@ -10,7 +10,7 @@ public class UIConstants : MonoBehaviour
     public static Color SpringWood = new Color(0xf2, 0xf0, 0xe5);
     public static Color Chatelle = new Color(0xb8, 0xb5, 0xb9);
     public static Color Mamba = new Color(0x86, 0x81, 0x88);
-    public static Color DarkGrey = new Color(0x45, 0x44, 0x4f);
+    public static Color GunPowder = new Color(0x45, 0x44, 0x4f);
     public static Color Martinique = new Color(0xf2, 0xf0, 0xe5);
     public static Color Shark = new Color(0x21, 0x21, 0x23);
     public static Color Blackcurrant = new Color(0x35, 0x2b, 0x42);
