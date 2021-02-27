@@ -26,11 +26,8 @@ public class LicenceNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         bool interactable = true;
         if (licence.PrerequisiteLicence != null)
         {
-            // Unless the licence has no prerequisite (is on tier 1),
-            // the prerequisite licence must be owned in order to get the licence.
             interactable = licence.PrerequisiteLicence.IsOwned;
         }
-        // Grey out licences that are locked or have already been purchased.
         nodeButton.interactable = interactable && licence.IsUnlocked && !licence.IsOwned;
     }
 

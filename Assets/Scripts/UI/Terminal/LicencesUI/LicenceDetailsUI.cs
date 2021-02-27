@@ -31,39 +31,56 @@ public class LicenceDetailsUI : MonoBehaviour
         StringBuilder builder = new StringBuilder();
         builder.AppendLineWithBreaks($"Name: {licence.Name}");
         builder.AppendLineWithBreaks($"Description: {licence.Description}");
-        builder.AppendLineWithBreaks($"Effect: {GetEffectDetails(licence.Effect)}");
+        builder.AppendLineWithBreaks($"Effect: {GetEffectString(licence)}");
+        builder.AppendLineWithBreaks($"Unlocked? {licence.IsUnlocked}");
         builder.AppendLineWithBreaks($"Owned? {licence.IsOwned}");
         
         return builder.ToString();
     }
 
-    private static string GetEffectDetails(LicenceEffect effect)
+    private static string GetEffectString(Licence licence)
     {
-        string effectDetails = string.Empty;
-        if (effect is MoneyEffect)
+        string effectString = string.Empty;
+
+        if (licence.Effect is MoneyEffect)
         {
-            MoneyEffect moneyEffect = effect as MoneyEffect;
-            effectDetails = $"{LicenceUtils.CoefficientToPercentage(moneyEffect.effect)}% increased money from missions";
+            MoneyEffect moneyEffect = licence.Effect as MoneyEffect;
+            effectString += $"{moneyEffect.Percentage}% increased money from missions\n";
+            effectString += GetAggregateEffectString<MoneyEffect>(licence.IsOwned);
+            
+            // Other effect property values can go here
         }
-        else if (effect is PilotXpEffect)
+        else if (licence.Effect is PilotXpEffect)
         {
-            PilotXpEffect pilotXpEffect = effect as PilotXpEffect;
-            effectDetails = $"{LicenceUtils.CoefficientToPercentage(pilotXpEffect.effect)}% increased pilot XP from missions";
+            PilotXpEffect pilotXpEffect = licence.Effect as PilotXpEffect;
+            effectString += $"{pilotXpEffect.Percentage}% increased pilot XP from missions";
+            effectString += GetAggregateEffectString<PilotXpEffect>(licence.IsOwned);
         }
-        else if (effect is ShipDamageEffect)
+        else if (licence.Effect is ShipDamageEffect)
         {
-            ShipDamageEffect shipDamageEffect = effect as ShipDamageEffect;
-            effectDetails = $"{LicenceUtils.CoefficientToPercentage(shipDamageEffect.effect)}% reduced damage to ships";
+            ShipDamageEffect shipDamageEffect = licence.Effect as ShipDamageEffect;
+            effectString += $"{shipDamageEffect.Percentage}% reduced damage to ships";
+            effectString += GetAggregateEffectString<ShipDamageEffect>(licence.IsOwned);
         }
-        else if (effect is FuelDiscountEffect)
+        else if (licence.Effect is FuelDiscountEffect)
         {
-            FuelDiscountEffect fuelDiscountEffect = effect as FuelDiscountEffect;
-            effectDetails = $"{LicenceUtils.CoefficientToPercentage(fuelDiscountEffect.effect)}% discount on fuel";
+            FuelDiscountEffect fuelDiscountEffect = licence.Effect as FuelDiscountEffect;
+            effectString += $"{fuelDiscountEffect.Percentage}% discount on fuel";
+            effectString += GetAggregateEffectString<FuelDiscountEffect>(licence.IsOwned);
         }
         else
         {
-            Debug.Log($"Licence effect {effect} is not of a recognised effect type");
+            Debug.Log($"Licence effect {licence.Effect} is not of a recognised effect type");
         }
-        return effectDetails;
+        return effectString;
+    }
+
+    private static string GetAggregateEffectString<T>(bool isOwned) where T : LicenceEffect
+    {
+        string substring = isOwned ? LicenceConstants.CurrentAggregateEffectSubstring 
+            : LicenceConstants.FutureAggregateEffectSubstring;
+
+        double aggregateEffect = LicencesManager.GetAggregateEffect<T>();
+        return $"{substring} {aggregateEffect}%";
     }
 }

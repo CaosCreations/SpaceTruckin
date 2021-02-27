@@ -10,7 +10,7 @@ public class ShipDamageOutcome : MissionOutcome
 
     public override void Process(Mission mission)
     {
-        int shipDamageTaken = Mathf.RoundToInt(shipDamage * LicencesManager.ShipDamageEffect);
+        int shipDamageTaken = (int)(shipDamage * LicencesManager.ShipDamageEffect);
         ShipsManager.DamageShip(mission.Ship, shipDamageTaken);
         mission.MissionToArchive.TotalDamageTaken += shipDamageTaken;
     }

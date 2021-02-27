@@ -3,5 +3,6 @@
 [CreateAssetMenu(fileName = "MoneyEffect", menuName = "ScriptableObjects/Licences/MoneyEffect", order = 1)]
 public class MoneyEffect : LicenceEffect
 {
-    public double effect;
+    //[SerializeField] private double effect;
+    //public double Effect { get => effect; }
 }

@@ -9,15 +9,15 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
     [SerializeField] private LicenceContainer licenceContainer;
     public Licence[] Licences { get => licenceContainer.licences; }
 
-    public MoneyEffect[] moneyEffects;
-    public PilotXpEffect[] pilotXpEffects;
-    public ShipDamageEffect[] shipDamageEffects;
-    public FuelDiscountEffect[] fuelDiscountEffects;
+    public List<MoneyEffect> moneyEffects;
+    public List<PilotXpEffect> pilotXpEffects;
+    public List<ShipDamageEffect> shipDamageEffects;
+    public List<FuelDiscountEffect> fuelDiscountEffects;
 
-    public static double MoneyEffect => Instance.moneyEffects.ToList().Sum(x => x.effect);
-    public static double PilotXpEffect => Instance.pilotXpEffects.ToList().Sum(x => x.effect);
-    public static float ShipDamageEffect => Instance.shipDamageEffects.ToList().Sum(x => x.effect);
-    public static float FuelDiscountEffect => Instance.fuelDiscountEffects.ToList().Sum(x => x.effect);
+    public static double MoneyEffect => Instance.moneyEffects.Sum(x => x.Effect);
+    public static double PilotXpEffect => Instance.pilotXpEffects.Sum(x => x.Effect);
+    public static double ShipDamageEffect => Instance.shipDamageEffects.Sum(x => x.Effect);
+    public static double FuelDiscountEffect => Instance.fuelDiscountEffects.Sum(x => x.Effect);
 
     private void Awake()
     {
@@ -38,6 +38,7 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
         if (DataModelsUtils.SaveFolderExists(Message.FOLDER_NAME))
         {
             LoadDataAsync();
+            SetEffectsReferences();
         }
         else
         {
@@ -48,11 +49,6 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
         {
             Debug.LogError("No licences data");
         }
-    }
-
-    public static Licence[] GetLicencesInTierOrder()
-    {
-        return Instance.Licences.OrderBy(x => x.Tier).ToArray();
     }
 
     /// <summary>
@@ -67,16 +63,28 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
         {
             licenceGroups.Add(i, new List<Licence>());
             Instance.Licences.Where(x => x.Tier == i).ToList().ForEach(y => licenceGroups[i].Add(y));
-            //Instance.Licences.Where(x => x.Tier == i).ToList().ForEach(y => licenceGroups.Add(i, y));
         }
         return licenceGroups;
     }
 
-    private static IEnumerable<LicenceEffect> GetLicenceEffectsByType<T>() 
+    private static List<T> GetLicenceEffectsByType<T>() where T : LicenceEffect
     {
         var effects = new List<LicenceEffect>();
         Instance.Licences.Where(x => x.Effect is T).ToList().ForEach(y => effects.Add(y.Effect));
-        return effects;
+        return effects as List<T>;
+    }
+
+    private void SetEffectsReferences()
+    {
+        moneyEffects = GetLicenceEffectsByType<MoneyEffect>();
+        pilotXpEffects = GetLicenceEffectsByType<PilotXpEffect>();
+        shipDamageEffects = GetLicenceEffectsByType<ShipDamageEffect>();
+        fuelDiscountEffects = GetLicenceEffectsByType<FuelDiscountEffect>();
+    }
+
+    public static double GetAggregateEffect<T>() where T: LicenceEffect
+    {
+        return GetLicenceEffectsByType<T>().Sum(x => x.Effect);
     }
 
     public void SaveData()
