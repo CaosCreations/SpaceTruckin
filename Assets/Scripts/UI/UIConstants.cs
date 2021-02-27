@@ -29,7 +29,7 @@ public class UIConstants : MonoBehaviour
     public static Color Muesli = new Color(0xa7, 0x7b, 0x5b);
     public static Color Tacha = new Color(0xc2, 0xd3, 0x68);
     public static Color ChelseaCucumber = new Color(0x8a, 0xb0, 0x60);
-    public static Color CutySark = new Color(0x56, 0x7b, 0x79);
+    public static Color CuttySark = new Color(0x56, 0x7b, 0x79);
     public static Color GreyAsparagus = new Color(0x4e, 0x58, 0x4a);
     public static Color YellowMetal = new Color(0x7b, 0x72, 0x43);
     public static Color DoubleSpanishWhite = new Color(0xe5, 0xce, 0xb4);
