@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public abstract class LicenceEffect : ScriptableObject 
 {
@@ -8,5 +7,6 @@ public abstract class LicenceEffect : ScriptableObject
 
     public string Name { get => effectName; }
     public double Effect { get => effect; }
-    public double Percentage { get => Math.Round((1 - effect) * 100, 2); }
+    //public double Percentage;
+    public double Percentage { get => System.Math.Round(Effect * 100, 2); }
 }

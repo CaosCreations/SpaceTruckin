@@ -71,10 +71,25 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
     private static List<T> GetLicenceEffectsByType<T>() where T : LicenceEffect
     {
         var effects = new List<T>();
-        Instance.Licences.Where(x => x.Effect is T).ToList().ForEach(y => effects.Add(y.Effect as T));
+        Instance.Licences.Where(x => x.Effect is T)
+            .ToList()
+            .ForEach(y => effects.Add(y.Effect as T));
+        
         return effects;
     }
 
+    private static List<T> GetActiveLicenceEffectsByType<T>() where T : LicenceEffect
+    {
+        var effects = new List<T>();
+        Instance.Licences
+            .Where(x => x.Effect is T && x.IsOwned)
+            .ToList()
+            .ForEach(y => effects.Add(y.Effect as T));
+        
+        return effects;
+    }
+
+    // Todo: store only owned effects
     private void SetEffectsReferences()
     {
         moneyEffects = GetLicenceEffectsByType<MoneyEffect>();
@@ -83,10 +98,12 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
         fuelDiscountEffects = GetLicenceEffectsByType<FuelDiscountEffect>();
     }
 
-    public static double GetTotalEffect<T>() where T: LicenceEffect
+    public static double GetTotalEffect<T>() where T : LicenceEffect
     {
-        return GetLicenceEffectsByType<T>().Sum(x => x.Effect);
+        return GetActiveLicenceEffectsByType<T>().Sum(x => x.Effect);
+        // Todo: don't use LINQ every time
     }
+
 
     public void SaveData()
     {

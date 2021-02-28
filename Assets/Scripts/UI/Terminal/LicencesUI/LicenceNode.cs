@@ -35,6 +35,7 @@ public class LicenceNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         PlayerManager.Instance.AcquireLicence(licence);
         OnLicenceAcquisition?.Invoke();
+
     }
 
     public void OnPointerEnter(PointerEventData eventData)

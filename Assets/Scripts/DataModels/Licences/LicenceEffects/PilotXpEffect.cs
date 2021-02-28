@@ -1,8 +1,7 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "PilotXpEffect", menuName = "ScriptableObjects/Licences/PilotXpEffect", order = 1)]
-public class PilotXpEffect : LicenceEffect
+public class PilotXpEffect : PositiveLicenceEffect
 {
     //[SerializeField] private double effect;
     //public double Effect { get => effect; }
