@@ -14,9 +14,19 @@ public class PilotXpOutcome : MissionOutcome
         // Then we can check if they levelled up as a result of the mission.
         mission.MissionToArchive.PilotLevelAtTimeOfMission = mission.Pilot.Level;
 
-        double xpGained = Random.Range(xpMin, xpMax) * ApplyOmens(mission) * LicencesManager.PilotXpEffect;
-        mission.MissionToArchive.TotalPilotXpGained += PilotsManager.AwardXp(mission.Pilot, xpGained);
-	}
+        double xpGained = Random.Range(xpMin, xpMax);
+        double xpAfterOmens = xpGained * ApplyOmens(mission);
+        double xpAfterLicences = xpAfterOmens *LicencesManager.PilotXpEffect;
+        
+        double xpIncreaseFromLicences = xpAfterLicences - xpAfterOmens;
+        if (mission.MissionToArchive != null)
+        {
+            mission.MissionToArchive.TotalXpIncreaseFromLicences += xpIncreaseFromLicences;
+            mission.MissionToArchive.TotalPilotXpGained += PilotsManager.AwardXp(mission.Pilot, xpAfterLicences);
+        }
+
+        Debug.Log("Pilot xp increase from licences: " + xpIncreaseFromLicences);
+    }
 
     /// <summary>
     /// Calculate the xp multiplier based on probability. 

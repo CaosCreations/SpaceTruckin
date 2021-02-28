@@ -11,7 +11,11 @@ public class ShipDamageOutcome : MissionOutcome
     public override void Process(Mission mission)
     {
         int shipDamageTaken = (int)(shipDamage * LicencesManager.ShipDamageEffect);
+        int damageReduced = shipDamage - shipDamageTaken;
         ShipsManager.DamageShip(mission.Ship, shipDamageTaken);
         mission.MissionToArchive.TotalDamageTaken += shipDamageTaken;
+        mission.MissionToArchive.TotalDamageReduced += damageReduced;
+
+        Debug.Log("Damage reduction from licences: " + damageReduced.ToString());
     }
 }

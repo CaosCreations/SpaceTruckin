@@ -12,13 +12,16 @@ public class MoneyOutcome : MissionOutcome
     public override void Process(Mission mission)
     {
         double moneyEarned = UnityEngine.Random.Range(moneyMin, moneyMax);
-        moneyEarned *= LicencesManager.MoneyEffect;
-        long moneyEarned64 = Convert.ToInt64(moneyEarned);
-        PlayerManager.Instance.ReceiveMoney(moneyEarned64);
+        double earningsAfterLicences = moneyEarned * LicencesManager.MoneyEffect;
+        long earnings64 = Convert.ToInt64(earningsAfterLicences);
+        PlayerManager.Instance.ReceiveMoney(earnings64);
 
+        long moneyIncrease64 = Convert.ToInt64(earnings64 - moneyEarned);
         if (mission.MissionToArchive != null)
         {
-            mission.MissionToArchive.TotalMoneyEarned += moneyEarned64;
+            mission.MissionToArchive.TotalMoneyIncrease += moneyIncrease64;
+            mission.MissionToArchive.TotalMoneyEarned += earnings64;
         }
+        Debug.Log("Money increase due to licences: " + (earnings64 - moneyEarned).ToString());
     }
 }

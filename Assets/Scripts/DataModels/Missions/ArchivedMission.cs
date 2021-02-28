@@ -37,9 +37,9 @@ public class ArchivedMission : IDataModel
     public class ArchivedMissionSaveData
     {
         public string missionName;
-        public int completionNumber, totalDamageTaken, totalFuelLost;
-        public long totalMoneyEarned;
-        public double totalPilotXpGained;
+        public int completionNumber, totalDamageTaken, totalDamageReduced, totalFuelLost;
+        public long totalMoneyEarned, totalMoneyIncrease;
+        public double totalPilotXpGained, totalXpIncreaseFromLicences;
         public Ship ship;
         public int pilotLevelAtTimeOfMission;
         public int missionsCompletedByPilotAtTimeOfMission;
@@ -58,7 +58,9 @@ public class ArchivedMission : IDataModel
     public string MissionName { get => saveData.missionName; set => saveData.missionName = value; }
     public int CompletionNumber { get => saveData.completionNumber; set => saveData.completionNumber = value; }
     public long TotalMoneyEarned { get => saveData.totalMoneyEarned; set => saveData.totalMoneyEarned = value; }
+    public long TotalMoneyIncrease { get => saveData.totalMoneyIncrease; set => saveData.totalMoneyIncrease = value; }
     public int TotalDamageTaken { get => saveData.totalDamageTaken; set => saveData.totalDamageTaken = value; }
+    public int TotalDamageReduced { get => saveData.totalDamageReduced; set => saveData.totalDamageReduced = value; }
     public int PilotLevelAtTimeOfMission 
     {
         get => saveData.pilotLevelAtTimeOfMission; set => saveData.pilotLevelAtTimeOfMission = value; 
@@ -69,6 +71,11 @@ public class ArchivedMission : IDataModel
         set => saveData.missionsCompletedByPilotAtTimeOfMission = value;
     }
     public double TotalPilotXpGained { get => saveData.totalPilotXpGained; set => saveData.totalPilotXpGained = value; }
+    public double TotalXpIncreaseFromLicences 
+    { 
+        get => saveData.totalXpIncreaseFromLicences; 
+        set => saveData.totalXpIncreaseFromLicences = value; 
+    }
     public int TotalFuelLost { get => saveData.totalFuelLost; set => saveData.totalFuelLost = value; }
     public Ship Ship { get => saveData.ship; set => saveData.ship = value; }
     public Pilot Pilot => Ship.Pilot; 
