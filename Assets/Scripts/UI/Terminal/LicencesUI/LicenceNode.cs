@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -7,6 +8,7 @@ public class LicenceNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public Licence licence;
     private Text nodeText;
     private Button nodeButton;
+    public static event Action OnLicenceAcquisition;
 
     public void Init(Licence licence)
     {
@@ -15,10 +17,8 @@ public class LicenceNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         nodeButton = GetComponent<Button>();
 
         SetInteractability();
-        if (nodeButton.interactable)
-        {
-            nodeButton.AddOnClick(HandleLicenceAcquisition);
-        }
+        OnLicenceAcquisition += SetInteractability;
+        nodeButton.AddOnClick(HandleLicenceAcquisition);
     }
 
     private void SetInteractability()
@@ -34,7 +34,7 @@ public class LicenceNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private void HandleLicenceAcquisition()
     {
         PlayerManager.Instance.AcquireLicence(licence);
-        SetInteractability();
+        OnLicenceAcquisition?.Invoke();
     }
 
     public void OnPointerEnter(PointerEventData eventData)

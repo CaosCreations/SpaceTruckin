@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class LicencesUI : MonoBehaviour
 {
     public GameObject treeContainer;
-    public GameObject detailsContainer; 
+    public GameObject detailsContainer;
+    public GameObject tierPrefab;
     public GameObject nodePrefab;
 
     private void Start()
@@ -32,10 +32,7 @@ public class LicencesUI : MonoBehaviour
 
     private void InitTier(List<Licence> licences)
     {
-        GameObject tier = new GameObject("Tier");
-        tier.transform.parent = treeContainer.transform;
-        tier.AddComponent<HorizontalLayoutGroup>();
-
+        GameObject tier = Instantiate(tierPrefab, treeContainer.transform);
         foreach (Licence licence in licences)
         {
             if (licence == null)
@@ -43,6 +40,7 @@ public class LicencesUI : MonoBehaviour
                 continue;
             }
             GameObject node = Instantiate(nodePrefab, tier.transform);
+            node.name = $"{licence.Name} node";
             node.GetComponent<LicenceNode>().Init(licence);
         }
     }
