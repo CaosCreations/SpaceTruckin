@@ -32,13 +32,13 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        if (DataModelsUtils.SaveFolderExists(Ship.FOLDER_NAME))
+        if (DataUtils.SaveFolderExists(Ship.FOLDER_NAME))
         {
             LoadDataAsync();
         }
         else
         {
-            DataModelsUtils.CreateSaveFolder(Ship.FOLDER_NAME);
+            DataUtils.CreateSaveFolder(Ship.FOLDER_NAME);
         }
         hangarSlots = FindObjectsOfType<HangarSlot>();
         UpdateHangarShips();
@@ -173,6 +173,6 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
 
     public void DeleteData()
     {
-        DataModelsUtils.RecursivelyDeleteSaveData(Ship.FOLDER_NAME);
+        DataUtils.RecursivelyDeleteSaveData(Ship.FOLDER_NAME);
     }
 }

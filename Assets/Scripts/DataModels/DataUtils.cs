@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public static class DataModelsUtils
+public static class DataUtils
 {
     public const string FILE_EXTENSION = ".truckin";
 
@@ -101,6 +101,23 @@ public static class DataModelsUtils
     public static void CreateSaveFolder(string folderName)
     {
         Directory.CreateDirectory(GetSaveFolderPath(folderName));
+    }
+
+    public async static Task<string> ReadTextFileAsync(string filePath)
+    {
+        string text = string.Empty;
+        if (File.Exists(filePath))
+        {
+            using (StreamReader reader = File.OpenText(filePath))
+            {
+                text = await reader.ReadToEndAsync();
+            }
+        }
+        else
+        {
+            Debug.Log($"Text file at path {filePath} does not exist");
+        }
+        return text;
     }
 
     public static void LogIOError(Exception e, string filePath)

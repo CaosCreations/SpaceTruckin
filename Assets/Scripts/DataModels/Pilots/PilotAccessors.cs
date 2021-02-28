@@ -1,12 +1,40 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 public partial class Pilot
 {
     // This class is just for property accessors. 
     // The fields are all located in Pilot.cs. 
 
-    public string Name { get => pilotName; }
+    public string Name 
+    { 
+        get => isRandom ? saveData.randomName : pilotName;
+        set
+        {
+            if (isRandom)
+            {
+                saveData.randomName = value;
+            }
+            else
+            {
+                pilotName = value;
+            }
+        }
+    }
+    public Species Species
+    {
+        get => isRandom ? saveData.randomSpecies : species;
+        set
+        {
+            if (isRandom)
+            {
+                saveData.randomSpecies = value;
+            }
+            else
+            {
+                species = value;
+            }
+        }
+    }
     public string Description
     {
         get => description; set => description = value;
@@ -35,6 +63,7 @@ public partial class Pilot
     {
         get => saveData.isAssignedToShip; set { saveData.isAssignedToShip = value; }
     }
+    public bool IsRandom => isRandom; 
     public Ship Ship { get => ship; } 
     public Sprite Avatar { get => avatar; set => avatar = value; }
 }

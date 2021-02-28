@@ -42,16 +42,17 @@ public class ArchivedMission : IDataModel
         public double totalPilotXpGained;
         public Ship ship;
         public int pilotLevelAtTimeOfMission;
+        public int missionsCompletedByPilotAtTimeOfMission;
     }
 
     public async Task LoadDataAsync()
     {
-        saveData = await DataModelsUtils.LoadFileAsync<ArchivedMissionSaveData>(FileName, FOLDER_NAME);
+        saveData = await DataUtils.LoadFileAsync<ArchivedMissionSaveData>(FileName, FOLDER_NAME);
     }
 
     public void SaveData()
     {
-        DataModelsUtils.SaveFileAsync(FileName, FOLDER_NAME, saveData);
+        DataUtils.SaveFileAsync(FileName, FOLDER_NAME, saveData);
     }
 
     public string MissionName { get => saveData.missionName; set => saveData.missionName = value; }
@@ -61,6 +62,11 @@ public class ArchivedMission : IDataModel
     public int PilotLevelAtTimeOfMission 
     {
         get => saveData.pilotLevelAtTimeOfMission; set => saveData.pilotLevelAtTimeOfMission = value; 
+    }
+    public int MissionsCompletedByPilotAtTimeOfMission
+    {
+        get => saveData.missionsCompletedByPilotAtTimeOfMission;
+        set => saveData.missionsCompletedByPilotAtTimeOfMission = value;
     }
     public double TotalPilotXpGained { get => saveData.totalPilotXpGained; set => saveData.totalPilotXpGained = value; }
     public int TotalFuelLost { get => saveData.totalFuelLost; set => saveData.totalFuelLost = value; }
