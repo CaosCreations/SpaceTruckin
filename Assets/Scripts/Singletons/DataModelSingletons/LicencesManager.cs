@@ -9,15 +9,10 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
     [SerializeField] private LicenceContainer licenceContainer;
     public Licence[] Licences { get => licenceContainer.licences; }
 
-    public List<MoneyEffect> moneyEffects;
-    public List<PilotXpEffect> pilotXpEffects;
-    public List<ShipDamageEffect> shipDamageEffects;
-    public List<FuelDiscountEffect> fuelDiscountEffects;
-
-    public static double MoneyEffect => Instance.moneyEffects.Sum(x => x.Effect);
-    public static double PilotXpEffect => Instance.pilotXpEffects.Sum(x => x.Effect);
-    public static double ShipDamageEffect => Instance.shipDamageEffects.Sum(x => x.Effect);
-    public static double FuelDiscountEffect => Instance.fuelDiscountEffects.Sum(x => x.Effect);
+    public static double MoneyEffect => GetTotalEffect<MoneyEffect>();
+    public static double PilotXpEffect => GetTotalEffect<PilotXpEffect>();
+    public static double ShipDamageEffect => GetTotalEffect<ShipDamageEffect>(); //Coefficient < 1 for reductions
+    public static double FuelDiscountEffect => GetTotalEffect<FuelDiscountEffect>(); 
     public static int NumberOfTiers => Instance.Licences.Max(x => x.Tier);
 
     private void Awake()
@@ -39,7 +34,6 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
         if (DataUtils.SaveFolderExists(Message.FOLDER_NAME))
         {
             LoadDataAsync();
-            SetEffectsReferences();
         }
         else
         {
@@ -89,22 +83,17 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
         return effects;
     }
 
-    // Todo: store only owned effects
-    private void SetEffectsReferences()
-    {
-        moneyEffects = GetLicenceEffectsByType<MoneyEffect>();
-        pilotXpEffects = GetLicenceEffectsByType<PilotXpEffect>();
-        shipDamageEffects = GetLicenceEffectsByType<ShipDamageEffect>();
-        fuelDiscountEffects = GetLicenceEffectsByType<FuelDiscountEffect>();
-    }
-
     public static double GetTotalEffect<T>() where T : LicenceEffect
     {
-        return GetActiveLicenceEffectsByType<T>().Sum(x => x.Effect);
-        // Todo: don't use LINQ every time
+        double totalEffect = GetActiveLicenceEffectsByType<T>().Sum(x => x.Effect);
+        if (typeof(T).IsSubclassOf(typeof(NegativeLicenceEffect)))
+        {
+            totalEffect *= -1;
+        }
+        return totalEffect;
     }
 
-
+    #region Persistence
     public void SaveData()
     {
         foreach (Licence licence in Instance.Licences)
@@ -131,4 +120,5 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
     {
         Instance.DeleteData();
     }
+    #endregion
 }
