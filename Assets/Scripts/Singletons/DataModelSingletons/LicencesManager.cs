@@ -18,6 +18,7 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
     public static double PilotXpEffect => Instance.pilotXpEffects.Sum(x => x.Effect);
     public static double ShipDamageEffect => Instance.shipDamageEffects.Sum(x => x.Effect);
     public static double FuelDiscountEffect => Instance.fuelDiscountEffects.Sum(x => x.Effect);
+    public static int NumberOfTiers => Instance.Licences.Max(x => x.Tier);
 
     private void Awake()
     {
@@ -59,7 +60,7 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
     public static Dictionary<int, List<Licence>> GetLicencesGroupedByTiers()
     {
         var licenceGroups = new Dictionary<int, List<Licence>>();
-        for (int i = 1; i <= LicenceConstants.NumberOfTiers; i++)
+        for (int i = 1; i <= NumberOfTiers; i++)
         {
             licenceGroups.Add(i, new List<Licence>());
             Instance.Licences.Where(x => x.Tier == i).ToList().ForEach(y => licenceGroups[i].Add(y));
@@ -69,9 +70,9 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
 
     private static List<T> GetLicenceEffectsByType<T>() where T : LicenceEffect
     {
-        var effects = new List<LicenceEffect>();
-        Instance.Licences.Where(x => x.Effect is T).ToList().ForEach(y => effects.Add(y.Effect));
-        return effects as List<T>;
+        var effects = new List<T>();
+        Instance.Licences.Where(x => x.Effect is T).ToList().ForEach(y => effects.Add(y.Effect as T));
+        return effects;
     }
 
     private void SetEffectsReferences()
@@ -82,7 +83,7 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
         fuelDiscountEffects = GetLicenceEffectsByType<FuelDiscountEffect>();
     }
 
-    public static double GetAggregateEffect<T>() where T: LicenceEffect
+    public static double GetTotalEffect<T>() where T: LicenceEffect
     {
         return GetLicenceEffectsByType<T>().Sum(x => x.Effect);
     }

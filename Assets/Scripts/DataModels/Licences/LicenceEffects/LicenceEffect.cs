@@ -8,5 +8,5 @@ public abstract class LicenceEffect : ScriptableObject
 
     public string Name { get => effectName; }
     public double Effect { get => effect; }
-    public double Percentage { get => Math.Round(effect * 100, 2); }
+    public double Percentage { get => Math.Round((1 - effect) * 100, 2); }
 }

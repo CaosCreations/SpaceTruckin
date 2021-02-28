@@ -46,4 +46,16 @@ public class LicencesUI : MonoBehaviour
             node.GetComponent<LicenceNode>().Init(licence);
         }
     }
+
+    private void InitNodeConnectionArrow(List<Licence> tierAbove, List<Licence> tierBelow)
+    {
+        // No. of arrows = tier.Count (whichever is highest) 
+        
+        // Sort based on the antecedent-consequent mapping 
+        // Tier above - make indices match the tier below - shuffle them (might need util/extension)
+
+    }
+
+
+
 }
