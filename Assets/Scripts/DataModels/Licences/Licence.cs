@@ -27,11 +27,11 @@ public partial class Licence : ScriptableObject, IDataModel
 
     public void SaveData()
     {
-        DataModelsUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
+        DataUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
     }
 
     public async Task LoadDataAsync()
     {
-        saveData = await DataModelsUtils.LoadFileAsync<LicenceSaveData>(name, FOLDER_NAME);
+        saveData = await DataUtils.LoadFileAsync<LicenceSaveData>(name, FOLDER_NAME);
     }
 }

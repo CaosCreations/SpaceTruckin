@@ -34,7 +34,11 @@ public class LicenceDetailsUI : MonoBehaviour
         builder.AppendLineWithBreaks($"Effect: {GetEffectAsString(licence)}");
         builder.AppendLineWithBreaks($"Unlocked? {licence.IsUnlocked}");
         builder.AppendLineWithBreaks($"Owned? {licence.IsOwned}");
-        
+
+        if (licence.PrerequisiteLicence != null)
+        {
+            builder.AppendLineWithBreaks($"Prerequisite licence: {licence.PrerequisiteLicence.Name}");
+        }
         return builder.ToString();
     }
 
@@ -45,7 +49,7 @@ public class LicenceDetailsUI : MonoBehaviour
         if (licence.Effect is MoneyEffect)
         {
             MoneyEffect moneyEffect = licence.Effect as MoneyEffect;
-            effectString += $"{moneyEffect.Percentage}% increased money from missions\n\n";
+            effectString += $"{moneyEffect.Percentage}{LicenceConstants.MoneyEffectText}";
             effectString += GetEffectTotalsAsString<MoneyEffect>(licence.IsOwned);
             
             // Other effect property values can go here
@@ -53,19 +57,19 @@ public class LicenceDetailsUI : MonoBehaviour
         else if (licence.Effect is PilotXpEffect)
         {
             PilotXpEffect pilotXpEffect = licence.Effect as PilotXpEffect;
-            effectString += $"{pilotXpEffect.Percentage}% increased pilot XP from missions\n\n";
+            effectString += $"{pilotXpEffect.Percentage}{LicenceConstants.PilotXpEffectText}";
             effectString += GetEffectTotalsAsString<PilotXpEffect>(licence.IsOwned);
         }
         else if (licence.Effect is ShipDamageEffect)
         {
             ShipDamageEffect shipDamageEffect = licence.Effect as ShipDamageEffect;
-            effectString += $"{shipDamageEffect.Percentage}% reduced damage to ships\n\n";
+            effectString += $"{shipDamageEffect.Percentage}{LicenceConstants.ShipDamageEffectText}";
             effectString += GetEffectTotalsAsString<ShipDamageEffect>(licence.IsOwned);
         }
         else if (licence.Effect is FuelDiscountEffect)
         {
             FuelDiscountEffect fuelDiscountEffect = licence.Effect as FuelDiscountEffect;
-            effectString += $"{fuelDiscountEffect.Percentage}% discount on fuel\n\n";
+            effectString += $"{fuelDiscountEffect.Percentage}{LicenceConstants.FuelDiscountEffectText}";
             effectString += GetEffectTotalsAsString<FuelDiscountEffect>(licence.IsOwned);
         }
         else
