@@ -20,7 +20,7 @@ public class TerminalUIManager : MonoBehaviour
     
     public enum Tab
     {
-        Missions, Messages, Analytics, Crew, Upgrades
+        Missions, Messages, Analytics, Fleet, Licences
     }
 
     private void Start()
@@ -50,8 +50,8 @@ public class TerminalUIManager : MonoBehaviour
         missionsButton.AddOnClick(() => TabButtonClicked(Tab.Missions));
         messagesButton.AddOnClick(() => TabButtonClicked(Tab.Messages));
         analyticsButton.AddOnClick(() => TabButtonClicked(Tab.Analytics));
-        crewButton.AddOnClick(() => TabButtonClicked(Tab.Crew));
-        upgradesButton.AddOnClick(() => TabButtonClicked(Tab.Upgrades));
+        crewButton.AddOnClick(() => TabButtonClicked(Tab.Fleet));
+        upgradesButton.AddOnClick(() => TabButtonClicked(Tab.Licences));
     }
 
     private void TabButtonClicked(Tab tabClicked)
@@ -86,9 +86,9 @@ public class TerminalUIManager : MonoBehaviour
                 return messagesPanel;
             case Tab.Analytics:
                 return analyticsPanel;
-            case Tab.Crew:
+            case Tab.Fleet:
                 return crewPanel;
-            case Tab.Upgrades:
+            case Tab.Licences:
                 return upgradesPanel;
             default:
                 return null;
@@ -121,9 +121,9 @@ public class TerminalUIManager : MonoBehaviour
                 return messagesButton;
             case Tab.Analytics:
                 return analyticsButton;
-            case Tab.Crew:
+            case Tab.Fleet:
                 return crewButton;
-            case Tab.Upgrades:
+            case Tab.Licences:
                 return upgradesButton;
             default:
                 return null;

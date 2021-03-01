@@ -6,14 +6,13 @@ using UnityEngine.UI;
 public class LicenceNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Licence licence;
-    private Text nodeText;
     private Button nodeButton;
     public static event Action OnLicenceAcquisition;
 
     public void Init(Licence licence)
     {
         this.licence = licence;
-        nodeText = GetComponentInChildren<Text>().SetText(licence.PointsCost.ToString());
+        GetComponentInChildren<Text>().SetText(licence.PointsCost.ToString());
         nodeButton = GetComponent<Button>();
 
         SetInteractability();
@@ -34,8 +33,8 @@ public class LicenceNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private void HandleLicenceAcquisition()
     {
         PlayerManager.Instance.AcquireLicence(licence);
+        LicenceDetailsUI.DisplayLicenceDetails(licence);
         OnLicenceAcquisition?.Invoke();
-
     }
 
     public void OnPointerEnter(PointerEventData eventData)

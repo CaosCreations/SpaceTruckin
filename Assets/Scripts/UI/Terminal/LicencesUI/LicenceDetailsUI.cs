@@ -81,7 +81,7 @@ public class LicenceDetailsUI : MonoBehaviour
 
     private static string GetTotalEffectString<T>(Licence licence) where T : LicenceEffect
     {
-        double totalEffect = LicencesManager.GetTotalEffect<T>() * 100;
+        double totalPercentage = LicencesManager.GetTotalEffect<T>() * 100;
         string totalEffectMessage;
         if (licence.IsOwned)
         {
@@ -90,17 +90,13 @@ public class LicenceDetailsUI : MonoBehaviour
         else
         {
             totalEffectMessage = LicenceConstants.FutureTotalEffectMessage;
+            totalPercentage += licence.Effect.Percentage;
         }
+        totalEffectMessage += totalPercentage.ToString() + "%";
 
         if (typeof(T).IsSubclassOf(typeof(NegativeLicenceEffect)))
         {
-            totalEffect = 100 - totalEffect - licence.Effect.Percentage;
-            totalEffectMessage += totalEffect.ToString() + "% reduction";
-        }
-        else
-        {
-            totalEffect += licence.Effect.Percentage;
-            totalEffectMessage += totalEffect.ToString() + "%";
+            totalEffectMessage += " reduction";
         }
         return totalEffectMessage;
     }
