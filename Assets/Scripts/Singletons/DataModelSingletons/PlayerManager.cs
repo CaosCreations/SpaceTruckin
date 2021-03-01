@@ -83,10 +83,10 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
 
     public void AcquireLicence(Licence licence)
     {
-        if (playerData.PlayerLicencePoints > 0)
+        if (playerData.PlayerLicencePoints >= licence.PointsCost)
         {
-            playerData.PlayerLicencePoints--;
-            playerData.PlayerTotalLicencePointsAcquired++;
+            playerData.PlayerLicencePoints -= licence.PointsCost;
+            playerData.PlayerTotalLicencePointsAcquired += licence.PointsCost;
             licence.IsOwned = true;
             Debug.Log($"{licence.Name} has been acquired\nRemaining LP: {playerData.PlayerLicencePoints}");
         }
