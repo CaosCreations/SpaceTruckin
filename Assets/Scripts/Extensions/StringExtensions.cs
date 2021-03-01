@@ -9,6 +9,6 @@ public static class StringExtensions
 
     public static string ToItalics(this string self)
     {
-        return self.Insert(0, "<i>").Insert(self.Length - 1, "</i>");
+        return self.Insert(self.Length - 1, "</i>").Insert(0, "<i>");
     }
 }

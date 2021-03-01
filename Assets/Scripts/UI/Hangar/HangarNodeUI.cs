@@ -192,8 +192,6 @@ public class HangarNodeUI : MonoBehaviour
 
     private long GetFuelCostAfterLicences()
     {
-        return LicencesManager.FuelDiscountEffect > 0 
-            ? Convert.ToInt64(fuelCostPerUnit * LicencesManager.FuelDiscountEffect)
-            : fuelCostPerUnit;
+        return Convert.ToInt64(fuelCostPerUnit * (1 - LicencesManager.FuelDiscountEffect));
     }
 }
