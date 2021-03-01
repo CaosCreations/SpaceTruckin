@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-// Todo: Put all effects in one file 
 public abstract class LicenceEffect : ScriptableObject
 {
     [SerializeField] private string effectName;

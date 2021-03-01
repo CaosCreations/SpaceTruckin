@@ -37,7 +37,7 @@ public class LicenceDetailsUI : MonoBehaviour
 
         if (licence.PrerequisiteLicence != null)
         {
-            builder.AppendLineWithBreaks($"Prerequisite licence: {licence.PrerequisiteLicence.Name}");
+            builder.AppendLineWithBreaks($"Prerequisite licence: {licence.PrerequisiteLicence.Name.ToItalics()}");
         }
         return builder.ToString();
     }
@@ -97,6 +97,10 @@ public class LicenceDetailsUI : MonoBehaviour
         if (typeof(T).IsSubclassOf(typeof(NegativeLicenceEffect)))
         {
             totalEffectMessage += " reduction";
+        }
+        else
+        {
+            totalEffectMessage += " increase";
         }
         return totalEffectMessage;
     }
