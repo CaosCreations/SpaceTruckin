@@ -32,7 +32,7 @@ public class HangarNodeUI : MonoBehaviour
 
     private bool isInSubMenu;
     private readonly long fuelCostPerUnit = 1;
-    private long fuelCostAfterLicenceEffect; 
+    private long fuelCostAfterLicences;
     private float fuelTimer = 0;
     private readonly float fuelTimerInterval = 0.025f;
 
@@ -52,8 +52,8 @@ public class HangarNodeUI : MonoBehaviour
         fuelButton.button.interactable = ShouldFuelButtonBeInteractable();
         launchButton.interactable = ShouldLaunchButtonBeInteractable();
 
-        fuelCostAfterLicenceEffect = Convert.ToInt64(fuelCostPerUnit * LicencesManager.FuelDiscountEffect);
-        Debug.Log("Fuel cost per unit after licence effect: " + fuelCostAfterLicenceEffect);
+        fuelCostAfterLicences = GetFuelCostAfterLicences();
+        Debug.Log("Fuel cost per unit after licence effect: " + fuelCostAfterLicences);
     }
 
     private void OnDisable()
@@ -113,7 +113,7 @@ public class HangarNodeUI : MonoBehaviour
             && PlayerManager.Instance.CanSpendMoney(fuelCostPerUnit)
             )
         {
-            PlayerManager.Instance.SpendMoney(fuelCostAfterLicenceEffect);
+            PlayerManager.Instance.SpendMoney(fuelCostAfterLicences);
             shipToInspect.CurrentFuel++;
             fuelSlider.value = shipToInspect.GetFuelPercent();
             fuelTimer = 0;
@@ -188,5 +188,12 @@ public class HangarNodeUI : MonoBehaviour
                 && shipToInspect.CurrentHullIntegrity > 0;
         }
         return false;
+    }
+
+    private long GetFuelCostAfterLicences()
+    {
+        return LicencesManager.FuelDiscountEffect > 0 
+            ? Convert.ToInt64(fuelCostPerUnit * LicencesManager.FuelDiscountEffect)
+            : fuelCostPerUnit;
     }
 }
