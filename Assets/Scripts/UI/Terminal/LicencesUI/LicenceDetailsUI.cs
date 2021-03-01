@@ -29,11 +29,11 @@ public class LicenceDetailsUI : MonoBehaviour
     private static string BuildDetailsString(Licence licence)
     {
         StringBuilder builder = new StringBuilder();
-        builder.AppendLineWithBreaks($"Name: {licence.Name}");
-        builder.AppendLineWithBreaks($"Description: {licence.Description}");
-        builder.AppendLineWithBreaks($"Effect: {GetEffectString(licence)}");
-        builder.AppendLineWithBreaks($"Unlocked: {licence.IsUnlocked}");
-        builder.AppendLineWithBreaks($"Owned: {licence.IsOwned}");
+        builder.AppendLineWithBreaks($"Name: {licence.Name.ToItalics()}");
+        builder.AppendLineWithBreaks($"Description: {licence.Description.ToItalics()}");
+        builder.AppendLineWithBreaks($"Effect: {GetEffectString(licence).ToItalics()}");
+        builder.AppendLineWithBreaks($"Unlocked: {licence.IsUnlocked.ToString().ToItalics()}");
+        builder.AppendLineWithBreaks($"Owned: {licence.IsOwned.ToString().ToItalics()}");
 
         if (licence.PrerequisiteLicence != null)
         {
