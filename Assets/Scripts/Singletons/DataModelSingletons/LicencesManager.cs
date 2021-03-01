@@ -31,13 +31,13 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        if (DataUtils.SaveFolderExists(Message.FOLDER_NAME))
+        if (DataUtils.SaveFolderExists(Licence.FOLDER_NAME))
         {
             LoadDataAsync();
         }
         else
         {
-            DataUtils.CreateSaveFolder(Message.FOLDER_NAME);
+            DataUtils.CreateSaveFolder(Licence.FOLDER_NAME);
         }
 
         if (Licences == null)

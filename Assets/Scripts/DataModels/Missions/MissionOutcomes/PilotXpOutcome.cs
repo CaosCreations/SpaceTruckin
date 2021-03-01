@@ -24,8 +24,9 @@ public class PilotXpOutcome : MissionOutcome
             mission.MissionToArchive.TotalXpIncreaseFromLicences += xpIncreaseFromLicences;
             mission.MissionToArchive.TotalPilotXpGained += PilotsManager.AwardXp(mission.Pilot, xpAfterLicences);
         }
-        Debug.Log("Total pilot xp gained: " + xpAfterLicences);
+        Debug.Log("Base pilot xp gained: " + xpGained);
         Debug.Log("Pilot xp increase from licences: " + xpIncreaseFromLicences);
+        Debug.Log("Total pilot xp gained: " + xpAfterLicences);
     }
 
     /// <summary>
