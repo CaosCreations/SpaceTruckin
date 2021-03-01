@@ -85,12 +85,7 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
 
     public static double GetTotalEffect<T>() where T : LicenceEffect
     {
-        double totalEffect = GetActiveLicenceEffectsByType<T>().Sum(x => x.Effect);
-        if (typeof(T).IsSubclassOf(typeof(NegativeLicenceEffect)))
-        {
-            totalEffect *= -1;
-        }
-        return totalEffect;
+        return GetActiveLicenceEffectsByType<T>().Sum(x => x.Effect);
     }
 
     #region Persistence

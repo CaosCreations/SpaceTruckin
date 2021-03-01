@@ -16,7 +16,7 @@ public class PilotXpOutcome : MissionOutcome
 
         double xpGained = Random.Range(xpMin, xpMax);
         double xpAfterOmens = xpGained * ApplyOmens(mission);
-        double xpAfterLicences = xpAfterOmens *LicencesManager.PilotXpEffect;
+        double xpAfterLicences = xpAfterOmens * (1 + LicencesManager.PilotXpEffect);
         
         double xpIncreaseFromLicences = xpAfterLicences - xpAfterOmens;
         if (mission.MissionToArchive != null)
@@ -24,7 +24,7 @@ public class PilotXpOutcome : MissionOutcome
             mission.MissionToArchive.TotalXpIncreaseFromLicences += xpIncreaseFromLicences;
             mission.MissionToArchive.TotalPilotXpGained += PilotsManager.AwardXp(mission.Pilot, xpAfterLicences);
         }
-
+        Debug.Log("Total pilot xp gained: " + xpAfterLicences);
         Debug.Log("Pilot xp increase from licences: " + xpIncreaseFromLicences);
     }
 
