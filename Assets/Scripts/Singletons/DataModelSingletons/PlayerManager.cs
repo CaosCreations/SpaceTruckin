@@ -16,6 +16,10 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         get => playerData.PlayerTotalMoneyAcquired; 
         set => playerData.PlayerTotalMoneyAcquired = value;
     }
+    public int LicencePoints
+    {
+        get => playerData.PlayerLicencePoints;
+    }
     public int TotalLicencePointsAcquired
     {
         get => playerData.PlayerTotalLicencePointsAcquired;

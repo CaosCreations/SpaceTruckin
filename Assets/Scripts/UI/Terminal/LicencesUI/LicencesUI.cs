@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LicencesUI : MonoBehaviour
 {
@@ -7,10 +8,13 @@ public class LicencesUI : MonoBehaviour
     public GameObject detailsContainer;
     public GameObject tierPrefab;
     public GameObject nodePrefab;
+    public Text pointsText; 
 
     private void Start()
     {
         PopulateTree();
+        UpdatePointsText();
+        LicenceNode.OnLicenceAcquisition += UpdatePointsText;
     }
 
     private void PopulateTree()
@@ -43,5 +47,10 @@ public class LicencesUI : MonoBehaviour
             node.name = $"{licence.Name} node";
             node.GetComponent<LicenceNode>().Init(licence);
         }
+    }
+
+    private void UpdatePointsText()
+    {
+        pointsText.SetText("Licence Points Remaining: " + PlayerManager.Instance.LicencePoints, FontType.Subtitle);
     }
 }
