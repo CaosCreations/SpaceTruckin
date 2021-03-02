@@ -65,4 +65,10 @@ public partial class Mission : ScriptableObject, IDataModel
             }
         }
     }
+
+    private void OnValidate()
+    {
+        // Prevent the ship from being permanently launched 
+        missionDurationInDays = Math.Max(1, missionDurationInDays);
+    }
 }
