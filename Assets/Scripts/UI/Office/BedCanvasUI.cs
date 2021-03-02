@@ -60,6 +60,7 @@ public class BedCanvasUI : MonoBehaviour
         PilotsManager.Instance.SaveData();
         ShipsManager.Instance.SaveData();
         MessagesManager.Instance.SaveData();
+        LicencesManager.Instance.SaveData();
     }
 
     private IEnumerator WaitForShipsToDock()
