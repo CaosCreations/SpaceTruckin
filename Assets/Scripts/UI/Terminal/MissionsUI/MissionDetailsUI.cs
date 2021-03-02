@@ -6,14 +6,14 @@ using UnityEngine.UI;
 
 public class MissionDetailsUI : MonoBehaviour
 {
+    public GameObject missionDetailsPrefab;
     public GameObject missionDetails;
     public Mission missionBeingDisplayed;
 
     public void DisplayMissionDetails(MissionUIItem listItem)
     {
         DestroyMissionDetails();
-        SetupDetailsContainer(listItem.GetComponent<RectTransform>());
-        SetupDetailsText();
+        InitMissionDetails(listItem.GetComponent<RectTransform>());
     }
 
     public void DestroyMissionDetails()
@@ -21,14 +21,16 @@ public class MissionDetailsUI : MonoBehaviour
         Destroy(missionDetails);
     }
 
-    private void SetupDetailsContainer(RectTransform listItemRect)
+    private void InitMissionDetails(RectTransform listItemRect)
     {
-        missionDetails = new GameObject("MissionDetails");
-        missionDetails.transform.parent = transform;
-        RectTransform detailsRect = missionDetails.AddComponent<RectTransform>();
-        detailsRect.Reset();
+        missionDetails = Instantiate(missionDetailsPrefab, transform);
+        missionDetails.name = "MissionDetails";
+
+        Text detailsText = missionDetails.GetComponentInChildren<Text>();
+        detailsText.SetText(BuildDetailsString(missionBeingDisplayed));
+
+        RectTransform detailsRect = missionDetails.GetComponent<RectTransform>();
         detailsRect.SetAnchors(GetMissionDetailsAnchors(listItemRect));
-        missionDetails.AddComponent<Image>().color = Color.magenta;
 
         // Let the player close the mission details box by clicking on it.
         missionDetails.AddCustomEvent(EventTriggerType.PointerClick, () => DestroyMissionDetails());
@@ -68,33 +70,20 @@ public class MissionDetailsUI : MonoBehaviour
         return anchors;
     }
 
-    private void SetupDetailsText()
-    {
-        GameObject textContainer = new GameObject("MissionDetailsText");
-        textContainer.transform.parent = missionDetails.transform;
-        Text detailsText = textContainer.AddComponent<Text>();
-        RectTransform textRect = textContainer.GetComponent<RectTransform>();
-        textRect.Reset();
-        textRect.Stretch();
-        detailsText.SetText(BuildDetailsString(missionBeingDisplayed));
-        detailsText.resizeTextForBestFit = true;
-        detailsText.color = Color.black;
-    }
-
     public string BuildDetailsString(Mission mission)
     {
         StringBuilder builder = new StringBuilder();
-        builder.AppendLineWithBreaks("Name: " + mission.Name);
-        builder.AppendLineWithBreaks("Customer: " + mission.Customer);
-        builder.AppendLineWithBreaks("Cargo: " + mission.Cargo);
+        builder.AppendLineWithBreaks("Name: " + mission.Name.ToItalics());
+        builder.AppendLineWithBreaks("Customer: " + mission.Customer.ToItalics());
+        builder.AppendLineWithBreaks("Cargo: " + mission.Cargo.ToItalics());
 
         if (string.IsNullOrEmpty(mission.Description))
         {
             mission.Description = PlaceholderUtils.GenerateLoremIpsum();
         }
 
-        builder.AppendLineWithBreaks("Description: " + mission.Description);
-        builder.AppendLineWithBreaks("Fuel cost: " + mission.FuelCost);
+        builder.AppendLineWithBreaks("Description: " + mission.Description.ToItalics());
+        builder.AppendLineWithBreaks("Fuel cost: " + mission.FuelCost.ToItalics());
         builder.AppendLineWithBreaks("Reward: " + BuildRewardString(mission));
         return builder.ToString();
     }
