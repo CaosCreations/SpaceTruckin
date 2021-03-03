@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -23,9 +24,9 @@ public class LicenceNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private void SetInteractability()
     {
         bool interactable = true;
-        if (licence.PrerequisiteLicence != null)
+        if (licence.AntecedentLicences != null)
         {
-            interactable = licence.PrerequisiteLicence.IsOwned;
+            interactable = licence.AntecedentLicences.Any(x => x.IsOwned);
         }
         nodeButton.interactable = interactable && licence.IsUnlocked && !licence.IsOwned;
     }
