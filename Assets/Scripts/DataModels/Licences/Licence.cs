@@ -10,10 +10,8 @@ public partial class Licence : ScriptableObject, IDataModel
     [SerializeField] private string description;
     [SerializeField] private int tier;
     [SerializeField] private int pointsCost;
+    [SerializeField] private Licence prerequisiteLicence;
     [SerializeField] private LicenceEffect effect;
-
-    // Owning at least one antecedent is a necessary condition to buy the licence
-    [SerializeField] private Licence[] antecedentLicences;
 
     [Header("Data to update IN GAME")]
     public LicenceSaveData saveData;
@@ -23,9 +21,7 @@ public partial class Licence : ScriptableObject, IDataModel
     [Serializable]
     public class LicenceSaveData
     {
-        // Some licences become available through external factors
-        public bool isUnlocked; 
-
+        public bool isUnlocked; //Some become available through external factors
         public bool isOwned;
     }
 

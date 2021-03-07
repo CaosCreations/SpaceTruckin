@@ -35,13 +35,9 @@ public class LicenceDetailsUI : MonoBehaviour
         builder.AppendLineWithBreaks($"Unlocked: {licence.IsUnlocked.ToString().ToItalics()}");
         builder.AppendLineWithBreaks($"Owned: {licence.IsOwned.ToString().ToItalics()}");
 
-        if (licence.AntecedentLicences != null)
+        if (licence.PrerequisiteLicence != null)
         {
-            for (int i = 1; i <= licence.AntecedentLicences.Length; i++)
-            {
-                builder.AppendLineWithBreaks(
-                    $"Antecedent licence {i}: {licence.AntecedentLicences[i].Name.ToItalics()}");
-            }
+            builder.AppendLineWithBreaks($"Prerequisite licence: {licence.PrerequisiteLicence.Name.ToItalics()}");
         }
         return builder.ToString();
     }
