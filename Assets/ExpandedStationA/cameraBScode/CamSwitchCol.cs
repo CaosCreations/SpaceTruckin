@@ -56,14 +56,6 @@ public class CamSwitchCol : MonoBehaviour {
 		}
 
 
-		
-			if(camName=="DineCam")
-		{
-			myCurrentCam=4;
-		}
-
-
-
 
 			if(camName=="HangarEdge")
 		{

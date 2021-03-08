@@ -501,8 +501,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 476110508}
-  m_LocalRotation: {x: 0.17364816, y: 0, z: 0, w: 0.9848078}
-  m_LocalPosition: {x: 215.5, y: 383.22815, z: -282.76755}
+  m_LocalRotation: {x: 0.09912505, y: -0.0073410515, z: 0.00073130376, w: 0.9950477}
+  m_LocalPosition: {x: 202.49606, y: 386.8618, z: -294.94046}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -633,9 +633,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 3
+  near clip plane: 4
   far clip plane: 5000
-  field of view: 45
+  field of view: 21.53
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -1132,6 +1132,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 905750803}
   m_PrefabAsset: {fileID: 0}
+--- !u!212 &905750806 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 1389270015817412045, guid: a06f1a9e44fccb3409ddc94a08e3cac6,
+    type: 3}
+  m_PrefabInstance: {fileID: 905750803}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &905750807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1157,7 +1163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adfbf10908c7511478c1627713c1defc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _renderer: {fileID: 0}
+  renderer: {fileID: 905750806}
   shadowOnly: 0
 --- !u!143 &905750809
 CharacterController:
