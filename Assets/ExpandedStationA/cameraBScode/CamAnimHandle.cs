@@ -23,6 +23,7 @@ public class CamAnimHandle : MonoBehaviour {
 		 	cTrans = GetComponent<Transform>();
 			anim = GetComponent<Animator>();
 			anim.SetBool("TopCam",true);
+			camadress=0;
 		
 		
 	}
