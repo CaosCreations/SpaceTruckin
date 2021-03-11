@@ -43,6 +43,14 @@ public class CamSwitchCol : MonoBehaviour {
 
 
 		
+
+
+		if(camName=="MainHall")
+		{
+			myCurrentCam=0;
+		}
+
+		
 		if(camName=="WorkShopCam")
 		{
 			myCurrentCam=1;
@@ -68,6 +76,20 @@ public class CamSwitchCol : MonoBehaviour {
 			if(camName=="HangarEdge")
 		{
 			myCurrentCam=5;
+		}
+
+			if(camName=="HangarCam")
+		{
+			myCurrentCam=6;
+		}
+
+
+
+
+		
+		if(camName=="LoungeUndOffice")
+		{
+			myCurrentCam=10;
 		}
 
 		

@@ -27,6 +27,14 @@ public class PlayerMovement : MonoBehaviour
     public Transform CameraTransform;
 
 
+    //RayCast To cam stuff
+    public float myRayDistance;
+    public GameObject mypointToRay;
+    public GameObject wallToTurnInvisible;
+
+
+
+
 
 
 
@@ -67,6 +75,53 @@ public class PlayerMovement : MonoBehaviour
         RotateWithView(movementVector,CameraTransform);
 
 
+//raycast for wall transparency
+
+        myRayDistance = Vector3.Distance(mypointToRay.transform.position, transform.position);
+
+        var dir = mypointToRay.transform.position - transform.position;
+        var ray = new Ray(transform.position,dir.normalized);
+        
+        RaycastHit hitr;
+        bool Raycastright= Physics.Raycast(ray, out hitr);
+
+       
+
+        if(Physics.Raycast(ray,myRayDistance))
+        {
+            
+            Debug.Log("ASODKASOD");
+
+            if (hitr.transform.gameObject.tag == "TurnTransparent")
+				{
+                    wallToTurnInvisible = hitr.transform.gameObject;
+                    var wallRenderee=wallToTurnInvisible.GetComponent<Renderer>();
+                    wallRenderee.material.color= new Color(1.0f, 1.0f, 1.0f, 0.4f/hitr.distance);
+					
+
+				}
+
+                
+
+
+        }else
+        {
+                    var wallRenderee=wallToTurnInvisible.GetComponent<Renderer>();
+                    wallRenderee.material.color= new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        }
+         Debug.DrawLine ( transform.position, mypointToRay.transform.position, Color.yellow);
+
+
+         //raycast for wall transparencyEND
+
+
+         
+
+
+
+        
+
+
 
     }
 
@@ -86,6 +141,15 @@ public class PlayerMovement : MonoBehaviour
 
         ApplyGravity();
         MovePlayer(); 
+
+
+
+
+        
+
+
+
+
     }
 
     private void SetDirection()
