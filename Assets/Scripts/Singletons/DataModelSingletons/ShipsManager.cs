@@ -1,11 +1,6 @@
 ﻿using UnityEngine;
 using System.Linq;
 
-public enum HangarNode
-{
-    None, One, Two, Three, Four, Five, Six
-}
-
 public class ShipsManager : MonoBehaviour, IDataModelManager
 {
     public static ShipsManager Instance;
@@ -58,7 +53,7 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    public static void LaunchShip(HangarNode node)
+    public static void LaunchShip(int node)
     {
         foreach (HangarSlot slot in Instance.hangarSlots)
         {
@@ -83,7 +78,7 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         ship.CurrentMission = null;
     }
 
-    public static Ship GetShipForNode(HangarNode node)
+    public static Ship GetShipForNode(int node)
     {
         foreach(Ship ship in Instance.Ships)
         {
@@ -120,7 +115,7 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    public static Ship NodeHasShip(HangarNode node)
+    public static Ship NodeHasShip(int node)
     {
         Ship ship = Instance.Ships.Where(x => x.HangarNode == node).FirstOrDefault();
         if (ship != null)

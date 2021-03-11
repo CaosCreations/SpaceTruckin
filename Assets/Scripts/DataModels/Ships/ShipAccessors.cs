@@ -30,7 +30,7 @@ public partial class Ship
         get => saveData.currenthullIntegrity; set => saveData.currenthullIntegrity = value;
     }
 
-    public HangarNode HangarNode
+    public int HangarNode
     {
         get => saveData.hangarNode; set => saveData.hangarNode = value;
     }

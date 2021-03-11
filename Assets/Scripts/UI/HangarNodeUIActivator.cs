@@ -2,7 +2,7 @@
 
 public class HangarNodeUIActivator : MonoBehaviour
 {
-    public HangarNode hangarNode;
+    public int hangarNode;
 
     private void OnTriggerEnter(Collider other)
     {

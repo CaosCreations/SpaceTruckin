@@ -27,7 +27,7 @@ public class HangarNodeUI : MonoBehaviour
 
     [Header("Set at Runtime")]
     public GameObject shipPreview;
-    public HangarNode hangarNode;
+    public int hangarNode;
     public Ship shipToInspect;
 
     private bool isInSubMenu;

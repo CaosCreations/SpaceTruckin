@@ -7,7 +7,7 @@ public class MissionScheduleSlot : MonoBehaviour
     public RectTransform slotTransform;
     public Image slotImage;
 
-    public HangarNode hangarNode;
+    public int hangarNode;
     public Ship ship;
 
     private bool isActive;

@@ -2,7 +2,7 @@
 
 public class HangarSlot : MonoBehaviour
 {
-    public HangarNode node;
+    public int node;
     public ShipInstance shipInstance;
 
     public void LaunchShip()
