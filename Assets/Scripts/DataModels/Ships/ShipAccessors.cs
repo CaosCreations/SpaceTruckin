@@ -7,45 +7,38 @@ public partial class Ship
     // The fields are all located in Ship.cs. 
 
     public string Name { get => shipName; }
-
     public bool IsOwned
     {
         get => saveData.isOwned; set => saveData.isOwned = value;
     }
-
     public bool IsLaunched
     {
         get => saveData.isLaunched; set => saveData.isLaunched = value;
     }
 
+    // Owned but not out on a mission nor docked
+    public bool IsInQueue => IsOwned && !IsLaunched && !HangarsManager.ShipIsDocked(this);
     public int CurrentFuel
     {
         get => saveData.currentFuel; set => saveData.currentFuel = value;
     }
-
     public int MaxFuel { get => maxFuel; set => maxFuel = value; }
-
     public float CurrentHullIntegrity
     {
         get => saveData.currenthullIntegrity; set => saveData.currenthullIntegrity = value;
     }
-
     public int HangarNode
     {
         get => saveData.hangarNode; set => saveData.hangarNode = value;
     }
-
     public Mission CurrentMission 
     { 
         get => saveData.currentMission; set => saveData.currentMission = value; 
     }
-
     public GameObject ShipPrefab
     {
         get => shipPrefab; set => shipPrefab = value;
     }
-
     public Sprite Avatar { get => shipAvatar; set => shipAvatar = value; }
-
     public Pilot Pilot { get => pilot; set => pilot = value; }
 }
