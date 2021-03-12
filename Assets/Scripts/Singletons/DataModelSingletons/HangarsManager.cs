@@ -8,7 +8,9 @@ public class HangarsManager : MonoBehaviour, IDataModelManager
 
     public Hangar[] hangars;
     public HangarSlot[] hangarSlots; // Use this if doing n int nodes (not enum)
-    public List<Ship> shipQueue; 
+    public List<Ship> shipQueue;
+
+    public GameObject shipInstancePrefab;
 
     private void Awake()
     {
@@ -31,11 +33,35 @@ public class HangarsManager : MonoBehaviour, IDataModelManager
 
         //hangar.HangarSlots[slotNumber].ship = ship;
 
-        HangarSlot targetSlot = hangar.HangarSlots.FirstOrDefault(x => x.node == node);
-        if (targetSlot != null)
+        if (ship != null && NodeIsValid(node))
         {
-            targetSlot.ship = ship;
+            HangarSlot targetSlot = hangar.HangarSlots.FirstOrDefault(x => x.node == node);
+            if (targetSlot != null && targetSlot.IsUnlocked)
+            {
+                targetSlot.ship = ship;
+
+                // Advance the queue once ship enters the hangar 
+                if (shipQueue.Contains(ship))
+                {
+                    shipQueue.Remove(ship);
+                }
+
+                // Create the ship object inside the target slot 
+                InitShipInstance(ship, targetSlot);
+            }
         }
+        else
+        {
+            Debug.Log($"Could not dock ship at node {node}");
+        }
+    }
+
+    public void InitShipInstance(Ship ship, HangarSlot slot)
+    {
+        GameObject shipParentInstance = Instantiate(Instance.shipInstancePrefab, slot.transform);
+        Instantiate(ship.ShipPrefab, shipParentInstance.transform);
+        ShipInstance instance = shipParentInstance.GetComponent<ShipInstance>();
+        slot.shipInstance = instance;
     }
 
     public static Ship GetShipByNode(int node)
@@ -62,8 +88,12 @@ public class HangarsManager : MonoBehaviour, IDataModelManager
     // Call this at the end of the day to get the total queue for the next day
     public List<Ship> GetShipsInQueue()
     {
-        //return ShipsManager.Instance.Ships.Where(x => x.IsLaunched && 
         return ShipsManager.Instance.Ships.Where(x => x.IsInQueue).ToList();
+    }
+
+    private static bool NodeIsValid(int node)
+    {
+        return node >= 1 && node <= HangarConstants.TotalNumberOfSlots;
     }
     
     public void DeleteData()
