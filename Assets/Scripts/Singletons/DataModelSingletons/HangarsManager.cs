@@ -9,7 +9,6 @@ public class HangarsManager : MonoBehaviour, IDataModelManager
     public Hangar[] hangars;
     public HangarSlot[] hangarSlots; // Use this if doing n int nodes (not enum)
     public List<Ship> shipQueue;
-
     public GameObject shipInstancePrefab;
 
     private void Awake()
@@ -96,12 +95,23 @@ public class HangarsManager : MonoBehaviour, IDataModelManager
         return node >= 1 && node <= HangarConstants.TotalNumberOfSlots;
     }
     
-    public void DeleteData()
+
+    public void Init()
     {
         throw new System.NotImplementedException();
     }
 
-    public void Init()
+    #region Persistence
+    public void SaveData()
+    {
+        if (hangarSlots != null)
+        {
+            string json = JsonUtility.ToJson(hangarSlots);
+            DataUtils.SaveFileAsync(HangarSlot.FILE_NAME, HangarSlot.FOLDER_NAME, json);
+        }
+    }
+
+    public void DeleteData()
     {
         throw new System.NotImplementedException();
     }
@@ -110,9 +120,5 @@ public class HangarsManager : MonoBehaviour, IDataModelManager
     {
         throw new System.NotImplementedException();
     }
-
-    public void SaveData()
-    {
-        throw new System.NotImplementedException();
-    }
+    #endregion
 }

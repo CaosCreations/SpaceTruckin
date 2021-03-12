@@ -44,6 +44,39 @@ public static class DataUtils
         }
     }
 
+    public static async void SaveFileAsync(string fileName, string folderName, string fileContents)
+    {
+        string folderPath = GetSaveFolderPath(folderName);
+        if (!Directory.Exists(folderPath))
+        {
+            try
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"{e.Message}\n{e.StackTrace}");
+            }
+        }
+
+        string filePath = Path.Combine(folderPath, fileName + FILE_EXTENSION);
+        try
+        {
+            var buffer = Encoding.UTF8.GetBytes(fileContents);
+
+            using (var fileStream = new FileStream(filePath, FileMode.OpenOrCreate,
+                FileAccess.Write, FileShare.None, buffer.Length, true))
+            {
+                fileStream.SetLength(0);
+                await fileStream.WriteAsync(buffer, 0, buffer.Length);
+            }
+        }
+        catch (Exception e)
+        {
+            LogIOError(e, filePath);
+        }
+    }
+
     public static async Task<T> LoadFileAsync<T>(string fileName, string folderName) where T : class, new()
     {
         string folderPath = GetSaveFolderPath(folderName);

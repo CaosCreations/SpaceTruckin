@@ -116,6 +116,6 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
 
     public void DeleteData()
     {
-        Instance.DeleteData();
+        DataUtils.RecursivelyDeleteSaveData(Pilot.FOLDER_NAME);
     }
 }
