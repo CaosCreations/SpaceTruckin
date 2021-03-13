@@ -34,10 +34,10 @@ public class HangarsManager : MonoBehaviour, IDataModelManager
 
         if (ship != null && NodeIsValid(node))
         {
-            HangarSlot targetSlot = hangar.HangarSlots.FirstOrDefault(x => x.node == node);
+            HangarSlot targetSlot = hangar.HangarSlots.FirstOrDefault(x => x.Node == node);
             if (targetSlot != null && targetSlot.IsUnlocked)
             {
-                targetSlot.ship = ship;
+                targetSlot.Ship = ship;
 
                 // Advance the queue once ship enters the hangar 
                 if (shipQueue.Contains(ship))
@@ -60,7 +60,7 @@ public class HangarsManager : MonoBehaviour, IDataModelManager
         GameObject shipParentInstance = Instantiate(Instance.shipInstancePrefab, slot.transform);
         Instantiate(ship.ShipPrefab, shipParentInstance.transform);
         ShipInstance instance = shipParentInstance.GetComponent<ShipInstance>();
-        slot.shipInstance = instance;
+        slot.ShipInstance = instance;
     }
 
     public static Ship GetShipByNode(int node)
@@ -68,7 +68,7 @@ public class HangarsManager : MonoBehaviour, IDataModelManager
         // If using int nodes, then just search for that
         // If using 6 element enum, then do a 2D loop through hangars 
 
-        return Instance.hangarSlots.FirstOrDefault(x => x.node == node).ship;
+        return Instance.hangarSlots.FirstOrDefault(x => x.Node == node).Ship;
     }
 
     public static int GetNodeByShip(Ship ship)
@@ -76,7 +76,7 @@ public class HangarsManager : MonoBehaviour, IDataModelManager
         // If using int nodes, then just search for that
         // If using 6 element enum, then do a 2D loop through hangars 
 
-        return Instance.hangarSlots.FirstOrDefault(x => x.ship == ship).node;
+        return Instance.hangarSlots.FirstOrDefault(x => x.Ship == ship).Node;
     }
 
     public static bool ShipIsDocked(Ship ship)
@@ -94,7 +94,12 @@ public class HangarsManager : MonoBehaviour, IDataModelManager
     {
         return node >= 1 && node <= HangarConstants.TotalNumberOfSlots;
     }
-    
+
+    public static HangarSlot[] GetUnlockedHangarSlots()
+    {
+        return Instance.hangarSlots
+            .Where(x => x.Node <= LicencesManager.HangarSlotUnlockEffect);
+    }
 
     public void Init()
     {
@@ -113,12 +118,19 @@ public class HangarsManager : MonoBehaviour, IDataModelManager
 
     public void DeleteData()
     {
-        throw new System.NotImplementedException();
+        DataUtils.RecursivelyDeleteSaveData(HangarSlot.FOLDER_NAME);
     }
 
     public void LoadDataAsync()
     {
-        throw new System.NotImplementedException();
+        for (int i = 0; i < HangarConstants.TotalNumberOfSlots; i++)
+        {
+            //hangarSlots[i] = new HangarSlot();
+
+        }
+
+        //hangarSlots = DataUtils.LoadFileAsync<>
+        //hangarSlots = DataUtils.LoadFileAsync<HangarSlot[]>(HangarSlot.FILE_NAME, HangarSlot.FOLDER_NAME);
     }
     #endregion
 }

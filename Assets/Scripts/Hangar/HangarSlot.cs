@@ -6,16 +6,10 @@ public class HangarSlot : MonoBehaviour // Or make a separate class for HangarSl
     private readonly int node;
     private Ship ship;
     private ShipInstance shipInstance;
-    public bool isUnlocked;
+    private bool isUnlocked;
 
     public static string FOLDER_NAME = "HangarSaveData";
     public static string FILE_NAME = "HangarSlots"; // Save all slots in one file
-
-    public HangarSlot(int node, bool isUnlocked)
-    {
-        this.node = node;
-        this.isUnlocked = isUnlocked;
-    }
 
     public void LaunchShip()
     {
@@ -25,5 +19,10 @@ public class HangarSlot : MonoBehaviour // Or make a separate class for HangarSl
         }
     }
 
-    public bool IsUnlocked { get => isUnlocked; set => isUnlocked = value; }
+    public int Node => node;
+    public Ship Ship { get => ship; set => ship = value; }
+    public ShipInstance ShipInstance { get => shipInstance; set => shipInstance = value; }
+    //public bool IsUnlocked { get => isUnlocked; set => isUnlocked = value; }
+    public bool IsUnlocked { get => Node <= LicencesManager.HangarSlotUnlockEffect; }
+    public bool IsOccupied { get => Ship != null; }
 }

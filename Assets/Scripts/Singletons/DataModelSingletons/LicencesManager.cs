@@ -12,9 +12,11 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
     public static double MoneyEffect => GetTotalEffect<MoneyEffect>();
     public static double PilotXpEffect => GetTotalEffect<PilotXpEffect>();
     public static double ShipDamageEffect => GetTotalEffect<ShipDamageEffect>(); //Coefficient < 1 for reductions
-    public static double FuelDiscountEffect => GetTotalEffect<FuelDiscountEffect>(); 
+    public static double FuelDiscountEffect => GetTotalEffect<FuelDiscountEffect>();
+    public static int HangarSlotUnlockEffect => GetTotalEffect<HangarSlotUnlockEffect>();
+    // Have another getter for unlocked slots that incorporates starting slots and licences acquireds
     public static int NumberOfTiers => Instance.Licences.Max(x => x.Tier);
-
+    
     private void Awake()
     {
         if (Instance == null)
