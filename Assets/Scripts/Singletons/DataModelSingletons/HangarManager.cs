@@ -22,15 +22,11 @@ public class HangarManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
+        MissionUIItem.OnMissionUnscheduled += DestroyShipInstance;
     }
 
     public static void DockShip(Ship ship, Hangar hangar, int node /*HangarSlotNumber slotNumber*/)
     {
-        // Use int param to index array 
-        // Or lookup the value 
-
-        //hangar.HangarSlots[slotNumber].ship = ship;
-
         if (ship != null && NodeIsValid(node))
         {
             HangarSlot targetSlot = hangar.HangarSlots.FirstOrDefault(x => x.Node == node);
@@ -38,13 +34,19 @@ public class HangarManager : MonoBehaviour, IDataModelManager
             {
                 targetSlot.Ship = ship;
 
-                // Advance the queue once ship enters the hangar 
+                // Advance the queue once the ship enters the hangar 
                 if (Instance.shipQueue.Contains(ship))
                 {
                     Instance.shipQueue.Remove(ship);
                 }
 
-                // Create the ship object inside the target slot 
+                if (targetSlot.ShipInstance != null)
+                {
+                    // Destroy the ship object if one already exists
+                    Instance.DestroyShipInstance(targetSlot);
+                }
+
+                // Create a new ship object inside the target slot 
                 Instance.InitShipInstance(ship, targetSlot);
             }
         }
@@ -65,6 +67,12 @@ public class HangarManager : MonoBehaviour, IDataModelManager
         Instantiate(ship.ShipPrefab, shipParentInstance.transform);
         ShipInstance instance = shipParentInstance.GetComponent<ShipInstance>();
         slot.ShipInstance = instance;
+    }
+
+    public void DestroyShipInstance(HangarSlot slot)
+    {
+        Destroy(slot.ShipInstance.transform.parent);
+        Destroy(slot.ShipInstance);
     }
 
     public static bool NodeIsUnlocked(int node)

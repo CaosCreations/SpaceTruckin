@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -34,13 +35,12 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if(!mission.IsInProgress())
+        if(!mission.IsInProgress()) // Update condition for new hangar requirements?
         {
             myRectTransform.SetParent(missionsUI.transform);
             canvasGroup.alpha = MissionConstants.dragAlpha;
             canvasGroup.blocksRaycasts = false;
         }
-        
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -61,49 +61,36 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
             canvasGroup.blocksRaycasts = true;
             canvasGroup.alpha = MissionConstants.dropAlpha;
 
-            MissionScheduleSlot slot = missionsUI.GetSlotForMissionDrag(eventData.position);
-            if (slot != null)
+            MissionScheduleSlot scheduleSlot = missionsUI.GetSlotByPosition(eventData.position);
+            if (scheduleSlot != null)
             {
-                CheckReplaceMission(slot);
-                myRectTransform.SetParent(slot.slotTransform);
+                CheckReplaceMission(scheduleSlot);
+                myRectTransform.SetParent(scheduleSlot.slotTransform);
 
-                if (slot.Pilot == null)
-                {
-                    // Open the pilot select menu after dropping a mission into a slot
-                    missionsUI.PopulatePilotSelect(mission, slot);
-
-                    // Open pilot select
-                    // Set ship in HangarSlot class?
-                    // Instantiate ship at node?
-
-                    // Handle if they quit first too
-                }
-                else
-                {
-                    Debug.LogError("The MissionScheduleSlot does not have a ship");
-                }
+                // Open the pilot select menu after dropping a mission into a slot
+                missionsUI.PopulatePilotSelect(mission, scheduleSlot);
             }
             else
             {
-                Unschedule();
+                Unschedule(scheduleSlot);
             }
         }
     }
 
-    private void CheckReplaceMission(MissionScheduleSlot slot)
+    private void CheckReplaceMission(MissionScheduleSlot scheduleSlot)
     {
-        if(slot.slotTransform.childCount > 0)
+        if (scheduleSlot.slotTransform.childCount > 0)
         {
-            MissionUIItem missionToUnschedule = slot.slotTransform.GetChild(0).GetComponent<MissionUIItem>();
+            MissionUIItem missionToUnschedule = scheduleSlot.slotTransform.GetChild(0).GetComponent<MissionUIItem>();
             
-            if(missionToUnschedule != null)
+            if (missionToUnschedule != null)
             {
-                missionToUnschedule.Unschedule();
+                missionToUnschedule.Unschedule(scheduleSlot);
             }
         }
     }
 
-    public void Unschedule()
+    public void Unschedule(MissionScheduleSlot scheduleSlot)
     {
         myRectTransform.SetParent(scrollViewContent);
         if (mission.Pilot != null)
@@ -111,21 +98,44 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
             mission.Pilot.CurrentMission = null; // Get directly from missions manager
             mission.Pilot = null;
         }
+
+        // Remove the ship object from the hangar if it is unscheduled
+        HangarSlot hangarSlot = HangarManager.GetSlotByNode(scheduleSlot.hangarNode);
+        HangarManager.Instance.DestroyShipInstance(hangarSlot);
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            if (missionDetailsUI.missionBeingDisplayed == mission)
+            MissionScheduleSlot scheduleSlot = missionsUI.GetSlotByPosition(eventData.position);
+            if (scheduleSlot != null)
             {
-                missionDetailsUI.DestroyMissionDetails();
-                missionDetailsUI.missionBeingDisplayed = null;
+                if (scheduleSlot.Pilot == null)
+                {
+                    // Allow the player to dock a ship at a node without dragging on a mission
+                    missionsUI.PopulatePilotSelect(mission, scheduleSlot);
+                }
+                else
+                {
+                    // Reset the schedule slot if the player clicks and there is one scheduled
+                    Unschedule(scheduleSlot);
+                }
+            }
+        }
+        else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            if (missionDetailsUI.missionBeingDisplayed != mission)
+            {
+                // Show the mission details for the scheduled mission 
+                missionDetailsUI.missionBeingDisplayed = mission;
+                missionDetailsUI.DisplayMissionDetails(this);
             }
             else
             {
-                missionDetailsUI.missionBeingDisplayed = mission;
-                missionDetailsUI.DisplayMissionDetails(this);
+                // Hide the mission details if they are already visible 
+                missionDetailsUI.DestroyMissionDetails();
+                missionDetailsUI.missionBeingDisplayed = null;
             }
         }
     }
