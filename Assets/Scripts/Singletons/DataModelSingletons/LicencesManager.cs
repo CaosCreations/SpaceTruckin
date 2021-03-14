@@ -7,14 +7,15 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
     public static LicencesManager Instance { get; private set; }
 
     [SerializeField] private LicenceContainer licenceContainer;
-    public Licence[] Licences { get => licenceContainer.licences; }
+    public Licence[] Licences => licenceContainer.licences;
 
-    public static double MoneyEffect => GetTotalEffect<MoneyEffect>();
-    public static double PilotXpEffect => GetTotalEffect<PilotXpEffect>();
-    public static double ShipDamageEffect => GetTotalEffect<ShipDamageEffect>(); //Coefficient < 1 for reductions
-    public static double FuelDiscountEffect => GetTotalEffect<FuelDiscountEffect>();
-    public static int HangarSlotUnlockEffect => GetTotalEffect<HangarSlotUnlockEffect>();
-    // Have another getter for unlocked slots that incorporates starting slots and licences acquireds
+    // Total effect getters 
+    public static double MoneyEffect => GetTotalPercentageEffect<MoneyEffect>();
+    public static double PilotXpEffect => GetTotalPercentageEffect<PilotXpEffect>();
+    public static double ShipDamageEffect => GetTotalPercentageEffect<ShipDamageEffect>();
+    public static double FuelDiscountEffect => GetTotalPercentageEffect<FuelDiscountEffect>();
+    public static double HangarSlotUnlockEffect => GetTotalHangarSlotEffect();
+
     public static int NumberOfTiers => Instance.Licences.Max(x => x.Tier);
     
     private void Awake()
@@ -64,16 +65,6 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
         return licenceGroups;
     }
 
-    private static List<T> GetLicenceEffectsByType<T>() where T : LicenceEffect
-    {
-        var effects = new List<T>();
-        Instance.Licences.Where(x => x.Effect is T)
-            .ToList()
-            .ForEach(y => effects.Add(y.Effect as T));
-        
-        return effects;
-    }
-
     private static List<T> GetActiveLicenceEffectsByType<T>() where T : LicenceEffect
     {
         var effects = new List<T>();
@@ -85,9 +76,22 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
         return effects;
     }
 
-    public static double GetTotalEffect<T>() where T : LicenceEffect
+    public static double GetTotalPercentageEffect<T>() where T : PercentageEffect
     {
-        return GetActiveLicenceEffectsByType<T>().Sum(x => x.Effect);
+        return GetActiveLicenceEffectsByType<T>().Sum(x => x.Coefficient);
+    }
+
+    public static int GetTotalHangarSlotEffect()
+    {
+        return GetActiveLicenceEffectsByType<HangarSlotUnlockEffect>().Sum(x => x.NumberOfSlotsToUnlock);
+    }
+
+    public static void UnlockHangarSlots(int numberOfSlots = 1)
+    {
+        for (int i = 0; i < numberOfSlots; i++)
+        {
+
+        }
     }
 
     #region Persistence

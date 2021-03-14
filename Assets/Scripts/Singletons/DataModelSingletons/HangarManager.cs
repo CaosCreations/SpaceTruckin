@@ -2,11 +2,10 @@
 using System.Linq;
 using UnityEngine;
 
-public class HangarsManager : MonoBehaviour, IDataModelManager
+public class HangarManager : MonoBehaviour, IDataModelManager
 {
-    public static HangarsManager Instance { get; private set; }
+    public static HangarManager Instance { get; private set; }
 
-    public Hangar[] hangars;
     public HangarSlot[] hangarSlots; // Use this if doing n int nodes (not enum)
     public List<Ship> shipQueue;
     public GameObject shipInstancePrefab;
@@ -98,7 +97,8 @@ public class HangarsManager : MonoBehaviour, IDataModelManager
     public static HangarSlot[] GetUnlockedHangarSlots()
     {
         return Instance.hangarSlots
-            .Where(x => x.Node <= LicencesManager.HangarSlotUnlockEffect);
+            .Where(x => x.Node <= LicencesManager.HangarSlotUnlockEffect)
+            .ToArray();
     }
 
     public void Init()

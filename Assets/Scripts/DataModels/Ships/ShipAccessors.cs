@@ -17,7 +17,7 @@ public partial class Ship
     }
 
     // Owned but not out on a mission nor docked
-    public bool IsInQueue => IsOwned && !IsLaunched && !HangarsManager.ShipIsDocked(this);
+    public bool IsInQueue => IsOwned && !IsLaunched && !HangarManager.ShipIsDocked(this);
     public int CurrentFuel
     {
         get => saveData.currentFuel; set => saveData.currentFuel = value;

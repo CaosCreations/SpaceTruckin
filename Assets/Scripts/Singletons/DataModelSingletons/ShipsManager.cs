@@ -57,7 +57,7 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
     {
         foreach (HangarSlot slot in Instance.hangarSlots)
         {
-            if (slot.node == node)
+            if (slot.Node == node)
             {
                 Ship ship = GetShipForNode(node);
                 if(ship != null)
@@ -105,7 +105,7 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
                     GameObject shipParentInstance = Instantiate(Instance.shipInstancePrefab, shipSlot.transform);
                     Instantiate(ship.ShipPrefab, shipParentInstance.transform);
                     ShipInstance instance = shipParentInstance.GetComponent<ShipInstance>();
-                    shipSlot.shipInstance = instance;
+                    shipSlot.ShipInstance = instance;
                 }
                 else
                 {
@@ -130,7 +130,7 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
     {
         foreach(HangarSlot slot in Instance.hangarSlots)
         {
-            if(slot.node == ship.HangarNode)
+            if(slot.Node == ship.HangarNode)
             {
                 return slot;
             }

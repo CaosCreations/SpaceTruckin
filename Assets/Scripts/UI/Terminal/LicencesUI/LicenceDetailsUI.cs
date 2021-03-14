@@ -79,9 +79,10 @@ public class LicenceDetailsUI : MonoBehaviour
         return effectString;
     }
 
-    private static string GetTotalEffectString<T>(Licence licence) where T : LicenceEffect
+    // Separate method for unlock licences?
+    private static string GetTotalEffectString<T>(Licence licence) where T : PercentageEffect
     {
-        double totalPercentage = LicencesManager.GetTotalEffect<T>() * 100;
+        double totalPercentage = LicencesManager.GetTotalPercentageEffect<T>();
         string totalEffectMessage;
         if (licence.IsOwned)
         {
@@ -90,11 +91,17 @@ public class LicenceDetailsUI : MonoBehaviour
         else
         {
             totalEffectMessage = LicenceConstants.FutureTotalEffectMessage;
-            totalPercentage += licence.Effect.Percentage;
+            if (licence.Effect is PercentageEffect)
+            {
+                Debug.Log("Effect is % effect");
+                PercentageEffect percentageEffect = licence.Effect as PercentageEffect;
+                totalPercentage += percentageEffect.Percentage;
+            }
+            
         }
         totalEffectMessage += totalPercentage.ToString() + "%";
 
-        if (typeof(T).IsSubclassOf(typeof(NegativeLicenceEffect)))
+        if (typeof(T).IsSubclassOf(typeof(PercentageDecreaseEffect)))
         {
             totalEffectMessage += " reduction";
         }
