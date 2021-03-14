@@ -70,12 +70,20 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         }
     }
 
+    // To Update // - don't deduct fuel when assigning mission
+    // its done before NDR 
     public static void DockShip(Ship ship)   
     {
         ship.DeductFuel();
         ship.IsLaunched = false;
         ship.CurrentMission.Ship = null;
         ship.CurrentMission = null;
+    }
+
+    public static void DockShip(Ship ship, HangarSlot hangarSlot)
+    {
+        hangarSlot.Ship = ship;
+        // More?
     }
 
     public static Ship GetShipForNode(int node)

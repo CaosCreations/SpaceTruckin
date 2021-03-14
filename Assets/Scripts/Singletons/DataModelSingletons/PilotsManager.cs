@@ -67,14 +67,25 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    public Pilot[] GetHiredPilots()
+    public static Pilot[] GetHiredPilots()
     {
         return Instance.Pilots.Where(p => p.IsHired).ToArray();
     }
 
-    public Pilot[] GetPilotsForHire()
+    public static Pilot[] GetPilotsForHire()
     {
         return Instance.Pilots.Where(p => !p.IsHired).ToArray();
+    }
+
+    public static Pilot[] GetPilotsAvailableForMissions()
+    {
+        return Instance.Pilots.Where(p => p.IsHired && p.CurrentMission == null).ToArray();
+    }
+
+    public static void AssignMissionToPilot(Pilot pilot, Mission mission)
+    {
+        mission.Pilot = pilot;
+        mission.Pilot.CurrentMission = mission; // Or get from missions manager directly (avoid circularity) 
     }
 
     public void RandomisePilots()

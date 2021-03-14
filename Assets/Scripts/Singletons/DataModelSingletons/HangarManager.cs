@@ -24,7 +24,7 @@ public class HangarManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    public void DockShip(Ship ship, Hangar hangar, int node /*HangarSlotNumber slotNumber*/)
+    public static void DockShip(Ship ship, Hangar hangar, int node /*HangarSlotNumber slotNumber*/)
     {
         // Use int param to index array 
         // Or lookup the value 
@@ -39,19 +39,24 @@ public class HangarManager : MonoBehaviour, IDataModelManager
                 targetSlot.Ship = ship;
 
                 // Advance the queue once ship enters the hangar 
-                if (shipQueue.Contains(ship))
+                if (Instance.shipQueue.Contains(ship))
                 {
-                    shipQueue.Remove(ship);
+                    Instance.shipQueue.Remove(ship);
                 }
 
                 // Create the ship object inside the target slot 
-                InitShipInstance(ship, targetSlot);
+                Instance.InitShipInstance(ship, targetSlot);
             }
         }
         else
         {
             Debug.Log($"Could not dock ship at node {node}");
         }
+    }
+
+    public static void DockShip(Ship ship, int node)
+    {
+        GetSlotByNode(node).Ship = ship;
     }
 
     public void InitShipInstance(Ship ship, HangarSlot slot)
@@ -83,12 +88,15 @@ public class HangarManager : MonoBehaviour, IDataModelManager
         return Instance.hangarSlots.FirstOrDefault(x => x.Ship == ship).Node;
     }
 
+    public static HangarSlot GetSlotByNode(int node)
+    {
+        return Instance.hangarSlots.FirstOrDefault(x => x.Node == node);
+    }
+
     public static bool ShipIsDocked(Ship ship)
     {
         return GetNodeByShip(ship) != -1;
     }
-
-    public static bool 
 
     // Call this at the end of the day to get the total queue for the next day
     public List<Ship> GetShipsInQueue()

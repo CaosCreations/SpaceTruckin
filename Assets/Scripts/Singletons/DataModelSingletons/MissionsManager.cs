@@ -151,6 +151,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         mission.Outcomes = randomOutcomes.ToArray();
     }
 
+    #region Persistence
     public void SaveData()
     {
         foreach (Mission mission in Instance.Missions)
@@ -171,4 +172,5 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
     {
         DataUtils.RecursivelyDeleteSaveData(Mission.FOLDER_NAME);
     }
+    #endregion
 }

@@ -7,15 +7,13 @@ public class PilotsUI : MonoBehaviour
 {
 	// The parent object 
 	public GameObject crewPanel;
-	
-	/// <summary>
-	///		There are two scroll views, one for the list of currently hired pilots,
-	///		and the other for the list of pilots that are available to hire. 
-	/// </summary>
+
+	// Scroll view for the list of currently hired pilots
 	public GameObject hiredPilotsList;
 	public GameObject hiredPilotsListHeader;
 	public Transform hiredPilotsScrollViewContent;
-	
+
+	// Scroll view for the list of pilots that are available to hire
 	public GameObject pilotsForHireList; 
 	public GameObject pilotsForHireListHeader;
 	public Transform pilotsForHireScrollViewContent;
@@ -24,7 +22,7 @@ public class PilotsUI : MonoBehaviour
 	public GameObject buttonPrefab;
 	public GameObject backButtonPrefab;
 	public GameObject hireButtonPrefab;
-	private Button hireButton;	
+	private Button hireButton;
 
 	private GameObject pilotProfilePanel;
 	private Text pilotDetailsText; 
@@ -69,7 +67,7 @@ public class PilotsUI : MonoBehaviour
 
 	private void PopulateScrollView(Pilot[] pilots, Transform scrollViewContent)
 	{
-		CleanScrollView(scrollViewContent);
+		scrollViewContent.DestroyDirectChildren();
 		if (pilots != null)
         {
 			foreach (Pilot pilot in pilots)
@@ -80,14 +78,6 @@ public class PilotsUI : MonoBehaviour
 			}
         }
 	}
-
-	private void CleanScrollView(Transform scrollViewContent)
-    {
-		foreach (Transform transform in scrollViewContent)
-        {
-			Destroy(transform.gameObject);
-        }
-    }
 	
 	private void ShowPilotProfilePanel(Pilot pilot)
 	{

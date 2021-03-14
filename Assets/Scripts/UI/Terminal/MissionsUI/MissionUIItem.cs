@@ -67,12 +67,16 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
                 CheckReplaceMission(slot);
                 myRectTransform.SetParent(slot.slotTransform);
 
-                // To update // 
-                if (slot.Pilot != null)
+                if (slot.Pilot == null)
                 {
-                    slot.Pilot.CurrentMission = mission;
-                    //mission.Pilot = slot.Pilot;
-                    mission.Pilot = slot.Pilot;
+                    // Open the pilot select menu after dropping a mission into a slot
+                    missionsUI.PopulatePilotSelect(mission, slot);
+
+                    // Open pilot select
+                    // Set ship in HangarSlot class?
+                    // Instantiate ship at node?
+
+                    // Handle if they quit first too
                 }
                 else
                 {
@@ -99,13 +103,12 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         }
     }
 
-    // To update
     public void Unschedule()
     {
         myRectTransform.SetParent(scrollViewContent);
-        if(mission.Pilot != null)
+        if (mission.Pilot != null)
         {
-            mission.Pilot.CurrentMission = null;
+            mission.Pilot.CurrentMission = null; // Get directly from missions manager
             mission.Pilot = null;
         }
     }
