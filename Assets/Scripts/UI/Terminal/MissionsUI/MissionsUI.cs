@@ -10,7 +10,7 @@ public class MissionsUI : MonoBehaviour
 
     public MissionScheduleSlot[] missionSlots;
 
-    void Start()
+    private void Start()
     {
         missionDetailsUI = GetComponent<MissionDetailsUI>();
     }
@@ -19,51 +19,39 @@ public class MissionsUI : MonoBehaviour
     {
         SetupMissionSlots();
         CleanMenu();
-        PopulateScrollView();
+        PopulateMissionSelectScrollView();
     }
 
-    void SetupMissionSlots()
+    private void SetupMissionSlots()
     {
         foreach (MissionScheduleSlot slot in missionSlots)
         {
-            Ship ship = ShipsManager.NodeHasShip(slot.hangarNode);
-            if (ship != null)
-            {
-                slot.ship = ship;
-                if(ship.CurrentMission == null)
-                {
-                    slot.IsActive = true;
-                }
-                else
-                {
-                    slot.IsActive = !ship.CurrentMission.IsInProgress();
-                }
-            }
-            else
-            {
-                slot.IsActive = false;
-            }
+            // Missions can be dropped into the slot if the corresponding
+            // node is unlocked AND there is no ship already at that node 
+            slot.IsActive = HangarManager.NodeIsUnlocked(slot.hangarNode)
+                && HangarManager.GetShipByNode(slot.hangarNode) == null;
         }
     }
 
-    void CleanMenu()
+    private void CleanMenu()
     {
-        foreach (Transform child in scrollViewContent.transform)
-        {
-            Destroy(child.gameObject);
-        }
+        scrollViewContent.transform.DestroyDirectChildren();
 
-        foreach(MissionScheduleSlot slot in missionSlots)
+        foreach (MissionScheduleSlot slot in missionSlots)
         {
             if(slot.slotTransform.childCount > 0)
             {
                 Destroy(slot.slotTransform.GetChild(0).gameObject);
             }
         }
-        missionDetailsUI?.DestroyMissionDetails();
+
+        if (missionDetailsUI != null)
+        {
+            missionDetailsUI.DestroyMissionDetails();
+        }
     }
 
-    void PopulateScrollView()
+    private void PopulateMissionSelectScrollView()
     {
         foreach (Mission mission in MissionsManager.GetAcceptedMissions())
         {
@@ -73,20 +61,15 @@ public class MissionsUI : MonoBehaviour
         }
 
         List<Mission> scheduledMissions = MissionsManager.GetScheduledMissions();
-        foreach(MissionScheduleSlot slot in missionSlots)
+        foreach (MissionScheduleSlot slot in missionSlots)
         {
-            Mission missionForSlot = scheduledMissions.Where(x => x.Ship == slot.ship).FirstOrDefault();
+            Mission missionForSlot = scheduledMissions.Where(x => x.Pilot == slot.Pilot).FirstOrDefault();
 
-            if(missionForSlot != null)
+            if (missionForSlot != null)
             {
                 GameObject scrollItem = Instantiate(missionItemPrefab, slot.slotTransform);
                 MissionUIItem missionItem = scrollItem.GetComponent<MissionUIItem>();
                 missionItem.Init(missionForSlot, scrollViewContent.transform);
-                
-                if (missionItem.mission.IsInProgress())
-                {
-                    ShowMissionProgress(missionItem);
-                }
             }
         }
     }
@@ -101,15 +84,21 @@ public class MissionsUI : MonoBehaviour
 
     public MissionScheduleSlot GetSlotForMissionDrag(Vector2 position)
     {
-        foreach(MissionScheduleSlot slot in missionSlots)
+        foreach (MissionScheduleSlot slot in missionSlots)
         {
-            if(RectTransformUtility.RectangleContainsScreenPoint(slot.parentTransform, position)
+            if (RectTransformUtility.RectangleContainsScreenPoint(slot.parentTransform, position)
                 && slot.IsActive)
             {
                 return slot;
             }
         }
-
         return null;
     }
+
+    private void PopulatePilotSelectScrollView()
+    {
+        scrollViewContent.transform.DestroyDirectChildren();
+
+    }
+
 }

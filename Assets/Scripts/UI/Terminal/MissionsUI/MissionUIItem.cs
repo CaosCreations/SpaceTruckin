@@ -67,11 +67,12 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
                 CheckReplaceMission(slot);
                 myRectTransform.SetParent(slot.slotTransform);
 
-                if (slot.ship != null)
+                // To update // 
+                if (slot.Pilot != null)
                 {
-                    slot.ship.CurrentMission = mission;
-                    //mission.Ship = slot.ship;
-                    mission.Ship = slot.ship;
+                    slot.Pilot.CurrentMission = mission;
+                    //mission.Pilot = slot.Pilot;
+                    mission.Pilot = slot.Pilot;
                 }
                 else
                 {
@@ -98,13 +99,14 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         }
     }
 
+    // To update
     public void Unschedule()
     {
         myRectTransform.SetParent(scrollViewContent);
-        if(mission.Ship != null)
+        if(mission.Pilot != null)
         {
-            mission.Ship.CurrentMission = null;
-            mission.Ship = null;
+            mission.Pilot.CurrentMission = null;
+            mission.Pilot = null;
         }
     }
 

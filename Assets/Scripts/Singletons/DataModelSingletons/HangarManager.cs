@@ -62,6 +62,11 @@ public class HangarManager : MonoBehaviour, IDataModelManager
         slot.ShipInstance = instance;
     }
 
+    public static bool NodeIsUnlocked(int node)
+    {
+        return node <= HangarConstants.StartingNumberOfSlots + LicencesManager.HangarSlotUnlockEffect; 
+    }
+
     public static Ship GetShipByNode(int node)
     {
         // If using int nodes, then just search for that
@@ -82,6 +87,8 @@ public class HangarManager : MonoBehaviour, IDataModelManager
     {
         return GetNodeByShip(ship) != -1;
     }
+
+    public static bool 
 
     // Call this at the end of the day to get the total queue for the next day
     public List<Ship> GetShipsInQueue()

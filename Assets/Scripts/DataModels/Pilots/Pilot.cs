@@ -37,6 +37,7 @@ public partial class Pilot : ScriptableObject
         public int missionsCompleted;
         public double currentXp;
         public bool isHired, isOnMission, isAssignedToShip;
+        public Mission currentMission;
     }
 
     public void SaveData()

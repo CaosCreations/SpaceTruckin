@@ -10,7 +10,7 @@ public partial class Ship : ScriptableObject, IDataModel
     public int maxFuel;
     public GameObject shipPrefab;
     public Sprite shipAvatar;
-    public Pilot pilot;
+    //public Pilot pilot;
 
     [Header("Data to update IN GAME")]
     public ShipSaveData saveData;
@@ -23,8 +23,7 @@ public partial class Ship : ScriptableObject, IDataModel
         [SerializeField] public bool isOwned, isLaunched;
         [SerializeField] public int currentFuel;
         [SerializeField] public float currenthullIntegrity;
-        [SerializeField] public int hangarNode;
-        [SerializeField] public Mission currentMission;
+        [SerializeField] public int hangarNode;//
     }
 
     public float GetHullPercent()
@@ -39,13 +38,13 @@ public partial class Ship : ScriptableObject, IDataModel
 
     public void DeductFuel()
     {
-        if (CurrentMission != null)
+        if (Pilot.CurrentMission != null)
         {
-            CurrentFuel = Math.Max(0, CurrentFuel - CurrentMission.FuelCost);
+            CurrentFuel = Math.Max(0, CurrentFuel - Pilot.CurrentMission.FuelCost);
         }
         else
         {
-            Debug.Log($" {CurrentMission.Name} was null when calling Ship.DeductFuel (ln 40) at {DateTime.Now}");
+            Debug.Log($" {Pilot.CurrentMission.Name} was null when calling Ship.DeductFuel (ln 40) at {DateTime.Now}");
         }
     }
 

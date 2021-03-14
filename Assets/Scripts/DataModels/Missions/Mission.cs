@@ -27,7 +27,7 @@ public partial class Mission : ScriptableObject, IDataModel
     {
         public bool hasBeenAccepted = false;
         public int daysLeftToComplete, numberOfCompletions;
-        public Ship ship = null;
+        public Pilot pilot = null;
     }
 
     public void SaveData()
@@ -38,7 +38,7 @@ public partial class Mission : ScriptableObject, IDataModel
     public async Task LoadDataAsync()
     {
         saveData = await DataUtils.LoadFileAsync<MissionSaveData>(name, FOLDER_NAME);
-    }   
+    }
 
     public void ScheduleMission(Ship ship)
     {

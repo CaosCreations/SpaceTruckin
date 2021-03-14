@@ -5,8 +5,8 @@ public partial class Pilot
     // This class is just for property accessors. 
     // The fields are all located in Pilot.cs. 
 
-    public string Name 
-    { 
+    public string Name
+    {
         get => isRandom ? saveData.randomName : pilotName;
         set
         {
@@ -42,9 +42,9 @@ public partial class Pilot
     public int HireCost { get => hireCost; }
     public double CurrentXp { get => saveData.currentXp; set => saveData.currentXp = value; }
     public double RequiredXp { get => saveData.requiredXp; set => saveData.requiredXp = value; }
-    public float XpThresholdExponent 
+    public float XpThresholdExponent
     {
-        get => xpThresholdExponent; set => xpThresholdExponent = value; 
+        get => xpThresholdExponent; set => xpThresholdExponent = value;
     }
     public int Level { get => saveData.level; set => saveData.level = value; }
     public int MissionsCompleted
@@ -63,7 +63,11 @@ public partial class Pilot
     {
         get => saveData.isAssignedToShip; set { saveData.isAssignedToShip = value; }
     }
-    public bool IsRandom => isRandom; 
-    public Ship Ship { get => ship; } 
+    public bool IsRandom => isRandom;
+    public Ship Ship { get => ship; }
     public Sprite Avatar { get => avatar; set => avatar = value; }
+    public Mission CurrentMission 
+    {
+        get => saveData.currentMission; set => saveData.currentMission = value; 
+    }
 }

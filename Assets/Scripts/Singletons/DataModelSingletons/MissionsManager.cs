@@ -42,19 +42,39 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         }
     }
 
+    /// <summary>
+    /// Missions are 'accepted' if they have been taken from the notice board
+    /// but a pilot is not currently assigned to them
+    /// </summary>
+    /// <returns></returns>
     public static List<Mission> GetAcceptedMissions()
     {
         return Instance.Missions
             .Where(x => x.HasBeenAccepted
-            && x.Ship == null)
+            && x.Pilot == null)
             .ToList();
     }
 
+    /// <summary>
+    /// Missions are 'scheduled' if a pilot has been assigned to them 
+    /// but that pilot has not yet left the hangar 
+    /// </summary>
     public static List<Mission> GetScheduledMissions()
     {
         return Instance.Missions
             .Where(x => x.HasBeenAccepted
-            && x.Ship != null)
+            && x.Pilot != null
+            && !x.IsInProgress())
+            .ToList();
+    }
+
+    /// <summary>
+    /// Missions are 'in progress' if the pilot assigned to them has left the hangar
+    /// </summary>
+    public static List<Mission> GetMissionsInProgress()
+    {
+        return Instance.Missions
+            .Where(x => x.IsInProgress())
             .ToList();
     }
 

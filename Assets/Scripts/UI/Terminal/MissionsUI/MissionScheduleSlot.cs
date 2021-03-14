@@ -8,7 +8,7 @@ public class MissionScheduleSlot : MonoBehaviour
     public Image slotImage;
 
     public int hangarNode;
-    public Ship ship;
+    public Pilot Pilot { get; set; } // Maybe more getter logic here 
 
     private bool isActive;
 

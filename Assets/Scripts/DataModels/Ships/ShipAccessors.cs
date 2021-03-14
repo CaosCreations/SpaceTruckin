@@ -6,7 +6,7 @@ public partial class Ship
     // This class is just for property accessors. 
     // The fields are all located in Ship.cs. 
 
-    public string Name { get => shipName; }
+    public string Name => shipName;
     public bool IsOwned
     {
         get => saveData.isOwned; set => saveData.isOwned = value;
@@ -27,18 +27,14 @@ public partial class Ship
     {
         get => saveData.currenthullIntegrity; set => saveData.currenthullIntegrity = value;
     }
-    public int HangarNode
+    public int HangarNode // To udpate // 
     {
         get => saveData.hangarNode; set => saveData.hangarNode = value;
-    }
-    public Mission CurrentMission 
-    { 
-        get => saveData.currentMission; set => saveData.currentMission = value; 
     }
     public GameObject ShipPrefab
     {
         get => shipPrefab; set => shipPrefab = value;
     }
     public Sprite Avatar { get => shipAvatar; set => shipAvatar = value; }
-    public Pilot Pilot { get => pilot; set => pilot = value; }
+    public Pilot Pilot => PilotsManager.Instance.Pilots.FirstOrDefault(x => x.Ship == this);
 }
