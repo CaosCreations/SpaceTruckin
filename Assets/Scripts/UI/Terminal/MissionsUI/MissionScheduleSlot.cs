@@ -1,14 +1,16 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MissionScheduleSlot : MonoBehaviour
+public class MissionScheduleSlot : MonoBehaviour, IPointerClickHandler
 {
     public RectTransform parentTransform;
-    public RectTransform slotTransform;
+    public RectTransform missionLayoutContainer;
     public Image slotImage;
+    private MissionsUI missionsUI;
 
     public int hangarNode;
-    public Pilot Pilot { get; set; } // Maybe more getter logic here
+    public Pilot Pilot { get; set; }
 
     private bool isActive;
     public bool IsActive
@@ -27,6 +29,23 @@ public class MissionScheduleSlot : MonoBehaviour
             else
             {
                 slotImage.color = Color.grey;
+            }
+        }
+    }
+
+    private void Start()
+    {
+        missionsUI = GetComponentInParent<MissionsUI>();
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            if (missionsUI != null && Pilot == null)
+            {
+                // Allow the player to dock a ship at a node without dragging on a mission
+                missionsUI.PopulatePilotSelect(this);
             }
         }
     }

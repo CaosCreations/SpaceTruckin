@@ -82,12 +82,6 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         return Instance.Pilots.Where(p => p.IsHired && p.CurrentMission == null).ToArray();
     }
 
-    public static void AssignMissionToPilot(Pilot pilot, Mission mission)
-    {
-        mission.Pilot = pilot;
-        mission.Pilot.CurrentMission = mission; // Or get from missions manager directly (avoid circularity) 
-    }
-
     public void RandomisePilots()
     {
         if (Pilots != null)

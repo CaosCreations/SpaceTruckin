@@ -36,7 +36,7 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
             DataUtils.CreateSaveFolder(Ship.FOLDER_NAME);
         }
         hangarSlots = FindObjectsOfType<HangarSlot>();
-        UpdateHangarShips();
+        //UpdateHangarShips();
 
         if (Ships == null)
         {
@@ -53,99 +53,91 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    public static void LaunchShip(int node)
-    {
-        foreach (HangarSlot slot in Instance.hangarSlots)
-        {
-            if (slot.Node == node)
-            {
-                Ship ship = GetShipForNode(node);
-                if(ship != null)
-                {
-                    ship.CurrentMission.StartMission();
-                    ship.IsLaunched = true;
-                    slot.LaunchShip();
-                }
-            }
-        }
-    }
+    //public static void LaunchShip(int node)
+    //{
+    //    foreach (HangarSlot slot in Instance.hangarSlots)
+    //    {
+    //        if (slot.Node == node)
+    //        {
+    //            Ship ship = GetShipForNode(node);
+    //            if(ship != null)
+    //            {
+    //                ship.CurrentMission.StartMission();
+    //                ship.IsLaunched = true;
+    //                slot.LaunchShip();
+    //            }
+    //        }
+    //    }
+    //}
 
-    // To Update // - don't deduct fuel when assigning mission
-    // its done before NDR 
-    public static void DockShip(Ship ship)   
-    {
-        ship.DeductFuel();
-        ship.IsLaunched = false;
-        ship.CurrentMission.Ship = null;
-        ship.CurrentMission = null;
-    }
+    //public static void DockShip(Ship ship)   
+    //{
+    //    ship.DeductFuel();
+    //    ship.IsLaunched = false;
+    //    ship.CurrentMission.Ship = null;
+    //    ship.CurrentMission = null;
+    //}
 
-    public static void DockShip(Ship ship, HangarSlot hangarSlot)
-    {
-        hangarSlot.Ship = ship;
-        // More?
-    }
+    //public static Ship GetShipForNode(int node)
+    //{
+    //    foreach(Ship ship in Instance.Ships)
+    //    {
+    //        if(ship.HangarNode == node)
+    //        {
+    //            return ship;
+    //        }
+    //    }
 
-    public static Ship GetShipForNode(int node)
-    {
-        foreach(Ship ship in Instance.Ships)
-        {
-            if(ship.HangarNode == node)
-            {
-                return ship;
-            }
-        }
+    //    return null;
+    //}
 
-        return null;
-    }
+    //public static void UpdateHangarShips()
+    //{
+    //    ClearSlots();
+    //    foreach (Ship ship in Instance.Ships)
+    //    {
+    //        if (ship.IsOwned && !ship.IsLaunched)
+    //        {
+    //            HangarSlot shipSlot = GetShipSlot(ship);
 
-    public static void UpdateHangarShips()
-    {
-        ClearSlots();
-        foreach (Ship ship in Instance.Ships)
-        {
-            if (ship.IsOwned && !ship.IsLaunched)
-            {
-                HangarSlot shipSlot = GetShipSlot(ship);
+    //            if(shipSlot != null)
+    //            {
+    //                GameObject shipParentInstance = Instantiate(Instance.shipInstancePrefab, shipSlot.transform);
+    //                Instantiate(ship.ShipPrefab, shipParentInstance.transform);
+    //                ShipInstance instance = shipParentInstance.GetComponent<ShipInstance>();
+    //                shipSlot.ShipInstance = instance;
+    //            }
+    //            else
+    //            {
+    //                Debug.Log("Ship Hangar node not set");
+    //            }
+    //        }
+    //    }
+    //}
 
-                if(shipSlot != null)
-                {
-                    GameObject shipParentInstance = Instantiate(Instance.shipInstancePrefab, shipSlot.transform);
-                    Instantiate(ship.ShipPrefab, shipParentInstance.transform);
-                    ShipInstance instance = shipParentInstance.GetComponent<ShipInstance>();
-                    shipSlot.ShipInstance = instance;
-                }
-                else
-                {
-                    Debug.Log("Ship Hangar node not set");
-                }
-            }
-        }
-    }
+    //public static Ship NodeHasShip(int node)
+    //{
+    //    Ship ship = Instance.Ships.Where(x => x.HangarNode == node).FirstOrDefault();
+    //    if (ship != null)
+    //    {
+    //        return ship;
+    //    }
 
-    public static Ship NodeHasShip(int node)
-    {
-        Ship ship = Instance.Ships.Where(x => x.HangarNode == node).FirstOrDefault();
-        if (ship != null)
-        {
-            return ship;
-        }
+    //    return null;
+    //}
 
-        return null;
-    }
+    //private static HangarSlot GetShipSlot(Ship ship)
+    //{
+    //    foreach(HangarSlot slot in Instance.hangarSlots)
+    //    {
+    //        if(slot.Node == ship.HangarNode)
+    //        {
+    //            return slot;
+    //        }
+    //    }
 
-    private static HangarSlot GetShipSlot(Ship ship)
-    {
-        foreach(HangarSlot slot in Instance.hangarSlots)
-        {
-            if(slot.Node == ship.HangarNode)
-            {
-                return slot;
-            }
-        }
-
-        return null;
-    }
+    //    return null;
+    //}
 
     private static void ClearSlots()
     {

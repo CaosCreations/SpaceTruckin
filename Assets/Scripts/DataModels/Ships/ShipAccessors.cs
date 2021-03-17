@@ -27,14 +27,15 @@ public partial class Ship
     {
         get => saveData.currenthullIntegrity; set => saveData.currenthullIntegrity = value;
     }
-    public int HangarNode // To udpate // 
-    {
-        get => saveData.hangarNode; set => saveData.hangarNode = value;
-    }
+    //public int HangarNode // To udpate // 
+    //{
+    //    get => saveData.hangarNode; set => saveData.hangarNode = value;
+    //}
     public GameObject ShipPrefab
     {
         get => shipPrefab; set => shipPrefab = value;
     }
     public Sprite Avatar { get => shipAvatar; set => shipAvatar = value; }
     public Pilot Pilot => PilotsManager.Instance.Pilots.FirstOrDefault(x => x.Ship == this);
+    public Mission CurrentMission => Pilot.CurrentMission;
 }

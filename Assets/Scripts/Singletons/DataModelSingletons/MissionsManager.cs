@@ -10,6 +10,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
     [SerializeField] private MissionOutcomeContainer missionOutcomeContainer;
     public Mission[] Missions { get => missionContainer.missions; }
     public MissionOutcome[] Outcomes { get => missionOutcomeContainer.missionOutcomes; }
+    public static List<ScheduledMission> ScheduledMissions = new List<ScheduledMission>();
 
     private void Awake()
     {
@@ -59,11 +60,11 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
     /// Missions are 'scheduled' if a pilot has been assigned to them 
     /// but that pilot has not yet left the hangar 
     /// </summary>
-    public static List<Mission> GetScheduledMissions()
+    public static List<Mission> GetScheduledMissions() // Todo: rename to less ambiguous 
     {
         return Instance.Missions
             .Where(x => x.HasBeenAccepted
-            && x.Pilot != null
+            && GetScheduledMissionByMission(x) != null
             && !x.IsInProgress())
             .ToList();
     }
@@ -130,7 +131,11 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         // Add the object to the archive once all outcomes have been processed. 
         ArchivedMissionsManager.AddToArchive(mission.MissionToArchive);
 
-        ShipsManager.DockShip(mission.Ship);
+        ScheduledMission missionToUnschedule = ScheduledMissions.FirstOrDefault(x => x.mission == mission);
+        if (missionToUnschedule != null) 
+        { 
+            ScheduledMissions.Remove(missionToUnschedule); 
+        }
     }
 
     private static void AssignRandomOutcomes(Mission mission)
@@ -149,6 +154,33 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         if (shipDamageOutcome != null) randomOutcomes.Add(shipDamageOutcome);
 
         mission.Outcomes = randomOutcomes.ToArray();
+    }
+
+    public static ScheduledMission GetScheduledMissionByMission(Mission mission)
+    {
+        return ScheduledMissions.FirstOrDefault(x => x.mission == mission);
+    }
+
+    public static void AddOrUpdateScheduledMission(Pilot pilot, Mission mission)
+    {
+        ScheduledMission scheduledMission = GetScheduledMissionByMission(mission);
+        if (scheduledMission != null)
+        {
+            scheduledMission.pilot = pilot;
+        }
+        else
+        {
+            ScheduledMissions.Add(new ScheduledMission { pilot = pilot, mission = mission });
+        }
+    }
+
+    public static void RemoveScheduledMission(Mission mission)
+    {
+        ScheduledMission scheduledMission = GetScheduledMissionByMission(mission);
+        if (scheduledMission != null)
+        {
+            ScheduledMissions.Remove(GetScheduledMissionByMission(mission));
+        }
     }
 
     #region Persistence

@@ -18,7 +18,7 @@ public class NewDayReportUI : MonoBehaviour
     {
         BedCanvasUI.OnEndOfDay += () => HasBeenViewed = false;
         terminalManager = GetComponentInParent<TerminalUIManager>();
-    } 
+    }
     
     private void OnDisable() => HasBeenViewed = true;
 

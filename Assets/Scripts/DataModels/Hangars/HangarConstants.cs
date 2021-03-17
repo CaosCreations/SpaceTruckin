@@ -1,6 +1,6 @@
 ﻿public static class HangarConstants
 {
-    public static int TotalNumberOfSlots = 24;
-    public static int StartingNumberOfSlots = 1;
+    public static int MaximumNumberOfNodes = 24;
+    public static int StartingNumberOfNodes = 1;
 
 }

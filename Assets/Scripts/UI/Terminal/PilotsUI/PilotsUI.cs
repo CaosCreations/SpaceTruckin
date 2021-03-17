@@ -61,8 +61,8 @@ public class PilotsUI : MonoBehaviour
 
 	private void PopulateScrollViews()
     {
-		PopulateScrollView(PilotsManager.Instance.GetHiredPilots(), hiredPilotsScrollViewContent);
-		PopulateScrollView(PilotsManager.Instance.GetPilotsForHire(), pilotsForHireScrollViewContent);
+		PopulateScrollView(PilotsManager.GetHiredPilots(), hiredPilotsScrollViewContent);
+		PopulateScrollView(PilotsManager.GetPilotsForHire(), pilotsForHireScrollViewContent);
     }
 
 	private void PopulateScrollView(Pilot[] pilots, Transform scrollViewContent)

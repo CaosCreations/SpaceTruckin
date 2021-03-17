@@ -23,7 +23,7 @@ public partial class Ship : ScriptableObject, IDataModel
         [SerializeField] public bool isOwned, isLaunched;
         [SerializeField] public int currentFuel;
         [SerializeField] public float currenthullIntegrity;
-        [SerializeField] public int hangarNode;//
+        //[SerializeField] public int hangarNode;//
     }
 
     public float GetHullPercent()

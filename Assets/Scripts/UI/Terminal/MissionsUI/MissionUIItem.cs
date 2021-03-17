@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -12,6 +11,7 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     public Mission mission;
     private MissionsUI missionsUI;
     private MissionDetailsUI missionDetailsUI;
+    private PilotSelectItem pilotSelectItem;
     public Canvas canvas;
     private CanvasGroup canvasGroup;
     private RectTransform myRectTransform;
@@ -35,7 +35,7 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if(!mission.IsInProgress()) // Update condition for new hangar requirements?
+        if(!mission.IsInProgress())
         {
             myRectTransform.SetParent(missionsUI.transform);
             canvasGroup.alpha = MissionConstants.dragAlpha;
@@ -65,43 +65,48 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
             if (scheduleSlot != null)
             {
                 CheckReplaceMission(scheduleSlot);
-                myRectTransform.SetParent(scheduleSlot.slotTransform);
+                myRectTransform.SetParent(scheduleSlot.missionLayoutContainer);
 
                 // Open the pilot select menu after dropping a mission into a slot
-                missionsUI.PopulatePilotSelect(mission, scheduleSlot);
+                missionsUI.PopulatePilotSelect(scheduleSlot, mission);
             }
             else
             {
-                Unschedule(scheduleSlot);
+                Unschedule();
             }
         }
     }
 
     private void CheckReplaceMission(MissionScheduleSlot scheduleSlot)
     {
-        if (scheduleSlot.slotTransform.childCount > 0)
+        if (scheduleSlot.missionLayoutContainer.childCount > 0)
         {
-            MissionUIItem missionToUnschedule = scheduleSlot.slotTransform.GetChild(0).GetComponent<MissionUIItem>();
+            MissionUIItem missionToUnschedule = scheduleSlot.missionLayoutContainer.GetChild(0).GetComponent<MissionUIItem>();
             
             if (missionToUnschedule != null)
             {
-                missionToUnschedule.Unschedule(scheduleSlot);
+                missionToUnschedule.Unschedule();
             }
         }
     }
 
-    public void Unschedule(MissionScheduleSlot scheduleSlot)
+    public void Unschedule()
     {
         myRectTransform.SetParent(scrollViewContent);
         if (mission.Pilot != null)
         {
-            mission.Pilot.CurrentMission = null; // Get directly from missions manager
-            mission.Pilot = null;
-        }
+            MissionsManager.ScheduledMissions.Remove();
 
-        // Remove the ship object from the hangar if it is unscheduled
-        HangarSlot hangarSlot = HangarManager.GetSlotByNode(scheduleSlot.hangarNode);
-        HangarManager.Instance.DestroyShipInstance(hangarSlot);
+ 
+
+            // Trigger leaving hangar animation 
+
+            //HangarSlot hangarSlot = HangarManager.GetSlotByPilot(mission.Pilot);
+            //if (hangarSlot != null)
+            //{
+            //    HangarManager.Instance.DestroyShipInstance(hangarSlot);
+            //}
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -109,18 +114,10 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             MissionScheduleSlot scheduleSlot = missionsUI.GetSlotByPosition(eventData.position);
-            if (scheduleSlot != null)
+            if (scheduleSlot != null && HangarManager.NodeIsUnlocked(scheduleSlot.hangarNode))
             {
-                if (scheduleSlot.Pilot == null)
-                {
-                    // Allow the player to dock a ship at a node without dragging on a mission
-                    missionsUI.PopulatePilotSelect(mission, scheduleSlot);
-                }
-                else
-                {
-                    // Reset the schedule slot if the player clicks and there is one scheduled
-                    Unschedule(scheduleSlot);
-                }
+                // Reset the schedule slot if the player clicks and there is already one scheduled
+                Unschedule();
             }
         }
         else if (eventData.button == PointerEventData.InputButton.Right)

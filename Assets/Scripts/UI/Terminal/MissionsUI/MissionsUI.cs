@@ -16,7 +16,6 @@ public class MissionsUI : MonoBehaviour
     private void Start()
     {
         missionDetailsUI = GetComponent<MissionDetailsUI>();
-        pilotSelectCloseButton.AddOnClick(() => PopulateMissionSelect());
     }
 
     private void OnEnable()
@@ -43,9 +42,9 @@ public class MissionsUI : MonoBehaviour
 
         foreach (MissionScheduleSlot slot in missionSlots)
         {
-            if(slot.slotTransform.childCount > 0)
+            if(slot.missionLayoutContainer.childCount > 0)
             {
-                Destroy(slot.slotTransform.GetChild(0).gameObject);
+                Destroy(slot.missionLayoutContainer.GetChild(0).gameObject);
             }
         }
 
@@ -65,7 +64,6 @@ public class MissionsUI : MonoBehaviour
             missionItem.Init(mission, scrollViewContent.transform);
         }
         
-        // Separate this out and only call OnEnable 
         List<Mission> scheduledMissions = MissionsManager.GetScheduledMissions();
         foreach (MissionScheduleSlot slot in missionSlots)
         {
@@ -73,7 +71,7 @@ public class MissionsUI : MonoBehaviour
 
             if (missionForSlot != null)
             {
-                GameObject scrollItem = Instantiate(missionItemPrefab, slot.slotTransform);
+                GameObject scrollItem = Instantiate(missionItemPrefab, slot.missionLayoutContainer);
                 MissionUIItem missionItem = scrollItem.GetComponent<MissionUIItem>();
                 missionItem.Init(missionForSlot, scrollViewContent.transform);
             }
@@ -101,7 +99,7 @@ public class MissionsUI : MonoBehaviour
         return null;
     }
 
-    public void PopulatePilotSelect(Mission mission, MissionScheduleSlot scheduleSlot)
+    public void PopulatePilotSelect(MissionScheduleSlot scheduleSlot, Mission mission = null)
     {
         scrollViewContent.transform.DestroyDirectChildren();
         foreach (Pilot pilot in PilotsManager.GetPilotsAvailableForMissions())
@@ -110,10 +108,24 @@ public class MissionsUI : MonoBehaviour
             {
                 GameObject pilotSelectItem = Instantiate(pilotSelectItemPrefab, scrollViewContent.transform);
 
-                pilotSelectItem.GetComponent<PilotSelectItem>().Init(pilot, callback: () =>
+                pilotSelectItem.GetComponent<PilotSelectItem>().Init(pilot, scheduleSlot, callback: () =>
                 {
-                    pilotSelectItem.transform.SetParent(scheduleSlot.transform);
-                    SelectPilot(pilot, mission, scheduleSlot.hangarNode);
+                    if (pilotSelectItem.transform.parent == scheduleSlot.missionLayoutContainer)
+                    {
+                        // The pilot is currently slotted 
+                        //PopulatePilotSelect();
+                    }
+
+                    pilotSelectItem.transform.SetParent(scheduleSlot.missionLayoutContainer);
+                    HangarManager.DockShip(pilot.Ship, scheduleSlot.hangarNode);
+
+                    if (mission != null)
+                    {
+                        MissionsManager.AddOrUpdateScheduledMission(pilot, mission);
+                    }
+
+                    // Return to the mission select after a pilot has been selected
+                    PopulateMissionSelect();
                 });
             }
         }
@@ -121,7 +133,7 @@ public class MissionsUI : MonoBehaviour
 
     private void SelectPilot(Pilot pilot, Mission mission, int hangarNode)
     {
-        PilotsManager.AssignMissionToPilot(pilot, mission);
+        //PilotsManager.AssignMissionToPilot(pilot, mission);
         HangarManager.DockShip(pilot.Ship, hangarNode);
 
         // Return to the mission select after a pilot has been selected

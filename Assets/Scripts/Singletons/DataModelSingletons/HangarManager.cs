@@ -2,11 +2,11 @@
 using System.Linq;
 using UnityEngine;
 
-public class HangarManager : MonoBehaviour, IDataModelManager
+public class HangarManager : MonoBehaviour
 {
     public static HangarManager Instance { get; private set; }
 
-    public HangarSlot[] hangarSlots; // Use this if doing n int nodes (not enum)
+    public HangarSlot[] hangarSlots;
     public List<Ship> shipQueue;
     public GameObject shipInstancePrefab;
 
@@ -20,12 +20,18 @@ public class HangarManager : MonoBehaviour, IDataModelManager
         else
         {
             Destroy(gameObject);
+         
             return;
         }
-        MissionUIItem.OnMissionUnscheduled += DestroyShipInstance;
+
+        hangarSlots = FindObjectsOfType<HangarSlot>();
+        if (hangarSlots == null)
+        {
+            Debug.LogError("Hangar slots not found");
+        }
     }
 
-    public static void DockShip(Ship ship, Hangar hangar, int node /*HangarSlotNumber slotNumber*/)
+    public static void DockShip(Ship ship, Hangar hangar, int node)
     {
         if (ship != null && NodeIsValid(node))
         {
@@ -61,6 +67,16 @@ public class HangarManager : MonoBehaviour, IDataModelManager
         GetSlotByNode(node).Ship = ship;
     }
 
+    public static void LaunchShip(int node)
+    {
+        Ship ship = GetShipByNode(node);
+        HangarSlot slot = GetSlotByNode(node);
+
+        ship.CurrentMission.StartMission();
+        ship.IsLaunched = true;
+        slot.LaunchShip();
+    }
+
     public void InitShipInstance(Ship ship, HangarSlot slot)
     {
         GameObject shipParentInstance = Instantiate(Instance.shipInstancePrefab, slot.transform);
@@ -77,28 +93,43 @@ public class HangarManager : MonoBehaviour, IDataModelManager
 
     public static bool NodeIsUnlocked(int node)
     {
-        return node <= HangarConstants.StartingNumberOfSlots + LicencesManager.HangarSlotUnlockEffect; 
+        return node <= HangarConstants.StartingNumberOfNodes + LicencesManager.HangarSlotUnlockEffect; 
     }
 
     public static Ship GetShipByNode(int node)
     {
-        // If using int nodes, then just search for that
-        // If using 6 element enum, then do a 2D loop through hangars 
-
-        return Instance.hangarSlots.FirstOrDefault(x => x.Node == node).Ship;
+        HangarSlot slot = GetSlotByNode(node);
+        if (slot != null && slot.Ship != null)
+        {
+            return slot.Ship;
+        }
+        return null;
     }
 
     public static int GetNodeByShip(Ship ship)
     {
-        // If using int nodes, then just search for that
-        // If using 6 element enum, then do a 2D loop through hangars 
-
         return Instance.hangarSlots.FirstOrDefault(x => x.Ship == ship).Node;
     }
 
     public static HangarSlot GetSlotByNode(int node)
     {
         return Instance.hangarSlots.FirstOrDefault(x => x.Node == node);
+    }
+
+    public static HangarSlot GetSlotByPilot(Pilot pilot)
+    {
+        foreach (HangarSlot slot in Instance.hangarSlots)
+        {
+            if (slot.Ship == null || slot.Ship.Pilot == null)
+            {
+                continue;
+            }
+            if (slot.Ship.Pilot == pilot)
+            {
+                return slot;
+            }
+        }
+        return null;
     }
 
     public static bool ShipIsDocked(Ship ship)
@@ -112,9 +143,9 @@ public class HangarManager : MonoBehaviour, IDataModelManager
         return ShipsManager.Instance.Ships.Where(x => x.IsInQueue).ToList();
     }
 
-    private static bool NodeIsValid(int node)
+    public static bool NodeIsValid(int node)
     {
-        return node >= 1 && node <= HangarConstants.TotalNumberOfSlots;
+        return node >= 1 && node <= HangarConstants.MaximumNumberOfNodes;
     }
 
     public static HangarSlot[] GetUnlockedHangarSlots()
@@ -123,37 +154,4 @@ public class HangarManager : MonoBehaviour, IDataModelManager
             .Where(x => x.Node <= LicencesManager.HangarSlotUnlockEffect)
             .ToArray();
     }
-
-    public void Init()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    #region Persistence
-    public void SaveData()
-    {
-        if (hangarSlots != null)
-        {
-            string json = JsonUtility.ToJson(hangarSlots);
-            DataUtils.SaveFileAsync(HangarSlot.FILE_NAME, HangarSlot.FOLDER_NAME, json);
-        }
-    }
-
-    public void DeleteData()
-    {
-        DataUtils.RecursivelyDeleteSaveData(HangarSlot.FOLDER_NAME);
-    }
-
-    public void LoadDataAsync()
-    {
-        for (int i = 0; i < HangarConstants.TotalNumberOfSlots; i++)
-        {
-            //hangarSlots[i] = new HangarSlot();
-
-        }
-
-        //hangarSlots = DataUtils.LoadFileAsync<>
-        //hangarSlots = DataUtils.LoadFileAsync<HangarSlot[]>(HangarSlot.FILE_NAME, HangarSlot.FOLDER_NAME);
-    }
-    #endregion
 }

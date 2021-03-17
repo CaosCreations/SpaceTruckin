@@ -154,14 +154,13 @@ public class HangarNodeUI : MonoBehaviour
         if (shipToInspect.CurrentFuel > 0
             && shipToInspect.CurrentMission != null)
         {
-            ShipsManager.LaunchShip(hangarNode);
+            HangarManager.LaunchShip(hangarNode);
             UIManager.ClearCanvases();
         }
         else
         {
             Debug.Log("Ship has no fuel!");
         }
-        
     }
 
     private void SetLayerRecursively(GameObject gameObject, int newLayer)
