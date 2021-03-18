@@ -85,7 +85,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
     // Todo: make this a property 
     public static bool PilotHasMission(Pilot pilot)
     {
-        return MissionsManager.GetScheduledMissionByPilot(pilot) != null;
+        return MissionsManager.GetScheduledMission(pilot) != null;
     }
 
     public void RandomisePilots()

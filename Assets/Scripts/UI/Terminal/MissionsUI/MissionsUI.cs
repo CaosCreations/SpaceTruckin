@@ -42,9 +42,9 @@ public class MissionsUI : MonoBehaviour
 
         foreach (MissionScheduleSlot slot in missionSlots)
         {
-            if(slot.missionLayoutContainer.childCount > 0)
+            if(slot.layoutContainer.childCount > 0)
             {
-                Destroy(slot.missionLayoutContainer.GetChild(0).gameObject);
+                Destroy(slot.layoutContainer.GetChild(0).gameObject);
             }
         }
 
@@ -57,11 +57,6 @@ public class MissionsUI : MonoBehaviour
     public void PopulateMissionSelect()
     {
         scrollViewContent.transform.DestroyDirectChildren();
-        //foreach (Transform child in scrollViewContent.transform)
-        //{
-        //    Destroy(child.gameObject);
-        //}
-
         foreach (Mission mission in MissionsManager.GetAcceptedMissions())
         {
             GameObject scrollItem = Instantiate(missionItemPrefab, scrollViewContent.transform);
@@ -78,7 +73,7 @@ public class MissionsUI : MonoBehaviour
 
             if (missionInSlot != null)
             {
-                GameObject scrollItem = Instantiate(missionItemPrefab, slot.missionLayoutContainer);
+                GameObject scrollItem = Instantiate(missionItemPrefab, slot.layoutContainer);
                 MissionUIItem missionItem = scrollItem.GetComponent<MissionUIItem>();
                 missionItem.Init(missionInSlot.mission, scrollViewContent.transform);
             }
@@ -109,8 +104,8 @@ public class MissionsUI : MonoBehaviour
     public void PopulatePilotSelect(MissionScheduleSlot scheduleSlot, Mission mission = null)
     {
         scrollViewContent.transform.DestroyDirectChildren();
-        Pilot[] pilots = PilotsManager.GetPilotsAvailableForMissions();
-        foreach (Pilot pilot in pilots)
+        Pilot[] pilotsToSelect = PilotsManager.GetPilotsAvailableForMissions();
+        foreach (Pilot pilot in pilotsToSelect)
         {
             if (pilot != null)
             {

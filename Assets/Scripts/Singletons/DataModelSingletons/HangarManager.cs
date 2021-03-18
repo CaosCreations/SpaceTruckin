@@ -31,40 +31,35 @@ public class HangarManager : MonoBehaviour
         }
     }
 
-    public static void DockShip(Ship ship, Hangar hangar, int node)
+    public static void DockShip(Ship ship, int node)
     {
         if (ship != null && NodeIsValid(node))
         {
-            HangarSlot targetSlot = hangar.HangarSlots.FirstOrDefault(x => x.Node == node);
-            if (targetSlot != null && targetSlot.IsUnlocked)
+            HangarSlot slot = GetSlotByNode(node);
+            if (slot != null && slot.IsUnlocked)
             {
-                targetSlot.Ship = ship;
+                slot.Ship = ship;
 
-                // Advance the queue once the ship enters the hangar 
+                // Update the queue once the ship enters the hangar 
                 if (Instance.shipQueue.Contains(ship))
                 {
                     Instance.shipQueue.Remove(ship);
                 }
 
-                if (targetSlot.ShipInstance != null)
+                if (slot.ShipInstance != null)
                 {
                     // Destroy the ship object if one already exists
-                    Instance.DestroyShipInstance(targetSlot);
+                    Instance.DestroyShipInstance(slot);
                 }
 
                 // Create a new ship object inside the target slot 
-                Instance.InitShipInstance(ship, targetSlot);
+                Instance.InitShipInstance(ship, slot);
             }
         }
         else
         {
             Debug.Log($"Could not dock ship at node {node}");
         }
-    }
-
-    public static void DockShip(Ship ship, int node)
-    {
-        GetSlotByNode(node).Ship = ship;
     }
 
     public static void LaunchShip(int node)

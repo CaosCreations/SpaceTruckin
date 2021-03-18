@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class PilotSelectItem : MonoBehaviour, IPointerClickHandler
+public class PilotSelectItem : MonoBehaviour
 {
     private Pilot pilot;
     private Mission mission;
@@ -30,39 +30,20 @@ public class PilotSelectItem : MonoBehaviour, IPointerClickHandler
 
     public void SelectPilotForSlot()
     {
-        PilotSelectItem itemToReplace = scheduleSlot.missionLayoutContainer
-            .GetComponentInChildren<PilotSelectItem>();
-        
-        if (itemToReplace != null)
+        if (pilot != null)
         {
-            // If there is already a pilot in the slot, remove it
-            MissionsManager.RemoveScheduledMission(itemToReplace.pilot);
-            Destroy(itemToReplace.gameObject);
+            // Dock the pilot regardless of whether there's a mission in the slot
+            HangarManager.DockShip(pilot.Ship, scheduleSlot.hangarNode);
+            scheduleSlot.PutPilotInSlot(pilot);
         }
-        transform.SetParent(scheduleSlot.missionLayoutContainer);
-        HangarManager.DockShip(pilot.Ship, scheduleSlot.hangarNode);
 
         if (mission != null)
         {
             MissionsManager.AddOrUpdateScheduledMission(pilot, mission);
         }
 
-        missionsUI.scrollViewContent.transform.DestroyDirectChildren();
-
         // Return to the mission select after a pilot has been selected
         missionsUI.PopulateMissionSelect();
-    }
-
-    public void DeselectPilot() 
-    {
-        MissionsManager.RemoveScheduledMission(pilot);
-        Destroy(gameObject);
-    }
-
-    public void ReselectPilot()
-    {
-        MissionsManager.RemoveScheduledMission(pilot);
-        missionsUI.PopulatePilotSelect(scheduleSlot);
     }
 
     private string BuildItemString()
@@ -72,17 +53,5 @@ public class PilotSelectItem : MonoBehaviour, IPointerClickHandler
         builder.AppendLineWithBreaks(pilot.Ship.Name);
         builder.AppendLineWithBreaks($"Lv. {pilot.Level}");
         return builder.ToString();
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        //if (eventData.button == PointerEventData.InputButton.Left)
-        //{
-        //    if (PilotsManager.PilotHasMission(pilot) && transform.parent.GetComponentInParent<MissionScheduleSlot>() != null)
-        //    {
-        //        // Allow the player to reselect the pilot once it's in the slot
-        //        ReselectPilot();
-        //    }
-        //}
     }
 }

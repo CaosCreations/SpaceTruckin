@@ -55,7 +55,7 @@ public partial class Mission : ScriptableObject, IDataModel
         {
             if (outcome != null)
             {
-                outcome.Process(MissionsManager.GetScheduledMissionByMission(this));
+                outcome.Process(MissionsManager.GetScheduledMission(this));
             }
         }
     }

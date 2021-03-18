@@ -52,7 +52,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
     {
         return Instance.Missions
             .Where(x => x.HasBeenAccepted
-            && GetScheduledMissionByMission(x) == null
+            && GetScheduledMission(x) == null
             && !x.IsInProgress())
             .ToList();
     }
@@ -155,52 +155,67 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         mission.Outcomes = randomOutcomes.ToArray();
     }
 
-    public static ScheduledMission GetScheduledMissionByMission(Mission mission)
+    public static ScheduledMission GetScheduledMission(Mission mission)
     {
         return ScheduledMissions.FirstOrDefault(x => x.mission == mission);
     }
 
-    public static ScheduledMission GetScheduledMissionByPilot(Pilot pilot)
+    public static ScheduledMission GetScheduledMission(Pilot pilot)
     {
         return ScheduledMissions.FirstOrDefault(x => x.pilot == pilot);
     }
+
     public static void AddOrUpdateScheduledMission(Pilot pilot, Mission mission)
     {
-        ScheduledMission scheduledMission = GetScheduledMissionByMission(mission);
+        ScheduledMission scheduledMission = GetScheduledMission(mission);
         if (scheduledMission != null)
         {
             scheduledMission.pilot = pilot;
         }
         else
         {
-            ScheduledMissions.Add(new ScheduledMission { pilot = pilot, mission = mission });
+            scheduledMission = new ScheduledMission { pilot = pilot, mission = mission };
+            ScheduledMissions.Add(scheduledMission);
         }
+        Debug.Log("Scheduled Mission added/updated:\n" + GetScheduledMissionString(scheduledMission));
     }
 
-    public static void RemoveScheduledMission(ScheduledMission mission)
+    public static void RemoveScheduledMission(ScheduledMission scheduledMission)
     {
-        if (mission != null)
+        if (scheduledMission != null)
         {
-            ScheduledMissions.Remove(mission);
+            ScheduledMissions.Remove(scheduledMission);
+            Debug.Log("Scheduled Mission removed:\n" + GetScheduledMissionString(scheduledMission));
         }
     }
 
     public static void RemoveScheduledMission(Mission mission)
     {
-        ScheduledMission scheduledMission = GetScheduledMissionByMission(mission);
+        ScheduledMission scheduledMission = GetScheduledMission(mission);
         if (scheduledMission != null)
         {
-            ScheduledMissions.Remove(GetScheduledMissionByMission(mission));
+            ScheduledMissions.Remove(GetScheduledMission(mission));
+            Debug.Log("Scheduled Mission removed:\n" + GetScheduledMissionString(scheduledMission));
         }
     }
 
     public static void RemoveScheduledMission(Pilot pilot)
     {
-        ScheduledMission scheduledMission = GetScheduledMissionByPilot(pilot);
+        ScheduledMission scheduledMission = GetScheduledMission(pilot);
         if (scheduledMission != null)
         {
-            ScheduledMissions.Remove(GetScheduledMissionByPilot(pilot));
+            ScheduledMissions.Remove(GetScheduledMission(pilot));
+            Debug.Log("Scheduled Mission removed:\n" + GetScheduledMissionString(scheduledMission));
         }
+    }
+
+    private static string GetScheduledMissionString(ScheduledMission scheduled)
+    {
+        if (scheduled != null)
+        {
+            return $"Mission: {scheduled.mission}, Pilot: {scheduled.pilot}";
+        }
+        return string.Empty;
     }
 
     #region Persistence
