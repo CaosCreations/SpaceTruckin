@@ -33,5 +33,5 @@ public partial class Ship
     }
     public Sprite Avatar { get => shipAvatar; set => shipAvatar = value; }
     public Pilot Pilot => PilotsManager.Instance.Pilots.FirstOrDefault(x => x.Ship == this);
-    public Mission CurrentMission => Pilot.CurrentMission;
+    public Mission CurrentMission => MissionsManager.GetScheduledMission(this).mission;
 }

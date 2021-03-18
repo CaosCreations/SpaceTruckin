@@ -9,6 +9,7 @@ public class HangarManager : MonoBehaviour
     public HangarSlot[] hangarSlots;
     public List<Ship> shipQueue;
     public GameObject shipInstancePrefab;
+    private MissionScheduleSlot[] scheduleSlots;
 
     private void Awake()
     {
@@ -28,6 +29,12 @@ public class HangarManager : MonoBehaviour
         if (hangarSlots == null)
         {
             Debug.LogError("Hangar slots not found");
+        }
+
+        scheduleSlots = FindObjectsOfType<MissionScheduleSlot>();
+        if (scheduleSlots == null)
+        {
+            Debug.LogError("Schedule slots not found");
         }
     }
 
@@ -67,28 +74,43 @@ public class HangarManager : MonoBehaviour
         Ship ship = GetShipByNode(node);
         HangarSlot slot = GetSlotByNode(node);
 
-        ship.CurrentMission.StartMission();
-        ship.IsLaunched = true;
+        ScheduledMission scheduled = MissionsManager.GetScheduledMission(ship);
+        if (scheduled != null)
+        {
+            ship.CurrentMission.StartMission();
+        }
+        ship.IsLaunched = true; // Can probably get rid of this flag 
         slot.LaunchShip();
+
+        // Open up the schedule slot for the next ship
+        MissionScheduleSlot scheduleSlot = GetScheduleSlotByNode(node);
+        scheduleSlot.IsActive = true;
     }
 
     public void InitShipInstance(Ship ship, HangarSlot slot)
     {
         GameObject shipParentInstance = Instantiate(Instance.shipInstancePrefab, slot.transform);
-        Instantiate(ship.ShipPrefab, shipParentInstance.transform);
+        if (ship.ShipPrefab != null)
+        {
+            Instantiate(ship.ShipPrefab, shipParentInstance.transform);
+        }
         ShipInstance instance = shipParentInstance.GetComponent<ShipInstance>();
         slot.ShipInstance = instance;
     }
 
     public void DestroyShipInstance(HangarSlot slot)
     {
-        Destroy(slot.ShipInstance.transform.parent);
-        Destroy(slot.ShipInstance);
+        //Destroy(slot.ShipInstance);
+        
+        if (slot.ShipInstance != null)
+        {
+            Destroy(slot.ShipInstance.transform.parent);
+        }
     }
 
     public static bool NodeIsUnlocked(int node)
     {
-        return node <= HangarConstants.StartingNumberOfNodes + LicencesManager.HangarSlotUnlockEffect; 
+        return node <= HangarConstants.StartingNumberOfSlots + LicencesManager.HangarSlotUnlockEffect; 
     }
 
     public static Ship GetShipByNode(int node)
@@ -140,7 +162,7 @@ public class HangarManager : MonoBehaviour
 
     public static bool NodeIsValid(int node)
     {
-        return node >= 1 && node <= HangarConstants.MaximumNumberOfNodes;
+        return node >= 1 && node <= HangarConstants.MaximumNumberOfSlots;
     }
 
     public static HangarSlot[] GetUnlockedHangarSlots()
@@ -148,5 +170,10 @@ public class HangarManager : MonoBehaviour
         return Instance.hangarSlots
             .Where(x => x.Node <= LicencesManager.HangarSlotUnlockEffect)
             .ToArray();
+    }
+
+    public static MissionScheduleSlot GetScheduleSlotByNode(int node)
+    {
+        return Instance.scheduleSlots.FirstOrDefault(x => x.hangarNode == node);
     }
 }

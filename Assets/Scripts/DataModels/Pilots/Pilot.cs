@@ -22,8 +22,6 @@ public partial class Pilot : ScriptableObject
     [Header("Data to update IN GAME")]
     public PilotSaveData saveData;
 
-    public static string FOLDER_NAME = "PilotSaveData";
-
     [Serializable]
     public class PilotSaveData
     {
@@ -39,6 +37,8 @@ public partial class Pilot : ScriptableObject
         public bool isHired, isOnMission, isAssignedToShip;
         public Mission currentMission;
     }
+
+    public static string FOLDER_NAME = "PilotSaveData";
 
     public void SaveData()
     {

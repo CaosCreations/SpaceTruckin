@@ -11,7 +11,7 @@ public class MissionsUI : MonoBehaviour
     public Button pilotSelectCloseButton;
     private MissionDetailsUI missionDetailsUI;
 
-    public MissionScheduleSlot[] missionSlots;
+    public MissionScheduleSlot[] scheduleSlots;
 
     private void Start()
     {
@@ -20,14 +20,15 @@ public class MissionsUI : MonoBehaviour
 
     private void OnEnable()
     {
-        SetupMissionSlots();
-        CleanMenu();
+        SetActiveSlots();
+        //CleanMenu();
+        PopulateScheduleSlots();
         PopulateMissionSelect();
     }
 
-    private void SetupMissionSlots()
+    private void SetActiveSlots()
     {
-        foreach (MissionScheduleSlot slot in missionSlots)
+        foreach (MissionScheduleSlot slot in scheduleSlots)
         {
             // Missions can be dropped into the slot if the corresponding
             // node is unlocked AND there is no ship already at that node 
@@ -40,7 +41,7 @@ public class MissionsUI : MonoBehaviour
     {
         scrollViewContent.transform.DestroyDirectChildren();
 
-        foreach (MissionScheduleSlot slot in missionSlots)
+        foreach (MissionScheduleSlot slot in scheduleSlots)
         {
             if(slot.layoutContainer.childCount > 0)
             {
@@ -63,42 +64,6 @@ public class MissionsUI : MonoBehaviour
             MissionUIItem missionItem = scrollItem.GetComponent<MissionUIItem>();
             missionItem.Init(mission, scrollViewContent.transform);
         }
-        
-        // Todo: only do this on enable 
-        List<ScheduledMission> scheduledMissions = MissionsManager.GetScheduledMissionsStillInHangar();
-        foreach (MissionScheduleSlot slot in missionSlots)
-        {
-            //Mission missionForSlot = scheduledMissions.Where(x => x.Pilot == slot.Pilot).FirstOrDefault();
-            ScheduledMission missionInSlot = scheduledMissions.FirstOrDefault(x => x == slot.ScheduledMission);
-
-            if (missionInSlot != null)
-            {
-                GameObject scrollItem = Instantiate(missionItemPrefab, slot.layoutContainer);
-                MissionUIItem missionItem = scrollItem.GetComponent<MissionUIItem>();
-                missionItem.Init(missionInSlot.mission, scrollViewContent.transform);
-            }
-        }
-    }
-
-    private void ShowMissionProgress(MissionUIItem missionItem)
-    {
-        string substring = missionItem.mission.DaysLeftToComplete > 1 ? "days" : "day";
-
-        missionItem.missionNameText.SetText(missionItem.mission.Name 
-            + $"\n({missionItem.mission.DaysLeftToComplete} {substring} remaining)", FontType.ListItem);
-    }
-
-    public MissionScheduleSlot GetSlotByPosition(Vector2 position)
-    {
-        foreach (MissionScheduleSlot slot in missionSlots)
-        {
-            if (RectTransformUtility.RectangleContainsScreenPoint(slot.parentTransform, position)
-                && slot.IsActive)
-            {
-                return slot;
-            }
-        }
-        return null;
     }
 
     public void PopulatePilotSelect(MissionScheduleSlot scheduleSlot, Mission mission = null)
@@ -113,5 +78,49 @@ public class MissionsUI : MonoBehaviour
                 pilotSelectItem.GetComponent<PilotSelectItem>().Init(pilot, scheduleSlot, mission);
             }
         }
+    }
+
+    private void PopulateScheduleSlots()
+    {
+        List<ScheduledMission> scheduledMissions = MissionsManager.GetScheduledMissionsStillInHangar();
+        foreach (MissionScheduleSlot slot in scheduleSlots)
+        {
+            ScheduledMission scheduled = scheduledMissions.FirstOrDefault(x => x == slot.ScheduledMission);
+            if (scheduled != null)
+            {
+                if (scheduled.mission != null)
+                {
+                    GameObject missionItemInstance = Instantiate(missionItemPrefab, slot.layoutContainer);
+                    MissionUIItem missionItem = missionItemInstance.GetComponent<MissionUIItem>();
+                    missionItem.Init(scheduled.mission, scrollViewContent.transform);
+                }
+
+                if (scheduled.pilot != null)
+                {
+                    slot.PutPilotInSlot(scheduled.pilot);
+                }
+            }
+        }
+    }
+
+    private void ShowMissionProgress(MissionUIItem missionItem)
+    {
+        string substring = missionItem.mission.DaysLeftToComplete > 1 ? "days" : "day";
+
+        missionItem.missionNameText.SetText(missionItem.mission.Name 
+            + $"\n({missionItem.mission.DaysLeftToComplete} {substring} remaining)", FontType.ListItem);
+    }
+
+    public MissionScheduleSlot GetSlotByPosition(Vector2 position)
+    {
+        foreach (MissionScheduleSlot slot in scheduleSlots)
+        {
+            if (RectTransformUtility.RectangleContainsScreenPoint(slot.parentTransform, position)
+                && slot.IsActive)
+            {
+                return slot;
+            }
+        }
+        return null;
     }
 }

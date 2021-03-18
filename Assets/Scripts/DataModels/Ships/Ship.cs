@@ -10,7 +10,6 @@ public partial class Ship : ScriptableObject, IDataModel
     public int maxFuel;
     public GameObject shipPrefab;
     public Sprite shipAvatar;
-    //public Pilot pilot;
 
     [Header("Data to update IN GAME")]
     public ShipSaveData saveData;
@@ -23,7 +22,6 @@ public partial class Ship : ScriptableObject, IDataModel
         [SerializeField] public bool isOwned, isLaunched;
         [SerializeField] public int currentFuel;
         [SerializeField] public float currenthullIntegrity;
-        //[SerializeField] public int hangarNode;//
     }
 
     public float GetHullPercent()

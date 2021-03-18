@@ -6,6 +6,11 @@ public class HangarSlot : MonoBehaviour
     private Ship ship;
     private ShipInstance shipInstance;
 
+    public void UpdateShip(Ship ship)
+    {
+
+    } 
+
     public void LaunchShip()
     {
         if (shipInstance != null)
@@ -17,6 +22,9 @@ public class HangarSlot : MonoBehaviour
     public int Node => node;
     public Ship Ship { get => ship; set => ship = value; }
     public ShipInstance ShipInstance { get => shipInstance; set => shipInstance = value; }
-    public bool IsUnlocked { get => Node <= LicencesManager.HangarSlotUnlockEffect; } // 
+    public bool IsUnlocked 
+    { 
+        get => Node <= LicencesManager.HangarSlotUnlockEffect + HangarConstants.StartingNumberOfSlots; 
+    } 
     public bool IsOccupied { get => Ship != null; }
 }

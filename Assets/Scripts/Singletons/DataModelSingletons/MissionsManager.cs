@@ -165,6 +165,11 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         return ScheduledMissions.FirstOrDefault(x => x.pilot == pilot);
     }
 
+    public static ScheduledMission GetScheduledMission(Ship ship)
+    {
+        return ScheduledMissions.FirstOrDefault(x => x.pilot.Ship == ship);
+    }
+
     public static void AddOrUpdateScheduledMission(Pilot pilot, Mission mission)
     {
         ScheduledMission scheduledMission = GetScheduledMission(mission);

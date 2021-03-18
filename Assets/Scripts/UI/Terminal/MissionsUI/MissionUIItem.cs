@@ -75,13 +75,12 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
                 {
                     // Open the pilot select menu after dropping a mission into a slot that has no pilot in it
                     missionsUI.PopulatePilotSelect(scheduleSlot, mission);
-
                 }
             }
             else
             {
                 // Unschedule the mission if it is dropped outside a slot
-                Unschedule();
+                Unschedule(scheduleSlot);
             }
         }
     }
@@ -95,7 +94,7 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
             if (scheduleSlot.CurrentMissionItemInSlot != null)
             {
-                scheduleSlot.CurrentMissionItemInSlot.Unschedule();
+                scheduleSlot.CurrentMissionItemInSlot.Unschedule(scheduleSlot);
             }
         }
     }
@@ -109,11 +108,15 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         }
     }
 
-    public void Unschedule()
+    public void Unschedule(MissionScheduleSlot scheduleSlot = null)
     {
         MissionsManager.RemoveScheduledMission(mission);
-        //myRectTransform.SetParent(scrollViewContent);
         Destroy(gameObject);
+
+        if (scheduleSlot != null)
+        {
+            scheduleSlot.IsActive = true;
+        }
         missionsUI.PopulateMissionSelect();
     }
 
