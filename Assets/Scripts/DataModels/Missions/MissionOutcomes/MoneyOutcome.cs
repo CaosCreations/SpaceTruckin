@@ -9,7 +9,7 @@ public class MoneyOutcome : MissionOutcome
     public long MoneyMin { get => moneyMin; set => moneyMin = value; }
     public long MoneyMax { get => moneyMax; set => moneyMax = value; }
 
-    public override void Process(Mission mission)
+    public override void Process(ScheduledMission scheduled)
     {
         double moneyEarned = UnityEngine.Random.Range(moneyMin, moneyMax);
         double earningsAfterLicences = moneyEarned * (1 + LicencesManager.MoneyEffect);
@@ -17,10 +17,10 @@ public class MoneyOutcome : MissionOutcome
         PlayerManager.Instance.ReceiveMoney(earnings64);
 
         long moneyIncrease64 = Convert.ToInt64(earnings64 - moneyEarned);
-        if (mission.MissionToArchive != null)
+        if (scheduled.mission.MissionToArchive != null)
         {
-            mission.MissionToArchive.TotalMoneyIncrease += moneyIncrease64;
-            mission.MissionToArchive.TotalMoneyEarned += earnings64;
+            scheduled.mission.MissionToArchive.TotalMoneyIncrease += moneyIncrease64;
+            scheduled.mission.MissionToArchive.TotalMoneyEarned += earnings64;
         }
         Debug.Log("Base money earned: " + moneyEarned);
         Debug.Log("Money increase due to licences: " + (earnings64 - moneyEarned).ToString());

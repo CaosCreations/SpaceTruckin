@@ -10,6 +10,7 @@ public class MissionScheduleSlot : MonoBehaviour, IPointerClickHandler
     private MissionsUI missionsUI;
 
     public int hangarNode;
+    public ScheduledMission ScheduledMission { get; set; }
     public Pilot Pilot { get; set; }
 
     private bool isActive;

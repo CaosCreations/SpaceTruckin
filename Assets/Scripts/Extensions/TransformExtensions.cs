@@ -6,7 +6,7 @@ public static class TransformExtensions
     {
         foreach (Transform child in self)
         {
-            Object.Destroy(child.gameObject);
+            GameObject.Destroy(child.gameObject);
         }
     }
 }

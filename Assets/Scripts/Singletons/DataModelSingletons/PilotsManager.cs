@@ -79,7 +79,13 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
 
     public static Pilot[] GetPilotsAvailableForMissions()
     {
-        return Instance.Pilots.Where(p => p.IsHired && p.CurrentMission == null).ToArray();
+        return Instance.Pilots.Where(p => p.IsHired && !PilotHasMission(p)).ToArray();
+    }
+
+    // Todo: make this a property 
+    public static bool PilotHasMission(Pilot pilot)
+    {
+        return MissionsManager.GetScheduledMissionByPilot(pilot) != null;
     }
 
     public void RandomisePilots()

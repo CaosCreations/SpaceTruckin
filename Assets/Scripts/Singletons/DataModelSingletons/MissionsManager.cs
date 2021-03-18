@@ -52,19 +52,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
     {
         return Instance.Missions
             .Where(x => x.HasBeenAccepted
-            && x.Pilot == null)
-            .ToList();
-    }
-
-    /// <summary>
-    /// Missions are 'scheduled' if a pilot has been assigned to them 
-    /// but that pilot has not yet left the hangar 
-    /// </summary>
-    public static List<Mission> GetScheduledMissions() // Todo: rename to less ambiguous 
-    {
-        return Instance.Missions
-            .Where(x => x.HasBeenAccepted
-            && GetScheduledMissionByMission(x) != null
+            && GetScheduledMissionByMission(x) == null
             && !x.IsInProgress())
             .ToList();
     }
@@ -79,6 +67,21 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
             .ToList();
     }
 
+    /// <summary>
+    /// Missions are 'in hangar' if they've been scheduled but their pilots haven't left the hangar
+    /// </summary>
+    /// <returns></returns>
+    public static List<ScheduledMission> GetScheduledMissionsStillInHangar()
+    {
+        //return Instance.Missions
+        //    .Where(x => x.HasBeenAccepted
+        //    && GetScheduledMissionByMission(x) != null
+        //    && !x.IsInProgress())
+        //    .ToList();
+
+        return ScheduledMissions.Where(x => !x.mission.IsInProgress()).ToList();
+    }
+
     public static Mission GetMissionByFileName(string fileName)
     {
         return Instance.Missions.FirstOrDefault(x => x.name == fileName);
@@ -89,53 +92,49 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         // Reset yesterday's missions, so today's will take their place. 
         ArchivedMissionsManager.ResetMissionsCompletedYesterday();
 
-        foreach (Mission mission in Instance.Missions)
+        foreach (ScheduledMission scheduled in ScheduledMissions)
         {
-            if(mission.IsInProgress())
+            if(scheduled.mission.IsInProgress())
             {
-                mission.DaysLeftToComplete--;
+                scheduled.mission.DaysLeftToComplete--;
 
-                // We just finished the mission
-                if (!mission.IsInProgress())
+                // We just finished the scheduledMission.mission
+                if (!scheduled.mission.IsInProgress())
                 {
-                    CompleteMission(mission);
+                    CompleteMission(scheduled);
                 }
             }
         }
     }
 
-    private static void CompleteMission(Mission mission)
+    private static void CompleteMission(ScheduledMission scheduled)
     {
         // Send a thank you email on first completion of the mission.
-        if (mission.ThankYouMessage != null && mission.NumberOfCompletions <= 0)
+        if (scheduled.mission.ThankYouMessage != null && scheduled.mission.NumberOfCompletions <= 0)
         {
-            mission.ThankYouMessage.IsUnlocked = true;
+            scheduled.mission.ThankYouMessage.IsUnlocked = true;
         }
-        mission.NumberOfCompletions++;
+        scheduled.mission.NumberOfCompletions++;
 
         // Instantiate an archived mission object to store the stats of the completed mission.
-        mission.MissionToArchive = new ArchivedMission(mission, mission.NumberOfCompletions);
+        scheduled.mission.MissionToArchive = new ArchivedMission(scheduled.mission, scheduled.pilot, scheduled.mission.NumberOfCompletions);
 
-        mission.Pilot.MissionsCompleted++;
-        mission.MissionToArchive.MissionsCompletedByPilotAtTimeOfMission = mission.Pilot.MissionsCompleted;
+        scheduled.pilot.MissionsCompleted++;
+        scheduled.mission.MissionToArchive.MissionsCompletedByPilotAtTimeOfMission = scheduled.pilot.MissionsCompleted;
 
         // Randomise the mission's outcomes if flag is set or they are missing. 
-        if (mission.HasRandomOutcomes)
+        if (scheduled.mission.HasRandomOutcomes)
         {
-            AssignRandomOutcomes(mission);
+            AssignRandomOutcomes(scheduled.mission);
         }
 
         // We will set the archived mission fields throughout the outcome processing. 
-        mission.ProcessOutcomes();
+        scheduled.mission.ProcessOutcomes();
 
         // Add the object to the archive once all outcomes have been processed. 
-        ArchivedMissionsManager.AddToArchive(mission.MissionToArchive);
+        ArchivedMissionsManager.AddToArchive(scheduled.mission.MissionToArchive);
 
-        ScheduledMission missionToUnschedule = ScheduledMissions.FirstOrDefault(x => x.mission == mission);
-        if (missionToUnschedule != null) 
-        { 
-            ScheduledMissions.Remove(missionToUnschedule); 
-        }
+        ScheduledMissions.Remove(scheduled);
     }
 
     private static void AssignRandomOutcomes(Mission mission)
@@ -161,6 +160,10 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         return ScheduledMissions.FirstOrDefault(x => x.mission == mission);
     }
 
+    public static ScheduledMission GetScheduledMissionByPilot(Pilot pilot)
+    {
+        return ScheduledMissions.FirstOrDefault(x => x.pilot == pilot);
+    }
     public static void AddOrUpdateScheduledMission(Pilot pilot, Mission mission)
     {
         ScheduledMission scheduledMission = GetScheduledMissionByMission(mission);
@@ -174,12 +177,29 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         }
     }
 
+    public static void RemoveScheduledMission(ScheduledMission mission)
+    {
+        if (mission != null)
+        {
+            ScheduledMissions.Remove(mission);
+        }
+    }
+
     public static void RemoveScheduledMission(Mission mission)
     {
         ScheduledMission scheduledMission = GetScheduledMissionByMission(mission);
         if (scheduledMission != null)
         {
             ScheduledMissions.Remove(GetScheduledMissionByMission(mission));
+        }
+    }
+
+    public static void RemoveScheduledMission(Pilot pilot)
+    {
+        ScheduledMission scheduledMission = GetScheduledMissionByPilot(pilot);
+        if (scheduledMission != null)
+        {
+            ScheduledMissions.Remove(GetScheduledMissionByPilot(pilot));
         }
     }
 

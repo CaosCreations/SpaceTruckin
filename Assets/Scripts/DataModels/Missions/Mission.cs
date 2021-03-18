@@ -39,11 +39,6 @@ public partial class Mission : ScriptableObject, IDataModel
         saveData = await DataUtils.LoadFileAsync<MissionSaveData>(name, FOLDER_NAME);
     }
 
-    public void ScheduleMission(Pilot pilot)
-    {
-        Pilot = pilot;
-    }
-
     public void StartMission()
     {
         saveData.daysLeftToComplete = missionDurationInDays;
@@ -60,7 +55,7 @@ public partial class Mission : ScriptableObject, IDataModel
         {
             if (outcome != null)
             {
-                outcome.Process(this);
+                outcome.Process(MissionsManager.GetScheduledMissionByMission(this));
             }
         }
     }

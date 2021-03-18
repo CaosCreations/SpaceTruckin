@@ -77,11 +77,11 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
                     // We use the loop counter to construct the file name, 
                     // which is determined by the number of completions
                     // that mission had at the time it was completed.
-                    ArchivedMission newArchivedMission = new ArchivedMission(
-                        mission, completionNumber: i + 1);
+                    //ArchivedMission newArchivedMission = new ArchivedMission(
+                    //    mission, completionNumber: i + 1);
                     
-                    await newArchivedMission.LoadDataAsync();
-                    ArchivedMissions.Add(newArchivedMission);
+                    //await newArchivedMission.LoadDataAsync();
+                    //ArchivedMissions.Add(newArchivedMission);
                 }
             }
         }

@@ -9,6 +9,7 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
     [Header("Set at Runtime")]
     public Mission mission;
+    //public ScheduledMission scheduledMission;
     private MissionsUI missionsUI;
     private MissionDetailsUI missionDetailsUI;
     private PilotSelectItem pilotSelectItem;
@@ -65,6 +66,7 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
             if (scheduleSlot != null)
             {
                 CheckReplaceMission(scheduleSlot);
+                CheckReplacePilot(scheduleSlot);
                 myRectTransform.SetParent(scheduleSlot.missionLayoutContainer);
 
                 // Open the pilot select menu after dropping a mission into a slot
@@ -82,7 +84,8 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         if (scheduleSlot.missionLayoutContainer.childCount > 0)
         {
             MissionUIItem missionToUnschedule = scheduleSlot.missionLayoutContainer.GetChild(0).GetComponent<MissionUIItem>();
-            
+            //MissionUIItem missionToUnschedule = scheduleSlot.missionLayoutContainer.GetChild(1).GetComponent<MissionUIItem>();
+
             if (missionToUnschedule != null)
             {
                 missionToUnschedule.Unschedule();
@@ -90,23 +93,20 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         }
     }
 
+    private void CheckReplacePilot(MissionScheduleSlot scheduleSlot)
+    {
+        //PilotSelectItem pilotSelectItem = scheduleSlot.missionLayoutContainer.GetChild(1).GetComponent<PilotSelectItem>();
+        PilotSelectItem pilotSelectItem = scheduleSlot.missionLayoutContainer.GetComponentInChildren<PilotSelectItem>();
+        if (pilotSelectItem != null)
+        {
+            pilotSelectItem.DeselectPilot();
+        }
+    }
+
     public void Unschedule()
     {
         myRectTransform.SetParent(scrollViewContent);
-        if (mission.Pilot != null)
-        {
-            MissionsManager.ScheduledMissions.Remove();
-
- 
-
-            // Trigger leaving hangar animation 
-
-            //HangarSlot hangarSlot = HangarManager.GetSlotByPilot(mission.Pilot);
-            //if (hangarSlot != null)
-            //{
-            //    HangarManager.Instance.DestroyShipInstance(hangarSlot);
-            //}
-        }
+        MissionsManager.RemoveScheduledMission(mission);
     }
 
     public void OnPointerClick(PointerEventData eventData)

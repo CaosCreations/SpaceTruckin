@@ -57,7 +57,7 @@ public partial class Pilot
     }
     public bool IsOnMission
     {
-        get => saveData.isOnMission; set { saveData.isOnMission = value; }
+        get => saveData.isOnMission; set => saveData.isOnMission = value; 
     }
     public bool IsAssignedToShip
     {

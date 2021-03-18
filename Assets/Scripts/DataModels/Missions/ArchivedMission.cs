@@ -18,13 +18,13 @@ public class ArchivedMission : IDataModel
     [HideInInspector]
     private ArchivedMissionSaveData saveData;
 
-    public ArchivedMission(Mission mission, int completionNumber)
+    public ArchivedMission(Mission mission, Pilot pilot, int completionNumber)
     {
         saveData = new ArchivedMissionSaveData();
         MissionName = mission.Name;
         CompletionNumber = completionNumber;
         FileName = $"{MissionName}_{completionNumber}";
-        Pilot = mission.Pilot;
+        Pilot = pilot;
         TotalFuelLost = mission.FuelCost;
     }
 

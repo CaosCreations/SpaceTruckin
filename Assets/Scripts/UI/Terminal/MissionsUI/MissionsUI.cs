@@ -54,9 +54,14 @@ public class MissionsUI : MonoBehaviour
         }
     }
 
-    private void PopulateMissionSelect()
+    public void PopulateMissionSelect()
     {
         scrollViewContent.transform.DestroyDirectChildren();
+        //foreach (Transform child in scrollViewContent.transform)
+        //{
+        //    Destroy(child.gameObject);
+        //}
+
         foreach (Mission mission in MissionsManager.GetAcceptedMissions())
         {
             GameObject scrollItem = Instantiate(missionItemPrefab, scrollViewContent.transform);
@@ -64,16 +69,18 @@ public class MissionsUI : MonoBehaviour
             missionItem.Init(mission, scrollViewContent.transform);
         }
         
-        List<Mission> scheduledMissions = MissionsManager.GetScheduledMissions();
+        // Todo: only do this on enable 
+        List<ScheduledMission> scheduledMissions = MissionsManager.GetScheduledMissionsStillInHangar();
         foreach (MissionScheduleSlot slot in missionSlots)
         {
-            Mission missionForSlot = scheduledMissions.Where(x => x.Pilot == slot.Pilot).FirstOrDefault();
+            //Mission missionForSlot = scheduledMissions.Where(x => x.Pilot == slot.Pilot).FirstOrDefault();
+            ScheduledMission missionInSlot = scheduledMissions.FirstOrDefault(x => x == slot.ScheduledMission);
 
-            if (missionForSlot != null)
+            if (missionInSlot != null)
             {
                 GameObject scrollItem = Instantiate(missionItemPrefab, slot.missionLayoutContainer);
                 MissionUIItem missionItem = scrollItem.GetComponent<MissionUIItem>();
-                missionItem.Init(missionForSlot, scrollViewContent.transform);
+                missionItem.Init(missionInSlot.mission, scrollViewContent.transform);
             }
         }
     }
@@ -102,42 +109,14 @@ public class MissionsUI : MonoBehaviour
     public void PopulatePilotSelect(MissionScheduleSlot scheduleSlot, Mission mission = null)
     {
         scrollViewContent.transform.DestroyDirectChildren();
-        foreach (Pilot pilot in PilotsManager.GetPilotsAvailableForMissions())
+        Pilot[] pilots = PilotsManager.GetPilotsAvailableForMissions();
+        foreach (Pilot pilot in pilots)
         {
             if (pilot != null)
             {
                 GameObject pilotSelectItem = Instantiate(pilotSelectItemPrefab, scrollViewContent.transform);
-
-                pilotSelectItem.GetComponent<PilotSelectItem>().Init(pilot, scheduleSlot, callback: () =>
-                {
-                    if (pilotSelectItem.transform.parent == scheduleSlot.missionLayoutContainer)
-                    {
-                        // The pilot is currently slotted 
-                        //PopulatePilotSelect();
-                    }
-
-                    pilotSelectItem.transform.SetParent(scheduleSlot.missionLayoutContainer);
-                    HangarManager.DockShip(pilot.Ship, scheduleSlot.hangarNode);
-
-                    if (mission != null)
-                    {
-                        MissionsManager.AddOrUpdateScheduledMission(pilot, mission);
-                    }
-
-                    // Return to the mission select after a pilot has been selected
-                    PopulateMissionSelect();
-                });
+                pilotSelectItem.GetComponent<PilotSelectItem>().Init(pilot, scheduleSlot, mission);
             }
         }
-    }
-
-    private void SelectPilot(Pilot pilot, Mission mission, int hangarNode)
-    {
-        //PilotsManager.AssignMissionToPilot(pilot, mission);
-        HangarManager.DockShip(pilot.Ship, hangarNode);
-
-        // Return to the mission select after a pilot has been selected
-        scrollViewContent.transform.DestroyDirectChildren();
-        PopulateMissionSelect();
     }
 }
