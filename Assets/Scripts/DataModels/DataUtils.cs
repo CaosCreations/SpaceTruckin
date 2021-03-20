@@ -101,16 +101,6 @@ public static class DataUtils
         return new T();
     }
 
-    public static async Task<string> ReadFileAsync(string filePath)
-    {
-        string json;
-        using (StreamReader reader = File.OpenText(filePath))
-        {
-            json = await reader.ReadToEndAsync();
-        }
-        return json;
-    }
-
     public static async Task<T[]> LoadFileToArrayAsync<T>(string fileName, string folderName) where T : class, new()
     {
         string folderPath = GetSaveFolderPath(folderName);
@@ -138,6 +128,11 @@ public static class DataUtils
     public static string GetSaveFolderPath(string folderName)
     {
         return Path.GetFullPath(Path.Combine(Application.persistentDataPath, folderName));
+    }
+
+    public static string GetSaveFilePath(string folderName, string fileName)
+    {
+        return Path.GetFullPath(Path.Combine(Application.persistentDataPath, folderName, fileName + FILE_EXTENSION));
     }
 
     public static void RecursivelyDeleteSaveData(string folderName)
@@ -170,7 +165,7 @@ public static class DataUtils
         Directory.CreateDirectory(GetSaveFolderPath(folderName));
     }
 
-    public async static Task<string> ReadTextFileAsync(string filePath)
+    public async static Task<string> ReadFileAsync(string filePath)
     {
         string text = string.Empty;
         if (File.Exists(filePath))
@@ -182,7 +177,7 @@ public static class DataUtils
         }
         else
         {
-            Debug.Log($"Text file at path {filePath} does not exist");
+            Debug.Log($"File at path {filePath} does not exist");
         }
         return text;
     }

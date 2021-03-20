@@ -23,7 +23,7 @@ public class MessageDetailView : MonoBehaviour
 
         Text messageBodyText = messageBody.GetComponent<Text>();
         string messageBodyContent;
-        messageBodyContent = string.IsNullOrEmpty(message.body) ? PlaceholderUtils.GenerateLoremIpsum(16)
+        messageBodyContent = string.IsNullOrEmpty(message.body) ? LoremIpsumGenerator.GenerateLoremIpsum(16)
             : message.body;
 
         // Add mission information if a mission is offered in the message 

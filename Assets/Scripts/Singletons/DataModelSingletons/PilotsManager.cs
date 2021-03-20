@@ -96,14 +96,6 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         return MissionsManager.GetScheduledMission(ship) != null;
     }
 
-    public static bool PilotHasMissionInProgress(Ship ship)
-    {
-        ScheduledMission scheduled = MissionsManager.GetScheduledMission(ship);
-        return scheduled != null 
-            && scheduled.Mission.IsInProgress() // IsLaunched should always be true if InProgress is true though
-            && !scheduled.Pilot.Ship.IsLaunched;
-    }
-
     public void RandomisePilots()
     {
         if (Pilots != null)

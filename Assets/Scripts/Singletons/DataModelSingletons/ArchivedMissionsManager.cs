@@ -79,7 +79,7 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
                     // that mission had at the time it was completed.
                     //ArchivedMission newArchivedMission = new ArchivedMission(
                     //    mission, completionNumber: i + 1);
-                    
+
                     //await newArchivedMission.LoadDataAsync();
                     //ArchivedMissions.Add(newArchivedMission);
                 }

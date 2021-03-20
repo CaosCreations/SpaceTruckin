@@ -188,7 +188,7 @@ public class PilotsUI : MonoBehaviour
 
 		if (string.IsNullOrEmpty(pilot.Description))
 		{
-			pilot.Description = PlaceholderUtils.GenerateLoremIpsum();
+			pilot.Description = LoremIpsumGenerator.GenerateLoremIpsum();
 		}
 
 		builder.AppendLineWithBreaks("Description: " + pilot.Description);

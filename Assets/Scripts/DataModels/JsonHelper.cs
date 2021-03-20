@@ -10,14 +10,15 @@ public static class JsonHelper
         return wrapper.Items;
     }
 
-    //public static string ToJson<T>(T[] array)
-    //{
-    //    Wrapper<T> wrapper = new Wrapper<T>();
-    //    wrapper.Items = array;
-    //    return JsonUtility.ToJson(wrapper);
-    //}
+    public static string ArrayToJson<T>(T[] array)
+    {
+        Wrapper<T> wrapper = new Wrapper<T>();
+        wrapper.Items = array;
+        string json = JsonUtility.ToJson(wrapper);
+        return json;
+    }
 
-    public static string ArrayToJson<T>(T[] array, bool prettyPrint = false)
+    public static string ArrayToJson<T>(T[] array, bool prettyPrint)
     {
         Wrapper<T> wrapper = new Wrapper<T>
         {

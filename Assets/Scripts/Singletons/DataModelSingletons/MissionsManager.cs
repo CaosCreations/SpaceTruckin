@@ -202,7 +202,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
             scheduledMission = new ScheduledMission { Mission = mission, Pilot = pilot };
             ScheduledMissions.Add(scheduledMission);
         }
-        Debug.Log("Scheduled Mission added/updated:\n" + GetScheduledMissionString(scheduledMission));
+        Debug.Log("Scheduled Mission added/updated: " + GetScheduledMissionString(scheduledMission));
     }
 
     public static void RemoveScheduledMission(ScheduledMission scheduledMission)
@@ -210,7 +210,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         if (scheduledMission != null)
         {
             ScheduledMissions.Remove(scheduledMission);
-            Debug.Log("Scheduled Mission removed:\n" + GetScheduledMissionString(scheduledMission));
+            Debug.Log("Scheduled Mission removed: " + GetScheduledMissionString(scheduledMission));
         }
     }
 
@@ -220,7 +220,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         if (scheduledMission != null)
         {
             ScheduledMissions.Remove(GetScheduledMission(mission));
-            Debug.Log("Scheduled Mission removed:\n" + GetScheduledMissionString(scheduledMission));
+            Debug.Log("Scheduled Mission removed: " + GetScheduledMissionString(scheduledMission));
         }
     }
 
@@ -230,7 +230,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         if (scheduledMission != null)
         {
             ScheduledMissions.Remove(GetScheduledMission(pilot));
-            Debug.Log("Scheduled Mission removed:\n" + GetScheduledMissionString(scheduledMission));
+            Debug.Log("Scheduled Mission removed: " + GetScheduledMissionString(scheduledMission));
         }
     }
 
@@ -255,22 +255,15 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         {
             mission.SaveData();
         }
-        //foreach (ScheduledMission scheduled in ScheduledMissions)
-        //{
-        //    scheduled.SaveData();
-        //}
-        // Write scheduled missions to a single file 
-        //ScheduledMission[] scheduledMissionsToSave = ScheduledMissions.ToArray();
-        //string json = JsonUtility.ToJson(scheduledMissionsToSave);
-        //DataUtils.SaveFileAsync("ScheduledMissionSaveData", Mission.FOLDER_NAME, json);
+        SaveScheduledMissionData();
+    }
 
-        var sm = ScheduledMissions.ToArray();
-        string json = JsonHelper.ArrayToJson(sm);
-        Debug.Log("Log SM saving Json: " + json);
+    private void SaveScheduledMissionData()
+    {
+        string json = JsonHelper.ArrayToJson(ScheduledMissions.ToArray());
         string folderPath = DataUtils.GetSaveFolderPath(Mission.FOLDER_NAME);
-        DataUtils.SaveFileAsync("ScheduledMissionSaveData", Mission.FOLDER_NAME, json);
-
-
+        Debug.Log("Scheduled Mission Json to save: " + json);
+        DataUtils.SaveFileAsync(ScheduledMission.FILE_NAME, folderPath, json);
     }
 
     public async void LoadDataAsync()
@@ -279,31 +272,15 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         {
             await mission.LoadDataAsync();
         }
+        LoadScheduledMissionData();
+    }
 
-        string folderPath = DataUtils.GetSaveFolderPath(Mission.FOLDER_NAME);
-        string filePath = Path.Combine(folderPath, "ScheduledMissionSaveData.truckin");
-        string json = await DataUtils.ReadTextFileAsync(filePath);
-        Debug.Log("Log SM loading Json: " + json);
-        ScheduledMissions = new List<ScheduledMission>(); // simplify
+    private async void LoadScheduledMissionData()
+    {
+        string json = await DataUtils.ReadFileAsync(ScheduledMission.FILE_PATH);
+        Debug.Log("Scheduled Mission Json to load: " + json);
         ScheduledMissions = JsonHelper.ArrayFromJson<ScheduledMission>(json).ToList();
-        Debug.Log("Logging SM Json post-load:\n");
         LogScheduledMissions();
-
-
-        //string[] scheduledMissionFiles = Directory.GetFiles(ScheduledMission.FOLDER_NAME);
-        //foreach (string file in scheduledMissionFiles)
-        //{
-        //    string[] objectNameComponents = file.Split('_');
-        //    //Mission mission = GetMissionByObjectName(objectNameComponents[0]);
-        //    //Pilot pilot = PilotsManager.GetPilotByObjectName(objectNameComponents[1]);
-
-
-        //    //ScheduledMission scheduledMission = new ScheduledMission(mission, pilot);
-
-
-        //}
-
-        //foreach ()
     }
     
     public void DeleteData()

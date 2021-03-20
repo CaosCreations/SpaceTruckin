@@ -11,10 +11,10 @@ public partial class Ship
     {
         get => saveData.isOwned; set => saveData.isOwned = value;
     }
+
     public bool IsLaunched
     {
         get => saveData.isLaunched; set => saveData.isLaunched = value;
-        //get => PilotsManager.PilotHasMission(this, missionIsInProgress: true);
     }
 
     // Owned but not out on a mission nor docked
