@@ -53,14 +53,10 @@ public class HangarManager : MonoBehaviour
                     Instance.shipQueue.Remove(ship);
                 }
 
-                if (slot.ShipInstance != null)
-                {
-                    // Destroy the ship object if one already exists
-                    Instance.DestroyShipInstance(slot);
-                }
-
                 // Create a new ship object inside the target slot 
-                Instance.InitShipInstance(ship, slot);
+                InitShipInstance(ship, slot);
+
+                // Todo: Landing Animation
             }
         }
         else
@@ -77,17 +73,18 @@ public class HangarManager : MonoBehaviour
         ScheduledMission scheduled = MissionsManager.GetScheduledMission(ship);
         if (scheduled != null)
         {
-            ship.CurrentMission.StartMission();
+            scheduled.Mission.StartMission();
+            Debug.Log($"{scheduled.Pilot} has started {scheduled.Mission}");
         }
-        ship.IsLaunched = true; // Can probably get rid of this flag 
-        slot.LaunchShip();
 
-        // Open up the schedule slot for the next ship
-        MissionScheduleSlot scheduleSlot = GetScheduleSlotByNode(node);
-        scheduleSlot.IsActive = true;
+        if (ship != null && slot != null)
+        {
+            slot.LaunchShip();
+            Debug.Log($"{ship} successfully launched from node {node}");
+        }
     }
 
-    public void InitShipInstance(Ship ship, HangarSlot slot)
+    public static void InitShipInstance(Ship ship, HangarSlot slot)
     {
         GameObject shipParentInstance = Instantiate(Instance.shipInstancePrefab, slot.transform);
         if (ship.ShipPrefab != null)
@@ -98,10 +95,8 @@ public class HangarManager : MonoBehaviour
         slot.ShipInstance = instance;
     }
 
-    public void DestroyShipInstance(HangarSlot slot)
-    {
-        //Destroy(slot.ShipInstance);
-        
+    public static void DestroyShipInstance(HangarSlot slot)
+    {        
         if (slot.ShipInstance != null)
         {
             Destroy(slot.ShipInstance.transform.parent);
@@ -154,6 +149,17 @@ public class HangarManager : MonoBehaviour
         return GetNodeByShip(ship) != -1;
     }
 
+    public static bool ShipIsDockedAtNode(int node)
+    {
+        HangarSlot slot = GetSlotByNode(node);
+        return slot != null && slot.Ship != null;
+    }
+
+    public static bool ShipIsDockedAtNode(HangarSlot slot)
+    {
+        return slot != null && slot.Ship != null;
+    }
+
     // Call this at the end of the day to get the total queue for the next day
     public List<Ship> GetShipsInQueue()
     {
@@ -170,10 +176,5 @@ public class HangarManager : MonoBehaviour
         return Instance.hangarSlots
             .Where(x => x.Node <= LicencesManager.HangarSlotUnlockEffect)
             .ToArray();
-    }
-
-    public static MissionScheduleSlot GetScheduleSlotByNode(int node)
-    {
-        return Instance.scheduleSlots.FirstOrDefault(x => x.hangarNode == node);
     }
 }

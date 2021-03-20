@@ -17,10 +17,10 @@ public class MoneyOutcome : MissionOutcome
         PlayerManager.Instance.ReceiveMoney(earnings64);
 
         long moneyIncrease64 = Convert.ToInt64(earnings64 - moneyEarned);
-        if (scheduled.mission.MissionToArchive != null)
+        if (scheduled.Mission.MissionToArchive != null)
         {
-            scheduled.mission.MissionToArchive.TotalMoneyIncrease += moneyIncrease64;
-            scheduled.mission.MissionToArchive.TotalMoneyEarned += earnings64;
+            scheduled.Mission.MissionToArchive.TotalMoneyIncrease += moneyIncrease64;
+            scheduled.Mission.MissionToArchive.TotalMoneyEarned += earnings64;
         }
         Debug.Log("Base money earned: " + moneyEarned);
         Debug.Log("Money increase due to licences: " + (earnings64 - moneyEarned).ToString());

@@ -42,6 +42,7 @@ public partial class Pilot
     public int HireCost { get => hireCost; }
     public double CurrentXp { get => saveData.currentXp; set => saveData.currentXp = value; }
     public double RequiredXp { get => saveData.requiredXp; set => saveData.requiredXp = value; }
+    public bool CanLevelUp { get => CurrentXp >= RequiredXp; }
     public float XpThresholdExponent
     {
         get => xpThresholdExponent; set => xpThresholdExponent = value;
@@ -55,14 +56,10 @@ public partial class Pilot
     {
         get => saveData.isHired; set { saveData.isHired = value; }
     }
-    public bool IsOnMission
-    {
-        get => saveData.isOnMission; set => saveData.isOnMission = value; 
-    }
-    public bool IsAssignedToShip
-    {
-        get => saveData.isAssignedToShip; set { saveData.isAssignedToShip = value; }
-    }
+    //public bool IsOnMission
+    //{
+    //    get => saveData.isOnMission; set => saveData.isOnMission = value; 
+    //}
     public bool IsRandom => isRandom;
     public Ship Ship { get => ship; }
     public Sprite Avatar { get => avatar; set => avatar = value; }

@@ -11,18 +11,18 @@ public class PilotXpOutcome : MissionOutcome
     public override void Process(ScheduledMission scheduled) 
 	{
         // Store the pilot's level before the xp is awarded.
-        // Then we can check if they levelled up as a result of the mission.
-        scheduled.mission.MissionToArchive.PilotLevelAtTimeOfMission = scheduled.pilot.Level;
+        // Then we can check if they levelled up as a result of the Mission.
+        scheduled.Mission.MissionToArchive.PilotLevelAtTimeOfMission = scheduled.Pilot.Level;
 
         double xpGained = Random.Range(xpMin, xpMax);
         double xpAfterOmens = xpGained * ApplyOmens(scheduled);
         double xpAfterLicences = xpAfterOmens * (1 + LicencesManager.PilotXpEffect);
         
         double xpIncreaseFromLicences = xpAfterLicences - xpAfterOmens;
-        if (scheduled.mission.MissionToArchive != null)
+        if (scheduled.Mission.MissionToArchive != null)
         {
-            scheduled.mission.MissionToArchive.TotalXpIncreaseFromLicences += xpIncreaseFromLicences;
-            scheduled.mission.MissionToArchive.TotalPilotXpGained += PilotsManager.AwardXp(scheduled.pilot, xpAfterLicences);
+            scheduled.Mission.MissionToArchive.TotalXpIncreaseFromLicences += xpIncreaseFromLicences;
+            scheduled.Mission.MissionToArchive.TotalPilotXpGained += PilotsManager.AwardXp(scheduled.Pilot, xpAfterLicences);
         }
         Debug.Log("Base pilot xp gained: " + xpGained);
         Debug.Log("Pilot xp increase from licences: " + xpIncreaseFromLicences);
@@ -39,11 +39,11 @@ public class PilotXpOutcome : MissionOutcome
     {
         float coefficient = 1f;
 
-        for (int i = 0; i < scheduled.mission.Outcomes.Length; i++)
+        for (int i = 0; i < scheduled.Mission.Outcomes.Length; i++)
         {
-            if (scheduled.mission.Outcomes[i] is OmenOutcome)
+            if (scheduled.Mission.Outcomes[i] is OmenOutcome)
             {
-                OmenOutcome omen = scheduled.mission.Outcomes[i] as OmenOutcome;
+                OmenOutcome omen = scheduled.Mission.Outcomes[i] as OmenOutcome;
                 coefficient += probability >= Random.Range(0f, 1f) ? omen.coefficient : omen.coefficient * -1;
             }
         }

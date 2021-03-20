@@ -32,7 +32,14 @@ public class PilotSelectItem : MonoBehaviour
     {
         if (pilot != null)
         {
-            // Dock the pilot regardless of whether there's a mission in the slot
+            if (HangarManager.ShipIsDockedAtNode(scheduleSlot.hangarNode))
+            {
+                //HangarSlot hangarSlot = HangarManager.GetSlotByNode(scheduleSlot.hangarNode);
+                //HangarManager.DestroyShipInstance(hangarSlot);
+                HangarManager.LaunchShip(scheduleSlot.hangarNode);
+            }
+
+            // Dock the pilot's ship regardless of whether there's a mission in the slot
             HangarManager.DockShip(pilot.Ship, scheduleSlot.hangarNode);
             scheduleSlot.PutPilotInSlot(pilot);
         }

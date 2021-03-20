@@ -101,6 +101,40 @@ public static class DataUtils
         return new T();
     }
 
+    public static async Task<string> ReadFileAsync(string filePath)
+    {
+        string json;
+        using (StreamReader reader = File.OpenText(filePath))
+        {
+            json = await reader.ReadToEndAsync();
+        }
+        return json;
+    }
+
+    public static async Task<T[]> LoadFileToArrayAsync<T>(string fileName, string folderName) where T : class, new()
+    {
+        string folderPath = GetSaveFolderPath(folderName);
+        string filePath = Path.Combine(folderPath, fileName + FILE_EXTENSION);
+
+        if (File.Exists(filePath))
+        {
+            try
+            {
+                string json;
+                using (StreamReader reader = File.OpenText(filePath))
+                {
+                    json = await reader.ReadToEndAsync();
+                }
+                return JsonUtility.FromJson<T[]>(json);
+            }
+            catch (Exception e)
+            {
+                LogIOError(e, filePath);
+            }
+        }
+        return new T[] { };
+    }
+
     public static string GetSaveFolderPath(string folderName)
     {
         return Path.GetFullPath(Path.Combine(Application.persistentDataPath, folderName));

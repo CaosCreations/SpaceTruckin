@@ -79,13 +79,29 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
 
     public static Pilot[] GetPilotsAvailableForMissions()
     {
-        return Instance.Pilots.Where(p => p.IsHired && !PilotHasMission(p)).ToArray();
+        return Instance.Pilots
+            .Where(p => p.IsHired
+            && !PilotHasMission(p.Ship))
+            .ToArray();
     }
 
-    // Todo: make this a property 
-    public static bool PilotHasMission(Pilot pilot)
+    public static Pilot GetPilotByObjectName(string objectName)
     {
-        return MissionsManager.GetScheduledMission(pilot) != null;
+        return Instance.Pilots.FirstOrDefault(x => x.name == objectName);
+    }
+
+    // Todo: Make this a property?
+    public static bool PilotHasMission(Ship ship)
+    {
+        return MissionsManager.GetScheduledMission(ship) != null;
+    }
+
+    public static bool PilotHasMissionInProgress(Ship ship)
+    {
+        ScheduledMission scheduled = MissionsManager.GetScheduledMission(ship);
+        return scheduled != null 
+            && scheduled.Mission.IsInProgress() // IsLaunched should always be true if InProgress is true though
+            && !scheduled.Pilot.Ship.IsLaunched;
     }
 
     public void RandomisePilots()

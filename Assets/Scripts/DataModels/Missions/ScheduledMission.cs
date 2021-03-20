@@ -1,18 +1,46 @@
 ﻿using System.Threading.Tasks;
 
-public class ScheduledMission : IDataModel
+[System.Serializable]
+public class ScheduledMission
 {
-    public Mission mission;
-    public Pilot pilot;
-    public static string FOLDER_NAME = "ScheduledMissionSaveData";
+    public Mission Mission { get; set; }
+    public Pilot Pilot { get; set; }
 
-    public Task LoadDataAsync()
+    //public ScheduledMissionSaveData saveData;
+    //public string FileName => $"{saveData.mission.name}_{saveData.pilot.name}";
+
+    //public static string FOLDER_NAME = "ScheduledMissionSaveData";
+
+    //[System.Serializable]
+    //public class ScheduledMissionSaveData
+    //{
+    //    public Mission mission;
+    //    public Pilot pilot;
+    //}
+
+    public ScheduledMission()
     {
-        throw new System.NotImplementedException();
+
     }
 
-    public void SaveData()
-    {
-        throw new System.NotImplementedException();
-    }
+    //public ScheduledMission()
+    //{
+    //    // Paramless and then call load afterwards 
+    //    // Or if creating for first time, just set fields inline
+
+    //    // This would avoid the loading problem somewhat
+    ////}
+
+    //public async Task LoadDataAsync()
+    //{
+    //    saveData = await DataUtils.LoadFileAsync<ScheduledMissionSaveData>(FileName, FOLDER_NAME);
+    //}
+
+    //public void SaveData()
+    //{
+    //    DataUtils.SaveFileAsync(FileName, FOLDER_NAME, saveData);
+    //}
+
+    //public Mission Mission { get => saveData.mission; set => saveData.mission = value; }
+    //public Pilot Pilot { get => saveData.pilot; set => saveData.pilot = value; }
 }

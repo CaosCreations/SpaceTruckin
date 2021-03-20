@@ -14,6 +14,7 @@ public partial class Ship
     public bool IsLaunched
     {
         get => saveData.isLaunched; set => saveData.isLaunched = value;
+        //get => PilotsManager.PilotHasMission(this, missionIsInProgress: true);
     }
 
     // Owned but not out on a mission nor docked
@@ -33,5 +34,16 @@ public partial class Ship
     }
     public Sprite Avatar { get => shipAvatar; set => shipAvatar = value; }
     public Pilot Pilot => PilotsManager.Instance.Pilots.FirstOrDefault(x => x.Ship == this);
-    public Mission CurrentMission => MissionsManager.GetScheduledMission(this).mission;
+    public Mission CurrentMission
+    {
+        get
+        {
+            ScheduledMission scheduled = MissionsManager.GetScheduledMission(this);
+            if (scheduled != null && scheduled.Mission != null)
+            {
+                return scheduled.Mission;
+            }
+            return null;
+        }
+    }
 }

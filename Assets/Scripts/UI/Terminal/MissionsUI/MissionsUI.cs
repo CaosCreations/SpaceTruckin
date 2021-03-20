@@ -21,7 +21,6 @@ public class MissionsUI : MonoBehaviour
     private void OnEnable()
     {
         SetActiveSlots();
-        //CleanMenu();
         PopulateScheduleSlots();
         PopulateMissionSelect();
     }
@@ -30,10 +29,10 @@ public class MissionsUI : MonoBehaviour
     {
         foreach (MissionScheduleSlot slot in scheduleSlots)
         {
-            // Missions can be dropped into the slot if the corresponding
-            // node is unlocked AND there is no ship already at that node 
-            slot.IsActive = HangarManager.NodeIsUnlocked(slot.hangarNode)
-                && HangarManager.GetShipByNode(slot.hangarNode) == null;
+            if (slot != null)
+            {
+                slot.IsActive = HangarManager.NodeIsUnlocked(slot.hangarNode);
+            }
         }
     }
 
@@ -70,34 +69,48 @@ public class MissionsUI : MonoBehaviour
     {
         scrollViewContent.transform.DestroyDirectChildren();
         Pilot[] pilotsToSelect = PilotsManager.GetPilotsAvailableForMissions();
-        foreach (Pilot pilot in pilotsToSelect)
+        if (pilotsToSelect != null)
         {
-            if (pilot != null)
+            foreach (Pilot pilot in pilotsToSelect)
             {
-                GameObject pilotSelectItem = Instantiate(pilotSelectItemPrefab, scrollViewContent.transform);
-                pilotSelectItem.GetComponent<PilotSelectItem>().Init(pilot, scheduleSlot, mission);
+                if (pilot != null)
+                {
+                    GameObject pilotSelectItem = Instantiate(pilotSelectItemPrefab, scrollViewContent.transform);
+                    pilotSelectItem.GetComponent<PilotSelectItem>().Init(pilot, scheduleSlot, mission);
+                }
             }
         }
     }
 
     private void PopulateScheduleSlots()
     {
-        List<ScheduledMission> scheduledMissions = MissionsManager.GetScheduledMissionsStillInHangar();
-        foreach (MissionScheduleSlot slot in scheduleSlots)
+        List<ScheduledMission> scheduledMissions = MissionsManager.GetScheduledMissionsNotInProgress();
+        foreach (MissionScheduleSlot scheduleSlot in scheduleSlots)
         {
-            ScheduledMission scheduled = scheduledMissions.FirstOrDefault(x => x == slot.ScheduledMission);
-            if (scheduled != null)
+            if (scheduleSlot != null)
             {
-                if (scheduled.mission != null)
+                scheduleSlot.CleanSlot();
+
+                ScheduledMission scheduled = scheduledMissions.FirstOrDefault(x => x == scheduleSlot.ScheduledMission); // Encapsulate?
+                if (scheduled != null)
                 {
-                    GameObject missionItemInstance = Instantiate(missionItemPrefab, slot.layoutContainer);
-                    MissionUIItem missionItem = missionItemInstance.GetComponent<MissionUIItem>();
-                    missionItem.Init(scheduled.mission, scrollViewContent.transform);
+                    // Put a mission in the slot if its ship has not been launched yet
+                    if (scheduled.Mission != null)
+                    {
+                        GameObject missionItemInstance = Instantiate(missionItemPrefab, scheduleSlot.layoutContainer);
+                        MissionUIItem missionItem = missionItemInstance.GetComponent<MissionUIItem>();
+                        missionItem.Init(scheduled.Mission, scrollViewContent.transform); // Oneline 
+                    }
                 }
 
-                if (scheduled.pilot != null)
+                HangarSlot hangarSlot = HangarManager.GetSlotByNode(scheduleSlot.hangarNode); // Reorder
+                if (HangarManager.ShipIsDockedAtNode(scheduleSlot.hangarNode))
                 {
-                    slot.PutPilotInSlot(scheduled.pilot);
+                    // Put a pilot in the slot if its ship has not been launched yet
+                    if (hangarSlot.Ship != null)
+                    {
+                        scheduleSlot.PutPilotInSlot(hangarSlot.Ship.Pilot);
+                    }
                 }
             }
         }

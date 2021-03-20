@@ -34,7 +34,7 @@ public partial class Pilot : ScriptableObject
         [Header("Data to update IN GAME")]
         public int missionsCompleted;
         public double currentXp;
-        public bool isHired, isOnMission, isAssignedToShip;
+        public bool isHired/*,isOnMission*/;
         public Mission currentMission;
     }
 
@@ -49,8 +49,6 @@ public partial class Pilot : ScriptableObject
     {
         saveData = await DataUtils.LoadFileAsync<PilotSaveData>(name, FOLDER_NAME);
     }
-
-    public bool CanLevelUp { get => CurrentXp >= RequiredXp; }
 
     public void LevelUp()
     {

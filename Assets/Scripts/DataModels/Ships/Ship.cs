@@ -23,7 +23,7 @@ public partial class Ship : ScriptableObject, IDataModel
         [SerializeField] public int currentFuel;
         [SerializeField] public float currenthullIntegrity;
     }
-
+    
     public float GetHullPercent()
     {
         return saveData.currenthullIntegrity / maxHullIntegrity;

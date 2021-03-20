@@ -24,13 +24,15 @@ public class PilotInSlot : MonoBehaviour, IPointerClickHandler
         if (pilot != null)
         {
             MissionsManager.RemoveScheduledMission(pilot);
-            Destroy(gameObject);
-
             if (scheduleSlot != null)
             {
                 // Todo: Check if its actually there first 
                 HangarManager.LaunchShip(scheduleSlot.hangarNode);
+
+                // Reopen the schedule slot
+                scheduleSlot.IsActive = true;
             }
+            Destroy(gameObject);
         }
     }
 

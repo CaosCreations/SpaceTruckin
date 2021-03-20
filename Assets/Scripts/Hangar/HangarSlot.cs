@@ -6,16 +6,13 @@ public class HangarSlot : MonoBehaviour
     private Ship ship;
     private ShipInstance shipInstance;
 
-    public void UpdateShip(Ship ship)
-    {
-
-    } 
-
     public void LaunchShip()
     {
         if (shipInstance != null)
         {
             shipInstance.Launch();
+            Ship = null;
+            ShipInstance = null;
         }
     }
 
