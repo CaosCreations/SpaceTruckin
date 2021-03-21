@@ -111,4 +111,9 @@ public class LicenceDetailsUI : MonoBehaviour
         }
         return totalEffectMessage;
     }
+
+    private string GetEffectString(HangarSlotUnlockEffect unlockEffect)
+    {
+        return "";
+    }
 }

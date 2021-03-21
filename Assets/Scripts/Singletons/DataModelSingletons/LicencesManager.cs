@@ -86,12 +86,9 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
         return GetActiveLicenceEffectsByType<HangarSlotUnlockEffect>().Sum(x => x.NumberOfSlotsToUnlock);
     }
 
-    public static void UnlockHangarSlots(int numberOfSlots = 1)
+    public static Licence GetLicenceByEffect(LicenceEffect effect)
     {
-        for (int i = 0; i < numberOfSlots; i++)
-        {
-
-        }
+        return Instance.Licences.FirstOrDefault(x => x.Effect == effect);
     }
 
     #region Persistence

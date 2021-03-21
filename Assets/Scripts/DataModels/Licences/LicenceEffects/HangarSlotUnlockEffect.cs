@@ -4,6 +4,6 @@
 public class HangarSlotUnlockEffect : UnlockEffect
 {
     [SerializeField] private int numberOfSlotsToUnlock;
-    public int NumberOfSlotsToUnlock { get; set; }
+    public int NumberOfSlotsToUnlock => numberOfSlotsToUnlock;
 
 }
