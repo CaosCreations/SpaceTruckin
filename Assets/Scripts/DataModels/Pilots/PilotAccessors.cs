@@ -56,15 +56,10 @@ public partial class Pilot
     {
         get => saveData.isHired; set { saveData.isHired = value; }
     }
-    //public bool IsOnMission
-    //{
-    //    get => saveData.isOnMission; set => saveData.isOnMission = value; 
-    //}
+    public bool HasMission => PilotsManager.PilotHasMission(this);
+    public bool IsOnMission => PilotsManager.PilotHasMissionInProgress(this);
+    public Mission CurrentMission => MissionsManager.GetMission(this);
     public bool IsRandom => isRandom;
     public Ship Ship { get => ship; }
     public Sprite Avatar { get => avatar; set => avatar = value; }
-    public Mission CurrentMission 
-    {
-        get => saveData.currentMission; set => saveData.currentMission = value; 
-    }
 }

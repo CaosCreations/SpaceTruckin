@@ -19,4 +19,22 @@ public static class StringExtensions
         }
         return string.Empty;
     }
+
+    public static string RemoveAllWhitespace(this string self)
+    {
+        if (!string.IsNullOrEmpty(self))
+        {
+            return self.Replace(" ", string.Empty);
+        }
+        return string.Empty;
+    }
+
+    public static string RemoveCharacter(this string self, char character)
+    {
+        if (self != null && !char.IsWhiteSpace(character)) 
+        {
+            return self.Replace(character.ToString(), string.Empty);
+        }
+        return string.Empty;
+    }
 }

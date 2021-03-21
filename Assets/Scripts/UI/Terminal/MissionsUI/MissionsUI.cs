@@ -57,21 +57,28 @@ public class MissionsUI : MonoBehaviour
     public void PopulateMissionSelect()
     {
         scrollViewContent.transform.DestroyDirectChildren();
-        foreach (Mission mission in MissionsManager.GetAcceptedMissions())
+        List<Mission> acceptedMissions = MissionsManager.GetAcceptedMissions();
+        if (acceptedMissions != null)
         {
-            GameObject scrollItem = Instantiate(missionItemPrefab, scrollViewContent.transform);
-            MissionUIItem missionItem = scrollItem.GetComponent<MissionUIItem>();
-            missionItem.Init(mission, scrollViewContent.transform);
+            foreach (Mission mission in acceptedMissions)
+            {
+                if (mission != null)
+                {
+                    GameObject scrollItem = Instantiate(missionItemPrefab, scrollViewContent.transform);
+                    MissionUIItem missionItem = scrollItem.GetComponent<MissionUIItem>();
+                    missionItem.Init(mission, scrollViewContent.transform);
+                }
+            }
         }
     }
 
     public void PopulatePilotSelect(MissionScheduleSlot scheduleSlot, Mission mission = null)
     {
         scrollViewContent.transform.DestroyDirectChildren();
-        Pilot[] pilotsToSelect = PilotsManager.GetPilotsAvailableForMissions();
-        if (pilotsToSelect != null)
+        Pilot[] availablePilots = PilotsManager.GetPilotsAvailableForMissions();
+        if (availablePilots != null)
         {
-            foreach (Pilot pilot in pilotsToSelect)
+            foreach (Pilot pilot in availablePilots)
             {
                 if (pilot != null)
                 {
@@ -102,7 +109,7 @@ public class MissionsUI : MonoBehaviour
                 }
 
                 HangarSlot hangarSlot = HangarManager.GetSlotByNode(scheduleSlot.hangarNode); // Reorder
-                if (HangarManager.ShipIsDockedAtNode(scheduleSlot.hangarNode))
+                if (HangarManager.ShipIsDockedAtSlot(hangarSlot))
                 {
                     // Put a pilot in the schedule slot if its ship is still docked  
                     if (hangarSlot.Ship != null)

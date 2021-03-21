@@ -81,7 +81,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
     {
         return Instance.Pilots
             .Where(p => p.IsHired
-            && !PilotHasMission(p.Ship))
+            && !PilotHasMission(p))
             .ToArray();
     }
 
@@ -90,10 +90,21 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         return Instance.Pilots.FirstOrDefault(x => x.name == objectName);
     }
 
-    // Todo: Make this a property?
-    public static bool PilotHasMission(Ship ship)
+    public static bool ShipHasMission(Ship ship)
     {
         return MissionsManager.GetScheduledMission(ship) != null;
+    }
+
+    public static bool PilotHasMission(Pilot pilot)
+    {
+        return MissionsManager.GetScheduledMission(pilot) != null;
+
+    }
+
+    public static bool PilotHasMissionInProgress(Pilot pilot)
+    {
+        ScheduledMission scheduled = MissionsManager.GetScheduledMission(pilot);
+        return scheduled?.Mission != null && scheduled.Mission.IsInProgress();
     }
 
     public void RandomisePilots()

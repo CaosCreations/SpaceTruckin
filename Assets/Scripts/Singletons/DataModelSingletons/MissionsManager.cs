@@ -175,14 +175,22 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
 
     public static ScheduledMission GetScheduledMission(Pilot pilot)
     {
-        return ScheduledMissions.FirstOrDefault(x => x.Pilot == pilot);
+        //return ScheduledMissions.FirstOrDefault(x => x.Pilot == pilot);
+        foreach (ScheduledMission scheduled in ScheduledMissions)
+        {
+            if (scheduled?.Pilot != null && scheduled.Pilot == pilot)
+            {
+                return scheduled;
+            }
+        }
+        return null;
     }
 
     public static ScheduledMission GetScheduledMission(Ship ship)
     {
         foreach (ScheduledMission scheduled in ScheduledMissions)
         {
-            if (scheduled.Pilot != null && scheduled.Pilot.Ship != null && scheduled.Pilot.Ship == ship)
+            if (scheduled?.Pilot != null && scheduled.Pilot.Ship != null && scheduled.Pilot.Ship == ship)
             {
                 return scheduled;
             }
@@ -247,18 +255,37 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         }
     }
 
+    public static Mission GetMission(Pilot pilot)
+    {
+        return GetScheduledMission(pilot)?.Mission;
+    }
+
+    public static Mission GetMission(Ship ship)
+    {
+        return GetScheduledMission(ship)?.Mission;
+    }
+
     private static string GetScheduledMissionString(ScheduledMission scheduled)
     {
         if (scheduled != null)
         {
-            return $"Mission: {scheduled.Mission}, Pilot: {scheduled.Pilot}";
+            return $"{scheduled.Mission}, {scheduled.Pilot}";
         }
         return string.Empty;
     }
 
     private static void LogScheduledMissions()
     {
-        ScheduledMissions.ForEach(x => Debug.Log(GetScheduledMissionString(x)));
+        ScheduledMissions.ForEach(x => 
+        {
+            string stringRepresentation = GetScheduledMissionString(x);
+            if (!string.IsNullOrEmpty(stringRepresentation
+                .RemoveAllWhitespace()
+                .RemoveCharacter(',')))
+            {
+                Debug.Log(GetScheduledMissionString(x)); 
+            }
+        });
     }
 
     #region Persistence
