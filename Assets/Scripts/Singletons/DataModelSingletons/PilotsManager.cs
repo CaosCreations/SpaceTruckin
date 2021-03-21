@@ -85,14 +85,16 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
             .ToArray();
     }
 
-    public static Pilot GetPilotByObjectName(string objectName)
+    public static Pilot[] GetPilotsInQueue()
     {
-        return Instance.Pilots.FirstOrDefault(x => x.name == objectName);
+        return Instance.Pilots
+            .Where(p => p.Ship.IsInQueue) // Maybe this flag isnt needed on ships 
+            .ToArray();
     }
 
-    public static bool ShipHasMission(Ship ship)
+    public static Pilot GetPilotByObjectName(string objectName)
     {
-        return MissionsManager.GetScheduledMission(ship) != null;
+        return Instance.Pilots.FirstOrDefault(p => p.name == objectName); // Redundant
     }
 
     public static bool PilotHasMission(Pilot pilot)

@@ -120,7 +120,15 @@ public class HangarManager : MonoBehaviour
 
     public static int GetNodeByShip(Ship ship)
     {
-        return Instance.hangarSlots.FirstOrDefault(x => x.Ship == ship).Node;
+        foreach (HangarSlot slot in Instance.hangarSlots)
+        {
+            if (slot != null && slot.Ship != null && slot.Ship == ship)
+            {
+                return slot.Node;
+            }
+        }
+        return -1;
+        //return Instance.hangarSlots.FirstOrDefault(x => x.Ship == ship).Node;
     }
 
     public static HangarSlot GetSlotByNode(int node)

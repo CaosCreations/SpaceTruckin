@@ -66,6 +66,5 @@ public class BedCanvasUI : MonoBehaviour
     private IEnumerator WaitForShipsToDock()
     {
         yield return new WaitForSeconds(timeToDock);
-        //ShipsManager.UpdateHangarShips();
     }
 }

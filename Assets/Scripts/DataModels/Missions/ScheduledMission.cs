@@ -1,8 +1,11 @@
-﻿[System.Serializable]
+﻿using UnityEngine;
+
+[System.Serializable]
 public class ScheduledMission
 {
-    private Mission mission;
-    private Pilot pilot;
+    [SerializeField] private Mission mission;
+    [SerializeField] private Pilot pilot;
+
     public Mission Mission { get => mission; set => mission = value; }
     public Pilot Pilot { get => pilot; set => pilot = value; }
     public static string FILE_NAME => "ScheduledMissionSaveData";

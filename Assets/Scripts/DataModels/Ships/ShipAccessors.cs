@@ -7,18 +7,11 @@ public partial class Ship
     // The fields are all located in Ship.cs. 
 
     public string Name => shipName;
-    public bool IsOwned
-    {
-        get => saveData.isOwned; set => saveData.isOwned = value;
-    }
-
-    public bool IsLaunched
-    {
-        get => saveData.isLaunched; set => saveData.isLaunched = value;
-    }
+    public bool IsLaunched => ShipsManager.ShipIsLaunched(this);
 
     // Owned but not out on a mission nor docked
-    public bool IsInQueue => IsOwned && !IsLaunched && !HangarManager.ShipIsDocked(this);
+    public bool IsInQueue => !IsLaunched && !HangarManager.ShipIsDocked(this);
+    
     public int CurrentFuel
     {
         get => saveData.currentFuel; set => saveData.currentFuel = value;

@@ -58,6 +58,11 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         return scheduled?.Mission != null && scheduled.Mission.IsInProgress();
     }
 
+    public static bool ShipHasMission(Ship ship)
+    {
+        return MissionsManager.GetScheduledMission(ship) != null;
+    }
+
     public void SaveData()
     {
         foreach (Ship ship in Instance.Ships)

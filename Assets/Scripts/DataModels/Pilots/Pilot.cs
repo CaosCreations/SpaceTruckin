@@ -25,17 +25,13 @@ public partial class Pilot : ScriptableObject
     [Serializable]
     public class PilotSaveData
     {
-        [Header("Set in Editor")]
         public string randomName;
         public Species randomSpecies;
         public int level;
         public double requiredXp;
-
-        [Header("Data to update IN GAME")]
-        public int missionsCompleted;
         public double currentXp;
-        public bool isHired/*,isOnMission*/;
-        public Mission currentMission;
+        public int missionsCompleted;
+        public bool isHired;
     }
 
     public static string FOLDER_NAME = "PilotSaveData";

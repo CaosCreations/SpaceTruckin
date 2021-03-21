@@ -75,10 +75,10 @@ public class MissionsUI : MonoBehaviour
     public void PopulatePilotSelect(MissionScheduleSlot scheduleSlot, Mission mission = null)
     {
         scrollViewContent.transform.DestroyDirectChildren();
-        Pilot[] availablePilots = PilotsManager.GetPilotsAvailableForMissions();
-        if (availablePilots != null)
+        Pilot[] pilotsInQueue = PilotsManager.GetPilotsInQueue();
+        if (pilotsInQueue != null)
         {
-            foreach (Pilot pilot in availablePilots)
+            foreach (Pilot pilot in pilotsInQueue)
             {
                 if (pilot != null)
                 {

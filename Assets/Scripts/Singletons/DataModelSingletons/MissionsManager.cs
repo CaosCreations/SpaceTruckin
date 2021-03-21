@@ -101,7 +101,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
                 continue;
             }
 
-            if(scheduled.Mission.IsInProgress())
+            if (scheduled.Mission.IsInProgress())
             {
                 scheduled.Mission.DaysLeftToComplete--;
 
@@ -221,6 +221,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         else
         {
             scheduledMission = new ScheduledMission { Mission = mission, Pilot = pilot };
+            //scheduledMission = new ScheduledMission(mission, pilot);
             ScheduledMissions.Add(scheduledMission);
         }
         Debug.Log("Scheduled Mission added/updated: " + GetScheduledMissionString(scheduledMission));
