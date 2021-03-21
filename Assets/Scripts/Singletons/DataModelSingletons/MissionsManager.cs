@@ -190,6 +190,19 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         return null;
     }
 
+    public static ScheduledMission GetScheduledMissionAtSlot(int node)
+    {
+        foreach (ScheduledMission scheduled in ScheduledMissions)
+        {
+            if (scheduled?.Mission != null && scheduled.Pilot != null && scheduled.Pilot.Ship != null
+                && scheduled.Pilot.Ship == HangarManager.GetShipByNode(node))
+            {
+                return scheduled;
+            }
+        }
+        return null;
+    }
+
     public static void AddOrUpdateScheduledMission(Pilot pilot, Mission mission)
     {
         ScheduledMission scheduledMission = GetScheduledMission(mission);

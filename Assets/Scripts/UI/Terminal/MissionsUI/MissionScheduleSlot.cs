@@ -62,7 +62,7 @@ public class MissionScheduleSlot : MonoBehaviour, IPointerClickHandler
         PilotInSlot pilotInSlot = layoutContainer.GetComponentInChildren<PilotInSlot>();
         if (pilotInSlot != null)
         {
-            Destroy(pilotInSlot);
+            Destroy(pilotInSlot.gameObject);
         }
     }
 

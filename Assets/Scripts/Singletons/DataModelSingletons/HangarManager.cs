@@ -155,7 +155,7 @@ public class HangarManager : MonoBehaviour
         return slot != null && slot.Ship != null;
     }
 
-    public static bool ShipIsDockedAtNode(HangarSlot slot)
+    public static bool ShipIsDockedAtSlot(HangarSlot slot)
     {
         return slot != null && slot.Ship != null;
     }

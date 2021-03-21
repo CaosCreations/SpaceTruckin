@@ -6,11 +6,13 @@ public class PilotInSlot : MonoBehaviour, IPointerClickHandler
 {
     public Pilot pilot;
     private MissionScheduleSlot scheduleSlot;
+    private MissionsUI missionsUI;
 
     public void Init(Pilot pilot)
     {
         this.pilot = pilot;
         scheduleSlot = GetComponentInParent<MissionScheduleSlot>();
+        missionsUI = GetComponentInParent<MissionsUI>();
 
         Image image = GetComponent<Image>();
         if (pilot != null && image != null)
@@ -19,20 +21,30 @@ public class PilotInSlot : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    private void RemovePilot()
+    private void RemoveOrReplacePilot()
     {
-        if (pilot != null)
+        if (pilot != null && scheduleSlot != null)
         {
-            MissionsManager.RemoveScheduledMission(pilot);
-            if (scheduleSlot != null)
+            ScheduledMission scheduled = MissionsManager.GetScheduledMission(pilot);
+            Mission mission = scheduled?.Mission;
+            if (mission != null)
             {
-                // Todo: Check if its actually there first 
+                // Give the option to replace the pilot if there was a mission in the slot
+                missionsUI.PopulatePilotSelect(scheduleSlot, mission);
+            }
+            else
+            {
+                // The pilot has been removed, so we unschedule the mission
+                MissionsManager.RemoveScheduledMission(scheduled);
+                
+                // Ship goes back into the queue 
                 HangarManager.LaunchShip(scheduleSlot.hangarNode);
 
-                // Reopen the schedule slot
+                // Schedule slot is reopened
                 scheduleSlot.IsActive = true;
+                
+                Destroy(gameObject);
             }
-            Destroy(gameObject);
         }
     }
 
@@ -40,20 +52,7 @@ public class PilotInSlot : MonoBehaviour, IPointerClickHandler
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            RemovePilot();
-            
-            MissionScheduleSlot scheduleSlot = GetComponentInParent<MissionScheduleSlot>();
-            if (scheduleSlot != null)
-            {
-                scheduleSlot.IsActive = true;
-            }
-
-            // Remove the mission as it's redundant without a pilot
-            MissionUIItem missionInSlot = transform.parent.GetComponentInChildren<MissionUIItem>();
-            if (missionInSlot != null)
-            {
-                missionInSlot.Unschedule();
-            }
+            RemoveOrReplacePilot();
         }
     }
 }

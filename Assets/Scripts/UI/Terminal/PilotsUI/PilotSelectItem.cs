@@ -34,8 +34,6 @@ public class PilotSelectItem : MonoBehaviour
         {
             if (HangarManager.ShipIsDockedAtNode(scheduleSlot.hangarNode))
             {
-                //HangarSlot hangarSlot = HangarManager.GetSlotByNode(scheduleSlot.hangarNode);
-                //HangarManager.DestroyShipInstance(hangarSlot);
                 HangarManager.LaunchShip(scheduleSlot.hangarNode);
             }
 

@@ -84,29 +84,27 @@ public class MissionsUI : MonoBehaviour
 
     private void PopulateScheduleSlots()
     {
-        List<ScheduledMission> scheduledMissions = MissionsManager.GetScheduledMissionsNotInProgress();
         foreach (MissionScheduleSlot scheduleSlot in scheduleSlots)
         {
             if (scheduleSlot != null)
             {
                 scheduleSlot.CleanSlot();
 
-                ScheduledMission scheduled = scheduledMissions.FirstOrDefault(x => x == scheduleSlot.ScheduledMission); // Encapsulate?
+                ScheduledMission scheduled = MissionsManager.GetScheduledMissionAtSlot(scheduleSlot.hangarNode);
                 if (scheduled != null)
                 {
-                    // Put a mission in the slot if its ship has not been launched yet
+                    // Put a mission in the schedule slot if it hasn't been started yet 
                     if (scheduled.Mission != null)
                     {
                         GameObject missionItemInstance = Instantiate(missionItemPrefab, scheduleSlot.layoutContainer);
-                        MissionUIItem missionItem = missionItemInstance.GetComponent<MissionUIItem>();
-                        missionItem.Init(scheduled.Mission, scrollViewContent.transform); // Oneline 
+                        missionItemInstance.GetComponent<MissionUIItem>().Init(scheduled.Mission, scrollViewContent.transform);
                     }
                 }
 
                 HangarSlot hangarSlot = HangarManager.GetSlotByNode(scheduleSlot.hangarNode); // Reorder
                 if (HangarManager.ShipIsDockedAtNode(scheduleSlot.hangarNode))
                 {
-                    // Put a pilot in the slot if its ship has not been launched yet
+                    // Put a pilot in the schedule slot if its ship is still docked  
                     if (hangarSlot.Ship != null)
                     {
                         scheduleSlot.PutPilotInSlot(hangarSlot.Ship.Pilot);
