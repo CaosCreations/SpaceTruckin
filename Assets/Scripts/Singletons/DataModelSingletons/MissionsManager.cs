@@ -61,32 +61,6 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
             .ToList();
     }
 
-    /// <summary>
-    /// Missions are 'in progress' if the pilot assigned to them has left the hangar
-    /// </summary>
-    public static List<Mission> GetMissionsInProgress()
-    {
-        return Instance.Missions
-            .Where(x => x.IsInProgress())
-            .ToList();
-    }
-
-    public static List<ScheduledMission> GetScheduledMissionsNotInProgress()
-    {
-        //return Instance.Missions
-        //    .Where(x => x.HasBeenAccepted
-        //    && GetScheduledMissionByMission(x) != null
-        //    && !x.IsInProgress())
-        //    .ToList();
-
-        return ScheduledMissions.Where(x => x.Mission != null && !x.Mission.IsInProgress()).ToList();
-    }
-
-    public static Mission GetMissionByFileName(string fileName)
-    {
-        return Instance.Missions.FirstOrDefault(x => x.name == fileName);
-    }
-
     public static void UpdateMissionSchedule()
     {
         // Reset yesterday's Missions, so today's will take their place. 
@@ -161,11 +135,6 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         if (shipDamageOutcome != null) randomOutcomes.Add(shipDamageOutcome);
 
         mission.Outcomes = randomOutcomes.ToArray();
-    }
-
-    public static Mission GetMissionByObjectName(string objectName)
-    {
-        return Instance.Missions.FirstOrDefault(x => x.name == objectName);
     }
 
     public static ScheduledMission GetScheduledMission(Mission mission)
@@ -301,7 +270,8 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
 
     private void SaveScheduledMissionData()
     {
-        string json = JsonHelper.ArrayToJson(ScheduledMissions.ToArray());
+        //string json = JsonHelper.ArrayToJson(ScheduledMissions.ToArray());
+        string json = JsonHelper.ListToJson(ScheduledMissions);
         string folderPath = DataUtils.GetSaveFolderPath(Mission.FOLDER_NAME);
         Debug.Log("Scheduled Mission Json to save: " + json);
         DataUtils.SaveFileAsync(ScheduledMission.FILE_NAME, folderPath, json);
@@ -320,7 +290,8 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
     {
         string json = await DataUtils.ReadFileAsync(ScheduledMission.FILE_PATH);
         Debug.Log("Scheduled Mission Json to load: " + json);
-        ScheduledMissions = JsonHelper.ArrayFromJson<ScheduledMission>(json).ToList();
+        //ScheduledMissions = JsonHelper.ArrayFromJson<ScheduledMission>(json).ToList();
+        ScheduledMissions = JsonHelper.ListFromJson<ScheduledMission>(json);
         LogScheduledMissions();
     }
     
