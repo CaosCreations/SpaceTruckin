@@ -6,20 +6,19 @@ using UnityEngine.UI;
 public class PilotsUI : MonoBehaviour
 {
 	// The parent object 
-	public GameObject crewPanel;
+	public GameObject fleetPanel;
 
-	// Scroll view for the list of currently hired pilots
+	// Scroll view for pilots currently hired
 	public GameObject hiredPilotsList;
 	public GameObject hiredPilotsListHeader;
 	public Transform hiredPilotsScrollViewContent;
 
-	// Scroll view for the list of pilots that are available to hire
+	// Scroll view for pilots available to hire
 	public GameObject pilotsForHireList; 
 	public GameObject pilotsForHireListHeader;
 	public Transform pilotsForHireScrollViewContent;
 
-	public GameObject crewItemPrefab;
-	public GameObject buttonPrefab;
+	public GameObject pilotListItemPrefab;
 	public GameObject backButtonPrefab;
 	public GameObject hireButtonPrefab;
 	private Button hireButton;
@@ -72,10 +71,15 @@ public class PilotsUI : MonoBehaviour
         {
 			foreach (Pilot pilot in pilots)
 			{
-				GameObject crewItem = Instantiate(crewItemPrefab, scrollViewContent);
-				crewItem.GetComponent<Button>().AddOnClick(() => ShowPilotProfilePanel(pilot));
-				crewItem.GetComponentInChildren<Text>().SetText(pilot.Name, FontType.ListItem);
-			}
+				if (pilot == null)
+                {
+					continue;
+                }
+                Instantiate(pilotListItemPrefab, scrollViewContent)
+					.GetComponent<Button>()
+                    .AddOnClick(() => ShowPilotProfilePanel(pilot))
+                    .SetText(pilot.Name, FontType.ListItem);
+            }
         }
 	}
 	
@@ -141,7 +145,7 @@ public class PilotsUI : MonoBehaviour
 	private void GeneratePilotProfilePanel()
 	{
 		pilotProfilePanel = new GameObject(PilotsConstants.profilePanelName);
-		pilotProfilePanel.transform.SetParent(crewPanel.transform);
+		pilotProfilePanel.transform.SetParent(fleetPanel.transform);
 
 		RectTransform rectTransform = pilotProfilePanel.AddComponent<RectTransform>();
 		rectTransform.Reset();

@@ -7,10 +7,10 @@ public partial class Pilot
 
     public string Name
     {
-        get => isRandom ? saveData.randomName : pilotName;
+        get => IsRandom ? saveData.randomName : pilotName;
         set
         {
-            if (isRandom)
+            if (IsRandom)
             {
                 saveData.randomName = value;
             }
