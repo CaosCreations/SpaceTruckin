@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using System.IO;
 
 public class MissionsManager : MonoBehaviour, IDataModelManager
 {
@@ -12,7 +11,6 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
     public Mission[] Missions { get => missionContainer.missions; }
     public MissionOutcome[] Outcomes { get => missionOutcomeContainer.missionOutcomes; }
     public static List<ScheduledMission> ScheduledMissions;
-    private object folderPath;
 
     private void Awake()
     {
@@ -40,7 +38,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
             //DataUtils.CreateSaveFolder(ScheduledMission.FOLDER_NAME);
         }
 
-        if (Missions == null || Missions.Length <= 0)
+        if (Missions?.Length <= 0)
         {
             Debug.LogError("No mission data found");
         }
@@ -68,7 +66,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
 
         foreach (ScheduledMission scheduled in ScheduledMissions.ToList())
         {
-            if (scheduled.Mission == null || scheduled.Pilot == null)
+            if (scheduled?.Mission == null || scheduled?.Pilot == null)
             {
                 // Outcome processing depends on Missions and Pilots 
                 RemoveScheduledMission(scheduled);
@@ -144,10 +142,9 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
 
     public static ScheduledMission GetScheduledMission(Pilot pilot)
     {
-        //return ScheduledMissions.FirstOrDefault(x => x.Pilot == pilot);
         foreach (ScheduledMission scheduled in ScheduledMissions)
         {
-            if (scheduled?.Pilot != null && scheduled.Pilot == pilot)
+            if (scheduled?.Pilot != null && scheduled?.Pilot == pilot)
             {
                 return scheduled;
             }
@@ -159,7 +156,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
     {
         foreach (ScheduledMission scheduled in ScheduledMissions)
         {
-            if (scheduled?.Pilot != null && scheduled.Pilot.Ship != null && scheduled.Pilot.Ship == ship)
+            if (scheduled?.Pilot != null && scheduled?.Pilot.Ship != null && scheduled?.Pilot.Ship == ship)
             {
                 return scheduled;
             }
@@ -171,7 +168,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
     {
         foreach (ScheduledMission scheduled in ScheduledMissions)
         {
-            if (scheduled?.Mission != null && scheduled.Pilot != null && scheduled.Pilot.Ship != null
+            if (scheduled?.Mission != null && scheduled?.Pilot != null && scheduled?.Pilot.Ship != null
                 && scheduled.Pilot.Ship == HangarManager.GetShipByNode(node))
             {
                 return scheduled;
@@ -190,7 +187,6 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         else
         {
             scheduledMission = new ScheduledMission { Mission = mission, Pilot = pilot };
-            //scheduledMission = new ScheduledMission(mission, pilot);
             ScheduledMissions.Add(scheduledMission);
         }
         Debug.Log("Scheduled Mission added/updated: " + GetScheduledMissionString(scheduledMission));
@@ -292,7 +288,10 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         Debug.Log("Scheduled Mission Json to load: " + json);
         //ScheduledMissions = JsonHelper.ArrayFromJson<ScheduledMission>(json).ToList();
         ScheduledMissions = JsonHelper.ListFromJson<ScheduledMission>(json);
-        LogScheduledMissions();
+        if (ScheduledMissions?.Count > 0)
+        {
+            LogScheduledMissions();
+        }
     }
     
     public void DeleteData()

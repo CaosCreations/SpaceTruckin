@@ -50,7 +50,7 @@ public class LicenceDetailsUI : MonoBehaviour
         {
             MoneyEffect moneyEffect = licence.Effect as MoneyEffect;
             effectString += $"{moneyEffect.Percentage}{LicenceConstants.MoneyEffectText}\n";
-            effectString += GetTotalEffectString<MoneyEffect>(licence);
+            effectString += GetTotalPercentageEffectString<MoneyEffect>(licence);
             
             // Other effect property values can go here
         }
@@ -58,19 +58,25 @@ public class LicenceDetailsUI : MonoBehaviour
         {
             PilotXpEffect pilotXpEffect = licence.Effect as PilotXpEffect;
             effectString += $"{pilotXpEffect.Percentage}{LicenceConstants.PilotXpEffectText}\n";
-            effectString += GetTotalEffectString<PilotXpEffect>(licence);
+            effectString += GetTotalPercentageEffectString<PilotXpEffect>(licence);
         }
         else if (licence.Effect is ShipDamageEffect)
         {
             ShipDamageEffect shipDamageEffect = licence.Effect as ShipDamageEffect;
             effectString += $"{shipDamageEffect.Percentage}{LicenceConstants.ShipDamageEffectText}\n";
-            effectString += GetTotalEffectString<ShipDamageEffect>(licence);
+            effectString += GetTotalPercentageEffectString<ShipDamageEffect>(licence);
         }
         else if (licence.Effect is FuelDiscountEffect)
         {
             FuelDiscountEffect fuelDiscountEffect = licence.Effect as FuelDiscountEffect;
             effectString += $"{fuelDiscountEffect.Percentage}{LicenceConstants.FuelDiscountEffectText}\n";
-            effectString += GetTotalEffectString<FuelDiscountEffect>(licence);
+            effectString += GetTotalPercentageEffectString<FuelDiscountEffect>(licence);
+        }
+        else if (licence.Effect is HangarSlotUnlockEffect)
+        {
+            HangarSlotUnlockEffect hangarSlotUnlockEffect = licence.Effect as HangarSlotUnlockEffect;
+            effectString += $"{hangarSlotUnlockEffect.NumberOfSlotsToUnlock} {LicenceConstants.HangarSlotUnlockEffectText}\n";
+            effectString += GetTotalHangarSlotUnlockEffectString(hangarSlotUnlockEffect, licence.IsOwned);
         }
         else
         {
@@ -79,8 +85,7 @@ public class LicenceDetailsUI : MonoBehaviour
         return effectString;
     }
 
-    // Separate method for unlock licences?
-    private static string GetTotalEffectString<T>(Licence licence) where T : PercentageEffect
+    private static string GetTotalPercentageEffectString<T>(Licence licence) where T : PercentageEffect
     {
         double totalPercentage = LicencesManager.GetTotalPercentageEffect<T>();
         string totalEffectMessage;
@@ -93,7 +98,6 @@ public class LicenceDetailsUI : MonoBehaviour
             totalEffectMessage = LicenceConstants.FutureTotalEffectMessage;
             if (licence.Effect is PercentageEffect)
             {
-                Debug.Log("Effect is % effect");
                 PercentageEffect percentageEffect = licence.Effect as PercentageEffect;
                 totalPercentage += percentageEffect.Percentage;
             }
@@ -112,8 +116,23 @@ public class LicenceDetailsUI : MonoBehaviour
         return totalEffectMessage;
     }
 
-    private string GetEffectString(HangarSlotUnlockEffect unlockEffect)
+    private static string GetTotalHangarSlotUnlockEffectString(HangarSlotUnlockEffect unlockEffect, bool licenceIsOwned)
     {
-        return "";
+        int totalNumberOfSlots = LicencesManager.GetTotalHangarSlotEffect();
+        if (!licenceIsOwned)
+        {
+            totalNumberOfSlots += unlockEffect.NumberOfSlotsToUnlock;
+        }
+
+        string totalEffectMessage = $"{GetTotalEffectMessage(licenceIsOwned)} {totalNumberOfSlots} slot";
+        if (totalNumberOfSlots > 1)
+        {
+            totalEffectMessage += "s".ToItalics();
+        }
+        return totalEffectMessage;
     }
+
+    private static string GetTotalEffectMessage(bool licenceIsOwned)
+        => licenceIsOwned ? LicenceConstants.CurrentTotalEffectMessage 
+        : LicenceConstants.FutureTotalEffectMessage;
 }

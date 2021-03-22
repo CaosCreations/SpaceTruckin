@@ -88,7 +88,15 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
 
     public static Licence GetLicenceByEffect(LicenceEffect effect)
     {
-        return Instance.Licences.FirstOrDefault(x => x.Effect == effect);
+        foreach (Licence licence in Instance.Licences)
+        {
+            if (licence != null && licence.Effect != null && licence.Effect == effect)
+            {
+                return licence;
+            }
+        }
+        return null;
+        //return Instance.Licences.FirstOrDefault(x => x.Effect == effect);
     }
 
     #region Persistence
