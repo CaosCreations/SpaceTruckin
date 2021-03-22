@@ -96,7 +96,6 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
             }
         }
         return null;
-        //return Instance.Licences.FirstOrDefault(x => x.Effect == effect);
     }
 
     #region Persistence

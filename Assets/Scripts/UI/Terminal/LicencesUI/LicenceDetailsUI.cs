@@ -87,7 +87,7 @@ public class LicenceDetailsUI : MonoBehaviour
 
     private static string GetTotalPercentageEffectString<T>(Licence licence) where T : PercentageEffect
     {
-        double totalPercentage = LicencesManager.GetTotalPercentageEffect<T>();
+        double totalPercentage = LicencesManager.GetTotalPercentageEffect<T>() * 100f; // Or pre-calculate this 
         string totalEffectMessage;
         if (licence.IsOwned)
         {
@@ -101,7 +101,6 @@ public class LicenceDetailsUI : MonoBehaviour
                 PercentageEffect percentageEffect = licence.Effect as PercentageEffect;
                 totalPercentage += percentageEffect.Percentage;
             }
-            
         }
         totalEffectMessage += totalPercentage.ToString() + "%";
 
@@ -124,7 +123,7 @@ public class LicenceDetailsUI : MonoBehaviour
             totalNumberOfSlots += unlockEffect.NumberOfSlotsToUnlock;
         }
 
-        string totalEffectMessage = $"{GetTotalEffectMessage(licenceIsOwned)} {totalNumberOfSlots} slot";
+        string totalEffectMessage = $"{GetTotalEffectMessage(licenceIsOwned)} {totalNumberOfSlots} additional slot";
         if (totalNumberOfSlots > 1)
         {
             totalEffectMessage += "s".ToItalics();

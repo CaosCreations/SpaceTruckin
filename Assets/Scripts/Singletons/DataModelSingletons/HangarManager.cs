@@ -128,7 +128,6 @@ public class HangarManager : MonoBehaviour
             }
         }
         return -1;
-        //return Instance.hangarSlots.FirstOrDefault(x => x.Ship == ship).Node;
     }
 
     public static HangarSlot GetSlotByNode(int node)

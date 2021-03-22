@@ -3,9 +3,9 @@ using UnityEngine;
 using System.IO;
 using System.Reflection;
 
-public class DeleteSaveData : MonoBehaviour
+public class SaveDataEditor : MonoBehaviour
 {
-    [MenuItem("Space Truckin/Delete Save Directory Recursively")]
+    [MenuItem("Space Truckin/Delete AppData")]
     private static void DeleteAll() 
     {
         if (!Directory.Exists(Application.persistentDataPath))
@@ -14,13 +14,13 @@ public class DeleteSaveData : MonoBehaviour
             return;
         }
         Directory.Delete(Application.persistentDataPath, recursive: true);
-        Debug.Log("Save data deleted");
+        Debug.Log($"Save data deleted at {Application.persistentDataPath}");
     }
 
-    [MenuItem("Space Truckin/Delete Scriptable Object Container Save Data")]
+    [MenuItem("Space Truckin/Delete Container Save Data")]
     private static void DeleteContainerFromTruckinMenu() => DeleteContainer();
 
-    [MenuItem("Assets/Delete Scriptable Object Container Save Data")]
+    [MenuItem("Assets/Delete Container Save Data")]
     private static void DeleteContainerFromAssetContextMenu() => DeleteContainer();
 
     private static void DeleteContainer()
