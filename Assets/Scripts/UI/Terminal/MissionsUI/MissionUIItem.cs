@@ -65,8 +65,9 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
             {
                 CheckReplaceMission(scheduleSlot);
                 myRectTransform.SetParent(scheduleSlot.layoutContainer);
+                myRectTransform.SetSiblingIndex(0);
 
-                if (scheduleSlot.CurrentPilotItemInSlot != null)
+                if (scheduleSlot.GetComponentInChildren<PilotInSlot>() != null)
                 {
                     // Schedule a mission if there is already a pilot in the slot 
                     Schedule(scheduleSlot);
@@ -89,19 +90,17 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     {
         if (scheduleSlot.layoutContainer.childCount > 0)
         {
-            //MissionUIItem missionToUnschedule = scheduleSlot.layoutContainer.GetChild(0).GetComponent<MissionUIItem>();
-            //MissionUIItem missionToUnschedule = scheduleSlot.missionLayoutContainer.GetChild(1).GetComponent<MissionUIItem>();
-
-            if (scheduleSlot.CurrentMissionItemInSlot != null)
+            MissionUIItem itemToReplace = scheduleSlot.GetComponentInChildren<MissionUIItem>();
+            if (itemToReplace != null)
             {
-                scheduleSlot.CurrentMissionItemInSlot.Unschedule(scheduleSlot);
+                itemToReplace.Unschedule(scheduleSlot);
             }
         }
     }
 
     public void Schedule(MissionScheduleSlot scheduleSlot)
     {
-        Pilot pilot = scheduleSlot.CurrentPilotItemInSlot.pilot;
+        Pilot pilot = HangarManager.GetPilotByNode(scheduleSlot.hangarNode);
         if (pilot != null && mission != null)
         {
             MissionsManager.AddOrUpdateScheduledMission(pilot, mission);
@@ -112,11 +111,6 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     {
         MissionsManager.RemoveScheduledMission(mission);
         Destroy(gameObject);
-
-        if (scheduleSlot != null)
-        {
-            scheduleSlot.IsActive = true;
-        }
         missionsUI.PopulateMissionSelect();
     }
 
@@ -125,7 +119,7 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             MissionScheduleSlot scheduleSlot = missionsUI.GetSlotByPosition(eventData.position);
-            if (scheduleSlot != null && HangarManager.NodeIsUnlocked(scheduleSlot.hangarNode))
+            if (scheduleSlot != null && scheduleSlot.IsActive)
             {
                 // Reset the schedule slot if the player clicks and there is already one scheduled
                 Unschedule();

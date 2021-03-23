@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class PilotSelectItem : MonoBehaviour
@@ -9,7 +8,7 @@ public class PilotSelectItem : MonoBehaviour
     private Mission mission;
     private MissionsUI missionsUI;
     private MissionScheduleSlot scheduleSlot;
-    [SerializeField] private Button itemButton; 
+    [SerializeField] private Button itemButton;
     [SerializeField] private Text itemText;
     [SerializeField] private Image itemImage;
 
@@ -34,6 +33,7 @@ public class PilotSelectItem : MonoBehaviour
         {
             if (HangarManager.ShipIsDockedAtNode(scheduleSlot.hangarNode))
             {
+                // If there's already a ship in this slot, we launch it 
                 HangarManager.LaunchShip(scheduleSlot.hangarNode);
             }
 

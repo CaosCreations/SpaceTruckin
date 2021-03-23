@@ -155,6 +155,13 @@ public class HangarNodeUI : MonoBehaviour
             && shipToInspect.CurrentMission != null)
         {
             HangarManager.LaunchShip(hangarNode);
+
+            ScheduledMission scheduled = MissionsManager.GetScheduledMission(shipToInspect);
+            if (scheduled != null)
+            {
+                scheduled.Mission.StartMission();
+                Debug.Log($"{scheduled.Pilot} has started {scheduled.Mission}");
+            }
             UIManager.ClearCanvases();
         }
         else

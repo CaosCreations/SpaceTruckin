@@ -206,7 +206,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         ScheduledMission scheduledMission = GetScheduledMission(mission);
         if (scheduledMission != null)
         {
-            ScheduledMissions.Remove(GetScheduledMission(mission));
+            ScheduledMissions.Remove(scheduledMission);
             Debug.Log("Scheduled Mission removed: " + GetScheduledMissionString(scheduledMission));
         }
     }

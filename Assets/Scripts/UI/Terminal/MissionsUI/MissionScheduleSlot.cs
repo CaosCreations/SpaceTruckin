@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -12,11 +11,6 @@ public class MissionScheduleSlot : MonoBehaviour, IPointerClickHandler
     private MissionsUI missionsUI;
 
     public int hangarNode;
-    public ScheduledMission ScheduledMission { get; set; }
-    public Pilot Pilot { get; set; }
-    public PilotInSlot CurrentPilotItemInSlot => GetComponentInChildren<PilotInSlot>();
-    public MissionUIItem CurrentMissionItemInSlot => GetComponentInChildren<MissionUIItem>();
-
     private bool isActive;
     public bool IsActive
     {
@@ -79,7 +73,9 @@ public class MissionScheduleSlot : MonoBehaviour, IPointerClickHandler
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            if (missionsUI != null && Pilot == null && layoutContainer.childCount <= 0)
+            if (missionsUI != null 
+                && IsActive 
+                && layoutContainer.childCount <= 0)
             {
                 // Allow the player to dock a ship at a node without scheduling a mission
                 missionsUI.PopulatePilotSelect(this);

@@ -40,9 +40,6 @@ public class PilotInSlot : MonoBehaviour, IPointerClickHandler
                 // Ship goes back into the queue 
                 HangarManager.LaunchShip(scheduleSlot.hangarNode);
 
-                // Schedule slot is reopened
-                scheduleSlot.IsActive = true;
-                
                 Destroy(gameObject);
             }
         }
