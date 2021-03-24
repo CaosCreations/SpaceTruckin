@@ -14,7 +14,6 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     public Canvas canvas;
     private CanvasGroup canvasGroup;
     private RectTransform myRectTransform;
-    private Transform scrollViewContent;
 
     private void Awake()
     {
@@ -25,11 +24,10 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         myRectTransform = GetComponent<RectTransform>();
     }
 
-    public void Init(Mission mission, Transform scrollViewContent)
+    public void Init(Mission mission)
     {
         this.mission = mission;
         missionNameText.SetText(mission.Name, FontType.ListItem);
-        this.scrollViewContent = scrollViewContent;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -110,8 +108,8 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     public void Unschedule(MissionScheduleSlot scheduleSlot = null)
     {
         MissionsManager.RemoveScheduledMission(mission);
-        Destroy(gameObject);
         missionsUI.PopulateMissionSelect();
+        Destroy(gameObject);
     }
 
     public void OnPointerClick(PointerEventData eventData)

@@ -88,19 +88,13 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
     public static Pilot[] GetPilotsInQueue()
     {
         return Instance.Pilots
-            .Where(p => p.Ship.IsInQueue) // Maybe this flag isnt needed on ships 
+            .Where(p => p.Ship.IsInQueue)
             .ToArray();
-    }
-
-    public static Pilot GetPilotByObjectName(string objectName)
-    {
-        return Instance.Pilots.FirstOrDefault(p => p.name == objectName); // Redundant
     }
 
     public static bool PilotHasMission(Pilot pilot)
     {
         return MissionsManager.GetScheduledMission(pilot) != null;
-
     }
 
     public static bool PilotHasMissionInProgress(Pilot pilot)
@@ -130,6 +124,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         }
     }
 
+    #region Persistence
     public void SaveData()
     {
         foreach (Pilot pilot in Instance.Pilots)
@@ -150,4 +145,5 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
     {
         DataUtils.RecursivelyDeleteSaveData(Pilot.FOLDER_NAME);
     }
+    #endregion
 }

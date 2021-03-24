@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Linq;
 
 public class ShipsManager : MonoBehaviour, IDataModelManager
 {
@@ -8,8 +7,6 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
     public GameObject shipInstancePrefab;
     [SerializeField] private ShipsContainer shipsContainer;
     public Ship[] Ships { get => shipsContainer.ships; }
-
-    public HangarSlot[] hangarSlots;
 
     private void Awake()
     {
@@ -35,7 +32,6 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         {
             DataUtils.CreateSaveFolder(Ship.FOLDER_NAME);
         }
-        hangarSlots = FindObjectsOfType<HangarSlot>();
 
         if (Ships == null)
         {
@@ -58,11 +54,7 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         return scheduled?.Mission != null && scheduled.Mission.IsInProgress();
     }
 
-    public static bool ShipHasMission(Ship ship)
-    {
-        return MissionsManager.GetScheduledMission(ship) != null;
-    }
-
+    #region Persistence
     public void SaveData()
     {
         foreach (Ship ship in Instance.Ships)
@@ -83,4 +75,5 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
     {
         DataUtils.RecursivelyDeleteSaveData(Ship.FOLDER_NAME);
     }
+    #endregion
 }

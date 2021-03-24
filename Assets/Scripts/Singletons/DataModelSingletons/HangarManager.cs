@@ -7,9 +7,7 @@ public class HangarManager : MonoBehaviour
     public static HangarManager Instance { get; private set; }
 
     public HangarSlot[] hangarSlots;
-    public List<Ship> shipQueue;
     public GameObject shipInstancePrefab;
-    private MissionScheduleSlot[] scheduleSlots;
 
     private void Awake()
     {
@@ -21,7 +19,6 @@ public class HangarManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
-         
             return;
         }
 
@@ -29,12 +26,6 @@ public class HangarManager : MonoBehaviour
         if (hangarSlots == null)
         {
             Debug.LogError("Hangar slots not found");
-        }
-
-        scheduleSlots = FindObjectsOfType<MissionScheduleSlot>();
-        if (scheduleSlots == null)
-        {
-            Debug.LogError("Schedule slots not found");
         }
     }
 
@@ -47,19 +38,15 @@ public class HangarManager : MonoBehaviour
             {
                 slot.Ship = ship;
 
-                // Update the queue once the ship enters the hangar 
-                if (Instance.shipQueue.Contains(ship))//
-                {
-                    Instance.shipQueue.Remove(ship);
-                }
-
                 // Create a new ship object inside the target slot 
                 InitShipInstance(ship, slot);
+
+                Debug.Log($"{ship} successfully docked at node {node}");
             }
         }
         else
         {
-            Debug.Log($"Could not dock ship at node {node}");
+            Debug.LogError($"Could not dock ship at node {node}");
         }
     }
 
@@ -79,20 +66,6 @@ public class HangarManager : MonoBehaviour
         }
     }
 
-    public static void LaunchShip(Ship ship)
-    {
-        HangarSlot slot = GetSlotByShip(ship);
-        if (ship != null && slot != null)
-        {
-            slot.LaunchShip();
-            Debug.Log($"{ship} successfully launched from node {slot.Node}");
-        }
-        else
-        {
-            Debug.LogError($"Couldn't launch ship at node {slot.Node}");
-        }
-    }
-
     public static void InitShipInstance(Ship ship, HangarSlot slot)
     {
         GameObject shipParentInstance = Instantiate(Instance.shipInstancePrefab, slot.transform);
@@ -104,17 +77,9 @@ public class HangarManager : MonoBehaviour
         slot.ShipInstance = instance;
     }
 
-    public static void DestroyShipInstance(HangarSlot slot)
-    {        
-        if (slot.ShipInstance != null)
-        {
-            Destroy(slot.ShipInstance.transform.parent);
-        }
-    }
-
     public static bool NodeIsUnlocked(int node)
     {
-        return node <= HangarConstants.StartingNumberOfSlots + LicencesManager.HangarSlotUnlockEffect; 
+        return node <= HangarConstants.StartingNumberOfSlots + LicencesManager.HangarSlotUnlockEffect;
     }
 
     public static Pilot GetPilotByNode(int node)
@@ -137,18 +102,6 @@ public class HangarManager : MonoBehaviour
         return null;
     }
 
-    public static int GetNodeByShip(Ship ship)
-    {
-        foreach (HangarSlot slot in Instance.hangarSlots)
-        {
-            if (slot != null && slot.Ship != null && slot.Ship == ship)
-            {
-                return slot.Node;
-            }
-        }
-        return -1;
-    }
-
     public static HangarSlot GetSlotByNode(int node)
     {
         return Instance.hangarSlots.FirstOrDefault(x => x.Node == node);
@@ -158,7 +111,9 @@ public class HangarManager : MonoBehaviour
     {
         foreach (HangarSlot slot in Instance.hangarSlots)
         {
-            if (slot != null && slot.Ship != null && slot.Ship == ship)
+            if (slot != null
+                && slot.Ship != null
+                && slot.Ship == ship)
             {
                 return slot;
             }
@@ -168,7 +123,7 @@ public class HangarManager : MonoBehaviour
 
     public static bool ShipIsDocked(Ship ship)
     {
-        return GetNodeByShip(ship) != -1;
+        return GetSlotByShip(ship) != null;
     }
 
     public static bool ShipIsDockedAtNode(int node)
@@ -191,12 +146,5 @@ public class HangarManager : MonoBehaviour
     public static bool NodeIsValid(int node)
     {
         return node >= 1 && node <= HangarConstants.MaximumNumberOfSlots;
-    }
-
-    public static HangarSlot[] GetUnlockedHangarSlots()
-    {
-        return Instance.hangarSlots
-            .Where(x => x.Node <= LicencesManager.HangarSlotUnlockEffect)
-            .ToArray();
     }
 }

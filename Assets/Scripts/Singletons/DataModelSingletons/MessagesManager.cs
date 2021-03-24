@@ -52,6 +52,7 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
         }
     }
 
+    #region Persistence
     public void SaveData()
     {
         foreach (Message message in Instance.Messages)
@@ -78,4 +79,5 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
     {
         Instance.DeleteData();
     }
+    #endregion
 }

@@ -60,15 +60,6 @@ public class MissionScheduleSlot : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public void CleanMissionInSlot()
-    {
-        MissionUIItem missionInSlot = layoutContainer.GetComponentInChildren<MissionUIItem>();
-        if (missionInSlot != null)
-        {
-            Destroy(missionInSlot);
-        }
-    }
-
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)

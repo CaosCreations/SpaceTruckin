@@ -31,7 +31,7 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
     {
         if (DataUtils.SaveFolderExists(ArchivedMission.FOLDER_NAME))
         {
-            LoadDataAsync();
+            //LoadDataAsync();
         }
         else
         {
@@ -63,7 +63,9 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
 
     public async void LoadDataAsync()
     {
-        ArchivedMissions = new List<ArchivedMission>();
+        // Todo: Rework this using Scheduled Missions 
+
+        //ArchivedMissions = new List<ArchivedMission>();
 
         //if (MissionsManager.Instance.Missions != null)
         //{
@@ -85,8 +87,6 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
         //        }
         //    }
         //}
-
-        // Todo: Rework this using Scheduled Missions 
     }
 
     public void SaveData() => ArchivedMissions.ForEach(a => a.SaveData());

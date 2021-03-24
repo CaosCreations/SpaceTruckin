@@ -106,6 +106,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         Instance.isPaused = true;
     }
 
+    #region Persistence
     public void SaveData()
     {
         playerData.SaveData();
@@ -120,4 +121,5 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     {
         DataUtils.RecursivelyDeleteSaveData(PlayerData.FOLDER_NAME);
     }
+    #endregion
 }
