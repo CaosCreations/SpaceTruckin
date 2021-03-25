@@ -67,30 +67,13 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    public static Pilot[] GetHiredPilots()
-    {
-        return Instance.Pilots.Where(p => p.IsHired).ToArray();
-    }
+    public static Pilot[] HiredPilots => Instance.Pilots.Where(p => p.IsHired).ToArray();
 
-    public static Pilot[] GetPilotsForHire()
-    {
-        return Instance.Pilots.Where(p => !p.IsHired).ToArray();
-    }
+    public static Pilot[] PilotsForHire => Instance.Pilots.Where(p => !p.IsHired).ToArray();
 
-    public static Pilot[] GetPilotsAvailableForMissions()
-    {
-        return Instance.Pilots
-            .Where(p => p.IsHired
-            && !PilotHasMission(p))
-            .ToArray();
-    }
-
-    public static Pilot[] GetPilotsInQueue()
-    {
-        return Instance.Pilots
+    public static Pilot[] PilotsInQueue => Instance.Pilots
             .Where(p => p.Ship.IsInQueue)
             .ToArray();
-    }
 
     public static bool PilotHasMission(Pilot pilot)
     {

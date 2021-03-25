@@ -32,10 +32,10 @@ public class MissionsUI : MonoBehaviour
     public void PopulateMissionSelect()
     {
         scrollViewContent.transform.DestroyDirectChildren();
-        List<Mission> acceptedMissions = MissionsManager.GetAcceptedMissions();
-        if (acceptedMissions != null)
+        List<Mission> selectableMissions = MissionsManager.GetSelectableMissions();
+        if (selectableMissions != null)
         {
-            foreach (Mission mission in acceptedMissions)
+            foreach (Mission mission in selectableMissions)
             {
                 if (mission != null)
                 {
@@ -50,10 +50,10 @@ public class MissionsUI : MonoBehaviour
     public void PopulatePilotSelect(MissionScheduleSlot scheduleSlot, Mission mission = null)
     {
         scrollViewContent.transform.DestroyDirectChildren();
-        Pilot[] pilotsInQueue = PilotsManager.GetPilotsInQueue();
-        if (pilotsInQueue != null)
+        
+        if (PilotsManager.PilotsInQueue != null)
         {
-            foreach (Pilot pilot in pilotsInQueue)
+            foreach (Pilot pilot in PilotsManager.PilotsInQueue)
             {
                 if (pilot != null)
                 {
@@ -84,7 +84,7 @@ public class MissionsUI : MonoBehaviour
                 }
 
                 HangarSlot hangarSlot = HangarManager.GetSlotByNode(scheduleSlot.hangarNode); // Reorder
-                if (HangarManager.ShipIsDockedAtSlot(hangarSlot))
+                if (HangarManager.ShipIsDocked(hangarSlot))
                 {
                     // Put a pilot in the schedule slot if its ship is still docked  
                     if (hangarSlot.Ship != null)

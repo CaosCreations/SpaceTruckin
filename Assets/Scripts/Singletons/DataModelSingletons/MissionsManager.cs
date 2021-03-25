@@ -46,11 +46,11 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
     }
 
     /// <summary>
-    /// Missions are 'accepted' if they have been taken from the notice board
+    /// Missions are 'selectable' if they have been taken from the notice board
     /// but a pilot is not currently assigned to them
     /// </summary>
     /// <returns></returns>
-    public static List<Mission> GetAcceptedMissions()
+    public static List<Mission> GetSelectableMissions()
     {
         return Instance.Missions
             .Where(x => x.HasBeenAccepted
@@ -227,7 +227,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
 
     private static string GetScheduledMissionString(ScheduledMission scheduled)
     {
-        if (scheduled != null)
+        if (scheduled?.Mission != null && scheduled?.Pilot != null)
         {
             return $"{scheduled.Mission.Name} (Mission), {scheduled.Pilot.Name} (Pilot)";
         }

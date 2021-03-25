@@ -87,7 +87,7 @@ public class LicenceDetailsUI : MonoBehaviour
 
     private static string GetTotalPercentageEffectString<T>(Licence licence) where T : PercentageEffect
     {
-        double totalPercentage = LicencesManager.GetTotalPercentageEffect<T>() * 100f; // Or pre-calculate this 
+        double totalPercentage = LicencesManager.GetTotalPercentageEffect<T>() * 100f; 
         string totalEffectMessage;
         if (licence.IsOwned)
         {

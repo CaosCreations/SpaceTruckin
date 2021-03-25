@@ -20,11 +20,6 @@ public class NewDayReportCard : MonoBehaviour
         detailsText.SetText(BuildReportDetails(mission));
     }
 
-    public void SetupNextCardListener(ArchivedMission mission)
-    {
-        nextCardButton.AddOnClick(() => ShowReport(mission));
-    }
-
     public string BuildReportDetails(ArchivedMission mission)
     {
         StringBuilder builder = new StringBuilder();

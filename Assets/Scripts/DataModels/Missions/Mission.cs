@@ -29,6 +29,11 @@ public partial class Mission : ScriptableObject, IDataModel
         public int daysLeftToComplete, numberOfCompletions;
     }
 
+    private void OnValidate()
+    {
+        missionDurationInDays = Mathf.Max(1, missionDurationInDays);
+    }
+
     public void SaveData()
     {
         DataUtils.SaveFileAsync(name, FOLDER_NAME, saveData);

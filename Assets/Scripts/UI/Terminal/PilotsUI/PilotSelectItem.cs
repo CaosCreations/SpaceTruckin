@@ -31,7 +31,7 @@ public class PilotSelectItem : MonoBehaviour
     {
         if (pilot != null)
         {
-            if (HangarManager.ShipIsDockedAtNode(scheduleSlot.hangarNode))
+            if (HangarManager.ShipIsDocked(scheduleSlot.hangarNode))
             {
                 // Launch the ship to make room for the new one  
                 HangarManager.LaunchShip(scheduleSlot.hangarNode);

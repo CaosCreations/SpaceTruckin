@@ -60,8 +60,8 @@ public class PilotsUI : MonoBehaviour
 
 	private void PopulateScrollViews()
     {
-		PopulateScrollView(PilotsManager.GetHiredPilots(), hiredPilotsScrollViewContent);
-		PopulateScrollView(PilotsManager.GetPilotsForHire(), pilotsForHireScrollViewContent);
+		PopulateScrollView(PilotsManager.HiredPilots, hiredPilotsScrollViewContent);
+		PopulateScrollView(PilotsManager.PilotsForHire, pilotsForHireScrollViewContent);
     }
 
 	private void PopulateScrollView(Pilot[] pilots, Transform scrollViewContent)
@@ -82,7 +82,7 @@ public class PilotsUI : MonoBehaviour
             }
         }
 	}
-	
+
 	private void ShowPilotProfilePanel(Pilot pilot)
 	{
 		SetPilotListVisibility(visible: false);
