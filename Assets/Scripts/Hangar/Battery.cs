@@ -32,7 +32,7 @@ public class Battery : MonoBehaviour
 
     public bool IsPlayerHolding()
     {
-        return GetComponentInParent<PlayerMovement>() != null;
+        return gameObject.ObjectWithTagIsParent(PlayerConstants.PlayerTag);
     }
 
     private void OnTriggerStay(Collider other)

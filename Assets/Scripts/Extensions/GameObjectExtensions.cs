@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -44,5 +45,48 @@ public static class GameObjectExtensions
             return image.color;
         }
         return Color.white;
+    }
+
+    public static GameObject GetChildObjectByTag(this GameObject self, string tag)
+    {
+        foreach (Transform child in self.transform)
+        {
+            if (child.CompareTag(tag))
+            {
+                return child.gameObject;
+            }
+        }
+        return null;
+    }
+
+    public static List<GameObject> FindParentObjectsWithTag(this GameObject self, string tag)
+    {
+        List<GameObject> parentsWithTag = new List<GameObject>();
+        Transform transformInTree = self.transform;
+
+        while (transformInTree.parent != null)
+        {
+            if (transformInTree.CompareTag(tag))
+            {
+                parentsWithTag.Add(transformInTree.gameObject);
+            }
+            transformInTree = transformInTree.parent.transform;
+        }
+        return parentsWithTag;
+    }
+
+    public static bool ObjectWithTagIsParent(this GameObject self, string tag)
+    {
+        Transform transformInTree = self.transform;
+
+        while (transformInTree.parent != null)
+        {
+            if (transformInTree.CompareTag(tag))
+            {
+                return true;
+            }
+            transformInTree = transformInTree.parent.transform;
+        }
+        return false;
     }
 }
