@@ -18,7 +18,6 @@ public class InteractableObject : MonoBehaviour
     {
         if (PlayerIsColliding(other))
         {
-            Debug.Log("Colliding true");
             IsPlayerColliding = true;
         }
     }
@@ -27,7 +26,6 @@ public class InteractableObject : MonoBehaviour
     {
         if (PlayerIsColliding(other))
         {
-            Debug.Log("Colliding false");
             IsPlayerColliding = false;
         }
     }
