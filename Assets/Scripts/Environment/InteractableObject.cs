@@ -3,7 +3,7 @@
 public class InteractableObject : MonoBehaviour
 {
     // Set this OnEnter and OnExit to avoiding repeatedly comparing tags
-    public bool IsPlayerColliding;
+    public bool IsPlayerColliding { get; private set; }
 
     private bool PlayerIsColliding(Collider other)
     {

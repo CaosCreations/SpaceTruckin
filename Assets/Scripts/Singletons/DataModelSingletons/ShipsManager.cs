@@ -57,7 +57,15 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
     /// <summary>Warp is required to go out on missions</summary>
     public static void EnableWarp(Ship ship)
     {
-        ship.CanWarp = true;
+        if (ship != null)
+        {
+            ship.CanWarp = true;
+            Debug.Log($"{ship.Name} (Ship) can now warp - launch condition fulfilled");
+        }
+        else
+        {
+            Debug.LogError("Ship was null while trying to enable warp");
+        }
     }
 
     #region Persistence

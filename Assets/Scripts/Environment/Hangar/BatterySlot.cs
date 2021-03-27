@@ -4,13 +4,9 @@ public class BatterySlot : InteractableObject
 {
     [SerializeField] private HangarSlot hangarSlot;
 
-    private void Start()
-    {
-    }
-
     public void TransferEnergyToShip(Battery battery)
     {
-        if (hangarSlot != null && hangarSlot.Ship != null)
+        if (hangarSlot != null)
         {
             ShipsManager.EnableWarp(hangarSlot.Ship);
             battery.Discharge();

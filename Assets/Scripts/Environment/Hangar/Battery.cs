@@ -61,16 +61,11 @@ public class Battery : MonoBehaviour
         if (other.CompareTag(PlayerConstants.PlayerTag)
             && Input.GetKeyDown(PlayerConstants.ActionKey))
         {
-            Debug.Log("Battery action");
-
             if (PlayerIsHolding())
             {
-                Debug.Log("already holding");
-
                 // Don't let the player pick up a battery if they already have one
                 return;
             }
-
             TakeBattery();
         }
     }
