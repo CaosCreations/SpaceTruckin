@@ -55,8 +55,16 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         {
             DataUtils.CreateSaveFolder(PlayerData.FOLDER_NAME);
         }
+
         PlayerObject = GameObject.FindGameObjectWithTag(PlayerConstants.PlayerTag);
-        PlayerMovement = PlayerObject.GetComponent<PlayerMovement>();
+        if (PlayerObject != null)
+        {
+            PlayerMovement = PlayerObject.GetComponent<PlayerMovement>();
+        }
+        else
+        {
+            Debug.LogError("Player object not found");
+        }
 
         if (playerData == null)
         {

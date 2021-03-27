@@ -10,7 +10,7 @@ public partial class Ship
     public bool IsLaunched => ShipsManager.ShipIsLaunched(this);
 
     /// <summary>Owned but not out on a mission nor docked</summary>
-    public bool IsInQueue => !IsLaunched && !HangarManager.ShipIsDocked(this);
+    public bool IsInQueue => Pilot.IsHired && !IsLaunched && !HangarManager.ShipIsDocked(this);
     
     public int CurrentFuel
     {
