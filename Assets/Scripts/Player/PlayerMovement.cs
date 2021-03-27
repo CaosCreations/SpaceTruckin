@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
     // Get input in Update 
     private void Update()
     {
-        if (PlayerManager.Instance.isPaused)
+        if (PlayerManager.Instance.IsPaused)
         {
             return;
         }
@@ -60,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
     // Move player in FixedUpdate 
     private void FixedUpdate()
     {
-        if (PlayerManager.Instance.isPaused)
+        if (PlayerManager.Instance.IsPaused)
         {
             return;
         }

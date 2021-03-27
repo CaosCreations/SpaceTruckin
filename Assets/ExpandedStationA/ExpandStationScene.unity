@@ -131,7 +131,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 7176415531693802501}
   m_PrefabAsset: {fileID: 0}
---- !u!54 &2352476
+--- !u!54 &2352479
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6592,6 +6592,37 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9934045a64799954c986d04d7ed6c50e, type: 3}
+--- !u!1 &618460162
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 618460163}
+  m_Layer: 0
+  m_Name: Batteries
+  m_TagString: BatteriesContainer
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &618460163
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 618460162}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1656642499}
+  m_Father: {fileID: 1796250474}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &628572998
 GameObject:
   m_ObjectHideFlags: 0
@@ -14028,6 +14059,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1648465717}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1656642499 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6921065644240486894, guid: 3bf930ed7f82ef446855a1b3bea626b9,
+    type: 3}
+  m_PrefabInstance: {fileID: 7176415531693802501}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1670726274
 GameObject:
   m_ObjectHideFlags: 0
@@ -14801,6 +14838,7 @@ Transform:
   m_Children:
   - {fileID: 1670726275}
   - {fileID: 395213752}
+  - {fileID: 618460163}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -17450,7 +17488,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 618460163}
     m_Modifications:
     - target: {fileID: 297833107997381439, guid: 3bf930ed7f82ef446855a1b3bea626b9,
         type: 3}
@@ -17470,22 +17508,22 @@ PrefabInstance:
     - target: {fileID: 6921065644240486894, guid: 3bf930ed7f82ef446855a1b3bea626b9,
         type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6921065644240486894, guid: 3bf930ed7f82ef446855a1b3bea626b9,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 213.45
+      value: 11.220001
       objectReference: {fileID: 0}
     - target: {fileID: 6921065644240486894, guid: 3bf930ed7f82ef446855a1b3bea626b9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 380
+      value: 0.48999023
       objectReference: {fileID: 0}
     - target: {fileID: 6921065644240486894, guid: 3bf930ed7f82ef446855a1b3bea626b9,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -239.68
+      value: 1.3800049
       objectReference: {fileID: 0}
     - target: {fileID: 6921065644240486894, guid: 3bf930ed7f82ef446855a1b3bea626b9,
         type: 3}
@@ -17495,17 +17533,17 @@ PrefabInstance:
     - target: {fileID: 6921065644240486894, guid: 3bf930ed7f82ef446855a1b3bea626b9,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6921065644240486894, guid: 3bf930ed7f82ef446855a1b3bea626b9,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6921065644240486894, guid: 3bf930ed7f82ef446855a1b3bea626b9,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6921065644240486894, guid: 3bf930ed7f82ef446855a1b3bea626b9,
         type: 3}

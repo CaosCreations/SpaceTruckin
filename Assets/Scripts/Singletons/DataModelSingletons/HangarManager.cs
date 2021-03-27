@@ -6,8 +6,10 @@ public class HangarManager : MonoBehaviour
 {
     public static HangarManager Instance { get; private set; }
 
-    public HangarSlot[] hangarSlots;
-    public GameObject shipInstancePrefab;
+    [SerializeField] private GameObject shipInstancePrefab;
+
+    public static HangarSlot[] HangarSlots { get; private set; }
+    public static GameObject BatteriesContainer { get; private set; }
 
     private void Awake()
     {
@@ -22,14 +24,17 @@ public class HangarManager : MonoBehaviour
             return;
         }
 
-        hangarSlots = FindObjectsOfType<HangarSlot>();
-        if (hangarSlots == null)
+        HangarSlots = FindObjectsOfType<HangarSlot>();
+        if (HangarSlots == null)
         {
             Debug.LogError("Hangar slots not found");
         }
-    }
 
-    public static void DockShip(Ship ship, int node)
+        BatteriesContainer = GameObject.FindGameObjectWithTag(
+            HangarConstants.BatteriesContainerTag);
+}
+
+public static void DockShip(Ship ship, int node)
     {
         if (ship != null && NodeIsValid(node))
         {
@@ -104,12 +109,12 @@ public class HangarManager : MonoBehaviour
 
     public static HangarSlot GetSlotByNode(int node)
     {
-        return Instance.hangarSlots.FirstOrDefault(x => x.Node == node);
+        return HangarSlots.FirstOrDefault(x => x.Node == node);
     }
 
     public static HangarSlot GetSlotByShip(Ship ship)
     {
-        foreach (HangarSlot slot in Instance.hangarSlots)
+        foreach (HangarSlot slot in HangarSlots)
         {
             if (slot != null
                 && slot.Ship != null

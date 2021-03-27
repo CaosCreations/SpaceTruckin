@@ -89,4 +89,26 @@ public static class GameObjectExtensions
         }
         return false;
     }
+
+    public static bool ObjectWithTagIsChild(this GameObject self, string tag)
+    {
+        foreach (Transform child in self.transform)
+        {
+            if (child.CompareTag(tag))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void ParentToPlayer(this GameObject self)
+    {
+        self.transform.SetParent(PlayerManager.PlayerObject.transform);
+    }
+
+    public static void SetParent(this GameObject self, GameObject parent)
+    {
+        self.transform.SetParent(parent.transform);
+    }
 }

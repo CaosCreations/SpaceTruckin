@@ -75,7 +75,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1.25, y: 1.25, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8907670562622561710
 MonoBehaviour:
@@ -89,8 +89,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d77d1f8cfa190a45baab6d5ed2da2db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  batteriesContainer: {fileID: 0}
+  batteryContainer: {fileID: 297833107997381439}
   meshRenderer: {fileID: 7176415530745143326}
-  parentObject: {fileID: 297833107997381439}
 --- !u!1 &7176415530745143324
 GameObject:
   m_ObjectHideFlags: 0

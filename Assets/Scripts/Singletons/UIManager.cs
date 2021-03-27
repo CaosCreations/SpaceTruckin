@@ -61,7 +61,8 @@ public class UIManager : MonoBehaviour
         {
             interactionTextMesh.gameObject.SetActive(true);
             interactionTextMesh.text = GetInteractionString();
-            interactionTextMesh.transform.position = PlayerManager.Instance.playerMovement.transform.position + new Vector3(0, 0.5f, 0);
+            interactionTextMesh.transform.position = 
+                PlayerManager.PlayerMovement.transform.position + new Vector3(0, 0.5f, 0);
         }
         else
         {
@@ -71,7 +72,7 @@ public class UIManager : MonoBehaviour
 
     public static void ClearCanvases()
     {
-        PlayerManager.Instance.isPaused = false;
+        PlayerManager.Instance.IsPaused = false;
         Instance.bedCanvas.SetActive(false);
         Instance.terminalCanvas.SetActive(false);
         Instance.hangarNodeCanvas.SetActive(false);

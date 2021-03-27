@@ -54,6 +54,7 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         return scheduled?.Mission != null && scheduled.Mission.IsInProgress();
     }
 
+    /// <summary>Warp is required to go out on missions</summary>
     public static void EnableWarp(Ship ship)
     {
         ship.CanWarp = true;

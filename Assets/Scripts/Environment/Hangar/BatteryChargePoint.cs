@@ -1,17 +1,15 @@
 ﻿using UnityEngine;
 
-public class BatteryCharger : MonoBehaviour
+public class BatteryChargePoint : InteractableObject
 {
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag(HangarConstants.BatteryTag)
+        if (IsPlayerColliding
             && Input.GetKeyDown(PlayerConstants.ActionKey))
         {
-            Battery battery = other.GetComponent<Battery>();
+            Battery battery = other.GetComponentInChildren<Battery>();
             
-            if (battery != null
-                && !battery.IsCharged
-                && battery.IsPlayerHolding())
+            if (battery != null && !battery.IsCharged)
             {
                 battery.Charge();
             }

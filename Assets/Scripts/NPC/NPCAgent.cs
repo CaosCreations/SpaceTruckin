@@ -32,7 +32,7 @@ public class NPCAgent: MonoBehaviour
 
     private void Update()
     {
-        if (PlayerManager.Instance.isPaused)
+        if (PlayerManager.Instance.IsPaused)
         {
             return;
         }

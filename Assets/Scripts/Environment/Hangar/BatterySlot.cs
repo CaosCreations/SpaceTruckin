@@ -1,16 +1,14 @@
 using UnityEngine;
 
-public class BatterySlot : MonoBehaviour
+public class BatterySlot : InteractableObject
 {
     [SerializeField] private HangarSlot hangarSlot;
-    private int nodeNumber;
 
     private void Start()
     {
-        nodeNumber = hangarSlot.Node;
     }
 
-    public void TransferEnergy(Battery battery)
+    public void TransferEnergyToShip(Battery battery)
     {
         if (hangarSlot != null && hangarSlot.Ship != null)
         {
@@ -19,33 +17,16 @@ public class BatterySlot : MonoBehaviour
         }
     }
 
-    private GameObject GetBattery(GameObject parent)
-    {
-        foreach (Transform child in parent.transform) 
-        {
-            if (child.CompareTag(HangarConstants.BatteryTag))
-            {
-                return child.gameObject;
-            }
-        }
-        return null;
-    }
-
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag(PlayerConstants.PlayerTag) 
+        if (IsPlayerColliding
             && Input.GetKeyDown(PlayerConstants.ActionKey))
         {
             Battery battery = other.GetComponentInChildren<Battery>();
             if (battery != null && battery.IsCharged)
             {
-                TransferEnergy(battery);
+                TransferEnergyToShip(battery);
             }
         }
-    }
-
-    private void Update()
-    {
-
     }
 }
