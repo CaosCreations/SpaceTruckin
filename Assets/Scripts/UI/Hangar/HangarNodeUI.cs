@@ -25,10 +25,13 @@ public class HangarNodeUI : MonoBehaviour
     public Button launchButton;
     public Button customizationButton;
 
+    public GameObject batterySlotIndicator; // Separate script
+
     [Header("Set at Runtime")]
     public GameObject shipPreview;
     public int hangarNode;
     public Ship shipToInspect;
+    private HangarSlot hangarSlot;
 
     private bool isInSubMenu;
     private readonly long fuelCostPerUnit = 1;
@@ -39,7 +42,9 @@ public class HangarNodeUI : MonoBehaviour
     private void OnEnable()
     {
         hangarNode = UIManager.Instance.hangarNode;
-        shipToInspect = HangarManager.GetShipByNode(hangarNode);
+        hangarSlot = HangarManager.GetSlotByNode(hangarNode);
+        shipToInspect = hangarSlot.Ship;
+        //shipToInspect = HangarManager.GetShipByNode(hangarNode);
 
         // There is no ship at this node, don't open UI
         if(shipToInspect == null || shipToInspect.IsLaunched)
@@ -61,11 +66,11 @@ public class HangarNodeUI : MonoBehaviour
         Destroy(shipPreview);
     }
 
-    void Update()
+    private void Update()
     {
         if (isInSubMenu)
         {
-            if (Input.GetKeyDown(PlayerConstants.exit))
+            if (Input.GetKeyDown(PlayerConstants.ExitKey))
             {
                 SwitchPanel(HangarPanel.Main);
             }
@@ -191,7 +196,8 @@ public class HangarNodeUI : MonoBehaviour
         if (shipToInspect.CurrentMission != null)
         {
             return shipToInspect.CurrentFuel >= shipToInspect.CurrentMission.FuelCost
-                && shipToInspect.CurrentHullIntegrity > 0;
+                && shipToInspect.CurrentHullIntegrity > 0
+                && hangarSlot.BatterySlot;
         }
         return false;
     }

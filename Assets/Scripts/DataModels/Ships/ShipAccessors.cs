@@ -19,8 +19,9 @@ public partial class Ship
     public int MaxFuel { get => maxFuel; set => maxFuel = value; }
     public float CurrentHullIntegrity
     {
-        get => saveData.currenthullIntegrity; set => saveData.currenthullIntegrity = value;
+        get => saveData.currentHullIntegrity; set => saveData.currentHullIntegrity = value;
     }
+    public bool CanWarp { get => saveData.canWarp; set => saveData.canWarp = value; }
     public GameObject ShipPrefab
     {
         get => shipPrefab; set => shipPrefab = value;

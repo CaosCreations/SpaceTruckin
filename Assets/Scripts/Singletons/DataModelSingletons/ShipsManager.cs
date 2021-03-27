@@ -54,6 +54,11 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         return scheduled?.Mission != null && scheduled.Mission.IsInProgress();
     }
 
+    public static void EnableWarp(Ship ship)
+    {
+        ship.CanWarp = true;
+    }
+
     #region Persistence
     public void SaveData()
     {

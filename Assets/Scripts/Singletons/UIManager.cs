@@ -48,11 +48,11 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(PlayerConstants.action) && interactableType != UICanvasType.None)
+        if (Input.GetKeyDown(PlayerConstants.ActionKey) && interactableType != UICanvasType.None)
         {
             ShowCanvas();
         }
-        if (Input.GetKeyDown(PlayerConstants.exit) && !currentMenuOverridesEscape)
+        if (Input.GetKeyDown(PlayerConstants.ExitKey) && !currentMenuOverridesEscape)
         {
             ClearCanvases();
         }
