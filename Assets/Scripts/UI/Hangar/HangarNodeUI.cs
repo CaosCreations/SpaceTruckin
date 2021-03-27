@@ -22,7 +22,8 @@ public class HangarNodeUI : MonoBehaviour
     public Button hullButton;
 
     public Button upgradeButton;
-    public Button launchButton;
+    public Button startMissionButton;
+    public Button returnToQueueButton;
     public Button customizationButton;
 
     public Image batteryChargeImage;
@@ -54,7 +55,7 @@ public class HangarNodeUI : MonoBehaviour
 
         PopulateUI();
         fuelButton.Button.interactable = FuelButtonIsInteractable();
-        launchButton.interactable = LaunchButtonIsInteractable();
+        startMissionButton.interactable = StartMissionButtonIsInteractable();
         SetBatteryChargeImage();
 
         fuelCostAfterLicences = GetFuelCostAfterLicences();
@@ -97,7 +98,8 @@ public class HangarNodeUI : MonoBehaviour
         hullButton.AddOnClick(() => SwitchPanel(HangarPanel.Repair));
         upgradeButton.AddOnClick(() => SwitchPanel(HangarPanel.Upgrade));
         customizationButton.AddOnClick(() => SwitchPanel(HangarPanel.Customization));
-        launchButton.AddOnClick(Launch);
+        startMissionButton.AddOnClick(Launch);
+        returnToQueueButton.AddOnClick(Launch);
     }
 
     private void SetupShipPreview()
@@ -123,7 +125,7 @@ public class HangarNodeUI : MonoBehaviour
             fuelSlider.value = shipToInspect.GetFuelPercent();
             fuelTimer = 0;
             fuelButton.Button.interactable = FuelButtonIsInteractable();
-            launchButton.interactable = LaunchButtonIsInteractable();
+            startMissionButton.interactable = StartMissionButtonIsInteractable();
         }
     }
 
@@ -156,8 +158,7 @@ public class HangarNodeUI : MonoBehaviour
 
     private void Launch()
     {
-        if (shipToInspect.CurrentFuel > 0
-            && shipToInspect.CurrentMission != null)
+        if (shipToInspect != null)
         {
             HangarManager.LaunchShip(hangarNode);
 
@@ -191,7 +192,7 @@ public class HangarNodeUI : MonoBehaviour
             && PlayerManager.Instance.CanSpendMoney(fuelCostPerUnit);
     }
 
-    private bool LaunchButtonIsInteractable()
+    private bool StartMissionButtonIsInteractable()
     {
         if (shipToInspect.CurrentMission != null)
         {
