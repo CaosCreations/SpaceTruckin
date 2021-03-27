@@ -25,7 +25,7 @@ public class HangarNodeUI : MonoBehaviour
     public Button launchButton;
     public Button customizationButton;
 
-    public GameObject batterySlotIndicator; // Separate script
+    public Image batteryChargeImage;
 
     [Header("Set at Runtime")]
     public GameObject shipPreview;
@@ -55,6 +55,7 @@ public class HangarNodeUI : MonoBehaviour
         PopulateUI();
         fuelButton.Button.interactable = FuelButtonIsInteractable();
         launchButton.interactable = LaunchButtonIsInteractable();
+        SetBatteryChargeImage();
 
         fuelCostAfterLicences = GetFuelCostAfterLicences();
         Debug.Log("Fuel cost per unit after licence effect: " + fuelCostAfterLicences);
@@ -164,13 +165,13 @@ public class HangarNodeUI : MonoBehaviour
             if (scheduled != null)
             {
                 scheduled.Mission.StartMission();
-                Debug.Log($"{scheduled.Pilot} has started {scheduled.Mission}");
+                Debug.Log($"{scheduled.Pilot.Name} (Pilot) has started {scheduled.Mission.Name} (Mission)");
             }
             UIManager.ClearCanvases();
         }
         else
         {
-            Debug.Log("Ship has no fuel!");
+            Debug.Log($"{shipToInspect} (Ship) has no fuel!");
         }
     }
 
@@ -204,5 +205,12 @@ public class HangarNodeUI : MonoBehaviour
     private long GetFuelCostAfterLicences()
     {
         return Convert.ToInt64(fuelCostPerUnit * (1 - LicencesManager.FuelDiscountEffect));
+    }
+
+    private void SetBatteryChargeImage()
+    {
+        batteryChargeImage.color = shipToInspect.CanWarp ?
+            HangarConstants.ChargedBatteryColour :
+            HangarConstants.DepletedBatteryColour;
     }
 }

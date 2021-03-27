@@ -47,16 +47,14 @@ public static class GameObjectExtensions
         return Color.white;
     }
 
-    public static GameObject GetChildObjectByTag(this GameObject self, string tag)
+    public static void ParentToPlayer(this GameObject self)
     {
-        foreach (Transform child in self.transform)
-        {
-            if (child.CompareTag(tag))
-            {
-                return child.gameObject;
-            }
-        }
-        return null;
+        self.transform.SetParent(PlayerManager.PlayerObject.transform);
+    }
+
+    public static void SetParent(this GameObject self, GameObject parent)
+    {
+        self.transform.SetParent(parent.transform);
     }
 
     public static List<GameObject> FindParentObjectsWithTag(this GameObject self, string tag)
@@ -90,25 +88,20 @@ public static class GameObjectExtensions
         return false;
     }
 
-    public static bool ObjectWithTagIsChild(this GameObject self, string tag)
+    public static GameObject GetChildObjectWithTag(this GameObject self, string tag)
     {
         foreach (Transform child in self.transform)
         {
             if (child.CompareTag(tag))
             {
-                return true;
+                return child.gameObject;
             }
         }
-        return false;
+        return null;
     }
 
-    public static void ParentToPlayer(this GameObject self)
+    public static bool ObjectWithTagIsChild(this GameObject self, string tag)
     {
-        self.transform.SetParent(PlayerManager.PlayerObject.transform);
-    }
-
-    public static void SetParent(this GameObject self, GameObject parent)
-    {
-        self.transform.SetParent(parent.transform);
+        return self.GetChildObjectWithTag(tag) != null;
     }
 }

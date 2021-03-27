@@ -6,10 +6,18 @@ public class BatterySlot : InteractableObject
 
     public void TransferEnergyToShip(Battery battery)
     {
-        if (hangarSlot != null)
+        if (hangarSlot != null
+            && hangarSlot.Ship != null
+            && battery.IsCharged
+            && !hangarSlot.Ship.CanWarp)
         {
             ShipsManager.EnableWarp(hangarSlot.Ship);
             battery.Discharge();
+            Debug.Log($"{hangarSlot.Ship.Name} (Ship) can now warp - launch condition fulfilled");
+        }
+        else
+        {
+            Debug.Log("Could not transfer energy");
         }
     }
 

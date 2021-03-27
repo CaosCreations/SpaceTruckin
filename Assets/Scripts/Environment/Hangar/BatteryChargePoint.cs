@@ -13,7 +13,6 @@ public class BatteryChargePoint : InteractableObject
             {
                 battery.Charge();
             }
-            Debug.Log("Charger action");
         }
     }
 }

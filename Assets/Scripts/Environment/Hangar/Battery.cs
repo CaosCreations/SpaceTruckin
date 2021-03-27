@@ -36,16 +36,6 @@ public class Battery : MonoBehaviour
         return PlayerManager.PlayerObject.GetComponentInChildren<Battery>() != null;
     }
 
-    public bool PlayerIsHoldingABattery(GameObject player)
-    {
-        return player.GetComponentInParent<Battery>() != null;
-    }
-
-    public bool PlayerIsHoldingThisBattery()
-    {
-        return gameObject.ObjectWithTagIsParent(PlayerConstants.PlayerTag);
-    }
-
     public void TakeBattery()
     {
         batteryContainer.ParentToPlayer();
