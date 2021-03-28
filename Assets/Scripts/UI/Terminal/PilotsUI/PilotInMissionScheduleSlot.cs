@@ -2,7 +2,7 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class PilotInSlot : MonoBehaviour, IPointerClickHandler
+public class PilotInMissionScheduleSlot : MonoBehaviour, IPointerClickHandler
 {
     public Pilot pilot;
     private MissionScheduleSlot scheduleSlot;

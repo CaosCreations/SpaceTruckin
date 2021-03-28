@@ -65,7 +65,7 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
                 myRectTransform.SetParent(scheduleSlot.layoutContainer);
                 myRectTransform.SetSiblingIndex(0);
 
-                if (scheduleSlot.GetComponentInChildren<PilotInSlot>() != null)
+                if (scheduleSlot.GetComponentInChildren<PilotInMissionScheduleSlot>() != null)
                 {
                     // Schedule a mission if there is already a pilot in the slot 
                     Schedule(scheduleSlot);
