@@ -45,4 +45,13 @@ public class LicencesEditor : MonoBehaviour
             Debug.LogError($"{ex.Message}\n{ex.StackTrace}");
         }
     }
+
+    public static void DeleteSaveData()
+    {
+        var licenceContainer = EditorHelper.GetAsset<LicenceContainer>();
+        foreach (var licence in licenceContainer.licences)
+        {
+            SaveDataEditor.NullifyFields(licence.saveData);
+        }
+    }
 }

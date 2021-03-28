@@ -20,8 +20,11 @@ public class SaveDataEditor : MonoBehaviour
     [MenuItem("Space Truckin/Delete Container Save Data")]
     private static void DeleteContainerFromTruckinMenu() => DeleteContainer();
 
-    [MenuItem("Assets/Delete Container Save Data")]
+    [MenuItem("Assets/Delete Container Save Data")] // Right click in Project tab
     private static void DeleteContainerFromAssetContextMenu() => DeleteContainer();
+
+    [MenuItem("Space Truckin/Delete All Container Save Data")]
+    private static void DeleteAllContainerSaveData() => DeleteAllContainers();
 
     private static void DeleteContainer()
     {
@@ -71,11 +74,17 @@ public class SaveDataEditor : MonoBehaviour
         Debug.Log("Successfully deleted save data for: " + selected);
     }
 
-    private static void NullifyFields<T>(T saveData)
+    public static void NullifyFields<T>(T saveData)
     {
         foreach (FieldInfo field in saveData.GetType().GetFields())
         {
             field.SetValue(saveData, null);
         }
+    }
+
+    private static void DeleteAllContainers()
+    {
+        LicencesEditor.DeleteSaveData();
+        ShipsEditor.DeleteSaveData();
     }
 }
