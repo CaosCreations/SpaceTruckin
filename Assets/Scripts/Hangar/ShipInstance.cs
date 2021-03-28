@@ -12,9 +12,16 @@ public class ShipInstance : MonoBehaviour
         launchAnimator = GetComponent<Animator>();
     }
 
-    public void Launch()
+    public void LaunchForMission()
     {
         isLaunching = true;
+        launchAnimator.SetBool("Launch", true);
+    }
+
+    public void Requeue()
+    {
+        isLaunching = true;
+        // TODO: add a new animation
         launchAnimator.SetBool("Launch", true);
     }
 

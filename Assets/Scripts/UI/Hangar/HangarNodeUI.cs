@@ -154,7 +154,7 @@ public class HangarNodeUI : MonoBehaviour
         if (shipToInspect.CurrentFuel > 0
             && shipToInspect.CurrentMission != null)
         {
-            HangarManager.LaunchShip(hangarNode);
+            HangarManager.RequeueShip(hangarNode);
 
             ScheduledMission scheduled = MissionsManager.GetScheduledMission(shipToInspect);
             if (scheduled != null)

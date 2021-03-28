@@ -50,14 +50,14 @@ public class HangarManager : MonoBehaviour
         }
     }
 
-    public static void LaunchShip(int node)
+    public static void RequeueShip(int node)
     {
         Ship ship = GetShipByNode(node);
         HangarSlot slot = GetSlotByNode(node);
 
         if (ship != null && slot != null)
         {
-            slot.LaunchShip();
+            slot.RequeueShip();
             Debug.Log($"{ship} successfully launched from node {node}");
         }
         else

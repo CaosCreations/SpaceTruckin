@@ -35,7 +35,6 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         else
         {
             DataUtils.CreateSaveFolder(Mission.FOLDER_NAME);
-            //DataUtils.CreateSaveFolder(ScheduledMission.FOLDER_NAME);
         }
 
         if (Missions?.Length <= 0)
@@ -66,6 +65,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
 
         foreach (ScheduledMission scheduled in ScheduledMissions.ToList())
         {
+            // If the mission or pilot are missing, we can't schedule it
             if (scheduled?.Mission == null || scheduled?.Pilot == null)
             {
                 // Outcome processing depends on Missions and Pilots 
