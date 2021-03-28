@@ -30,14 +30,7 @@ public static class JsonHelper
     public static List<T> ListFromJson<T>(string json)
     {
         ListWrapper<T> wrapper = JsonUtility.FromJson<ListWrapper<T>>(json);
-
-        // If the list is empty (a brand new save) the wrapper will be null and cause a nullref
-        if(wrapper != null)
-        {
-            return wrapper.Items;
-        }
-
-        return new List<T>();
+        return wrapper.Items;
     }
 
     [Serializable]

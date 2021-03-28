@@ -62,7 +62,7 @@ public class NewDayReportUI : MonoBehaviour
 
     private void Update()
     {
-        if (reportCardInstance != null && Input.GetKeyDown(PlayerConstants.exit))
+        if (reportCardInstance != null && Input.GetKeyDown(PlayerConstants.ExitKey))
         {
             CloseReport();
         }

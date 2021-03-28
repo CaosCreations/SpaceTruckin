@@ -9,8 +9,8 @@ public partial class Ship
     public string Name => shipName;
     public bool IsLaunched => ShipsManager.ShipIsLaunched(this);
 
-    // Owned but not out on a mission nor docked
-    public bool IsInQueue => !IsLaunched && !HangarManager.ShipIsDocked(this);
+    /// <summary>Owned but not out on a mission nor docked</summary>
+    public bool IsInQueue => Pilot.IsHired && !IsLaunched && !HangarManager.ShipIsDocked(this);
     
     public int CurrentFuel
     {
@@ -19,8 +19,12 @@ public partial class Ship
     public int MaxFuel { get => maxFuel; set => maxFuel = value; }
     public float CurrentHullIntegrity
     {
-        get => saveData.currenthullIntegrity; set => saveData.currenthullIntegrity = value;
+        get => saveData.currentHullIntegrity; set => saveData.currentHullIntegrity = value;
     }
+    
+    /// <summary>Warp is required to go out on missions</summary>
+    public bool CanWarp { get => saveData.canWarp; set => saveData.canWarp = value; }
+    
     public GameObject ShipPrefab
     {
         get => shipPrefab; set => shipPrefab = value;

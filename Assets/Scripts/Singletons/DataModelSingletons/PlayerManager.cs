@@ -22,12 +22,12 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     }
     public int TotalLicencePointsAcquired
     {
-        get => playerData.PlayerTotalLicencePointsSpent;
+        get => playerData.PlayerTotalLicencePointsAcquired;
     }
 
-    [Header("Set at Runtime")]
-    public bool isPaused;
-    public PlayerMovement playerMovement;
+    public bool IsPaused { get; set; }
+    public static GameObject PlayerObject { get; private set; }
+    public static PlayerMovement PlayerMovement { get; private set; }
 
     public static event System.Action onFinancialTransaction;
 
@@ -55,7 +55,16 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         {
             DataUtils.CreateSaveFolder(PlayerData.FOLDER_NAME);
         }
-        playerMovement = FindObjectOfType<PlayerMovement>();
+
+        PlayerObject = GameObject.FindGameObjectWithTag(PlayerConstants.PlayerTag);
+        if (PlayerObject != null)
+        {
+            PlayerMovement = PlayerObject.GetComponent<PlayerMovement>();
+        }
+        else
+        {
+            Debug.LogError("Player object not found");
+        }
 
         if (playerData == null)
         {
@@ -90,7 +99,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         if (playerData.PlayerLicencePoints >= licence.PointsCost)
         {
             playerData.PlayerLicencePoints -= licence.PointsCost;
-            playerData.PlayerTotalLicencePointsSpent += licence.PointsCost;
+            playerData.PlayerTotalLicencePointsAcquired += licence.PointsCost;
             licence.IsOwned = true;
             Debug.Log($"{licence.Name} has been acquired\nRemaining LP: {playerData.PlayerLicencePoints}");
         }
@@ -102,8 +111,8 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
 
     public void EnterMenuState()
     {
-        playerMovement.ResetAnimator();
-        Instance.isPaused = true;
+        PlayerMovement.ResetAnimator();
+        Instance.IsPaused = true;
     }
 
     #region Persistence

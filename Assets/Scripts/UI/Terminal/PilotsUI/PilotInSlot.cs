@@ -2,7 +2,7 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class PilotInMissionScheduleSlot : MonoBehaviour, IPointerClickHandler
+public class PilotInSlot : MonoBehaviour, IPointerClickHandler
 {
     public Pilot pilot;
     private MissionScheduleSlot scheduleSlot;
@@ -38,7 +38,7 @@ public class PilotInMissionScheduleSlot : MonoBehaviour, IPointerClickHandler
                 MissionsManager.RemoveScheduledMission(scheduled);
                 
                 // Ship goes back into the queue 
-                HangarManager.RequeueShip(scheduleSlot.hangarNode);
+                HangarManager.LaunchShip(scheduleSlot.hangarNode);
 
                 Destroy(gameObject);
             }

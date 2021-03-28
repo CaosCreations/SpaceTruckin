@@ -48,20 +48,21 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(PlayerConstants.action) && interactableType != UICanvasType.None)
+        if (Input.GetKeyDown(PlayerConstants.ActionKey) && interactableType != UICanvasType.None)
         {
             ShowCanvas();
         }
-        if (Input.GetKeyDown(PlayerConstants.exit) && !currentMenuOverridesEscape)
+        if (Input.GetKeyDown(PlayerConstants.ExitKey) && !currentMenuOverridesEscape)
         {
             ClearCanvases();
         }
         
-        if(interactableType != UICanvasType.None)
+        if (interactableType != UICanvasType.None)
         {
             interactionTextMesh.gameObject.SetActive(true);
             interactionTextMesh.text = GetInteractionString();
-            interactionTextMesh.transform.position = PlayerManager.Instance.playerMovement.transform.position + new Vector3(0, 0.5f, 0);
+            interactionTextMesh.transform.position = 
+                PlayerManager.PlayerMovement.transform.position + new Vector3(0, 0.5f, 0);
         }
         else
         {
@@ -71,7 +72,7 @@ public class UIManager : MonoBehaviour
 
     public static void ClearCanvases()
     {
-        PlayerManager.Instance.isPaused = false;
+        PlayerManager.Instance.IsPaused = false;
         Instance.bedCanvas.SetActive(false);
         Instance.terminalCanvas.SetActive(false);
         Instance.hangarNodeCanvas.SetActive(false);

@@ -19,13 +19,14 @@ public partial class Ship : ScriptableObject, IDataModel
     [Serializable]
     public class ShipSaveData
     {
-        [SerializeField] public int currentFuel;
-        [SerializeField] public float currenthullIntegrity;
+        public int currentFuel;
+        public float currentHullIntegrity;
+        public bool canWarp;
     }
     
     public float GetHullPercent()
     {
-        return saveData.currenthullIntegrity / maxHullIntegrity;
+        return saveData.currentHullIntegrity / maxHullIntegrity;
     }
 
     public float GetFuelPercent()
