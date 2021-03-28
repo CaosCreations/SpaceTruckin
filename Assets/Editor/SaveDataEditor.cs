@@ -63,6 +63,15 @@ public class SaveDataEditor : MonoBehaviour
                 EditorUtility.SetDirty(message);
             }
         }
+        else if (selected is LicenceContainer)
+        {
+            LicenceContainer licenceContainer = (LicenceContainer)selected;
+            foreach (Licence licence in licenceContainer.licences)
+            {
+                NullifyFields(licence.saveData);
+                EditorUtility.SetDirty(licence);
+            }
+        }
         else
         {
             Debug.LogError("<b>Invalid object selected:</b> " + selected);

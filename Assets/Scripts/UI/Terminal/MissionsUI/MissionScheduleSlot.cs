@@ -40,8 +40,8 @@ public class MissionScheduleSlot : MonoBehaviour, IPointerClickHandler
     public void PutPilotInSlot(Pilot pilot)
     {
         CleanPilotInSlot();
-        PilotInSlot pilotInSlot = Instantiate(pilotInSlotPrefab, layoutContainer.transform)
-            .GetComponent<PilotInSlot>();
+        PilotInMissionScheduleSlot pilotInSlot = Instantiate(pilotInSlotPrefab, layoutContainer.transform)
+            .GetComponent<PilotInMissionScheduleSlot>();
 
         pilotInSlot.Init(pilot);
     }
@@ -53,7 +53,7 @@ public class MissionScheduleSlot : MonoBehaviour, IPointerClickHandler
 
     public void CleanPilotInSlot()
     {
-        PilotInSlot pilotInSlot = layoutContainer.GetComponentInChildren<PilotInSlot>();
+        PilotInMissionScheduleSlot pilotInSlot = layoutContainer.GetComponentInChildren<PilotInMissionScheduleSlot>();
         if (pilotInSlot != null)
         {
             Destroy(pilotInSlot.gameObject);

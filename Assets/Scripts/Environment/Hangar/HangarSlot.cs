@@ -8,11 +8,11 @@ public class HangarSlot : MonoBehaviour
     private Ship ship;
     private ShipInstance shipInstance;
 
-    public void LaunchShip()
+    public void RequeueShip()
     {
         if (shipInstance != null)
         {
-            shipInstance.Launch();
+            shipInstance.Requeue();
             Ship = null;
             ShipInstance = null;
         }

@@ -34,7 +34,7 @@ public class PilotSelectItem : MonoBehaviour
             if (HangarManager.ShipIsDocked(scheduleSlot.hangarNode))
             {
                 // Launch the ship to make room for the new one  
-                HangarManager.LaunchShip(scheduleSlot.hangarNode);
+                HangarManager.RequeueShip(scheduleSlot.hangarNode);
             }
 
             // Dock the pilot's ship regardless of whether there's a mission in the slot

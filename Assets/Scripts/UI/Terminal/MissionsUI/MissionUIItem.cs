@@ -32,55 +32,46 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if(!mission.IsInProgress())
-        {
-            myRectTransform.SetParent(missionsUI.transform);
-            canvasGroup.alpha = MissionConstants.dragAlpha;
-            canvasGroup.blocksRaycasts = false;
-        }
+        myRectTransform.SetParent(missionsUI.transform);
+        canvasGroup.alpha = MissionConstants.dragAlpha;
+        canvasGroup.blocksRaycasts = false;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         // Delta is the distance that the mouse moved since previous frame
         // Divide by canvas scale factor to prevent object from not following the mouse properly on a scaled canvas
-        if (!mission.IsInProgress())
-        {
-            myRectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
-        }
+        myRectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (!mission.IsInProgress())
+        // Raycast will pass through and hit the schedule
+        canvasGroup.blocksRaycasts = true;
+        canvasGroup.alpha = MissionConstants.dropAlpha;
+
+        MissionScheduleSlot scheduleSlot = missionsUI.GetSlotByPosition(eventData.position);
+        if (scheduleSlot != null)
         {
-            // Raycast will pass through and hit the schedule
-            canvasGroup.blocksRaycasts = true;
-            canvasGroup.alpha = MissionConstants.dropAlpha;
+            CheckReplaceMission(scheduleSlot);
+            myRectTransform.SetParent(scheduleSlot.layoutContainer);
+            myRectTransform.SetSiblingIndex(0);
 
-            MissionScheduleSlot scheduleSlot = missionsUI.GetSlotByPosition(eventData.position);
-            if (scheduleSlot != null)
+            if (scheduleSlot.GetComponentInChildren<PilotInMissionScheduleSlot>() != null)
             {
-                CheckReplaceMission(scheduleSlot);
-                myRectTransform.SetParent(scheduleSlot.layoutContainer);
-                myRectTransform.SetSiblingIndex(0);
-
-                if (scheduleSlot.GetComponentInChildren<PilotInSlot>() != null)
-                {
-                    // Schedule a mission if there is already a pilot in the slot 
-                    Schedule(scheduleSlot);
-                }
-                else
-                {
-                    // Open the pilot select menu after dropping a mission into a slot that has no pilot in it
-                    missionsUI.PopulatePilotSelect(scheduleSlot, mission);
-                }
+                // Schedule a mission if there is already a pilot in the slot 
+                Schedule(scheduleSlot);
             }
             else
             {
-                // Unschedule the mission if it is dropped outside a slot
-                Unschedule(scheduleSlot);
+                // Open the pilot select menu after dropping a mission into a slot that has no pilot in it
+                missionsUI.PopulatePilotSelect(scheduleSlot, mission);
             }
+        }
+        else
+        {
+            // Unschedule the mission if it is dropped outside a slot
+            Unschedule();
         }
     }
 
@@ -91,7 +82,7 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
             MissionUIItem itemToReplace = scheduleSlot.GetComponentInChildren<MissionUIItem>();
             if (itemToReplace != null)
             {
-                itemToReplace.Unschedule(scheduleSlot);
+                itemToReplace.Unschedule();
             }
         }
     }
@@ -105,7 +96,7 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         }
     }
 
-    public void Unschedule(MissionScheduleSlot scheduleSlot = null)
+    public void Unschedule()
     {
         MissionsManager.RemoveScheduledMission(mission);
         missionsUI.PopulateMissionSelect();

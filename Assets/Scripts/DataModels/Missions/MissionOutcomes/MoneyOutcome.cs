@@ -16,7 +16,7 @@ public class MoneyOutcome : MissionOutcome
         long earnings64 = Convert.ToInt64(earningsAfterLicences);
         PlayerManager.Instance.ReceiveMoney(earnings64);
 
-        long moneyIncrease64 = Convert.ToInt64(earnings64 - moneyEarned);
+        long moneyIncrease64 = Convert.ToInt64(earningsAfterLicences - moneyEarned);
         if (scheduled.Mission.MissionToArchive != null)
         {
             scheduled.Mission.MissionToArchive.TotalMoneyIncrease += moneyIncrease64;
