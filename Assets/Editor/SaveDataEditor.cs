@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.IO;
 using System.Reflection;
+using System;
 
 public class SaveDataEditor : MonoBehaviour
 {
@@ -84,7 +85,17 @@ public class SaveDataEditor : MonoBehaviour
 
     private static void DeleteAllContainers()
     {
-        LicencesEditor.DeleteSaveData();
-        ShipsEditor.DeleteSaveData();
+        try
+        {
+            MissionsEditor.DeleteSaveData();
+            PilotsEditor.DeleteSaveData();
+            ShipsEditor.DeleteSaveData();
+            LicencesEditor.DeleteSaveData();
+            PlayerEditor.DeleteSaveData();
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"{ex.Message}\n{ex.StackTrace}");
+        }
     }
 }
