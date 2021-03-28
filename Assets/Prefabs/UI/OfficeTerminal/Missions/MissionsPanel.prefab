@@ -305,7 +305,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2951288913603219694}
   m_HandleRect: {fileID: 4497250543913872234}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -891,7 +891,10 @@ MonoBehaviour:
   scrollViewContent: {fileID: 5129938362553061448}
   missionItemPrefab: {fileID: 7301272531736026728, guid: c65380a869684b847bc0a2653704950a,
     type: 3}
-  missionSlots:
+  pilotSelectItemPrefab: {fileID: 2442879683164484124, guid: 51ea1504ad1fb894eb2b7585acaa7240,
+    type: 3}
+  pilotSelectCloseButton: {fileID: 0}
+  scheduleSlots:
   - {fileID: 6560387683185120884}
   - {fileID: 5846485876630898351}
   - {fileID: 4023447684295124617}
@@ -910,8 +913,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8946bc6f3edc509418831f5f22bc70f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missionDetailsPrefab: {fileID: 3716876146242060348, guid: 8ae1cad5ec8f35740b1e213573c78d0e,
-    type: 3}
   missionDetails: {fileID: 0}
   missionBeingDisplayed: {fileID: 0}
 --- !u!114 &6879104490178104362

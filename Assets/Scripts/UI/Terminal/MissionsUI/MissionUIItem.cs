@@ -14,7 +14,6 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     public Canvas canvas;
     private CanvasGroup canvasGroup;
     private RectTransform myRectTransform;
-    private Transform scrollViewContent;
 
     private void Awake()
     {
@@ -25,11 +24,10 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         myRectTransform = GetComponent<RectTransform>();
     }
 
-    public void Init(Mission mission, Transform scrollViewContent)
+    public void Init(Mission mission)
     {
         this.mission = mission;
         missionNameText.SetText(mission.Name, FontType.ListItem);
-        this.scrollViewContent = scrollViewContent;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -40,7 +38,6 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
             canvasGroup.alpha = MissionConstants.dragAlpha;
             canvasGroup.blocksRaycasts = false;
         }
-        
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -61,66 +58,84 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
             canvasGroup.blocksRaycasts = true;
             canvasGroup.alpha = MissionConstants.dropAlpha;
 
-            MissionScheduleSlot slot = missionsUI.GetSlotForMissionDrag(eventData.position);
-            if (slot != null)
+            MissionScheduleSlot scheduleSlot = missionsUI.GetSlotByPosition(eventData.position);
+            if (scheduleSlot != null)
             {
-                CheckReplaceMission(slot);
-                myRectTransform.SetParent(slot.slotTransform);
+                CheckReplaceMission(scheduleSlot);
+                myRectTransform.SetParent(scheduleSlot.layoutContainer);
+                myRectTransform.SetSiblingIndex(0);
 
-                if (slot.ship != null)
+                if (scheduleSlot.GetComponentInChildren<PilotInSlot>() != null)
                 {
-                    slot.ship.CurrentMission = mission;
-                    //mission.Ship = slot.ship;
-                    mission.Ship = slot.ship;
+                    // Schedule a mission if there is already a pilot in the slot 
+                    Schedule(scheduleSlot);
                 }
                 else
                 {
-                    Debug.LogError("The MissionScheduleSlot does not have a ship");
+                    // Open the pilot select menu after dropping a mission into a slot that has no pilot in it
+                    missionsUI.PopulatePilotSelect(scheduleSlot, mission);
                 }
             }
             else
             {
-                Unschedule();
+                // Unschedule the mission if it is dropped outside a slot
+                Unschedule(scheduleSlot);
             }
         }
     }
 
-    private void CheckReplaceMission(MissionScheduleSlot slot)
+    private void CheckReplaceMission(MissionScheduleSlot scheduleSlot)
     {
-        if(slot.slotTransform.childCount > 0)
+        if (scheduleSlot.layoutContainer.childCount > 0)
         {
-            MissionUIItem missionToUnschedule = slot.slotTransform.GetChild(0).GetComponent<MissionUIItem>();
-            
-            if(missionToUnschedule != null)
+            MissionUIItem itemToReplace = scheduleSlot.GetComponentInChildren<MissionUIItem>();
+            if (itemToReplace != null)
             {
-                missionToUnschedule.Unschedule();
+                itemToReplace.Unschedule(scheduleSlot);
             }
         }
     }
 
-    public void Unschedule()
+    public void Schedule(MissionScheduleSlot scheduleSlot)
     {
-        myRectTransform.SetParent(scrollViewContent);
-        if(mission.Ship != null)
+        Pilot pilot = HangarManager.GetPilotByNode(scheduleSlot.hangarNode);
+        if (pilot != null && mission != null)
         {
-            mission.Ship.CurrentMission = null;
-            mission.Ship = null;
+            MissionsManager.AddOrUpdateScheduledMission(pilot, mission);
         }
+    }
+
+    public void Unschedule(MissionScheduleSlot scheduleSlot = null)
+    {
+        MissionsManager.RemoveScheduledMission(mission);
+        missionsUI.PopulateMissionSelect();
+        Destroy(gameObject);
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            if (missionDetailsUI.missionBeingDisplayed == mission)
+            MissionScheduleSlot scheduleSlot = missionsUI.GetSlotByPosition(eventData.position);
+            if (scheduleSlot != null && scheduleSlot.IsActive)
             {
-                missionDetailsUI.DestroyMissionDetails();
-                missionDetailsUI.missionBeingDisplayed = null;
+                // Reset the schedule slot if the player clicks and there is already one scheduled
+                Unschedule();
+            }
+        }
+        else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            if (missionDetailsUI.missionBeingDisplayed != mission)
+            {
+                // Show the mission details for the scheduled mission 
+                missionDetailsUI.missionBeingDisplayed = mission;
+                missionDetailsUI.DisplayMissionDetails(this);
             }
             else
             {
-                missionDetailsUI.missionBeingDisplayed = mission;
-                missionDetailsUI.DisplayMissionDetails(this);
+                // Hide the mission details if they are already visible 
+                missionDetailsUI.DestroyMissionDetails();
+                missionDetailsUI.missionBeingDisplayed = null;
             }
         }
     }

@@ -18,13 +18,13 @@ public class ArchivedMission : IDataModel
     [HideInInspector]
     private ArchivedMissionSaveData saveData;
 
-    public ArchivedMission(Mission mission, int completionNumber)
+    public ArchivedMission(Mission mission, Pilot pilot, int completionNumber)
     {
         saveData = new ArchivedMissionSaveData();
         MissionName = mission.Name;
         CompletionNumber = completionNumber;
         FileName = $"{MissionName}_{completionNumber}";
-        Ship = mission.Ship;
+        Pilot = pilot;
         TotalFuelLost = mission.FuelCost;
     }
 
@@ -40,7 +40,7 @@ public class ArchivedMission : IDataModel
         public int completionNumber, totalDamageTaken, totalDamageReduced, totalFuelLost;
         public long totalMoneyEarned, totalMoneyIncrease;
         public double totalPilotXpGained, totalXpIncreaseFromLicences;
-        public Ship ship;
+        public Pilot pilot;
         public int pilotLevelAtTimeOfMission;
         public int missionsCompletedByPilotAtTimeOfMission;
     }
@@ -77,6 +77,6 @@ public class ArchivedMission : IDataModel
         set => saveData.totalXpIncreaseFromLicences = value; 
     }
     public int TotalFuelLost { get => saveData.totalFuelLost; set => saveData.totalFuelLost = value; }
-    public Ship Ship { get => saveData.ship; set => saveData.ship = value; }
-    public Pilot Pilot => Ship.Pilot; 
+    public Pilot Pilot { get => saveData.pilot; set => saveData.pilot = value; }
+    public Ship Ship => Pilot.Ship; 
 }

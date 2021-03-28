@@ -22,22 +22,19 @@ public partial class Pilot : ScriptableObject
     [Header("Data to update IN GAME")]
     public PilotSaveData saveData;
 
-    public static string FOLDER_NAME = "PilotSaveData";
-
     [Serializable]
     public class PilotSaveData
     {
-        [Header("Set in Editor")]
         public string randomName;
         public Species randomSpecies;
         public int level;
         public double requiredXp;
-
-        [Header("Data to update IN GAME")]
-        public int missionsCompleted;
         public double currentXp;
-        public bool isHired, isOnMission, isAssignedToShip;
+        public int missionsCompleted;
+        public bool isHired;
     }
+
+    public static string FOLDER_NAME = "PilotSaveData";
 
     public void SaveData()
     {
@@ -48,8 +45,6 @@ public partial class Pilot : ScriptableObject
     {
         saveData = await DataUtils.LoadFileAsync<PilotSaveData>(name, FOLDER_NAME);
     }
-
-    public bool CanLevelUp { get => CurrentXp >= RequiredXp; }
 
     public void LevelUp()
     {

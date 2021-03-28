@@ -27,7 +27,11 @@ public partial class Mission : ScriptableObject, IDataModel
     {
         public bool hasBeenAccepted = false;
         public int daysLeftToComplete, numberOfCompletions;
-        public Ship ship = null;
+    }
+
+    private void OnValidate()
+    {
+        missionDurationInDays = Mathf.Max(1, missionDurationInDays);
     }
 
     public void SaveData()
@@ -38,11 +42,6 @@ public partial class Mission : ScriptableObject, IDataModel
     public async Task LoadDataAsync()
     {
         saveData = await DataUtils.LoadFileAsync<MissionSaveData>(name, FOLDER_NAME);
-    }   
-
-    public void ScheduleMission(Ship ship)
-    {
-        Ship = ship;
     }
 
     public void StartMission()
@@ -61,7 +60,7 @@ public partial class Mission : ScriptableObject, IDataModel
         {
             if (outcome != null)
             {
-                outcome.Process(this);
+                outcome.Process(MissionsManager.GetScheduledMission(this));
             }
         }
     }

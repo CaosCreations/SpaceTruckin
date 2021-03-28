@@ -79,7 +79,7 @@ public class MissionDetailsUI : MonoBehaviour
 
         if (string.IsNullOrEmpty(mission.Description))
         {
-            mission.Description = PlaceholderUtils.GenerateLoremIpsum();
+            mission.Description = LoremIpsumGenerator.GenerateLoremIpsum();
         }
 
         builder.AppendLineWithBreaks("Description: " + mission.Description.ToItalics());

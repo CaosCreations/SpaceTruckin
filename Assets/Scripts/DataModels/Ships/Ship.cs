@@ -10,7 +10,6 @@ public partial class Ship : ScriptableObject, IDataModel
     public int maxFuel;
     public GameObject shipPrefab;
     public Sprite shipAvatar;
-    public Pilot pilot;
 
     [Header("Data to update IN GAME")]
     public ShipSaveData saveData;
@@ -20,16 +19,14 @@ public partial class Ship : ScriptableObject, IDataModel
     [Serializable]
     public class ShipSaveData
     {
-        [SerializeField] public bool isOwned, isLaunched;
-        [SerializeField] public int currentFuel;
-        [SerializeField] public float currenthullIntegrity;
-        [SerializeField] public HangarNode hangarNode;
-        [SerializeField] public Mission currentMission;
+        public int currentFuel;
+        public float currentHullIntegrity;
+        public bool canWarp;
     }
-
+    
     public float GetHullPercent()
     {
-        return saveData.currenthullIntegrity / maxHullIntegrity;
+        return saveData.currentHullIntegrity / maxHullIntegrity;
     }
 
     public float GetFuelPercent()

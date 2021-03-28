@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7105066481962662059}
   - component: {fileID: 3197085279453762649}
   - component: {fileID: 7158868080756466719}
+  - component: {fileID: 2692949180829779189}
   - component: {fileID: 8710179870615699991}
   - component: {fileID: 8021603277474344776}
   - component: {fileID: 7084496073094469789}
@@ -111,6 +112,22 @@ MonoBehaviour:
     type: 3}
   shipsContainer: {fileID: 11400000, guid: 6bd5f91068b898f4d96ba6794873186e, type: 2}
   hangarSlots: []
+--- !u!114 &2692949180829779189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5745358076465076624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da42263ef217adb4e996bb9911ffbd04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hangarSlots: []
+  shipQueue: []
+  shipInstancePrefab: {fileID: 6567717090386942404, guid: 1d0b47e8d0def734ab93c2b8d30299b2,
+    type: 3}
 --- !u!114 &8710179870615699991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,10 +154,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   licenceContainer: {fileID: 11400000, guid: 913043d08d8a65841aaf14b6e20dd87c, type: 2}
-  moneyEffects: []
-  pilotXpEffects: []
-  shipDamageEffects: []
-  fuelDiscountEffects: []
 --- !u!114 &7084496073094469789
 MonoBehaviour:
   m_ObjectHideFlags: 0

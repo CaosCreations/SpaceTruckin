@@ -25,9 +25,9 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         get => playerData.PlayerTotalLicencePointsAcquired;
     }
 
-    [Header("Set at Runtime")]
-    public bool isPaused;
-    public PlayerMovement playerMovement;
+    public bool IsPaused { get; set; }
+    public static GameObject PlayerObject { get; private set; }
+    public static PlayerMovement PlayerMovement { get; private set; }
 
     public static event System.Action onFinancialTransaction;
 
@@ -55,7 +55,16 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         {
             DataUtils.CreateSaveFolder(PlayerData.FOLDER_NAME);
         }
-        playerMovement = FindObjectOfType<PlayerMovement>();
+
+        PlayerObject = GameObject.FindGameObjectWithTag(PlayerConstants.PlayerTag);
+        if (PlayerObject != null)
+        {
+            PlayerMovement = PlayerObject.GetComponent<PlayerMovement>();
+        }
+        else
+        {
+            Debug.LogError("Player object not found");
+        }
 
         if (playerData == null)
         {
@@ -102,10 +111,11 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
 
     public void EnterMenuState()
     {
-        playerMovement.ResetAnimator();
-        Instance.isPaused = true;
+        PlayerMovement.ResetAnimator();
+        Instance.IsPaused = true;
     }
 
+    #region Persistence
     public void SaveData()
     {
         playerData.SaveData();
@@ -120,4 +130,5 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     {
         DataUtils.RecursivelyDeleteSaveData(PlayerData.FOLDER_NAME);
     }
+    #endregion
 }

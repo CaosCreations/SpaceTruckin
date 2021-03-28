@@ -22,13 +22,17 @@ public class HangarNodeUI : MonoBehaviour
     public Button hullButton;
 
     public Button upgradeButton;
-    public Button launchButton;
+    public Button startMissionButton;
+    public Button returnToQueueButton;
     public Button customizationButton;
+
+    public Image batteryChargeImage;
 
     [Header("Set at Runtime")]
     public GameObject shipPreview;
-    public HangarNode hangarNode;
+    public int hangarNode;
     public Ship shipToInspect;
+    private HangarSlot hangarSlot;
 
     private bool isInSubMenu;
     private readonly long fuelCostPerUnit = 1;
@@ -39,7 +43,8 @@ public class HangarNodeUI : MonoBehaviour
     private void OnEnable()
     {
         hangarNode = UIManager.Instance.hangarNode;
-        shipToInspect = ShipsManager.GetShipForNode(hangarNode);
+        hangarSlot = HangarManager.GetSlotByNode(hangarNode);
+        shipToInspect = hangarSlot.Ship;
 
         // There is no ship at this node, don't open UI
         if(shipToInspect == null || shipToInspect.IsLaunched)
@@ -49,8 +54,9 @@ public class HangarNodeUI : MonoBehaviour
         }
 
         PopulateUI();
-        fuelButton.button.interactable = ShouldFuelButtonBeInteractable();
-        launchButton.interactable = ShouldLaunchButtonBeInteractable();
+        fuelButton.Button.interactable = FuelButtonIsInteractable();
+        startMissionButton.interactable = StartMissionButtonIsInteractable();
+        SetBatteryChargeImage();
 
         fuelCostAfterLicences = GetFuelCostAfterLicences();
         Debug.Log("Fuel cost per unit after licence effect: " + fuelCostAfterLicences);
@@ -61,11 +67,11 @@ public class HangarNodeUI : MonoBehaviour
         Destroy(shipPreview);
     }
 
-    void Update()
+    private void Update()
     {
         if (isInSubMenu)
         {
-            if (Input.GetKeyDown(PlayerConstants.exit))
+            if (Input.GetKeyDown(PlayerConstants.ExitKey))
             {
                 SwitchPanel(HangarPanel.Main);
             }
@@ -92,7 +98,8 @@ public class HangarNodeUI : MonoBehaviour
         hullButton.AddOnClick(() => SwitchPanel(HangarPanel.Repair));
         upgradeButton.AddOnClick(() => SwitchPanel(HangarPanel.Upgrade));
         customizationButton.AddOnClick(() => SwitchPanel(HangarPanel.Customization));
-        launchButton.AddOnClick(Launch);
+        startMissionButton.AddOnClick(Launch);
+        returnToQueueButton.AddOnClick(Launch);
     }
 
     private void SetupShipPreview()
@@ -107,7 +114,7 @@ public class HangarNodeUI : MonoBehaviour
     {
         fuelTimer += Time.deltaTime;
 
-        if (fuelButton.isFueling
+        if (fuelButton.IsFueling
             && fuelTimer > fuelTimerInterval
             && shipToInspect.CurrentFuel < shipToInspect.MaxFuel
             && PlayerManager.Instance.CanSpendMoney(fuelCostPerUnit)
@@ -117,8 +124,8 @@ public class HangarNodeUI : MonoBehaviour
             shipToInspect.CurrentFuel++;
             fuelSlider.value = shipToInspect.GetFuelPercent();
             fuelTimer = 0;
-            fuelButton.button.interactable = ShouldFuelButtonBeInteractable();
-            launchButton.interactable = ShouldLaunchButtonBeInteractable();
+            fuelButton.Button.interactable = FuelButtonIsInteractable();
+            startMissionButton.interactable = StartMissionButtonIsInteractable();
         }
     }
 
@@ -151,17 +158,22 @@ public class HangarNodeUI : MonoBehaviour
 
     private void Launch()
     {
-        if (shipToInspect.CurrentFuel > 0
-            && shipToInspect.CurrentMission != null)
+        if (shipToInspect != null)
         {
-            ShipsManager.LaunchShip(hangarNode);
+            HangarManager.LaunchShip(hangarNode);
+
+            ScheduledMission scheduled = MissionsManager.GetScheduledMission(shipToInspect);
+            if (scheduled != null)
+            {
+                scheduled.Mission.StartMission();
+                Debug.Log($"{scheduled.Pilot.Name} (Pilot) has started {scheduled.Mission.Name} (Mission)");
+            }
             UIManager.ClearCanvases();
         }
         else
         {
-            Debug.Log("Ship has no fuel!");
+            Debug.Log($"{shipToInspect} (Ship) has no fuel!");
         }
-        
     }
 
     private void SetLayerRecursively(GameObject gameObject, int newLayer)
@@ -174,18 +186,19 @@ public class HangarNodeUI : MonoBehaviour
         }
     }
 
-    private bool ShouldFuelButtonBeInteractable()
+    private bool FuelButtonIsInteractable()
     {
         return shipToInspect.CurrentFuel < shipToInspect.MaxFuel
             && PlayerManager.Instance.CanSpendMoney(fuelCostPerUnit);
     }
 
-    private bool ShouldLaunchButtonBeInteractable()
+    private bool StartMissionButtonIsInteractable()
     {
         if (shipToInspect.CurrentMission != null)
         {
             return shipToInspect.CurrentFuel >= shipToInspect.CurrentMission.FuelCost
-                && shipToInspect.CurrentHullIntegrity > 0;
+                && shipToInspect.CurrentHullIntegrity > 0
+                && shipToInspect.CanWarp;
         }
         return false;
     }
@@ -193,5 +206,12 @@ public class HangarNodeUI : MonoBehaviour
     private long GetFuelCostAfterLicences()
     {
         return Convert.ToInt64(fuelCostPerUnit * (1 - LicencesManager.FuelDiscountEffect));
+    }
+
+    private void SetBatteryChargeImage()
+    {
+        batteryChargeImage.color = shipToInspect.CanWarp ?
+            HangarConstants.ChargedBatteryColour :
+            HangarConstants.DepletedBatteryColour;
     }
 }

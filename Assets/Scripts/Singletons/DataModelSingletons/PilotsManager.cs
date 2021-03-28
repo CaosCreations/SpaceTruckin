@@ -67,14 +67,23 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    public Pilot[] GetHiredPilots()
+    public static Pilot[] HiredPilots => Instance.Pilots.Where(p => p.IsHired).ToArray();
+
+    public static Pilot[] PilotsForHire => Instance.Pilots.Where(p => !p.IsHired).ToArray();
+
+    public static Pilot[] PilotsInQueue => Instance.Pilots
+            .Where(p => p.Ship.IsInQueue)
+            .ToArray();
+
+    public static bool PilotHasMission(Pilot pilot)
     {
-        return Instance.Pilots.Where(p => p.IsHired).ToArray();
+        return MissionsManager.GetScheduledMission(pilot) != null;
     }
 
-    public Pilot[] GetPilotsForHire()
+    public static bool PilotHasMissionInProgress(Pilot pilot)
     {
-        return Instance.Pilots.Where(p => !p.IsHired).ToArray();
+        ScheduledMission scheduled = MissionsManager.GetScheduledMission(pilot);
+        return scheduled?.Mission != null && scheduled.Mission.IsInProgress();
     }
 
     public void RandomisePilots()
@@ -98,6 +107,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         }
     }
 
+    #region Persistence
     public void SaveData()
     {
         foreach (Pilot pilot in Instance.Pilots)
@@ -116,6 +126,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
 
     public void DeleteData()
     {
-        Instance.DeleteData();
+        DataUtils.RecursivelyDeleteSaveData(Pilot.FOLDER_NAME);
     }
+    #endregion
 }
