@@ -851,7 +851,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   node: 2
-  shipInstance: {fileID: 0}
 --- !u!1001 &102621289
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1058,12 +1057,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 205330823}
   m_PrefabAsset: {fileID: 0}
---- !u!212 &129007671 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 1389270015817412045, guid: a06f1a9e44fccb3409ddc94a08e3cac6,
-    type: 3}
-  m_PrefabInstance: {fileID: 205330823}
-  m_PrefabAsset: {fileID: 0}
 --- !u!143 &129007673
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1106,7 +1099,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adfbf10908c7511478c1627713c1defc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderer: {fileID: 129007671}
+  _renderer: {fileID: 0}
   shadowOnly: 0
 --- !u!1 &132877855
 GameObject:
@@ -2503,6 +2496,12 @@ PrefabInstance:
       propertyPath: m_ScrollSensitivity
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 5136929912590927492, guid: d84bb0f39e8541f4f9524a9df8df9b87,
+        type: 3}
+      propertyPath: pilotSelectItemPrefab
+      value: 
+      objectReference: {fileID: 2442879683164484124, guid: 51ea1504ad1fb894eb2b7585acaa7240,
+        type: 3}
     - target: {fileID: 5429714492542327374, guid: d84bb0f39e8541f4f9524a9df8df9b87,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -4649,7 +4648,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adfbf10908c7511478c1627713c1defc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderer: {fileID: 0}
+  _renderer: {fileID: 0}
   shadowOnly: 0
 --- !u!65 &319016692
 BoxCollider:
@@ -4894,7 +4893,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adfbf10908c7511478c1627713c1defc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderer: {fileID: 0}
+  _renderer: {fileID: 0}
   shadowOnly: 0
 --- !u!65 &334914712
 BoxCollider:
@@ -6369,7 +6368,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   node: 5
-  shipInstance: {fileID: 0}
 --- !u!1 &600489519
 GameObject:
   m_ObjectHideFlags: 0
@@ -6978,7 +6976,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2.5518072, y: 1}
+    m_SensorSize: {x: 2.1418269, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -7660,7 +7658,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   node: 1
-  shipInstance: {fileID: 0}
 --- !u!4 &726683073 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e44bc196522222b41975efc0bf3aeee0,
@@ -8185,7 +8182,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   node: 3
-  shipInstance: {fileID: 0}
 --- !u!1 &898847699
 GameObject:
   m_ObjectHideFlags: 0
@@ -9023,7 +9019,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   node: 6
-  shipInstance: {fileID: 0}
 --- !u!1001 &993151652
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14953,7 +14948,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   node: 4
-  shipInstance: {fileID: 0}
 --- !u!1001 &1822436745
 PrefabInstance:
   m_ObjectHideFlags: 0

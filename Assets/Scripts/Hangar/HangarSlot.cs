@@ -2,14 +2,26 @@
 
 public class HangarSlot : MonoBehaviour
 {
-    public HangarNode node;
-    public ShipInstance shipInstance;
+    [SerializeField] private int node;
+    private Ship ship;
+    private ShipInstance shipInstance;
 
-    public void LaunchShip()
+    public void RequeueShip()
     {
         if (shipInstance != null)
         {
-            shipInstance.Launch();
+            shipInstance.Requeue();
+            Ship = null;
+            ShipInstance = null;
         }
     }
+
+    public int Node => node;
+    public Ship Ship { get => ship; set => ship = value; }
+    public ShipInstance ShipInstance { get => shipInstance; set => shipInstance = value; }
+    public bool IsUnlocked 
+    { 
+        get => Node <= LicencesManager.HangarSlotUnlockEffect + HangarConstants.StartingNumberOfSlots; 
+    } 
+    public bool IsOccupied { get => Ship != null; }
 }

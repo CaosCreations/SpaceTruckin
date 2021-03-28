@@ -9,7 +9,7 @@ public class MissionModifierOutcome : MissionOutcome
 
     public Sprite sprite;
 
-    public override void Process(Mission mission)
+    public override void Process(ScheduledMission mission)
     {
         foreach (MissionOutcome outcome in outcomes)
         {

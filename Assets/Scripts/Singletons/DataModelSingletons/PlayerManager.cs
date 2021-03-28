@@ -16,6 +16,14 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         get => playerData.PlayerTotalMoneyAcquired; 
         set => playerData.PlayerTotalMoneyAcquired = value;
     }
+    public int LicencePoints
+    {
+        get => playerData.PlayerLicencePoints;
+    }
+    public int TotalLicencePointsAcquired
+    {
+        get => playerData.PlayerTotalLicencePointsSpent;
+    }
 
     [Header("Set at Runtime")]
     public bool isPaused;
@@ -77,12 +85,28 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         onFinancialTransaction?.Invoke();
     }
 
+    public void AcquireLicence(Licence licence)
+    {
+        if (playerData.PlayerLicencePoints >= licence.PointsCost)
+        {
+            playerData.PlayerLicencePoints -= licence.PointsCost;
+            playerData.PlayerTotalLicencePointsSpent += licence.PointsCost;
+            licence.IsOwned = true;
+            Debug.Log($"{licence.Name} has been acquired\nRemaining LP: {playerData.PlayerLicencePoints}");
+        }
+        else
+        {
+            Debug.Log($"Player has insufficient LP to acquire {licence.Name}");
+        }
+    }
+
     public void EnterMenuState()
     {
         playerMovement.ResetAnimator();
         Instance.isPaused = true;
     }
 
+    #region Persistence
     public void SaveData()
     {
         playerData.SaveData();
@@ -97,4 +121,5 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     {
         DataUtils.RecursivelyDeleteSaveData(PlayerData.FOLDER_NAME);
     }
+    #endregion
 }

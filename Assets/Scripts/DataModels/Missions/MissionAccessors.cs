@@ -27,8 +27,6 @@
     {
         get => moneyNeededToUnlock; set => moneyNeededToUnlock = value;
     }
-    public Ship Ship { get => saveData.ship; set => saveData.ship = value; }
-    public Pilot Pilot { get => saveData.ship.Pilot; }
     public bool HasRandomOutcomes 
     { 
         get => hasRandomOutcomes || Outcomes == null || Outcomes.Length <= 0;

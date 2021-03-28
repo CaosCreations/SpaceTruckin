@@ -59,7 +59,7 @@ public class PilotNameManager : MonoBehaviour
 
 	private async Task<string[]> LoadNamePoolAsync(string fileName)
     {
-		string namePool = await DataUtils.ReadTextFileAsync(fileName);
+		string namePool = await DataUtils.ReadFileAsync(fileName);
 		return namePool.Split('\n');
     }
 

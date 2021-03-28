@@ -6,25 +6,22 @@ using UnityEngine.UI;
 public class PilotsUI : MonoBehaviour
 {
 	// The parent object 
-	public GameObject crewPanel;
-	
-	/// <summary>
-	///		There are two scroll views, one for the list of currently hired pilots,
-	///		and the other for the list of pilots that are available to hire. 
-	/// </summary>
+	public GameObject fleetPanel;
+
+	// Scroll view for pilots currently hired
 	public GameObject hiredPilotsList;
 	public GameObject hiredPilotsListHeader;
 	public Transform hiredPilotsScrollViewContent;
-	
+
+	// Scroll view for pilots available to hire
 	public GameObject pilotsForHireList; 
 	public GameObject pilotsForHireListHeader;
 	public Transform pilotsForHireScrollViewContent;
 
-	public GameObject crewItemPrefab;
-	public GameObject buttonPrefab;
+	public GameObject pilotListItemPrefab;
 	public GameObject backButtonPrefab;
 	public GameObject hireButtonPrefab;
-	private Button hireButton;	
+	private Button hireButton;
 
 	private GameObject pilotProfilePanel;
 	private Text pilotDetailsText; 
@@ -63,32 +60,29 @@ public class PilotsUI : MonoBehaviour
 
 	private void PopulateScrollViews()
     {
-		PopulateScrollView(PilotsManager.Instance.GetHiredPilots(), hiredPilotsScrollViewContent);
-		PopulateScrollView(PilotsManager.Instance.GetPilotsForHire(), pilotsForHireScrollViewContent);
+		PopulateScrollView(PilotsManager.HiredPilots, hiredPilotsScrollViewContent);
+		PopulateScrollView(PilotsManager.PilotsForHire, pilotsForHireScrollViewContent);
     }
 
 	private void PopulateScrollView(Pilot[] pilots, Transform scrollViewContent)
 	{
-		CleanScrollView(scrollViewContent);
+		scrollViewContent.DestroyDirectChildren();
 		if (pilots != null)
         {
 			foreach (Pilot pilot in pilots)
 			{
-				GameObject crewItem = Instantiate(crewItemPrefab, scrollViewContent);
-				crewItem.GetComponent<Button>().AddOnClick(() => ShowPilotProfilePanel(pilot));
-				crewItem.GetComponentInChildren<Text>().SetText(pilot.Name, FontType.ListItem);
-			}
+				if (pilot == null)
+                {
+					continue;
+                }
+                Instantiate(pilotListItemPrefab, scrollViewContent)
+					.GetComponent<Button>()
+                    .AddOnClick(() => ShowPilotProfilePanel(pilot))
+                    .SetText(pilot.Name, FontType.ListItem);
+            }
         }
 	}
 
-	private void CleanScrollView(Transform scrollViewContent)
-    {
-		foreach (Transform transform in scrollViewContent)
-        {
-			Destroy(transform.gameObject);
-        }
-    }
-	
 	private void ShowPilotProfilePanel(Pilot pilot)
 	{
 		SetPilotListVisibility(visible: false);
@@ -151,7 +145,7 @@ public class PilotsUI : MonoBehaviour
 	private void GeneratePilotProfilePanel()
 	{
 		pilotProfilePanel = new GameObject(PilotsConstants.profilePanelName);
-		pilotProfilePanel.transform.SetParent(crewPanel.transform);
+		pilotProfilePanel.transform.SetParent(fleetPanel.transform);
 
 		RectTransform rectTransform = pilotProfilePanel.AddComponent<RectTransform>();
 		rectTransform.Reset();
@@ -198,7 +192,7 @@ public class PilotsUI : MonoBehaviour
 
 		if (string.IsNullOrEmpty(pilot.Description))
 		{
-			pilot.Description = PlaceholderUtils.GenerateLoremIpsum();
+			pilot.Description = LoremIpsumGenerator.GenerateLoremIpsum();
 		}
 
 		builder.AppendLineWithBreaks("Description: " + pilot.Description);

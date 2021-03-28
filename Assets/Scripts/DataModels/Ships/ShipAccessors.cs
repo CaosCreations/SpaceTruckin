@@ -6,46 +6,26 @@ public partial class Ship
     // This class is just for property accessors. 
     // The fields are all located in Ship.cs. 
 
-    public string Name { get => shipName; }
+    public string Name => shipName;
+    public bool IsLaunched => ShipsManager.ShipIsLaunched(this);
 
-    public bool IsOwned
-    {
-        get => saveData.isOwned; set => saveData.isOwned = value;
-    }
-
-    public bool IsLaunched
-    {
-        get => saveData.isLaunched; set => saveData.isLaunched = value;
-    }
-
+    // Owned but not out on a mission nor docked
+    public bool IsInQueue => !IsLaunched && !HangarManager.ShipIsDocked(this);
+    
     public int CurrentFuel
     {
         get => saveData.currentFuel; set => saveData.currentFuel = value;
     }
-
     public int MaxFuel { get => maxFuel; set => maxFuel = value; }
-
     public float CurrentHullIntegrity
     {
         get => saveData.currenthullIntegrity; set => saveData.currenthullIntegrity = value;
     }
-
-    public HangarNode HangarNode
-    {
-        get => saveData.hangarNode; set => saveData.hangarNode = value;
-    }
-
-    public Mission CurrentMission 
-    { 
-        get => saveData.currentMission; set => saveData.currentMission = value; 
-    }
-
     public GameObject ShipPrefab
     {
         get => shipPrefab; set => shipPrefab = value;
     }
-
     public Sprite Avatar { get => shipAvatar; set => shipAvatar = value; }
-
-    public Pilot Pilot { get => pilot; set => pilot = value; }
+    public Pilot Pilot => PilotsManager.Instance.Pilots.FirstOrDefault(x => x.Ship == this);
+    public Mission CurrentMission => MissionsManager.GetMission(this);
 }

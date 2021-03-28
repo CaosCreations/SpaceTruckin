@@ -21,7 +21,7 @@ public class UIManager : MonoBehaviour
     public TextMeshPro interactionTextMesh;
 
     public UICanvasType interactableType;
-    public HangarNode hangarNode;
+    public int hangarNode;
 
     public static event Action onCanvasActivated;
     public static event Action onCanvasDeactivated;
@@ -121,7 +121,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public static void SetCanInteractHangarNode(HangarNode node, bool canInteract)
+    public static void SetCanInteractHangarNode(int node, bool canInteract)
     {
         if (canInteract)
         {

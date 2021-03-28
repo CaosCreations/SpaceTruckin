@@ -44,6 +44,39 @@ public static class DataUtils
         }
     }
 
+    public static async void SaveFileAsync(string fileName, string folderName, string fileContents)
+    {
+        string folderPath = GetSaveFolderPath(folderName);
+        if (!Directory.Exists(folderPath))
+        {
+            try
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"{e.Message}\n{e.StackTrace}");
+            }
+        }
+
+        string filePath = Path.Combine(folderPath, fileName + FILE_EXTENSION);
+        try
+        {
+            var buffer = Encoding.UTF8.GetBytes(fileContents);
+
+            using (var fileStream = new FileStream(filePath, FileMode.OpenOrCreate,
+                FileAccess.Write, FileShare.None, buffer.Length, true))
+            {
+                fileStream.SetLength(0);
+                await fileStream.WriteAsync(buffer, 0, buffer.Length);
+            }
+        }
+        catch (Exception e)
+        {
+            LogIOError(e, filePath);
+        }
+    }
+
     public static async Task<T> LoadFileAsync<T>(string fileName, string folderName) where T : class, new()
     {
         string folderPath = GetSaveFolderPath(folderName);
@@ -71,6 +104,11 @@ public static class DataUtils
     public static string GetSaveFolderPath(string folderName)
     {
         return Path.GetFullPath(Path.Combine(Application.persistentDataPath, folderName));
+    }
+
+    public static string GetSaveFilePath(string folderName, string fileName)
+    {
+        return Path.GetFullPath(Path.Combine(Application.persistentDataPath, folderName, fileName + FILE_EXTENSION));
     }
 
     public static void RecursivelyDeleteSaveData(string folderName)
@@ -103,7 +141,7 @@ public static class DataUtils
         Directory.CreateDirectory(GetSaveFolderPath(folderName));
     }
 
-    public async static Task<string> ReadTextFileAsync(string filePath)
+    public async static Task<string> ReadFileAsync(string filePath)
     {
         string text = string.Empty;
         if (File.Exists(filePath))
@@ -115,7 +153,7 @@ public static class DataUtils
         }
         else
         {
-            Debug.Log($"Text file at path {filePath} does not exist");
+            Debug.Log($"File at path {filePath} does not exist");
         }
         return text;
     }

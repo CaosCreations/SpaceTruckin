@@ -1,10 +1,4 @@
 ﻿using UnityEngine;
-using System.Linq;
-
-public enum HangarNode
-{
-    None, One, Two, Three, Four, Five, Six
-}
 
 public class ShipsManager : MonoBehaviour, IDataModelManager
 {
@@ -13,8 +7,6 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
     public GameObject shipInstancePrefab;
     [SerializeField] private ShipsContainer shipsContainer;
     public Ship[] Ships { get => shipsContainer.ships; }
-
-    public HangarSlot[] hangarSlots;
 
     private void Awake()
     {
@@ -40,8 +32,6 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         {
             DataUtils.CreateSaveFolder(Ship.FOLDER_NAME);
         }
-        hangarSlots = FindObjectsOfType<HangarSlot>();
-        UpdateHangarShips();
 
         if (Ships == null)
         {
@@ -51,107 +41,20 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
 
     public static void DamageShip(Ship ship, int damage)
     {
-        ship.CurrentHullIntegrity = Mathf.Max(
-            0, ship.CurrentHullIntegrity - damage);
-    }
-
-    public static void LaunchShip(HangarNode node)
-    {
-        foreach (HangarSlot slot in Instance.hangarSlots)
-        {
-            if (slot.node == node)
-            {
-                Ship ship = GetShipForNode(node);
-                if(ship != null)
-                {
-                    ship.CurrentMission.StartMission();
-                    ship.IsLaunched = true;
-                    slot.LaunchShip();
-                }
-            }
-        }
-    }
-
-    public static void DockShip(Ship ship)   
-    {
-        ship.DeductFuel();
-        ship.IsLaunched = false;
-        ship.CurrentMission.Ship = null;
-        ship.CurrentMission = null;
-    }
-
-    public static Ship GetShipForNode(HangarNode node)
-    {
-        foreach(Ship ship in Instance.Ships)
-        {
-            if(ship.HangarNode == node)
-            {
-                return ship;
-            }
-        }
-
-        return null;
-    }
-
-    public static void UpdateHangarShips()
-    {
-        ClearSlots();
-        foreach (Ship ship in Instance.Ships)
-        {
-            if (ship.IsOwned && !ship.IsLaunched)
-            {
-                HangarSlot shipSlot = GetShipSlot(ship);
-
-                if(shipSlot != null)
-                {
-                    GameObject shipParentInstance = Instantiate(Instance.shipInstancePrefab, shipSlot.transform);
-                    Instantiate(ship.ShipPrefab, shipParentInstance.transform);
-                    ShipInstance instance = shipParentInstance.GetComponent<ShipInstance>();
-                    shipSlot.shipInstance = instance;
-                }
-                else
-                {
-                    Debug.Log("Ship Hangar node not set");
-                }
-            }
-        }
-    }
-
-    public static Ship NodeHasShip(HangarNode node)
-    {
-        Ship ship = Instance.Ships.Where(x => x.HangarNode == node).FirstOrDefault();
         if (ship != null)
         {
-            return ship;
+            ship.CurrentHullIntegrity = Mathf.Max(
+                0, ship.CurrentHullIntegrity - damage);
         }
-
-        return null;
     }
 
-    private static HangarSlot GetShipSlot(Ship ship)
+    public static bool ShipIsLaunched(Ship ship)
     {
-        foreach(HangarSlot slot in Instance.hangarSlots)
-        {
-            if(slot.node == ship.HangarNode)
-            {
-                return slot;
-            }
-        }
-
-        return null;
+        ScheduledMission scheduled = MissionsManager.GetScheduledMission(ship);
+        return scheduled?.Mission != null && scheduled.Mission.IsInProgress();
     }
 
-    private static void ClearSlots()
-    {
-        foreach (HangarSlot slot in Instance.hangarSlots)
-        {
-            if (slot.transform.childCount > 0)
-            {
-                Destroy(slot.transform.GetChild(0).gameObject);
-            }
-        }
-    }
-
+    #region Persistence
     public void SaveData()
     {
         foreach (Ship ship in Instance.Ships)
@@ -172,4 +75,5 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
     {
         DataUtils.RecursivelyDeleteSaveData(Ship.FOLDER_NAME);
     }
+    #endregion
 }

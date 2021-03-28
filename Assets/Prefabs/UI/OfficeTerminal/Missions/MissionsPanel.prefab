@@ -305,8 +305,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2951288913603219694}
   m_HandleRect: {fileID: 4497250543913872234}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.48929873
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -504,7 +504,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -7201.016, y: 811.2991}
+  m_AnchoredPosition: {x: -0.00048828125, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &5383537696972837750
@@ -828,8 +828,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1175425182315388254}
   m_HandleRect: {fileID: 6847476741033070606}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 0
+  m_Value: 1
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -891,7 +891,10 @@ MonoBehaviour:
   scrollViewContent: {fileID: 5129938362553061448}
   missionItemPrefab: {fileID: 7301272531736026728, guid: c65380a869684b847bc0a2653704950a,
     type: 3}
-  missionSlots:
+  pilotSelectItemPrefab: {fileID: 2442879683164484124, guid: 51ea1504ad1fb894eb2b7585acaa7240,
+    type: 3}
+  pilotSelectCloseButton: {fileID: 0}
+  scheduleSlots:
   - {fileID: 6560387683185120884}
   - {fileID: 5846485876630898351}
   - {fileID: 4023447684295124617}

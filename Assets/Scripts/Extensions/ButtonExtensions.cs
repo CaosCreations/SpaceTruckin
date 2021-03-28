@@ -11,12 +11,12 @@ public static class ButtonExtensions
         return self;
     }
 
-    public static void SetText(this Button self, string text)
+    public static void SetText(this Button self, string text, FontType fontType = FontType.Button)
     {
         Text buttonText = self.GetComponentInChildren<Text>();
-        if (buttonText != null)
+        if (buttonText != null && !string.IsNullOrWhiteSpace(text))
         {
-            buttonText.SetText(text, FontType.Button);
+            buttonText.SetText(text, fontType);
         }
     }
 
@@ -27,5 +27,11 @@ public static class ButtonExtensions
         {
             image.color = newColour;
         }
+    }
+
+    public static Button SetInteractable(this Button self, bool value)
+    {
+        self.interactable = value;
+        return self;
     }
 }

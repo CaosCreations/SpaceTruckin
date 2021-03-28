@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9adadca2c03c576429bd49e1c5c9a2e3, type: 3}
+  m_Name: FuelDiscountLicence
+  m_EditorClassIdentifier: 
+  licenceName: Fuel discount licence
+  description: Get cheaper fuel
+  tier: 2
+  pointsCost: 1
+  prerequisiteLicence: {fileID: 11400000, guid: e6636acfdf8e91642a14034e9b4fdbe9,
+    type: 2}
+  effect: {fileID: 11400000, guid: ead8a74f9b2d48f4d93fa5e722f3dbaa, type: 2}
+  saveData:
+    isUnlocked: 1
+    isOwned: 0

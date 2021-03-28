@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9adadca2c03c576429bd49e1c5c9a2e3, type: 3}
+  m_Name: MoneyLicence 3
+  m_EditorClassIdentifier: 
+  licenceName: Money licence 3
+  description: Get even more money
+  tier: 4
+  pointsCost: 5
+  prerequisiteLicence: {fileID: 11400000, guid: 18b87f8b106c98e4ebb1d27acbcc90d4,
+    type: 2}
+  effect: {fileID: 11400000, guid: d06b7a30e84ffd84aadf3f31cf324690, type: 2}
+  saveData:
+    isUnlocked: 1
+    isOwned: 0

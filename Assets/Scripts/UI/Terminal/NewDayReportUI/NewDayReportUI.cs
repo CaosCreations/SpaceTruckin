@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class NewDayReportUI : MonoBehaviour
 {
     public GameObject reportCardPrefab;
     public GameObject reportCardInstance; 
     public NewDayReportCard reportCard;
+    private Button nextCardButton;
     private int currentReportIndex;
 
     private TerminalUIManager terminalManager;
@@ -14,11 +16,12 @@ public class NewDayReportUI : MonoBehaviour
         get => ArchivedMissionsManager.Instance.MissionsCompletedYesterday[currentReportIndex];
     }
 
-    private void Start()
+    private void Awake()
     {
         BedCanvasUI.OnEndOfDay += () => HasBeenViewed = false;
         terminalManager = GetComponentInParent<TerminalUIManager>();
-    } 
+        nextCardButton = GetComponentInChildren<Button>(includeInactive: true);
+    }
     
     private void OnDisable() => HasBeenViewed = true;
 
@@ -26,7 +29,8 @@ public class NewDayReportUI : MonoBehaviour
     {
         reportCardInstance.SetActive(true);
         currentReportIndex = 0;
-        ShowNextReport();
+        nextCardButton.AddOnClick(ShowNextReport);
+        nextCardButton.onClick.Invoke();
     }
 
     private void ShowNextReport()
@@ -39,7 +43,6 @@ public class NewDayReportUI : MonoBehaviour
                 .MissionsCompletedYesterday.Count - 1)
             {
                 currentReportIndex++;
-                reportCard.SetupNextCardListener(CurrentMissionToReport);
             }
             else
             {

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class HangarNodeUI : MonoBehaviour
@@ -26,18 +27,19 @@ public class HangarNodeUI : MonoBehaviour
 
     [Header("Set at Runtime")]
     public GameObject shipPreview;
-    public HangarNode hangarNode;
+    public int hangarNode;
     public Ship shipToInspect;
 
     private bool isInSubMenu;
-    private long fuelCostPerUnit = 1;
+    private readonly long fuelCostPerUnit = 1;
+    private long fuelCostAfterLicences;
     private float fuelTimer = 0;
-    private float fuelTimerInterval = 0.025f;
+    private readonly float fuelTimerInterval = 0.025f;
 
     private void OnEnable()
     {
         hangarNode = UIManager.Instance.hangarNode;
-        shipToInspect = ShipsManager.GetShipForNode(hangarNode);
+        shipToInspect = HangarManager.GetShipByNode(hangarNode);
 
         // There is no ship at this node, don't open UI
         if(shipToInspect == null || shipToInspect.IsLaunched)
@@ -49,6 +51,9 @@ public class HangarNodeUI : MonoBehaviour
         PopulateUI();
         fuelButton.button.interactable = ShouldFuelButtonBeInteractable();
         launchButton.interactable = ShouldLaunchButtonBeInteractable();
+
+        fuelCostAfterLicences = GetFuelCostAfterLicences();
+        Debug.Log("Fuel cost per unit after licence effect: " + fuelCostAfterLicences);
     }
 
     private void OnDisable()
@@ -82,19 +87,12 @@ public class HangarNodeUI : MonoBehaviour
         SetupShipPreview();
 
         fuelSlider.value = shipToInspect.GetFuelPercent();
-
         hullSlider.value = shipToInspect.GetHullPercent();
-        hullButton.onClick.RemoveAllListeners();
-        hullButton.onClick.AddListener(() => SwitchPanel(HangarPanel.Repair));
 
-        upgradeButton.onClick.RemoveAllListeners();
-        upgradeButton.onClick.AddListener(() => SwitchPanel(HangarPanel.Upgrade));
-
-        customizationButton.onClick.RemoveAllListeners();
-        customizationButton.onClick.AddListener(() => SwitchPanel(HangarPanel.Customization));
-
-        launchButton.onClick.RemoveAllListeners();
-        launchButton.onClick.AddListener(Launch);
+        hullButton.AddOnClick(() => SwitchPanel(HangarPanel.Repair));
+        upgradeButton.AddOnClick(() => SwitchPanel(HangarPanel.Upgrade));
+        customizationButton.AddOnClick(() => SwitchPanel(HangarPanel.Customization));
+        launchButton.AddOnClick(Launch);
     }
 
     private void SetupShipPreview()
@@ -115,7 +113,7 @@ public class HangarNodeUI : MonoBehaviour
             && PlayerManager.Instance.CanSpendMoney(fuelCostPerUnit)
             )
         {
-            PlayerManager.Instance.SpendMoney(fuelCostPerUnit);
+            PlayerManager.Instance.SpendMoney(fuelCostAfterLicences);
             shipToInspect.CurrentFuel++;
             fuelSlider.value = shipToInspect.GetFuelPercent();
             fuelTimer = 0;
@@ -156,14 +154,20 @@ public class HangarNodeUI : MonoBehaviour
         if (shipToInspect.CurrentFuel > 0
             && shipToInspect.CurrentMission != null)
         {
-            ShipsManager.LaunchShip(hangarNode);
+            HangarManager.RequeueShip(hangarNode);
+
+            ScheduledMission scheduled = MissionsManager.GetScheduledMission(shipToInspect);
+            if (scheduled != null)
+            {
+                scheduled.Mission.StartMission();
+                Debug.Log($"{scheduled.Pilot} has started {scheduled.Mission}");
+            }
             UIManager.ClearCanvases();
         }
         else
         {
             Debug.Log("Ship has no fuel!");
         }
-        
     }
 
     private void SetLayerRecursively(GameObject gameObject, int newLayer)
@@ -190,5 +194,10 @@ public class HangarNodeUI : MonoBehaviour
                 && shipToInspect.CurrentHullIntegrity > 0;
         }
         return false;
+    }
+
+    private long GetFuelCostAfterLicences()
+    {
+        return Convert.ToInt64(fuelCostPerUnit * (1 - LicencesManager.FuelDiscountEffect));
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "MoneyOutcome", menuName = "ScriptableObjects/Missions/Outcomes/MoneyOutcome", order = 1)]
 public class MoneyOutcome : MissionOutcome
@@ -8,14 +9,21 @@ public class MoneyOutcome : MissionOutcome
     public long MoneyMin { get => moneyMin; set => moneyMin = value; }
     public long MoneyMax { get => moneyMax; set => moneyMax = value; }
 
-    public override void Process(Mission mission)
+    public override void Process(ScheduledMission scheduled)
     {
-        long moneyEarned = (long)Random.Range(moneyMin, moneyMax);
-        PlayerManager.Instance.ReceiveMoney(moneyEarned);
+        double moneyEarned = UnityEngine.Random.Range(moneyMin, moneyMax);
+        double earningsAfterLicences = moneyEarned * (1 + LicencesManager.MoneyEffect);
+        long earnings64 = Convert.ToInt64(earningsAfterLicences);
+        PlayerManager.Instance.ReceiveMoney(earnings64);
 
-        if (mission.MissionToArchive != null)
+        long moneyIncrease64 = Convert.ToInt64(earningsAfterLicences - moneyEarned);
+        if (scheduled.Mission.MissionToArchive != null)
         {
-            mission.MissionToArchive.TotalMoneyEarned += moneyEarned;
+            scheduled.Mission.MissionToArchive.TotalMoneyIncrease += moneyIncrease64;
+            scheduled.Mission.MissionToArchive.TotalMoneyEarned += earnings64;
         }
+        Debug.Log("Base money earned: " + moneyEarned);
+        Debug.Log("Money increase due to licences: " + (earnings64 - moneyEarned).ToString());
+        Debug.Log("Total money earned: " + earnings64);
     }
 }
