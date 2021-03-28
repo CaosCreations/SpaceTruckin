@@ -22,7 +22,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     }
     public int TotalLicencePointsAcquired
     {
-        get => playerData.PlayerTotalLicencePointsSpent;
+        get => playerData.PlayerTotalLicencePointsAcquired;
     }
 
     public bool IsPaused { get; set; }
@@ -99,7 +99,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         if (playerData.PlayerLicencePoints >= licence.PointsCost)
         {
             playerData.PlayerLicencePoints -= licence.PointsCost;
-            playerData.PlayerTotalLicencePointsSpent += licence.PointsCost;
+            playerData.PlayerTotalLicencePointsAcquired += licence.PointsCost;
             licence.IsOwned = true;
             Debug.Log($"{licence.Name} has been acquired\nRemaining LP: {playerData.PlayerLicencePoints}");
         }

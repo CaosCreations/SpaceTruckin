@@ -37,7 +37,7 @@ public class LicencesEditor : MonoBehaviour
         {
             var playerData = EditorHelper.GetAsset<PlayerData>();
             playerData.PlayerLicencePoints += points;
-            playerData.PlayerTotalLicencePointsSpent += points;
+            playerData.PlayerTotalLicencePointsAcquired += points;
             EditorUtility.SetDirty(playerData);
         }
         catch (Exception ex)

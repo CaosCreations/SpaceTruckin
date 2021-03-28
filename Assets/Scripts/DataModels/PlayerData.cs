@@ -36,7 +36,7 @@ public class PlayerData : ScriptableObject, IDataModel
 
     }
 
-    public int PlayerTotalLicencePointsSpent
+    public int PlayerTotalLicencePointsAcquired
     {
         get => saveData.playerTotalLicencePointsAcquired;
         set => saveData.playerTotalLicencePointsAcquired = value;

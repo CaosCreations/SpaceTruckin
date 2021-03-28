@@ -50,6 +50,7 @@ public class BedCanvasUI : MonoBehaviour
 
     private void EndDay()
     {
+        StartCoroutine(WaitForShipsToDock());
         MissionsManager.UpdateMissionSchedule();
         OnEndOfDay?.Invoke();
 
@@ -60,5 +61,10 @@ public class BedCanvasUI : MonoBehaviour
         ShipsManager.Instance.SaveData();
         MessagesManager.Instance.SaveData();
         LicencesManager.Instance.SaveData();
+    }
+
+    private IEnumerator WaitForShipsToDock()
+    {
+        yield return new WaitForSeconds(timeToDock);
     }
 }
