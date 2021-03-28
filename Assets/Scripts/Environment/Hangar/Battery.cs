@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Battery : MonoBehaviour
+public class Battery : InteractableObject
 {
     public bool IsCharged { get; set; }
 
@@ -48,8 +48,7 @@ public class Battery : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag(PlayerConstants.PlayerTag)
-            && Input.GetKeyDown(PlayerConstants.ActionKey))
+        if (IsPlayerColliding && Input.GetKey(PlayerConstants.ActionKey))
         {
             if (PlayerIsHolding())
             {

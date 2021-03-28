@@ -57,7 +57,7 @@ public class UIManager : MonoBehaviour
             ClearCanvases();
         }
         
-        if(interactableType != UICanvasType.None)
+        if (interactableType != UICanvasType.None)
         {
             interactionTextMesh.gameObject.SetActive(true);
             interactionTextMesh.text = GetInteractionString();

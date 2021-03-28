@@ -5,7 +5,7 @@ public class BatteryChargePoint : InteractableObject
     private void OnTriggerStay(Collider other)
     {
         if (IsPlayerColliding
-            && Input.GetKeyDown(PlayerConstants.ActionKey))
+            && Input.GetKey(PlayerConstants.ActionKey))
         {
             Battery battery = other.GetComponentInChildren<Battery>();
             
