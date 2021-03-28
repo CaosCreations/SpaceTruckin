@@ -31,8 +31,13 @@ public class MissionsEditor : MonoBehaviour
     {
         try
         {
-            AcceptAll();
-            PlayerEditor.SetMoney(GetHighestMoneyNeededToUnlock());
+            long moneyNeeded = GetHighestMoneyNeededToUnlock();
+            long currentMoney = EditorHelper.GetAsset<PlayerData>().PlayerMoney;
+
+            if (currentMoney < moneyNeeded)
+            {
+                PlayerEditor.SetMoney(moneyNeeded);
+            }
             Debug.Log("All missions unlocked");
         }
         catch (Exception ex)
