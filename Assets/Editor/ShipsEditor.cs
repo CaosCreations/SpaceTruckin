@@ -5,10 +5,10 @@ using UnityEngine;
 public class ShipsEditor : MonoBehaviour
 {
     [MenuItem("Space Truckin/Ships/Max Out Resources")]
-    private static void MaxOutResources() => MaxOutOrDepleteResources(true);
+    private static void MaxOutResources() => MaxOutOrDepleteResources(isMaxedOut: true);
 
     [MenuItem("Space Truckin/Ships/Deplete All Resources")]
-    private static void DepleteResources() => MaxOutOrDepleteResources(false);
+    private static void DepleteResources() => MaxOutOrDepleteResources(isMaxedOut: false);
 
     private static void MaxOutOrDepleteResources(bool isMaxedOut)
     {

@@ -92,10 +92,10 @@ public class MissionsEditor : MonoBehaviour
 
     public static void DeleteSaveData()
     {
-        var shipsContainer = EditorHelper.GetAsset<ShipsContainer>();
-        foreach (var ship in shipsContainer.ships)
+        var missionContainer = EditorHelper.GetAsset<MissionContainer>();
+        foreach (var mission in missionContainer.missions)
         {
-            SaveDataEditor.NullifyFields(ship.saveData);
+            SaveDataEditor.NullifyFields(mission.saveData);
         }
     }
 }
