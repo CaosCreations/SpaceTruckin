@@ -12,6 +12,7 @@ public class NoticeBoard : MonoBehaviour
     public Text jobNameText;
     public Text customerNameText;
     public Text cargoText;
+    public Text descriptionText;
     public Text rewardText;
     public Button acceptJobButton;
 
@@ -27,31 +28,28 @@ public class NoticeBoard : MonoBehaviour
     private void OnEnable()
     {
         selectedMission = null;
-        CleanDetailPane();
+        CleanDetailPanel();
         CleanScrollView();
         PopulateScrollView();
     }
 
-    void AcceptMission()
+    private void AcceptMission()
     {
         if(selectedMission != null)
         {
             selectedMission.HasBeenAccepted = true;
             CleanScrollView();
             PopulateScrollView();
-            CleanDetailPane();
+            CleanDetailPanel();
         }
     }
 
-    void CleanScrollView()
+    private void CleanScrollView()
     {
-        foreach(Transform child in scrollViewContent.transform)
-        {
-            Destroy(child.gameObject);
-        }
+        scrollViewContent.transform.DestroyDirectChildren();
     }
 
-    void CleanDetailPane()
+    private void CleanDetailPanel()
     {
         jobNameText.text = string.Empty;
         customerNameText.text = string.Empty;
@@ -59,7 +57,7 @@ public class NoticeBoard : MonoBehaviour
         rewardText.text = string.Empty;
     }
 
-    void PopulateScrollView()
+    private void PopulateScrollView()
     {
         foreach(Mission mission in MissionsManager.Instance.Missions)
         {
@@ -79,6 +77,7 @@ public class NoticeBoard : MonoBehaviour
         jobNameText.SetText(selectedMission.Name);
         customerNameText.SetText(selectedMission.Customer);
         cargoText.SetText(selectedMission.Cargo);
+        descriptionText.SetText(selectedMission.Description);
         rewardText.SetText(MissionDetailsUI.BuildRewardString(missionToSelect));
     }
 }
