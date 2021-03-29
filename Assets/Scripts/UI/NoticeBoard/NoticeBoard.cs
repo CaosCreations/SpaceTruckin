@@ -31,16 +31,18 @@ public class NoticeBoard : MonoBehaviour
         CleanDetailPanel();
         CleanScrollView();
         PopulateScrollView();
+        acceptJobButton.interactable = false;
     }
 
     private void AcceptMission()
     {
         if(selectedMission != null)
         {
-            selectedMission.HasBeenAccepted = true;
             CleanScrollView();
             PopulateScrollView();
             CleanDetailPanel();
+            selectedMission.HasBeenAccepted = true;
+            acceptJobButton.interactable = false;
         }
     }
 
@@ -51,10 +53,11 @@ public class NoticeBoard : MonoBehaviour
 
     private void CleanDetailPanel()
     {
-        jobNameText.text = string.Empty;
-        customerNameText.text = string.Empty;
-        cargoText.text = string.Empty;
-        rewardText.text = string.Empty;
+        jobNameText.SetText(string.Empty);
+        customerNameText.SetText(string.Empty);
+        cargoText.SetText(string.Empty);
+        descriptionText.SetText(string.Empty);
+        rewardText.SetText(string.Empty);
     }
 
     private void PopulateScrollView()
@@ -79,5 +82,6 @@ public class NoticeBoard : MonoBehaviour
         cargoText.SetText(selectedMission.Cargo);
         descriptionText.SetText(selectedMission.Description);
         rewardText.SetText(MissionDetailsUI.BuildRewardString(missionToSelect));
+        acceptJobButton.interactable = true;
     }
 }
