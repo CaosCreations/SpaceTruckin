@@ -277,6 +277,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -800,6 +801,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -894,6 +896,10 @@ MonoBehaviour:
   pilotSelectItemPrefab: {fileID: 2442879683164484124, guid: 51ea1504ad1fb894eb2b7585acaa7240,
     type: 3}
   pilotSelectCloseButton: {fileID: 0}
+  missionsUnavailablePrefab: {fileID: 7495960371826234808, guid: 1656ea69650ab0a4c85c6f2d719abdce,
+    type: 3}
+  pilotsUnavailablePrefab: {fileID: 930874488124841848, guid: cb92f9a4f16a7034c98b7d40b98af2a6,
+    type: 3}
   scheduleSlots:
   - {fileID: 6560387683185120884}
   - {fileID: 5846485876630898351}
@@ -913,7 +919,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8946bc6f3edc509418831f5f22bc70f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missionDetails: {fileID: 0}
+  missionDetailsPrefab: {fileID: 0}
+  missionDetails: {fileID: 3716876146242060348, guid: 8ae1cad5ec8f35740b1e213573c78d0e,
+    type: 3}
   missionBeingDisplayed: {fileID: 0}
 --- !u!114 &6879104490178104362
 MonoBehaviour:

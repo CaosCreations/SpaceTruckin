@@ -9,7 +9,13 @@ public class MissionsUI : MonoBehaviour
     public GameObject pilotSelectItemPrefab;
     public Button pilotSelectCloseButton;
 
+    public GameObject missionsUnavailablePrefab;
+    public GameObject pilotsUnavailablePrefab;
+    private GameObject missionsUnavailableText;
+    private GameObject pilotsUnavailableText;
+
     public MissionScheduleSlot[] scheduleSlots;
+    //private enum UnavailableMessageType { PilotsUnavailable, MissionsUnavailable };
 
     private void OnEnable()
     {
@@ -50,8 +56,9 @@ public class MissionsUI : MonoBehaviour
     public void PopulatePilotSelect(MissionScheduleSlot scheduleSlot, Mission mission = null)
     {
         scrollViewContent.transform.DestroyDirectChildren();
+        pilotsUnavailableText.DestroyIfExists();
         
-        if (PilotsManager.PilotsInQueue != null)
+        if (!PilotsManager.PilotsInQueue.IsNullOrEmpty())
         {
             foreach (Pilot pilot in PilotsManager.PilotsInQueue)
             {
@@ -61,6 +68,11 @@ public class MissionsUI : MonoBehaviour
                     pilotSelectItem.GetComponent<PilotSelectItem>().Init(pilot, scheduleSlot, mission);
                 }
             }
+        }
+        else
+        {
+            // Show a message saying there are no pilots available
+            Instantiate(pilotsUnavailablePrefab, scrollViewContent.transform);
         }
     }
 
@@ -83,7 +95,7 @@ public class MissionsUI : MonoBehaviour
                     }
                 }
 
-                HangarSlot hangarSlot = HangarManager.GetSlotByNode(scheduleSlot.hangarNode); // Reorder
+                HangarSlot hangarSlot = HangarManager.GetSlotByNode(scheduleSlot.hangarNode);
                 if (HangarManager.ShipIsDocked(hangarSlot))
                 {
                     // Put a pilot in the schedule slot if its ship is still docked  
@@ -103,6 +115,21 @@ public class MissionsUI : MonoBehaviour
         missionItem.missionNameText.SetText(missionItem.mission.Name
             + $"\n({missionItem.mission.DaysLeftToComplete} {substring} remaining)", FontType.ListItem);
     }
+
+    //private void ShowOrHideUnavailableMessage(bool showMessage, UnavailableMessageType messageType)
+    //{
+    //    GameObject objectToDestroy = null;
+    //    GameObject prefabToInstantiate = null;
+    //    switch (messageType)
+    //    {
+    //        case UnavailableMessageType.MissionsUnavailable:
+
+    //            break;
+    //        case UnavailableMessageType.PilotsUnavailable:
+
+    //            break;
+    //    }
+    //}
 
     public MissionScheduleSlot GetSlotByPosition(Vector2 position)
     {

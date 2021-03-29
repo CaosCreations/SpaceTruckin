@@ -47,6 +47,16 @@ public static class GameObjectExtensions
         return Color.white;
     }
 
+    public static Text SetText(this GameObject self, string value)
+    {
+        Text text = self.GetComponent<Text>();
+        if (text != null)
+        {
+            return text.SetText(value);
+        }
+        return default;
+    }
+
     public static void ParentToPlayer(this GameObject self)
     {
         self.transform.SetParent(PlayerManager.PlayerObject.transform);
@@ -55,6 +65,14 @@ public static class GameObjectExtensions
     public static void SetParent(this GameObject self, GameObject parent)
     {
         self.transform.SetParent(parent.transform);
+    }
+
+    public static void DestroyIfExists(this GameObject self)
+    {
+        if (self != null)
+        {
+            GameObject.Destroy(self);
+        }
     }
 
     public static List<GameObject> FindParentObjectsWithTag(this GameObject self, string tag)
