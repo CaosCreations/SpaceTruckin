@@ -16,4 +16,9 @@ public static class ArrayExtensions
         }
         return self; 
     }
+
+    public static bool IsNullOrEmpty<T>(this T[] self)
+    {
+        return self == null || self.Length <= 0;
+    }
 }

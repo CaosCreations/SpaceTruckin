@@ -9,6 +9,11 @@ public class MissionsUI : MonoBehaviour
     public GameObject pilotSelectItemPrefab;
     public Button pilotSelectCloseButton;
 
+    public GameObject missionsUnavailablePrefab;
+    public GameObject pilotsUnavailablePrefab;
+    private GameObject missionsUnavailableText;
+    private GameObject pilotsUnavailableText;
+
     public MissionScheduleSlot[] scheduleSlots;
 
     private void OnEnable()
@@ -33,8 +38,10 @@ public class MissionsUI : MonoBehaviour
     {
         scrollViewContent.transform.DestroyDirectChildren();
         List<Mission> selectableMissions = MissionsManager.GetSelectableMissions();
-        if (selectableMissions != null)
+        if (!selectableMissions.IsNullOrEmpty())
         {
+            missionsUnavailableText.DestroyIfExists();
+
             foreach (Mission mission in selectableMissions)
             {
                 if (mission != null)
@@ -45,14 +52,20 @@ public class MissionsUI : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            // Show a message saying there are no missions available
+            missionsUnavailableText = Instantiate(missionsUnavailablePrefab, scrollViewContent.transform);
+        }
     }
 
     public void PopulatePilotSelect(MissionScheduleSlot scheduleSlot, Mission mission = null)
     {
         scrollViewContent.transform.DestroyDirectChildren();
         
-        if (PilotsManager.PilotsInQueue != null)
+        if (!PilotsManager.PilotsInQueue.IsNullOrEmpty())
         {
+            pilotsUnavailableText.DestroyIfExists();
             foreach (Pilot pilot in PilotsManager.PilotsInQueue)
             {
                 if (pilot != null)
@@ -61,6 +74,11 @@ public class MissionsUI : MonoBehaviour
                     pilotSelectItem.GetComponent<PilotSelectItem>().Init(pilot, scheduleSlot, mission);
                 }
             }
+        }
+        else
+        {
+            // Show a message saying there are no pilots available
+            pilotsUnavailableText = Instantiate(pilotsUnavailablePrefab, scrollViewContent.transform);
         }
     }
 
@@ -83,7 +101,7 @@ public class MissionsUI : MonoBehaviour
                     }
                 }
 
-                HangarSlot hangarSlot = HangarManager.GetSlotByNode(scheduleSlot.hangarNode); // Reorder
+                HangarSlot hangarSlot = HangarManager.GetSlotByNode(scheduleSlot.hangarNode);
                 if (HangarManager.ShipIsDocked(hangarSlot))
                 {
                     // Put a pilot in the schedule slot if its ship is still docked  
