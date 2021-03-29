@@ -15,7 +15,6 @@ public class MissionsUI : MonoBehaviour
     private GameObject pilotsUnavailableText;
 
     public MissionScheduleSlot[] scheduleSlots;
-    //private enum UnavailableMessageType { PilotsUnavailable, MissionsUnavailable };
 
     private void OnEnable()
     {
@@ -39,8 +38,10 @@ public class MissionsUI : MonoBehaviour
     {
         scrollViewContent.transform.DestroyDirectChildren();
         List<Mission> selectableMissions = MissionsManager.GetSelectableMissions();
-        if (selectableMissions != null)
+        if (!selectableMissions.IsNullOrEmpty())
         {
+            missionsUnavailableText.DestroyIfExists();
+
             foreach (Mission mission in selectableMissions)
             {
                 if (mission != null)
@@ -50,6 +51,11 @@ public class MissionsUI : MonoBehaviour
                     missionItem.Init(mission);
                 }
             }
+        }
+        else
+        {
+            // Show a message saying there are no missions available
+            missionsUnavailableText = Instantiate(missionsUnavailablePrefab, scrollViewContent.transform);
         }
     }
 
@@ -72,7 +78,7 @@ public class MissionsUI : MonoBehaviour
         else
         {
             // Show a message saying there are no pilots available
-            Instantiate(pilotsUnavailablePrefab, scrollViewContent.transform);
+            pilotsUnavailableText = Instantiate(pilotsUnavailablePrefab, scrollViewContent.transform);
         }
     }
 
@@ -115,21 +121,6 @@ public class MissionsUI : MonoBehaviour
         missionItem.missionNameText.SetText(missionItem.mission.Name
             + $"\n({missionItem.mission.DaysLeftToComplete} {substring} remaining)", FontType.ListItem);
     }
-
-    //private void ShowOrHideUnavailableMessage(bool showMessage, UnavailableMessageType messageType)
-    //{
-    //    GameObject objectToDestroy = null;
-    //    GameObject prefabToInstantiate = null;
-    //    switch (messageType)
-    //    {
-    //        case UnavailableMessageType.MissionsUnavailable:
-
-    //            break;
-    //        case UnavailableMessageType.PilotsUnavailable:
-
-    //            break;
-    //    }
-    //}
 
     public MissionScheduleSlot GetSlotByPosition(Vector2 position)
     {
