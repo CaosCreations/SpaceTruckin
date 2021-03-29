@@ -93,6 +93,12 @@ public class CamSwitchCol : MonoBehaviour {
 		}
 
 		
+		if(camName=="CamToOuterCircle")
+		{
+			myCurrentCam=20;
+		}
+
+		
 			
 
 
