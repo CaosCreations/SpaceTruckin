@@ -29,7 +29,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     public static GameObject PlayerObject { get; private set; }
     public static PlayerMovement PlayerMovement { get; private set; }
 
-    public static event System.Action onFinancialTransaction;
+    public static event System.Action OnFinancialTransaction;
 
     private void Awake()
     {
@@ -84,14 +84,14 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     public void SpendMoney(long amount)
     {
         Instance.Money -= amount;
-        onFinancialTransaction?.Invoke();
+        OnFinancialTransaction?.Invoke();
     }
 
     public void ReceiveMoney(long amount)
     {
         Instance.Money += amount;
         Instance.TotalMoneyAcquired += amount;
-        onFinancialTransaction?.Invoke();
+        OnFinancialTransaction?.Invoke();
     }
 
     public void AcquireLicence(Licence licence)
