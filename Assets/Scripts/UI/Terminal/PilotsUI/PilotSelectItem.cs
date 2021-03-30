@@ -49,6 +49,7 @@ public class PilotSelectItem : MonoBehaviour
 
         // Return to the mission select after a pilot has been selected
         missionsUI.PopulateMissionSelect();
+        missionsUI.pilotSelectCloseButton.SetActive(false);
     }
 
     private string BuildItemString()
