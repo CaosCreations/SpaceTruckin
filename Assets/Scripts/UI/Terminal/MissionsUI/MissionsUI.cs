@@ -21,7 +21,7 @@ public class MissionsUI : MonoBehaviour
         SetActiveSlots();
         PopulateScheduleSlots();
         PopulateMissionSelect();
-        pilotSelectCloseButton.gameObject.SetActive(false);
+        pilotSelectCloseButton.SetActive(false);
     }
 
     private void Start()
@@ -87,7 +87,7 @@ public class MissionsUI : MonoBehaviour
             pilotsUnavailableText = Instantiate(pilotsUnavailablePrefab, scrollViewContent.transform);
         }
 
-        pilotSelectCloseButton.gameObject.SetActive(true);
+        pilotSelectCloseButton.SetActive(true);
     }
 
     private void PopulateScheduleSlots()
@@ -124,7 +124,7 @@ public class MissionsUI : MonoBehaviour
 
     private void ClosePilotSelect()
     {
-        pilotSelectCloseButton.gameObject.SetActive(false);
+        pilotSelectCloseButton.SetActive(false);
         PopulateMissionSelect();
     }
 

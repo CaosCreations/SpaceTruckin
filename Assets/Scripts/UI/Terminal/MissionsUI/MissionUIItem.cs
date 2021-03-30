@@ -121,6 +121,8 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
             {
                 // Reset the schedule slot if the player clicks and there is already one scheduled
                 Unschedule();
+
+                missionsUI.pilotSelectCloseButton.SetActive(false);
             }
         }
         else if (eventData.button == PointerEventData.InputButton.Right)

@@ -34,4 +34,10 @@ public static class ButtonExtensions
         self.interactable = value;
         return self;
     }
+
+    public static Button SetActive(this Button self, bool value)
+    {
+        self.gameObject.SetActive(value);
+        return self;
+    }
 }
