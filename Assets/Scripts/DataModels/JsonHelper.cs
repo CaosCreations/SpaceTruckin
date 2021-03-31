@@ -15,7 +15,7 @@ public static class JsonHelper
     public static T[] ArrayFromJson<T>(string json)
     {
         ArrayWrapper<T> wrapper = JsonUtility.FromJson<ArrayWrapper<T>>(json);
-        return wrapper.Items;
+        return wrapper?.Items;
     }
 
     public static string ListToJson<T>(List<T> list)
@@ -30,7 +30,7 @@ public static class JsonHelper
     public static List<T> ListFromJson<T>(string json)
     {
         ListWrapper<T> wrapper = JsonUtility.FromJson<ListWrapper<T>>(json);
-        return wrapper.Items;
+        return wrapper?.Items;
     }
 
     [Serializable]

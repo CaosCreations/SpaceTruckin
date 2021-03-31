@@ -28,9 +28,6 @@ public class TerminalUIManager : MonoBehaviour
         SetupButtonListeners();
         TabButtonClicked(Tab.Missions);
         newDayReportUI = newDayReportPanel.GetComponent<NewDayReportUI>();
-
-        UpdateMoneyText();
-        PlayerManager.onFinancialTransaction += UpdateMoneyText;
     }
 
     private void OnEnable()
@@ -128,10 +125,5 @@ public class TerminalUIManager : MonoBehaviour
             default:
                 return null;
         }
-    }
-
-    private void UpdateMoneyText()
-    {
-        moneyText.SetText("$ " + PlayerManager.Instance.Money, FontType.Title);
     }
 }

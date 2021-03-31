@@ -18,7 +18,7 @@ public class MissionDetailsUI : MonoBehaviour
 
     public void DestroyMissionDetails()
     {
-        Destroy(missionDetails);
+        missionDetails.DestroyIfExists();
     }
 
     private void InitMissionDetails(RectTransform listItemRect)
