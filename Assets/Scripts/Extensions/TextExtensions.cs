@@ -14,4 +14,9 @@ public static class TextExtensions
         self.text = value.InsertNewLines();
         return self;
     }
+
+    public static Text Clear(this Text self)
+    {
+        return self.SetText(string.Empty);
+    }
 }

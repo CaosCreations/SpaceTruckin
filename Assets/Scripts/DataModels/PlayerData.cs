@@ -13,10 +13,12 @@ public class PlayerData : ScriptableObject, IDataModel
     public class PlayerSaveData
     {
         public long playerMoney;
-        public long playerTotalMoneyAcquired; //Used to unlock missions
+        public long playerTotalMoneyAcquired; // Used to unlock missions
         
         public int playerLicencePoints;
-        public int playerTotalLicencePointsAcquired; //Used to unlock licence tiers
+        public int playerTotalLicencePointsAcquired; // Used to unlock licence tiers
+
+        public int playerRepairTools; // Used to attempt the repairs minigame 
     }
 
     public long PlayerMoney
@@ -33,13 +35,17 @@ public class PlayerData : ScriptableObject, IDataModel
     public int PlayerLicencePoints
     {
         get => saveData.playerLicencePoints; set => saveData.playerLicencePoints = value;
-
     }
 
     public int PlayerTotalLicencePointsAcquired
     {
         get => saveData.playerTotalLicencePointsAcquired;
         set => saveData.playerTotalLicencePointsAcquired = value;
+    }
+
+    public int PlayerRepairTools
+    {
+        get => saveData.playerRepairTools; set => saveData.playerRepairTools = value;
     }
 
     public void SaveData()

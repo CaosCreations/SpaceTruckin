@@ -10,5 +10,9 @@ public static class RepairsConstants
     // Difficulty increase-related 
     public static float RotationReversalThreshold = 3f; 
     public static float RotationReversalUpperBound = 5f;
-    public static float GreenZoneShrinkInterval = 3f; 
+    public static float GreenZoneShrinkInterval = 3f;
+
+    // UI 
+    public static string SuccessMessage = "Success!";
+    public static string FailureMessage = "Failure!";
 }

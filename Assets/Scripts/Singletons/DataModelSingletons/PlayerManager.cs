@@ -24,6 +24,10 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     {
         get => playerData.PlayerTotalLicencePointsAcquired;
     }
+    public int RepairTools 
+    { 
+        get => playerData.PlayerRepairTools; set => playerData.PlayerRepairTools = value; 
+    }
 
     public bool IsPaused { get; set; }
     public static GameObject PlayerObject { get; private set; }

@@ -28,7 +28,7 @@ public class Workstation : MonoBehaviour
     public void StartRotating()
     {
         isRotating = true;
-        repairsManager.ResetFeedbackText();
+        //repairsManager.ResetFeedbackText();
     }
 
     public void StopRotating()
