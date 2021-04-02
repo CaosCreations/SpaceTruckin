@@ -29,7 +29,7 @@ public class RepairsManager : MonoBehaviour
         {
             workstation.ReverseRotationDirection();
         }
-        repairsUI.UpdateUI(success: true);
+        repairsUI.UpdateUI(wasSuccessful: true);
     }
 
     public void PlayerLoses()
@@ -37,7 +37,7 @@ public class RepairsManager : MonoBehaviour
         consecutiveWins = 0;
         workstation.ResetRotationSpeed();
         greenZone.ResetSize();
-        repairsUI.UpdateUI(success: false);
+        repairsUI.UpdateUI(wasSuccessful: false);
     }
 
     public bool IsGreenZoneShrinking()

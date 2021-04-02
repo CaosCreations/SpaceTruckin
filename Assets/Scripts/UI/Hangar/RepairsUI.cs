@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Text;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class RepairsUI : MonoBehaviour
@@ -11,10 +12,10 @@ public class RepairsUI : MonoBehaviour
         UpdateToolsText();
     }
 
-    public void UpdateUI(bool success)
+    public void UpdateUI(bool wasSuccessful)
     {
         UpdateToolsText();
-        UpdateFeedbackText(success);
+        UpdateFeedbackText(wasSuccessful);
     }
 
     private void UpdateToolsText()
@@ -22,11 +23,15 @@ public class RepairsUI : MonoBehaviour
         toolsText.SetText("x" + PlayerManager.Instance.RepairTools.ToString());
     }
 
-    private void UpdateFeedbackText(bool success)
+    private void UpdateFeedbackText(bool wasSuccessful)
     {
-        string feedback = success ? RepairsConstants.SuccessMessage : RepairsConstants.FailureMessage;
-        Debug.Log(feedback);
-        feedbackText.SetText(feedback);
+        StringBuilder builder = new StringBuilder();
+        builder.AppendLine(
+            wasSuccessful ? RepairsConstants.SuccessMessage : RepairsConstants.FailureMessage);
+        
+        builder.AppendLine($"You have {PlayerManager.Instance.RepairTools} tools remaining.");
+
+        feedbackText.SetText(builder.ToString());
     }
 
     public void ResetFeedbackText()
