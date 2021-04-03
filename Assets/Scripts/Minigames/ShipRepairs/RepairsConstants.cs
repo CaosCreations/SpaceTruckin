@@ -15,4 +15,8 @@ public static class RepairsConstants
     // UI 
     public static string SuccessMessage = "Success!";
     public static string FailureMessage = "Failure!";
+
+    // Tools
+    public static long CostPerTool = 100L;
+
 }

@@ -4,23 +4,18 @@ using UnityEngine.UI;
 
 public class RepairsUI : MonoBehaviour
 {
-    [SerializeField] private Text toolsText;
+    [SerializeField] RepairTools repairTools;
     [SerializeField] private Text feedbackText;
 
     private void OnEnable()
     {
-        UpdateToolsText();
+        repairTools.UpdateToolsText();
     }
 
     public void UpdateUI(bool wasSuccessful)
     {
-        UpdateToolsText();
+        repairTools.UpdateToolsText();
         UpdateFeedbackText(wasSuccessful);
-    }
-
-    private void UpdateToolsText()
-    {
-        toolsText.SetText("x" + PlayerManager.Instance.RepairTools.ToString());
     }
 
     private void UpdateFeedbackText(bool wasSuccessful)
