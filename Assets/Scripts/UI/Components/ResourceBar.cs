@@ -18,6 +18,26 @@ public class ResourceBar : MonoBehaviour
         InitGradient();
     }
 
+    private void InitGradient()
+    {
+        // Colour 
+        colourKeys = new GradientColorKey[2];
+        colourKeys[0].color = UIConstants.Matrix; // Red 
+        colourKeys[1].color = UIConstants.ChelseaCucumber; // Green 
+        colourKeys[0].time = 0f;
+        colourKeys[1].time = 1f;
+
+        // Alpha 
+        alphaKeys = new GradientAlphaKey[2];
+        alphaKeys[0].alpha = 1f;
+        alphaKeys[1].alpha = 0f;
+        alphaKeys[0].time = 1f;
+        alphaKeys[1].time = 0f;
+
+        gradient = new Gradient();
+        gradient.SetKeys(colourKeys, alphaKeys);
+    }
+
     public void SetResourceValue(float value)
     {
         currentPercentage = value;
@@ -26,30 +46,9 @@ public class ResourceBar : MonoBehaviour
         SetBarColour();
     }
 
-    private void InitGradient()
-    {
-        // Colour 
-        colourKeys = new GradientColorKey[2];
-        colourKeys[0].color = Color.red;
-        colourKeys[0].time = 0f;
-        colourKeys[1].color = Color.green;
-        colourKeys[1].time = 1f;
-
-        // Alpha 
-        alphaKeys = new GradientAlphaKey[2];
-        alphaKeys[0].alpha = 1f;
-        alphaKeys[0].time = 1f;
-        alphaKeys[1].alpha = 0f;
-        alphaKeys[1].time = 0f;
-
-        gradient = new Gradient();
-        gradient.SetKeys(colourKeys, alphaKeys);
-    }
-
     public void SetBarColour()
     {
-        float gradientValue = currentPercentage;
-        Color newColour = GetColourFromGradient(gradientValue);
+        Color newColour = GetColourFromGradient(currentPercentage);
         sliderBackgroundImage.color = newColour;
     }
 

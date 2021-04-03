@@ -4,10 +4,11 @@ using UnityEngine.UI;
 
 public class RepairsUI : MonoBehaviour
 {
-    [SerializeField] RepairToolsUI repairToolsUI;
+    [SerializeField] private RepairToolsUI repairToolsUI;
     [SerializeField] private Text feedbackText;
     [SerializeField] private Button stopStartButton;
     [SerializeField] private ResourceBar hullResourceBar;
+    [SerializeField] private ShipDetails shipDetails;
 
     [SerializeField] private GameObject repairsMinigamePrefab;
     private GameObject repairsMinigameInstance;
@@ -18,6 +19,7 @@ public class RepairsUI : MonoBehaviour
     public void Init(Ship shipToRepair)
     {
         ShipToRepair = shipToRepair;
+        shipDetails.Init(shipToRepair);
         UpdateHullResourceBar();
         feedbackText.Clear();
         SetupMinigame();

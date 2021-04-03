@@ -4,7 +4,6 @@ using UnityEngine;
 public class Workstation : MonoBehaviour
 {
     public static event Action OnRotationStopped;
-    private RepairsUI repairsUI;
 
     public bool isRotating;
     private bool isDirectionReversed; 
@@ -12,7 +11,6 @@ public class Workstation : MonoBehaviour
 
     private void Start()
     {
-        repairsUI = GetComponentInParent<RepairsUI>();
         currentRotationSpeed = RepairsConstants.StartingSpeed;
     }
 
@@ -28,7 +26,6 @@ public class Workstation : MonoBehaviour
     public void StartRotating()
     {
         isRotating = true;
-        //repairsUI.ResetFeedbackText();
     }
 
     public void StopRotating()

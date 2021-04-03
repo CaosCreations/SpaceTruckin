@@ -6,23 +6,10 @@ public class RepairsManager : MonoBehaviour
     private GreenZone greenZone;
     private RepairsUI repairsUI;
 
-    private Ship shipToRepair;
-
     public int consecutiveWins;
     public bool IsRepairing { get => workstation.isRotating; }
 
     private void Start()
-    {
-        workstation = GetComponentInChildren<Workstation>();
-        greenZone = GetComponentInChildren<GreenZone>();
-        repairsUI = GetComponentInParent<RepairsUI>();
-
-        //HangarNodeUI hangarNodeUI = GetComponentInParent<HangarNodeUI>();
-        //shipToRepair = hangarNodeUI.shipToInspect;
-        //shipToRepair = HangarManager.GetShipByNode(hangarNodeUI.hangarNode);
-    }
-
-    public void Init()
     {
         workstation = GetComponentInChildren<Workstation>();
         greenZone = GetComponentInChildren<GreenZone>();
@@ -58,6 +45,7 @@ public class RepairsManager : MonoBehaviour
         {
             workstation.ReverseRotationDirection();
         }
+
         repairsUI.UpdateUI(wasSuccessful: true);
     }
 
