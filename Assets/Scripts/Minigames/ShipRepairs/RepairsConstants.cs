@@ -21,4 +21,7 @@ public static class RepairsConstants
     // Tools
     public static int CostPerTool = 100;
 
+    // Gameplay 
+    public static int HullRepairedPerWin = 10;
+
 }

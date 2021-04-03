@@ -7,6 +7,8 @@ public class RepairToolsUI : MonoBehaviour
     [SerializeField] private Button buyButton;
     [SerializeField] private InputField quantityInput;
 
+    [SerializeField] private Button stopStartButton;
+
     private void Start()
     {
         buyButton.AddOnClick(BuyTools);
@@ -35,6 +37,9 @@ public class RepairToolsUI : MonoBehaviour
                 PlayerManager.Instance.RepairTools += numberOfToolsToBuy;
                 UpdateToolsText();
             }
+
+            // Allow the player to start the minigame as they now have tools
+            stopStartButton.interactable = PlayerManager.CanRepair;
         }
     }
 }

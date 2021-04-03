@@ -144,7 +144,7 @@ public class HangarNodeUI : MonoBehaviour
                 break;
             case HangarPanel.Repair:
                 repairPanel.SetActive(true);
-                repairsUI.SetupMinigame();
+                repairsUI.Init(shipToInspect);
                 break;
             case HangarPanel.Upgrade:
                 upgradePanel.SetActive(true);

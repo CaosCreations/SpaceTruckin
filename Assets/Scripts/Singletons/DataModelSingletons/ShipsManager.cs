@@ -48,6 +48,13 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         }
     }
 
+    public static void RepairShip(Ship ship)
+    {
+        ship.CurrentHullIntegrity = Mathf.Min(
+            ship.CurrentHullIntegrity + RepairsConstants.HullRepairedPerWin,
+            ship.MaxHullIntegrity);
+    }
+
     public static bool ShipIsLaunched(Ship ship)
     {
         ScheduledMission scheduled = MissionsManager.GetScheduledMission(ship);

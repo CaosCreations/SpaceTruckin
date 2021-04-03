@@ -6,6 +6,8 @@ public class RepairsManager : MonoBehaviour
     private GreenZone greenZone;
     private RepairsUI repairsUI;
 
+    private Ship shipToRepair;
+
     public int consecutiveWins;
     public bool IsRepairing { get => workstation.isRotating; }
 
@@ -14,6 +16,10 @@ public class RepairsManager : MonoBehaviour
         workstation = GetComponentInChildren<Workstation>();
         greenZone = GetComponentInChildren<GreenZone>();
         repairsUI = GetComponentInParent<RepairsUI>();
+
+        //HangarNodeUI hangarNodeUI = GetComponentInParent<HangarNodeUI>();
+        //shipToRepair = hangarNodeUI.shipToInspect;
+        //shipToRepair = HangarManager.GetShipByNode(hangarNodeUI.hangarNode);
     }
 
     public void Init()
@@ -37,6 +43,8 @@ public class RepairsManager : MonoBehaviour
 
     public void PlayerWins()
     {
+        ShipsManager.RepairShip(repairsUI.ShipToRepair);
+
         workstation.IncreaseRotationSpeed();
         Debug.Log("New speed: " + workstation.currentRotationSpeed);
 

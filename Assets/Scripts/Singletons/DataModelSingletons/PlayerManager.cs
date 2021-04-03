@@ -28,8 +28,9 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     { 
         get => playerData.PlayerRepairTools; set => playerData.PlayerRepairTools = value; 
     }
-
+    public static bool CanRepair => Instance.RepairTools > 0;
     public bool IsPaused { get; set; }
+
     public static GameObject PlayerObject { get; private set; }
     public static PlayerMovement PlayerMovement { get; private set; }
 
