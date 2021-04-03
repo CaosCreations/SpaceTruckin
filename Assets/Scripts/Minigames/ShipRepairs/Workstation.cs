@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Workstation : MonoBehaviour
 {
-    public static event Action onRotationStopped;
+    public static event Action OnRotationStopped;
     [SerializeField] private RepairsUI repairsUI;
 
     public bool isRotating;
@@ -33,7 +33,7 @@ public class Workstation : MonoBehaviour
     public void StopRotating()
     {
         isRotating = false;
-        onRotationStopped?.Invoke();
+        OnRotationStopped?.Invoke();
     }
 
     // Increase the difficulty by decreasing the timing window 
