@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class RepairsUI : MonoBehaviour
 {
-    [SerializeField] RepairTools repairTools;
+    [SerializeField] RepairToolsUI repairTools;
     [SerializeField] private Text feedbackText;
 
     private void OnEnable()

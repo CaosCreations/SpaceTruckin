@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RepairTools : MonoBehaviour
+public class RepairToolsUI : MonoBehaviour
 {
     [SerializeField] private Text toolsText;
     [SerializeField] private Button buyButton;
