@@ -10,6 +10,22 @@ public class ShipsEditor : MonoBehaviour
     [MenuItem("Space Truckin/Ships/Deplete All Resources")]
     private static void DepleteResources() => MaxOutOrDepleteResources(isMaxedOut: false);
 
+    [MenuItem("Space Truckin/Ships/Give 10 Repair Tools")]
+    private static void Give10Tools() => GiveRepairTools(10);
+    
+    private static void GiveRepairTools(int numberOfTools)
+    {
+        try
+        {
+            var playerData = EditorHelper.GetAsset<PlayerData>();
+            playerData.PlayerRepairTools += numberOfTools;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"{ex.Message}\n{ex.StackTrace}");
+        }
+    }
+
     private static void MaxOutOrDepleteResources(bool isMaxedOut)
     {
         try
