@@ -12,6 +12,7 @@ public class HangarNodeUI : MonoBehaviour
     [Header("Set In Editor")]
     public GameObject mainPanel;
     public GameObject repairPanel;
+    public RepairsUI repairsUI;
     public GameObject upgradePanel;
     public GameObject customizationPanel;
 
@@ -107,7 +108,7 @@ public class HangarNodeUI : MonoBehaviour
         shipPreview = Instantiate(shipToInspect.ShipPrefab, transform);
         shipPreview.transform.localScale *= UIConstants.ShipPreviewScaleFactor;
         shipPreview.transform.position += UIConstants.ShipPreviewOffset;
-        SetLayerRecursively(shipPreview, UIConstants.UIObjectLayer);
+        shipPreview.SetLayerRecursively(UIConstants.ShipPreviewLayer);
     }
 
     private void CheckFueling()
@@ -143,6 +144,7 @@ public class HangarNodeUI : MonoBehaviour
                 break;
             case HangarPanel.Repair:
                 repairPanel.SetActive(true);
+                repairsUI.SetupMinigame();
                 break;
             case HangarPanel.Upgrade:
                 upgradePanel.SetActive(true);

@@ -6,6 +6,20 @@ public class RepairsUI : MonoBehaviour
 {
     [SerializeField] RepairToolsUI repairToolsUI;
     [SerializeField] private Text feedbackText;
+    [SerializeField] private Button stopStartButton;
+
+    [SerializeField] private GameObject repairsMinigamePrefab;
+    private GameObject repairsMinigameInstance;
+
+    private void Start()
+    {
+        
+    }
+
+    private void OnDisable()
+    {
+        repairsMinigameInstance.DestroyIfExists();
+    }
 
     public void UpdateUI(bool wasSuccessful)
     {
@@ -27,5 +41,11 @@ public class RepairsUI : MonoBehaviour
     public void ResetFeedbackText()
     {
         feedbackText.Clear();
+    }
+
+    public void SetupMinigame()
+    {
+        repairsMinigameInstance = Instantiate(repairsMinigamePrefab, transform);
+        repairsMinigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer);
     }
 }

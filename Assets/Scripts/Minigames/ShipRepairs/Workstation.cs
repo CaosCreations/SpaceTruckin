@@ -4,7 +4,7 @@ using UnityEngine;
 public class Workstation : MonoBehaviour
 {
     public static event Action OnRotationStopped;
-    [SerializeField] private RepairsUI repairsUI;
+    private RepairsUI repairsUI;
 
     public bool isRotating;
     private bool isDirectionReversed; 
@@ -12,7 +12,8 @@ public class Workstation : MonoBehaviour
 
     private void Start()
     {
-		currentRotationSpeed = RepairsConstants.StartingSpeed;
+        repairsUI = GetComponentInParent<RepairsUI>();
+        currentRotationSpeed = RepairsConstants.StartingSpeed;
     }
 
     public void RotateWorkstation()

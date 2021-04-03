@@ -4,7 +4,7 @@ public class RepairsManager : MonoBehaviour
 {
     private Workstation workstation;
     private GreenZone greenZone;
-    [SerializeField] private RepairsUI repairsUI;
+    private RepairsUI repairsUI;
 
     public int consecutiveWins;
 
@@ -12,6 +12,7 @@ public class RepairsManager : MonoBehaviour
     {
         workstation = GetComponentInChildren<Workstation>();
         greenZone = GetComponentInChildren<GreenZone>();
+        repairsUI = GetComponentInParent<RepairsUI>();
     }
 
     public void PlayerWins()

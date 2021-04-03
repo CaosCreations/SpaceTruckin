@@ -4,7 +4,8 @@ public class UIConstants : MonoBehaviour
 {
     // Layers 
     public static int UILayer = 5;
-    public static int UIObjectLayer = 9;
+    public static int ShipPreviewLayer = 9;
+    public static int RepairsMinigameLayer = 10;
 
     // Colour palette
     public static Color32 SpringWood = new Color32(0xf2, 0xf0, 0xe5, 0xff);
