@@ -7,11 +7,6 @@ public class RepairsUI : MonoBehaviour
     [SerializeField] RepairToolsUI repairToolsUI;
     [SerializeField] private Text feedbackText;
 
-    private void OnEnable()
-    {
-        repairToolsUI.UpdateToolsText();
-    }
-
     public void UpdateUI(bool wasSuccessful)
     {
         repairToolsUI.UpdateToolsText();

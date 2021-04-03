@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class RepairToolsUI : MonoBehaviour
@@ -13,6 +12,12 @@ public class RepairToolsUI : MonoBehaviour
         buyButton.AddOnClick(BuyTools);
     }
 
+    private void OnEnable()
+    {
+        UpdateToolsText();
+        quantityInput.text = "0";
+    }
+
     public void UpdateToolsText()
     {
         toolsText.SetText("x" + PlayerManager.Instance.RepairTools.ToString());
@@ -20,11 +25,10 @@ public class RepairToolsUI : MonoBehaviour
 
     private void BuyTools()
     {
-        if (quantityInput != null )
+        if (int.TryParse(quantityInput.text, out int numberOfToolsToBuy))
         {
-            int numberOfToolsToBuy = Convert.ToInt32(quantityInput.text);
-            long costOfTools = numberOfToolsToBuy * RepairsConstants.CostPerTool;
-            
+            int costOfTools = numberOfToolsToBuy * RepairsConstants.CostPerTool;
+
             if (numberOfToolsToBuy > 0 && PlayerManager.Instance.CanSpendMoney(costOfTools))
             {
                 PlayerManager.Instance.SpendMoney(costOfTools);

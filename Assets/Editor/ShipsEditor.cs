@@ -10,15 +10,16 @@ public class ShipsEditor : MonoBehaviour
     [MenuItem("Space Truckin/Ships/Deplete All Resources")]
     private static void DepleteResources() => MaxOutOrDepleteResources(isMaxedOut: false);
 
-    [MenuItem("Space Truckin/Ships/Give 10 Repair Tools")]
-    private static void Give10Tools() => GiveRepairTools(10);
+    [MenuItem("Space Truckin/Ships/Reset Repair Tools")]
+    private static void ResetTools() => SetRepairTools(0);
     
-    private static void GiveRepairTools(int numberOfTools)
+    private static void SetRepairTools(int numberOfTools)
     {
         try
         {
             var playerData = EditorHelper.GetAsset<PlayerData>();
-            playerData.PlayerRepairTools += numberOfTools;
+            playerData.PlayerRepairTools = numberOfTools;
+            Debug.Log("Repair tools set to " + playerData.PlayerRepairTools);
         }
         catch (Exception ex)
         {

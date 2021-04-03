@@ -17,6 +17,6 @@ public static class RepairsConstants
     public static string FailureMessage = "Failure!";
 
     // Tools
-    public static long CostPerTool = 100L;
+    public static int CostPerTool = 100;
 
 }
