@@ -28,7 +28,7 @@ public class Workstation : MonoBehaviour
     public void StartRotating()
     {
         isRotating = true;
-        repairsUI.ResetFeedbackText();
+        //repairsUI.ResetFeedbackText();
     }
 
     public void StopRotating()
@@ -50,18 +50,6 @@ public class Workstation : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonUp(0))
-        {
-            if (isRotating)
-            {
-                StopRotating();
-            }
-            else
-            {
-                StartRotating();
-            }
-        }
-
         if (isRotating)
         {
             RotateWorkstation();

@@ -10,6 +10,7 @@ public class RepairsUI : MonoBehaviour
 
     [SerializeField] private GameObject repairsMinigamePrefab;
     private GameObject repairsMinigameInstance;
+    private RepairsManager repairsManager;
 
     private void Start()
     {
@@ -47,5 +48,25 @@ public class RepairsUI : MonoBehaviour
     {
         repairsMinigameInstance = Instantiate(repairsMinigamePrefab, transform);
         repairsMinigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer);
+w        repairsManager = repairsMinigameInstance.GetComponent<RepairsManager>();
+        //repairsManager.Init();
+        stopStartButton.SetText(RepairsConstants.StartButtonText);
+        stopStartButton.AddOnClick(HandleStopStart);
+    }
+
+    private void HandleStopStart()
+    {
+        repairsManager.StopStart();
+
+        if (repairsManager.IsRepairing)
+        {
+            stopStartButton.SetText(RepairsConstants.StopButtonText);
+
+        }
+        else
+        {
+            stopStartButton.SetText(RepairsConstants.StartButtonText);
+        }
+
     }
 }

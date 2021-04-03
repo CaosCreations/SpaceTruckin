@@ -15,6 +15,8 @@ public static class RepairsConstants
     // UI 
     public static string SuccessMessage = "Success!";
     public static string FailureMessage = "Failure!";
+    public static string StartButtonText = "Start Repairing";
+    public static string StopButtonText = "Stop Repairing";
 
     // Tools
     public static int CostPerTool = 100;

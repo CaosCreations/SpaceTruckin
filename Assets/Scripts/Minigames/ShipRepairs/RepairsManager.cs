@@ -2,17 +2,37 @@
 
 public class RepairsManager : MonoBehaviour
 {
-    private Workstation workstation;
+    public Workstation workstation;
     private GreenZone greenZone;
     private RepairsUI repairsUI;
 
     public int consecutiveWins;
+    public bool IsRepairing { get => workstation.isRotating; }
 
     private void Start()
     {
         workstation = GetComponentInChildren<Workstation>();
         greenZone = GetComponentInChildren<GreenZone>();
         repairsUI = GetComponentInParent<RepairsUI>();
+    }
+
+    public void Init()
+    {
+        workstation = GetComponentInChildren<Workstation>();
+        greenZone = GetComponentInChildren<GreenZone>();
+        repairsUI = GetComponentInParent<RepairsUI>();
+    }
+
+    public void StopStart()
+    {
+        if (workstation.isRotating)
+        {
+            workstation.StopRotating();
+        }
+        else
+        {
+            workstation.StartRotating();
+        }
     }
 
     public void PlayerWins()
