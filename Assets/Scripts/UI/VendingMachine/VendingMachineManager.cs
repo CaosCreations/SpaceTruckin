@@ -95,7 +95,7 @@ public class VendingMachineManager : MonoBehaviour
     
     public void CleanUI()
     {
-        feedbackText.text = string.Empty; 
+        feedbackText.Clear();
         ResetAllColours();
     }
 }
