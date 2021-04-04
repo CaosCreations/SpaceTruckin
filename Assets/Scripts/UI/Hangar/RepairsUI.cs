@@ -73,8 +73,8 @@ public class RepairsUI : MonoBehaviour
         if (repairsManager.IsRepairing)
         {
             stopStartButton.SetText(RepairsConstants.StopButtonText);
-            feedbackText.Clear();
-        }
+        feedbackText.Clear();
+    }
         else
         {
             stopStartButton.SetText(RepairsConstants.StartButtonText);

@@ -37,9 +37,10 @@ public class RepairToolsUI : MonoBehaviour
                 PlayerManager.Instance.RepairTools += numberOfToolsToBuy;
                 UpdateToolsText();
             }
-
-            // Allow the player to start the minigame as they now have tools
-            stopStartButton.interactable = PlayerManager.CanRepair;
+        }
+        else
+        {
+            Debug.LogError($"Invalid input when buying tools (must be int). Value was: {quantityInput.text}");
         }
     }
 }
