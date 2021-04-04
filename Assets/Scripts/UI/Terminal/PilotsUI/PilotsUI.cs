@@ -189,13 +189,8 @@ public class PilotsUI : MonoBehaviour
 		builder.AppendLineWithBreaks("Ship: " + pilot.Ship.Name);
 		builder.AppendLineWithBreaks("Level: " + pilot.Level);
 		builder.AppendLineWithBreaks("Experience: " + pilot.CurrentXp);
-
-		if (string.IsNullOrEmpty(pilot.Description))
-		{
-			pilot.Description = LoremIpsumGenerator.GenerateLoremIpsum();
-		}
-
-		builder.AppendLineWithBreaks("Description: " + pilot.Description);
+		builder.AppendLineWithBreaks("Likes: " + pilot.Like);
+		builder.AppendLineWithBreaks("Dislikes: " + pilot.Dislike);
 		builder.AppendLineWithBreaks("Missions completed: " + pilot.MissionsCompleted);
 		return builder.ToString();
 	}

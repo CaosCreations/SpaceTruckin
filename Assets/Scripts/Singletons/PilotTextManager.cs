@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class PilotNameManager : MonoBehaviour
+public class PilotTextManager : MonoBehaviour
 {
-	public static PilotNameManager Instance { get; private set; }
+	public static PilotTextManager Instance { get; private set; }
 	public string[] HumanMaleNames { get; private set; }
 	public string[] HumanFemaleNames { get; private set; }
 	public string[] HelicidNames { get; private set; }
@@ -12,9 +12,6 @@ public class PilotNameManager : MonoBehaviour
 	public string[] OshunianTitles { get; private set; }
 	public string[] VestaPrefixes { get; private set; }
 	public string[] VestaNames { get; private set; }
-
-	private readonly int robotPrefixLength = 3;
-	private readonly int robotSuffixLength = 4;
 
 	/// <summary>
 	/// Species name formats:
@@ -24,8 +21,14 @@ public class PilotNameManager : MonoBehaviour
 	///		Vesta: [Prefix-[Name]
 	///		Robot: [Alphabetical prefix]-[Numerical suffix]
 	/// </summary>
+	/// 
 
+	private readonly int robotPrefixLength = 3;
+	private readonly int robotSuffixLength = 4;
 	private static System.Random random;
+
+	public static string[] Likes { get; private set; }
+	public static string[] Dislikes { get; private set; }
 
 	private void Awake()
 	{
@@ -44,23 +47,25 @@ public class PilotNameManager : MonoBehaviour
 
 	public async void Init()
 	{
-        List<Task> pilotNameTasks = new List<Task>
-        {
-            Task.Factory.StartNew(() => HumanMaleNames = LoadNamePoolAsync(PilotsConstants.humanMaleNamesPath).Result),
-            Task.Factory.StartNew(() => HumanFemaleNames = LoadNamePoolAsync(PilotsConstants.humanFemaleNamesPath).Result),
-            Task.Factory.StartNew(() => HelicidNames = LoadNamePoolAsync(PilotsConstants.helicidNamesPath).Result),
-            Task.Factory.StartNew(() => OshunianNames = LoadNamePoolAsync(PilotsConstants.oshunianNamesPath).Result),
-            Task.Factory.StartNew(() => OshunianTitles = LoadNamePoolAsync(PilotsConstants.oshunianTitlesPath).Result),
-            Task.Factory.StartNew(() => VestaPrefixes = LoadNamePoolAsync(PilotsConstants.vestaPrefixesPath).Result),
-            Task.Factory.StartNew(() => VestaNames = LoadNamePoolAsync(PilotsConstants.vestaNamesPath).Result)
-        };
+		List<Task> pilotNameTasks = new List<Task>
+		{
+			Task.Factory.StartNew(() => HumanMaleNames = LoadTextPoolAsync(PilotsConstants.humanMaleNamesPath).Result),
+			Task.Factory.StartNew(() => HumanFemaleNames = LoadTextPoolAsync(PilotsConstants.humanFemaleNamesPath).Result),
+			Task.Factory.StartNew(() => HelicidNames = LoadTextPoolAsync(PilotsConstants.helicidNamesPath).Result),
+			Task.Factory.StartNew(() => OshunianNames = LoadTextPoolAsync(PilotsConstants.oshunianNamesPath).Result),
+			Task.Factory.StartNew(() => OshunianTitles = LoadTextPoolAsync(PilotsConstants.oshunianTitlesPath).Result),
+			Task.Factory.StartNew(() => VestaPrefixes = LoadTextPoolAsync(PilotsConstants.vestaPrefixesPath).Result),
+			Task.Factory.StartNew(() => VestaNames = LoadTextPoolAsync(PilotsConstants.vestaNamesPath).Result),
+			Task.Factory.StartNew(() => Likes = LoadTextPoolAsync(PilotsConstants.pilotLikesPath).Result),
+			Task.Factory.StartNew(() => Dislikes = LoadTextPoolAsync(PilotsConstants.pilotDislikesPath).Result)
+		};
 		await Task.WhenAll(pilotNameTasks).ContinueWith(x => PilotsManager.Instance.RandomisePilots());
 	}
 
-	private async Task<string[]> LoadNamePoolAsync(string fileName)
+	private async Task<string[]> LoadTextPoolAsync(string fileName)
     {
-		string namePool = await DataUtils.ReadFileAsync(fileName);
-		return namePool.Split('\n');
+		string textPool = await DataUtils.ReadFileAsync(fileName);
+		return textPool.Split('\n');
     }
 
 	// Combine the value returned with an initial, digit, or second portion
@@ -131,4 +136,12 @@ public class PilotNameManager : MonoBehaviour
 				return string.Empty;
 		}
 	}
+
+	public static (string, string) GetRandomPreferences()
+    {
+		(string like, string dislike) preferences;
+		preferences.like = Likes.GetRandomElement();
+		preferences.dislike = Dislikes.GetRandomElement();
+		return preferences; 
+    }
 }

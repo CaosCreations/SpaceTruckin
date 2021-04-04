@@ -2,9 +2,9 @@
 
 public static class ArrayExtensions
 {
+    private static Random random = new Random();
     public static T[] Shuffle<T>(this T[] self)
     {
-        Random random = new Random();
         int n = self.Length;
         while (n > 1)
         {
@@ -20,5 +20,10 @@ public static class ArrayExtensions
     public static bool IsNullOrEmpty<T>(this T[] self)
     {
         return self == null || self.Length <= 0;
+    }
+
+    public static T GetRandomElement<T>(this T[] self)
+    {
+        return self[random.Next(self.Length - 1)];
     }
 }

@@ -12,7 +12,8 @@ public partial class Pilot : ScriptableObject
     [Header("Set in Editor")]
     public bool isRandom;
     [SerializeField] private string pilotName;
-    [SerializeField] private string description;
+    [SerializeField] private string like;
+    [SerializeField] private string dislike;
     [SerializeField] private int hireCost;
     [SerializeField] private float xpThresholdExponent;
     [SerializeField] private Species species;

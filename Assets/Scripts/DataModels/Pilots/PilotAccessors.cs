@@ -35,10 +35,8 @@ public partial class Pilot
             }
         }
     }
-    public string Description
-    {
-        get => description; set => description = value;
-    }
+    public string Like { get => like; set => like = value; }
+    public string Dislike { get => dislike; set => dislike = value; }
     public int HireCost { get => hireCost; }
     public double CurrentXp { get => saveData.currentXp; set => saveData.currentXp = value; }
     public double RequiredXp { get => saveData.requiredXp; set => saveData.requiredXp = value; }

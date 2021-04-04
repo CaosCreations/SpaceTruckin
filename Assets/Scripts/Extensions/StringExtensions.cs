@@ -37,4 +37,12 @@ public static class StringExtensions
         }
         return string.Empty;
     }
+
+    public static bool IsNullOrEmpty(this (string, string) self)
+    {
+        return self == (null, null)
+            || self == (string.Empty, null)
+            || self == (null, string.Empty)
+            || self == (string.Empty, string.Empty);
+    }
 }

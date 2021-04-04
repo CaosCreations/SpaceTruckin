@@ -24,14 +24,19 @@ public class PilotsConstants : MonoBehaviour
     public static ValueTuple<Vector2, Vector2> hireButtonAnchors = (new Vector2((1 - borderSize * 2) / 3, borderSize), new Vector2((1 - borderSize * 2) / 1.5f - borderSize, borderSize + buttonHeight));
 
 
-    // Paths to text files containing pilot names 
-    public static string parentDirectoryPath = "./Assets/ImportedAssets/PilotNames/";
-    public static string humanMaleNamesPath = parentDirectoryPath + "male_names.txt";
-    public static string humanFemaleNamesPath = parentDirectoryPath + "female_names.txt";
-    public static string helicidNamesPath = parentDirectoryPath + "helicid_names.txt";
-    public static string oshunianNamesPath = parentDirectoryPath + "oshunian_first_names.txt";
-    public static string oshunianTitlesPath = parentDirectoryPath + "oshunian_titles.txt";
-    public static string vestaPrefixesPath = parentDirectoryPath + "vesta_prefixes.txt";
-    public static string vestaNamesPath = parentDirectoryPath + "vesta_names.txt";
+    // Paths to text files
+    public static string parentDirectoryPath = "./Assets/ImportedAssets/Text/Pilots/";
+    public static string pilotNameSubDirectoryPath = parentDirectoryPath + "PilotNames/";
+
+    public static string humanMaleNamesPath = pilotNameSubDirectoryPath + "male_names.txt";
+    public static string humanFemaleNamesPath = pilotNameSubDirectoryPath + "female_names.txt";
+    public static string helicidNamesPath = pilotNameSubDirectoryPath + "helicid_names.txt";
+    public static string oshunianNamesPath = pilotNameSubDirectoryPath + "oshunian_first_names.txt";
+    public static string oshunianTitlesPath = pilotNameSubDirectoryPath + "oshunian_titles.txt";
+    public static string vestaPrefixesPath = pilotNameSubDirectoryPath + "vesta_prefixes.txt";
+    public static string vestaNamesPath = pilotNameSubDirectoryPath + "vesta_names.txt";
+
+    public static string pilotLikesPath = parentDirectoryPath + "pilot_likes.txt";
+    public static string pilotDislikesPath = parentDirectoryPath + "pilot_dislikes.txt";
 
 }
