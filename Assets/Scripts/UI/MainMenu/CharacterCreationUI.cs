@@ -19,14 +19,14 @@ public class CharacterCreationUI : MonoBehaviour
         
         if (choiceOfName.IsAlphabetical())
         {
-            PlayerManager.SetPlayerName(characterNameInput.text);
+            PlayerManager.SetPlayerName(choiceOfName);
             invalidInputText.SetActive(false);
             UIManager.ClearCanvases();
         }
         else
         {
             Debug.LogError(
-                $"Invalid input when choosing name (must be alphabetical string). Value was: {characterNameInput.text}");
+                $"Invalid input when choosing name (must be alphabetical string). Value was: {choiceOfName}");
             
             invalidInputText.SetActive(true);
         }
