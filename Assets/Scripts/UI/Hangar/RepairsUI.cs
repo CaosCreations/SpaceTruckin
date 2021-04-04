@@ -18,11 +18,14 @@ public class RepairsUI : MonoBehaviour
 
     public void Init(Ship shipToRepair)
     {
-        ShipToRepair = shipToRepair;
-        shipDetails.Init(shipToRepair);
-        UpdateHullResourceBar();
-        feedbackText.Clear();
-        SetupMinigame();
+        if (shipToRepair != null)
+        {
+            ShipToRepair = shipToRepair;
+            shipDetails.Init(shipToRepair);
+            UpdateHullResourceBar();
+            feedbackText.Clear();
+            SetupMinigame();
+        }
     }
     
     private void OnDisable()
