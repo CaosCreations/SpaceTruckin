@@ -122,7 +122,6 @@ public class UIManager : MonoBehaviour
                 break;
             case UICanvasType.MainMenu:
                 Instance.mainMenuCanvas.SetActive(true);
-                Instance.interactableType = UICanvasType.None;
                 break;
         }
     }
@@ -176,6 +175,9 @@ public class UIManager : MonoBehaviour
             case UICanvasType.Vending:
                 interaction += "Buy Snax";
                 break;
+            case UICanvasType.MainMenu:
+            default:
+                return string.Empty;
         }
 
         return interaction;
