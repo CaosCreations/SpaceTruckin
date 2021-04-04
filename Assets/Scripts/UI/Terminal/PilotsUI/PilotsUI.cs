@@ -189,9 +189,9 @@ public class PilotsUI : MonoBehaviour
 		builder.AppendLineWithBreaks("Ship: " + pilot.Ship.Name);
 		builder.AppendLineWithBreaks("Level: " + pilot.Level);
 		builder.AppendLineWithBreaks("Experience: " + pilot.CurrentXp);
+		builder.AppendLineWithBreaks("Missions completed: " + pilot.MissionsCompleted);
 		builder.AppendLineWithBreaks("Likes: " + pilot.Like);
 		builder.AppendLineWithBreaks("Dislikes: " + pilot.Dislike);
-		builder.AppendLineWithBreaks("Missions completed: " + pilot.MissionsCompleted);
 		return builder.ToString();
 	}
 

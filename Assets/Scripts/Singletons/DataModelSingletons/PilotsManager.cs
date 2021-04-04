@@ -109,8 +109,8 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
                 
                 if (!preferences.IsNullOrEmpty())
                 {
-                    pilot.Like = preferences.Item1;
-                    pilot.Dislike = preferences.Item2;
+                    pilot.Like = preferences.like;
+                    pilot.Dislike = preferences.dislike;
                 }
             }
         }

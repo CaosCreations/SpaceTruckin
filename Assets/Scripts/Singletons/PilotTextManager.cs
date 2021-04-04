@@ -137,11 +137,12 @@ public class PilotTextManager : MonoBehaviour
 		}
 	}
 
-	public static (string, string) GetRandomPreferences()
+	public static (string like, string dislike) GetRandomPreferences()
     {
 		(string like, string dislike) preferences;
 		preferences.like = Likes.GetRandomElement();
 		preferences.dislike = Dislikes.GetRandomElement();
+
 		return preferences; 
     }
 }
