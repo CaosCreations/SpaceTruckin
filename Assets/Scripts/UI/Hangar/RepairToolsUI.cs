@@ -36,5 +36,9 @@ public class RepairToolsUI : MonoBehaviour
                 UpdateToolsText();
             }
         }
+        else
+        {
+            Debug.LogError($"Invalid input when buying tools (must be int). Value was: {quantityInput.text}");
+        }
     }
 }
