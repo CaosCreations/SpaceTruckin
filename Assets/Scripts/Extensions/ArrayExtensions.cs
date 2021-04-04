@@ -2,7 +2,7 @@
 
 public static class ArrayExtensions
 {
-    private static Random random = new Random();
+    private static readonly Random random = new Random();
     public static T[] Shuffle<T>(this T[] self)
     {
         int n = self.Length;

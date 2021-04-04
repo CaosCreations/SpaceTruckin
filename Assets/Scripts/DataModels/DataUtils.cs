@@ -160,6 +160,11 @@ public static class DataUtils
         return false; 
     }
 
+    public static bool IsNewGame()
+    {
+        return !SaveFolderExists(PlayerData.FOLDER_NAME);
+    }
+
     public static void CreateSaveFolder(string folderName)
     {
         Directory.CreateDirectory(GetSaveFolderPath(folderName));

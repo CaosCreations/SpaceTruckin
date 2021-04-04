@@ -30,6 +30,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     }
     public static bool CanRepair => Instance.RepairTools > 0;
     public bool IsPaused { get; set; }
+    public static string PlayerName { get; private set; }
 
     public static GameObject PlayerObject { get; private set; }
     public static PlayerMovement PlayerMovement { get; private set; }
@@ -118,6 +119,11 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     {
         PlayerMovement.ResetAnimator();
         Instance.IsPaused = true;
+    }
+
+    public static void SetPlayerName(string playerName)
+    {
+        PlayerName = playerName;
     }
 
     #region Persistence

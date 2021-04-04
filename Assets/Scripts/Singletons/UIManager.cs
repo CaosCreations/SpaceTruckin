@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum UICanvasType
 {
-    Bed, Terminal, Vending, Hangar, Cassette, NoticeBoard, None
+    Bed, Terminal, Vending, Hangar, Cassette, NoticeBoard, MainMenu, None
 }
 
 public class UIManager : MonoBehaviour
@@ -17,14 +17,16 @@ public class UIManager : MonoBehaviour
     public GameObject hangarNodeCanvas;
     public GameObject casetteCanvas;
     public GameObject noticeBoardCanvas;
+    public GameObject mainMenuCanvas;
+
     public bool currentMenuOverridesEscape;
     public TextMeshPro interactionTextMesh;
 
     public UICanvasType interactableType;
     public int hangarNode;
 
-    public static event Action onCanvasActivated;
-    public static event Action onCanvasDeactivated;
+    public static event Action OnCanvasActivated;
+    public static event Action OnCanvasDeactivated;
 
     void Awake()
     {
@@ -44,6 +46,16 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         ClearCanvases();
+        Init();
+    }
+
+    public void Init()
+    {
+        if (DataUtils.IsNewGame())
+        {
+            // Show the main menu canvas for character creation
+            mainMenuCanvas.SetActive(true);        
+        }
     }
 
     private void Update()
@@ -105,6 +117,9 @@ public class UIManager : MonoBehaviour
                 break;
             case UICanvasType.Bed:
                 Instance.bedCanvas.SetActive(true);
+                break;
+            case UICanvasType.MainMenu:
+                Instance.mainMenuCanvas.SetActive(true);
                 break;
         }
     }

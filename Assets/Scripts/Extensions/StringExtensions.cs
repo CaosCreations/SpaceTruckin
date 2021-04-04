@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 public static class StringExtensions
 {
+    private static readonly string alphabeticalPattern = @"^[a-zA-Z]+$";
+
     public static string InsertNewLines(this string self)
     {
         if (!string.IsNullOrWhiteSpace(self))
@@ -44,5 +47,11 @@ public static class StringExtensions
             || self == (string.Empty, null)
             || self == (null, string.Empty)
             || self == (string.Empty, string.Empty);
+    }
+
+    public static bool IsAlphabetical(this string self)
+    {
+        return !string.IsNullOrWhiteSpace(self) 
+            && Regex.IsMatch(self, alphabeticalPattern);
     }
 }
