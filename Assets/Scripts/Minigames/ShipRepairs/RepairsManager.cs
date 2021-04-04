@@ -30,7 +30,10 @@ public class RepairsManager : MonoBehaviour
 
     public void PlayerWins()
     {
-        ShipsManager.RepairShip(repairsUI.ShipToRepair);
+        if (repairsUI.ShipToRepair != null)
+        {
+            ShipsManager.RepairShip(repairsUI.ShipToRepair);
+        }
 
         workstation.IncreaseRotationSpeed();
         Debug.Log("New speed: " + workstation.currentRotationSpeed);

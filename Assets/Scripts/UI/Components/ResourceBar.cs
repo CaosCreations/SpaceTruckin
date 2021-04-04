@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class ResourceBar : MonoBehaviour
 {
-    [SerializeField] Text currentPercentageText;
+    [SerializeField] private Text currentPercentageText;
     private float currentPercentage;
 
     [SerializeField] private Slider resourceSlider;
