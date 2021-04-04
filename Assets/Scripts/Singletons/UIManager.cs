@@ -20,8 +20,8 @@ public class UIManager : MonoBehaviour
     public bool currentMenuOverridesEscape;
     public TextMeshPro interactionTextMesh;
 
-    public UICanvasType interactableType;
-    public int hangarNode;
+    public static UICanvasType interactableType;
+    public static int hangarNode;
 
     public static event Action onCanvasActivated;
     public static event Action onCanvasDeactivated;
@@ -85,27 +85,35 @@ public class UIManager : MonoBehaviour
     {
         ClearCanvases();
         PlayerManager.Instance.EnterMenuState();
+        GetCanvasByType(interactableType).SetActive(true);
+        
+        // Show tutorial overlay if first time using the UI 
+        if (!PlayerPrefsManager.GetUsedUIPref(interactableType))
+        {
 
-        switch (Instance.interactableType)
+            PlayerPrefsManager.SetUsedUIPref(interactableType);
+        }
+    }
+
+    private static GameObject GetCanvasByType(UICanvasType canvasType)
+    {
+        switch (canvasType)
         {
             case UICanvasType.Terminal:
-                Instance.terminalCanvas.SetActive(true);
-                break;
+                return Instance.terminalCanvas;
             case UICanvasType.Hangar:
-                Instance.hangarNodeCanvas.SetActive(true);
-                break;
+                return Instance.hangarNodeCanvas;
             case UICanvasType.Vending:
-                Instance.vendingCanvas.SetActive(true);
-                break;
+                return Instance.vendingCanvas;
             case UICanvasType.Cassette:
-                Instance.casetteCanvas.SetActive(true);
-                break;
+                return Instance.casetteCanvas;
             case UICanvasType.NoticeBoard:
-                Instance.noticeBoardCanvas.SetActive(true);
-                break;
+                return Instance.noticeBoardCanvas;
             case UICanvasType.Bed:
-                Instance.bedCanvas.SetActive(true);
-                break;
+                return Instance.bedCanvas;
+            default:
+                Debug.LogError("Invalid UI type passed to GetCanvasByType");
+                return default;
         }
     }
 
@@ -113,12 +121,11 @@ public class UIManager : MonoBehaviour
     {
         if (canInteract)
         {
-            Instance.interactableType = type;
-
+            interactableType = type;
         }
         else
         {
-            Instance.interactableType = UICanvasType.None;
+            interactableType = UICanvasType.None;
         }
     }
 
@@ -126,19 +133,19 @@ public class UIManager : MonoBehaviour
     {
         if (canInteract)
         {
-            Instance.interactableType = UICanvasType.Hangar;
-            Instance.hangarNode = node;
+            interactableType = UICanvasType.Hangar;
+            hangarNode = node;
         }
         else
         {
-            Instance.interactableType = UICanvasType.None;
+            interactableType = UICanvasType.None;
         }
     }
 
     private static string GetInteractionString()
     {
         string interaction = "Press E to ";
-        switch (Instance.interactableType)
+        switch (interactableType)
         {
             case UICanvasType.Bed:
                 interaction += "Sleep";

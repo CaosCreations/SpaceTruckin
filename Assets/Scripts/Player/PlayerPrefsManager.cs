@@ -3,7 +3,6 @@
 public static class PlayerPrefsManager
 {
     #region UI
-
     // Used UI keys - to check if the player has used the UI before
     public static readonly string TerminalIsUsedKey = "TerminalIsUsed";
     public static readonly string HangarIsUsedKey = "HangarIsUsed";
@@ -65,7 +64,12 @@ public static class PlayerPrefsManager
     {
         PlayerPrefs.SetInt(key, value.ToInt());
     }
-    
+
+    private static int GetInt(string key, int defaultValue = 0)
+    {
+        return PlayerPrefs.GetInt(key, defaultValue);
+    }
+
     private static void SetInt(string key, int value)
     {
         PlayerPrefs.SetInt(key, value);
