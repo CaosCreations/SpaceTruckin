@@ -10,6 +10,7 @@ public class CharacterCreationUI : MonoBehaviour
     private void Start()
     {
         okButton.AddOnClick(ChooseName);
+        invalidInputText.SetActive(false);
     }
 
     private void ChooseName()
@@ -19,6 +20,8 @@ public class CharacterCreationUI : MonoBehaviour
         if (choiceOfName.IsAlphabetical())
         {
             PlayerManager.SetPlayerName(characterNameInput.text);
+            invalidInputText.SetActive(false);
+            UIManager.ClearCanvases();
         }
         else
         {

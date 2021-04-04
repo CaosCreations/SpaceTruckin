@@ -54,7 +54,8 @@ public class UIManager : MonoBehaviour
         if (DataUtils.IsNewGame())
         {
             // Show the main menu canvas for character creation
-            mainMenuCanvas.SetActive(true);        
+            interactableType = UICanvasType.MainMenu;
+            ShowCanvas();
         }
     }
 
@@ -68,11 +69,11 @@ public class UIManager : MonoBehaviour
         {
             ClearCanvases();
         }
-        
+
         if (interactableType != UICanvasType.None)
         {
             interactionTextMesh.gameObject.SetActive(true);
-            interactionTextMesh.text = GetInteractionString();
+            interactionTextMesh.SetText(GetInteractionString());
             interactionTextMesh.transform.position = 
                 PlayerManager.PlayerMovement.transform.position + new Vector3(0, 0.5f, 0);
         }
@@ -91,6 +92,7 @@ public class UIManager : MonoBehaviour
         Instance.vendingCanvas.SetActive(false);
         Instance.casetteCanvas.SetActive(false);
         Instance.noticeBoardCanvas.SetActive(false);
+        Instance.mainMenuCanvas.SetActive(false);
     }
 
     public static void ShowCanvas()
@@ -120,6 +122,7 @@ public class UIManager : MonoBehaviour
                 break;
             case UICanvasType.MainMenu:
                 Instance.mainMenuCanvas.SetActive(true);
+                Instance.interactableType = UICanvasType.None;
                 break;
         }
     }

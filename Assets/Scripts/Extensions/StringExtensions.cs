@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 public static class StringExtensions
 {
-    private static readonly string alphabeticalPattern = @"^[a-zA-Z]+$";
+    private static readonly string alphabeticalPattern = @"^[a-zA-Z ]+$";
 
     public static string InsertNewLines(this string self)
     {
