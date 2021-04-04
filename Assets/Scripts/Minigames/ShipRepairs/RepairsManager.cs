@@ -2,7 +2,7 @@
 
 public class RepairsManager : MonoBehaviour
 {
-    private Workstation workstation;
+    public Workstation workstation;
     private GreenZone greenZone;
     private RepairsUI repairsUI;
 

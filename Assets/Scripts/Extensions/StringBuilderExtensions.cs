@@ -2,8 +2,17 @@
 
 public static class StringBuilderExtensions
 {
-    public static StringBuilder AppendLineWithBreaks(this StringBuilder self, string value)
+    public static StringBuilder AppendLineWithBreaks(this StringBuilder self, string value, int extraBreaks = 0)
     {
-        return self.AppendLine(value.InsertNewLines());
+        self.AppendLine(value.InsertNewLines());
+        
+        if (extraBreaks > 0)
+        {
+            for (int i = 0; i < extraBreaks; i++)
+            {
+                self.AppendLine();
+            }
+        }
+        return self;
     }
 }

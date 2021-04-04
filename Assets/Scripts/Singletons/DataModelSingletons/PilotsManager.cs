@@ -99,9 +99,18 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
                 else if (pilot.IsRandom && string.IsNullOrEmpty(pilot.Name))
                 {
                     pilot.Species = PilotUtils.GetRandomSpecies();
-                    pilot.Name = PilotNameManager.Instance.GetRandomName(pilot.Species);
+                    pilot.Name = PilotTextManager.Instance.GetRandomName(pilot.Species);
 
                     // Other random stats logic here
+                }
+
+                // We always randomise likes and dislikes 
+                var preferences = PilotTextManager.GetRandomPreferences();
+                
+                if (!preferences.IsNullOrEmpty())
+                {
+                    pilot.Like = preferences.like;
+                    pilot.Dislike = preferences.dislike;
                 }
             }
         }
