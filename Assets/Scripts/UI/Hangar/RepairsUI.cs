@@ -4,8 +4,34 @@ using UnityEngine.UI;
 
 public class RepairsUI : MonoBehaviour
 {
-    [SerializeField] RepairToolsUI repairToolsUI;
+    [SerializeField] private RepairToolsUI repairToolsUI;
     [SerializeField] private Text feedbackText;
+    [SerializeField] private Button stopStartButton;
+    [SerializeField] private ResourceBar hullResourceBar;
+    [SerializeField] private ShipDetails shipDetails;
+
+    [SerializeField] private GameObject repairsMinigamePrefab;
+    private GameObject repairsMinigameInstance;
+    private RepairsManager repairsManager;
+
+    public Ship ShipToRepair { get; set; }
+
+    public void Init(Ship shipToRepair)
+    {
+        if (shipToRepair != null)
+        {
+            ShipToRepair = shipToRepair;
+            shipDetails.Init(shipToRepair);
+            UpdateHullResourceBar();
+            feedbackText.Clear();
+            SetupMinigame();
+        }
+    }
+    
+    private void OnDisable()
+    {
+        repairsMinigameInstance.DestroyIfExists();
+    }
 
     public void UpdateUI(bool wasSuccessful)
     {
@@ -27,5 +53,39 @@ public class RepairsUI : MonoBehaviour
     public void ResetFeedbackText()
     {
         feedbackText.Clear();
+    }
+
+    public void SetupMinigame()
+    {
+        repairsMinigameInstance = Instantiate(repairsMinigamePrefab, transform);
+        repairsMinigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer);
+        repairsManager = repairsMinigameInstance.GetComponent<RepairsManager>();
+
+        stopStartButton.SetText(RepairsConstants.StartButtonText);
+        stopStartButton.AddOnClick(HandleStopStart);
+        stopStartButton.interactable = PlayerManager.CanRepair;
+    }
+
+    private void HandleStopStart()
+    {
+        repairsManager.StopStart();
+
+        if (repairsManager.IsRepairing)
+        {
+            stopStartButton.SetText(RepairsConstants.StopButtonText);
+        feedbackText.Clear();
+    }
+        else
+        {
+            stopStartButton.SetText(RepairsConstants.StartButtonText);
+            stopStartButton.interactable = PlayerManager.CanRepair;
+            UpdateHullResourceBar();
+        }
+    }
+
+    private void UpdateHullResourceBar()
+    {
+        float hullPercentage = ShipToRepair.GetHullPercent();
+        hullResourceBar.SetResourceValue(hullPercentage);
     }
 }

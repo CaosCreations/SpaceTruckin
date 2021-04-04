@@ -13,6 +13,9 @@ public class Indicator : MonoBehaviour
 
     public void DetermineOutcome()
     {
+        // Expend a tool regardless of whether the player wins
+        PlayerManager.Instance.RepairTools--;
+     
         if (isInsideGreenZone)
         {
             repairsManager.PlayerWins();

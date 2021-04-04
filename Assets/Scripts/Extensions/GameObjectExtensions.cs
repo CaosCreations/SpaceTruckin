@@ -75,6 +75,24 @@ public static class GameObjectExtensions
         }
     }
 
+    public static void SetLayerRecursively(this GameObject self, int newLayer)
+    {
+        self.layer = newLayer;
+
+        foreach (Transform child in self.transform)
+        {
+            SetLayerRecursively(child.gameObject, newLayer);
+        }
+    }
+
+    public static void CentreObject(this GameObject self)
+    {
+        self.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(
+            Screen.width / 2,
+            Screen.height / 2,
+            Camera.main.nearClipPlane));
+    }
+
     public static List<GameObject> FindParentObjectsWithTag(this GameObject self, string tag)
     {
         List<GameObject> parentsWithTag = new List<GameObject>();

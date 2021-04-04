@@ -7,6 +7,8 @@ public class RepairToolsUI : MonoBehaviour
     [SerializeField] private Button buyButton;
     [SerializeField] private InputField quantityInput;
 
+    [SerializeField] private Button stopStartButton;
+
     private void Start()
     {
         buyButton.AddOnClick(BuyTools);

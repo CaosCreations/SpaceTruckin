@@ -4,7 +4,6 @@ using UnityEngine;
 public class Workstation : MonoBehaviour
 {
     public static event Action OnRotationStopped;
-    [SerializeField] private RepairsUI repairsUI;
 
     public bool isRotating;
     private bool isDirectionReversed; 
@@ -12,7 +11,7 @@ public class Workstation : MonoBehaviour
 
     private void Start()
     {
-		currentRotationSpeed = RepairsConstants.StartingSpeed;
+        currentRotationSpeed = RepairsConstants.StartingSpeed;
     }
 
     public void RotateWorkstation()
@@ -27,7 +26,6 @@ public class Workstation : MonoBehaviour
     public void StartRotating()
     {
         isRotating = true;
-        repairsUI.ResetFeedbackText();
     }
 
     public void StopRotating()
@@ -49,18 +47,6 @@ public class Workstation : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonUp(0))
-        {
-            if (isRotating)
-            {
-                StopRotating();
-            }
-            else
-            {
-                StartRotating();
-            }
-        }
-
         if (isRotating)
         {
             RotateWorkstation();

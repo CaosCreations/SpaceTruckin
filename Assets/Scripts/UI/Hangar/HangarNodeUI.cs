@@ -12,6 +12,7 @@ public class HangarNodeUI : MonoBehaviour
     [Header("Set In Editor")]
     public GameObject mainPanel;
     public GameObject repairPanel;
+    public RepairsUI repairsUI;
     public GameObject upgradePanel;
     public GameObject customizationPanel;
 
@@ -54,8 +55,7 @@ public class HangarNodeUI : MonoBehaviour
         }
 
         PopulateUI();
-        fuelButton.Button.interactable = FuelButtonIsInteractable();
-        startMissionButton.interactable = StartMissionButtonIsInteractable();
+        SetButtonInteractability();
         SetBatteryChargeImage();
 
         fuelCostAfterLicences = GetFuelCostAfterLicences();
@@ -91,9 +91,7 @@ public class HangarNodeUI : MonoBehaviour
     {
         SwitchPanel(HangarPanel.Main);
         SetupShipPreview();
-
-        fuelSlider.value = shipToInspect.GetFuelPercent();
-        hullSlider.value = shipToInspect.GetHullPercent();
+        SetSliderValues();
 
         hullButton.AddOnClick(() => SwitchPanel(HangarPanel.Repair));
         upgradeButton.AddOnClick(() => SwitchPanel(HangarPanel.Upgrade));
@@ -107,7 +105,7 @@ public class HangarNodeUI : MonoBehaviour
         shipPreview = Instantiate(shipToInspect.ShipPrefab, transform);
         shipPreview.transform.localScale *= UIConstants.ShipPreviewScaleFactor;
         shipPreview.transform.position += UIConstants.ShipPreviewOffset;
-        SetLayerRecursively(shipPreview, UIConstants.UIObjectLayer);
+        shipPreview.SetLayerRecursively(UIConstants.ShipPreviewLayer);
     }
 
     private void CheckFueling()
@@ -140,9 +138,12 @@ public class HangarNodeUI : MonoBehaviour
         {
             case HangarPanel.Main:
                 mainPanel.SetActive(true);
+                SetSliderValues();
+                SetButtonInteractability();
                 break;
             case HangarPanel.Repair:
                 repairPanel.SetActive(true);
+                repairsUI.Init(shipToInspect);
                 break;
             case HangarPanel.Upgrade:
                 upgradePanel.SetActive(true);
@@ -213,5 +214,17 @@ public class HangarNodeUI : MonoBehaviour
         batteryChargeImage.color = shipToInspect.CanWarp ?
             HangarConstants.ChargedBatteryColour :
             HangarConstants.DepletedBatteryColour;
+    }
+
+    private void SetSliderValues()
+    {
+        fuelSlider.value = shipToInspect.GetFuelPercent();
+        hullSlider.value = shipToInspect.GetHullPercent();
+    }
+
+    private void SetButtonInteractability()
+    {
+        fuelButton.Button.interactable = FuelButtonIsInteractable();
+        startMissionButton.interactable = StartMissionButtonIsInteractable();
     }
 }
