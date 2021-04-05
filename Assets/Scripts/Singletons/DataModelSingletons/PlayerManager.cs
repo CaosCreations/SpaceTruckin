@@ -6,6 +6,10 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
 
     [Header("Set In Editor")]
     [SerializeField] private PlayerData playerData;
+    public string PlayerName
+    {
+        get => playerData.PlayerName; set => playerData.PlayerName = value;
+    }
     public long Money
     {
         get => playerData.PlayerMoney;
@@ -118,6 +122,12 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     {
         PlayerMovement.ResetAnimator();
         Instance.IsPaused = true;
+    }
+
+    public static void SetPlayerName(string playerName)
+    {
+        Instance.PlayerName = playerName;
+        Debug.Log($"Player name set to: {Instance.PlayerName}");
     }
 
     #region Persistence
