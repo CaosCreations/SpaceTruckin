@@ -3,48 +3,48 @@
 public static class PlayerPrefsManager
 {
     #region UI
-    // Used UI keys - to check if the player has used the UI before
-    public static readonly string TerminalIsUsedKey = "TerminalIsUsed";
-    public static readonly string HangarIsUsedKey = "HangarIsUsed";
-    public static readonly string VendingIsUsedKey = "VendingIsUsed";
-    public static readonly string CasetteIsUsedKey = "CasetteIsUsed";
-    public static readonly string NoticeBoardIsUsedKey = "NoticeBoardIsUsed";
-    public static readonly string BedIsUsedKey = "BedIsUsed";
+    // Viewed UI keys - used to check if the player has seen the UI before
+    public static readonly string TerminalHasBeenViewedKey = "TerminalHasBeenViewed";
+    public static readonly string HangarHasBeenViewedKey = "HangarHasBeenViewed";
+    public static readonly string VendingHasBeenViewedKey = "VendingHasBeenViewed";
+    public static readonly string CasetteHasBeenViewedKey = "CasetteHasBeenViewed";
+    public static readonly string NoticeBoardHasBeenViewedKey = "NoticeBoardHasBeenViewed";
+    public static readonly string BedHasBeenViewedKey = "BedHasBeenViewed";
 
-    public static bool GetUsedUIPref(UICanvasType canvasType)
+    public static bool GetHasBeenViewedPref(UICanvasType canvasType)
     {
-        string key = GetUsedUIKeyByType(canvasType);
+        string key = GetHasBeenViewedKey(canvasType);
         return GetBool(key);
     }
 
-    public static void SetUsedUIPref(UICanvasType canvasType)
+    public static void SetHasBeenViewedPref(UICanvasType canvasType, bool value)
     {
-        string key = GetUsedUIKeyByType(canvasType);
-        SetBool(key, true);
+        string key = GetHasBeenViewedKey(canvasType);
+        SetBool(key, value);
     }
 
-    private static string GetUsedUIKeyByType(UICanvasType canvasType)
+    private static string GetHasBeenViewedKey(UICanvasType canvasType)
     {
         string key;
         switch (canvasType)
         {
             case UICanvasType.Terminal:
-                key = TerminalIsUsedKey;
+                key = TerminalHasBeenViewedKey;
                 break;
             case UICanvasType.Hangar:
-                key = HangarIsUsedKey;
+                key = HangarHasBeenViewedKey;
                 break;
             case UICanvasType.Vending:
-                key = VendingIsUsedKey;
+                key = VendingHasBeenViewedKey;
                 break;
             case UICanvasType.Cassette:
-                key = CasetteIsUsedKey;
+                key = CasetteHasBeenViewedKey;
                 break;
             case UICanvasType.NoticeBoard:
-                key = NoticeBoardIsUsedKey;
+                key = NoticeBoardHasBeenViewedKey;
                 break;
             case UICanvasType.Bed:
-                key = BedIsUsedKey;
+                key = BedHasBeenViewedKey;
                 break;
             default:
                 Debug.LogError("Invalid UI type passed to SetUsedUIPref");

@@ -20,7 +20,7 @@ public class UIManager : MonoBehaviour
     public bool currentMenuOverridesEscape;
     public TextMeshPro interactionTextMesh;
 
-    public static UICanvasType interactableType;
+    public static UICanvasType currentCanvasType;
     public static int hangarNode;
 
     public static event Action onCanvasActivated;
@@ -48,7 +48,7 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(PlayerConstants.ActionKey) && interactableType != UICanvasType.None)
+        if (Input.GetKeyDown(PlayerConstants.ActionKey) && currentCanvasType != UICanvasType.None)
         {
             ShowCanvas();
         }
@@ -57,7 +57,7 @@ public class UIManager : MonoBehaviour
             ClearCanvases();
         }
         
-        if (interactableType != UICanvasType.None)
+        if (currentCanvasType != UICanvasType.None)
         {
             interactionTextMesh.gameObject.SetActive(true);
             interactionTextMesh.text = GetInteractionString();
@@ -85,13 +85,12 @@ public class UIManager : MonoBehaviour
     {
         ClearCanvases();
         PlayerManager.Instance.EnterMenuState();
-        GetCanvasByType(interactableType).SetActive(true);
+        GetCanvasByType(currentCanvasType).SetActive(true);
         
         // Show tutorial overlay if first time using the UI 
-        if (!PlayerPrefsManager.GetUsedUIPref(interactableType))
+        if (!CurrentCanvasHasBeenViewed())
         {
 
-            PlayerPrefsManager.SetUsedUIPref(interactableType);
         }
     }
 
@@ -117,15 +116,15 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public static void SetCanInteract(UICanvasType type, bool canInteract)
+    public static void SetCanInteract(UICanvasType canvasType, bool canInteract)
     {
         if (canInteract)
         {
-            interactableType = type;
+            currentCanvasType = canvasType;
         }
         else
         {
-            interactableType = UICanvasType.None;
+            currentCanvasType = UICanvasType.None;
         }
     }
 
@@ -133,19 +132,19 @@ public class UIManager : MonoBehaviour
     {
         if (canInteract)
         {
-            interactableType = UICanvasType.Hangar;
+            currentCanvasType = UICanvasType.Hangar;
             hangarNode = node;
         }
         else
         {
-            interactableType = UICanvasType.None;
+            currentCanvasType = UICanvasType.None;
         }
     }
 
     private static string GetInteractionString()
     {
         string interaction = "Press E to ";
-        switch (interactableType)
+        switch (currentCanvasType)
         {
             case UICanvasType.Bed:
                 interaction += "Sleep";
@@ -168,5 +167,15 @@ public class UIManager : MonoBehaviour
         }
 
         return interaction;
+    }
+
+    private static bool CurrentCanvasHasBeenViewed()
+    {
+        return PlayerPrefsManager.GetHasBeenViewedPref(currentCanvasType);
+    }
+
+    public static void SetCurrentCanvasHasBeenViewed(bool value)
+    {
+        PlayerPrefsManager.SetHasBeenViewedPref(currentCanvasType, value);
     }
 }
