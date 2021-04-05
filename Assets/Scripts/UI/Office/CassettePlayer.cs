@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class CassettePlayer : MonoBehaviour
+public class CassettePlayer : UICanvasBase
 {
 	public AudioClip[] tracks;
 

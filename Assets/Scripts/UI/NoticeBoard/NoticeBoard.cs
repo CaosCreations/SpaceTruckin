@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class NoticeBoard : MonoBehaviour
+public class NoticeBoard : UICanvasBase
 {
     [Header("Set in prefab")]
     // Left Panel

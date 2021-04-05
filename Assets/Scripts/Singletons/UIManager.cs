@@ -11,13 +11,13 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
-    public GameObject bedCanvas;
-    public GameObject terminalCanvas;
-    public GameObject vendingCanvas;
-    public GameObject hangarNodeCanvas;
-    public GameObject casetteCanvas;
-    public GameObject noticeBoardCanvas;
-    public GameObject mainMenuCanvas;
+    public UICanvasBase bedCanvas;
+    public UICanvasBase terminalCanvas;
+    public UICanvasBase vendingCanvas;
+    public UICanvasBase hangarNodeCanvas;
+    public UICanvasBase casetteCanvas;
+    public UICanvasBase noticeBoardCanvas;
+    public UICanvasBase mainMenuCanvas;
 
     public bool currentMenuOverridesEscape;
     public TextMeshPro interactionTextMesh;
@@ -54,7 +54,7 @@ public class UIManager : MonoBehaviour
         if (DataUtils.IsNewGame())
         {
             // Show the main menu canvas for character creation
-            interactableType = UICanvasType.MainMenu;
+            currentCanvasType = UICanvasType.MainMenu;
             ShowCanvas();
         }
     }
@@ -99,16 +99,17 @@ public class UIManager : MonoBehaviour
     {
         ClearCanvases();
         PlayerManager.Instance.EnterMenuState();
-        GetCanvasByType(currentCanvasType).SetActive(true);
+        UICanvasBase canvas = GetCanvasByType(currentCanvasType);
+        canvas.SetActive(true);
         
         // Show tutorial overlay if first time using the UI 
         if (!CurrentCanvasHasBeenViewed())
         {
-
+            canvas.ShowTutorial();
         }
     }
 
-    private static GameObject GetCanvasByType(UICanvasType canvasType)
+    private static UICanvasBase GetCanvasByType(UICanvasType canvasType)
     {
         switch (canvasType)
         {
@@ -124,14 +125,11 @@ public class UIManager : MonoBehaviour
                 return Instance.noticeBoardCanvas;
             case UICanvasType.Bed:
                 return Instance.bedCanvas;
+            case UICanvasType.MainMenu:
+                return Instance.mainMenuCanvas;
             default:
                 Debug.LogError("Invalid UI type passed to GetCanvasByType");
-                return default;
-                Instance.bedCanvas.SetActive(true);
-                break;
-            case UICanvasType.MainMenu:
-                Instance.mainMenuCanvas.SetActive(true);
-                break;
+                return null;
         }
     }
 

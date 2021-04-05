@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class BedCanvasUI : MonoBehaviour
+public class BedCanvasUI : UICanvasBase
 {
     [Header("Set at runtime")]
     public Image backgroundImage;

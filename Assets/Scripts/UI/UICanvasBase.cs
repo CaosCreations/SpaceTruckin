@@ -4,8 +4,11 @@ public class UICanvasBase : MonoBehaviour
 {
     [SerializeField] private GameObject canvasTutorialPrefab;
     
-    public void ShowCanvasTutorial()
+    public void ShowTutorial()
     {
-        Instantiate(canvasTutorialPrefab, transform);
+        if (canvasTutorialPrefab != null)
+        {
+            Instantiate(canvasTutorialPrefab, transform);
+        }
     }
 }

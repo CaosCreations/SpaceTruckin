@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HangarNodeUI : MonoBehaviour
+public class HangarNodeUI : UICanvasBase
 {
     public enum HangarPanel
     {
@@ -43,7 +43,7 @@ public class HangarNodeUI : MonoBehaviour
 
     private void OnEnable()
     {
-        hangarNode = UIManager.Instance.hangarNode;
+        hangarNode = UIManager.hangarNode;
         hangarSlot = HangarManager.GetSlotByNode(hangarNode);
         shipToInspect = hangarSlot.Ship;
 
