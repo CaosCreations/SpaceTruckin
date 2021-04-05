@@ -15,6 +15,11 @@ public static class TextExtensions
         return self;
     }
 
+    public static void SetActive(this Text self, bool value)
+    {
+        self.gameObject.SetActive(value);
+    }
+
     public static Text Clear(this Text self)
     {
         return self.SetText(string.Empty);

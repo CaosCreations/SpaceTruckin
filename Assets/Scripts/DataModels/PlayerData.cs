@@ -12,6 +12,8 @@ public class PlayerData : ScriptableObject, IDataModel
     [Serializable]
     public class PlayerSaveData
     {
+        public string playerName;
+
         public long playerMoney;
         public long playerTotalMoneyAcquired; // Used to unlock missions
         
@@ -19,6 +21,11 @@ public class PlayerData : ScriptableObject, IDataModel
         public int playerTotalLicencePointsAcquired; // Used to unlock licence tiers
 
         public int playerRepairTools; // Used to attempt the repairs minigame 
+    }
+
+    public string PlayerName 
+    {
+        get => saveData.playerName; set => saveData.playerName = value; 
     }
 
     public long PlayerMoney

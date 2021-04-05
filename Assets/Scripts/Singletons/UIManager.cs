@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum UICanvasType
 {
-    Bed, Terminal, Vending, Hangar, Cassette, NoticeBoard, None
+    Bed, Terminal, Vending, Hangar, Cassette, NoticeBoard, MainMenu, None
 }
 
 public class UIManager : MonoBehaviour
@@ -17,14 +17,16 @@ public class UIManager : MonoBehaviour
     public GameObject hangarNodeCanvas;
     public GameObject casetteCanvas;
     public GameObject noticeBoardCanvas;
+    public GameObject mainMenuCanvas;
+
     public bool currentMenuOverridesEscape;
     public TextMeshPro interactionTextMesh;
 
     public static UICanvasType currentCanvasType;
     public static int hangarNode;
 
-    public static event Action onCanvasActivated;
-    public static event Action onCanvasDeactivated;
+    public static event Action OnCanvasActivated;
+    public static event Action OnCanvasDeactivated;
 
     void Awake()
     {
@@ -44,6 +46,17 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         ClearCanvases();
+        Init();
+    }
+
+    public void Init()
+    {
+        if (DataUtils.IsNewGame())
+        {
+            // Show the main menu canvas for character creation
+            interactableType = UICanvasType.MainMenu;
+            ShowCanvas();
+        }
     }
 
     private void Update()
@@ -60,7 +73,7 @@ public class UIManager : MonoBehaviour
         if (currentCanvasType != UICanvasType.None)
         {
             interactionTextMesh.gameObject.SetActive(true);
-            interactionTextMesh.text = GetInteractionString();
+            interactionTextMesh.SetText(GetInteractionString());
             interactionTextMesh.transform.position = 
                 PlayerManager.PlayerMovement.transform.position + new Vector3(0, 0.5f, 0);
         }
@@ -79,6 +92,7 @@ public class UIManager : MonoBehaviour
         Instance.vendingCanvas.SetActive(false);
         Instance.casetteCanvas.SetActive(false);
         Instance.noticeBoardCanvas.SetActive(false);
+        Instance.mainMenuCanvas.SetActive(false);
     }
 
     public static void ShowCanvas()
@@ -113,6 +127,11 @@ public class UIManager : MonoBehaviour
             default:
                 Debug.LogError("Invalid UI type passed to GetCanvasByType");
                 return default;
+                Instance.bedCanvas.SetActive(true);
+                break;
+            case UICanvasType.MainMenu:
+                Instance.mainMenuCanvas.SetActive(true);
+                break;
         }
     }
 
@@ -164,6 +183,9 @@ public class UIManager : MonoBehaviour
             case UICanvasType.Vending:
                 interaction += "Buy Snax";
                 break;
+            case UICanvasType.MainMenu:
+            default:
+                return string.Empty;
         }
 
         return interaction;

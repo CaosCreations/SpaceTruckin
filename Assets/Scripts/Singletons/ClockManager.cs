@@ -23,8 +23,8 @@ public class ClockManager : MonoBehaviour
 
     private void Start()
     {
-        UIManager.onCanvasActivated += StopClock;
-        UIManager.onCanvasDeactivated += StartClock;
+        UIManager.OnCanvasActivated += StopClock;
+        UIManager.OnCanvasDeactivated += StartClock;
 
         CalculateTickSpeedMultiplier();
         StartDay();
