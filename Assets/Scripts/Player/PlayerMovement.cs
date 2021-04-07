@@ -34,6 +34,10 @@ public class PlayerMovement : MonoBehaviour {
     public GameObject wallToTurnInvisible;
     public float wallVisibity;
     public float wallHitDistace;
+    public Material transparentMat;
+     public Material opaqueStd;
+
+
 
     private void Start () {
         characterController = GetComponent<CharacterController> ();
@@ -103,8 +107,18 @@ public class PlayerMovement : MonoBehaviour {
                 wallVisibity = wallRenderee.material.color.a;
 
                 if (wallVisibity >= 0.1 && wallVisibity <= 1) {
+                    //change material from cutout to fade
+                    wallRenderee.material= transparentMat;
+                  
+
+
+
                     wallRenderee.material.color = new Color (1.0f, 1.0f, 1.0f, 1.0f-wallHitDistace/5);
                     //U CAN MESS WITH WALL ALPHA WITH HITR.DISTANCE
+
+
+                    
+
 
 
 
@@ -123,6 +137,9 @@ public class PlayerMovement : MonoBehaviour {
         } else {
             var wallRenderee = wallToTurnInvisible.GetComponent<Renderer> ();
             wallRenderee.material.color = new Color (1.0f, 1.0f, 1.0f, 1.0f);
+
+             wallRenderee.material= opaqueStd;
+             
         }
         Debug.DrawLine (transform.position, mypointToRay.transform.position, Color.yellow);
 
