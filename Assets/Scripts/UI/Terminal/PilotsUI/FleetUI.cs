@@ -121,9 +121,9 @@ public class FleetUI : MonoBehaviour
 			hireButton = GeneratePilotProfileButton(
 				hireButtonPrefab, PilotsConstants.hireButtonAnchors, () => HirePilot(pilot));
 		}
-		else if (pilot.IsHired && hireButton != null)
+		else
         {
-			Destroy(hireButton.gameObject);
+			hireButton.DestroyIfExists();
         }
 	}
 
