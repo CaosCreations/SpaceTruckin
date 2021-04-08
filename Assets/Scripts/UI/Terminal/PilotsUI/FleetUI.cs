@@ -89,20 +89,22 @@ public class FleetUI : MonoBehaviour
 
 		if (pilot.Ship != null)
         {
+			// Show ship avatar 
 			if (pilot.Ship.Avatar != null)
             {
 				shipAvatar.sprite = pilot.Ship.Avatar;
 			}
 			else
             {
-				Debug.Log($"{pilot}'s ship avatar is null");
+				Debug.LogError($"{pilot}'s ship avatar is null");
             }
 		}
 		else
         {
-			Debug.Log($"{pilot}'s ship is null");
+			Debug.LogError($"{pilot}'s ship is null");
         }
 
+		// Show pilot avatar
 		if (pilot.Avatar != null)
         {
 			pilotAvatar.sprite = pilot.Avatar;
@@ -119,9 +121,9 @@ public class FleetUI : MonoBehaviour
 			hireButton = GeneratePilotProfileButton(
 				hireButtonPrefab, PilotsConstants.hireButtonAnchors, () => HirePilot(pilot));
 		}
-		else if (pilot.IsHired && hireButton != null)
+		else
         {
-			Destroy(hireButton.gameObject);
+			hireButton.DestroyIfExists();
         }
 	}
 
@@ -189,9 +191,10 @@ public class FleetUI : MonoBehaviour
 		builder.AppendLineWithBreaks("Ship: " + pilot.Ship.Name);
 		builder.AppendLineWithBreaks("Level: " + pilot.Level);
 		builder.AppendLineWithBreaks("Experience: " + pilot.CurrentXp);
-		builder.AppendLineWithBreaks("Missions completed: " + pilot.MissionsCompleted);
+		builder.AppendLineWithBreaks("Missions completed: " + pilot.MissionsCompleted, 1);
 		builder.AppendLineWithBreaks("Likes: " + pilot.Like);
-		builder.AppendLineWithBreaks("Dislikes: " + pilot.Dislike);
+		builder.AppendLineWithBreaks("Dislikes: " + pilot.Dislike, 1);
+		builder.AppendLineWithBreaks("Cost to hire: " + pilot.HireCost);
 		return builder.ToString();
 	}
 

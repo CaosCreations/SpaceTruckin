@@ -6,4 +6,12 @@ public static class MonoBehaviourExtensions
     {
         self.gameObject.SetActive(value);
     }
+
+    public static void DestroyIfExists(this MonoBehaviour self)
+    {
+        if (self != null)
+        {
+            self.gameObject.DestroyIfExists();
+        }
+    }
 }

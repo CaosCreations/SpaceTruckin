@@ -83,7 +83,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
 
     public bool CanSpendMoney(long amount)
     {
-        if (amount < Instance.Money)
+        if (amount <= Instance.Money)
         {
             return true;
         }
