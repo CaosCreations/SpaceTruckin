@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class LicenceNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class LicenceNode : UICanvasBase, IPointerEnterHandler, IPointerExitHandler
 {
     public Licence licence;
     private Button nodeButton;

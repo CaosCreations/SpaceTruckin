@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class VendingMachineManager : MonoBehaviour
+public class VendingMachineUI : UICanvasBase
 {
     // Items indices correspond to the keys on the keypad 
     public VendingMachineItemContainer vendingMachineItemContainer;

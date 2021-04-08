@@ -1,20 +1,20 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class TerminalUIManager : MonoBehaviour
+public class TerminalUIManager : UICanvasBase
 {
     public Button missionsButton;
     public Button messagesButton;
     public Button analyticsButton;
-    public Button crewButton;
-    public Button upgradesButton;
+    public Button fleetButton;
+    public Button licencesButton;
     public Text moneyText;
 
     public GameObject missionsPanel;
     public GameObject messagesPanel;
     public GameObject analyticsPanel;
-    public GameObject crewPanel;
-    public GameObject upgradesPanel;
+    public GameObject fleetPanel;
+    public GameObject licencesPanel;
     public GameObject newDayReportPanel; 
     private NewDayReportUI newDayReportUI;
     
@@ -47,8 +47,8 @@ public class TerminalUIManager : MonoBehaviour
         missionsButton.AddOnClick(() => TabButtonClicked(Tab.Missions));
         messagesButton.AddOnClick(() => TabButtonClicked(Tab.Messages));
         analyticsButton.AddOnClick(() => TabButtonClicked(Tab.Analytics));
-        crewButton.AddOnClick(() => TabButtonClicked(Tab.Fleet));
-        upgradesButton.AddOnClick(() => TabButtonClicked(Tab.Licences));
+        fleetButton.AddOnClick(() => TabButtonClicked(Tab.Fleet));
+        licencesButton.AddOnClick(() => TabButtonClicked(Tab.Licences));
     }
 
     private void TabButtonClicked(Tab tabClicked)
@@ -68,8 +68,8 @@ public class TerminalUIManager : MonoBehaviour
         missionsPanel.SetActive(false);
         messagesPanel.SetActive(false);
         analyticsPanel.SetActive(false);
-        crewPanel.SetActive(false);
-        upgradesPanel.SetActive(false);
+        fleetPanel.SetActive(false);
+        licencesPanel.SetActive(false);
         newDayReportPanel.SetActive(false);
     }
 
@@ -84,9 +84,9 @@ public class TerminalUIManager : MonoBehaviour
             case Tab.Analytics:
                 return analyticsPanel;
             case Tab.Fleet:
-                return crewPanel;
+                return fleetPanel;
             case Tab.Licences:
-                return upgradesPanel;
+                return licencesPanel;
             default:
                 return null;
         }
@@ -104,8 +104,8 @@ public class TerminalUIManager : MonoBehaviour
         missionsButton.SetColour(UIConstants.InactiveTabButtonColour);
         messagesButton.SetColour(UIConstants.InactiveTabButtonColour);
         analyticsButton.SetColour(UIConstants.InactiveTabButtonColour);
-        crewButton.SetColour(UIConstants.InactiveTabButtonColour);
-        upgradesButton.SetColour(UIConstants.InactiveTabButtonColour);
+        fleetButton.SetColour(UIConstants.InactiveTabButtonColour);
+        licencesButton.SetColour(UIConstants.InactiveTabButtonColour);
     }
 
     private Button GetTabButtonByTabClicked(Tab tabClicked)
@@ -119,9 +119,9 @@ public class TerminalUIManager : MonoBehaviour
             case Tab.Analytics:
                 return analyticsButton;
             case Tab.Fleet:
-                return crewButton;
+                return fleetButton;
             case Tab.Licences:
-                return upgradesButton;
+                return licencesButton;
             default:
                 return null;
         }

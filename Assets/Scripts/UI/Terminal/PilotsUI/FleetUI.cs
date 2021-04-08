@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI; 
 
-public class PilotsUI : MonoBehaviour
+public class FleetUI : MonoBehaviour
 {
 	// The parent object 
 	public GameObject fleetPanel;

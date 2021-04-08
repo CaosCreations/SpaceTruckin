@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-//Simple handler for office door box collider
+// Simple handler for office door box collider
 public class OfficeDoor : MonoBehaviour
 {
     public Vector3 doorOpenOffset;
