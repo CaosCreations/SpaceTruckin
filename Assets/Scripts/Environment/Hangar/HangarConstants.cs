@@ -10,7 +10,7 @@ public static class HangarConstants
     // Batteries 
     public static Color ChargedBatteryImageColour = Color.green;
     public static Color DepletedBatteryImageColour = Color.red;
-    public static float BatteryIntensityDelta = 400f;
+    public static float BatteryEmissionCoefficient = 400f;
 
 
     // Tags

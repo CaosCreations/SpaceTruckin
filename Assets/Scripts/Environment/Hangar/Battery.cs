@@ -15,8 +15,8 @@ public class Battery : InteractableObject
         if (meshRenderer != null)
         {
             meshRenderer.material.EnableKeyword("_EMISSION");
-            depletedEmission = meshRenderer.material.GetColor("_EmissionColor");
-            chargedEmission = depletedEmission * HangarConstants.BatteryIntensityDelta;
+            depletedEmission = meshRenderer.material.GetColor("_EmissionColor"); // Depleted by default
+            chargedEmission = depletedEmission * HangarConstants.BatteryEmissionCoefficient;
         }
     }
 
