@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum UICanvasType
 {
-    Bed, Terminal, Vending, Hangar, Cassette, NoticeBoard, MainMenu, None
+    None, Terminal, Vending, Hangar, Cassette, NoticeBoard, MainMenu, Bed
 }
 
 public class UIManager : MonoBehaviour
@@ -56,8 +56,6 @@ public class UIManager : MonoBehaviour
             // Show the main menu canvas for character creation
             currentCanvasType = UICanvasType.MainMenu;
             ShowCanvas();
-
-            currentCanvasType = UICanvasType.None;
         }
     }
 
@@ -108,6 +106,12 @@ public class UIManager : MonoBehaviour
         if (!CurrentCanvasHasBeenViewed())
         {
             canvas.ShowTutorial();
+        }
+
+        // Main menu is not proximity-based, so we reset the current type
+        if (currentCanvasType == UICanvasType.MainMenu)
+        {
+            currentCanvasType = UICanvasType.None;
         }
     }
 
