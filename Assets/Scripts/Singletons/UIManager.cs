@@ -28,7 +28,7 @@ public class UIManager : MonoBehaviour
     public static event Action OnCanvasActivated;
     public static event Action OnCanvasDeactivated;
 
-    void Awake()
+    private void Awake()
     {
         if (Instance == null)
         {
@@ -56,6 +56,8 @@ public class UIManager : MonoBehaviour
             // Show the main menu canvas for character creation
             currentCanvasType = UICanvasType.MainMenu;
             ShowCanvas();
+
+            currentCanvasType = UICanvasType.None;
         }
     }
 
@@ -69,12 +71,12 @@ public class UIManager : MonoBehaviour
         {
             ClearCanvases();
         }
-        
+
         if (currentCanvasType != UICanvasType.None)
         {
             interactionTextMesh.gameObject.SetActive(true);
             interactionTextMesh.SetText(GetInteractionString());
-            interactionTextMesh.transform.position = 
+            interactionTextMesh.transform.position =
                 PlayerManager.PlayerMovement.transform.position + new Vector3(0, 0.5f, 0);
         }
         else
@@ -101,7 +103,7 @@ public class UIManager : MonoBehaviour
         PlayerManager.Instance.EnterMenuState();
         UICanvasBase canvas = GetCanvasByType(currentCanvasType);
         canvas.SetActive(true);
-        
+
         // Show tutorial overlay if first time using the UI 
         if (!CurrentCanvasHasBeenViewed())
         {

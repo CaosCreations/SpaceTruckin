@@ -212,8 +212,8 @@ public class HangarNodeUI : UICanvasBase
     private void SetBatteryChargeImage()
     {
         batteryChargeImage.color = shipToInspect.CanWarp ?
-            HangarConstants.ChargedBatteryColour :
-            HangarConstants.DepletedBatteryColour;
+            HangarConstants.ChargedBatteryImageColour :
+            HangarConstants.DepletedBatteryImageColour;
     }
 
     private void SetSliderValues()
