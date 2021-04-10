@@ -12,7 +12,21 @@ public class Battery : InteractableObject
 
     private void Start()
     {
-        if (meshRenderer != null)
+        Init();
+    }
+
+    private void Init()
+    {
+        if (meshRenderer == null)
+        {
+            meshRenderer = GetComponent<MeshRenderer>();
+        }
+        else
+        {
+            Debug.LogError($"MeshRenderer component on battery '{gameObject.name}' is null.");
+        }
+
+        if (meshRenderer != null && meshRenderer.material != null)
         {
             meshRenderer.material.EnableKeyword("_EMISSION");
             depletedEmission = meshRenderer.material.GetColor("_EmissionColor"); // Depleted by default
