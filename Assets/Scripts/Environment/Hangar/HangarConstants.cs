@@ -6,9 +6,12 @@ public static class HangarConstants
     public static int MaximumNumberOfSlots = 24;
     public static int StartingNumberOfSlots = 1;
 
+
     // Batteries 
-    public static Color ChargedBatteryColour = Color.green;
-    public static Color DepletedBatteryColour = Color.red;
+    public static Color ChargedBatteryImageColour = Color.green;
+    public static Color DepletedBatteryImageColour = Color.red;
+    public static float BatteryEmissionCoefficient = 400f;
+
 
     // Tags
     public static string BatteryTag = "Battery";

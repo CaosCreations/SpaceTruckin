@@ -20,10 +20,6 @@ public class CalendarManager : MonoBehaviour
 
     private void EndDay()
     {
-        //StartCoroutine(WaitForShipsToDock());
-        //MissionsManager.UpdateMissionSchedule();
-        //OnEndOfDay?.Invoke();
-
         PlayerManager.Instance.SaveData();
         MissionsManager.Instance.SaveData();
         ArchivedMissionsManager.Instance.SaveData();

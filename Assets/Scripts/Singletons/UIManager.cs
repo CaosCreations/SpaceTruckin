@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum UICanvasType
 {
-    Bed, Terminal, Vending, Hangar, Cassette, NoticeBoard, MainMenu, None
+    None, Terminal, Vending, Hangar, Cassette, NoticeBoard, MainMenu, Bed
 }
 
 public class UIManager : MonoBehaviour
@@ -28,7 +28,7 @@ public class UIManager : MonoBehaviour
     public static event Action OnCanvasActivated;
     public static event Action OnCanvasDeactivated;
 
-    void Awake()
+    private void Awake()
     {
         if (Instance == null)
         {
@@ -69,12 +69,12 @@ public class UIManager : MonoBehaviour
         {
             ClearCanvases();
         }
-        
+
         if (currentCanvasType != UICanvasType.None)
         {
             interactionTextMesh.gameObject.SetActive(true);
             interactionTextMesh.SetText(GetInteractionString());
-            interactionTextMesh.transform.position = 
+            interactionTextMesh.transform.position =
                 PlayerManager.PlayerMovement.transform.position + new Vector3(0, 0.5f, 0);
         }
         else
@@ -101,11 +101,17 @@ public class UIManager : MonoBehaviour
         PlayerManager.Instance.EnterMenuState();
         UICanvasBase canvas = GetCanvasByType(currentCanvasType);
         canvas.SetActive(true);
-        
+
         // Show tutorial overlay if first time using the UI 
         if (!CurrentCanvasHasBeenViewed())
         {
             canvas.ShowTutorial();
+        }
+
+        // Main menu is not proximity-based, so we reset the current type
+        if (currentCanvasType == UICanvasType.MainMenu)
+        {
+            currentCanvasType = UICanvasType.None;
         }
     }
 

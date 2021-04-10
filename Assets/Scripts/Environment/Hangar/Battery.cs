@@ -7,28 +7,52 @@ public class Battery : InteractableObject
     [SerializeField] private GameObject batteryContainer; // Contains both colliders
     [SerializeField] private MeshRenderer meshRenderer;
 
+    private Color depletedEmission;
+    private Color chargedEmission;
+
     private void Start()
     {
-        SetColour();
+        Init();
+    }
+
+    private void Init()
+    {
+        if (meshRenderer == null)
+        {
+            Debug.Log(
+                $"Getting MeshRenderer on battery {gameObject.name} as the reference is missing on the prefab.");
+            
+            meshRenderer = GetComponent<MeshRenderer>();
+        }
+
+        if (meshRenderer != null)
+        {
+            meshRenderer.material.EnableKeyword("_EMISSION");
+            depletedEmission = meshRenderer.material.GetColor("_EmissionColor"); // Depleted by default
+            chargedEmission = depletedEmission * HangarConstants.BatteryEmissionCoefficient;
+        }
+        else
+        {
+            Debug.LogError($"MeshRenderer on battery {gameObject.name} is null");
+        }
     }
 
     public void Charge()
     {
         IsCharged = true;
-        SetColour();
+        SetEmission();
     }
 
     public void Discharge()
     {
         IsCharged = false;
-        SetColour();
+        SetEmission();
     }
 
-    private void SetColour()
+    private void SetEmission()
     {
-        meshRenderer.material.color = IsCharged ?
-            HangarConstants.ChargedBatteryColour :
-            HangarConstants.DepletedBatteryColour;
+        Color emission = IsCharged ? chargedEmission : depletedEmission;
+        meshRenderer.material.SetColor("_EmissionColor", emission);
     }
 
     public bool PlayerIsHolding()

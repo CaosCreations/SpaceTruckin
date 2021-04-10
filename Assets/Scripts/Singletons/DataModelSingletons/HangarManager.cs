@@ -34,7 +34,7 @@ public class HangarManager : MonoBehaviour
             HangarConstants.BatteriesContainerTag);
 }
 
-public static void DockShip(Ship ship, int node)
+    public static void DockShip(Ship ship, int node)
     {
         if (ship != null && NodeIsValid(node))
         {
