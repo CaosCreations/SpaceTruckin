@@ -96,16 +96,22 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
                 {
                     continue;
                 }
-                else if (pilot.IsRandom && string.IsNullOrEmpty(pilot.Name))
+                else if (pilot.IsRandom)
                 {
                     pilot.Species = PilotUtils.GetRandomSpecies();
-                    pilot.Name = PilotTextManager.Instance.GetRandomName(pilot.Species);
+                    pilot.Name = PilotAssetsManager.Instance.GetRandomName(pilot.Species);
+
+                    Sprite randomAvatar = PilotAssetsManager.GetRandomAvatar();
+                    if (randomAvatar != null)
+                    {
+                        pilot.Avatar = randomAvatar;
+                    }
 
                     // Other random stats logic here
                 }
 
                 // We always randomise likes and dislikes 
-                var preferences = PilotTextManager.GetRandomPreferences();
+                var preferences = PilotAssetsManager.GetRandomPreferences();
                 
                 if (!preferences.IsNullOrEmpty())
                 {

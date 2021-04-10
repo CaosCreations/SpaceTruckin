@@ -11,7 +11,7 @@ public class DataModelManagerInitialiser : MonoBehaviour
     {
         MissionsManager.Instance.Init();
         ArchivedMissionsManager.Instance.Init();
-        PilotTextManager.Instance.Init();
+        PilotAssetsManager.Instance.Init();
         PilotsManager.Instance.Init();
         ShipsManager.Instance.Init();
         MessagesManager.Instance.Init();

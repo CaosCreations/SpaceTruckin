@@ -2,9 +2,11 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class PilotTextManager : MonoBehaviour
+public class PilotAssetsManager : MonoBehaviour
 {
-	public static PilotTextManager Instance { get; private set; }
+	public static PilotAssetsManager Instance { get; private set; }
+
+	// Pilot names 
 	public string[] HumanMaleNames { get; private set; }
 	public string[] HumanFemaleNames { get; private set; }
 	public string[] HelicidNames { get; private set; }
@@ -27,10 +29,14 @@ public class PilotTextManager : MonoBehaviour
 	private readonly int robotSuffixLength = 4;
 	private static System.Random random;
 
+	// Pilot likes and dislikes 
 	public static string[] Likes { get; private set; }
 	public static string[] Dislikes { get; private set; }
 
-	private void Awake()
+    // Pilot sprite avatars 
+    [SerializeField] private Sprite[] avatars;
+
+    private void Awake()
 	{
 		if (Instance == null)
 		{
@@ -144,5 +150,10 @@ public class PilotTextManager : MonoBehaviour
 		preferences.dislike = Dislikes.GetRandomElement();
 
 		return preferences; 
+    }
+
+	public static Sprite GetRandomAvatar()
+    {
+		return Instance.avatars.GetRandomElement();
     }
 }

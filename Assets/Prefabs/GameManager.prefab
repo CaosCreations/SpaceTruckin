@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 8710179870615699991}
   - component: {fileID: 8021603277474344776}
   - component: {fileID: 7084496073094469789}
-  - component: {fileID: 4802881469282757512}
+  - component: {fileID: 4085865392418400431}
   - component: {fileID: 8553136933094880774}
   m_Layer: 0
   m_Name: GameManager
@@ -54,8 +54,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerData: {fileID: 11400000, guid: 1506149f15b36014eb19522e7ab71165, type: 2}
-  isPaused: 0
-  playerMovement: {fileID: 0}
 --- !u!114 &5745358076465076627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111,7 +109,6 @@ MonoBehaviour:
   shipInstancePrefab: {fileID: 6567717090386942404, guid: 1d0b47e8d0def734ab93c2b8d30299b2,
     type: 3}
   shipsContainer: {fileID: 11400000, guid: 6bd5f91068b898f4d96ba6794873186e, type: 2}
-  hangarSlots: []
 --- !u!114 &2692949180829779189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,8 +121,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da42263ef217adb4e996bb9911ffbd04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hangarSlots: []
-  shipQueue: []
   shipInstancePrefab: {fileID: 6567717090386942404, guid: 1d0b47e8d0def734ab93c2b8d30299b2,
     type: 3}
 --- !u!114 &8710179870615699991
@@ -166,7 +161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0c9dbc129c65004c894a0262b8acc21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4802881469282757512
+--- !u!114 &4085865392418400431
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -175,9 +170,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5745358076465076624}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93a148b52f196454b97bde6550f2ad9b, type: 3}
+  m_Script: {fileID: 11500000, guid: 38e2c5fd6b8e83a4caaa7c043ec4a7ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  avatars: []
 --- !u!114 &8553136933094880774
 MonoBehaviour:
   m_ObjectHideFlags: 0
