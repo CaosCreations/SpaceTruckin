@@ -19,18 +19,21 @@ public class Battery : InteractableObject
     {
         if (meshRenderer == null)
         {
+            Debug.Log(
+                $"Getting MeshRenderer on battery {gameObject.name} as the reference is missing on the prefab.");
+            
             meshRenderer = GetComponent<MeshRenderer>();
         }
-        else
-        {
-            Debug.LogError($"MeshRenderer component on battery '{gameObject.name}' is null.");
-        }
 
-        if (meshRenderer != null && meshRenderer.material != null)
+        if (meshRenderer != null)
         {
             meshRenderer.material.EnableKeyword("_EMISSION");
             depletedEmission = meshRenderer.material.GetColor("_EmissionColor"); // Depleted by default
             chargedEmission = depletedEmission * HangarConstants.BatteryEmissionCoefficient;
+        }
+        else
+        {
+            Debug.LogError($"MeshRenderer on battery {gameObject.name} is null");
         }
     }
 
