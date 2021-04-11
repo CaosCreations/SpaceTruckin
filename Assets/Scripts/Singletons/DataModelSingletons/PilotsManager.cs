@@ -100,25 +100,37 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
                 {
                     pilot.Species = PilotUtils.GetRandomSpecies();
                     pilot.Name = PilotAssetsManager.Instance.GetRandomName(pilot.Species);
-
-                    Sprite randomAvatar = PilotAssetsManager.GetRandomAvatar();
-                    if (randomAvatar != null)
-                    {
-                        pilot.Avatar = randomAvatar;
-                    }
-
-                    // Other random stats logic here
+                    RandomiseAvatar(pilot);
                 }
 
                 // We always randomise likes and dislikes 
-                var preferences = PilotAssetsManager.GetRandomPreferences();
-                
-                if (!preferences.IsNullOrEmpty())
-                {
-                    pilot.Like = preferences.like;
-                    pilot.Dislike = preferences.dislike;
-                }
+                RandomisePreferences(pilot);
             }
+        }
+    }
+
+    private void RandomiseAvatar(Pilot pilot)
+    {
+        Sprite randomAvatar = PilotAssetsManager.GetRandomAvatar(pilot.Species);
+        
+        if (randomAvatar != null)
+        {
+            pilot.Avatar = randomAvatar;
+        }
+        else
+        {
+            Debug.Log($"Random avatar for {pilot.Species} (Species) was null");
+        }
+    }
+
+    private void RandomisePreferences(Pilot pilot)
+    {
+        var preferences = PilotAssetsManager.GetRandomPreferences();
+
+        if (!preferences.IsNullOrEmpty())
+        {
+            pilot.Like = preferences.like;
+            pilot.Dislike = preferences.dislike;
         }
     }
 

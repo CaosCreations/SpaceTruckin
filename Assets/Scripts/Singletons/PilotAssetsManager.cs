@@ -33,10 +33,14 @@ public class PilotAssetsManager : MonoBehaviour
 	public static string[] Likes { get; private set; }
 	public static string[] Dislikes { get; private set; }
 
-    // Pilot sprite avatars 
-    [SerializeField] private Sprite[] avatars;
+	// Pilot sprite avatars 
+	[SerializeField] private Sprite[] humanMaleSprites;
+	[SerializeField] private Sprite[] humanFemaleSprites;
+	[SerializeField] private Sprite[] vestaSprites;
+	[SerializeField] private Sprite[] helicidSprites;
+	[SerializeField] private Sprite[] robotSprites;
 
-    private void Awake()
+	private void Awake()
 	{
 		if (Instance == null)
 		{
@@ -152,8 +156,28 @@ public class PilotAssetsManager : MonoBehaviour
 		return preferences; 
     }
 
-	public static Sprite GetRandomAvatar()
+	public static Sprite GetRandomAvatar(Species species)
     {
-		return Instance.avatars.GetRandomElement();
+		return GetSpritePool(species)?.GetRandomElement();
     }
+
+	public static Sprite[] GetSpritePool(Species species)
+    {
+		switch (species)
+		{
+			case Species.HumanMale:
+				return Instance.humanMaleSprites;
+			case Species.HumanFemale:
+				return Instance.humanFemaleSprites;
+			case Species.Oshunian:
+			case Species.Helicid:
+				return Instance.helicidSprites;
+			case Species.Vesta:
+				return Instance.vestaSprites;
+			case Species.Robot:
+				return Instance.robotSprites;
+			default:
+				return null;
+		}
+	}
 }
