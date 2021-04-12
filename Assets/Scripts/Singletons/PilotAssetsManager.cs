@@ -2,9 +2,11 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class PilotTextManager : MonoBehaviour
+public class PilotAssetsManager : MonoBehaviour
 {
-	public static PilotTextManager Instance { get; private set; }
+	public static PilotAssetsManager Instance { get; private set; }
+
+	// Pilot names 
 	public string[] HumanMaleNames { get; private set; }
 	public string[] HumanFemaleNames { get; private set; }
 	public string[] HelicidNames { get; private set; }
@@ -27,8 +29,16 @@ public class PilotTextManager : MonoBehaviour
 	private readonly int robotSuffixLength = 4;
 	private static System.Random random;
 
+	// Pilot likes and dislikes 
 	public static string[] Likes { get; private set; }
 	public static string[] Dislikes { get; private set; }
+
+	// Pilot sprite avatars 
+	[SerializeField] private Sprite[] humanMaleSprites;
+	[SerializeField] private Sprite[] humanFemaleSprites;
+	[SerializeField] private Sprite[] vestaSprites;
+	[SerializeField] private Sprite[] helicidSprites;
+	[SerializeField] private Sprite[] robotSprites;
 
 	private void Awake()
 	{
@@ -145,4 +155,29 @@ public class PilotTextManager : MonoBehaviour
 
 		return preferences; 
     }
+
+	public static Sprite GetRandomAvatar(Species species)
+    {
+		return GetSpritePool(species)?.GetRandomElement();
+    }
+
+	public static Sprite[] GetSpritePool(Species species)
+    {
+		switch (species)
+		{
+			case Species.HumanMale:
+				return Instance.humanMaleSprites;
+			case Species.HumanFemale:
+				return Instance.humanFemaleSprites;
+			case Species.Oshunian:
+			case Species.Helicid:
+				return Instance.helicidSprites;
+			case Species.Vesta:
+				return Instance.vestaSprites;
+			case Species.Robot:
+				return Instance.robotSprites;
+			default:
+				return null;
+		}
+	}
 }
