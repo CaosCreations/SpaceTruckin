@@ -70,18 +70,21 @@ public class RepairsUI : MonoBehaviour
 
     private void HandleStopStart()
     {
-        repairsManager.StopStart();
+        if (repairsManager != null)
+        {
+            repairsManager.StopStart();
 
-        if (repairsManager.IsRepairing)
-        {
-            stopStartButton.SetText(RepairsConstants.StopButtonText);
-            feedbackText.Clear();
-        }
-        else
-        {
-            stopStartButton.SetText(RepairsConstants.StartButtonText);
-            stopStartButton.interactable = PlayerManager.CanRepair;
-            UpdateHullResourceBar();
+            if (repairsManager.IsRepairing)
+            {
+                stopStartButton.SetText(RepairsConstants.StopButtonText);
+                feedbackText.Clear();
+            }
+            else
+            {
+                stopStartButton.SetText(RepairsConstants.StartButtonText);
+                stopStartButton.interactable = PlayerManager.CanRepair;
+                UpdateHullResourceBar();
+            }
         }
     }
 
