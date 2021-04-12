@@ -35,6 +35,7 @@ public class RepairToolsUI : MonoBehaviour
             {
                 PlayerManager.Instance.SpendMoney(costOfTools);
                 PlayerManager.Instance.RepairTools += numberOfToolsToBuy;
+                stopStartButton.interactable = PlayerManager.CanRepair;
                 UpdateToolsText();
             }
         }
