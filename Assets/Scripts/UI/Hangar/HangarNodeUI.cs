@@ -96,8 +96,8 @@ public class HangarNodeUI : UICanvasBase
         hullButton.AddOnClick(() => SwitchPanel(HangarPanel.Repair));
         upgradeButton.AddOnClick(() => SwitchPanel(HangarPanel.Upgrade));
         customizationButton.AddOnClick(() => SwitchPanel(HangarPanel.Customization));
-        startMissionButton.AddOnClick(Launch);
-        returnToQueueButton.AddOnClick(Launch);
+        startMissionButton.AddOnClick(() => Launch(isStartingMission: true));
+        returnToQueueButton.AddOnClick(() => Launch(isStartingMission: false));
     }
 
     private void SetupShipPreview()
@@ -157,17 +157,26 @@ public class HangarNodeUI : UICanvasBase
         UIManager.Instance.currentMenuOverridesEscape = isInSubMenu;
     }
 
-    private void Launch()
+    private void Launch(bool isStartingMission)
     {
         if (shipToInspect != null)
         {
+            // Launch ship regardless of mission status 
             HangarManager.LaunchShip(hangarNode);
 
             ScheduledMission scheduled = MissionsManager.GetScheduledMission(shipToInspect);
             if (scheduled != null)
             {
-                scheduled.Mission.StartMission();
-                Debug.Log($"{scheduled.Pilot.Name} (Pilot) has started {scheduled.Mission.Name} (Mission)");
+                // If starting a mission, start it. Otherwise unschedule and return ship to queue. 
+                if (isStartingMission)
+                {
+                    scheduled.Mission.StartMission();
+                    Debug.Log($"{scheduled.Pilot.Name} (Pilot) has started {scheduled.Mission.Name} (Mission)");
+                }
+                else
+                {
+                    MissionsManager.RemoveScheduledMission(scheduled);
+                }
             }
             UIManager.ClearCanvases();
         }
