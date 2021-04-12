@@ -24,9 +24,6 @@ public class Indicator : MonoBehaviour
         {
             repairsManager.PlayerLoses();
         }
-
-        // Expend a tool regardless of whether the player wins
-        PlayerManager.Instance.RepairTools--;
     }
 
     private void OnTriggerEnter(Collider other)
