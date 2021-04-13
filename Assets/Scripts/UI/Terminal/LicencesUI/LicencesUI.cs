@@ -4,11 +4,11 @@ using UnityEngine.UI;
 
 public class LicencesUI : MonoBehaviour
 {
-    public GameObject treeContainer;
-    public GameObject detailsContainer;
-    public GameObject tierPrefab;
-    public GameObject nodePrefab;
-    public Text pointsText; 
+    [SerializeField] private GameObject treeContainer;
+    [SerializeField] private GameObject detailsContainer;
+    [SerializeField] private GameObject tierPrefab;
+    [SerializeField] private GameObject nodePrefab;
+    [SerializeField] private Text pointsText; 
 
     private void Start()
     {

@@ -16,6 +16,11 @@ public class RepairsUI : MonoBehaviour
 
     public Ship ShipToRepair { get; set; }
 
+    private void Start()
+    {
+        stopStartButton.AddOnClick(HandleStopStart);
+    }
+
     public void Init(Ship shipToRepair)
     {
         if (shipToRepair != null)
@@ -28,11 +33,6 @@ public class RepairsUI : MonoBehaviour
         }
     }
     
-    private void OnDisable()
-    {
-        repairsMinigameInstance.DestroyIfExists();
-    }
-
     public void UpdateUI(bool wasSuccessful)
     {
         repairToolsUI.UpdateToolsText();
@@ -57,29 +57,34 @@ public class RepairsUI : MonoBehaviour
 
     public void SetupMinigame()
     {
-        repairsMinigameInstance = Instantiate(repairsMinigamePrefab, transform);
-        repairsMinigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer);
-        repairsManager = repairsMinigameInstance.GetComponent<RepairsManager>();
+        if (repairsMinigameInstance == null)
+        {
+            repairsMinigameInstance = Instantiate(repairsMinigamePrefab, transform);
+            repairsMinigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer);
+            repairsManager = repairsMinigameInstance.GetComponent<RepairsManager>();
+        }
 
         stopStartButton.SetText(RepairsConstants.StartButtonText);
-        stopStartButton.AddOnClick(HandleStopStart);
         stopStartButton.interactable = PlayerManager.CanRepair;
     }
 
     private void HandleStopStart()
     {
-        repairsManager.StopStart();
+        if (repairsManager != null)
+        {
+            repairsManager.StopStart();
 
-        if (repairsManager.IsRepairing)
-        {
-            stopStartButton.SetText(RepairsConstants.StopButtonText);
-        feedbackText.Clear();
-    }
-        else
-        {
-            stopStartButton.SetText(RepairsConstants.StartButtonText);
-            stopStartButton.interactable = PlayerManager.CanRepair;
-            UpdateHullResourceBar();
+            if (repairsManager.IsRepairing)
+            {
+                stopStartButton.SetText(RepairsConstants.StopButtonText);
+                feedbackText.Clear();
+            }
+            else
+            {
+                stopStartButton.SetText(RepairsConstants.StartButtonText);
+                stopStartButton.interactable = PlayerManager.CanRepair;
+                UpdateHullResourceBar();
+            }
         }
     }
 
