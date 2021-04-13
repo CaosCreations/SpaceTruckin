@@ -66,12 +66,13 @@ public static class StringExtensions
 
         foreach (Match match in matches.Cast<Match>().Reverse())
         {
-            switch (match.Value.ToUpper().RemoveAllWhitespace())
-            {
-                case UIConstants.PlayerNameTemplate:
-
-                    break;
-            }
+            string replacement = UIUtils.GetTemplateReplacement(match.Value
+                .ToUpper()
+                .RemoveAllWhitespace()
+                .TrimStart('{')
+                .TrimEnd('}'));
+            
+            self = self.Remove(match.Index, match.Length).Insert(match.Index, replacement);
         }
         return self;
     }

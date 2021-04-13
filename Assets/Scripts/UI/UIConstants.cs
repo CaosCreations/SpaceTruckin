@@ -52,10 +52,10 @@ public class UIConstants : MonoBehaviour
     // Regex
     public static string TemplateBoundaryLeft = "{{";
     public static string TemplateBoundaryRight = "}}";
-    public static string TemplatePattern = $"(?<=\\{TemplateBoundaryLeft})[^\\]]*(?={TemplateBoundaryRight}])";
+    public static string TemplatePattern = $"({TemplateBoundaryLeft}[^}}]*){TemplateBoundaryRight}";
 
 
-    // Templates 
+    // Templates
     public const string PlayerNameTemplate = "PLAYERNAME";
 
 }

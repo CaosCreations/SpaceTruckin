@@ -24,4 +24,9 @@ public static class TextExtensions
     {
         return self.SetText(string.Empty);
     }
+
+    public static Text ReplaceTemplates(this Text self)
+    {
+        return self.SetText(self.text.ReplaceTemplates());
+    }
 }

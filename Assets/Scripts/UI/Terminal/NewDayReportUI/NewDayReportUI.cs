@@ -3,9 +3,11 @@ using UnityEngine.UI;
 
 public class NewDayReportUI : MonoBehaviour
 {
-    public GameObject reportCardPrefab;
-    public GameObject reportCardInstance; 
-    public NewDayReportCard reportCard;
+    [SerializeField] private GameObject reportCardPrefab;
+    [SerializeField] private GameObject reportCardInstance; 
+    [SerializeField] private NewDayReportCard reportCard;
+    [SerializeField] private Text welcomeMessageText;
+
     private Button nextCardButton;
     private int currentReportIndex;
 
@@ -31,6 +33,7 @@ public class NewDayReportUI : MonoBehaviour
         currentReportIndex = 0;
         nextCardButton.AddOnClick(ShowNextReport);
         nextCardButton.onClick.Invoke();
+        welcomeMessageText.ReplaceTemplates();
     }
 
     private void ShowNextReport()
