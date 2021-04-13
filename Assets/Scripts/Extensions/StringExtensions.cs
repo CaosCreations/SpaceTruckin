@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 public static class StringExtensions
@@ -53,5 +54,25 @@ public static class StringExtensions
     {
         return !string.IsNullOrWhiteSpace(self) 
             && Regex.IsMatch(self, alphabeticalPattern);
+    }
+
+    public static string ReplaceTemplates(this string self)
+    {
+        MatchCollection matches = new Regex(UIConstants.TemplatePattern).Matches(self);
+        if (matches.Count <= 0)
+        {
+            return self;
+        }
+
+        foreach (Match match in matches.Cast<Match>().Reverse())
+        {
+            switch (match.Value.ToUpper().RemoveAllWhitespace())
+            {
+                case UIConstants.PlayerNameTemplate:
+
+                    break;
+            }
+        }
+        return self;
     }
 }

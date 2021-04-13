@@ -47,4 +47,15 @@ public class UIConstants : MonoBehaviour
     public static float ShipPreviewScaleFactor = 0.85f;
 
     public static string CloseReportButtonText = "Close";
+
+
+    // Regex
+    public static string TemplateBoundaryLeft = "{{";
+    public static string TemplateBoundaryRight = "}}";
+    public static string TemplatePattern = $"(?<=\\{TemplateBoundaryLeft})[^\\]]*(?={TemplateBoundaryRight}])";
+
+
+    // Templates 
+    public const string PlayerNameTemplate = "PLAYERNAME";
+
 }
