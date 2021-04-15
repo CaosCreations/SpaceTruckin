@@ -75,21 +75,15 @@ public class TerminalUIManager : UICanvasBase
 
     private GameObject GetPanelByTabClicked(Tab tabClicked)
     {
-        switch (tabClicked)
+        return tabClicked switch
         {
-            case Tab.Missions:
-                return missionsPanel;
-            case Tab.Messages:
-                return messagesPanel;
-            case Tab.Analytics:
-                return analyticsPanel;
-            case Tab.Fleet:
-                return fleetPanel;
-            case Tab.Licences:
-                return licencesPanel;
-            default:
-                return null;
-        }
+            Tab.Missions => missionsPanel,
+            Tab.Messages => messagesPanel,
+            Tab.Analytics => analyticsPanel,
+            Tab.Fleet => fleetPanel,
+            Tab.Licences => licencesPanel,
+            _ => null,
+        };
     }
 
     private void SetTabButtonColours(Tab tabClicked)
@@ -110,20 +104,14 @@ public class TerminalUIManager : UICanvasBase
 
     private Button GetTabButtonByTabClicked(Tab tabClicked)
     {
-        switch (tabClicked)
+        return tabClicked switch
         {
-            case Tab.Missions:
-                return missionsButton;
-            case Tab.Messages:
-                return messagesButton;
-            case Tab.Analytics:
-                return analyticsButton;
-            case Tab.Fleet:
-                return fleetButton;
-            case Tab.Licences:
-                return licencesButton;
-            default:
-                return null;
-        }
+            Tab.Missions => missionsButton,
+            Tab.Messages => messagesButton,
+            Tab.Analytics => analyticsButton,
+            Tab.Fleet => fleetButton,
+            Tab.Licences => licencesButton,
+            _ => null,
+        };
     }
 }
