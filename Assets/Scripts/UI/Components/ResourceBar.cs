@@ -7,7 +7,7 @@ public class ResourceBar : MonoBehaviour
     private float currentPercentage;
 
     [SerializeField] private Slider resourceSlider;
-    [SerializeField] private Image sliderBackgroundImage; 
+    [SerializeField] private Image sliderBackgroundImage;
 
     private Gradient gradient;
     private GradientColorKey[] colourKeys;
@@ -41,7 +41,7 @@ public class ResourceBar : MonoBehaviour
     public void SetResourceValue(float value)
     {
         currentPercentage = value;
-        currentPercentageText.SetText($"{Mathf.RoundToInt(currentPercentage * 100)}%");
+        currentPercentageText.SetText($"{Mathf.FloorToInt(currentPercentage * 100)}%");
         resourceSlider.value = currentPercentage;
         SetBarColour();
     }
