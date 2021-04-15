@@ -26,7 +26,7 @@ public class MissionsUI : MonoBehaviour
 
     private void Start()
     {
-        pilotSelectCloseButton.AddOnClick(ClosePilotSelect);
+        pilotSelectCloseButton.AddOnClick(PopulateMissionSelect);
     }
 
     private void SetActiveSlots()
@@ -43,6 +43,8 @@ public class MissionsUI : MonoBehaviour
     public void PopulateMissionSelect()
     {
         scrollViewContent.transform.DestroyDirectChildren();
+        pilotSelectCloseButton.SetActive(false);
+
         List<Mission> selectableMissions = MissionsManager.GetSelectableMissions();
         if (!selectableMissions.IsNullOrEmpty())
         {
@@ -120,12 +122,6 @@ public class MissionsUI : MonoBehaviour
                 }
             }
         }
-    }
-
-    private void ClosePilotSelect()
-    {
-        pilotSelectCloseButton.SetActive(false);
-        PopulateMissionSelect();
     }
 
     private void ShowMissionProgress(MissionUIItem missionItem)
