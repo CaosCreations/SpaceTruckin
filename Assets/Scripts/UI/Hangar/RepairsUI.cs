@@ -30,6 +30,7 @@ public class RepairsUI : MonoBehaviour
             UpdateHullResourceBar();
             feedbackText.Clear();
             SetupMinigame();
+            stopStartButton.interactable = !ShipToRepair.IsFullyRepaired;
         }
     }
     
@@ -37,6 +38,7 @@ public class RepairsUI : MonoBehaviour
     {
         repairToolsUI.UpdateToolsText();
         UpdateFeedbackText(wasSuccessful);
+        stopStartButton.interactable = !ShipToRepair.IsFullyRepaired;
     }
 
     private void UpdateFeedbackText(bool wasSuccessful)
