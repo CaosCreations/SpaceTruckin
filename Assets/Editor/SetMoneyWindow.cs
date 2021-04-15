@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SetMoneyWindow : EditorWindow
 {
-    public static event Action OnMoneySet;
     private long amount;
 
     [MenuItem("Space Truckin/Player/Set Money")]
@@ -25,12 +24,25 @@ public class SetMoneyWindow : EditorWindow
         if (GUI.Button(new Rect(20, 40, position.width - 40, 20), "Set Money"))
         {
             PlayerEditor.SetMoney(Math.Max(0, amount));
-            OnMoneySet?.Invoke();
+            SetMoneyTexts();
         }
 
         Repaint();
     }
 
-
-
+    private static void SetMoneyTexts()
+    {
+        try
+        {
+            var moneyTexts = FindObjectsOfType<MoneyText>();
+            foreach (var text in moneyTexts)
+            {
+                text.UpdateMoneyText();
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"{ex.Message}\n{ex.StackTrace}");
+        }
+    }
 }
