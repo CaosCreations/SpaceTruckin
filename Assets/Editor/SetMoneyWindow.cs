@@ -40,9 +40,9 @@ public class SetMoneyWindow : EditorWindow
                 text.UpdateMoneyText();
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            Debug.LogError($"{ex.Message}\n{ex.StackTrace}");
+            Debug.Log("Unable to set money texts");
         }
     }
 }
