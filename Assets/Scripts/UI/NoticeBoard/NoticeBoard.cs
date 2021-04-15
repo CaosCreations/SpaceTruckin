@@ -19,7 +19,7 @@ public class NoticeBoard : UICanvasBase
     [Header("Set in game")]
     public Mission selectedMission;
 
-    void Start()
+    private void Start()
     {
         acceptJobButton.onClick.RemoveAllListeners();
         acceptJobButton.onClick.AddListener(AcceptMission);
@@ -36,13 +36,13 @@ public class NoticeBoard : UICanvasBase
 
     private void AcceptMission()
     {
-        if(selectedMission != null)
+        if (selectedMission != null)
         {
+            selectedMission.HasBeenAccepted = true;
+            acceptJobButton.interactable = false;
             CleanScrollView();
             PopulateScrollView();
             CleanDetailPanel();
-            selectedMission.HasBeenAccepted = true;
-            acceptJobButton.interactable = false;
         }
     }
 
