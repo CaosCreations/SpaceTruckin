@@ -86,7 +86,8 @@ public class Battery : InteractableObject
     private void Update()
     {
         if (Input.GetKeyDown(PlayerConstants.DropObjectKey)
-            && PlayerIsHolding())
+            && PlayerIsHolding()
+            && !HangarManager.ChargePoint.IsPlayerColliding)
         {
             DropBattery();
         }

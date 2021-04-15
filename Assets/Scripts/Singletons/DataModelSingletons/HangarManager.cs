@@ -10,6 +10,7 @@ public class HangarManager : MonoBehaviour
 
     public static HangarSlot[] HangarSlots { get; private set; }
     public static GameObject BatteriesContainer { get; private set; }
+    public static BatteryChargePoint ChargePoint { get; private set; }
 
     private void Awake()
     {
@@ -24,15 +25,8 @@ public class HangarManager : MonoBehaviour
             return;
         }
 
-        HangarSlots = FindObjectsOfType<HangarSlot>();
-        if (HangarSlots == null)
-        {
-            Debug.LogError("Hangar slots not found");
-        }
-
-        BatteriesContainer = GameObject.FindGameObjectWithTag(
-            HangarConstants.BatteriesContainerTag);
-}
+        GetSceneReferences();
+    }
 
     public static void DockShip(Ship ship, int node)
     {
@@ -151,5 +145,28 @@ public class HangarManager : MonoBehaviour
     public static bool NodeIsValid(int node)
     {
         return node >= 1 && node <= HangarConstants.MaximumNumberOfSlots;
+    }
+
+    private static void GetSceneReferences()
+    {
+        HangarSlots = FindObjectsOfType<HangarSlot>();
+        if (HangarSlots == null)
+        {
+            Debug.LogError("Hangar slots not found");
+        }
+
+        BatteriesContainer = GameObject.FindGameObjectWithTag(
+            HangarConstants.BatteriesContainerTag);
+
+        if (BatteriesContainer == null)
+        {
+            Debug.LogError("Batteries container not found");
+        }
+
+        ChargePoint = FindObjectOfType<BatteryChargePoint>();
+        if (ChargePoint == null)
+        {
+            Debug.LogError("Battery charge point could not be found");
+        }
     }
 }
