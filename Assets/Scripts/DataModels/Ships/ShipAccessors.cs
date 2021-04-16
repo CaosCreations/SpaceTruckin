@@ -22,6 +22,7 @@ public partial class Ship
         get => saveData.currentHullIntegrity; set => saveData.currentHullIntegrity = value;
     }
     public float MaxHullIntegrity { get => maxHullIntegrity; set => maxHullIntegrity = value; }
+    public bool IsFullyRepaired { get => CurrentHullIntegrity >= MaxHullIntegrity; }
 
     /// <summary>Warp is required to go out on missions</summary>
     public bool CanWarp { get => saveData.canWarp; set => saveData.canWarp = value; }

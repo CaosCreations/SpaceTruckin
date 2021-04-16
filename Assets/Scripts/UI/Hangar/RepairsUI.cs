@@ -27,8 +27,11 @@ public class RepairsUI : MonoBehaviour
         {
             ShipToRepair = shipToRepair;
             shipDetails.Init(shipToRepair);
-            UpdateHullResourceBar();
             feedbackText.Clear();
+            stopStartButton.SetText(RepairsConstants.StartButtonText);
+            UpdateHullResourceBar();
+            SetButtonInteractability();
+
             SetupMinigame();
         }
     }
@@ -37,6 +40,8 @@ public class RepairsUI : MonoBehaviour
     {
         repairToolsUI.UpdateToolsText();
         UpdateFeedbackText(wasSuccessful);
+        SetButtonInteractability();
+        UpdateHullResourceBar();
     }
 
     private void UpdateFeedbackText(bool wasSuccessful)
@@ -63,9 +68,6 @@ public class RepairsUI : MonoBehaviour
             repairsMinigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer);
             repairsManager = repairsMinigameInstance.GetComponent<RepairsManager>();
         }
-
-        stopStartButton.SetText(RepairsConstants.StartButtonText);
-        stopStartButton.interactable = PlayerManager.CanRepair;
     }
 
     private void HandleStopStart()
@@ -82,8 +84,6 @@ public class RepairsUI : MonoBehaviour
             else
             {
                 stopStartButton.SetText(RepairsConstants.StartButtonText);
-                stopStartButton.interactable = PlayerManager.CanRepair;
-                UpdateHullResourceBar();
             }
         }
     }
@@ -92,5 +92,11 @@ public class RepairsUI : MonoBehaviour
     {
         float hullPercentage = ShipToRepair.GetHullPercent();
         hullResourceBar.SetResourceValue(hullPercentage);
+    }
+
+    private void SetButtonInteractability()
+    {
+        stopStartButton.interactable = PlayerManager.CanRepair
+            && !ShipToRepair.IsFullyRepaired;
     }
 }

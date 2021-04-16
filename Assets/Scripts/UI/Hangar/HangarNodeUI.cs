@@ -122,8 +122,7 @@ public class HangarNodeUI : UICanvasBase
             shipToInspect.CurrentFuel++;
             fuelSlider.value = shipToInspect.GetFuelPercent();
             fuelTimer = 0;
-            fuelButton.Button.interactable = FuelButtonIsInteractable();
-            startMissionButton.interactable = StartMissionButtonIsInteractable();
+            SetButtonInteractability();
         }
     }
 
@@ -235,5 +234,6 @@ public class HangarNodeUI : UICanvasBase
     {
         fuelButton.Button.interactable = FuelButtonIsInteractable();
         startMissionButton.interactable = StartMissionButtonIsInteractable();
+        hullButton.interactable = !shipToInspect.IsFullyRepaired;
     }
 }
