@@ -7,7 +7,7 @@ public class RepairsManager : MonoBehaviour
     private RepairsUI repairsUI;
 
     public int consecutiveWins;
-    public bool IsRepairing { get => workstation.isRotating; }
+    public bool IsRepairing => workstation.isRotating;
 
     private void Start()
     {

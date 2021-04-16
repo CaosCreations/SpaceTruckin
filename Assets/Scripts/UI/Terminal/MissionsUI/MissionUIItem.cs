@@ -24,6 +24,8 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         myRectTransform = GetComponent<RectTransform>();
     }
 
+    private void OnDisable() => gameObject.DestroyIfExists();
+
     public void Init(Mission mission)
     {
         this.mission = mission;
