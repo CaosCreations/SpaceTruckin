@@ -7,9 +7,9 @@ public enum Direction
 
 public class PlayerMovement : MonoBehaviour
 {
-    public static Vector3 movementVector;
-    public float killFloorHeight = -25;
-    public Vector3 playerResetPosition = new Vector3(8.5f, 0.8f, -10f);
+    public static Vector3 MovementVector;
+    private readonly float killFloorHeight = -25;
+    private readonly Vector3 playerResetPosition = new Vector3(210f, 380f, -247f);
 
     [SerializeField] private Animator animator;
 
@@ -50,11 +50,11 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
-        movementVector.x = Input.GetAxisRaw("Horizontal");
-        movementVector.y = Input.GetAxisRaw("Vertical");
+        MovementVector.x = Input.GetAxisRaw("Horizontal");
+        MovementVector.y = Input.GetAxisRaw("Vertical");
 
         SetDirection();
-        RotateWithView(movementVector,CameraTransform);
+        RotateWithView(MovementVector,CameraTransform);
     }
 
     // Move player in FixedUpdate 
@@ -66,9 +66,9 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Adjust for diagonal input 
-        if (movementVector.magnitude > 1f)
+        if (MovementVector.magnitude > 1f)
         {
-            movementVector /= movementVector.magnitude;
+            MovementVector /= MovementVector.magnitude;
         }
 
         ApplyGravity();
@@ -77,35 +77,35 @@ public class PlayerMovement : MonoBehaviour
 
     private void SetDirection()
     {
-        if (movementVector == Vector3.up)
+        if (MovementVector == Vector3.up)
         {
             animator.SetBool("Up", true);
         }
-        else if (movementVector == new Vector3(-1f, 1f))
+        else if (MovementVector == new Vector3(-1f, 1f))
         {
             animator.SetBool("Up", true);
         }
-        else if (movementVector == Vector3.left)
+        else if (MovementVector == Vector3.left)
         {
             animator.SetBool("Left", true);
         }
-        else if (movementVector == new Vector3(-1f, -1f))
+        else if (MovementVector == new Vector3(-1f, -1f))
         {
             animator.SetBool("Left", true);
         }
-        else if (movementVector == Vector3.down)
+        else if (MovementVector == Vector3.down)
         {
             animator.SetBool("Down", true);
         }
-        else if (movementVector == new Vector3(1f, -1f))
+        else if (MovementVector == new Vector3(1f, -1f))
         {
             animator.SetBool("Down", true);
         }
-        else if (movementVector == Vector3.right)
+        else if (MovementVector == Vector3.right)
         {
             animator.SetBool("Right", true);
         }
-        else if (movementVector == Vector3.one)
+        else if (MovementVector == Vector3.one)
         {
             animator.SetBool("Right", true);
             
@@ -152,6 +152,12 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("RUN",false);
             currentSpeed = walkSpeed;
         }
+
+        // Manually trigger respawn 
+        if (Input.GetKeyDown(PlayerConstants.RespawnKey))
+        {
+            ResetPlayerToOrigin();
+        }
     }
 
     private void ApplyGravity()
@@ -166,12 +172,12 @@ public class PlayerMovement : MonoBehaviour
             currentSpeed += acceleration; 
         }
 
-        if (movementVector == Vector3.zero)
+        if (MovementVector == Vector3.zero)
         {
             currentSpeed = 0f;
         }
 
-        Vector3 movement = new Vector3(movementVector.x, 0f, movementVector.y);
+        Vector3 movement = new Vector3(MovementVector.x, 0f, MovementVector.y);
         characterController.Move(movement * currentSpeed * Time.fixedDeltaTime);
     }
 

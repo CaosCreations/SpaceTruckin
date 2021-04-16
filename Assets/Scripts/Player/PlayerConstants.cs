@@ -6,6 +6,7 @@ public class PlayerConstants : MonoBehaviour
     public static KeyCode ActionKey = KeyCode.E;
     public static KeyCode ExitKey = KeyCode.Escape;
     public static KeyCode DropObjectKey = KeyCode.Q;
+    public static KeyCode RespawnKey = KeyCode.R;
 
     public static string PlayerTag = "Player";
 }
