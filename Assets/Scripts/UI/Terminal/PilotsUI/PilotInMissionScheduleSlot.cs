@@ -21,7 +21,9 @@ public class PilotInMissionScheduleSlot : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    private void RemoveOrReplacePilot()
+    /// <summary>Either remove or choose a new pilot based on circumstances</summary>
+    /// <param name="isReplacingPilot">When left clicking, this will be true</param>
+    private void RemoveOrReplacePilot(bool isReplacingPilot)
     {
         if (pilot != null && scheduleSlot != null)
         {
@@ -29,19 +31,23 @@ public class PilotInMissionScheduleSlot : MonoBehaviour, IPointerClickHandler
             Mission mission = scheduled?.Mission;
             if (mission != null)
             {
-                // Give the option to replace the pilot if there was a mission in the slot
-                missionsUI.PopulatePilotSelect(scheduleSlot, mission);
-            }
-            else
-            {
-                // The pilot has been removed, so we unschedule the mission
-                MissionsManager.RemoveScheduledMission(scheduled);
-                
-                // Ship goes back into the queue 
-                HangarManager.LaunchShip(scheduleSlot.hangarNode);
+                if (isReplacingPilot)
+                {
+                    // Give the option to replace the pilot if we change our mind.
+                    // We don't send them back to the queue immediately in case we want to revert.
+                    missionsUI.PopulatePilotSelect(scheduleSlot, mission);
+                    return;
+                }
 
-                Destroy(gameObject);
+                // We are removing the new pilot,
+                // so we unschedule the mission as it's invalid without a pilot.
+                MissionsManager.RemoveScheduledMission(scheduled);
             }
+
+            // Ship goes back into the queue as it's not longer needed.
+            HangarManager.LaunchShip(scheduleSlot.hangarNode);
+
+            Destroy(gameObject);
         }
     }
 
@@ -49,7 +55,13 @@ public class PilotInMissionScheduleSlot : MonoBehaviour, IPointerClickHandler
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            RemoveOrReplacePilot();
+            // Left click to replace 
+            RemoveOrReplacePilot(isReplacingPilot: true);
+        }
+        else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            // Right click to remove 
+            RemoveOrReplacePilot(isReplacingPilot: false);
         }
     }
 }
