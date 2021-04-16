@@ -8,19 +8,13 @@ public enum Direction
 public class PlayerMovement : MonoBehaviour
 {
     public static Vector3 MovementVector;
-    private readonly float killFloorHeight = -25;
-    private readonly Vector3 playerResetPosition = new Vector3(210f, 380f, -247f);
 
     [SerializeField] private Animator animator;
+    private CharacterController characterController;
 
     private float currentSpeed;
-    private readonly float walkSpeed = 3f;
-    private readonly float runSpeed = 7f;
     [SerializeField] private float maximumSpeed; 
     [SerializeField] private float acceleration;
-
-    private CharacterController characterController;
-    private readonly float gravity = -9.81f;
 
     // Player movement relates to camera
     public Transform CameraTransform;
@@ -145,12 +139,12 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift))
         {
             animator.SetBool("RUN", true);
-            currentSpeed = runSpeed;
+            currentSpeed = PlayerConstants.RunSpeed;
         }
         else
         { 
             animator.SetBool("RUN",false);
-            currentSpeed = walkSpeed;
+            currentSpeed = PlayerConstants.WalkSpeed;
         }
 
         // Manually trigger respawn 
@@ -162,7 +156,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ApplyGravity()
     {
-        characterController.Move(new Vector3(0, gravity * Time.fixedDeltaTime, 0));
+        characterController.Move(new Vector3(0, PlayerConstants.Gravity * Time.fixedDeltaTime, 0));
     }
 
     private void MovePlayer()
@@ -183,13 +177,13 @@ public class PlayerMovement : MonoBehaviour
 
     private bool IsPlayerBelowKillFloor()
     {
-        return characterController.transform.position.y < killFloorHeight;
+        return characterController.transform.position.y < PlayerConstants.KillFloorHeight;
     }
 
     private void ResetPlayerToOrigin()
     {
         characterController.enabled = false;
-        transform.position = playerResetPosition;
+        transform.position = PlayerConstants.PlayerResetPosition;
         characterController.enabled = true;
     }
 
