@@ -53,6 +53,7 @@ public class UIConstants : MonoBehaviour
     public static string TemplateBoundaryLeft = "{{";
     public static string TemplateBoundaryRight = "}}";
     public static string TemplatePattern = $"({TemplateBoundaryLeft}[^}}]*){TemplateBoundaryRight}";
+    public static string UnsignedIntegerPattern = "^[0-9]*$";
 
 
     // Templates
