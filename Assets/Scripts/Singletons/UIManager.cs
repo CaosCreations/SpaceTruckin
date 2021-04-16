@@ -61,11 +61,13 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(PlayerConstants.ActionKey) && currentCanvasType != UICanvasType.None)
+        if (!PlayerManager.IsPaused 
+            && currentCanvasType != UICanvasType.None 
+            && Input.GetKeyDown(PlayerConstants.ActionKey))
         {
             ShowCanvas();
         }
-        if (Input.GetKeyDown(PlayerConstants.ExitKey) && !currentMenuOverridesEscape)
+        else if (Input.GetKeyDown(PlayerConstants.ExitKey) && !currentMenuOverridesEscape)
         {
             ClearCanvases();
         }
@@ -85,7 +87,7 @@ public class UIManager : MonoBehaviour
 
     public static void ClearCanvases()
     {
-        PlayerManager.Instance.IsPaused = false;
+        PlayerManager.IsPaused = false;
         Instance.bedCanvas.SetActive(false);
         Instance.terminalCanvas.SetActive(false);
         Instance.hangarNodeCanvas.SetActive(false);

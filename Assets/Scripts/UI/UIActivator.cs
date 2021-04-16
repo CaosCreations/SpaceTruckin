@@ -6,7 +6,7 @@ public class UIActivator : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag(PlayerConstants.PlayerTag))
+        if (other.CompareTag(PlayerConstants.PlayerTag))
         {
             UIManager.SetCanInteract(type, true);
         }
@@ -14,7 +14,7 @@ public class UIActivator : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if(other.CompareTag(PlayerConstants.PlayerTag))
+        if (other.CompareTag(PlayerConstants.PlayerTag))
         {
             UIManager.SetCanInteract(type, false);
         }
