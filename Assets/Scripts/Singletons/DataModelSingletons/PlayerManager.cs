@@ -33,7 +33,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         get => playerData.PlayerRepairTools; set => playerData.PlayerRepairTools = value; 
     }
     public static bool CanRepair => Instance.RepairTools > 0;
-    public bool IsPaused { get; set; }
+    public static bool IsPaused { get; set; }
 
     public static GameObject PlayerObject { get; private set; }
     public static PlayerMovement PlayerMovement { get; private set; }
@@ -121,7 +121,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     public void EnterMenuState()
     {
         PlayerMovement.ResetAnimator();
-        Instance.IsPaused = true;
+        IsPaused = true;
     }
 
     public static void SetPlayerName(string playerName)
