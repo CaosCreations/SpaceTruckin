@@ -20,7 +20,7 @@ public class PlayerEditor : MonoBehaviour
         }
     }
 
-    [MenuItem("Space Truckin/Player/Give 1 $Million")]
+    [MenuItem("Space Truckin/Player/Give $1 Million")]
     private static void GiveOneMillion()
     {
         try
