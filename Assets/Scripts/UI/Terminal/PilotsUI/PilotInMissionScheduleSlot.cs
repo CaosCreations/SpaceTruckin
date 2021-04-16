@@ -44,7 +44,7 @@ public class PilotInMissionScheduleSlot : MonoBehaviour, IPointerClickHandler
                 MissionsManager.RemoveScheduledMission(scheduled);
             }
 
-            // Ship goes back into the queue as it's not longer needed.
+            // Ship goes back into the queue as it's no longer needed.
             HangarManager.LaunchShip(scheduleSlot.hangarNode);
 
             Destroy(gameObject);
