@@ -32,7 +32,7 @@ public class BatterySlot : InteractableObject
             && Input.GetKey(PlayerConstants.ActionKey))
         {
             Battery battery = other.GetComponentInChildren<Battery>();
-            if (battery != null && battery.IsCharged)
+            if (battery != null)
             {
                 TransferEnergyToShip(battery);
             }
