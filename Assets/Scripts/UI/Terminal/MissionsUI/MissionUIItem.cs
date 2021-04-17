@@ -5,13 +5,13 @@ using UnityEngine.UI;
 public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler
 {
     [Header("Set in Editor")]
-    public Text missionNameText;
+    public Text MissionNameText;
 
     [Header("Set at Runtime")]
-    public Mission mission;
+    public Mission Mission;
     private MissionsUI missionsUI;
     private MissionDetailsUI missionDetailsUI;
-    public Canvas canvas;
+    private Canvas canvas;
     private CanvasGroup canvasGroup;
     private RectTransform myRectTransform;
 
@@ -28,13 +28,13 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
     public void Init(Mission mission)
     {
-        this.mission = mission;
-        missionNameText.SetText(mission.Name, FontType.ListItem);
+        Mission = mission;
+        MissionNameText.SetText(mission.Name, FontType.ListItem);
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if(!mission.IsInProgress())
+        if (!Mission.IsInProgress())
         {
             myRectTransform.SetParent(missionsUI.transform);
             canvasGroup.alpha = MissionConstants.dragAlpha;
@@ -46,7 +46,7 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     {
         // Delta is the distance that the mouse moved since previous frame
         // Divide by canvas scale factor to prevent object from not following the mouse properly on a scaled canvas
-        if (!mission.IsInProgress())
+        if (!Mission.IsInProgress())
         {
             myRectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
         }
@@ -54,7 +54,7 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (!mission.IsInProgress())
+        if (!Mission.IsInProgress())
         {
             // Raycast will pass through and hit the schedule
             canvasGroup.blocksRaycasts = true;
@@ -75,7 +75,7 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
                 else
                 {
                     // Open the pilot select menu after dropping a mission into a slot that has no pilot in it
-                    missionsUI.PopulatePilotSelect(scheduleSlot, mission);
+                    missionsUI.PopulatePilotSelect(scheduleSlot, Mission);
                 }
             }
             else
@@ -101,17 +101,17 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     public void Schedule(MissionScheduleSlot scheduleSlot)
     {
         Pilot pilot = HangarManager.GetPilotByNode(scheduleSlot.hangarNode);
-        if (pilot != null && mission != null)
+        if (pilot != null && Mission != null)
         {
-            MissionsManager.AddOrUpdateScheduledMission(pilot, mission);
+            MissionsManager.AddOrUpdateScheduledMission(pilot, Mission);
         }
     }
 
     public void Unschedule(MissionScheduleSlot scheduleSlot = null)
     {
-        MissionsManager.RemoveScheduledMission(mission);
+        MissionsManager.RemoveScheduledMission(Mission);
+        Mission = null;
         missionsUI.PopulateMissionSelect();
-        Destroy(gameObject);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -125,14 +125,15 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
                 Unschedule();
 
                 missionsUI.pilotSelectCloseButton.SetActive(false);
+                Destroy(gameObject);
             }
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
-            if (missionDetailsUI.missionBeingDisplayed != mission)
+            if (missionDetailsUI.missionBeingDisplayed != Mission)
             {
                 // Show the mission details for the scheduled mission 
-                missionDetailsUI.missionBeingDisplayed = mission;
+                missionDetailsUI.missionBeingDisplayed = Mission;
                 missionDetailsUI.DisplayMissionDetails(this);
             }
             else
