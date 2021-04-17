@@ -35,7 +35,6 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         else
         {
             DataUtils.CreateSaveFolder(Mission.FOLDER_NAME);
-            //DataUtils.CreateSaveFolder(ScheduledMission.FOLDER_NAME);
         }
 
         if (Missions?.Length <= 0)

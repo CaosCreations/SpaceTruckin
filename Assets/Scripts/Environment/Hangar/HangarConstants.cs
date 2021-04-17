@@ -17,4 +17,5 @@ public static class HangarConstants
     public static string BatteryTag = "Battery";
     public static string BatteriesContainerTag = "BatteriesContainer";
 
+    public static float BatteryRotationSpeed = 4f;
 }

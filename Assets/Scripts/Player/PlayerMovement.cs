@@ -25,6 +25,8 @@ public class PlayerMovement : MonoBehaviour
     // Player movement relates to camera
     public Transform CameraTransform;
 
+    [SerializeField] private SpringJoint springJoint;
+
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -200,5 +202,15 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("KeyDown", false);
         animator.SetBool("KeyRight", false);
         animator.SetBool("KeyLeft", false);
+    }
+
+    public void ConnectBodyToSpring(Rigidbody connectedBody)
+    {
+        springJoint.connectedBody = connectedBody;
+    }
+
+    public void DisconnectBodyFromSpring()
+    {
+        springJoint.connectedBody = null;
     }
 }

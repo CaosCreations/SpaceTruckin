@@ -5,7 +5,9 @@ public class Battery : InteractableObject
     public bool IsCharged { get; set; }
 
     [SerializeField] private GameObject batteryContainer; // Contains both colliders
+    [SerializeField] private GameObject batteryModel;
     [SerializeField] private MeshRenderer meshRenderer;
+    [SerializeField] private Rigidbody myRigidbody;
 
     private Color depletedEmission;
     private Color chargedEmission;
@@ -27,14 +29,19 @@ public class Battery : InteractableObject
 
         if (meshRenderer != null)
         {
-            meshRenderer.material.EnableKeyword("_EMISSION");
-            depletedEmission = meshRenderer.material.GetColor("_EmissionColor"); // Depleted by default
-            chargedEmission = depletedEmission * HangarConstants.BatteryEmissionCoefficient;
+            InitEmission();
         }
         else
         {
             Debug.LogError($"MeshRenderer on battery {gameObject.name} is null");
         }
+    }
+
+    private void InitEmission()
+    {
+        meshRenderer.material.EnableKeyword("_EMISSION");
+        depletedEmission = meshRenderer.material.GetColor("_EmissionColor"); // Depleted by default
+        chargedEmission = depletedEmission * HangarConstants.BatteryEmissionCoefficient;
     }
 
     public void Charge()
@@ -55,26 +62,38 @@ public class Battery : InteractableObject
         meshRenderer.material.SetColor("_EmissionColor", emission);
     }
 
-    public bool PlayerIsHolding()
+    public bool PlayerIsHoldingABattery()
     {
         return PlayerManager.PlayerObject.GetComponentInChildren<Battery>() != null;
+    }
+
+    public bool PlayerIsHoldingThisBattery()
+    {
+        return PlayerManager.PlayerObject.GetComponentInChildren<Battery>() == this;
     }
 
     public void TakeBattery()
     {
         batteryContainer.ParentToPlayer();
+        PlayerManager.PlayerMovement.ConnectBodyToSpring(myRigidbody);
     }
 
     public void DropBattery()
     {
         batteryContainer.SetParent(HangarManager.BatteriesContainer);
+        PlayerManager.PlayerMovement.DisconnectBodyFromSpring();
+    }
+
+    private void RotateBattery()
+    {
+        batteryModel.transform.Rotate(new Vector3(0f, 0f, HangarConstants.BatteryRotationSpeed));
     }
 
     private void OnTriggerStay(Collider other)
     {
         if (IsPlayerColliding && Input.GetKey(PlayerConstants.ActionKey))
         {
-            if (PlayerIsHolding())
+            if (PlayerIsHoldingABattery())
             {
                 // Don't let the player pick up a battery if they already have one
                 return;
@@ -85,8 +104,12 @@ public class Battery : InteractableObject
 
     private void Update()
     {
-        if (Input.GetKeyDown(PlayerConstants.DropObjectKey)
-            && PlayerIsHolding())
+        if (PlayerIsHoldingThisBattery())
+        {
+            RotateBattery();
+        }
+        
+        if (PlayerIsHoldingABattery() && Input.GetKeyDown(PlayerConstants.DropObjectKey))
         {
             DropBattery();
         }
