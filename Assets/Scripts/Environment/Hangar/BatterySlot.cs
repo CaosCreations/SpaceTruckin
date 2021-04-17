@@ -1,3 +1,4 @@
+using System.Text;
 using UnityEngine;
 
 public class BatterySlot : InteractableObject
@@ -6,19 +7,23 @@ public class BatterySlot : InteractableObject
 
     public void TransferEnergyToShip(Battery battery)
     {
-        if (hangarSlot != null
-            && hangarSlot.Ship != null
-            && battery.IsCharged
-            && !hangarSlot.Ship.CanWarp)
+        bool canTransferEnergy = CanTransferEnergy(battery);
+
+        if (canTransferEnergy)
         {
             ShipsManager.EnableWarp(hangarSlot.Ship);
             battery.Discharge();
-            Debug.Log($"{hangarSlot.Ship.Name} (Ship) can now warp - launch condition fulfilled");
         }
-        else
-        {
-            Debug.Log("Could not transfer energy");
-        }
+        
+        LogInformation(battery, canTransferEnergy);
+    }
+
+    private bool CanTransferEnergy(Battery battery)
+    {
+        return hangarSlot != null
+            && hangarSlot.Ship != null
+            && battery.IsCharged
+            && !hangarSlot.Ship.CanWarp;
     }
 
     private void OnTriggerStay(Collider other)
@@ -33,4 +38,42 @@ public class BatterySlot : InteractableObject
             }
         }
     }
+
+    #region Diagnostics
+    private void LogInformation(Battery battery, bool chargeWasSuccessful)
+    {
+        StringBuilder builder = new StringBuilder();
+
+        if (chargeWasSuccessful && hangarSlot.Ship.CanWarp)
+        {
+            builder.AppendLine($"{hangarSlot.Ship.Name} can now warp");
+        }
+        else
+        {
+            builder.AppendLine($"Failed to charge {hangarSlot.Ship.Name} at node {hangarSlot.Node}");
+
+            if (hangarSlot == null)
+            {
+                builder.AppendLine($"{hangarSlot} (HangarSlot) is null");
+            }
+            else
+            {
+                if (hangarSlot.Ship == null)
+                {
+                    builder.AppendLine($"{hangarSlot.Ship} (Ship) is null");
+                }
+                else if (hangarSlot.Ship.CanWarp)
+                {
+                    builder.AppendLine($"{hangarSlot.Ship} (Ship) can already warp");
+                }
+                if (!battery.IsCharged)
+                {
+                    builder.AppendLine($"{battery} (Battery) is not charged");
+                }
+            }
+        }
+
+        Debug.Log(builder.ToString());
+    }
+    #endregion
 }
