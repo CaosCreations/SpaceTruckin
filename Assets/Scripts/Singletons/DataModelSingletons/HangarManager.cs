@@ -188,7 +188,7 @@ public class HangarManager : MonoBehaviour
             batterySaveData.Add(new BatterySaveData()
             {
                 IsCharged = battery.IsCharged,
-                PositionInHangar = battery.transform.position
+                PositionInHangar = battery.Container.transform.position
             });
         }
         string json = JsonHelper.ListToJson(batterySaveData);

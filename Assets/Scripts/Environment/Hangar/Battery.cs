@@ -4,7 +4,7 @@ using UnityEngine;
 public class Battery : InteractableObject
 {
     public bool IsCharged { get; set; }
-    [SerializeField] private GameObject batteryContainer; // Contains both colliders
+    public GameObject Container; // Contains both colliders
     
     [SerializeField] private MeshRenderer meshRenderer;
     private Color depletedEmission;
@@ -62,12 +62,12 @@ public class Battery : InteractableObject
 
     public void TakeBattery()
     {
-        batteryContainer.ParentToPlayer();
+        Container.ParentToPlayer();
     }
 
     public void DropBattery()
     {
-        batteryContainer.SetParent(HangarManager.BatteriesContainer);
+        Container.SetParent(HangarManager.BatteriesContainer);
     }
 
     private void OnTriggerStay(Collider other)
@@ -102,7 +102,7 @@ public class Battery : InteractableObject
 
     public void LoadData(BatterySaveData saveData)
     {
-        batteryContainer.transform.position = saveData.PositionInHangar;
+        Container.transform.position = saveData.PositionInHangar;
         IsCharged = saveData.IsCharged;
         SetEmission();
     }
