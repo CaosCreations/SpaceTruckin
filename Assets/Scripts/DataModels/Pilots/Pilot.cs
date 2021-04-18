@@ -35,7 +35,7 @@ public partial class Pilot : ScriptableObject
         public bool isHired;
     }
 
-    public static string FOLDER_NAME = "PilotSaveData";
+    public const string FOLDER_NAME = "PilotSaveData";
 
     public void SaveData()
     {
