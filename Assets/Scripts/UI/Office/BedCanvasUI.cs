@@ -61,6 +61,7 @@ public class BedCanvasUI : UICanvasBase
         ShipsManager.Instance.SaveData();
         MessagesManager.Instance.SaveData();
         LicencesManager.Instance.SaveData();
+        HangarManager.Instance.SaveBatteryData();
     }
 
     private IEnumerator WaitForShipsToDock()

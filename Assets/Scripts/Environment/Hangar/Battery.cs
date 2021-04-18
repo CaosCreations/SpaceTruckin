@@ -10,26 +10,14 @@ public struct BatterySaveData
 
 public class Battery : InteractableObject
 {
+    public bool IsCharged { get; set; }
     [SerializeField] private GameObject batteryContainer; // Contains both colliders
+    
     [SerializeField] private MeshRenderer meshRenderer;
-
-    public bool IsCharged { get => saveData.isCharged; set => saveData.isCharged = value; }
-    public Vector3 PositionInHangar 
-    {
-        get => saveData.positionInHangar; set => saveData.positionInHangar = value; 
-    }
-
-    private BatterySaveData saveData;
-
     private Color depletedEmission;
     private Color chargedEmission;
 
-    private void Start()
-    {
-        Init();
-    }
-
-    private void Init()
+    public void Init()
     {
         if (meshRenderer == null)
         {
@@ -82,7 +70,6 @@ public class Battery : InteractableObject
     public void DropBattery()
     {
         batteryContainer.SetParent(HangarManager.BatteriesContainer);
-        saveData.positionInHangar = transform.position;
     }
 
     private void OnTriggerStay(Collider other)
@@ -110,10 +97,16 @@ public class Battery : InteractableObject
     #region Persistence
     public const string FOLDER_NAME = "HangarSaveData";
     public const string FILE_NAME = "BatterySaveData";
-
-    public string GetJson()
+    public static string FILE_PATH
     {
-        return JsonUtility.ToJson(saveData);
+        get => DataUtils.GetSaveFilePath(FOLDER_NAME, FILE_NAME);
+    }
+
+    public void LoadData(BatterySaveData saveData)
+    {
+        batteryContainer.transform.position = saveData.positionInHangar;
+        IsCharged = saveData.isCharged;
+        SetEmission();
     }
     #endregion
 }

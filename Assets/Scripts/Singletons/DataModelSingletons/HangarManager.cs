@@ -9,6 +9,7 @@ public class HangarManager : MonoBehaviour
     [SerializeField] private GameObject shipInstancePrefab;
 
     public static HangarSlot[] HangarSlots { get; private set; }
+    public static Battery[] Batteries { get; private set; }
     public static GameObject BatteriesContainer { get; private set; }
 
     private void Awake()
@@ -23,16 +24,13 @@ public class HangarManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        FindSceneObjects();
+    }
 
-        HangarSlots = FindObjectsOfType<HangarSlot>();
-        if (HangarSlots == null)
-        {
-            Debug.LogError("Hangar slots not found");
-        }
-
-        BatteriesContainer = GameObject.FindGameObjectWithTag(
-            HangarConstants.BatteriesContainerTag);
-}
+    public void Init()
+    {
+        LoadBatteryDataAsync();
+    }
 
     public static void DockShip(Ship ship, int node)
     {
@@ -152,4 +150,72 @@ public class HangarManager : MonoBehaviour
     {
         return node >= 1 && node <= HangarConstants.MaximumNumberOfSlots;
     }
+
+    private static void FindSceneObjects()
+    {
+        HangarSlots = FindObjectsOfType<HangarSlot>();
+        if (HangarSlots == null)
+        {
+            Debug.LogError("Hangar slots not found");
+        }
+
+        Batteries = FindObjectsOfType<Battery>();
+        if (Batteries.IsNullOrEmpty())
+        {
+            Debug.LogError("Batteries not found");
+        }
+
+        BatteriesContainer = GameObject.FindGameObjectWithTag(
+            HangarConstants.BatteriesContainerTag);
+        if (BatteriesContainer == null)
+        {
+            Debug.LogError("Batteries container not found");
+        }
+    }
+
+    //#region Persistence
+    public void SaveBatteryData()
+    {
+        List<BatterySaveData> batterySaveData = new List<BatterySaveData>();
+
+        foreach (Battery battery in Batteries)
+        {
+            if (battery == null)
+            {
+                continue;
+            }
+
+            batterySaveData.Add(new BatterySaveData()
+            {
+                isCharged = battery.IsCharged,
+                positionInHangar = battery.transform.position
+            });
+        }
+        string json = JsonHelper.ListToJson(batterySaveData);
+        Debug.Log($"Battery json to save: {json}");
+        string folderPath = DataUtils.GetSaveFolderPath(Battery.FOLDER_NAME);
+        DataUtils.SaveFileAsync(Battery.FILE_NAME, folderPath, json);
+    }
+
+    public async static void LoadBatteryDataAsync()
+    {
+        string json = await DataUtils.ReadFileAsync(Battery.FILE_PATH);
+        BatterySaveData[] batterySaveData = JsonHelper.ArrayFromJson<BatterySaveData>(json);
+
+        if (!batterySaveData.IsNullOrEmpty())
+        {
+            for (int i = 0; i < batterySaveData.Length; i++)
+            {
+                if (i > Batteries.Length - 1)
+                {
+                    break;
+                }
+                HangarManager.Batteries[i].Init();
+                HangarManager.Batteries[i].LoadData(batterySaveData[i]);
+                //HangarManager.Batteries[i].IsCharged = batterySaveData[i].isCharged;
+                //HangarManager.Batteries[i].transform.position = batterySaveData[i].positionInHangar;
+            }
+        }
+    }
+    //#endregion
 }
