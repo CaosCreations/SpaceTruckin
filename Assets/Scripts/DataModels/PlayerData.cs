@@ -7,7 +7,7 @@ public class PlayerData : ScriptableObject, IDataModel
     [Header("Data to update IN GAME")]
     public PlayerSaveData saveData;
 
-    public static string FOLDER_NAME = "PlayerSaveData";
+    public const string FOLDER_NAME = "PlayerSaveData";
 
     [Serializable]
     public class PlayerSaveData

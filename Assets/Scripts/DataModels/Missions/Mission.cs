@@ -20,7 +20,7 @@ public partial class Mission : ScriptableObject, IDataModel
     [HideInInspector]
     private ArchivedMission missionToArchive;
 
-    public static string FOLDER_NAME = "MissionSaveData";
+    public const string FOLDER_NAME = "MissionSaveData";
 
     [Serializable]
     public class MissionSaveData

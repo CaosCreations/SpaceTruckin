@@ -1,13 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-[Serializable]
-public struct BatterySaveData
-{
-    public bool isCharged;
-    public Vector3 positionInHangar;
-}
-
 public class Battery : InteractableObject
 {
     public bool IsCharged { get; set; }
@@ -16,6 +9,11 @@ public class Battery : InteractableObject
     [SerializeField] private MeshRenderer meshRenderer;
     private Color depletedEmission;
     private Color chargedEmission;
+
+    private void Awake()
+    {
+        Init();
+    }
 
     public void Init()
     {
@@ -104,9 +102,16 @@ public class Battery : InteractableObject
 
     public void LoadData(BatterySaveData saveData)
     {
-        batteryContainer.transform.position = saveData.positionInHangar;
-        IsCharged = saveData.isCharged;
+        batteryContainer.transform.position = saveData.PositionInHangar;
+        IsCharged = saveData.IsCharged;
         SetEmission();
     }
     #endregion
+}
+
+[Serializable]
+public struct BatterySaveData
+{
+    public bool IsCharged;
+    public Vector3 PositionInHangar;
 }

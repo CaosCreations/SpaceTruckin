@@ -173,7 +173,7 @@ public class HangarManager : MonoBehaviour
         }
     }
 
-    //#region Persistence
+    #region Persistence
     public void SaveBatteryData()
     {
         List<BatterySaveData> batterySaveData = new List<BatterySaveData>();
@@ -187,12 +187,11 @@ public class HangarManager : MonoBehaviour
 
             batterySaveData.Add(new BatterySaveData()
             {
-                isCharged = battery.IsCharged,
-                positionInHangar = battery.transform.position
+                IsCharged = battery.IsCharged,
+                PositionInHangar = battery.transform.position
             });
         }
         string json = JsonHelper.ListToJson(batterySaveData);
-        Debug.Log($"Battery json to save: {json}");
         string folderPath = DataUtils.GetSaveFolderPath(Battery.FOLDER_NAME);
         DataUtils.SaveFileAsync(Battery.FILE_NAME, folderPath, json);
     }
@@ -210,12 +209,9 @@ public class HangarManager : MonoBehaviour
                 {
                     break;
                 }
-                HangarManager.Batteries[i].Init();
-                HangarManager.Batteries[i].LoadData(batterySaveData[i]);
-                //HangarManager.Batteries[i].IsCharged = batterySaveData[i].isCharged;
-                //HangarManager.Batteries[i].transform.position = batterySaveData[i].positionInHangar;
+                Batteries[i].LoadData(batterySaveData[i]);
             }
         }
     }
-    //#endregion
+    #endregion
 }
