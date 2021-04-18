@@ -1,11 +1,25 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+
+[Serializable]
+public struct BatterySaveData
+{
+    public bool isCharged;
+    public Vector3 positionInHangar;
+}
 
 public class Battery : InteractableObject
 {
-    public bool IsCharged { get; set; }
-
     [SerializeField] private GameObject batteryContainer; // Contains both colliders
     [SerializeField] private MeshRenderer meshRenderer;
+
+    public bool IsCharged { get => saveData.isCharged; set => saveData.isCharged = value; }
+    public Vector3 PositionInHangar 
+    {
+        get => saveData.positionInHangar; set => saveData.positionInHangar = value; 
+    }
+
+    private BatterySaveData saveData;
 
     private Color depletedEmission;
     private Color chargedEmission;
@@ -68,6 +82,7 @@ public class Battery : InteractableObject
     public void DropBattery()
     {
         batteryContainer.SetParent(HangarManager.BatteriesContainer);
+        saveData.positionInHangar = transform.position;
     }
 
     private void OnTriggerStay(Collider other)
@@ -91,4 +106,14 @@ public class Battery : InteractableObject
             DropBattery();
         }
     }
+
+    #region Persistence
+    public const string FOLDER_NAME = "HangarSaveData";
+    public const string FILE_NAME = "BatterySaveData";
+
+    public string GetJson()
+    {
+        return JsonUtility.ToJson(saveData);
+    }
+    #endregion
 }
