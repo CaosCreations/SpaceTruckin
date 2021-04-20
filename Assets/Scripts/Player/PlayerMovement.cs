@@ -185,6 +185,7 @@ public class PlayerMovement : MonoBehaviour
         characterController.enabled = false;
         transform.position = PlayerConstants.PlayerResetPosition;
         characterController.enabled = true;
+        UIManager.SetCannotInteract();
     }
 
     public static void RotateWithView(Vector3 vector,Transform cameraTransform)
