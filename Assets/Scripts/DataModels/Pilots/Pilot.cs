@@ -46,10 +46,4 @@ public partial class Pilot : ScriptableObject
     {
         saveData = await DataUtils.LoadFileAsync<PilotSaveData>(name, FOLDER_NAME);
     }
-
-    public void LevelUp()
-    {
-        Level++;
-        RequiredXp = Math.Pow(RequiredXp, XpThresholdExponent);  
-    }
 }
