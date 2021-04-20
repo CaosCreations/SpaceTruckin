@@ -45,6 +45,8 @@ public class HangarManager : MonoBehaviour
                 InitShipInstance(ship, slot);
 
                 Debug.Log($"{ship} successfully docked at node {node}");
+
+                EnableWarpIfPreCharged(ship, slot);
             }
         }
         else
@@ -170,6 +172,14 @@ public class HangarManager : MonoBehaviour
         if (BatteriesContainer == null)
         {
             Debug.LogError("Batteries container not found");
+        }
+    }
+
+    private static void EnableWarpIfPreCharged(Ship ship, HangarSlot hangarSlot)
+    {
+        if (!ship.CanWarp && hangarSlot.BatteryInSlot.IsCharged)
+        {
+            ShipsManager.EnableWarp(ship);
         }
     }
 

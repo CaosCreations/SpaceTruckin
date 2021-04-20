@@ -3,6 +3,7 @@ using UnityEngine;
 public class BatterySlot : InteractableObject
 {
     [SerializeField] private HangarSlot hangarSlot;
+    public Battery BatteryInSlot { get; set; }
 
     public void TransferEnergyToShip(Battery battery)
     {
