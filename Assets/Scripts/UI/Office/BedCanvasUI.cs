@@ -53,12 +53,17 @@ public class BedCanvasUI : UICanvasBase
         StartCoroutine(WaitForShipsToDock());
         MissionsManager.UpdateMissionSchedule();
         OnEndOfDay?.Invoke();
+        SaveAllData();
+    }
 
+    private void SaveAllData()
+    {
         PlayerManager.Instance.SaveData();
         MissionsManager.Instance.SaveData();
         ArchivedMissionsManager.Instance.SaveData();
         PilotsManager.Instance.SaveData();
         ShipsManager.Instance.SaveData();
+        HangarManager.Instance.SaveBatteryData();
         MessagesManager.Instance.SaveData();
         LicencesManager.Instance.SaveData();
     }
