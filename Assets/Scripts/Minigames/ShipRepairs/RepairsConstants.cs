@@ -19,9 +19,9 @@ public static class RepairsConstants
     public static string StopButtonText = "Stop Repairing";
 
     // Tools
-    public static int CostPerTool = 100;
+    public static int CostPerTool = 10;
 
     // Gameplay 
-    public static int HullRepairedPerWin = 10;
+    public static int HullRepairedPerWin = 15;
 
 }

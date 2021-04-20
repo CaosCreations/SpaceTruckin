@@ -35,7 +35,7 @@ public partial class Pilot : ScriptableObject
         public bool isHired;
     }
 
-    public static string FOLDER_NAME = "PilotSaveData";
+    public const string FOLDER_NAME = "PilotSaveData";
 
     public void SaveData()
     {
@@ -45,11 +45,5 @@ public partial class Pilot : ScriptableObject
     public async System.Threading.Tasks.Task LoadDataAsync()
     {
         saveData = await DataUtils.LoadFileAsync<PilotSaveData>(name, FOLDER_NAME);
-    }
-
-    public void LevelUp()
-    {
-        Level++;
-        RequiredXp = Math.Pow(RequiredXp, XpThresholdExponent);  
     }
 }

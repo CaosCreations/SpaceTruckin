@@ -14,7 +14,7 @@ public partial class Ship : ScriptableObject, IDataModel
     [Header("Data to update IN GAME")]
     public ShipSaveData saveData;
 
-    public static string FOLDER_NAME = "ShipSaveData";
+    public const string FOLDER_NAME = "ShipSaveData";
 
     [Serializable]
     public class ShipSaveData
