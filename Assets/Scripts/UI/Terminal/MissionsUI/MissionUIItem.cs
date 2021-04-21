@@ -110,8 +110,9 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     public void Unschedule(MissionScheduleSlot scheduleSlot = null)
     {
         MissionsManager.RemoveScheduledMission(Mission);
-        Mission = null;
+        gameObject.Orphan();
         missionsUI.PopulateMissionSelect();
+        Destroy(gameObject);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -123,9 +124,6 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
             {
                 // Reset the schedule slot if the player clicks and there is already one scheduled
                 Unschedule();
-
-                missionsUI.pilotSelectCloseButton.SetActive(false);
-                Destroy(gameObject);
             }
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
