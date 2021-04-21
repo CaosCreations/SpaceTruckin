@@ -4,6 +4,7 @@ public class HangarSlot : MonoBehaviour
 {
     [SerializeField] private int node;
     [SerializeField] private BatterySlot batterySlot;
+    public BatterySlot BatterySlot { get => batterySlot; }
     public Battery BatteryInSlot { get => batterySlot.BatteryInSlot; }
     public Ship Ship { get; set; }
     public ShipInstance ShipInstance { get; set; }

@@ -11,6 +11,7 @@ public static class HangarConstants
     public static Color ChargedBatteryImageColour = Color.green;
     public static Color DepletedBatteryImageColour = Color.red;
     public static float BatteryEmissionCoefficient = 400f;
+    public static Vector3 BatteryPositionInNodeSlot = new Vector3(0f, 0f, 0f);
 
 
     // Tags

@@ -36,17 +36,17 @@ public class HangarManager : MonoBehaviour
     {
         if (ship != null && NodeIsValid(node))
         {
-            HangarSlot slot = GetSlotByNode(node);
-            if (slot != null && slot.IsUnlocked)
+            HangarSlot hangarSlot = GetSlotByNode(node);
+            if (hangarSlot != null && hangarSlot.IsUnlocked)
             {
-                slot.Ship = ship;
+                hangarSlot.Ship = ship;
 
                 // Create a new ship object inside the target slot 
-                InitShipInstance(ship, slot);
+                InitShipInstance(ship, hangarSlot);
 
                 Debug.Log($"{ship} successfully docked at node {node}");
 
-                EnableWarpIfPreCharged(ship, slot);
+                EnableWarpIfPreCharged(ship, hangarSlot.BatterySlot);
             }
         }
         else
@@ -90,7 +90,9 @@ public class HangarManager : MonoBehaviour
     public static Pilot GetPilotByNode(int node)
     {
         HangarSlot slot = GetSlotByNode(node);
-        if (slot != null && slot.Ship != null && slot.Ship.Pilot != null)
+        if (slot != null 
+            && slot.Ship != null 
+            && slot.Ship.Pilot != null)
         {
             return slot.Ship.Pilot;
         }
@@ -175,9 +177,12 @@ public class HangarManager : MonoBehaviour
         }
     }
 
-    private static void EnableWarpIfPreCharged(Ship ship, HangarSlot hangarSlot)
+    private static void EnableWarpIfPreCharged(Ship ship, BatterySlot batterySlot)
     {
-        if (!ship.CanWarp && hangarSlot.BatteryInSlot.IsCharged)
+        if (!ship.CanWarp 
+            && batterySlot != null 
+            && batterySlot.BatteryInSlot != null 
+            && batterySlot.BatteryInSlot.IsCharged)
         {
             ShipsManager.EnableWarp(ship);
         }
