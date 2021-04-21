@@ -2,13 +2,13 @@
 
 public class UIActivator : MonoBehaviour
 {
-    public UICanvasType type;
+    public UICanvasType canvasType;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(PlayerConstants.PlayerTag))
         {
-            UIManager.SetCanInteract(type, true);
+            UIManager.SetCanInteract(canvasType);
         }
     }
 
@@ -16,7 +16,7 @@ public class UIActivator : MonoBehaviour
     {
         if (other.CompareTag(PlayerConstants.PlayerTag))
         {
-            UIManager.SetCanInteract(type, false);
+            UIManager.SetCannotInteract();
         }
     }
 }

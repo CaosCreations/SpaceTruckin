@@ -54,7 +54,7 @@ public class UIManager : MonoBehaviour
         if (DataUtils.IsNewGame())
         {
             // Show the main menu canvas for character creation
-            currentCanvasType = UICanvasType.MainMenu;
+            SetCanInteract(UICanvasType.MainMenu);
             ShowCanvas();
         }
     }
@@ -110,10 +110,10 @@ public class UIManager : MonoBehaviour
             canvas.ShowTutorial();
         }
 
-        // Main menu is not proximity-based, so we reset the current type
+        // Main menu is not an 'interactable' object, so we reset the current type
         if (currentCanvasType == UICanvasType.MainMenu)
         {
-            currentCanvasType = UICanvasType.None;
+            SetCannotInteract();
         }
     }
 
@@ -141,29 +141,20 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public static void SetCanInteract(UICanvasType canvasType, bool canInteract)
+    public static void SetCanInteract(UICanvasType canvasType, int node = -1)
     {
-        if (canInteract)
+        currentCanvasType = canvasType;
+
+        // We pass in a node value when opening the hangar UI
+        if (canvasType == UICanvasType.Hangar && HangarManager.NodeIsValid(node))
         {
-            currentCanvasType = canvasType;
-        }
-        else
-        {
-            currentCanvasType = UICanvasType.None;
+            hangarNode = node;    
         }
     }
 
-    public static void SetCanInteractHangarNode(int node, bool canInteract)
+    public static void SetCannotInteract()
     {
-        if (canInteract)
-        {
-            currentCanvasType = UICanvasType.Hangar;
-            hangarNode = node;
-        }
-        else
-        {
-            currentCanvasType = UICanvasType.None;
-        }
+        currentCanvasType = UICanvasType.None;
     }
 
     private static string GetInteractionString()

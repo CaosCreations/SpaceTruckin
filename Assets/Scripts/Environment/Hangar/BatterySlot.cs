@@ -50,21 +50,21 @@ public class BatterySlot : InteractableObject
         }
         else
         {
-            builder.AppendLine($"Failed to charge {hangarSlot.Ship.Name} at node {hangarSlot.Node}");
+            builder.AppendLine($"Failed to charge battery");
 
             if (hangarSlot == null)
             {
-                builder.AppendLine($"{hangarSlot} (HangarSlot) is null");
+                builder.AppendLine($"HangarSlot is null");
             }
             else
             {
                 if (hangarSlot.Ship == null)
                 {
-                    builder.AppendLine($"{hangarSlot.Ship} (Ship) is null");
+                    builder.AppendLine($"Ship is null");
                 }
                 else if (hangarSlot.Ship.CanWarp)
                 {
-                    builder.AppendLine($"{hangarSlot.Ship} (Ship) can already warp");
+                    builder.AppendLine($"{hangarSlot.Ship.Name} (Ship) can already warp");
                 }
                 if (!battery.IsCharged)
                 {
