@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class RepairToolsUI : MonoBehaviour
 {
     [SerializeField] private Text toolsText;
+    [SerializeField] private Text toolsCostText;
     [SerializeField] private Button buyButton;
     [SerializeField] private InputField quantityInput;
 
@@ -12,12 +13,14 @@ public class RepairToolsUI : MonoBehaviour
     private void Start()
     {
         buyButton.AddOnClick(BuyTools);
+        quantityInput.onValueChanged.AddListener(delegate { UpdateToolsCostText(); });
     }
 
     private void OnEnable()
     {
         UpdateToolsText();
         quantityInput.text = "0";
+        toolsCostText.SetText(RepairsConstants.ToolsCostText + 0.ToString());
     }
 
     public void UpdateToolsText()
@@ -25,23 +28,42 @@ public class RepairToolsUI : MonoBehaviour
         toolsText.SetText("x" + PlayerManager.Instance.RepairTools.ToString());
     }
 
+    private void UpdateToolsCostText()
+    {
+        int newCost = 0;
+        
+        // Empty string/whitespace equates to 0
+        if (!string.IsNullOrWhiteSpace(quantityInput.text)
+            && int.TryParse(quantityInput.text, out int quantity))
+        {
+            newCost = GetTotalCost(quantity);
+        }
+
+        toolsCostText.SetText(RepairsConstants.ToolsCostText + newCost.ToString());
+    }
+
     private void BuyTools()
     {
-        if (int.TryParse(quantityInput.text, out int numberOfToolsToBuy))
+        if (int.TryParse(quantityInput.text, out int quantity))
         {
-            int costOfTools = numberOfToolsToBuy * RepairsConstants.CostPerTool;
+            int costOfTools = GetTotalCost(quantity);
 
-            if (numberOfToolsToBuy > 0 && PlayerManager.Instance.CanSpendMoney(costOfTools))
+            if (quantity > 0 && PlayerManager.Instance.CanSpendMoney(costOfTools))
             {
                 PlayerManager.Instance.SpendMoney(costOfTools);
-                PlayerManager.Instance.RepairTools += numberOfToolsToBuy;
+                PlayerManager.Instance.RepairTools += quantity;
                 stopStartButton.interactable = PlayerManager.CanRepair;
                 UpdateToolsText();
             }
         }
         else
         {
-            Debug.LogError($"Invalid input when buying tools (must be int). Value was: {quantityInput.text}");
+            Debug.LogError($"Invalid input when buying tools (must be int). Value was: '{quantityInput.text}'");
         }
+    }
+
+    private int GetTotalCost(int quantity)
+    {
+        return quantity* RepairsConstants.CostPerTool;
     }
 }
