@@ -34,7 +34,7 @@ public class CharacterCreationUI : MonoBehaviour
 
     private bool NameIsValid(string name)
     {
-        return !string.IsNullOrWhiteSpace(name) || name.IsAlphabetical();
+        return !string.IsNullOrWhiteSpace(name) && name.IsAlphabetical();
     }
 
     private void Update()
