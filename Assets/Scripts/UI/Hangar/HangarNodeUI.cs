@@ -40,6 +40,7 @@ public class HangarNodeUI : UICanvasBase
     private long fuelCostAfterLicences;
     private float fuelTimer = 0;
     private readonly float fuelTimerInterval = 0.025f;
+    private bool ThisNodeIsEmpty => shipToInspect == null || shipToInspect.IsLaunched;
 
     private void OnEnable()
     {
@@ -48,7 +49,7 @@ public class HangarNodeUI : UICanvasBase
         shipToInspect = hangarSlot.Ship;
 
         // There is no ship at this node, don't open UI
-        if(shipToInspect == null || shipToInspect.IsLaunched)
+        if (ThisNodeIsEmpty)
         {
             UIManager.ClearCanvases();
             return;
@@ -65,6 +66,11 @@ public class HangarNodeUI : UICanvasBase
     private void OnDisable()
     {
         Destroy(shipPreview);
+        
+        if (ThisNodeIsEmpty)
+        {
+            UIManager.SetCannotInteract();
+        }
     }
 
     private void Update()
@@ -177,6 +183,8 @@ public class HangarNodeUI : UICanvasBase
                     MissionsManager.RemoveScheduledMission(scheduled);
                 }
             }
+
+            shipToInspect = null;
             UIManager.ClearCanvases();
         }
         else
