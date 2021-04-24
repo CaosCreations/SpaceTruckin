@@ -17,7 +17,7 @@ public class CharacterCreationUI : MonoBehaviour
     {
         string choiceOfName = characterNameInput.text;
         
-        if (choiceOfName.IsAlphabetical())
+        if (NameIsValid(choiceOfName))
         {
             PlayerManager.SetPlayerName(choiceOfName);
             invalidInputText.SetActive(false);
@@ -26,9 +26,22 @@ public class CharacterCreationUI : MonoBehaviour
         else
         {
             Debug.LogError(
-                $"Invalid input when choosing name (must be alphabetical string). Value was: {choiceOfName}");
+                $"Invalid input when choosing name (must be alphabetical string and not only whitespace). Value was: '{choiceOfName}'");
             
             invalidInputText.SetActive(true);
+        }
+    }
+
+    private bool NameIsValid(string name)
+    {
+        return !string.IsNullOrWhiteSpace(name) || name.IsAlphabetical();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            ChooseName();
         }
     }
 }
