@@ -23,31 +23,6 @@ public class RepairToolsUI : MonoBehaviour
         toolsCostText.SetText(RepairsConstants.ToolsCostText + 0.ToString());
     }
 
-    public void UpdateToolsText()
-    {
-        toolsText.SetText("x" + PlayerManager.Instance.RepairTools.ToString());
-    }
-
-    private void UpdateToolsCostText()
-    {
-        int newCost = 0;
-        
-        // Empty string/whitespace equates to 0
-        if (!string.IsNullOrWhiteSpace(quantityInput.text)
-            && int.TryParse(quantityInput.text, out int quantity))
-        {
-            newCost = GetTotalCost(quantity);
-        }
-
-        toolsCostText.SetText(RepairsConstants.ToolsCostText + newCost.ToString());
-        UpdateToolsCostColour(PlayerManager.Instance.CanSpendMoney(newCost));
-    }
-
-    private void UpdateToolsCostColour(bool canAfford)
-    {
-        toolsCostText.color = canAfford ? UIConstants.ChelseaCucumber : UIConstants.Matrix;
-    }
-
     private void BuyTools()
     {
         if (int.TryParse(quantityInput.text, out int quantity))
@@ -71,6 +46,31 @@ public class RepairToolsUI : MonoBehaviour
 
     private int GetTotalCost(int quantity)
     {
-        return quantity* RepairsConstants.CostPerTool;
+        return quantity * RepairsConstants.CostPerTool;
+    }
+
+    public void UpdateToolsText()
+    {
+        toolsText.SetText("x" + PlayerManager.Instance.RepairTools.ToString());
+    }
+
+    private void UpdateToolsCostText()
+    {
+        int newCost = 0;
+        
+        // Empty string/whitespace equates to 0
+        if (!string.IsNullOrWhiteSpace(quantityInput.text)
+            && int.TryParse(quantityInput.text, out int quantity))
+        {
+            newCost = GetTotalCost(quantity);
+        }
+
+        toolsCostText.SetText(RepairsConstants.ToolsCostText + newCost.ToString());
+        UpdateToolsCostColour(PlayerManager.Instance.CanSpendMoney(newCost));
+    }
+
+    private void UpdateToolsCostColour(bool canAfford)
+    {
+        toolsCostText.color = canAfford ? UIConstants.ChelseaCucumber : UIConstants.Matrix;
     }
 }
