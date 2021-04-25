@@ -41,7 +41,16 @@ public class PlayerEditor : MonoBehaviour
         try
         {
             var playerData = EditorHelper.GetAsset<PlayerData>();
-            playerData.PlayerMoney = amount;
+            
+            if (Application.IsPlaying(PlayerManager.Instance))
+            {
+                playerData.PlayerMoney = 0;
+                PlayerManager.Instance.ReceiveMoney(amount);
+            }
+            else
+            {
+                playerData.PlayerMoney = amount;
+            }
             Debug.Log("Player money = " + playerData.PlayerMoney.ToString());
         }
         catch (Exception ex)

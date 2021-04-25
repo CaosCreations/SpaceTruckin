@@ -11,6 +11,8 @@ public class MoneyText : MonoBehaviour
         PlayerManager.OnFinancialTransaction += UpdateMoneyText;
     }
 
+    private void OnEnable() => UpdateMoneyText();
+
     public void UpdateMoneyText()
     {
         moneyAsText.SetText("$ " + PlayerManager.Instance.Money, FontType.Title);
