@@ -40,6 +40,12 @@ public class RepairToolsUI : MonoBehaviour
         }
 
         toolsCostText.SetText(RepairsConstants.ToolsCostText + newCost.ToString());
+        UpdateToolsCostColour(PlayerManager.Instance.CanSpendMoney(newCost));
+    }
+
+    private void UpdateToolsCostColour(bool canAfford)
+    {
+        toolsCostText.color = canAfford ? UIConstants.ChelseaCucumber : UIConstants.Matrix;
     }
 
     private void BuyTools()
@@ -54,6 +60,7 @@ public class RepairToolsUI : MonoBehaviour
                 PlayerManager.Instance.RepairTools += quantity;
                 stopStartButton.interactable = PlayerManager.CanRepair;
                 UpdateToolsText();
+                UpdateToolsCostText();
             }
         }
         else
