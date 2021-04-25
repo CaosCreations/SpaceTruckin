@@ -1,11 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI; 
+﻿using UnityEngine;
 
 public static class BlackjackConstants 
 { 
-
 	// Dimensions
 	public static int tableSpacing = 32;
 	public static int tablePaddingLeft = 32;

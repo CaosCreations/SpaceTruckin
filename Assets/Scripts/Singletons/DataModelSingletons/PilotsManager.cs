@@ -1,9 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 
 public class PilotsManager : MonoBehaviour, IDataModelManager
 {   
-    public static PilotsManager Instance;
+    public static PilotsManager Instance { get; private set; }
 
     public PilotsContainer pilotsContainer;
     public Pilot[] Pilots { get => pilotsContainer.pilots; }
@@ -20,45 +21,120 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
-        Init();
     }
 
     public void Init()
     {
-        if (DataModelsUtils.SaveFolderExists(Pilot.FOLDER_NAME))
+        if (Pilots == null)
+        {
+            Debug.LogError("No pilot data");
+        }
+
+        if (DataUtils.SaveFolderExists(Pilot.FOLDER_NAME))
         {
             LoadDataAsync();
         }
         else
         {
-            DataModelsUtils.CreateSaveFolder(Pilot.FOLDER_NAME);
+            DataUtils.CreateSaveFolder(Pilot.FOLDER_NAME);
         }
     }
 
-    public void AwardXp(Ship ship, int xp)
+    public static double AwardXp(Pilot pilot, double xpGained)
     {
-        if (ship != null && ship.Pilot != null)
+        if (pilot != null)
         {
-            ship.Pilot.Xp += xp;
+            pilot.CurrentXp += xpGained;
+            if (pilot.CanLevelUp)
+            {
+                LevelUpPilot(pilot);
+            }
         }
+        return pilot.CurrentXp;
+    }
+
+    private static void LevelUpPilot(Pilot pilot)
+    {
+        pilot.Level++;
+        pilot.RequiredXp = Math.Pow(pilot.RequiredXp, pilot.XpThresholdExponent);
     }
 
     public void HirePilot(Pilot pilot)
     {
-        pilot.IsHired = true;
+        if (pilot != null)
+        {
+            pilot.IsHired = true;
+        }
     }
 
-    public Pilot[] GetHiredPilots()
+    public static Pilot[] HiredPilots => Instance.Pilots.Where(p => p.IsHired).ToArray();
+
+    public static Pilot[] PilotsForHire => Instance.Pilots.Where(p => !p.IsHired).ToArray();
+
+    public static Pilot[] PilotsInQueue => Instance.Pilots
+            .Where(p => p.Ship.IsInQueue)
+            .ToArray();
+
+    public static bool PilotHasMission(Pilot pilot)
     {
-        return Instance.Pilots.Where(p => p.IsHired) as Pilot[];
+        return MissionsManager.GetScheduledMission(pilot) != null;
+    }
+
+    public static bool PilotHasMissionInProgress(Pilot pilot)
+    {
+        ScheduledMission scheduled = MissionsManager.GetScheduledMission(pilot);
+        return scheduled?.Mission != null && scheduled.Mission.IsInProgress();
+    }
+
+    public void RandomisePilots()
+    {
+        if (Pilots != null)
+        {
+            foreach (Pilot pilot in Pilots)
+            {
+                if (pilot == null)
+                {
+                    continue;
+                }
+                else if (pilot.IsRandom)
+                {
+                    pilot.Species = PilotUtils.GetRandomSpecies();
+                    pilot.Name = PilotAssetsManager.Instance.GetRandomName(pilot.Species);
+                    RandomiseAvatar(pilot);
+                }
+
+                // We always randomise likes and dislikes 
+                RandomisePreferences(pilot);
+            }
+        }
+    }
+
+    private void RandomiseAvatar(Pilot pilot)
+    {
+        Sprite randomAvatar = PilotAssetsManager.GetRandomAvatar(pilot.Species);
         
+        if (randomAvatar != null)
+        {
+            pilot.Avatar = randomAvatar;
+        }
+        else
+        {
+            Debug.Log($"Random avatar for {pilot.Species} (Species) was null");
+        }
     }
 
-    public Pilot[] GetPilotsForHire()
+    private void RandomisePreferences(Pilot pilot)
     {
-        return Instance.Pilots.Where(p => !p.IsHired) as Pilot[];
+        var preferences = PilotAssetsManager.GetRandomPreferences();
+
+        if (!preferences.IsNullOrEmpty())
+        {
+            pilot.Like = preferences.like;
+            pilot.Dislike = preferences.dislike;
+        }
     }
 
+    #region Persistence
     public void SaveData()
     {
         foreach (Pilot pilot in Instance.Pilots)
@@ -77,6 +153,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
 
     public void DeleteData()
     {
-        Instance.DeleteData();
+        DataUtils.RecursivelyDeleteSaveData(Pilot.FOLDER_NAME);
     }
+    #endregion
 }

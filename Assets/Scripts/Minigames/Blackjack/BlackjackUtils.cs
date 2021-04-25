@@ -72,7 +72,7 @@ public class BlackjackUtils : MonoBehaviour
 		return cardContainer;
 	}
 
-	public static Text InitializeTotalText(GameObject parentObject, bool isDealer)
+	public static Text InitialiseTotalText(GameObject parentObject, bool isDealer)
     {
 		string totalObjectName = isDealer ? BlackjackConstants.dealerTotalName : BlackjackConstants.playerTotalName;
 		GameObject totalObject = new GameObject(totalObjectName);

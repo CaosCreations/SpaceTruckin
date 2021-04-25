@@ -7,8 +7,8 @@ public class NPCAgent: MonoBehaviour
     private NavMeshAgent agent;
     
     public bool isWaiting;
-    public float waitTimeLowerBound = 2;
-    public float waitTimeUpperBound = 7; 
+    private float waitTimeLowerBound = 1f;
+    private float waitTimeUpperBound = 4f;
     private float timer;
     
     public Color gizmoColour; 
@@ -32,7 +32,7 @@ public class NPCAgent: MonoBehaviour
 
     private void Update()
     {
-        if (PlayerManager.Instance.isPaused)
+        if (PlayerManager.IsPaused)
         {
             return;
         }
@@ -48,8 +48,4 @@ public class NPCAgent: MonoBehaviour
             }
         }
     }
-
-
-
-
 }

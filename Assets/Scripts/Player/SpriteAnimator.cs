@@ -30,9 +30,11 @@ public class SpriteAnimator : MonoBehaviour
     private bool flipped;
 
     public static Direction direction; 
+    
 
     void Start()
     {
+        
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
 
         // Default stationary position is facing down 

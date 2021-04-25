@@ -52,12 +52,14 @@ public class PlayerMovement : MonoBehaviour {
     private void Update () 
     {
         CameraTransform = Camera.main.transform;
-
-        if (PlayerManager.Instance.isPaused) {
+        
+            if (PlayerManager.IsPaused)
+        {
             return;
         }
-        if (IsPlayerBelowKillFloor ()) {
-            ResetPlayerToOrigin ();
+        if (IsPlayerBelowKillFloor())
+        {
+            ResetPlayerToOrigin();
             return;
 
         }
@@ -149,7 +151,7 @@ public class PlayerMovement : MonoBehaviour {
 
     // Move player in FixedUpdate 
     private void FixedUpdate () {
-        if (PlayerManager.Instance.isPaused) {
+       if (PlayerManager.IsPaused) {
             return;
         }
 
@@ -256,5 +258,17 @@ public class PlayerMovement : MonoBehaviour {
         transform.position = playerResetPosition;
         characterController.enabled = true;
     }
+
+
+       public void ResetAnimator()
+    {
+        animator.SetBool("KeyUp", false);
+        animator.SetBool("KeyDown", false);
+        animator.SetBool("KeyRight", false);
+        animator.SetBool("KeyLeft", false);
+    }
+
+
+
 
 }

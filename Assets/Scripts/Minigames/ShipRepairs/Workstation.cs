@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class Workstation : MonoBehaviour
 {
-    public static event Action onRotationStopped; 
-    private RepairsManager repairsManager;
+    public static event Action OnRotationStopped;
 
     public bool isRotating;
     private bool isDirectionReversed; 
@@ -12,8 +11,7 @@ public class Workstation : MonoBehaviour
 
     private void Start()
     {
-        repairsManager = GetComponentInParent<RepairsManager>();
-		currentRotationSpeed = RepairsConstants.StartingSpeed;
+        currentRotationSpeed = RepairsConstants.StartingSpeed;
     }
 
     public void RotateWorkstation()
@@ -28,13 +26,12 @@ public class Workstation : MonoBehaviour
     public void StartRotating()
     {
         isRotating = true;
-        repairsManager.ResetFeedbackText();
     }
 
     public void StopRotating()
     {
         isRotating = false;
-        onRotationStopped?.Invoke();
+        OnRotationStopped?.Invoke();
     }
 
     // Increase the difficulty by decreasing the timing window 
@@ -50,18 +47,6 @@ public class Workstation : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonUp(0))
-        {
-            if (isRotating)
-            {
-                StopRotating();
-            }
-            else
-            {
-                StartRotating();
-            }
-        }
-
         if (isRotating)
         {
             RotateWorkstation();

@@ -12,13 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebc094bd36c61b845ab21644873d89d4, type: 3}
   m_Name: Pilot2
   m_EditorClassIdentifier: 
-  id: 0
-  xp: 0
-  level: 1
-  missionsCompleted: 0
-  hireCost: 0
+  isRandom: 1
   pilotName: Ipsum Lorem
-  shipName: Lorem Ipsum
   description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque tortor
     dui, elementum eu convallis non, cursus ac dolor. Quisque dictum est quam, et
     pellentesque velit rutrum eget. Nullam interdum ultricies velit pharetra aliquet.
@@ -27,9 +22,16 @@ MonoBehaviour:
     lobortis. Pellentesque eu ipsum consectetur, pharetra nulla in, consectetur turpis.
     Curabitur ornare eu nisi tempus varius. Phasellus vel ex mauris. Fusce fermentum
     mi id elementum gravida.
-  isHired: 1
-  isOnMission: 0
-  isAssignedToShip: 0
+  hireCost: 0
+  xpThresholdExponent: 0
   species: 0
-  ship: {fileID: 11400000, guid: 3e871902184899248a66c558118ec4cc, type: 2}
+  ship: {fileID: 11400000, guid: e0f526b5cb01e094e99726f95e616e72, type: 2}
   avatar: {fileID: 21300000, guid: 22d55be3b08fa6b49a612a7653b73434, type: 3}
+  saveData:
+    randomName: Kar-Kumuru
+    randomSpecies: 4
+    level: 0
+    requiredXp: 0
+    currentXp: 0
+    missionsCompleted: 0
+    isHired: 0

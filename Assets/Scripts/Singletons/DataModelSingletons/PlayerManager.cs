@@ -6,6 +6,10 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
 
     [Header("Set In Editor")]
     [SerializeField] private PlayerData playerData;
+    public string PlayerName
+    {
+        get => playerData.PlayerName; set => playerData.PlayerName = value;
+    }
     public long Money
     {
         get => playerData.PlayerMoney;
@@ -16,12 +20,25 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         get => playerData.PlayerTotalMoneyAcquired; 
         set => playerData.PlayerTotalMoneyAcquired = value;
     }
+    public int LicencePoints
+    {
+        get => playerData.PlayerLicencePoints;
+    }
+    public int TotalLicencePointsAcquired
+    {
+        get => playerData.PlayerTotalLicencePointsAcquired;
+    }
+    public int RepairTools 
+    { 
+        get => playerData.PlayerRepairTools; set => playerData.PlayerRepairTools = value; 
+    }
+    public static bool CanRepair => Instance.RepairTools > 0;
+    public static bool IsPaused { get; set; }
 
-    [Header("Set at Runtime")]
-    public bool isPaused;
-    public PlayerMovement playerMovement;
+    public static GameObject PlayerObject { get; private set; }
+    public static PlayerMovement PlayerMovement { get; private set; }
 
-    public static event System.Action onFinancialTransaction;
+    public static event System.Action OnFinancialTransaction;
 
     private void Awake()
     {
@@ -35,33 +52,38 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
-        Init();
     }
 
-    private void Start()
+    public void Init()
     {
+        if (DataUtils.SaveFolderExists(PlayerData.FOLDER_NAME))
+        {
+            LoadDataAsync();
+        }
+        else
+        {
+            DataUtils.CreateSaveFolder(PlayerData.FOLDER_NAME);
+        }
+
+        PlayerObject = GameObject.FindGameObjectWithTag(PlayerConstants.PlayerTag);
+        if (PlayerObject != null)
+        {
+            PlayerMovement = PlayerObject.GetComponent<PlayerMovement>();
+        }
+        else
+        {
+            Debug.LogError("Player object not found");
+        }
+
         if (playerData == null)
         {
             Debug.LogError("No player data found");
         }
     }
 
-    public void Init()
-    {
-        if (DataModelsUtils.SaveFolderExists(PlayerData.FOLDER_NAME))
-        {
-            LoadDataAsync();
-        }
-        else
-        {
-            DataModelsUtils.CreateSaveFolder(PlayerData.FOLDER_NAME);
-        }
-        playerMovement = FindObjectOfType<PlayerMovement>();
-    }
-
     public bool CanSpendMoney(long amount)
     {
-        if (amount < Instance.Money)
+        if (amount <= Instance.Money)
         {
             return true;
         }
@@ -71,16 +93,45 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     public void SpendMoney(long amount)
     {
         Instance.Money -= amount;
-        onFinancialTransaction?.Invoke();
+        OnFinancialTransaction?.Invoke();
     }
 
     public void ReceiveMoney(long amount)
     {
         Instance.Money += amount;
         Instance.TotalMoneyAcquired += amount;
-        onFinancialTransaction?.Invoke();
+        OnFinancialTransaction?.Invoke();
     }
 
+    public void AcquireLicence(Licence licence)
+    {
+        if (playerData.PlayerLicencePoints >= licence.PointsCost)
+        {
+            playerData.PlayerLicencePoints -= licence.PointsCost;
+            playerData.PlayerTotalLicencePointsAcquired += licence.PointsCost;
+            licence.IsOwned = true;
+            Debug.Log($"{licence.Name} has been acquired\nRemaining LP: {playerData.PlayerLicencePoints}");
+        }
+        else
+        {
+            Debug.Log($"Player has insufficient LP to acquire {licence.Name}");
+        }
+    }
+
+    public void EnterMenuState()
+    {
+        //NOT SURE WHY IS'N WORKING.
+       // PlayerMovement.ResetAnimator();
+        IsPaused = true;
+    }
+
+    public static void SetPlayerName(string playerName)
+    {
+        Instance.PlayerName = playerName;
+        Debug.Log($"Player name set to: {Instance.PlayerName}");
+    }
+
+    #region Persistence
     public void SaveData()
     {
         playerData.SaveData();
@@ -93,6 +144,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
 
     public void DeleteData()
     {
-        DataModelsUtils.RecursivelyDeleteSaveData(PlayerData.FOLDER_NAME);
+        DataUtils.RecursivelyDeleteSaveData(PlayerData.FOLDER_NAME);
     }
+    #endregion
 }

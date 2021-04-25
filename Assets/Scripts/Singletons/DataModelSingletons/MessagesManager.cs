@@ -19,18 +19,22 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
-        Init();
     }
 
     public void Init()
     {
-        if (DataModelsUtils.SaveFolderExists(Message.FOLDER_NAME))
+        if (DataUtils.SaveFolderExists(Message.FOLDER_NAME))
         {
             LoadDataAsync();
         }
         else
         {
-            DataModelsUtils.CreateSaveFolder(Message.FOLDER_NAME);
+            DataUtils.CreateSaveFolder(Message.FOLDER_NAME);
+        }
+
+        if (Messages == null)
+        {
+            Debug.LogError("No message data");
         }
     }
 
@@ -48,6 +52,7 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
         }
     }
 
+    #region Persistence
     public void SaveData()
     {
         foreach (Message message in Instance.Messages)
@@ -74,4 +79,5 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
     {
         Instance.DeleteData();
     }
+    #endregion
 }

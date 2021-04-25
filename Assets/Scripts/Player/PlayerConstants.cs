@@ -5,8 +5,9 @@ using UnityEngine;
 public class PlayerConstants : MonoBehaviour
 {
     // Keybinds
-    public static KeyCode action = KeyCode.E;
-    public static KeyCode exit = KeyCode.Escape;
+    public static KeyCode ActionKey = KeyCode.E;
+    public static KeyCode ExitKey = KeyCode.Escape;
+    public static KeyCode DropObjectKey = KeyCode.Q;
 
-    public static string objectTag = "Player"; 
+    public static string PlayerTag = "Player";
 }

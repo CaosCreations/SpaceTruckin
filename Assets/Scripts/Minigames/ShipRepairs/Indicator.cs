@@ -8,11 +8,14 @@ public class Indicator : MonoBehaviour
     private void Start()
     {
         repairsManager = GetComponentInParent<RepairsManager>();
-        Workstation.onRotationStopped += DetermineOutcome; 
+        Workstation.OnRotationStopped += DetermineOutcome; 
     }
 
     public void DetermineOutcome()
     {
+        // Expend a tool regardless of whether the player wins
+        PlayerManager.Instance.RepairTools--;
+     
         if (isInsideGreenZone)
         {
             repairsManager.PlayerWins();

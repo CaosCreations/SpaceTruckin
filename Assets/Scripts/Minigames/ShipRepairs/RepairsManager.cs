@@ -2,28 +2,39 @@
 
 public class RepairsManager : MonoBehaviour
 {
-    private Workstation workstation;
+    public Workstation workstation;
     private GreenZone greenZone;
+    private RepairsUI repairsUI;
 
-    public int points;
     public int consecutiveWins;
-
-    private string feedbackText;
-    private string pointsText = "Points: ";
-    private string consecutiveWinsText = "Consecutive Wins: ";
-    private string successMessage = "Success!";
-    private string failureMessage = "Failure!";
+    public bool IsRepairing => workstation.isRotating;
 
     private void Start()
     {
         workstation = GetComponentInChildren<Workstation>();
         greenZone = GetComponentInChildren<GreenZone>();
+        repairsUI = GetComponentInParent<RepairsUI>();
+    }
+
+    public void StopStart()
+    {
+        if (workstation.isRotating)
+        {
+            workstation.StopRotating();
+        }
+        else
+        {
+            workstation.StartRotating();
+        }
     }
 
     public void PlayerWins()
     {
-        points++;
-        consecutiveWins++;
+        if (repairsUI.ShipToRepair != null)
+        {
+            ShipsManager.RepairShip(repairsUI.ShipToRepair);
+        }
+
         workstation.IncreaseRotationSpeed();
         Debug.Log("New speed: " + workstation.currentRotationSpeed);
 
@@ -37,7 +48,8 @@ public class RepairsManager : MonoBehaviour
         {
             workstation.ReverseRotationDirection();
         }
-        UpdateFeedbackText(success: true);
+
+        repairsUI.UpdateUI(wasSuccessful: true);
     }
 
     public void PlayerLoses()
@@ -45,7 +57,7 @@ public class RepairsManager : MonoBehaviour
         consecutiveWins = 0;
         workstation.ResetRotationSpeed();
         greenZone.ResetSize();
-        UpdateFeedbackText(success: false);
+        repairsUI.UpdateUI(wasSuccessful: false);
     }
 
     public bool IsGreenZoneShrinking()
@@ -58,18 +70,5 @@ public class RepairsManager : MonoBehaviour
     {
         return Random.Range(0, RepairsConstants.RotationReversalUpperBound)
             > RepairsConstants.RotationReversalThreshold;
-    }
-
-    public void UpdateFeedbackText(bool success)
-    {
-        feedbackText = success ? successMessage : failureMessage;
-        Debug.Log(feedbackText);
-        pointsText = "Points: " + points;
-        consecutiveWinsText = "Consecutive Wins: " + consecutiveWins;
-    }
-
-    public void ResetFeedbackText()
-    {
-        feedbackText = string.Empty;
     }
 }

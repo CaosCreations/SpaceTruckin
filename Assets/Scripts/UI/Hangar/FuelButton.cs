@@ -4,21 +4,21 @@ using UnityEngine.EventSystems;
 
 public class FuelButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    public Button button;
-    public bool isFueling = false;
+    public Button Button { get; private set; }
+    public bool IsFueling { get; private set; }
 
     private void Awake()
     {
-        button = GetComponent<Button>();   
+        Button = GetComponent<Button>();   
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        isFueling = true;
+        IsFueling = true;
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        isFueling = false;
+        IsFueling = false;
     }
 }

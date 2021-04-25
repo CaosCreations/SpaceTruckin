@@ -12,17 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65c61d5d74a340740ad66c5ce01d5754, type: 3}
   m_Name: VespaShip1
   m_EditorClassIdentifier: 
-  id: 1
   shipName: Vespa Freighter X09
-  maxHullIntegrity: 200
-  maxFuel: 2000
+  maxHullIntegrity: 100
+  maxFuel: 100
   shipPrefab: {fileID: 919132149155446097, guid: c97d1b7f0369e5f45810f470321df530,
     type: 3}
   shipAvatar: {fileID: 21300000, guid: 96c9ce1d9e3993243af287359acea75d, type: 3}
-  pilot: {fileID: 0}
-  isOwned: 0
-  isLaunched: 0
-  hangarNode: 0
-  currentMission: {fileID: 0}
-  currentFuel: 0
-  currenthullIntegrity: 0
+  saveData:
+    currentFuel: 100
+    currentHullIntegrity: 100
+    canWarp: 0

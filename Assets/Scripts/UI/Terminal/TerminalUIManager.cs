@@ -1,74 +1,66 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class TerminalUIManager : MonoBehaviour
+public class TerminalUIManager : UICanvasBase
 {
     public Button missionsButton;
     public Button messagesButton;
     public Button analyticsButton;
-    public Button crewButton;
-    public Button upgradesButton;
+    public Button fleetButton;
+    public Button licencesButton;
     public Text moneyText;
 
     public GameObject missionsPanel;
     public GameObject messagesPanel;
     public GameObject analyticsPanel;
-    public GameObject crewPanel;
-    public PilotsUI pilotsUI;
-    public GameObject upgradesPanel;
-
+    public GameObject fleetPanel;
+    public GameObject licencesPanel;
+    public GameObject newDayReportPanel; 
+    private NewDayReportUI newDayReportUI;
+    
     public enum Tab
     {
-        Missions, Messages, Analytics, Crew, Upgrades
+        Missions, Messages, Analytics, Fleet, Licences
     }
 
-    void Start()
+    private void Start()
     {
         SetupButtonListeners();
         TabButtonClicked(Tab.Missions);
-        UpdateMoneyText();
-        PlayerManager.onFinancialTransaction += UpdateMoneyText;
+        newDayReportUI = newDayReportPanel.GetComponent<NewDayReportUI>();
+    }
+
+    private void OnEnable()
+    {
+        if (ArchivedMissionsManager.WereMissionsCompletedYesterday()
+            && !newDayReportUI.HasBeenViewed)
+        {
+            ClearPanels();
+            ResetTabButtonColours();
+            newDayReportPanel.SetActive(true);
+            newDayReportUI.Init();
+        }
     }
 
     private void SetupButtonListeners()
     {
-        missionsButton.onClick.RemoveAllListeners();
-        missionsButton.onClick.AddListener(delegate { TabButtonClicked(Tab.Missions); });
-
-        messagesButton.onClick.RemoveAllListeners();
-        messagesButton.onClick.AddListener(delegate { TabButtonClicked(Tab.Messages); });
-
-        analyticsButton.onClick.RemoveAllListeners();
-        analyticsButton.onClick.AddListener(delegate { TabButtonClicked(Tab.Analytics); });
-
-        crewButton.onClick.RemoveAllListeners();
-        crewButton.onClick.AddListener(delegate { TabButtonClicked(Tab.Crew); });
-
-        upgradesButton.onClick.RemoveAllListeners();
-        upgradesButton.onClick.AddListener(delegate { TabButtonClicked(Tab.Upgrades); });
+        missionsButton.AddOnClick(() => TabButtonClicked(Tab.Missions));
+        messagesButton.AddOnClick(() => TabButtonClicked(Tab.Messages));
+        analyticsButton.AddOnClick(() => TabButtonClicked(Tab.Analytics));
+        fleetButton.AddOnClick(() => TabButtonClicked(Tab.Fleet));
+        licencesButton.AddOnClick(() => TabButtonClicked(Tab.Licences));
     }
 
     private void TabButtonClicked(Tab tabClicked)
     {
+        SetActivePanel(tabClicked);
+        SetTabButtonColours(tabClicked);
+    }
+
+    private void SetActivePanel(Tab tabClicked)
+    {
         ClearPanels();
-        switch (tabClicked)
-        {
-            case Tab.Missions:
-                missionsPanel.SetActive(true);
-                break;
-            case Tab.Messages:
-                messagesPanel.SetActive(true);
-                break;
-            case Tab.Analytics:
-                analyticsPanel.SetActive(true);
-                break;
-            case Tab.Crew:
-                crewPanel.SetActive(true);
-                break;
-            case Tab.Upgrades:
-                upgradesPanel.SetActive(true);
-                break;
-        }
+        GetPanelByTabClicked(tabClicked).SetActive(true);
     }
 
     private void ClearPanels()
@@ -76,12 +68,50 @@ public class TerminalUIManager : MonoBehaviour
         missionsPanel.SetActive(false);
         messagesPanel.SetActive(false);
         analyticsPanel.SetActive(false);
-        crewPanel.SetActive(false);
-        upgradesPanel.SetActive(false);
+        fleetPanel.SetActive(false);
+        licencesPanel.SetActive(false);
+        newDayReportPanel.SetActive(false);
     }
 
-    private void UpdateMoneyText()
+    private GameObject GetPanelByTabClicked(Tab tabClicked)
     {
-        moneyText.text = "$ " + PlayerManager.Instance.Money;
+        return tabClicked switch
+        {
+            Tab.Missions => missionsPanel,
+            Tab.Messages => messagesPanel,
+            Tab.Analytics => analyticsPanel,
+            Tab.Fleet => fleetPanel,
+            Tab.Licences => licencesPanel,
+            _ => null,
+        };
+    }
+
+    private void SetTabButtonColours(Tab tabClicked)
+    {
+        ResetTabButtonColours();
+        Color tabButtonColour = GetPanelByTabClicked(tabClicked).GetImageColour();
+        GetTabButtonByTabClicked(tabClicked).SetColour(tabButtonColour);
+    }
+
+    public void ResetTabButtonColours()
+    {
+        missionsButton.SetColour(UIConstants.InactiveTabButtonColour);
+        messagesButton.SetColour(UIConstants.InactiveTabButtonColour);
+        analyticsButton.SetColour(UIConstants.InactiveTabButtonColour);
+        fleetButton.SetColour(UIConstants.InactiveTabButtonColour);
+        licencesButton.SetColour(UIConstants.InactiveTabButtonColour);
+    }
+
+    private Button GetTabButtonByTabClicked(Tab tabClicked)
+    {
+        return tabClicked switch
+        {
+            Tab.Missions => missionsButton,
+            Tab.Messages => messagesButton,
+            Tab.Analytics => analyticsButton,
+            Tab.Fleet => fleetButton,
+            Tab.Licences => licencesButton,
+            _ => null,
+        };
     }
 }

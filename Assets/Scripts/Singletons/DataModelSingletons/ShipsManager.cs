@@ -1,10 +1,4 @@
 ﻿using UnityEngine;
-using System.Linq;
-
-public enum HangarNode
-{
-    None, One, Two, Three, Four, Five, Six
-}
 
 public class ShipsManager : MonoBehaviour, IDataModelManager
 {
@@ -14,9 +8,7 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
     [SerializeField] private ShipsContainer shipsContainer;
     public Ship[] Ships { get => shipsContainer.ships; }
 
-    public HangarSlot[] hangarSlots;
-
-    void Awake()
+    private void Awake()
     {
         if (Instance == null)
         {
@@ -28,118 +20,54 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
-        Init();
     }
 
     public void Init()
     {
-        if (DataModelsUtils.SaveFolderExists(Ship.FOLDER_NAME))
+        if (DataUtils.SaveFolderExists(Ship.FOLDER_NAME))
         {
             LoadDataAsync();
         }
         else
         {
-            DataModelsUtils.CreateSaveFolder(Ship.FOLDER_NAME);
+            DataUtils.CreateSaveFolder(Ship.FOLDER_NAME);
         }
-        hangarSlots = FindObjectsOfType<HangarSlot>();
-        UpdateHangarShips();
+
+        if (Ships == null)
+        {
+            Debug.LogError("No ship data");
+        }
     }
 
     public static void DamageShip(Ship ship, int damage)
     {
-        ship.CurrentHullIntegrity = Mathf.Max(
-            0, ship.CurrentHullIntegrity - damage);
-    }
-
-    public static void LaunchShip(HangarNode node)
-    {
-        foreach (HangarSlot slot in Instance.hangarSlots)
-        {
-            if (slot.node == node)
-            {
-                Ship ship = GetShipForNode(node);
-                if(ship != null)
-                {
-                    ship.CurrentMission.StartMission();
-                    ship.IsLaunched = true;
-                    slot.LaunchShip();
-                }
-            }
-        }
-    }
-
-    public static Ship GetShipForNode(HangarNode node)
-    {
-        foreach(Ship ship in Instance.Ships)
-        {
-            if(ship.HangarNode == node)
-            {
-                return ship;
-            }
-        }
-
-        return null;
-    }
-
-    public static void UpdateHangarShips()
-    {
-        ClearSlots();
-        foreach (Ship ship in Instance.Ships)
-        {
-            if (ship.IsOwned && !ship.IsLaunched)
-            {
-                HangarSlot shipSlot = GetShipSlot(ship);
-
-                if(shipSlot != null)
-                {
-                    GameObject shipParentInstance = Instantiate(Instance.shipInstancePrefab, shipSlot.transform);
-                    Instantiate(ship.ShipPrefab, shipParentInstance.transform);
-                    ShipInstance instance = shipParentInstance.GetComponent<ShipInstance>();
-                    shipSlot.shipInstance = instance;
-                }
-                else
-                {
-                    Debug.Log("Ship Hangar node not set");
-                }
-            }
-        }
-    }
-
-    public static Ship NodeHasShip(HangarNode node)
-    {
-        Ship ship = Instance.Ships.Where(x => x.HangarNode == node).FirstOrDefault();
         if (ship != null)
         {
-            return ship;
+            ship.CurrentHullIntegrity = Mathf.Max(
+                0, ship.CurrentHullIntegrity - damage);
         }
-
-        return null;
     }
 
-    private static HangarSlot GetShipSlot(Ship ship)
+    public static void RepairShip(Ship ship)
     {
-        foreach(HangarSlot slot in Instance.hangarSlots)
-        {
-            if(slot.node == ship.HangarNode)
-            {
-                return slot;
-            }
-        }
-
-        return null;
+        ship.CurrentHullIntegrity = Mathf.Min(
+            ship.CurrentHullIntegrity + RepairsConstants.HullRepairedPerWin,
+            ship.MaxHullIntegrity);
     }
 
-    private static void ClearSlots()
+    public static bool ShipIsLaunched(Ship ship)
     {
-        foreach (HangarSlot slot in Instance.hangarSlots)
-        {
-            if (slot.transform.childCount > 0)
-            {
-                Destroy(slot.transform.GetChild(0).gameObject);
-            }
-        }
+        ScheduledMission scheduled = MissionsManager.GetScheduledMission(ship);
+        return scheduled?.Mission != null && scheduled.Mission.IsInProgress();
     }
 
+    /// <summary>Warp is required to go out on missions</summary>
+    public static void EnableWarp(Ship ship)
+    {
+        ship.CanWarp = true;
+    }
+
+    #region Persistence
     public void SaveData()
     {
         foreach (Ship ship in Instance.Ships)
@@ -158,6 +86,7 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
 
     public void DeleteData()
     {
-        DataModelsUtils.RecursivelyDeleteSaveData(Ship.FOLDER_NAME);
+        DataUtils.RecursivelyDeleteSaveData(Ship.FOLDER_NAME);
     }
+    #endregion
 }

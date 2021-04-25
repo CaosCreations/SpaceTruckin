@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class NoticeBoard : MonoBehaviour
+public class NoticeBoard : UICanvasBase
 {
     [Header("Set in prefab")]
     // Left Panel
@@ -12,13 +12,14 @@ public class NoticeBoard : MonoBehaviour
     public Text jobNameText;
     public Text customerNameText;
     public Text cargoText;
+    public Text descriptionText;
     public Text rewardText;
     public Button acceptJobButton;
 
     [Header("Set in game")]
     public Mission selectedMission;
 
-    void Start()
+    private void Start()
     {
         acceptJobButton.onClick.RemoveAllListeners();
         acceptJobButton.onClick.AddListener(AcceptMission);
@@ -27,39 +28,39 @@ public class NoticeBoard : MonoBehaviour
     private void OnEnable()
     {
         selectedMission = null;
-        CleanDetailPane();
+        CleanDetailPanel();
         CleanScrollView();
         PopulateScrollView();
+        acceptJobButton.interactable = false;
     }
 
-    void AcceptMission()
+    private void AcceptMission()
     {
-        if(selectedMission != null)
+        if (selectedMission != null)
         {
             selectedMission.HasBeenAccepted = true;
+            acceptJobButton.interactable = false;
             CleanScrollView();
             PopulateScrollView();
-            CleanDetailPane();
+            CleanDetailPanel();
         }
     }
 
-    void CleanScrollView()
+    private void CleanScrollView()
     {
-        foreach(Transform child in scrollViewContent.transform)
-        {
-            Destroy(child.gameObject);
-        }
+        scrollViewContent.transform.DestroyDirectChildren();
     }
 
-    void CleanDetailPane()
+    private void CleanDetailPanel()
     {
-        jobNameText.text = string.Empty;
-        customerNameText.text = string.Empty;
-        cargoText.text = string.Empty;
-        rewardText.text = string.Empty;
+        jobNameText.SetText(string.Empty);
+        customerNameText.SetText(string.Empty);
+        cargoText.SetText(string.Empty);
+        descriptionText.SetText(string.Empty);
+        rewardText.SetText(string.Empty);
     }
 
-    void PopulateScrollView()
+    private void PopulateScrollView()
     {
         foreach(Mission mission in MissionsManager.Instance.Missions)
         {
@@ -76,9 +77,11 @@ public class NoticeBoard : MonoBehaviour
     public void SelectItem(Mission missionToSelect)
     {
         selectedMission = missionToSelect;
-        jobNameText.text = selectedMission.Name;
-        customerNameText.text = selectedMission.Customer;
-        cargoText.text = selectedMission.Cargo;
-        rewardText.text = $"${selectedMission.Reward}";
+        jobNameText.SetText(selectedMission.Name);
+        customerNameText.SetText(selectedMission.Customer);
+        cargoText.SetText(selectedMission.Cargo);
+        descriptionText.SetText(selectedMission.Description);
+        rewardText.SetText(MissionDetailsUI.BuildRewardString(missionToSelect));
+        acceptJobButton.interactable = true;
     }
 }

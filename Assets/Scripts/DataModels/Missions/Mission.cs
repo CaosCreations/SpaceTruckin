@@ -8,12 +8,17 @@ public partial class Mission : ScriptableObject, IDataModel
     [Header("Set in Editor")]
     [SerializeField] private int missionDurationInDays;
     [SerializeField] private string missionName, customer, cargo, description;
-    [SerializeField] private int fuelCost, reward, moneyNeededToUnlock; // may need to be longs later
+    [SerializeField] private int fuelCost;
+    [SerializeField] private long moneyNeededToUnlock;
+    [SerializeField] private bool hasRandomOutcomes;
     [SerializeField] private MissionOutcome[] outcomes;
     [SerializeField] private ThankYouMessage thankYouMessage;
 
     [Header("Data to update IN GAME")] 
     public MissionSaveData saveData;
+
+    [HideInInspector]
+    private ArchivedMission missionToArchive;
 
     public static string FOLDER_NAME = "MissionSaveData";
 
@@ -22,22 +27,21 @@ public partial class Mission : ScriptableObject, IDataModel
     {
         public bool hasBeenAccepted = false;
         public int daysLeftToComplete, numberOfCompletions;
-        public Ship ship = null;
+    }
+
+    private void OnValidate()
+    {
+        missionDurationInDays = Mathf.Max(1, missionDurationInDays);
     }
 
     public void SaveData()
     {
-        DataModelsUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
+        DataUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
     }
 
     public async Task LoadDataAsync()
     {
-        saveData = await DataModelsUtils.LoadFileAsync<MissionSaveData>(name, FOLDER_NAME);
-    }   
-
-    public void ScheduleMission(Ship ship)
-    {
-        Ship = ship;
+        saveData = await DataUtils.LoadFileAsync<MissionSaveData>(name, FOLDER_NAME);
     }
 
     public void StartMission()
@@ -50,30 +54,14 @@ public partial class Mission : ScriptableObject, IDataModel
         return saveData.daysLeftToComplete > 0;
     }
 
-    private void ProcessOutcomes()
+    public void ProcessOutcomes()
     {
         foreach (MissionOutcome outcome in outcomes)
         {
             if (outcome != null)
             {
-                outcome.Process(this);
+                outcome.Process(MissionsManager.GetScheduledMission(this));
             }
         }
-    }
-
-    public void CompleteMission()
-    {
-        ProcessOutcomes();
-        Ship.DeductFuel();
-        Ship.IsLaunched = false;
-        Ship.CurrentMission = null;
-        Ship = null;
-
-        // Send a thank you email on first completion of the mission
-        if (thankYouMessage != null && NumberOfCompletions <= 0)
-        {
-            thankYouMessage.IsUnlocked = true; 
-        }
-        NumberOfCompletions++;
     }
 }
