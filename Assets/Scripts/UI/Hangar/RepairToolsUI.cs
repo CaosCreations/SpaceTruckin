@@ -8,45 +8,42 @@ public class RepairToolsUI : MonoBehaviour
     [SerializeField] private Button buyButton;
     [SerializeField] private InputField quantityInput;
 
-    [SerializeField] private Button stopStartButton;
+    private int currentQuantity;
+    private int TotalCost => currentQuantity * RepairsConstants.CostPerTool;
+
+    [SerializeField] private Button stopStartRepairsButton;
 
     private void Start()
     {
         buyButton.AddOnClick(BuyTools);
-        quantityInput.onValueChanged.AddListener(delegate { UpdateToolsCostText(); });
+        quantityInput.AddOnValueChanged(HandleOnValueChanged);
     }
 
     private void OnEnable()
     {
-        UpdateToolsText();
-        quantityInput.text = "0";
-        toolsCostText.SetText(RepairsConstants.ToolsCostText + 0.ToString());
+        ResetValues();
     }
 
     private void BuyTools()
     {
-        if (int.TryParse(quantityInput.text, out int quantity))
+        if (currentQuantity > 0 && PlayerManager.Instance.CanSpendMoney(TotalCost))
         {
-            int costOfTools = GetTotalCost(quantity);
-
-            if (quantity > 0 && PlayerManager.Instance.CanSpendMoney(costOfTools))
-            {
-                PlayerManager.Instance.SpendMoney(costOfTools);
-                PlayerManager.Instance.RepairTools += quantity;
-                stopStartButton.interactable = PlayerManager.CanRepair;
-                UpdateToolsText();
-                UpdateToolsCostText();
-            }
+            PlayerManager.Instance.SpendMoney(TotalCost);
+            PlayerManager.Instance.RepairTools += currentQuantity;
+            stopStartRepairsButton.interactable = PlayerManager.CanRepair;
+            UpdateToolsText();
+            UpdateToolsCostText();
         }
         else
         {
-            Debug.LogError($"Invalid input when buying tools (must be int). Value was: '{quantityInput.text}'");
+            LogError();
         }
     }
 
-    private int GetTotalCost(int quantity)
+    private void HandleOnValueChanged()
     {
-        return quantity * RepairsConstants.CostPerTool;
+        currentQuantity = GetCurrentQuantity();
+        UpdateToolsCostText();
     }
 
     public void UpdateToolsText()
@@ -54,23 +51,47 @@ public class RepairToolsUI : MonoBehaviour
         toolsText.SetText("x" + PlayerManager.Instance.RepairTools.ToString());
     }
 
-    private void UpdateToolsCostText()
+    private int GetCurrentQuantity()
     {
-        int newCost = 0;
-        
-        // Empty string/whitespace equates to 0
         if (!string.IsNullOrWhiteSpace(quantityInput.text)
             && int.TryParse(quantityInput.text, out int quantity))
         {
-            newCost = GetTotalCost(quantity);
+            return quantity;
         }
 
-        toolsCostText.SetText(RepairsConstants.ToolsCostText + newCost.ToString());
-        UpdateToolsCostColour(PlayerManager.Instance.CanSpendMoney(newCost));
+        // Empty string/whitespace equates to 0
+        return 0;
+    }
+
+    private void UpdateToolsCostText()
+    {
+        toolsCostText.SetText(RepairsConstants.ToolsCostText + TotalCost.ToString());
+        UpdateToolsCostColour(PlayerManager.Instance.CanSpendMoney(TotalCost));
     }
 
     private void UpdateToolsCostColour(bool canAfford)
     {
         toolsCostText.color = canAfford ? UIConstants.ChelseaCucumber : UIConstants.Matrix;
+    }
+
+    private void ResetValues()
+    {
+        UpdateToolsText();
+        currentQuantity = 0;
+        quantityInput.text = "0";
+        toolsCostText.SetText(RepairsConstants.ToolsCostText + 0.ToString());
+    }
+
+    private void LogError()
+    {
+        if (currentQuantity <= 0)
+        {
+            Debug.LogError("Tool quantity was 0. Cannot purchase 0 tools.");
+        }
+
+        if (!int.TryParse(quantityInput.text, out _))
+        {
+            Debug.LogError($"Invalid tool input type (must be int). Value was: '{quantityInput.text}'");
+        }
     }
 }
