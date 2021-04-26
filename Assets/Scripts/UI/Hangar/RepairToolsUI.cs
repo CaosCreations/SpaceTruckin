@@ -36,7 +36,7 @@ public class RepairToolsUI : MonoBehaviour
         }
         else
         {
-            LogError();
+            LogErrors();
         }
     }
 
@@ -71,7 +71,22 @@ public class RepairToolsUI : MonoBehaviour
 
     private void UpdateToolsCostColour(bool canAfford)
     {
-        toolsCostText.color = canAfford ? UIConstants.ChelseaCucumber : UIConstants.Matrix;
+        Color toolsCostColour;
+
+        if (currentQuantity <= 0)
+        {
+            toolsCostColour = UIConstants.SpringWood;
+        }
+        else if (canAfford)
+        {
+            toolsCostColour = UIConstants.ChelseaCucumber;
+        }
+        else
+        {
+            toolsCostColour = UIConstants.Matrix;
+        }
+
+        toolsCostText.color = toolsCostColour;
     }
 
     private void ResetValues()
@@ -80,9 +95,11 @@ public class RepairToolsUI : MonoBehaviour
         currentQuantity = 0;
         quantityInput.text = "0";
         toolsCostText.SetText(RepairsConstants.ToolsCostText + 0.ToString());
+        toolsCostText.color = UIConstants.SpringWood;
     }
 
-    private void LogError()
+    #region Diagnostics
+    private void LogErrors()
     {
         if (currentQuantity <= 0)
         {
@@ -94,4 +111,5 @@ public class RepairToolsUI : MonoBehaviour
             Debug.LogError($"Invalid tool input type (must be int). Value was: '{quantityInput.text}'");
         }
     }
+    #endregion
 }
