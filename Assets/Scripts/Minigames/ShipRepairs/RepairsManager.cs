@@ -16,6 +16,11 @@ public class RepairsManager : MonoBehaviour
         repairsUI = GetComponentInParent<RepairsUI>();
     }
 
+    private void OnDisable()
+    {
+        workstation.ResetWorkstation();
+    }
+
     public void StopStart()
     {
         if (workstation.isRotating)

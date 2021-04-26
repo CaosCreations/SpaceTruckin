@@ -45,6 +45,12 @@ public class Workstation : MonoBehaviour
     public void ReverseRotationDirection() =>
         isDirectionReversed = !isDirectionReversed;
 
+    public void ResetWorkstation()
+    {
+        StopRotating();
+        transform.localEulerAngles = Vector3.zero;
+    }
+
     private void Update()
     {
         if (isRotating)
