@@ -12,6 +12,12 @@ public class PlayerEditor : MonoBehaviour
             var playerData = EditorHelper.GetAsset<PlayerData>();
             playerData.PlayerMoney = 0;
             playerData.PlayerTotalMoneyAcquired = 0;
+
+            if (Application.IsPlaying(PlayerManager.Instance))
+            {
+                PlayerManager.Instance.ReceiveMoney(0);
+            }
+
             Debug.Log("Player money reset");
         }
         catch (Exception ex)
@@ -41,7 +47,16 @@ public class PlayerEditor : MonoBehaviour
         try
         {
             var playerData = EditorHelper.GetAsset<PlayerData>();
-            playerData.PlayerMoney = amount;
+            
+            if (Application.IsPlaying(PlayerManager.Instance))
+            {
+                playerData.PlayerMoney = 0;
+                PlayerManager.Instance.ReceiveMoney(amount);
+            }
+            else
+            {
+                playerData.PlayerMoney = amount;
+            }
             Debug.Log("Player money = " + playerData.PlayerMoney.ToString());
         }
         catch (Exception ex)
