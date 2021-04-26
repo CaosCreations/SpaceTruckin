@@ -14,4 +14,9 @@ public static class MonoBehaviourExtensions
             self.gameObject.DestroyIfExists();
         }
     }
+
+    public static bool HasChildOfType<T>(this MonoBehaviour self) where T : MonoBehaviour
+    {
+        return self.GetComponentInChildren<T>() != null;
+    }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public static class GameObjectExtensions 
+public static class GameObjectExtensions
 {
     public static void AddCustomEvent(this GameObject self, EventTriggerType triggerType, Action callback)
     {
@@ -25,7 +25,7 @@ public static class GameObjectExtensions
         RectTransform rectTransform = self.AddComponent<RectTransform>();
         rectTransform.Reset();
         rectTransform.SetAnchors(anchors);
-        return self; 
+        return self;
     }
 
     public static void SetSprite(this GameObject self, Sprite sprite)
@@ -33,7 +33,7 @@ public static class GameObjectExtensions
         Image image = self.GetComponent<Image>();
         if (image != null)
         {
-            image.sprite = sprite; 
+            image.sprite = sprite;
         }
     }
 
@@ -65,6 +65,11 @@ public static class GameObjectExtensions
     public static void SetParent(this GameObject self, GameObject parent)
     {
         self.transform.SetParent(parent.transform);
+    }
+
+    public static void Orphan(this GameObject self)
+    {
+        self.transform.parent = null;
     }
 
     public static void DestroyIfExists(this GameObject self)

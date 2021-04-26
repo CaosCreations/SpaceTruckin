@@ -52,7 +52,7 @@ public class MissionsUI : MonoBehaviour
 
             foreach (Mission mission in selectableMissions)
             {
-                if (mission != null)
+                if (mission != null && !MissionIsInAScheduleSlot(mission))
                 {
                     GameObject scrollItem = Instantiate(missionItemPrefab, scrollViewContent.transform);
                     MissionUIItem missionItem = scrollItem.GetComponent<MissionUIItem>();
@@ -126,10 +126,10 @@ public class MissionsUI : MonoBehaviour
 
     private void ShowMissionProgress(MissionUIItem missionItem)
     {
-        string substring = missionItem.mission.DaysLeftToComplete > 1 ? "days" : "day";
+        string substring = missionItem.Mission.DaysLeftToComplete > 1 ? "days" : "day";
 
-        missionItem.missionNameText.SetText(missionItem.mission.Name
-            + $"\n({missionItem.mission.DaysLeftToComplete} {substring} remaining)", FontType.ListItem);
+        missionItem.MissionNameText.SetText(missionItem.Mission.Name
+            + $"\n({missionItem.Mission.DaysLeftToComplete} {substring} remaining)", FontType.ListItem);
     }
 
     public MissionScheduleSlot GetSlotByPosition(Vector2 position)
@@ -143,5 +143,18 @@ public class MissionsUI : MonoBehaviour
             }
         }
         return null;
+    }
+
+    private bool MissionIsInAScheduleSlot(Mission mission)
+    {
+        foreach (MissionScheduleSlot scheduleSlot in scheduleSlots)
+        {
+            MissionUIItem itemInSlot = scheduleSlot.GetComponentInChildren<MissionUIItem>();
+            if (itemInSlot != null && itemInSlot.Mission == mission)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
