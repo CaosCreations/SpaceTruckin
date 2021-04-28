@@ -28,6 +28,8 @@ public class TerminalUIManager : UICanvasBase
         SetupButtonListeners();
         TabButtonClicked(Tab.Missions);
         newDayReportUI = newDayReportPanel.GetComponent<NewDayReportUI>();
+
+        DisableButtons();
     }
 
     private void OnEnable()
@@ -49,6 +51,13 @@ public class TerminalUIManager : UICanvasBase
         analyticsButton.AddOnClick(() => TabButtonClicked(Tab.Analytics));
         fleetButton.AddOnClick(() => TabButtonClicked(Tab.Fleet));
         licencesButton.AddOnClick(() => TabButtonClicked(Tab.Licences));
+    }
+
+    private void DisableButtons()
+    {
+        messagesButton.interactable = false;
+        analyticsButton.interactable = false;
+        licencesButton.interactable = false;
     }
 
     private void TabButtonClicked(Tab tabClicked)

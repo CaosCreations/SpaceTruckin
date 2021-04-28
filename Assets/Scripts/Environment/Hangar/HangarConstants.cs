@@ -4,7 +4,7 @@ public static class HangarConstants
 {
     // Licences
     public static int MaximumNumberOfSlots = 24;
-    public static int StartingNumberOfSlots = 1;
+    public static int StartingNumberOfSlots = 2;
 
 
     // Batteries 
