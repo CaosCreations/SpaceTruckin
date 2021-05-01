@@ -61,8 +61,8 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        if (!PlayerManager.IsPaused 
-            && currentCanvasType != UICanvasType.None 
+        if (!PlayerManager.IsPaused
+            && currentCanvasType != UICanvasType.None
             && Input.GetKeyDown(PlayerConstants.ActionKey))
         {
             ShowCanvas();
@@ -109,12 +109,6 @@ public class UIManager : MonoBehaviour
         {
             canvas.ShowTutorial();
         }
-
-        // Main menu is not an 'interactable' object, so we reset the current type
-        if (currentCanvasType == UICanvasType.MainMenu)
-        {
-            SetCannotInteract();
-        }
     }
 
     private static UICanvasBase GetCanvasByType(UICanvasType canvasType)
@@ -148,7 +142,7 @@ public class UIManager : MonoBehaviour
         // We pass in a node value when opening the hangar UI
         if (canvasType == UICanvasType.Hangar && HangarManager.NodeIsValid(node))
         {
-            hangarNode = node;    
+            hangarNode = node;
         }
     }
 
