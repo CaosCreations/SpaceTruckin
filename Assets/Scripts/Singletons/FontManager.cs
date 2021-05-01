@@ -31,20 +31,14 @@ public class FontManager : MonoBehaviour
 
     public Font GetFontByType(FontType fontType)
     {
-        switch (fontType)
+        return fontType switch
         {
-            case FontType.Title:
-                return titleFont;
-            case FontType.Subtitle:
-                return subtitleFont;
-            case FontType.ListItem:
-                return listItemFont;
-            case FontType.Paragraph:
-                return paragraphFont;
-            case FontType.Button:
-                return buttonFont;
-            default:
-                return paragraphFont;
-        }
+            FontType.Title => titleFont,
+            FontType.Subtitle => subtitleFont,
+            FontType.ListItem => listItemFont,
+            FontType.Paragraph => paragraphFont,
+            FontType.Button => buttonFont,
+            _ => paragraphFont,
+        };
     }
 }

@@ -7,15 +7,30 @@ using System;
 public class SaveDataEditor : MonoBehaviour
 {
     [MenuItem("Space Truckin/Delete AppData")]
-    private static void DeleteAll() 
+    private static void DeleteAppData() 
     {
         if (!Directory.Exists(Application.persistentDataPath))
         {
             Debug.LogError("<b>No save data to delete</b>");
             return;
         }
+
         Directory.Delete(Application.persistentDataPath, recursive: true);
         Debug.Log($"Save data deleted at {Application.persistentDataPath}");
+    }
+
+    [MenuItem("Space Truckin/Delete PlayerPrefs")]
+    private static void DeletePlayerPrefs()
+    {
+        try
+        {
+            PlayerPrefs.DeleteAll();
+            Debug.Log("PlayerPrefs deleted");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogException(ex);
+        }
     }
 
     [MenuItem("Space Truckin/Delete Container Save Data")]
@@ -29,50 +44,55 @@ public class SaveDataEditor : MonoBehaviour
 
     private static void DeleteContainer()
     {
-        var selected = Selection.activeObject;
+        try
+        {
+            var selected = Selection.activeObject;
 
-        if (selected is MissionContainer)
-        {
-            MissionContainer missionContainer = (MissionContainer)selected;
-            foreach (Mission mission in missionContainer.missions)
+            if (selected is MissionContainer missionContainer)
             {
-                NullifyFields(mission.saveData);
-                EditorUtility.SetDirty(mission);
+                foreach (Mission mission in missionContainer.missions)
+                {
+                    NullifyFields(mission.saveData);
+                    EditorUtility.SetDirty(mission);
+                }
             }
-        }
-        else if (selected is PilotsContainer)
-        {
-            PilotsContainer pilotsContainer = (PilotsContainer)selected;
-            foreach (Pilot pilot in pilotsContainer.pilots)
+            else if (selected is PilotsContainer pilotsContainer)
             {
-                NullifyFields(pilot.saveData);
-                EditorUtility.SetDirty(pilot);
+                foreach (Pilot pilot in pilotsContainer.pilots)
+                {
+                    NullifyFields(pilot.saveData);
+                    EditorUtility.SetDirty(pilot);
+                }
             }
-        }
-        else if (selected is ShipsContainer)
-        {
-            ShipsContainer shipsContainer = (ShipsContainer)selected;
-            foreach (Ship ship in shipsContainer.ships)
+            else if (selected is ShipsContainer shipsContainer)
             {
-                NullifyFields(ship.saveData);
-                EditorUtility.SetDirty(ship);
+                foreach (Ship ship in shipsContainer.ships)
+                {
+                    NullifyFields(ship.saveData);
+                    EditorUtility.SetDirty(ship);
+                }
             }
-        }
-        else if (selected is MessageContainer)
-        {
-            MessageContainer messagesContainer = (MessageContainer)selected;
-            foreach (Message message in messagesContainer.messages)
+            else if (selected is MessageContainer messagesContainer)
             {
-                NullifyFields(message.saveData);
-                EditorUtility.SetDirty(message);
+                foreach (Message message in messagesContainer.messages)
+                {
+                    NullifyFields(message.saveData);
+                    EditorUtility.SetDirty(message);
+                }
             }
+            else
+            {
+                Debug.LogError("<b>Invalid object selected:</b> " + selected);
+                return;
+            }
+
+            Debug.Log("Successfully deleted save data for: " + selected);
+
         }
-        else
+        catch (Exception ex)
         {
-            Debug.LogError("<b>Invalid object selected:</b> " + selected);
-            return;
+            Debug.LogException(ex);
         }
-        Debug.Log("Successfully deleted save data for: " + selected);
     }
 
     public static void NullifyFields<T>(T saveData)
@@ -95,7 +115,7 @@ public class SaveDataEditor : MonoBehaviour
         }
         catch (Exception ex)
         {
-            Debug.LogError($"{ex.Message}\n{ex.StackTrace}");
+            Debug.LogException(ex);
         }
     }
 }
