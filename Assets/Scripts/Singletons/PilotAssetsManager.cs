@@ -128,19 +128,19 @@ public class PilotAssetsManager : MonoBehaviour
 				return $"{vestaPefix}-{vestaName}";
 
 			case Species.Robot:
-				string prefix = string.Empty;
-				string suffix = string.Empty;
+				var robotPrefix = string.Empty;
+				var robotSuffix = string.Empty;
 
 				for (int i = 0; i < robotPrefixLength; i++)
 				{
-					prefix += GenerateInitial();
+					robotPrefix += GenerateInitial();
 				}
 				for (int i = 0; i < robotSuffixLength; i++)
 				{
-					suffix += GenerateDigit().ToString();
+					robotSuffix += GenerateDigit().ToString();
 				}
 
-				return $"{prefix}-{suffix}";
+				return $"{robotPrefix}-{robotSuffix}";
 
 			default:
 				return string.Empty;

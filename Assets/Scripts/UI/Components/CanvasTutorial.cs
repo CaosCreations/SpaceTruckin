@@ -14,18 +14,22 @@ public class CanvasTutorial : MonoBehaviour
     private void Init()
     {
         SetTutorialText();
-
-        Button closeButton = GetComponentInChildren<Button>();
-        
-        if (closeButton != null)
-        {
-            closeButton.AddOnClick(CloseTutorial);
-        }
+        SetupCloseButton();
     }
 
     private void SetTutorialText()
     {
         tutorialText.SetText(tutorialTextContent);
+    }
+
+    private void SetupCloseButton()
+    {
+        Button closeButton = GetComponentInChildren<Button>();
+
+        if (closeButton != null)
+        {
+            closeButton.AddOnClick(CloseTutorial);
+        }
     }
 
     public void CloseTutorial()
