@@ -56,6 +56,7 @@ public class UIManager : MonoBehaviour
             // Show the main menu canvas for character creation
             SetCanInteract(UICanvasType.MainMenu);
             ShowCanvas();
+            currentMenuOverridesEscape = true;
         }
     }
 

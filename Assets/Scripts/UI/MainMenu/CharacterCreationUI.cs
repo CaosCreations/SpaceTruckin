@@ -22,6 +22,7 @@ public class CharacterCreationUI : MonoBehaviour
             PlayerManager.SetPlayerName(choiceOfName);
             invalidInputText.SetActive(false);
             UIManager.ClearCanvases();
+            UIManager.Instance.currentMenuOverridesEscape = false;
         }
         else
         {
