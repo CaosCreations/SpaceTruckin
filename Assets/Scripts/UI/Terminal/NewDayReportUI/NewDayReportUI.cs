@@ -49,7 +49,7 @@ public class NewDayReportUI : MonoBehaviour
             }
             else
             {
-                reportCard.nextCardButton.AddOnClick(CloseReport).SetText(UIConstants.CloseReportButtonText);
+                reportCard.nextCardButton.AddOnClick(CloseReport).SetText(UIConstants.CloseCardCycleText);
             }
         }
     }
