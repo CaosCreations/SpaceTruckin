@@ -1,17 +1,27 @@
 ﻿using UnityEngine;
 
 // Simple handler for office door box collider
-public class OfficeDoor : MonoBehaviour
+public class OfficeDoor : InteractableObject
 {
-    public Vector3 doorOpenOffset;
+    [SerializeField] private Vector3 doorOpenOffset;
 
     private void OnTriggerEnter(Collider other)
+    {
+        OpenDoor();
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        CloseDoor();
+    }
+
+    private void OpenDoor()
     {
         transform.parent.Translate(doorOpenOffset);
         transform.Translate(-doorOpenOffset);
     }
 
-    private void OnTriggerExit(Collider other)
+    public void CloseDoor()
     {
         transform.parent.Translate(-doorOpenOffset);
         transform.Translate(doorOpenOffset);
