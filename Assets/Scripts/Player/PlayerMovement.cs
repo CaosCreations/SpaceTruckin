@@ -37,11 +37,12 @@ public class PlayerMovement : MonoBehaviour
         {
             return;
         }
-        if (IsPlayerBelowKillFloor())
-        {
-            ResetPlayerToOrigin();
-            return;
 
+        if (IsPlayerBelowKillFloor() 
+            || Input.GetKeyDown(PlayerConstants.RespawnKey))
+        {
+            RespawnPlayer();
+            return;
         }
 
         MovementVector.x = Input.GetAxisRaw("Horizontal");
@@ -66,6 +67,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         ApplyGravity();
+        DetermineSpeed();
         MovePlayer(); 
     }
 
@@ -135,6 +137,15 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("KeyRight", false);
             animator.SetBool("KeyLeft", false);
         }
+    }
+
+    private void ApplyGravity()
+    {
+        characterController.Move(new Vector3(0, PlayerConstants.Gravity * Time.fixedDeltaTime, 0));
+    }
+
+    private void DetermineSpeed()
+    {
 
         if (Input.GetKey(KeyCode.LeftShift))
         {
@@ -142,21 +153,10 @@ public class PlayerMovement : MonoBehaviour
             currentSpeed = PlayerConstants.RunSpeed;
         }
         else
-        { 
-            animator.SetBool("RUN",false);
+        {
+            animator.SetBool("RUN", false);
             currentSpeed = PlayerConstants.WalkSpeed;
         }
-
-        // Manually trigger respawn 
-        if (Input.GetKeyDown(PlayerConstants.RespawnKey))
-        {
-            ResetPlayerToOrigin();
-        }
-    }
-
-    private void ApplyGravity()
-    {
-        characterController.Move(new Vector3(0, PlayerConstants.Gravity * Time.fixedDeltaTime, 0));
     }
 
     private void MovePlayer()
@@ -185,7 +185,29 @@ public class PlayerMovement : MonoBehaviour
         characterController.enabled = false;
         transform.position = PlayerConstants.PlayerResetPosition;
         characterController.enabled = true;
+    }
+
+    private void RespawnPlayer()
+    {
+        ResetPlayerToOrigin();
+        CounteractRespawnSideEffects();
+    }
+
+    /// <summary>
+    /// Stop respawning affecting other game state in undesired ways.
+    /// </summary>
+    private void CounteractRespawnSideEffects()
+    {
+        // Stop UI canvas remaining interactable 
         UIManager.SetCannotInteract();
+
+        // Stop door remaining open 
+        OfficeDoor collidingDoor = EnvironmentUtils.GetDoorCollidingWithPlayer();
+
+        if (collidingDoor != null)
+        {
+            collidingDoor.CloseDoor();
+        }
     }
 
     public static void RotateWithView(Vector3 vector,Transform cameraTransform)

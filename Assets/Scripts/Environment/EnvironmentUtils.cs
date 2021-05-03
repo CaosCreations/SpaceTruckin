@@ -5,11 +5,8 @@ public static class EnvironmentUtils
 {
     public static OfficeDoor GetDoorCollidingWithPlayer()
     {
-        var collidingDoor = 
-        /*return */Object
+        return Object
             .FindObjectsOfType<OfficeDoor>()
             .FirstOrDefault(d => d.IsPlayerColliding);
-
-        return collidingDoor;
     }
 }
