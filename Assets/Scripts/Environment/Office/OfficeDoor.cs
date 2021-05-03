@@ -5,25 +5,35 @@ public class OfficeDoor : InteractableObject
 {
     [SerializeField] private Vector3 doorOpenOffset;
 
-    private void OnTriggerEnter(Collider other)
+    public override void OnTriggerEnter(Collider other)
     {
-        OpenDoor();
+        if (PlayerIsColliding(other))
+        {
+            OpenDoor();
+        }
     }
 
-    private void OnTriggerExit(Collider other)
+    public override void OnTriggerExit(Collider other)
     {
-        CloseDoor();
+        if (PlayerIsColliding(other))
+        {
+            CloseDoor();
+        }
     }
 
     private void OpenDoor()
     {
         transform.parent.Translate(doorOpenOffset);
         transform.Translate(-doorOpenOffset);
+
+        IsPlayerColliding = true;
     }
 
     public void CloseDoor()
     {
         transform.parent.Translate(-doorOpenOffset);
         transform.Translate(doorOpenOffset);
+        
+        IsPlayerColliding = false;
     }
 }

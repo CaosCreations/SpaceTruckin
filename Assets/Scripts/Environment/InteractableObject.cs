@@ -3,9 +3,9 @@
 public class InteractableObject : MonoBehaviour
 {
     // Set this OnEnter and OnExit to avoiding repeatedly comparing tags
-    public bool IsPlayerColliding { get; private set; }
+    public bool IsPlayerColliding { get; protected set; }
 
-    private bool PlayerIsColliding(Collider other)
+    protected bool PlayerIsColliding(Collider other)
     {
         if (other.CompareTag(PlayerConstants.PlayerTag))
         {
@@ -14,7 +14,7 @@ public class InteractableObject : MonoBehaviour
         return false;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public virtual void OnTriggerEnter(Collider other)
     {
         if (PlayerIsColliding(other))
         {
@@ -22,7 +22,7 @@ public class InteractableObject : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    public virtual void OnTriggerExit(Collider other)
     {
         if (PlayerIsColliding(other))
         {
