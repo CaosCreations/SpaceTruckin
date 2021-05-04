@@ -46,7 +46,9 @@ public class UIConstants : MonoBehaviour
     public static Vector3 ShipPreviewRotationSpeed = new Vector3(0f, 0.15f, 0f);
     public static float ShipPreviewScaleFactor = 0.85f;
 
-    public static string CloseReportButtonText = "Close";
+
+    // UI text
+    public static string CloseCardCycleText = "Close";
 
 
     // Regex

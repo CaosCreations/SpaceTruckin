@@ -89,6 +89,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6199420112288808843}
   - component: {fileID: 4317014087069833805}
+  - component: {fileID: 6599468129845306850}
   - component: {fileID: 1787563532655816092}
   - component: {fileID: 5138271713504926754}
   m_Layer: 5
@@ -131,8 +132,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ef2c72e60903aa4cbbc210d3ce72734, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tutorialText: {fileID: 3553060809365805183}
-  tutorialTextContent: 
+  tutorialCardCycle: {fileID: 6599468129845306850}
+--- !u!114 &6599468129845306850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6622225993795418308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8558c559883a60844ab69aac98023b98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <CyclableContent>k__BackingField: []
+  cardText: {fileID: 3553060809365805183}
+  cardCycleButton: {fileID: 8775910442599911087}
 --- !u!222 &1787563532655816092
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -263,7 +278,7 @@ GameObject:
   - component: {fileID: 8826082765604486085}
   - component: {fileID: 8775910442599911087}
   m_Layer: 5
-  m_Name: CloseButton
+  m_Name: CardCycleButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
