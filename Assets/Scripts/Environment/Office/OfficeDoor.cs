@@ -1,19 +1,39 @@
 ﻿using UnityEngine;
 
 // Simple handler for office door box collider
-public class OfficeDoor : MonoBehaviour
+public class OfficeDoor : InteractableObject
 {
-    public Vector3 doorOpenOffset;
+    [SerializeField] private Vector3 doorOpenOffset;
 
-    private void OnTriggerEnter(Collider other)
+    public override void OnTriggerEnter(Collider other)
+    {
+        if (PlayerIsColliding(other))
+        {
+            OpenDoor();
+        }
+    }
+
+    public override void OnTriggerExit(Collider other)
+    {
+        if (PlayerIsColliding(other))
+        {
+            CloseDoor();
+        }
+    }
+
+    private void OpenDoor()
     {
         transform.parent.Translate(doorOpenOffset);
         transform.Translate(-doorOpenOffset);
+
+        IsPlayerColliding = true;
     }
 
-    private void OnTriggerExit(Collider other)
+    public void CloseDoor()
     {
         transform.parent.Translate(-doorOpenOffset);
         transform.Translate(doorOpenOffset);
+        
+        IsPlayerColliding = false;
     }
 }
