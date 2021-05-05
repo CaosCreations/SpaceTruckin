@@ -102,7 +102,7 @@ public static class StringExtensions
     {
         if (self != null && self.Length > limit)
         {
-            return self.Remove(self.Length - 1);
+            return self.Substring(0, limit);
         }
         return self;
     }
