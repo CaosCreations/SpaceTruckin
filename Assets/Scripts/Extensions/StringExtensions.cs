@@ -99,4 +99,9 @@ public static class StringExtensions
         }
         return self; 
     }
+
+    public static string EnforceCharacterLimit(this string self, int limit)
+    {
+        return self.Length > limit ? self.Remove(self.Length - 1) : self;
+    }
 }

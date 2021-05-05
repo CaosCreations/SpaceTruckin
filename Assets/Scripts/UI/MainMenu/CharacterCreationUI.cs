@@ -7,6 +7,11 @@ public class CharacterCreationUI : MonoBehaviour
     [SerializeField] private Text invalidInputText;
     [SerializeField] private Button okButton;
 
+    private string CharacterName 
+    {
+        get => characterNameInput.text; set => characterNameInput.text = value; 
+    } 
+
     private void Start()
     {
         Init();
@@ -14,8 +19,13 @@ public class CharacterCreationUI : MonoBehaviour
 
     private void Init()
     {
-        okButton.AddOnClick(ChooseName);
+        AddListeners();
         invalidInputText.SetActive(false);
+    }
+
+    private void AddListeners()
+    {
+        okButton.AddOnClick(ChooseName);
 
         characterNameInput.onValidateInput += (string input, int charIndex, char addedChar) =>
         {
@@ -24,24 +34,23 @@ public class CharacterCreationUI : MonoBehaviour
 
         characterNameInput.AddOnValueChanged(() =>
         {
-            characterNameInput.text = characterNameInput.text.RemoveTrailingDoubleSpace();
+            CharacterName = CharacterName.RemoveTrailingDoubleSpace();
+            CharacterName = CharacterName.EnforceCharacterLimit(PlayerConstants.MaxPlayerNameLength);
         });
     }
 
     private void ChooseName()
     {
-        string choiceOfName = characterNameInput.text;
-
-        if (NameIsValid(choiceOfName))
+        if (NameIsValid(CharacterName))
         {
-            PlayerManager.SetPlayerName(choiceOfName);
+            PlayerManager.SetPlayerName(CharacterName);
             invalidInputText.SetActive(false);
             UIManager.ClearCanvases();
         }
         else
         {
             Debug.LogError(
-                $"Invalid input when choosing name (must be alphabetical string and not only whitespace). Value was: '{choiceOfName}'");
+                $"Invalid input when choosing name (must be alphabetical string and not only whitespace). Value was: '{CharacterName}'");
 
             invalidInputText.SetActive(true);
         }
@@ -49,7 +58,8 @@ public class CharacterCreationUI : MonoBehaviour
 
     private bool NameIsValid(string name)
     {
-        return !string.IsNullOrWhiteSpace(name) && name.IsAlphabeticalIncludingAccents();
+        return !string.IsNullOrWhiteSpace(name)
+            && name.IsAlphabeticalIncludingAccents();
     }
 
     private void Update()
