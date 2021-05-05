@@ -4,8 +4,6 @@ using System.Text.RegularExpressions;
 
 public static class StringExtensions
 {
-    private static readonly string alphabeticalPattern = @"^[a-zA-Z ]+$";
-
     public static string InsertNewLines(this string self)
     {
         if (!string.IsNullOrWhiteSpace(self))
@@ -53,12 +51,13 @@ public static class StringExtensions
     public static bool IsAlphabetical(this string self)
     {
         return !string.IsNullOrWhiteSpace(self) 
-            && Regex.IsMatch(self, alphabeticalPattern);
+            && Regex.IsMatch(self, UIConstants.AlphabeticalPattern);
     }
 
-    public static string ReplaceTemplates(this string self)
+    public static string ReplaceTemplates(this string self, IDataModel dataModel = null)
     {
         MatchCollection matches = new Regex(UIConstants.TemplatePattern).Matches(self);
+
         if (matches.Count <= 0)
         {
             return self;
@@ -67,13 +66,20 @@ public static class StringExtensions
         foreach (Match match in matches.Cast<Match>().Reverse())
         {
             string replacement = UIUtils.GetTemplateReplacement(match.Value
-                .ToUpper()
+                .RemoveTemplateBoundaries()
                 .RemoveAllWhitespace()
-                .TrimStart('{')
-                .TrimEnd('}'));
-            
+                .ToUpper(),
+                dataModel);
+
             self = self.Remove(match.Index, match.Length).Insert(match.Index, replacement);
         }
         return self;
+    }
+
+    private static string RemoveTemplateBoundaries(this string self)
+    {
+        return self
+            .TrimStart(UIConstants.TemplateBoundaryLeftChar)
+            .TrimEnd(UIConstants.TemplateBoundaryRightChar);
     }
 }

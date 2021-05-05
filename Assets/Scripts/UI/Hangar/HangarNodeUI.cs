@@ -244,4 +244,22 @@ public class HangarNodeUI : UICanvasBase
         startMissionButton.interactable = StartMissionButtonIsInteractable();
         hullButton.interactable = !shipToInspect.IsFullyRepaired;
     }
+
+    public override void ShowTutorial()
+    {
+        if (CanvasTutorialPrefab != null)
+        {
+            GameObject tutorial = Instantiate(CanvasTutorialPrefab, transform);
+
+            CardCycle cardCycle = tutorial.GetComponent<CardCycle>();
+
+            if (cardCycle != null)
+            {
+                // Show the name of the currently docked ship in the tutorial cards
+                cardCycle.CyclableContent.ReplaceTemplates(shipToInspect);
+
+                cardCycle.SetupCardCycle();
+            }
+        }
+    }
 }

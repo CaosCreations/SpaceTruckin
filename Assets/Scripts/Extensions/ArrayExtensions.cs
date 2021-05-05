@@ -14,7 +14,7 @@ public static class ArrayExtensions
             self[n] = self[k];
             self[k] = temp;
         }
-        return self; 
+        return self;
     }
 
     public static bool IsNullOrEmpty<T>(this T[] self)
@@ -25,5 +25,14 @@ public static class ArrayExtensions
     public static T GetRandomElement<T>(this T[] self)
     {
         return self[random.Next(self.Length - 1)];
+    }
+
+    public static string[] ReplaceTemplates(this string[] self, IDataModel dataModel = null)
+    {
+        for (int i = 0; i < self.Length; i++)
+        {
+            self[i] = self[i].ReplaceTemplates(dataModel);
+        }
+        return self;
     }
 }

@@ -1,34 +1,12 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &304947627881115013
+--- !u!1001 &8662867338171935903
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4317014087069833805, guid: b682c1a4333f557479c909977ff5b52a,
-        type: 3}
-      propertyPath: tutorialTextContent
-      value: "Welcome to Starlight Express and thank you for your helping us out
-        with this playtest!<br><br>\"Oh thank god, there you are! You\u2019re the
-        new mechanic right? Welcome to Starlight Express! Have you ever worked for
-        an interplanetary courtier service before?<br><br>Hoo boy\u2026 Ok\u2026
-        Um\u2026<br><br>Right, so unfortunately, the person who hired you, the owner
-        of the company, has mysteriously disappeared without so much as an explanation
-        and the delivery orders are piling up! The pilots can\u2019t do everything
-        themselves, we need someone to schedule runs on the office terminal and clear
-        the ships for takeoff from the hangar nodes!<br><br>Sorry to dump all of
-        this on you at once, we know it wasn\u2019t in the job description but we\u2019re
-        really in a bind here and the pilots are already behind schedule and we really
-        need you to approve the last run of the day! We\u2019ve left little pop up
-        messages on each of the tools you\u2019ll have to use so don\u2019t panic;
-        start by accessing the \u201CNotice Board\u201D Terminal in the pilot\u2019s
-        lounge. It\u2019s the next room over, the one with the grimy vending machines.<br><br>P.S.<br>You
-        were also promised lodging in the station\u2019s habitat ring but that\u2019s
-        the first we\u2019re hearing of it so you might have to crash on the office
-        couch for a while but don\u2019t worry, its mostly pretty clean!<br><br>SORRY!!!\""
-      objectReference: {fileID: 0}
     - target: {fileID: 6199420112288808843, guid: b682c1a4333f557479c909977ff5b52a,
         type: 3}
       propertyPath: m_Pivot.x
@@ -142,53 +120,54 @@ PrefabInstance:
     - target: {fileID: 6599468129845306850, guid: b682c1a4333f557479c909977ff5b52a,
         type: 3}
       propertyPath: <CyclableContent>k__BackingField.Array.data[0]
-      value: Welcome to Starlight Express and thank you for your helping us out with
-        this playtest!
+      value: "All right you\u2019re almost done!"
       objectReference: {fileID: 0}
     - target: {fileID: 6599468129845306850, guid: b682c1a4333f557479c909977ff5b52a,
         type: 3}
       propertyPath: <CyclableContent>k__BackingField.Array.data[1]
-      value: "Oh thank god, there you are! You\u2019re the new mechanic right? Welcome
-        to Starlight Express! Have you ever worked for an interplanetary courtier
-        service before?"
+      value: "This is a hangar node, where you can repair, refuel, upgrade and customise
+        the ships on your fleet! This is also where you clear them for take-off when
+        you\u2019ve assigned a mission."
       objectReference: {fileID: 0}
     - target: {fileID: 6599468129845306850, guid: b682c1a4333f557479c909977ff5b52a,
         type: 3}
       propertyPath: <CyclableContent>k__BackingField.Array.data[2]
-      value: "Hoo boy\u2026 Ok\u2026 Um\u2026"
+      value: "This is the {{SHIP NAME}}. It got pretty banged up on its last run
+        so you\u2019ll have to repair it on top of refuelling. The refuelling button
+        is on the top right, hit that and the hangars fuel injector arms will top
+        the ship up!<br><br>Below that is the is the \u201CRepair\u201D function
+        where you can remotely repair the ships damaged systems"
       objectReference: {fileID: 0}
     - target: {fileID: 6599468129845306850, guid: b682c1a4333f557479c909977ff5b52a,
         type: 3}
       propertyPath: <CyclableContent>k__BackingField.Array.data[3]
-      value: "Right, so unfortunately, the person who hired you, the owner of the
-        company, has mysteriously disappeared without so much as an explanation and
-        the delivery orders are piling up! The pilots can\u2019t do everything themselves,
-        we need someone to schedule runs on the office terminal and clear the ships
-        for take-off from the hangar nodes!"
+      value: This is the repair function, on this node. Anything we do here will
+        be carried out will be carried out in real time on the ship.
       objectReference: {fileID: 0}
     - target: {fileID: 6599468129845306850, guid: b682c1a4333f557479c909977ff5b52a,
         type: 3}
       propertyPath: <CyclableContent>k__BackingField.Array.data[4]
-      value: "Sorry to dump all of this on you at once, we know it wasn\u2019t in
-        the job description but we\u2019re really in a bind here and the pilots are
-        already behind schedule and we really need you to approve the last run of
-        the day! We\u2019ve left little pop-up messages on each of the tools you\u2019ll
-        have to use so don\u2019t panic; start by accessing the \u201CNotice Board\u201D
-        Terminal in the pilot\u2019s lounge. It\u2019s the next room over, the one
-        with the grimy vending machines."
+      value: "Awesome! Now all that\u2019s left left to do is recharge the rift shielding
+        on this ship. We wouldn\u2019t want our pilots to go through the wormholes
+        without the proper precautions now would we? You can tell the shields haven\u2019t
+        been applied cause the icon below the \u201CRepair Button\u201D is red, you\u2019ll
+        need to charge an empty battery at our charger on the left side of the hangar,
+        then bring it over to the charging port where the ship is docked.<br><br>Then
+        access the node again (yeah I know it\u2019s a hassle, the boss was too cheap
+        to buy an automated system so we gotta do it ourselves)."
       objectReference: {fileID: 0}
     - target: {fileID: 6599468129845306850, guid: b682c1a4333f557479c909977ff5b52a,
         type: 3}
       propertyPath: <CyclableContent>k__BackingField.Array.data[5]
-      value: "P.S. You were also promised you lodging in the station\u2019s habitat
-        ring but that\u2019s the first we\u2019re hearing of it so you might have
-        to crash on the office couch for a while but don\u2019t worry, its mostly
-        pretty clean!<br><br>SORRY!!!"
+      value: "All right looks like we\u2019re all set! Just hit that launch button
+        to clear the pilot for take off! Most runs take at least a day to complete
+        so make sure you\u2019ve fixed that ship up right cause you\u2019ll only
+        see it again tomorrow! If it even makes it back that is\u2026"
       objectReference: {fileID: 0}
     - target: {fileID: 6622225993795418308, guid: b682c1a4333f557479c909977ff5b52a,
         type: 3}
       propertyPath: m_Name
-      value: MainMenuTutorial
+      value: HangarNodeTutorial
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b682c1a4333f557479c909977ff5b52a, type: 3}
