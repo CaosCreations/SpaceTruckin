@@ -54,6 +54,12 @@ public static class StringExtensions
             && Regex.IsMatch(self, UIConstants.AlphabeticalPattern);
     }
 
+    public static bool IsAlphabeticalIncludingAccents(this string self)
+    {
+        return !string.IsNullOrWhiteSpace(self)
+            && Regex.IsMatch(self, UIConstants.AlphabeticalIncludingAccentsPattern);
+    }
+
     public static string ReplaceTemplates(this string self, IDataModel dataModel = null)
     {
         MatchCollection matches = new Regex(UIConstants.TemplatePattern).Matches(self);
@@ -81,5 +87,16 @@ public static class StringExtensions
         return self
             .TrimStart(UIConstants.TemplateBoundaryLeftChar)
             .TrimEnd(UIConstants.TemplateBoundaryRightChar);
+    }
+
+    public static string RemoveTrailingDoubleSpace(this string self)
+    {
+        if (self.Length > 1
+            && self[self.Length - 2] == ' '
+            && self[self.Length - 1] == ' ')
+        {
+            self = self.Remove(self.Length - 1);
+        }
+        return self; 
     }
 }

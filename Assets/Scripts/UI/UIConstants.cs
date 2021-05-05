@@ -63,6 +63,8 @@ public class UIConstants : MonoBehaviour
     public static string TemplatePattern = $"({TemplateBoundaryLeft}[^}}]*){TemplateBoundaryRight}";
     public const string UnsignedIntegerPattern = "^[0-9]*$";
     public const string AlphabeticalPattern = @"^[a-zA-Z ]+$";
+    public const string AlphabeticalIncludingAccentsPattern = @"[-'0-9a-zÀ-ÿ ]";
+
 
     // Templates
     public const string PlayerNameTemplate = "PLAYERNAME";
