@@ -91,17 +91,21 @@ public static class StringExtensions
 
     public static string RemoveTrailingDoubleSpace(this string self)
     {
-        if (self.Length > 1
-            && self[self.Length - 2] == ' '
-            && self[self.Length - 1] == ' ')
+        if (self != null 
+            && self.Length > 1
+            && self.Substring(self.Length - 2, 2) == "  ")
         {
-            self = self.Remove(self.Length - 1);
+            return self.Remove(self.Length - 1);
         }
         return self; 
     }
 
     public static string EnforceCharacterLimit(this string self, int limit)
     {
-        return self.Length > limit ? self.Remove(self.Length - 1) : self;
+        if (self != null && self.Length > limit)
+        {
+            return self.Remove(self.Length - 1);
+        }
+        return self;
     }
 }
