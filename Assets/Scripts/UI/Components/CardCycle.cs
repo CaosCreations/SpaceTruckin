@@ -18,20 +18,14 @@ public class CardCycle : MonoBehaviour, ICyclable<string>
     private string CurrentCardContent => CyclableContent[currentIndex];
     private bool OnLastCard => currentIndex >= CyclableContent.Length - 1;
 
-    // Setup on enable allows the tutorial cards to be re-visited
-    private void OnEnable()
-    {
-        SetupCardCycle();
-    }
-
-    private void SetupCardCycle()
+    public void SetupCardCycle(IDataModel dataModel = null)
     {
         currentIndex = 0;
         cardText.SetText(CurrentCardContent);
 
         if (CyclableContent.Length <= 1)
         {
-            // Only one card, so make the button close the container 
+            // Only one card, so just make the button close the container 
             SetupCloseButton();
         }
         else

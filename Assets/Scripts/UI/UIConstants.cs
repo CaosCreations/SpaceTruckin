@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class UIConstants : MonoBehaviour
 {
@@ -42,23 +43,29 @@ public class UIConstants : MonoBehaviour
     // UI element colours 
     public static Color32 InactiveTabButtonColour = SpringWood;
 
+
     public static Vector3 ShipPreviewOffset = new Vector3(-3f, 0f, 0f);
     public static Vector3 ShipPreviewRotationSpeed = new Vector3(0f, 0.15f, 0f);
     public static float ShipPreviewScaleFactor = 0.85f;
 
 
-    // UI text
+    // UI element text
     public static string CloseCardCycleText = "Close";
 
 
     // Regex
-    public static string TemplateBoundaryLeft = "{{";
-    public static string TemplateBoundaryRight = "}}";
-    public static string TemplatePattern = $"({TemplateBoundaryLeft}[^}}]*){TemplateBoundaryRight}";
-    public static string UnsignedIntegerPattern = "^[0-9]*$";
+    public const char TemplateBoundaryLeftChar = '{';
+    public const char TemplateBoundaryRightChar = '}';
+    private const int numberOfBoundaryChars = 2;
+    public static string TemplateBoundaryLeft = new string(TemplateBoundaryLeftChar, numberOfBoundaryChars);
+    public static string TemplateBoundaryRight = new string(TemplateBoundaryRightChar, numberOfBoundaryChars);
 
+    public static string TemplatePattern = $"({TemplateBoundaryLeft}[^}}]*){TemplateBoundaryRight}";
+    public const string UnsignedIntegerPattern = "^[0-9]*$";
+    public const string AlphabeticalPattern = @"^[a-zA-Z ]+$";
 
     // Templates
     public const string PlayerNameTemplate = "PLAYERNAME";
+    public const string ShipNameTemplate = "SHIPNAME";
 
 }

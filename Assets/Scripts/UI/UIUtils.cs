@@ -1,16 +1,46 @@
 ﻿public static class UIUtils
 {
-    public static string GetTemplateReplacement(string template) 
+    /// <summary>
+    /// Get the value to replace a template that represents some information that 
+    /// changes depending on the situation.
+    /// </summary>
+    /// <param name="template">The template to replace.</param>
+    /// <param name="dataModel">An optional data model used to get information about a specific object</param>
+    public static string GetTemplateReplacement(string template, IDataModel dataModel = null)
     {
         string replacement = string.Empty;
-        switch (template)
-        {
-            case UIConstants.PlayerNameTemplate:
-                replacement = PlayerManager.Instance.PlayerName;
-                break;
 
-            // Other templates here 
+        if (dataModel is null)
+        {
+            replacement = GetTemplateReplacement(template);
         }
-        return replacement; 
+        else if (dataModel is Ship ship)
+        {
+            replacement = GetTemplateReplacement(template, ship);
+        }
+        return replacement;
+    }
+
+    private static string GetTemplateReplacement(string template)
+    {
+        return template switch
+        {
+            UIConstants.PlayerNameTemplate => PlayerManager.Instance.PlayerName,
+            _ => string.Empty,
+        };
+    }
+
+    private static string GetTemplateReplacement(string template, Ship ship)
+    {
+        if (ship == null)
+        {
+            return string.Empty;
+        }
+
+        return template switch
+        {
+            UIConstants.ShipNameTemplate => ship.Name,
+            _ => string.Empty,
+        };
     }
 }

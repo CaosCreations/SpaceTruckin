@@ -2,13 +2,20 @@
 
 public class UICanvasBase : MonoBehaviour
 {
-    [SerializeField] private GameObject canvasTutorialPrefab;
+    [field: SerializeField] public GameObject CanvasTutorialPrefab { get; private set; }
     
-    public void ShowTutorial()
+    public virtual void ShowTutorial()
     {
-        if (canvasTutorialPrefab != null)
+        if (CanvasTutorialPrefab != null)
         {
-            Instantiate(canvasTutorialPrefab, transform);
+            GameObject tutorial = Instantiate(CanvasTutorialPrefab, transform);
+
+            CardCycle cardCycle = tutorial.GetComponent<CardCycle>();
+
+            if (cardCycle != null)
+            {
+                cardCycle.SetupCardCycle();
+            }
         }
     }
 }
