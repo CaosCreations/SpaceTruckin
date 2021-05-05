@@ -61,9 +61,10 @@ public class UIConstants : MonoBehaviour
     public static string TemplateBoundaryRight = new string(TemplateBoundaryRightChar, numberOfBoundaryChars);
 
     public static string TemplatePattern = $"({TemplateBoundaryLeft}[^}}]*){TemplateBoundaryRight}";
-    public const string UnsignedIntegerPattern = "^[0-9]*$";
+    public const string UnsignedIntegerPattern = @"^[0-9]*$";
     public const string AlphabeticalPattern = @"^[a-zA-Z ]+$";
     public const string AlphabeticalIncludingAccentsPattern = @"[-'0-9a-zA-ZÀ-ÿ ]";
+    public const string ConsecutiveSpacesPattern = @"[ ]{2,}"; 
 
 
     // Templates

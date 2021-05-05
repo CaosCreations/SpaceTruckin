@@ -89,15 +89,13 @@ public static class StringExtensions
             .TrimEnd(UIConstants.TemplateBoundaryRightChar);
     }
 
-    public static string RemoveTrailingDoubleSpace(this string self)
+    public static string RemoveConsecutiveSpaces(this string self)
     {
-        if (self != null 
-            && self.Length > 1
-            && self.Substring(self.Length - 2, 2) == "  ")
+        if (!string.IsNullOrEmpty(self))
         {
-            return self.Remove(self.Length - 1);
+            return new Regex(UIConstants.ConsecutiveSpacesPattern).Replace(self, " ");
         }
-        return self; 
+        return self;
     }
 
     public static string EnforceCharacterLimit(this string self, int limit)

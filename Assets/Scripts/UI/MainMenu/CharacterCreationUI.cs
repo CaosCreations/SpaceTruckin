@@ -34,8 +34,10 @@ public class CharacterCreationUI : MonoBehaviour
 
         characterNameInput.AddOnValueChanged(() =>
         {
-            CharacterName = CharacterName.RemoveTrailingDoubleSpace();
-            CharacterName = CharacterName.EnforceCharacterLimit(PlayerConstants.MaxPlayerNameLength);
+            CharacterName = CharacterName
+                .TrimStart()
+                .RemoveConsecutiveSpaces()
+                .EnforceCharacterLimit(PlayerConstants.MaxPlayerNameLength);
         });
     }
 
