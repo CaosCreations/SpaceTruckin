@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
 {
     public static Vector3 MovementVector;
 
+    public Rigidbody MyRigidbody;
+
     [SerializeField] private Animator animator;
     private CharacterController characterController;
 
@@ -22,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
+        MyRigidbody = GetComponent<Rigidbody>();
 
         // Initialize the player's Camera
         if (Camera.main != null)

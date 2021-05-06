@@ -10,6 +10,8 @@ public class Battery : InteractableObject
     private Color depletedEmission;
     private Color chargedEmission;
 
+    private SpringJoint mySpringJoint;
+
     private void Awake()
     {
         Init();
@@ -57,17 +59,25 @@ public class Battery : InteractableObject
 
     public bool PlayerIsHolding()
     {
-        return PlayerManager.PlayerObject.GetComponentInChildren<Battery>() != null;
+        //return PlayerManager.PlayerObject.GetComponentInChildren<Battery>() != null;
+        return mySpringJoint != null 
+            && mySpringJoint.connectedBody == PlayerManager.PlayerMovement.MyRigidbody;
     }
 
     public void TakeBattery()
     {
-        Container.ParentToPlayer();
+        //Container.ParentToPlayer();
+
+        mySpringJoint = Container.AddComponent<SpringJoint>();
+        mySpringJoint.connectedBody = PlayerManager.PlayerMovement.MyRigidbody;
+
     }
 
     public void DropBattery()
     {
-        Container.SetParent(HangarManager.BatteriesContainer);
+        //Container.SetParent(HangarManager.BatteriesContainer);
+        //mySpringJoint = null;
+        Destroy(mySpringJoint);
     }
 
     private void OnTriggerStay(Collider other)
