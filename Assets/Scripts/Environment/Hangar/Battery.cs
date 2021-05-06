@@ -63,11 +63,17 @@ public class Battery : InteractableObject
     public void TakeBattery()
     {
         Container.ParentToPlayer();
+        SpringJoint springJoint = gameObject.AddComponent<SpringJoint>();
+        springJoint.connectedBody = PlayerManager.PlayerObject.GetComponent<Rigidbody>();
+
     }
 
     public void DropBattery()
     {
         Container.SetParent(HangarManager.BatteriesContainer);
+
+        Debug.Log("Drop battery");
+        Destroy(GetComponent<SpringJoint>());
     }
 
     private void OnTriggerStay(Collider other)
