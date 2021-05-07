@@ -60,8 +60,7 @@ public class CharacterCreationUI : MonoBehaviour
 
     private bool NameIsValid(string name)
     {
-        return !string.IsNullOrWhiteSpace(name)
-            && name.IsAlphabeticalIncludingAccents();
+        return !string.IsNullOrWhiteSpace(name) && name.IsAlphabetical(includeAccents: true);
     }
 
     private void Update()

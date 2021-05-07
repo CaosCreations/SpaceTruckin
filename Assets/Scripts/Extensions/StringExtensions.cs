@@ -48,16 +48,12 @@ public static class StringExtensions
             || self == (string.Empty, string.Empty);
     }
 
-    public static bool IsAlphabetical(this string self)
+    public static bool IsAlphabetical(this string self, bool includeAccents = false)
     {
-        return !string.IsNullOrWhiteSpace(self) 
-            && Regex.IsMatch(self, UIConstants.AlphabeticalPattern);
-    }
+        string regexPattern = includeAccents ? 
+            UIConstants.AlphabeticalIncludingAccentsPattern : UIConstants.AlphabeticalPattern;
 
-    public static bool IsAlphabeticalIncludingAccents(this string self)
-    {
-        return !string.IsNullOrWhiteSpace(self)
-            && Regex.IsMatch(self, UIConstants.AlphabeticalIncludingAccentsPattern);
+        return !string.IsNullOrWhiteSpace(self) && Regex.IsMatch(self, regexPattern);
     }
 
     public static string ReplaceTemplates(this string self, IDataModel dataModel = null)
