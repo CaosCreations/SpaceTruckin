@@ -48,10 +48,12 @@ public static class StringExtensions
             || self == (string.Empty, string.Empty);
     }
 
-    public static bool IsAlphabetical(this string self)
+    public static bool IsAlphabetical(this string self, bool includeAccents = false)
     {
-        return !string.IsNullOrWhiteSpace(self) 
-            && Regex.IsMatch(self, UIConstants.AlphabeticalPattern);
+        string regexPattern = includeAccents ? 
+            UIConstants.AlphabeticalIncludingAccentsPattern : UIConstants.AlphabeticalPattern;
+
+        return !string.IsNullOrWhiteSpace(self) && Regex.IsMatch(self, regexPattern);
     }
 
     public static string ReplaceTemplates(this string self, IDataModel dataModel = null)
@@ -81,5 +83,23 @@ public static class StringExtensions
         return self
             .TrimStart(UIConstants.TemplateBoundaryLeftChar)
             .TrimEnd(UIConstants.TemplateBoundaryRightChar);
+    }
+
+    public static string RemoveConsecutiveSpaces(this string self)
+    {
+        if (!string.IsNullOrEmpty(self))
+        {
+            return new Regex(UIConstants.ConsecutiveSpacesPattern).Replace(self, " ");
+        }
+        return self;
+    }
+
+    public static string EnforceCharacterLimit(this string self, int limit)
+    {
+        if (self != null && self.Length > limit)
+        {
+            return self.Substring(0, limit);
+        }
+        return self;
     }
 }

@@ -1,4 +1,6 @@
-﻿public static class UIUtils
+﻿using System.Text.RegularExpressions;
+
+public static class UIUtils
 {
     /// <summary>
     /// Get the value to replace a template that represents some information that 
@@ -42,5 +44,17 @@
             UIConstants.ShipNameTemplate => ship.Name,
             _ => string.Empty,
         };
+    }
+
+    public static char ValidateCharInput(char addedChar, string validationPattern)
+    {
+        if (Regex.IsMatch(addedChar.ToString(), validationPattern))
+        {
+            return addedChar;
+        }
+        else
+        {
+            return '\0';
+        }
     }
 }
