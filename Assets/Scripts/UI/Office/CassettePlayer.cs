@@ -55,21 +55,6 @@ public class CassettePlayer : UICanvasBase
     {
         SetAllButtonsInteractable();
 
-        //// Don't grey out the following buttons if they are active,
-        //// since they will still be in effect 
-        //if (MusicManager.Instance.IsPlaying)
-        //      {
-        //	playButton.interactable = false;
-        //      }
-        //else if (MusicManager.Instance.IsStopped)
-        //      {
-        //	stopButton.interactable = false;
-        //      }
-        //else if ()
-        //      {
-        //	pauseButton.interactable = false; 
-        //      }
-
         switch (currentState)
         {
 			case AudioSourceState.Playing:
