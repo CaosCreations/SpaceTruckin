@@ -60,16 +60,13 @@ public class MusicManager : AudioManager
         {
             currentTrackIndex = (currentTrackIndex + 1) % AudioClips.Length;
         }
+        else if (currentTrackIndex >= 1)
+        {
+            currentTrackIndex--;
+        }
         else
         {
-            if (currentTrackIndex >= 1)
-            {
-                currentTrackIndex--;
-            }
-            else
-            {
-                currentTrackIndex = Instance.AudioClips.Length - 1;
-            }
+            currentTrackIndex = Instance.AudioClips.Length - 1;
         }
     }
 }
