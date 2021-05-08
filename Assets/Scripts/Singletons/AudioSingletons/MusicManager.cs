@@ -2,15 +2,33 @@
 
 public class MusicManager : AudioManager
 {
-    private static int currentTrackIndex;
-    private static AudioClip CurrentTrack => Instance.AudioClips[currentTrackIndex];
+    public static MusicManager Instance { get; private set; }
+
+    private int currentTrackIndex;
+    private AudioClip CurrentTrack => Instance.AudioClips[currentTrackIndex];
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+
+            audioSource.LogIfNull();
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
 
     private void Start()
     {
         PlayMusicOnStart();
     }
 
-    private static void PlayMusicOnStart()
+    private void PlayMusicOnStart()
     {
         currentTrackIndex = GetRandomTrackIndex();
         PlayTrack();
@@ -21,33 +39,26 @@ public class MusicManager : AudioManager
         return Random.Range(0, Instance.AudioClips.Length - 1);
     }
 
-    public static void PlayTrack()
+    public void PlayTrack()
     {
         PlayAudioClip(CurrentTrack);
     }
 
-    public static void PauseTrack()
+    public void PauseTrack()
     {
         PauseAudioClip();
     }
 
-    public static void StopTrack()
+    public void StopTrack()
     {
         StopAudioClip();
     }
 
-    public static void ChangeTrack(bool isGoingForward)
+    public void ChangeTrack(bool isGoingForward)
     {
         if (isGoingForward)
         {
-            if (currentTrackIndex < Instance.AudioClips.Length - 1)
-            {
-                currentTrackIndex++;
-            }
-            else
-            {
-                currentTrackIndex = 0;
-            }
+            currentTrackIndex = (currentTrackIndex + 1) % AudioClips.Length;
         }
         else
         {

@@ -8,40 +8,22 @@ public enum AudioSourceState
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager Instance { get; private set; }
-
-    [SerializeField] private AudioSource audioSource;
+    [SerializeField] protected AudioSource audioSource;
     [field: SerializeField] public AudioClip[] AudioClips { get; private set; }
 
-    protected static AudioSourceState currentState;
-    public static bool IsPlaying => currentState.Equals(AudioSourceState.Playing);
-    public static bool IsPaused => currentState.Equals(AudioSourceState.Paused);
-    public static bool IsStopped => currentState.Equals(AudioSourceState.Stopped);
+    protected AudioSourceState currentState;
+    public bool IsPlaying => currentState.Equals(AudioSourceState.Playing);
+    public bool IsPaused => currentState.Equals(AudioSourceState.Paused);
+    public bool IsStopped => currentState.Equals(AudioSourceState.Stopped);
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-
-            audioSource.LogIfNull();
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-    }
-
-    public static void PlayAudioClip(AudioClip audioClip)
+    protected void PlayAudioClip(AudioClip audioClip)
     {
         if (audioClip != null)
         {
-            Debug.Log($"Playing audio clip {audioClip.name}");
+            Debug.Log($"Playing audio clip '{audioClip.name}'");
 
-            Instance.audioSource.clip = audioClip;
-            Instance.audioSource.Play();
+            audioSource.clip = audioClip;
+            audioSource.Play();
             currentState = AudioSourceState.Playing;
         }
         else
@@ -50,16 +32,15 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public static void PauseAudioClip()
+    protected void PauseAudioClip()
     {
-        Instance.audioSource.Pause();
+        audioSource.Pause();
         currentState = AudioSourceState.Paused;
-        
     }
 
-    public static void StopAudioClip()
+    protected void StopAudioClip()
     {
-        Instance.audioSource.Stop();
+        audioSource.Stop();
         currentState = AudioSourceState.Stopped;
     }
 }

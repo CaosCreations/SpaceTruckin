@@ -3,24 +3,11 @@ using UnityEngine.UI;
 
 public class CassettePlayer : UICanvasBase
 {
-	public Button playButton;
-	public Button pauseButton;
-	public Button stopButton;
-	public Button nextTrackButton;
-	public Button previousTrackButton;
-
-	private AudioSource audioSource;
-
-	// Use these flags to differentiate between the 
-	// player pressing pause/stop and the audiosource  
-	// not playing 
-	private bool trackStopped;
-	private bool trackPaused;
-
-	// Without this, when the user goes back/forward 
-	// while the track is playing, we can't automatically
-	// play the next track 
-	private bool trackPlaying;
+	[SerializeField] private Button playButton;
+	[SerializeField] private Button pauseButton;
+	[SerializeField] private Button stopButton;
+	[SerializeField] private Button nextTrackButton;
+	[SerializeField] private Button previousTrackButton;
 
 	private void Start()
 	{
@@ -29,67 +16,74 @@ public class CassettePlayer : UICanvasBase
 
 	private void AddListeners()
 	{
-		playButton.AddOnClick(() => MusicManager.PlayTrack());
-		pauseButton.AddOnClick(() => MusicManager.PauseTrack());
-		stopButton.AddOnClick(() => MusicManager.StopTrack());
-		nextTrackButton.AddOnClick(() => MusicManager.ChangeTrack(isGoingForward: true));
-		previousTrackButton.AddOnClick(() => MusicManager.ChangeTrack(isGoingForward: false));
+		playButton.AddOnClick(() => PlayTrack());
+		pauseButton.AddOnClick(() => PauseTrack());
+		stopButton.AddOnClick(() => StopTrack());
+		nextTrackButton.AddOnClick(() => ChangeTrack(isGoingForward: true));
+		previousTrackButton.AddOnClick(() => ChangeTrack(isGoingForward: false));
 	}
 
-	private void PlayTrack() 
-	{
-		SetAllButtonsInteractable();
-		playButton.interactable = false;
-		ResetFlags();
-		trackPlaying = true; 
-		audioSource.Play();
+	private void PlayTrack()
+    {
+		SetButtonInteractability(AudioSourceState.Playing);
+		MusicManager.Instance.PlayTrack();
 	}
 
 	private void PauseTrack()
 	{
-		SetAllButtonsInteractable();
-		pauseButton.interactable = false;
-		ResetFlags(); 
-		trackPaused = true;
-		audioSource.Pause();
+		SetButtonInteractability(AudioSourceState.Paused);
+		MusicManager.Instance.PauseTrack();
 	}
 
 	private void StopTrack()
 	{
-		SetAllButtonsInteractable();
-		stopButton.interactable = false;
-		ResetFlags();
-		trackStopped = true;
-		audioSource.Stop();
+		SetButtonInteractability(AudioSourceState.Stopped);
+		MusicManager.Instance.StopTrack();
 	}
 
-	private void SetButtonInteractability()
+	private void ChangeTrack(bool isGoingForward)
     {
-		SetAllButtonsInteractable();
+		MusicManager.Instance.ChangeTrack(isGoingForward);
 
-		// Don't grey out the following buttons if they are active,
-		// since they will still be in effect 
-		if (trackPlaying)
+		if (MusicManager.Instance.IsPlaying)
         {
-			playButton.interactable = false;
-
-			// Instantly play track when switching while previous track was active 
-			audioSource.Play();
+			MusicManager.Instance.PlayTrack();
         }
-		else
+    }
+
+	private void SetButtonInteractability(AudioSourceState currentState)
+    {
+        SetAllButtonsInteractable();
+
+        //// Don't grey out the following buttons if they are active,
+        //// since they will still be in effect 
+        //if (MusicManager.Instance.IsPlaying)
+        //      {
+        //	playButton.interactable = false;
+        //      }
+        //else if (MusicManager.Instance.IsStopped)
+        //      {
+        //	stopButton.interactable = false;
+        //      }
+        //else if ()
+        //      {
+        //	pauseButton.interactable = false; 
+        //      }
+
+        switch (currentState)
         {
-			if (trackStopped)
-            {
+			case AudioSourceState.Playing:
+				playButton.interactable = false;
+				break;
+			case AudioSourceState.Paused:
+				pauseButton.interactable = false;
+				break;
+			case AudioSourceState.Stopped:
 				stopButton.interactable = false;
-            }
-			else if (trackPaused)
-            {
-				pauseButton.interactable = false; 
-            }
-        }
+				break;
+		}
 	}
 
-	// Call this before greying out the most recently pushed button 
 	private void SetAllButtonsInteractable()
 	{
 		playButton.interactable = true;
@@ -98,12 +92,4 @@ public class CassettePlayer : UICanvasBase
 		nextTrackButton.interactable = true;
 		previousTrackButton.interactable = true;
 	}
-
-	// Call this when playing, pausing, or stopping tracks 
-	private void ResetFlags()
-    {
-		trackStopped = false;
-		trackPaused = false;
-		trackPlaying = false;
-    }
 }
