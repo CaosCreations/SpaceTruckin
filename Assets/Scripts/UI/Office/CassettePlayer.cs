@@ -3,8 +3,6 @@ using UnityEngine.UI;
 
 public class CassettePlayer : UICanvasBase
 {
-	public AudioClip[] tracks;
-
 	public Button playButton;
 	public Button pauseButton;
 	public Button stopButton;
@@ -24,22 +22,18 @@ public class CassettePlayer : UICanvasBase
 	// play the next track 
 	private bool trackPlaying;
 
-	private int currentTrackIndex;
-
 	private void Start()
 	{
-		audioSource = FindObjectOfType<AudioSource>();
-		audioSource.clip = tracks[currentTrackIndex];
 		AddListeners();
 	}
 
 	private void AddListeners()
 	{
-		playButton.AddOnClick(() => PlayTrack());
-		pauseButton.AddOnClick(() => PauseTrack());
-		stopButton.AddOnClick(() => StopTrack());
-		nextTrackButton.AddOnClick(() => ChangeTrack(goingForward: true));
-		previousTrackButton.AddOnClick(() => ChangeTrack(goingForward: false));
+		playButton.AddOnClick(() => MusicManager.PlayTrack());
+		pauseButton.AddOnClick(() => MusicManager.PauseTrack());
+		stopButton.AddOnClick(() => MusicManager.StopTrack());
+		nextTrackButton.AddOnClick(() => MusicManager.ChangeTrack(isGoingForward: true));
+		previousTrackButton.AddOnClick(() => MusicManager.ChangeTrack(isGoingForward: false));
 	}
 
 	private void PlayTrack() 
@@ -48,7 +42,6 @@ public class CassettePlayer : UICanvasBase
 		playButton.interactable = false;
 		ResetFlags();
 		trackPlaying = true; 
-		audioSource.clip = tracks[currentTrackIndex];
 		audioSource.Play();
 	}
 
@@ -70,32 +63,8 @@ public class CassettePlayer : UICanvasBase
 		audioSource.Stop();
 	}
 
-	private void ChangeTrack(bool goingForward) 
-	{
-		if (goingForward)
-        {
-			if (currentTrackIndex < tracks.Length - 1)
-            {
-				currentTrackIndex++;
-            }
-			else
-            {
-				currentTrackIndex = 0;
-            }
-        }
-		else
-        {
-			if (currentTrackIndex >= 1)
-            {
-				currentTrackIndex--;
-            }
-			else
-            {
-				currentTrackIndex = tracks.Length - 1;
-            }
-        }
-			
-		audioSource.clip = tracks[currentTrackIndex];
+	private void SetButtonInteractability()
+    {
 		SetAllButtonsInteractable();
 
 		// Don't grey out the following buttons if they are active,
