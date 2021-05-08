@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public static Vector3 MovementVector;
 
-    [SerializeField] Rigidbody batteryRb;
+    public Rigidbody PlayerRigidbody;
 
     [SerializeField] private Animator animator;
     private CharacterController characterController;
