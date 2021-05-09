@@ -14,7 +14,7 @@ public class MusicManager : AudioManager
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
-            audioSource.LogIfNull();
+            audioSource.LogErrorIfNull();
         }
         else
         {

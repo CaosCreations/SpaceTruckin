@@ -11,19 +11,19 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
-    public UICanvasBase bedCanvas;
-    public UICanvasBase terminalCanvas;
-    public UICanvasBase vendingCanvas;
-    public UICanvasBase hangarNodeCanvas;
-    public UICanvasBase casetteCanvas;
-    public UICanvasBase noticeBoardCanvas;
-    public UICanvasBase mainMenuCanvas;
+    [SerializeField] private UICanvasBase bedCanvas;
+    [SerializeField] private UICanvasBase terminalCanvas;
+    [SerializeField] private UICanvasBase vendingCanvas;
+    [SerializeField] private UICanvasBase hangarNodeCanvas;
+    [SerializeField] private UICanvasBase casetteCanvas;
+    [SerializeField] private UICanvasBase noticeBoardCanvas;
+    [SerializeField] private UICanvasBase mainMenuCanvas;
 
-    public bool currentMenuOverridesEscape;
-    public TextMeshPro interactionTextMesh;
-
-    public static UICanvasType currentCanvasType;
-    public static int hangarNode;
+    public bool CurrentMenuOverridesEscape;
+    private TextMeshPro interactionTextMesh;
+    private static UICanvasType currentCanvasType;
+    
+    public static int HangarNode;
 
     public static event Action OnCanvasActivated;
     public static event Action OnCanvasDeactivated;
@@ -67,7 +67,7 @@ public class UIManager : MonoBehaviour
         {
             ShowCanvas();
         }
-        else if (Input.GetKeyDown(PlayerConstants.ExitKey) && !currentMenuOverridesEscape)
+        else if (Input.GetKeyDown(PlayerConstants.ExitKey) && !CurrentMenuOverridesEscape)
         {
             ClearCanvases();
         }
@@ -142,7 +142,7 @@ public class UIManager : MonoBehaviour
         // We pass in a node value when opening the hangar UI
         if (canvasType == UICanvasType.Hangar && HangarManager.NodeIsValid(node))
         {
-            hangarNode = node;
+            HangarNode = node;
         }
     }
 

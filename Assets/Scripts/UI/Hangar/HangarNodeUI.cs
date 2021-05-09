@@ -10,29 +10,29 @@ public class HangarNodeUI : UICanvasBase
     }
 
     [Header("Set In Editor")]
-    public GameObject mainPanel;
-    public GameObject repairPanel;
-    public RepairsUI repairsUI;
-    public GameObject upgradePanel;
-    public GameObject customizationPanel;
+    [SerializeField] private GameObject mainPanel;
+    [SerializeField] private GameObject repairPanel;
+    [SerializeField] private RepairsUI repairsUI;
+    [SerializeField] private GameObject upgradePanel;
+    [SerializeField] private GameObject customizationPanel;
 
-    public Slider fuelSlider;
-    public FuelButton fuelButton;
+    [SerializeField] private Slider fuelSlider;
+    [SerializeField] private FuelButton fuelButton;
 
-    public Slider hullSlider;
-    public Button hullButton;
+    [SerializeField] private Slider hullSlider;
+    [SerializeField] private Button hullButton;
 
-    public Button upgradeButton;
-    public Button startMissionButton;
-    public Button returnToQueueButton;
-    public Button customizationButton;
+    [SerializeField] private Button upgradeButton;
+    [SerializeField] private Button startMissionButton;
+    [SerializeField] private Button returnToQueueButton;
+    [SerializeField] private Button customizationButton;
 
-    public Image batteryChargeImage;
+    [SerializeField] private Image batteryChargeImage;
 
     [Header("Set at Runtime")]
-    public GameObject shipPreview;
-    public int hangarNode;
-    public Ship shipToInspect;
+    [SerializeField] private GameObject shipPreview;
+    [SerializeField] private int hangarNode;
+    [SerializeField] private Ship shipToInspect;
     private HangarSlot hangarSlot;
 
     private bool isInSubMenu;
@@ -44,7 +44,7 @@ public class HangarNodeUI : UICanvasBase
 
     private void OnEnable()
     {
-        hangarNode = UIManager.hangarNode;
+        hangarNode = UIManager.HangarNode;
         hangarSlot = HangarManager.GetSlotByNode(hangarNode);
         shipToInspect = hangarSlot.Ship;
 
@@ -159,7 +159,7 @@ public class HangarNodeUI : UICanvasBase
         }
 
         isInSubMenu = !(panel == HangarPanel.Main);
-        UIManager.Instance.currentMenuOverridesEscape = isInSubMenu;
+        UIManager.Instance.CurrentMenuOverridesEscape = isInSubMenu;
     }
 
     private void Launch(bool isStartingMission)

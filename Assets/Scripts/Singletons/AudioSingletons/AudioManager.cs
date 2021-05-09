@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /// <summary>Represents the possible states of an AudioSource</summary>
-public enum AudioSourceState
+public enum AudioState
 {
     Playing, Paused, Stopped  
 }
@@ -11,10 +11,10 @@ public class AudioManager : MonoBehaviour
     [SerializeField] protected AudioSource audioSource;
     [field: SerializeField] public AudioClip[] AudioClips { get; private set; }
 
-    protected AudioSourceState currentState;
-    public bool IsPlaying => currentState.Equals(AudioSourceState.Playing);
-    public bool IsPaused => currentState.Equals(AudioSourceState.Paused);
-    public bool IsStopped => currentState.Equals(AudioSourceState.Stopped);
+    protected AudioState currentState;
+    public bool IsPlaying => currentState.Equals(AudioState.Playing);
+    public bool IsPaused => currentState.Equals(AudioState.Paused);
+    public bool IsStopped => currentState.Equals(AudioState.Stopped);
 
     protected void PlayAudioClip(AudioClip audioClip)
     {
@@ -24,23 +24,23 @@ public class AudioManager : MonoBehaviour
 
             audioSource.clip = audioClip;
             audioSource.Play();
-            currentState = AudioSourceState.Playing;
+            currentState = AudioState.Playing;
         }
         else
         {
-            audioClip.LogIfNull();
+            audioClip.LogErrorIfNull();
         }
     }
 
     protected void PauseAudioClip()
     {
         audioSource.Pause();
-        currentState = AudioSourceState.Paused;
+        currentState = AudioState.Paused;
     }
 
     protected void StopAudioClip()
     {
         audioSource.Stop();
-        currentState = AudioSourceState.Stopped;
+        currentState = AudioState.Stopped;
     }
 }

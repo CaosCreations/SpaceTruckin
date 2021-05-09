@@ -25,19 +25,19 @@ public class CassettePlayer : UICanvasBase
 
 	private void PlayTrack()
     {
-		SetButtonInteractability(AudioSourceState.Playing);
+		SetButtonInteractability(AudioState.Playing);
 		MusicManager.Instance.PlayTrack();
 	}
 
 	private void PauseTrack()
 	{
-		SetButtonInteractability(AudioSourceState.Paused);
+		SetButtonInteractability(AudioState.Paused);
 		MusicManager.Instance.PauseTrack();
 	}
 
 	private void StopTrack()
 	{
-		SetButtonInteractability(AudioSourceState.Stopped);
+		SetButtonInteractability(AudioState.Stopped);
 		MusicManager.Instance.StopTrack();
 	}
 
@@ -51,7 +51,7 @@ public class CassettePlayer : UICanvasBase
         }
     }
 
-	private void SetButtonInteractability(AudioSourceState currentState)
+	private void SetButtonInteractability(AudioState currentState)
     {
         SetAllButtonsInteractable();
 
@@ -72,13 +72,13 @@ public class CassettePlayer : UICanvasBase
 
         switch (currentState)
         {
-			case AudioSourceState.Playing:
+			case AudioState.Playing:
 				playButton.interactable = false;
 				break;
-			case AudioSourceState.Paused:
+			case AudioState.Paused:
 				pauseButton.interactable = false;
 				break;
-			case AudioSourceState.Stopped:
+			case AudioState.Stopped:
 				stopButton.interactable = false;
 				break;
 		}

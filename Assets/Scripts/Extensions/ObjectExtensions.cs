@@ -2,7 +2,7 @@
 
 public static class ObjectExtensions
 {
-    public static void LogIfNull(this Object self, string objectDescription = null)
+    public static void LogErrorIfNull(this Object self, string objectDescription = null)
     {
         if (self != null)
         {
