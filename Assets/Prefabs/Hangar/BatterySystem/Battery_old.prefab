@@ -9,8 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7565187367321210414}
-  - component: {fileID: 8223680205256685485}
-  - component: {fileID: 8424855993406580408}
   - component: {fileID: 1691787280572270736}
   m_Layer: 0
   m_Name: Battery
@@ -27,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 923938306559941887}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 11.220001, y: 0.34, z: 1.3800049}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3392611835173258821}
@@ -35,33 +33,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8223680205256685485
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 923938306559941887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d77d1f8cfa190a45baab6d5ed2da2db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  meshRenderer: {fileID: 4566604538120125738}
-  batteryRigidbody: {fileID: 1691787280572270736}
---- !u!65 &8424855993406580408
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 923938306559941887}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.1207075, y: 0.6131356, z: 1}
-  m_Center: {x: 0.017434597, y: 0.3184322, z: 0}
 --- !u!54 &1691787280572270736
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -109,7 +80,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1744850172657582187
 Transform:
   m_ObjectHideFlags: 0
@@ -149,8 +120,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d77d1f8cfa190a45baab6d5ed2da2db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Container: {fileID: 923938306559941887}
   meshRenderer: {fileID: 4566604538120125738}
-  batteryRigidbody: {fileID: 0}
+  containerRigidBody: {fileID: 1691787280572270736}
 --- !u!54 &7739399383686196890
 Rigidbody:
   m_ObjectHideFlags: 0
