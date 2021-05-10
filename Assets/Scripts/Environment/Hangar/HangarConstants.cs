@@ -21,8 +21,8 @@ public static class HangarConstants
     public const float Tolerance = 0f;
     public const bool EnableCollision = true;
     public const float BreakForce = 200f;
-    public const RigidbodyConstraints BatteryRigidbodyConstraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
-
+    public const RigidbodyConstraints BatteryRigidbodyConstraintsTaken = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+    public const RigidbodyConstraints BatteryRigidbodyConstraintsDropped = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 
 
 

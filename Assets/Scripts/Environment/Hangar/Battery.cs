@@ -13,8 +13,10 @@ public class Battery : InteractableObject
     private SpringJoint springJoint;
     [SerializeField] Rigidbody containerRigidBody;
 
+    // Shows that the player is holding any battery
     public static bool PlayerIsHoldingBattery;
 
+    // Shows that this instance of the battery is being held by the player
     private bool springJointIsSet;
 
     private void Awake()
@@ -82,7 +84,7 @@ public class Battery : InteractableObject
         containerRigidBody.useGravity = false;
 
         // We add constraints so that the battery doesn't swing around uncontrollably
-        containerRigidBody.constraints = HangarConstants.BatteryRigidbodyConstraints;
+        containerRigidBody.constraints = HangarConstants.BatteryRigidbodyConstraintsTaken;
 
         // Setting the container's spring joint values
 
@@ -105,12 +107,13 @@ public class Battery : InteractableObject
 
     public void DropBattery()
     {
-        springJointIsSet = false;
         // As the battery is dropped, we remove the constraint so that the battery can move freely as a physics object
-        containerRigidBody.constraints = RigidbodyConstraints.None;
+        containerRigidBody.constraints = HangarConstants.BatteryRigidbodyConstraintsDropped;
         containerRigidBody.useGravity = true;
         Destroy(springJoint);
+
         PlayerIsHoldingBattery = false;
+        springJointIsSet = false;
     }
 
     private void OnTriggerStay(Collider other)
@@ -131,16 +134,11 @@ public class Battery : InteractableObject
     {
         Debug.Log("PlayerIsHoldingBattery =" + PlayerIsHoldingBattery);
 
-        if(springJointIsSet == true && Container.GetComponent<SpringJoint>() == false)
+        if((springJointIsSet == true && (Container.GetComponent<SpringJoint>() == false) || Input.GetKeyDown(PlayerConstants.DropObjectKey)))
         {
             DropBattery();
         }
 
-        if (Input.GetKeyDown(PlayerConstants.DropObjectKey)
-            && PlayerIsHoldingBattery == true)
-        {
-            DropBattery();
-        }
     }
 
     #region Persistence
