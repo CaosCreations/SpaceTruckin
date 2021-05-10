@@ -13,14 +13,14 @@ public class Battery : InteractableObject
     private SpringJoint springJoint;
     [SerializeField] Rigidbody containerRigidBody;
 
-    private bool springJointExists;
+    public static bool PlayerIsHoldingBattery;
+
+    private bool springJointIsSet;
 
     private void Awake()
     {
         Init();
     }
-
-
 
     public void Init()
     {
@@ -64,14 +64,19 @@ public class Battery : InteractableObject
 
     /*public bool PlayerIsHolding()
     {
-        return springJoint != null && springJoint.connectedBody == PlayerManager.PlayerMovement.PlayerRigidbody;
+        //Debug.Log("PlayerIsHolding = " + PlayerManager.PlayerObject.GetComponentInChildren<Battery>() != null);
 
-        return PlayerManager.IsHoldingBattery;
+        return springJoint != null && springJoint.connectedBody == PlayerManager.PlayerMovement.PlayerRigidbody;
     }
     */
+    
 
     public void TakeBattery()
     {
+        springJointIsSet = true;
+
+        PlayerIsHoldingBattery = true;
+
         Container.transform.localPosition = new Vector3(Container.transform.localPosition.x, HangarConstants.BatteryYPosition, Container.transform.localPosition.z);
 
         containerRigidBody.useGravity = false;
@@ -80,38 +85,37 @@ public class Battery : InteractableObject
         containerRigidBody.constraints = HangarConstants.BatteryRigidbodyConstraints;
 
         // Setting the container's spring joint values
-        springJoint = Container.AddComponent<SpringJoint>();
-        springJoint.connectedBody = PlayerManager.PlayerObject.GetComponent<Rigidbody>();
 
-        springJoint.spring = HangarConstants.Spring;
+        ConfigureSpringJoint();
+
         springJoint.damper = HangarConstants.Damper;
         springJoint.minDistance = HangarConstants.MinDistance;
         springJoint.maxDistance = HangarConstants.MaxDistance;
         springJoint.tolerance = HangarConstants.Tolerance;
         springJoint.enableCollision = HangarConstants.EnableCollision;
         springJoint.breakForce = HangarConstants.BreakForce;
+    }
 
-        PlayerManager.IsHoldingBattery = true;
-
-        springJointExists = true;
-
+    private void ConfigureSpringJoint()
+    {
+        springJoint = Container.AddComponent<SpringJoint>();
+        springJoint.connectedBody = PlayerManager.PlayerObject.GetComponent<Rigidbody>();
+        springJoint.spring = HangarConstants.Spring;
     }
 
     public void DropBattery()
     {
-        Container.SetParent(HangarManager.BatteriesContainer);
-
+        springJointIsSet = false;
         // As the battery is dropped, we remove the constraint so that the battery can move freely as a physics object
         containerRigidBody.constraints = RigidbodyConstraints.None;
         containerRigidBody.useGravity = true;
-        springJointExists = false;
-        PlayerManager.IsHoldingBattery = false;
         Destroy(springJoint);
+        PlayerIsHoldingBattery = false;
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (PlayerManager.IsHoldingBattery)
+        if (PlayerIsHoldingBattery == true)
         {
             // Don't let the player pick up a battery if they already have one
             return;
@@ -125,14 +129,15 @@ public class Battery : InteractableObject
 
     private void Update()
     {
-        // Checking when the spring joint gets destroyed
-        if(springJoint == null && springJointExists == true)
+        Debug.Log("PlayerIsHoldingBattery =" + PlayerIsHoldingBattery);
+
+        if(springJointIsSet == true && Container.GetComponent<SpringJoint>() == false)
         {
             DropBattery();
         }
 
         if (Input.GetKeyDown(PlayerConstants.DropObjectKey)
-            && PlayerManager.IsHoldingBattery)
+            && PlayerIsHoldingBattery == true)
         {
             DropBattery();
         }

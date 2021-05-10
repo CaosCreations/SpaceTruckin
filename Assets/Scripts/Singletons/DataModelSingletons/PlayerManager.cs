@@ -38,8 +38,6 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     public static GameObject PlayerObject { get; private set; }
     public static PlayerMovement PlayerMovement { get; private set; }
 
-    public static bool IsHoldingBattery { get; set; }
-
     public static event System.Action OnFinancialTransaction;
 
     private void Awake()
