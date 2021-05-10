@@ -63,23 +63,12 @@ public class Battery : InteractableObject
         Color emission = IsCharged ? chargedEmission : depletedEmission;
         meshRenderer.material.SetColor("_EmissionColor", emission);
     }
-
-    /*public bool PlayerIsHolding()
-    {
-        //Debug.Log("PlayerIsHolding = " + PlayerManager.PlayerObject.GetComponentInChildren<Battery>() != null);
-
-        return springJoint != null && springJoint.connectedBody == PlayerManager.PlayerMovement.PlayerRigidbody;
-    }
-    */
     
-
     public void TakeBattery()
     {
         springJointIsSet = true;
 
         PlayerIsHoldingBattery = true;
-
-        Container.transform.localPosition = new Vector3(Container.transform.localPosition.x, HangarConstants.BatteryYPosition, Container.transform.localPosition.z);
 
         containerRigidBody.useGravity = false;
 
@@ -87,15 +76,9 @@ public class Battery : InteractableObject
         containerRigidBody.constraints = HangarConstants.BatteryRigidbodyConstraintsTaken;
 
         // Setting the container's spring joint values
+        Container.transform.localPosition = new Vector3(Container.transform.localPosition.x, HangarConstants.BatteryYPosition, Container.transform.localPosition.z);
 
-        ConfigureSpringJoint();
-
-        springJoint.damper = HangarConstants.Damper;
-        springJoint.minDistance = HangarConstants.MinDistance;
-        springJoint.maxDistance = HangarConstants.MaxDistance;
-        springJoint.tolerance = HangarConstants.Tolerance;
-        springJoint.enableCollision = HangarConstants.EnableCollision;
-        springJoint.breakForce = HangarConstants.BreakForce;
+        ConfigureSpringJoint(); 
     }
 
     private void ConfigureSpringJoint()
@@ -103,6 +86,12 @@ public class Battery : InteractableObject
         springJoint = Container.AddComponent<SpringJoint>();
         springJoint.connectedBody = PlayerManager.PlayerObject.GetComponent<Rigidbody>();
         springJoint.spring = HangarConstants.Spring;
+        springJoint.damper = HangarConstants.Damper;
+        springJoint.minDistance = HangarConstants.MinDistance;
+        springJoint.maxDistance = HangarConstants.MaxDistance;
+        springJoint.tolerance = HangarConstants.Tolerance;
+        springJoint.enableCollision = HangarConstants.EnableCollision;
+        springJoint.breakForce = HangarConstants.BreakForce;
     }
 
     public void DropBattery()
@@ -132,13 +121,12 @@ public class Battery : InteractableObject
 
     private void Update()
     {
-        Debug.Log("PlayerIsHoldingBattery =" + PlayerIsHoldingBattery);
-
-        if((springJointIsSet == true && (Container.GetComponent<SpringJoint>() == false) || Input.GetKeyDown(PlayerConstants.DropObjectKey)))
+        if((springJointIsSet == true 
+            && (Container.GetComponent<SpringJoint>() == false) 
+            || Input.GetKeyDown(PlayerConstants.DropObjectKey)))
         {
             DropBattery();
         }
-
     }
 
     #region Persistence
