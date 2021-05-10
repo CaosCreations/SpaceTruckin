@@ -8,7 +8,7 @@ public class Indicator : MonoBehaviour
     private void Start()
     {
         repairsManager = GetComponentInParent<RepairsManager>();
-        Workstation.OnRotationStopped += DetermineOutcome; 
+        Workstation.OnRotationStoppedByPlayer += DetermineOutcome; 
     }
 
     public void DetermineOutcome()
