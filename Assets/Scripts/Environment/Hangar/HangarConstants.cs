@@ -20,7 +20,7 @@ public static class HangarConstants
     public const float MaxDistance = 0.2f;
     public const float Tolerance = 0f;
     public const bool EnableCollision = true;
-    public const float BreakForce = 200f;
+    public const float BreakForce = 400f;
     public const RigidbodyConstraints BatteryRigidbodyConstraintsTaken = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
     public const RigidbodyConstraints BatteryRigidbodyConstraintsDropped = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 
