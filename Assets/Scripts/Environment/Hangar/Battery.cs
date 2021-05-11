@@ -84,6 +84,8 @@ public class Battery : InteractableObject
             // Setting the container's position so that it floats above the ground
             transform.localPosition = new Vector3(
                 transform.localPosition.x, HangarConstants.BatteryYPosition, transform.localPosition.z);
+
+           
         }
         else
         {
@@ -106,6 +108,8 @@ public class Battery : InteractableObject
         springJoint.tolerance = HangarConstants.Tolerance;
         springJoint.enableCollision = HangarConstants.EnableCollision;
         springJoint.breakForce = HangarConstants.BreakForce;
+        springJoint.autoConfigureConnectedAnchor = HangarConstants.AutoConfigureConnectedAnchor;
+        springJoint.connectedAnchor = new Vector3(springJoint.connectedAnchor.x, HangarConstants.ConnectedAnchorYPosition, springJoint.connectedAnchor.z);
     }
 
     public void DropBattery()

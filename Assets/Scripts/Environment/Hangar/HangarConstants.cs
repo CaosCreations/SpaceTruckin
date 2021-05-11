@@ -21,7 +21,9 @@ public static class HangarConstants
     public const float Tolerance = 0f;
     public const bool EnableCollision = true;
     public const float BreakForce = 400f;
-    
+    public const bool AutoConfigureConnectedAnchor = false;
+    public const float ConnectedAnchorYPosition = 0f;
+
     // Battery rigidbody constraints 
     public const RigidbodyConstraints BatteryRigidbodyConstraintsTaken = RigidbodyConstraints.FreezePositionY 
         | RigidbodyConstraints.FreezeRotationX 
