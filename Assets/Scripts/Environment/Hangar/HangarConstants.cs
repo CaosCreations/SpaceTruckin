@@ -23,6 +23,7 @@ public static class HangarConstants
     public const float BreakForce = 400f;
     public const bool AutoConfigureConnectedAnchor = false;
     public const float ConnectedAnchorYPosition = 0f;
+    public const float distanceBetweenPlayerAndBattery = 0.25f;
 
     // Battery rigidbody constraints 
     public const RigidbodyConstraints BatteryRigidbodyConstraintsTaken = RigidbodyConstraints.FreezePositionY 
