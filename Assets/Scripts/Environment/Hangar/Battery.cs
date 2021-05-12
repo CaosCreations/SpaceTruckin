@@ -69,6 +69,10 @@ public class Battery : InteractableObject
 
         // Update the Rigidbody settings to align with the spring physics 
         ConfigureRigidbody(isConnectingToPlayer: true);
+
+        // We position the battery away from the player. Otherwise it will block the player. 
+        Vector3 direction = (new Vector3(transform.position.x, 0f, transform.position.z) - new Vector3(PlayerManager.PlayerObject.transform.position.x, 0f, PlayerManager.PlayerObject.transform.position.z)).normalized;
+        transform.position += direction * 0.25f;
     }
 
     private void ConfigureRigidbody(bool isConnectingToPlayer)

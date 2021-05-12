@@ -16,8 +16,8 @@ public static class HangarConstants
     public const float BatteryYPosition = 0.4f;
     public const float Spring = 1000f;
     public const float Damper = 0f;
-    public const float MinDistance = 0.2f;
-    public const float MaxDistance = 0.2f;
+    public const float MinDistance = 0.25f;
+    public const float MaxDistance = 0.25f;
     public const float Tolerance = 0f;
     public const bool EnableCollision = true;
     public const float BreakForce = 400f;
