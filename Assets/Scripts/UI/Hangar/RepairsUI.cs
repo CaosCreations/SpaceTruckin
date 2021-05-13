@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RepairsUI : MonoBehaviour
+public class RepairsUI : SubMenu
 {
     [SerializeField] private RepairToolsUI repairToolsUI;
     [SerializeField] private Text feedbackText;

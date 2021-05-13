@@ -23,9 +23,15 @@ public class SubMenu : MonoBehaviour
 
     public virtual void OnDisable()
     {
+        ResetKeyOverrides();
+    }
+
+    protected void ResetKeyOverrides()
+    {
         // Delay the release of overrides until the time has elapsed 
         StartCoroutine(DelayOverrideReset());
 
+        // Remove the override so that that key can be used in higher-level menus
         UIManager.AddOrRemoveOverriddenKeys(uniqueKeysToOverride, false);
     }
 

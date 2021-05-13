@@ -6,11 +6,9 @@ using UnityEngine.UI;
 public class BedCanvasUI : UICanvasBase
 {
     [Header("Set at runtime")]
-    public Image backgroundImage;
+    [SerializeField] private Image backgroundImage;
 
     private float timer;
-    private const float timeToSleep = 4;
-    private const float timeToDock = 2; 
     private float opacity;
 
     public static UnityAction OnEndOfDay;
@@ -31,18 +29,18 @@ public class BedCanvasUI : UICanvasBase
     {
         timer += Time.deltaTime;
 
-        if(timer < timeToSleep / 2)
+        if(timer < UIConstants.TimeToSleep / 2)
         {
-            opacity += Time.deltaTime / (timeToSleep / 2);
+            opacity += Time.deltaTime / (UIConstants.TimeToSleep / 2);
         }
         else
         {
-            opacity -= Time.deltaTime / (timeToSleep / 2);
+            opacity -= Time.deltaTime / (UIConstants.TimeToSleep / 2);
         }
 
         backgroundImage.color = new Color(0, 0, 0, opacity);
 
-        if (timer >= timeToSleep)
+        if (timer >= UIConstants.TimeToSleep)
         {
             UIManager.ClearCanvases();
         }
@@ -70,6 +68,6 @@ public class BedCanvasUI : UICanvasBase
 
     private IEnumerator WaitForShipsToDock()
     {
-        yield return new WaitForSeconds(timeToDock);
+        yield return new WaitForSeconds(UIConstants.TimeToDock);
     }
 }

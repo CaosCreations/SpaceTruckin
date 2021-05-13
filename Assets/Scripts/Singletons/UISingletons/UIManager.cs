@@ -219,4 +219,16 @@ public class UIManager : MonoBehaviour
             currentlyOverriddenKeys.ExceptWith(keysToOverride);
         }
     }
+
+    public static void AddOrRemoveOverriddenKeys(KeyCode keyToOverride, bool isAdding)
+    {
+        if (isAdding)
+        {
+            currentlyOverriddenKeys.Add(keyToOverride);
+        }
+        else
+        {
+            currentlyOverriddenKeys.Remove(keyToOverride);
+        }
+    }
 }
