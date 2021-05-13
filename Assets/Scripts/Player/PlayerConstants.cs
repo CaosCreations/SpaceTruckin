@@ -3,12 +3,15 @@
 public class PlayerConstants : MonoBehaviour
 {
     // Keybinds
-    public static KeyCode ActionKey = KeyCode.E;
-    public static KeyCode ExitKey = KeyCode.Escape;
-    public static KeyCode DropObjectKey = KeyCode.Q;
-    public static KeyCode RespawnKey = KeyCode.R;
+    public const KeyCode ActionKey = KeyCode.E;
+    public const KeyCode ExitKey = KeyCode.Escape;
+    public const KeyCode DropObjectKey = KeyCode.Q;
+    public const KeyCode RespawnKey = KeyCode.R;
+    public const KeyCode NextCardKey = KeyCode.RightArrow;
+    public const KeyCode CloseCardCycleKey = KeyCode.Return;
+    public const KeyCode ChooseNameKey = KeyCode.Return;
 
-    public static string PlayerTag = "Player";
+    public const string PlayerTag = "Player";
 
     // Movement 
     public const float WalkSpeed = 3f;
