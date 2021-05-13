@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -19,7 +20,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private UICanvasBase noticeBoardCanvas;
     [SerializeField] private UICanvasBase mainMenuCanvas;
 
-    public bool CurrentMenuOverridesEscape;
+    /// <summary>
+    /// Keys that cannot be used for regular UI input until the override is lifted
+    /// </summary>
+    private static HashSet<KeyCode> currentlyOverriddenKeys;
+
     private TextMeshPro interactionTextMesh;
     private static UICanvasType currentCanvasType;
     
@@ -40,6 +45,8 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
+        currentlyOverriddenKeys = new HashSet<KeyCode>();
         interactionTextMesh = GetComponentInChildren<TextMeshPro>();
     }
 
@@ -67,7 +74,7 @@ public class UIManager : MonoBehaviour
         {
             ShowCanvas();
         }
-        else if (Input.GetKeyDown(PlayerConstants.ExitKey) && !CurrentMenuOverridesEscape)
+        else if (GetNonOverriddenKeyDown(PlayerConstants.ExitKey))
         {
             ClearCanvases();
         }
@@ -153,7 +160,7 @@ public class UIManager : MonoBehaviour
 
     private static string GetInteractionString()
     {
-        string interaction = "Press E to ";
+        string interaction = $"Press {PlayerConstants.ActionKey} to ";
         switch (currentCanvasType)
         {
             case UICanvasType.Bed:
@@ -190,5 +197,26 @@ public class UIManager : MonoBehaviour
     public static void SetCurrentCanvasHasBeenViewed(bool value)
     {
         PlayerPrefsManager.SetHasBeenViewedPref(currentCanvasType, value);
+    }
+
+    /// <summary>
+    /// Returns true if the key is down and is not being overridden by another menu
+    /// </summary>
+    /// <param name="keyCode"></param>
+    public static bool GetNonOverriddenKeyDown(KeyCode keyCode)
+    {
+        return Input.GetKeyDown(keyCode) && !currentlyOverriddenKeys.Contains(keyCode);
+    }
+
+    public static void AddOrRemoveOverriddenKeys(HashSet<KeyCode> keysToOverride, bool isAdding)
+    {
+        if (isAdding)
+        {
+            currentlyOverriddenKeys.UnionWith(keysToOverride);
+        }
+        else
+        {
+            currentlyOverriddenKeys.ExceptWith(keysToOverride);
+        }
     }
 }
