@@ -21,7 +21,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private UICanvasBase mainMenuCanvas;
 
     /// <summary>
-    /// Keys that cannot be used for regular UI input until the override is lifted
+    /// Keys that cannot be used for regular UI input until the override is lifted.
     /// </summary>
     private static HashSet<KeyCode> currentlyOverriddenKeys;
 
@@ -205,7 +205,7 @@ public class UIManager : MonoBehaviour
 
     #region KeyOverriding
     /// <summary>
-    /// Returns true if the key is down and is not being overridden by another menu
+    /// Returns true if the key is down and is not being overridden by another menu.
     /// </summary>
     /// <param name="keyCode"></param>
     public static bool GetNonOverriddenKeyDown(KeyCode keyCode)
@@ -213,16 +213,18 @@ public class UIManager : MonoBehaviour
         return Input.GetKeyDown(keyCode) && !currentlyOverriddenKeys.Contains(keyCode);
     }
 
-    public static void AddOverriddenKeys(HashSet<KeyCodeOverride> keysToOverride)
+    public static void AddOverriddenKeys(HashSet<KeyCodeOverride> keyCodeOverrides)
     {
-        var keyCodes = keysToOverride.ToListOfKeyCodes();
+        var keyCodes = keyCodeOverrides.ToListOfKeyCodes();
         currentlyOverriddenKeys.UnionWith(keyCodes);
     }
 
-    public static void RemoveOverriddenKeys(HashSet<KeyCodeOverride> keysToOverride)
+    public static void RemoveOverriddenKeys(HashSet<KeyCodeOverride> keyCodeOverrides)
     {
-        var keyCodes = keysToOverride.ToListOfNonPersistentKeyCodes();
-        currentlyOverriddenKeys.ExceptWith(keyCodes);
+        // Don't remove the persistent overridden keycodes from the list 
+        var nonPersistentKeyCodes = keyCodeOverrides.ToListOfNonPersistentKeyCodes();
+
+        currentlyOverriddenKeys.ExceptWith(nonPersistentKeyCodes);
     }
 
     public static void ResetOverriddenKeys()

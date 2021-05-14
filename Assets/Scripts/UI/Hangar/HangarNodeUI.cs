@@ -74,7 +74,7 @@ public class HangarNodeUI : UICanvasBase
 
     private void Update()
     {
-        if (Input.GetKeyDown/*UIManager.GetNonOverriddenKeyDown*/(PlayerConstants.ExitKey))
+        if (Input.GetKeyDown(PlayerConstants.ExitKey))
         {
             SwitchPanel(HangarPanel.Main);
         }
@@ -150,9 +150,6 @@ public class HangarNodeUI : UICanvasBase
                 customizationPanel.SetActive(true);
                 break;
         }
-
-        //isInSubMenu = !(panel == HangarPanel.Main);
-        //UIManager.Instance.CurrentMenuOverridesEscape = isInSubMenu;
     }
 
     private void Launch(bool isStartingMission)
