@@ -21,7 +21,6 @@ public class CharacterCreationUI : MonoBehaviour
     {
         AddListeners();
         invalidInputText.SetActive(false);
-        UIManager.AddOrRemoveOverriddenKeys(PlayerConstants.ExitKey, true);
     }
 
     private void AddListeners()
@@ -50,7 +49,6 @@ public class CharacterCreationUI : MonoBehaviour
             invalidInputText.SetActive(false);
 
             UIManager.ClearCanvases();
-            UIManager.AddOrRemoveOverriddenKeys(PlayerConstants.ExitKey, false);
         }
         else
         {

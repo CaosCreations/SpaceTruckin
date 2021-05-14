@@ -7,7 +7,7 @@ public class CanvasTutorial : SubMenu
     public override void OnDisable()
     {
         UIManager.SetCurrentCanvasHasBeenViewed(true);
-        ResetKeyOverrides();
+        UIManager.RemoveOverriddenKeys(uniqueKeyCodeOverrides);
         Destroy(gameObject);
     }
 }

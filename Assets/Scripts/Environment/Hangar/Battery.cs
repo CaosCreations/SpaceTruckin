@@ -85,7 +85,8 @@ public class Battery : InteractableObject
 
     private void Update()
     {
-        if (Input.GetKeyDown(PlayerConstants.DropObjectKey)
+        if (!PlayerManager.IsPaused 
+            && Input.GetKeyDown(PlayerConstants.DropObjectKey)
             && PlayerIsHolding())
         {
             DropBattery();

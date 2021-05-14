@@ -27,7 +27,7 @@ public class UIManager : MonoBehaviour
 
     private TextMeshPro interactionTextMesh;
     private static UICanvasType currentCanvasType;
-    
+
     public static int HangarNode;
 
     public static event Action OnCanvasActivated;
@@ -142,6 +142,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    #region Interaction
     public static void SetCanInteract(UICanvasType canvasType, int node = -1)
     {
         currentCanvasType = canvasType;
@@ -188,7 +189,9 @@ public class UIManager : MonoBehaviour
 
         return interaction;
     }
+    #endregion
 
+    #region PlayerPrefs
     private static bool CurrentCanvasHasBeenViewed()
     {
         return PlayerPrefsManager.GetHasBeenViewedPref(currentCanvasType);
@@ -198,7 +201,9 @@ public class UIManager : MonoBehaviour
     {
         PlayerPrefsManager.SetHasBeenViewedPref(currentCanvasType, value);
     }
+    #endregion
 
+    #region KeyOverriding
     /// <summary>
     /// Returns true if the key is down and is not being overridden by another menu
     /// </summary>
@@ -208,27 +213,21 @@ public class UIManager : MonoBehaviour
         return Input.GetKeyDown(keyCode) && !currentlyOverriddenKeys.Contains(keyCode);
     }
 
-    public static void AddOrRemoveOverriddenKeys(HashSet<KeyCode> keysToOverride, bool isAdding)
+    public static void AddOverriddenKeys(HashSet<KeyCodeOverride> keysToOverride)
     {
-        if (isAdding)
-        {
-            currentlyOverriddenKeys.UnionWith(keysToOverride);
-        }
-        else
-        {
-            currentlyOverriddenKeys.ExceptWith(keysToOverride);
-        }
+        var keyCodes = keysToOverride.ToListOfKeyCodes();
+        currentlyOverriddenKeys.UnionWith(keyCodes);
     }
 
-    public static void AddOrRemoveOverriddenKeys(KeyCode keyToOverride, bool isAdding)
+    public static void RemoveOverriddenKeys(HashSet<KeyCodeOverride> keysToOverride)
     {
-        if (isAdding)
-        {
-            currentlyOverriddenKeys.Add(keyToOverride);
-        }
-        else
-        {
-            currentlyOverriddenKeys.Remove(keyToOverride);
-        }
+        var keyCodes = keysToOverride.ToListOfNonPersistentKeyCodes();
+        currentlyOverriddenKeys.ExceptWith(keyCodes);
     }
+
+    public static void ResetOverriddenKeys()
+    {
+        currentlyOverriddenKeys.Clear();
+    }
+    #endregion
 }
