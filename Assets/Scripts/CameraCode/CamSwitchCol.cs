@@ -95,7 +95,19 @@ public class CamSwitchCol : MonoBehaviour {
 		
 		if(camName=="CamToOuterCircle")
 		{
+			//20to30 for habitat ring
 			myCurrentCam=20;
+		}
+
+
+
+
+
+		
+		if(camName=="RefugeeUnder02")
+		{
+			//30to40 for refuggecamp
+			myCurrentCam=30;
 		}
 
 		
