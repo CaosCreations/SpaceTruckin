@@ -72,7 +72,9 @@ public class Battery : InteractableObject
 
     private void OnTriggerStay(Collider other)
     {
-        if (IsPlayerColliding && Input.GetKey(PlayerConstants.ActionKey))
+        if (!PlayerManager.IsPaused
+            && IsPlayerColliding 
+            && Input.GetKey(PlayerConstants.ActionKey))
         {
             if (PlayerIsHolding())
             {
