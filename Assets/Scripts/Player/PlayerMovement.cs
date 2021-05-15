@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController characterController;
 
     private float currentSpeed;
-    [SerializeField] private float maximumSpeed; 
+    [SerializeField] private float maximumSpeed;
     [SerializeField] private float acceleration;
 
     // Player movement relates to camera
@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        if (IsPlayerBelowKillFloor() 
+        if (IsPlayerBelowKillFloor()
             || Input.GetKeyDown(PlayerConstants.RespawnKey))
         {
             RespawnPlayer();
@@ -49,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
         MovementVector.y = Input.GetAxisRaw("Vertical");
 
         SetDirection();
-        RotateWithView(MovementVector,CameraTransform);
+        RotateWithView(MovementVector, CameraTransform);
     }
 
     // Move player in FixedUpdate 
@@ -68,75 +68,27 @@ public class PlayerMovement : MonoBehaviour
 
         ApplyGravity();
         DetermineSpeed();
-        MovePlayer(); 
+        MovePlayer();
     }
 
     private void SetDirection()
     {
-        if (MovementVector == Vector3.up)
-        {
-            animator.SetBool("Up", true);
-        }
-        else if (MovementVector == new Vector3(-1f, 1f))
-        {
-            animator.SetBool("Up", true);
-        }
-        else if (MovementVector == Vector3.left)
-        {
-            animator.SetBool("Left", true);
-        }
-        else if (MovementVector == new Vector3(-1f, -1f))
-        {
-            animator.SetBool("Left", true);
-        }
-        else if (MovementVector == Vector3.down)
-        {
-            animator.SetBool("Down", true);
-        }
-        else if (MovementVector == new Vector3(1f, -1f))
-        {
-            animator.SetBool("Down", true);
-        }
-        else if (MovementVector == Vector3.right)
-        {
-            animator.SetBool("Right", true);
-        }
-        else if (MovementVector == Vector3.one)
-        {
-            animator.SetBool("Right", true);
-            
-        }
-        else
-        {
-            animator.SetBool("Up", false);
-            animator.SetBool("Down", false);
-            animator.SetBool("Right", false);
-            animator.SetBool("Left", false);
-        }
+        ResetDirection();
 
-        if (Input.GetKey(KeyCode.W)) animator.SetBool("KeyUp", true);
-        else animator.SetBool("KeyUp", false);
-
-        if (Input.GetKey(KeyCode.S)) animator.SetBool("KeyDown", true);
-        else animator.SetBool("KeyDown", false);
-
-        if (Input.GetKey(KeyCode.D)) animator.SetBool("KeyRight", true);
-        else animator.SetBool("KeyRight", false);
-
-        if (Input.GetKey(KeyCode.A)) animator.SetBool("KeyLeft", true);
-        else animator.SetBool("KeyLeft", false);
-
-        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S))
+        if (MovementVector != Vector3.zero
+            && PlayerConstants.PlayerMovementMap.ContainsKey(MovementVector))
         {
-            animator.SetBool("KeyUp", false);
-            animator.SetBool("KeyDown", false);
+            string animatorParameter = PlayerConstants.PlayerMovementMap[MovementVector];
+            animator.SetBool(animatorParameter, true);
         }
+    }
 
-        if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
-        {
-            animator.SetBool("KeyRight", false);
-            animator.SetBool("KeyLeft", false);
-        }
+    public void ResetDirection()
+    {
+        animator.SetBool(PlayerConstants.AnimationUpParameter, false);
+        animator.SetBool(PlayerConstants.AnimationLeftParameter, false);
+        animator.SetBool(PlayerConstants.AnimationDownParameter, false);
+        animator.SetBool(PlayerConstants.AnimationRightParameter, false);
     }
 
     private void ApplyGravity()
@@ -146,8 +98,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void DetermineSpeed()
     {
-
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(PlayerConstants.SprintKey))
         {
             animator.SetBool("RUN", true);
             currentSpeed = PlayerConstants.RunSpeed;
@@ -163,7 +114,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (currentSpeed < maximumSpeed)
         {
-            currentSpeed += acceleration; 
+            currentSpeed += acceleration;
         }
 
         if (MovementVector == Vector3.zero)
@@ -210,18 +161,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public static void RotateWithView(Vector3 vector,Transform cameraTransform)
-	{
-		Vector3 dir = cameraTransform.TransformDirection(vector);
-        dir.Set(dir.x, 0, dir.z);
-		vector = dir.normalized * vector.magnitude;
-	}
-
-    public void ResetAnimator()
+    public static void RotateWithView(Vector3 vector, Transform cameraTransform)
     {
-        animator.SetBool("KeyUp", false);
-        animator.SetBool("KeyDown", false);
-        animator.SetBool("KeyRight", false);
-        animator.SetBool("KeyLeft", false);
+        Vector3 dir = cameraTransform.TransformDirection(vector);
+        dir.Set(dir.x, 0, dir.z);
+        vector = dir.normalized * vector.magnitude;
     }
 }
