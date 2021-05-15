@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public enum Direction
 {
@@ -90,6 +90,8 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool(PlayerConstants.AnimationDownParameter, false);
         animator.SetBool(PlayerConstants.AnimationRightParameter, false);
     }
+
+
 
     private void ApplyGravity()
     {

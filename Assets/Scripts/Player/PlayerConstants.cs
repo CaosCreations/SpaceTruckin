@@ -20,6 +20,7 @@ public class PlayerConstants : MonoBehaviour
     public static Vector3 PlayerResetPosition = new Vector3(210f, 380f, -247f);
 
     public static Vector3 Vector3UpLeft = new Vector3(-1f, 1f);
+     public static Vector3 Vector3UpRight = new Vector3(1f, 1f);
     public static Vector3 Vector3DownLeft = new Vector3(-1f, -1f);
     public static Vector3 Vector3DownRight = new Vector3(1f, -1f);
 
@@ -35,13 +36,23 @@ public class PlayerConstants : MonoBehaviour
     {
         { Vector3.up, AnimationUpParameter },
         { Vector3UpLeft, AnimationUpParameter },
+        { Vector3UpRight, AnimationUpParameter },
+
         { Vector3.left, AnimationLeftParameter },
-        { Vector3DownLeft, AnimationLeftParameter },
+       
         { Vector3.down, AnimationDownParameter },
+         { Vector3DownLeft, AnimationDownParameter },
         { Vector3DownRight, AnimationDownParameter },
         { Vector3.right, AnimationRightParameter },
         { Vector3.one, AnimationRightParameter }
     };
+
+    void Update() 
+    {
+        
+        
+        
+    }
 
     // Misc
     public const int MaxPlayerNameLength = 24;
