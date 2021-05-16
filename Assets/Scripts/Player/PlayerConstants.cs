@@ -98,13 +98,20 @@ public class PlayerConstants : MonoBehaviour
     public static Dictionary<Vector3,
         (string[] activeParams, string[] inactiveParams)> PlayerMovementOnAndOffMap = new Dictionary<Vector3, (string[], string[])>()
     {
-        { Vector3.up, (ActiveAnimationUpLeftMap, InactiveAnimationUpMap) },
-        { Vector3UpLeft, (ActiveAnimationUpLeftMap, InactiveAnimationUpMap) },
-        { Vector3UpRight, (ActiveAnimationUpRightMap, InactiveAnimationUpMap) },
+        { Vector3.up, (ActiveAnimationUpMap, InactiveAnimationDownMap) },
+      
+        { Vector3UpLeft, (ActiveAnimationUpLeftMap, InactiveAnimationDownMap) },
+
+        { Vector3UpRight, (ActiveAnimationUpRightMap, InactiveAnimationDownMap) },
+
         { Vector3.left, (ActiveAnimationLeftMap, InactiveAnimationUpMap) },
+
         { Vector3.down, (ActiveAnimationDownMap, InactiveAnimationUpMap) },
+
         { Vector3DownLeft, (ActiveAnimationDownLeftMap, InactiveAnimationUpMap) },
+
         { Vector3DownRight, (ActiveAnimationDownRightMap, InactiveAnimationUpMap) },
+
         { Vector3.right, (ActiveAnimationRightMap, InactiveAnimationUpMap) }
     };
     #endregion
