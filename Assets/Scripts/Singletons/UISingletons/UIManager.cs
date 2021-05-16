@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -19,10 +20,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] private UICanvasBase noticeBoardCanvas;
     [SerializeField] private UICanvasBase mainMenuCanvas;
 
-    public bool CurrentMenuOverridesEscape;
+    /// <summary>
+    /// Keys that cannot be used for regular UI input until the override is lifted.
+    /// </summary>
+    private static HashSet<KeyCode> currentlyOverriddenKeys;
+
     private TextMeshPro interactionTextMesh;
     private static UICanvasType currentCanvasType;
-    
+
     public static int HangarNode;
 
     public static event Action OnCanvasActivated;
@@ -40,6 +45,8 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
+        currentlyOverriddenKeys = new HashSet<KeyCode>();
         interactionTextMesh = GetComponentInChildren<TextMeshPro>();
     }
 
@@ -67,7 +74,7 @@ public class UIManager : MonoBehaviour
         {
             ShowCanvas();
         }
-        else if (Input.GetKeyDown(PlayerConstants.ExitKey) && !CurrentMenuOverridesEscape)
+        else if (GetNonOverriddenKeyDown(PlayerConstants.ExitKey))
         {
             ClearCanvases();
         }
@@ -135,6 +142,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    #region Interaction
     public static void SetCanInteract(UICanvasType canvasType, int node = -1)
     {
         currentCanvasType = canvasType;
@@ -153,7 +161,7 @@ public class UIManager : MonoBehaviour
 
     private static string GetInteractionString()
     {
-        string interaction = "Press E to ";
+        string interaction = $"Press {PlayerConstants.ActionKey} to ";
         switch (currentCanvasType)
         {
             case UICanvasType.Bed:
@@ -181,7 +189,9 @@ public class UIManager : MonoBehaviour
 
         return interaction;
     }
+    #endregion
 
+    #region PlayerPrefs
     private static bool CurrentCanvasHasBeenViewed()
     {
         return PlayerPrefsManager.GetHasBeenViewedPref(currentCanvasType);
@@ -191,4 +201,35 @@ public class UIManager : MonoBehaviour
     {
         PlayerPrefsManager.SetHasBeenViewedPref(currentCanvasType, value);
     }
+    #endregion
+
+    #region KeyOverriding
+    /// <summary>
+    /// Returns true if the key is down and is not being overridden by another menu.
+    /// </summary>
+    /// <param name="keyCode"></param>
+    public static bool GetNonOverriddenKeyDown(KeyCode keyCode)
+    {
+        return Input.GetKeyDown(keyCode) && !currentlyOverriddenKeys.Contains(keyCode);
+    }
+
+    public static void AddOverriddenKeys(HashSet<KeyCodeOverride> keyCodeOverrides)
+    {
+        var keyCodes = keyCodeOverrides.ToListOfKeyCodes();
+        currentlyOverriddenKeys.UnionWith(keyCodes);
+    }
+
+    public static void RemoveOverriddenKeys(HashSet<KeyCodeOverride> keyCodeOverrides)
+    {
+        // Don't remove the persistent overridden keycodes from the list 
+        var nonPersistentKeyCodes = keyCodeOverrides.ToListOfNonPersistentKeyCodes();
+
+        currentlyOverriddenKeys.ExceptWith(nonPersistentKeyCodes);
+    }
+
+    public static void ResetOverriddenKeys()
+    {
+        currentlyOverriddenKeys.Clear();
+    }
+    #endregion
 }

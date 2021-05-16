@@ -72,7 +72,9 @@ public class Battery : InteractableObject
 
     private void OnTriggerStay(Collider other)
     {
-        if (IsPlayerColliding && Input.GetKey(PlayerConstants.ActionKey))
+        if (!PlayerManager.IsPaused
+            && IsPlayerColliding 
+            && Input.GetKey(PlayerConstants.ActionKey))
         {
             if (PlayerIsHolding())
             {
@@ -85,7 +87,8 @@ public class Battery : InteractableObject
 
     private void Update()
     {
-        if (Input.GetKeyDown(PlayerConstants.DropObjectKey)
+        if (!PlayerManager.IsPaused 
+            && Input.GetKeyDown(PlayerConstants.DropObjectKey)
             && PlayerIsHolding())
         {
             DropBattery();

@@ -50,4 +50,23 @@ public class CardCycle : MonoBehaviour, ICyclable<string>
             SetupCloseButton();
         }
     }
+
+    private void HandleKeyboardInput()
+    {
+        if (Input.GetKeyDown(PlayerConstants.NextCardKey)
+            && !OnLastCard)
+        {
+            Cycle();
+        }
+        else if (Input.GetKeyDown(PlayerConstants.ExitKey) 
+            || (Input.GetKeyDown(PlayerConstants.CloseCardCycleKey) && OnLastCard))
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
+    private void Update()
+    {
+        HandleKeyboardInput();
+    }
 }
