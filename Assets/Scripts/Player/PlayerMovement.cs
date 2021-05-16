@@ -79,9 +79,14 @@ public class PlayerMovement : MonoBehaviour
 
         if (PlayerConstants.PlayerMovementMap.ContainsKey(MovementVector))
         {
-            string[] directionalParameters = PlayerConstants.PlayerMovementArrayMap[MovementVector];
+            //string[] directionalParameters = PlayerConstants.PlayerMovementArrayMap[MovementVector];
 
-            Array.ForEach(directionalParameters, x => animator.SetBool(x, true));
+            //Array.ForEach(directionalParameters, x => animator.SetBool(x, true));
+
+            (string[] active, string[] inactive) parameters = PlayerConstants.PlayerMovementOnAndOffMap[MovementVector];
+
+            Array.ForEach(parameters.active, x => animator.SetBool(x, true));
+            Array.ForEach(parameters.inactive, x => animator.SetBool(x, false));
         }
     }
 

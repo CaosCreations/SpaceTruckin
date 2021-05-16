@@ -93,10 +93,9 @@ public class PlayerConstants : MonoBehaviour
     public static string[] InactiveAnimationRightMap = new[] { AnimationRightParameter };
 
     /// <summary>
-    /// Animation state map that supports multiple animator parameters to be mapped to movement vectors 
+    /// Animation state map that supports multiple active and inactive parameters to be mapped to movement vectors 
     /// </summary>
-    public static Dictionary<
-        Vector3,
+    public static Dictionary<Vector3,
         (string[] activeParams, string[] inactiveParams)> PlayerMovementOnAndOffMap = new Dictionary<Vector3, (string[], string[])>()
     {
         { Vector3.up, (ActiveAnimationUpLeftMap, InactiveAnimationUpMap) },
