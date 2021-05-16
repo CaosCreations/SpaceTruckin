@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
         MovementVector.x = Input.GetAxisRaw("Horizontal");
         MovementVector.y = Input.GetAxisRaw("Vertical");
 
-        SetDirection();
+        SetAnimatorParameters();
         RotateWithView(MovementVector, CameraTransform);
     }
 
@@ -71,27 +71,34 @@ public class PlayerMovement : MonoBehaviour
         MovePlayer();
     }
 
-    private void SetDirection()
+    private void SetAnimatorParameters()
     {
-        ResetDirection();
+        SetInactiveParameters();
 
-        if (MovementVector != Vector3.zero
-            && PlayerConstants.PlayerMovementMap.ContainsKey(MovementVector))
+        if (PlayerConstants.PlayerMovementMap.ContainsKey(MovementVector))
         {
-            string animatorParameter = PlayerConstants.PlayerMovementMap[MovementVector];
-            animator.SetBool(animatorParameter, true);
+            SetActiveParameters();
         }
     }
 
-    public void ResetDirection()
+    private void SetActiveParameters()
+    {
+        string[] parameters = PlayerConstants.PlayerMovementArrayMap[MovementVector];
+
+        // Set n parameters to true so that multiple states in the state machine can be active 
+        for (int i = 0; i < parameters.Length; i++)
+        {
+            animator.SetBool(parameters[i], true);
+        }
+    }
+
+    public void SetInactiveParameters()
     {
         animator.SetBool(PlayerConstants.AnimationUpParameter, false);
         animator.SetBool(PlayerConstants.AnimationLeftParameter, false);
         animator.SetBool(PlayerConstants.AnimationDownParameter, false);
         animator.SetBool(PlayerConstants.AnimationRightParameter, false);
     }
-
-
 
     private void ApplyGravity()
     {

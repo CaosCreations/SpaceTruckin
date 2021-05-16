@@ -20,9 +20,9 @@ public class PlayerConstants : MonoBehaviour
     public static Vector3 PlayerResetPosition = new Vector3(210f, 380f, -247f);
 
     public static Vector3 Vector3UpLeft = new Vector3(-1f, 1f);
-     public static Vector3 Vector3UpRight = new Vector3(1f, 1f);
     public static Vector3 Vector3DownLeft = new Vector3(-1f, -1f);
     public static Vector3 Vector3DownRight = new Vector3(1f, -1f);
+    public static Vector3 Vector3UpRight = new Vector3(1f, 1f);
 
     public const string AnimationUpParameter = "KeyUp";
     public const string AnimationLeftParameter = "KeyLeft";
@@ -37,22 +37,36 @@ public class PlayerConstants : MonoBehaviour
         { Vector3.up, AnimationUpParameter },
         { Vector3UpLeft, AnimationUpParameter },
         { Vector3UpRight, AnimationUpParameter },
-
         { Vector3.left, AnimationLeftParameter },
-       
         { Vector3.down, AnimationDownParameter },
-         { Vector3DownLeft, AnimationDownParameter },
+        { Vector3DownLeft, AnimationDownParameter },
         { Vector3DownRight, AnimationDownParameter },
         { Vector3.right, AnimationRightParameter },
-        { Vector3.one, AnimationRightParameter }
     };
 
-    void Update() 
+    /// <summary>
+    /// Animation state maps that support multiple animator parameters to be mapped to movement vectors 
+    /// </summary>
+    public static string[] AnimationUpMap = new[] { AnimationUpParameter };
+    public static string[] AnimationUpLeftMap = new[] { AnimationUpParameter, AnimationLeftParameter };
+    public static string[] AnimationUpRightMap = new[] { AnimationUpParameter, AnimationRightParameter };
+    public static string[] AnimationLeftMap = new[] { AnimationLeftParameter };
+    public static string[] AnimationDownMap = new[] { AnimationDownParameter };
+    public static string[] AnimationDownLeftMap = new[] { AnimationDownParameter, AnimationLeftParameter };
+    public static string[] AnimationDownRightMap = new[] { AnimationDownParameter, AnimationRightParameter };
+    public static string[] right = new[] { AnimationRightParameter };
+
+    public static Dictionary<Vector3, string[]> PlayerMovementArrayMap = new Dictionary<Vector3, string[]>()
     {
-        
-        
-        
-    }
+        { Vector3.up, AnimationUpLeftMap },
+        { Vector3UpLeft, AnimationUpLeftMap },
+        { Vector3UpRight, AnimationUpRightMap},
+        { Vector3.left, AnimationLeftMap},
+        { Vector3.down, AnimationDownMap },
+        { Vector3DownLeft, AnimationDownLeftMap},
+        { Vector3DownRight, AnimationDownRightMap },
+        { Vector3.right, right }
+    };
 
     // Misc
     public const int MaxPlayerNameLength = 24;
