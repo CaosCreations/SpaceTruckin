@@ -26,6 +26,7 @@ public class PlayerConstants : MonoBehaviour
     public static Vector3 Vector3UpRight = new Vector3(1f, 1f);
 
     #region Player Movement Animation
+
     // State machine parameters 
     public const string AnimationUpParameter = "KeyUp";
     public const string AnimationLeftParameter = "KeyLeft";
@@ -34,48 +35,37 @@ public class PlayerConstants : MonoBehaviour
     public const string AnimationRunParameter = "RUN";
 
     // The animation states to be turned on when the movement vector matches
-    public static string[] ActiveAnimationUpMap = new[] { AnimationUpParameter };
-    public static string[] ActiveAnimationUpLeftMap = new[] { AnimationUpParameter, AnimationLeftParameter };
-    public static string[] ActiveAnimationUpRightMap = new[] { AnimationUpParameter, AnimationRightParameter };
-    public static string[] ActiveAnimationLeftMap = new[] { AnimationLeftParameter };
-    public static string[] ActiveAnimationDownMap = new[] { AnimationDownParameter };
-    public static string[] ActiveAnimationDownLeftMap = new[] { AnimationDownParameter, AnimationLeftParameter };
-    public static string[] ActiveAnimationDownRightMap = new[] { AnimationDownParameter, AnimationRightParameter };
-    public static string[] ActiveAnimationRightMap = new[] { AnimationRightParameter };
-
-    // The animation states to be turned off when the movement vector matches
-    public static string[] InactiveAnimationUpMap = new[] { AnimationDownParameter };
-    public static string[] InactiveAnimationUpLeftMap = new[] { AnimationDownParameter };
-    public static string[] InactiveAnimationUpRightMap = new[] { AnimationDownParameter };
-    public static string[] InactiveAnimationLeftMap = new[] { AnimationDownParameter };
-    public static string[] InactiveAnimationDownMap = new[] { AnimationUpParameter };
-    public static string[] InactiveAnimationDownLeftMap = new[] { AnimationUpParameter };
-    public static string[] InactiveAnimationDownRightMap = new[] { AnimationUpParameter };
-    public static string[] InactiveAnimationRightMap = new[] { AnimationDownParameter };
+    public static string[] MovementAnimationUpMap = new[] { AnimationUpParameter };
+    public static string[] MovementAnimationUpLeftMap = new[] { AnimationUpParameter, AnimationLeftParameter };
+    public static string[] MovementAnimationUpRightMap = new[] { AnimationUpParameter, AnimationRightParameter };
+    public static string[] MovementAnimationLeftMap = new[] { AnimationLeftParameter };
+    public static string[] MovementAnimationDownMap = new[] { AnimationDownParameter };
+    public static string[] MovementAnimationDownLeftMap = new[] { AnimationDownParameter, AnimationLeftParameter };
+    public static string[] MovementAnimationDownRightMap = new[] { AnimationDownParameter, AnimationRightParameter };
+    public static string[] MovementAnimationRightMap = new[] { AnimationRightParameter };
 
     /// <summary>
     /// The relationships between animator parameter values and the player's movement vector.
-    /// Supports multiple parameters being mapped to each possible movement vector value. 
     /// </summary>
-    public static Dictionary<Vector3,
-        (string[] activeParams, string[] inactiveParams)> PlayerMovementMap = new Dictionary<Vector3, (string[], string[])>()
+    public static Dictionary<Vector3, string[]> MovementAnimationMap = new Dictionary<Vector3, string[]>()
     {
-        { Vector3.up, (ActiveAnimationUpMap, InactiveAnimationUpMap) },
+        { Vector3.up, MovementAnimationUpMap },
 
-        { Vector3UpLeft, (ActiveAnimationUpLeftMap, InactiveAnimationUpLeftMap) },
+        { Vector3UpLeft, MovementAnimationUpLeftMap },
 
-        { Vector3UpRight, (ActiveAnimationUpRightMap, InactiveAnimationUpRightMap) },
+        { Vector3UpRight, MovementAnimationUpRightMap },
 
-        { Vector3.left, (ActiveAnimationLeftMap, InactiveAnimationLeftMap) },
+        { Vector3.left, MovementAnimationLeftMap },
 
-        { Vector3.down, (ActiveAnimationDownMap, InactiveAnimationDownMap) },
+        { Vector3.down, MovementAnimationDownMap },
 
-        { Vector3DownLeft, (ActiveAnimationDownLeftMap, InactiveAnimationDownLeftMap) },
+        { Vector3DownLeft, MovementAnimationDownLeftMap },
 
-        { Vector3DownRight, (ActiveAnimationDownRightMap, InactiveAnimationDownRightMap) },
+        { Vector3DownRight, MovementAnimationDownRightMap },
 
-        { Vector3.right, (ActiveAnimationRightMap, InactiveAnimationRightMap) }
+        { Vector3.right, MovementAnimationRightMap },
     };
+
     #endregion
 
     // Misc

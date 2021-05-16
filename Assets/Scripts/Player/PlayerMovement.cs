@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using UnityEngine;
 
 public enum Direction
@@ -77,12 +76,13 @@ public class PlayerMovement : MonoBehaviour
     {
         ResetDirection();
 
-        if (PlayerConstants.PlayerMovementMap.ContainsKey(MovementVector))
+        if (PlayerConstants.MovementAnimationMap.ContainsKey(MovementVector))
         {
-            (string[] activeParams, string[] inactiveParams) = PlayerConstants.PlayerMovementMap[MovementVector];
+            // Get the matching parameters for the player's current direction  
+            string[] activeParams = PlayerConstants.MovementAnimationMap[MovementVector];
 
+            // Update the state machine 
             Array.ForEach(activeParams, x => animator.SetBool(x, true));
-            Array.ForEach(inactiveParams, x => animator.SetBool(x, false));
         }
     }
 
