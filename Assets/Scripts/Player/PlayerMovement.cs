@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using UnityEngine;
 
 public enum Direction
@@ -48,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
         MovementVector.x = Input.GetAxisRaw("Horizontal");
         MovementVector.y = Input.GetAxisRaw("Vertical");
 
-        SetAnimatorParameters();
+        SetDirection();
         RotateWithView(MovementVector, CameraTransform);
     }
 
@@ -71,28 +73,19 @@ public class PlayerMovement : MonoBehaviour
         MovePlayer();
     }
 
-    private void SetAnimatorParameters()
+    private void SetDirection()
     {
-        SetInactiveParameters();
+        ResetDirection();
 
         if (PlayerConstants.PlayerMovementMap.ContainsKey(MovementVector))
         {
-            SetActiveParameters();
+            string[] directionalParameters = PlayerConstants.PlayerMovementArrayMap[MovementVector];
+
+            Array.ForEach(directionalParameters, x => animator.SetBool(x, true));
         }
     }
 
-    private void SetActiveParameters()
-    {
-        string[] parameters = PlayerConstants.PlayerMovementArrayMap[MovementVector];
-
-        // Set n parameters to true so that multiple states in the state machine can be active 
-        for (int i = 0; i < parameters.Length; i++)
-        {
-            animator.SetBool(parameters[i], true);
-        }
-    }
-
-    public void SetInactiveParameters()
+    public void ResetDirection()
     {
         animator.SetBool(PlayerConstants.AnimationUpParameter, false);
         animator.SetBool(PlayerConstants.AnimationLeftParameter, false);
@@ -109,12 +102,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetKey(PlayerConstants.SprintKey))
         {
-            animator.SetBool("RUN", true);
+            animator.SetBool(PlayerConstants.AnimationRunParameter, true);
             currentSpeed = PlayerConstants.RunSpeed;
         }
         else
         {
-            animator.SetBool("RUN", false);
+            animator.SetBool(PlayerConstants.AnimationRunParameter, false);
             currentSpeed = PlayerConstants.WalkSpeed;
         }
     }

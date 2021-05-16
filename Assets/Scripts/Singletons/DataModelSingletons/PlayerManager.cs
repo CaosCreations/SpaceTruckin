@@ -120,7 +120,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
 
     public void EnterMenuState()
     {
-        PlayerMovement.SetInactiveParameters();
+        PlayerMovement.ResetDirection();
         IsPaused = true;
     }
 
