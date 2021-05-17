@@ -9,7 +9,7 @@ public class Battery : InteractableObject
     private Color depletedEmission;
     private Color chargedEmission;
 
-    private SpringJoint springJoint;
+    private FixedJoint fixedJoint;
     [SerializeField] Rigidbody batteryRigidbody;
 
     // Shows that the player is holding any battery
@@ -64,15 +64,18 @@ public class Battery : InteractableObject
     {
         PlayerIsHoldingABattery = true;
 
-        // Setup a spring joint component that will attach the battery to the player
-        ConfigureSpringJoint(); 
+        // We position the battery away from the player. If we don't do this the player won't have space to move towards the battery.
+        // So the battery won't move, blocking the player.
+        // We must do this before the creating the fixed spring, because once a fixed spring is set you 
+        // can't change the distance between the 2 attached bodies.
+
+        Vector3 playertoBatteryDirection = (new Vector3(transform.position.x, 0f, transform.position.z) - new Vector3(PlayerManager.PlayerObject.transform.position.x, 0f, PlayerManager.PlayerObject.transform.position.z)).normalized;
+        transform.position += playertoBatteryDirection * 0.25f;
+
+        ConfigureFixedJoint(); 
 
         // Update the Rigidbody settings to align with the spring physics 
         ConfigureRigidbody(isConnectingToPlayer: true);
-
-        // We position the battery away from the player, towards the direction the player is facing. Otherwise it will block the player. 
-        Vector3 direction = (new Vector3(transform.position.x, 0f, transform.position.z) - new Vector3(PlayerManager.PlayerObject.transform.position.x, 0f, PlayerManager.PlayerObject.transform.position.z)).normalized;
-        transform.position += direction * HangarConstants.distanceBetweenPlayerAndBattery;
     }
 
     private void ConfigureRigidbody(bool isConnectingToPlayer)
@@ -82,14 +85,11 @@ public class Battery : InteractableObject
 
         if (isConnectingToPlayer)
         {
-            // We add constraints so that the battery doesn't swing around uncontrollably
             batteryRigidbody.constraints = HangarConstants.BatteryRigidbodyConstraintsTaken;
 
             // Setting the container's position so that it floats above the ground
             transform.localPosition = new Vector3(
                 transform.localPosition.x, HangarConstants.BatteryYPosition, transform.localPosition.z);
-
-           
         }
         else
         {
@@ -98,32 +98,23 @@ public class Battery : InteractableObject
         }
     }
 
-    private void ConfigureSpringJoint()
+    private void ConfigureFixedJoint()
     {
-        // Add a spring joint to the battery and attach it to the player
-        springJoint = gameObject.AddComponent<SpringJoint>();
-        springJoint.connectedBody = PlayerManager.PlayerObject.GetComponent<Rigidbody>();
-        
-        // Set its physics parameters 
-        springJoint.spring = HangarConstants.Spring;
-        springJoint.damper = HangarConstants.Damper;
-        springJoint.minDistance = HangarConstants.MinDistance;
-        springJoint.maxDistance = HangarConstants.MaxDistance;
-        springJoint.tolerance = HangarConstants.Tolerance;
-        springJoint.enableCollision = HangarConstants.EnableCollision;
-        springJoint.breakForce = HangarConstants.BreakForce;
-        springJoint.autoConfigureConnectedAnchor = HangarConstants.AutoConfigureConnectedAnchor;
-        springJoint.connectedAnchor = new Vector3(springJoint.connectedAnchor.x, HangarConstants.ConnectedAnchorYPosition, springJoint.connectedAnchor.z);
+        fixedJoint = gameObject.AddComponent<FixedJoint>();
+        fixedJoint.connectedBody = PlayerManager.PlayerObject.GetComponent<Rigidbody>();
+
+        // We want the fixed joint to break when the battery collides with other objects (walls, etc.)
+        fixedJoint.breakForce = HangarConstants.BatteryBreakForce;
+        fixedJoint.enableCollision = HangarConstants.BatteryEnableCollision;
     }
 
     public void DropBattery()
     {
         PlayerIsHoldingABattery = false;
 
-        // Destroy the spring joint to sever the battery's connection to the player
-        if (springJoint != null)
+        if (fixedJoint != null)
         {
-            Destroy(springJoint);
+            Destroy(fixedJoint);
         }
 
         // Re-configure the Rigidbody to be independent 

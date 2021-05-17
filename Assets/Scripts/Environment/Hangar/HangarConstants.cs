@@ -12,19 +12,12 @@ public static class HangarConstants
     public static Color DepletedBatteryImageColour = Color.red;
     public static float BatteryEmissionCoefficient = 400f;
 
-    // Spring settings for battery
+    // Fixed joint settings for battery
     public const float BatteryYPosition = 0.4f;
-    public const float Spring = 1000f;
-    public const float Damper = 0f;
-    public const float MinDistance = 0.25f;
-    public const float MaxDistance = 0.25f;
-    public const float Tolerance = 0f;
-    public const bool EnableCollision = true;
-    public const float BreakForce = 400f;
-    public const bool AutoConfigureConnectedAnchor = false;
-    public const float ConnectedAnchorYPosition = 0f;
-    public const float distanceBetweenPlayerAndBattery = 0.25f;
+    public const float BatteryBreakForce = 30f;
+    public const bool BatteryEnableCollision = true;
 
+  
     // Battery rigidbody constraints 
     public const RigidbodyConstraints BatteryRigidbodyConstraintsTaken = RigidbodyConstraints.FreezePositionY 
         | RigidbodyConstraints.FreezeRotationX 
