@@ -23,7 +23,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 923938306559941887}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 11.220001, y: 0.34, z: 1.3800049}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -92,6 +92,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Container: {fileID: 923938306559941887}
   meshRenderer: {fileID: 4566604538120125738}
+  batterySpawnPositionManager: {fileID: 0}
 --- !u!54 &7739399383686196890
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -174,6 +175,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Battery16x16testn
+      objectReference: {fileID: 0}
+    - target: {fileID: 3451118302482216456, guid: 6a3b55f3d5701014ca3a6ff686e3d6c3,
+        type: 3}
+      propertyPath: m_Convex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3451118302482216456, guid: 6a3b55f3d5701014ca3a6ff686e3d6c3,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a3b55f3d5701014ca3a6ff686e3d6c3, type: 3}

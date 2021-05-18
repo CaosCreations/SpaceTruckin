@@ -10,6 +10,8 @@ public class Battery : InteractableObject
     private Color depletedEmission;
     private Color chargedEmission;
 
+    [SerializeField] private BatterySpawnPositionManager batterySpawnPositionManager;
+
     private void Awake()
     {
         Init();
@@ -63,6 +65,7 @@ public class Battery : InteractableObject
     public void TakeBattery()
     {
         Container.ParentToPlayer();
+        
     }
 
     public void DropBattery()
@@ -82,6 +85,16 @@ public class Battery : InteractableObject
                 return;
             }
             TakeBattery();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "BatteryExit")
+        {
+            Debug.Log("Exiting hangar");
+            DropBattery();
+            batterySpawnPositionManager.SpawnBatteryAt(Container.transform, gameObject.GetComponent<BoxCollider>());
         }
     }
 
