@@ -88,6 +88,7 @@ public class Battery : InteractableObject
         }
     }
 
+    // To prevent the player exits the hangar with a battery, we respawn it back into the hangar
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "BatteryExit")
