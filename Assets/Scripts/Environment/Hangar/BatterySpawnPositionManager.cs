@@ -6,7 +6,17 @@ public class BatterySpawnPositionManager : MonoBehaviour
 {
     [SerializeField] private GameObject[] spawnPositions;
 
-    public void SpawnBatteryAt(Transform objectToMove, Collider boundaries)
+    [SerializeField] private GameObject[] batteries;
+
+    public void Awake()
+    {
+        for (int i = 0; i < batteries.Length; i++)
+        {
+            batteries[i].transform.position = spawnPositions[i].transform.position;
+        }
+    }
+
+    public void RespawnBattery(Transform objectToMove, Collider boundaries)
     {
         Collider[] colliders;
 

@@ -95,7 +95,7 @@ public class Battery : InteractableObject
         {
             Debug.Log("Exiting hangar");
             DropBattery();
-            batterySpawnPositionManager.SpawnBatteryAt(Container.transform, gameObject.GetComponent<BoxCollider>());
+            batterySpawnPositionManager.RespawnBattery(Container.transform, gameObject.GetComponent<BoxCollider>());
         }
     }
 
