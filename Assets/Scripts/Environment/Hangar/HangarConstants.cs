@@ -13,9 +13,9 @@ public static class HangarConstants
     public static float BatteryEmissionCoefficient = 400f;
 
     // Fixed joint settings for battery
-    public const float BatteryYPosition = 0.4f;
-    public const float BatteryBreakForce = 30f;
-    public const bool BatteryEnableCollision = true;
+    public const float BatteryYPosition = 0.5f;
+
+    public const bool BatteryEnableCollision = false;
 
   
     // Battery rigidbody constraints 

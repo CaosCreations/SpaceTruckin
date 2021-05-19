@@ -9,7 +9,6 @@ public class Battery : InteractableObject
     private Color depletedEmission;
     private Color chargedEmission;
 
-    private FixedJoint fixedJoint;
     [SerializeField] Rigidbody batteryRigidbody;
 
     // Shows that the player is holding any battery
@@ -64,17 +63,8 @@ public class Battery : InteractableObject
     {
         PlayerIsHoldingABattery = true;
 
-        // We position the battery away from the player. If we don't do this the player won't have space to move towards the battery.
-        // So the battery won't move, blocking the player.
-        // We must do this before the creating the fixed spring, because once a fixed spring is set you 
-        // can't change the distance between the 2 attached bodies.
+        transform.parent = PlayerManager.PlayerObject.transform;
 
-        Vector3 playertoBatteryDirection = (new Vector3(transform.position.x, 0f, transform.position.z) - new Vector3(PlayerManager.PlayerObject.transform.position.x, 0f, PlayerManager.PlayerObject.transform.position.z)).normalized;
-        transform.position += playertoBatteryDirection * 0.25f;
-
-        ConfigureFixedJoint(); 
-
-        // Update the Rigidbody settings to align with the spring physics 
         ConfigureRigidbody(isConnectingToPlayer: true);
     }
 
@@ -98,24 +88,9 @@ public class Battery : InteractableObject
         }
     }
 
-    private void ConfigureFixedJoint()
-    {
-        fixedJoint = gameObject.AddComponent<FixedJoint>();
-        fixedJoint.connectedBody = PlayerManager.PlayerObject.GetComponent<Rigidbody>();
-
-        // We want the fixed joint to break when the battery collides with other objects (walls, etc.)
-        fixedJoint.breakForce = HangarConstants.BatteryBreakForce;
-        fixedJoint.enableCollision = HangarConstants.BatteryEnableCollision;
-    }
-
     public void DropBattery()
     {
         PlayerIsHoldingABattery = false;
-
-        if (fixedJoint != null)
-        {
-            Destroy(fixedJoint);
-        }
 
         // Re-configure the Rigidbody to be independent 
         ConfigureRigidbody(isConnectingToPlayer: false);
