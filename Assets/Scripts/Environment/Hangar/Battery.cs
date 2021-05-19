@@ -119,7 +119,7 @@ public class Battery : InteractableObject
 
     public void LoadData(BatterySaveData saveData)
     {
-        Container.transform.position = saveData.PositionInHangar;
+        //Container.transform.position = saveData.PositionInHangar;
         IsCharged = saveData.IsCharged;
         SetEmission();
     }

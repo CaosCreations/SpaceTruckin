@@ -10,12 +10,14 @@ public class BatterySpawnPositionManager : MonoBehaviour
 
     public void Awake()
     {
+        // As the game starts, spawn the batteries at their initial position
         for (int i = 0; i < batteries.Length; i++)
         {
             batteries[i].transform.position = spawnPositions[i].transform.position;
         }
     }
 
+    // Respawn the battery when the player tries to take it out of the hangar
     public void RespawnBattery(Transform objectToMove, Collider boundaries)
     {
         Collider[] colliders;
