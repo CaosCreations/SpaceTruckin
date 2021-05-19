@@ -32,6 +32,9 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     { 
         get => playerData.PlayerRepairTools; set => playerData.PlayerRepairTools = value; 
     }
+
+    public Vector3 PlayerFacingDirection;
+
     public static bool CanRepair => Instance.RepairTools > 0;
     public static bool IsPaused { get; set; }
 
@@ -79,6 +82,8 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         {
             Debug.LogError("No player data found");
         }
+
+        PlayerMovement.UpdateMovementVectorEvent += updatePlayerFacingDirectionVector;
     }
 
     public bool CanSpendMoney(long amount)
@@ -128,6 +133,17 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     {
         Instance.PlayerName = playerName;
         Debug.Log($"Player name set to: {Instance.PlayerName}");
+    }
+
+    private void updatePlayerFacingDirectionVector(Vector3 directionVector)
+    {
+        // If the player is not moving then then Movement Vector in PlayerMovement is 0
+        // As we want a direction we only take the last non 0 Movement Vector
+        if (directionVector != Vector3.zero)
+        {
+            PlayerFacingDirection = new Vector3(directionVector.x, 0f, directionVector.y);
+        }
+        
     }
 
     #region Persistence

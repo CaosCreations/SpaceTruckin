@@ -9,7 +9,8 @@ public class Battery : InteractableObject
     private Color depletedEmission;
     private Color chargedEmission;
 
-    [SerializeField] Rigidbody batteryRigidbody;
+    [SerializeField] Rigidbody batteryContainerRigidbody;
+    [SerializeField] Collider batteryModelCollider;
 
     // Shows that the player is holding any battery
     public static bool PlayerIsHoldingABattery;
@@ -63,28 +64,30 @@ public class Battery : InteractableObject
     {
         PlayerIsHoldingABattery = true;
 
-        transform.parent = PlayerManager.PlayerObject.transform;
+        gameObject.ParentToPlayer();
+
+        // We place the battery above the player's head
+        // We offset it's position towards the direction the player is facing
+
+        transform.localPosition = new Vector3(0f, HangarConstants.BatteryYPosition, 0f);
+
+        batteryModelCollider.enabled = false;
 
         ConfigureRigidbody(isConnectingToPlayer: true);
     }
 
     private void ConfigureRigidbody(bool isConnectingToPlayer)
     {
-        // Disable gravity when a spring is connected
-        batteryRigidbody.useGravity = !isConnectingToPlayer;
+        batteryContainerRigidbody.useGravity = !isConnectingToPlayer;
 
         if (isConnectingToPlayer)
         {
-            batteryRigidbody.constraints = HangarConstants.BatteryRigidbodyConstraintsTaken;
-
-            // Setting the container's position so that it floats above the ground
-            transform.localPosition = new Vector3(
-                transform.localPosition.x, HangarConstants.BatteryYPosition, transform.localPosition.z);
+            batteryContainerRigidbody.constraints = HangarConstants.BatteryRigidbodyConstraintsTaken;
         }
         else
         {
             // As the battery is dropped, we remove the constraint so that the battery can move freely as a physics object
-            batteryRigidbody.constraints = HangarConstants.BatteryRigidbodyConstraintsDropped;
+            batteryContainerRigidbody.constraints = HangarConstants.BatteryRigidbodyConstraintsDropped;
         }
     }
 
@@ -92,13 +95,13 @@ public class Battery : InteractableObject
     {
         PlayerIsHoldingABattery = false;
 
-        // Re-configure the Rigidbody to be independent 
         ConfigureRigidbody(isConnectingToPlayer: false);
-    }
 
-    private void OnJointBreak(float breakForce)
-    {
-        DropBattery();
+        gameObject.SetParent(HangarManager.BatteriesContainer);
+
+        transform.position += PlayerManager.Instance.PlayerFacingDirection.normalized *0.5f;
+
+        batteryModelCollider.enabled = true;
     }
 
     private void OnTriggerStay(Collider other)
@@ -117,10 +120,12 @@ public class Battery : InteractableObject
 
     private void Update()
     {
-        if (Input.GetKeyDown(PlayerConstants.DropObjectKey))
+        if (Input.GetKeyDown(PlayerConstants.DropObjectKey) && transform.parent.gameObject == PlayerManager.PlayerObject)
         {
             DropBattery();
-        }   
+        }
+
+        Debug.Log("Player facing direction = " +PlayerManager.Instance.PlayerFacingDirection);
     }
 
     #region Persistence

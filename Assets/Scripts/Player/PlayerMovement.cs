@@ -21,6 +21,10 @@ public class PlayerMovement : MonoBehaviour
     // Player movement relates to camera
     public Transform CameraTransform;
 
+    public delegate void UpdateMovementVectorDelegate(Vector3 movementVector);
+
+    public UpdateMovementVectorDelegate UpdateMovementVectorEvent;
+
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -50,7 +54,11 @@ public class PlayerMovement : MonoBehaviour
         MovementVector.x = Input.GetAxisRaw("Horizontal");
         MovementVector.y = Input.GetAxisRaw("Vertical");
 
+        Debug.Log("MovementVector = " + MovementVector);
+        UpdateMovementVectorEvent(MovementVector);
+
         SetDirection();
+        
         RotateWithView(MovementVector,CameraTransform);
     }
 
