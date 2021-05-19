@@ -92,7 +92,7 @@ public class PlayerMovement : MonoBehaviour {
 
         if (Physics.Raycast (ray, myRayDistance)) {
 
-            Debug.Log ("ASODKASOD");
+            //Debug.Log ("ASODKASOD");
             wallHitDistace=hitr.distance;
 
 
