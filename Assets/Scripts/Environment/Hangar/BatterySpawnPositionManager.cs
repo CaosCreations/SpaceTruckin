@@ -6,14 +6,12 @@ public class BatterySpawnPositionManager : MonoBehaviour
 {
     [SerializeField] private GameObject[] spawnPositions;
 
-    [SerializeField] private GameObject[] batteries;
-
     public void Awake()
     {
         // As the game starts, spawn the batteries at their initial position
-        for (int i = 0; i < batteries.Length; i++)
+        for (int i = 0; i < HangarManager.BatteryParentGameObjects.Length; i++)
         {
-            batteries[i].transform.position = spawnPositions[i].transform.position;
+            HangarManager.BatteryParentGameObjects[i].transform.position = spawnPositions[i].transform.position;
         }
     }
 
@@ -31,7 +29,7 @@ public class BatterySpawnPositionManager : MonoBehaviour
             // If Physics.OverlapBox() returns nothing, it means that the space is free
             if(colliders.Length == 0)
             {
-                objectToMove.transform.position = spawnPositions[i].transform.position;
+                objectToMove.position = spawnPositions[i].transform.position;
                 return;
             }
         }

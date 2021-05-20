@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider))]
 public class Battery : InteractableObject
 {
     public bool IsCharged { get; set; }
@@ -12,9 +13,15 @@ public class Battery : InteractableObject
 
     [SerializeField] private BatterySpawnPositionManager batterySpawnPositionManager;
 
+    [SerializeField] private BoxCollider boxCollider;
+
     private void Awake()
     {
         Init();
+        if (boxCollider == null)
+            Debug.LogError("boxCollider is null. Please assign assign the current Boxcollider to this variable." +
+                           "We need it to check collisions for various things: respawning the battery, " +
+                            "checking when the battery exits the hangar, dropping it on the ground");
     }
 
     public void Init()
@@ -65,7 +72,6 @@ public class Battery : InteractableObject
     public void TakeBattery()
     {
         Container.ParentToPlayer();
-        
     }
 
     public void DropBattery()
@@ -89,13 +95,12 @@ public class Battery : InteractableObject
     }
 
     // To prevent the player exits the hangar with a battery, we respawn it back into the hangar
-    private void OnTriggerExit(Collider other)
+    public override void OnTriggerExit(Collider other)
     {
-        if (other.tag == "BatteryExit")
+        if (other.CompareTag("BatteryExit"))
         {
-            Debug.Log("Exiting hangar");
             DropBattery();
-            batterySpawnPositionManager.RespawnBattery(Container.transform, gameObject.GetComponent<BoxCollider>());
+            batterySpawnPositionManager.RespawnBattery(Container.transform, boxCollider);
         }
     }
 
@@ -119,7 +124,6 @@ public class Battery : InteractableObject
 
     public void LoadData(BatterySaveData saveData)
     {
-        //Container.transform.position = saveData.PositionInHangar;
         IsCharged = saveData.IsCharged;
         SetEmission();
     }
