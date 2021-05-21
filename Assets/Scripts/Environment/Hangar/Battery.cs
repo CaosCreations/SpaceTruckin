@@ -83,7 +83,6 @@ public class Battery : InteractableObject
     {
         if (!PlayerManager.IsPaused
             && IsPlayerColliding
-            && PlayerIsColliding(other)
             && Input.GetKey(PlayerConstants.ActionKey))
         {
             if (PlayerIsHolding())
