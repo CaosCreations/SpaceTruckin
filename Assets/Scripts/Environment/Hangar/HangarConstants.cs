@@ -16,6 +16,6 @@ public static class HangarConstants
     // Tags
     public static string BatteryTag = "Battery";
     public static string BatteriesContainerTag = "BatteriesContainer";
-    public static string BatteriesParentGameObjectTag = "BatteryParentGameObject";
+    public static string BatteryExitColliderTag = "BatteryExit";
 
 }

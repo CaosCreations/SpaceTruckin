@@ -97,7 +97,13 @@ public class Battery : InteractableObject
     // To prevent the player exits the hangar with a battery, we respawn it back into the hangar
     public override void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("BatteryExit"))
+        if(PlayerIsColliding(other))
+        {
+            IsPlayerColliding = false;
+            return;
+        }
+
+        if (other.CompareTag(HangarConstants.BatteryExitColliderTag))
         {
             DropBattery();
             batterySpawnPositionManager.RespawnBattery(Container.transform, boxCollider);
