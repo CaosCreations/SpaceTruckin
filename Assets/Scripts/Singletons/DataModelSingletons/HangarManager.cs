@@ -9,8 +9,7 @@ public class HangarManager : MonoBehaviour
     [SerializeField] private GameObject shipInstancePrefab;
 
     public static HangarSlot[] HangarSlots { get; private set; }
-    public static Battery[] BatteryModels { get; private set; }
-    public static GameObject[] BatteryParentGameObjects { get; private set; }
+    public static Battery[] Batteries { get; private set; }
     public static GameObject BatteriesContainer { get; private set; }
 
     private void Awake()
@@ -160,8 +159,8 @@ public class HangarManager : MonoBehaviour
             Debug.LogError("Hangar slots not found");
         }
 
-        BatteryModels = FindObjectsOfType<Battery>();
-        if (BatteryModels.IsNullOrEmpty())
+        Batteries = FindObjectsOfType<Battery>();
+        if (Batteries.IsNullOrEmpty())
         {
             Debug.LogError("Batteries not found");
         }
@@ -172,13 +171,6 @@ public class HangarManager : MonoBehaviour
         {
             Debug.LogError("Batteries container not found");
         }
-
-        BatteryParentGameObjects = GameObject.FindGameObjectsWithTag(
-            HangarConstants.BatteriesParentGameObjectTag);
-        if (BatteryParentGameObjects == null)
-        {
-            Debug.LogError("Batteries parent game object not found");
-        }
     }
 
     #region Persistence
@@ -186,7 +178,7 @@ public class HangarManager : MonoBehaviour
     {
         List<BatterySaveData> batterySaveData = new List<BatterySaveData>();
 
-        foreach (Battery battery in BatteryModels)
+        foreach (Battery battery in Batteries)
         {
             if (battery == null)
             {
@@ -213,11 +205,11 @@ public class HangarManager : MonoBehaviour
         {
             for (int i = 0; i < batterySaveData.Length; i++)
             {
-                if (i > BatteryModels.Length - 1)
+                if (i > Batteries.Length - 1)
                 {
                     break;
                 }
-                BatteryModels[i].LoadData(batterySaveData[i]);
+                Batteries[i].LoadData(batterySaveData[i]);
             }
         }
     }

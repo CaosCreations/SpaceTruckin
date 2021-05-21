@@ -101,6 +101,7 @@ public class Battery : InteractableObject
         {
             DropBattery();
             batterySpawnPositionManager.RespawnBattery(Container.transform, boxCollider);
+            IsPlayerColliding = false;
         }
     }
 

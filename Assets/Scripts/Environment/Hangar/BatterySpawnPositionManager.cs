@@ -9,9 +9,9 @@ public class BatterySpawnPositionManager : MonoBehaviour
     public void Awake()
     {
         // As the game starts, spawn the batteries at their initial position
-        for (int i = 0; i < HangarManager.BatteryParentGameObjects.Length; i++)
+        for (int i = 0; i < HangarManager.Batteries.Length; i++)
         {
-            HangarManager.BatteryParentGameObjects[i].transform.position = spawnPositions[i].transform.position;
+            HangarManager.Batteries[i].transform.position = spawnPositions[i].transform.position;
         }
     }
 
