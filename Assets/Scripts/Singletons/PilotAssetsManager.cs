@@ -25,8 +25,6 @@ public class PilotAssetsManager : MonoBehaviour
 	/// </summary>
 	/// 
 
-	private readonly int robotPrefixLength = 3;
-	private readonly int robotSuffixLength = 4;
 	private static System.Random random;
 
 	// Pilot likes and dislikes 
@@ -57,20 +55,20 @@ public class PilotAssetsManager : MonoBehaviour
 
 	public async void Init()
 	{
-		List<Task> pilotNameTasks = new List<Task>
-		{
-			Task.Factory.StartNew(() => HumanMaleNames = LoadTextPoolAsync(PilotsConstants.humanMaleNamesPath).Result),
-			Task.Factory.StartNew(() => HumanFemaleNames = LoadTextPoolAsync(PilotsConstants.humanFemaleNamesPath).Result),
-			Task.Factory.StartNew(() => HelicidNames = LoadTextPoolAsync(PilotsConstants.helicidNamesPath).Result),
-			Task.Factory.StartNew(() => OshunianNames = LoadTextPoolAsync(PilotsConstants.oshunianNamesPath).Result),
-			Task.Factory.StartNew(() => OshunianTitles = LoadTextPoolAsync(PilotsConstants.oshunianTitlesPath).Result),
-			Task.Factory.StartNew(() => VestaPrefixes = LoadTextPoolAsync(PilotsConstants.vestaPrefixesPath).Result),
-			Task.Factory.StartNew(() => VestaNames = LoadTextPoolAsync(PilotsConstants.vestaNamesPath).Result),
-			Task.Factory.StartNew(() => Likes = LoadTextPoolAsync(PilotsConstants.pilotLikesPath).Result),
-			Task.Factory.StartNew(() => Dislikes = LoadTextPoolAsync(PilotsConstants.pilotDislikesPath).Result)
-		};
-		await Task.WhenAll(pilotNameTasks).ContinueWith(x => PilotsManager.Instance.RandomisePilots());
-	}
+        List<Task> pilotNameTasks = new List<Task>
+        {
+            Task.Factory.StartNew(() => HumanMaleNames = LoadTextPoolAsync(PilotsConstants.HumanMaleNamesPath).Result),
+            Task.Factory.StartNew(() => HumanFemaleNames = LoadTextPoolAsync(PilotsConstants.HumanFemaleNamesPath).Result),
+            Task.Factory.StartNew(() => HelicidNames = LoadTextPoolAsync(PilotsConstants.HelicidNamesPath).Result),
+            Task.Factory.StartNew(() => OshunianNames = LoadTextPoolAsync(PilotsConstants.OshunianNamesPath).Result),
+            Task.Factory.StartNew(() => OshunianTitles = LoadTextPoolAsync(PilotsConstants.OshunianTitlesPath).Result),
+            Task.Factory.StartNew(() => VestaPrefixes = LoadTextPoolAsync(PilotsConstants.VestaPrefixesPath).Result),
+            Task.Factory.StartNew(() => VestaNames = LoadTextPoolAsync(PilotsConstants.VestaNamesPath).Result),
+            Task.Factory.StartNew(() => Likes = LoadTextPoolAsync(PilotsConstants.PilotLikesPath).Result),
+            Task.Factory.StartNew(() => Dislikes = LoadTextPoolAsync(PilotsConstants.PilotDislikesPath).Result)
+        };
+        await Task.WhenAll(pilotNameTasks).ContinueWith(x => PilotsManager.Instance.RandomisePilots());
+    }
 
 	private async Task<string[]> LoadTextPoolAsync(string fileName)
     {
@@ -131,11 +129,11 @@ public class PilotAssetsManager : MonoBehaviour
 				var robotPrefix = string.Empty;
 				var robotSuffix = string.Empty;
 
-				for (int i = 0; i < robotPrefixLength; i++)
+				for (int i = 0; i < PilotsConstants.RobotPrefixLength; i++)
 				{
 					robotPrefix += GenerateInitial();
 				}
-				for (int i = 0; i < robotSuffixLength; i++)
+				for (int i = 0; i < PilotsConstants.RobotSuffixLength; i++)
 				{
 					robotSuffix += GenerateDigit().ToString();
 				}
