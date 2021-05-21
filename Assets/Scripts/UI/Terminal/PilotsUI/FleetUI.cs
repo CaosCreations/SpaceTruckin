@@ -40,7 +40,7 @@ public class FleetUI : MonoBehaviour
         GeneratePilotAvatar();
 		GeneratePilotDetails();
 		GeneratePilotProfileButton(
-			backButtonPrefab, PilotsConstants.backButtonAnchors, () => SetPilotListVisibility(true));
+			backButtonPrefab, PilotsConstants.BackButtonAnchors, () => SetPilotListVisibility(true));
     }
 
 	private void OnEnable()
@@ -119,7 +119,7 @@ public class FleetUI : MonoBehaviour
 		if (!pilot.IsHired)
         {
 			hireButton = GeneratePilotProfileButton(
-				hireButtonPrefab, PilotsConstants.hireButtonAnchors, () => HirePilot(pilot));
+				hireButtonPrefab, PilotsConstants.HireButtonAnchors, () => HirePilot(pilot));
 		}
 		else
         {
@@ -146,7 +146,7 @@ public class FleetUI : MonoBehaviour
 
 	private void GeneratePilotProfilePanel()
 	{
-		pilotProfilePanel = new GameObject(PilotsConstants.profilePanelName);
+		pilotProfilePanel = new GameObject(PilotsConstants.ProfilePanelName);
 		pilotProfilePanel.transform.SetParent(fleetPanel.transform);
 
 		RectTransform rectTransform = pilotProfilePanel.AddComponent<RectTransform>();
@@ -159,7 +159,7 @@ public class FleetUI : MonoBehaviour
 	private void GenerateShipAvatar()
 	{
 		GameObject shipAvatarObject = new GameObject().ScaffoldUI(
-			PilotsConstants.shipAvatarObjectName, pilotProfilePanel, PilotsConstants.shipAvatarAnchors);
+			PilotsConstants.ShipAvatarObjectName, pilotProfilePanel, PilotsConstants.ShipAvatarAnchors);
 
 		shipAvatar = shipAvatarObject.AddComponent<Image>();
 	}
@@ -167,7 +167,7 @@ public class FleetUI : MonoBehaviour
 	private void GeneratePilotAvatar()
 	{
 		GameObject pilotAvatarObject = new GameObject().ScaffoldUI(
-			PilotsConstants.pilotAvatarObjectName, pilotProfilePanel, PilotsConstants.pilotAvatarAnchors);
+			PilotsConstants.PilotAvatarObjectName, pilotProfilePanel, PilotsConstants.PilotAvatarAnchors);
 
 		pilotAvatar = pilotAvatarObject.AddComponent<Image>();
 	}
@@ -175,9 +175,9 @@ public class FleetUI : MonoBehaviour
 	private void GeneratePilotDetails()
     {
 		GameObject pilotDetails = new GameObject().ScaffoldUI(
-			PilotsConstants.detailsObjectName, pilotProfilePanel, PilotsConstants.pilotDetailsAnchors);
+			PilotsConstants.DetailsObjectName, pilotProfilePanel, PilotsConstants.PilotDetailsAnchors);
 
-		pilotDetails.GetComponent<RectTransform>().SetPadding(Side.Top, PilotsConstants.topPadding);
+		pilotDetails.GetComponent<RectTransform>().SetPadding(Side.Top, PilotsConstants.TopPadding);
 		pilotDetailsText = pilotDetails.AddComponent<Text>();
 		pilotDetailsText.SetDefaultFont();
 		pilotDetailsText.resizeTextForBestFit = true; 
