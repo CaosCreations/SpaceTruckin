@@ -23,9 +23,9 @@ public class PilotsConstants : MonoBehaviour
     public static ValueTuple<Vector2, Vector2> backButtonAnchors = (new Vector2(borderSize, borderSize), new Vector2((1 - borderSize * 2) / 3, borderSize + buttonHeight));
     public static ValueTuple<Vector2, Vector2> hireButtonAnchors = (new Vector2((1 - borderSize * 2) / 3, borderSize), new Vector2((1 - borderSize * 2) / 1.5f - borderSize, borderSize + buttonHeight));
 
-
+    
     // Paths to text files
-    public static string parentDirectoryPath = "./Assets/ImportedAssets/Text/Pilots/";
+    public static string parentDirectoryPath = "./Assets/ImportedAssets/Resources/Text/Pilots/";
     public static string pilotNameSubDirectoryPath = parentDirectoryPath + "PilotNames/";
 
     public static string humanMaleNamesPath = pilotNameSubDirectoryPath + "male_names.txt";
