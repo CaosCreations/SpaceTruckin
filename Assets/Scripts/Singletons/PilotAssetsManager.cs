@@ -102,12 +102,6 @@ public class PilotAssetsManager : MonoBehaviour
 		OnPilotTextDataLoaded?.Invoke();
 	}
 
-	// Combine the value returned with an initial, digit, or second portion
-	private static string GenerateNamePortion(string[] namePool)
-	{
-		return namePool[random.Next(0, namePool.Length)];
-	}
-
 	private static char GenerateInitial()
 	{
 		return char.ToUpper((char)('a' + random.Next(0, 26)));
