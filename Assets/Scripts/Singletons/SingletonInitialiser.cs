@@ -12,7 +12,6 @@ public class SingletonInitialiser : MonoBehaviour
         MissionsManager.Instance.Init();
         ArchivedMissionsManager.Instance.Init();
         PilotAssetsManager.Instance.Init();
-        PilotsManager.Instance.Init();
         ShipsManager.Instance.Init();
         HangarManager.Instance.Init();
         MessagesManager.Instance.Init();

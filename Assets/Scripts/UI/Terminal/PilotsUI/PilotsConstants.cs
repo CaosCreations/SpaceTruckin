@@ -3,16 +3,16 @@ using UnityEngine;
 
 public class PilotsConstants : MonoBehaviour
 {
-    // GameObject names 
+    #region GameObject Names
     public const string ProfilePanelName = "PilotProfilePanel";
     public const string DetailsObjectName = "PilotDetails";
     public const string PilotAvatarObjectName = "PilotAvatar";
     public const string ShipAvatarObjectName = "ShipAvatar";
     public const string BackButtonName = "BackButton";
-    public const string BackButtonText = "Back"; 
+    public const string BackButtonText = "Back";
+    #endregion
 
-
-    // UI dimensions 
+    #region UI Dimensions 
     public const float BorderSize = 0.05f;
     public const float TopPadding = 32f;
     public const float ButtonHeight = 0.1f; 
@@ -22,32 +22,29 @@ public class PilotsConstants : MonoBehaviour
     public static ValueTuple<Vector2, Vector2> ShipAvatarAnchors = (new Vector2(BorderSize, BorderSize), new Vector2((1 - BorderSize * 2) / 1.5f, 1 - BorderSize));
     public static ValueTuple<Vector2, Vector2> BackButtonAnchors = (new Vector2(BorderSize, BorderSize), new Vector2((1 - BorderSize * 2) / 3, BorderSize + ButtonHeight));
     public static ValueTuple<Vector2, Vector2> HireButtonAnchors = (new Vector2((1 - BorderSize * 2) / 3, BorderSize), new Vector2((1 - BorderSize * 2) / 1.5f - BorderSize, BorderSize + ButtonHeight));
+    #endregion
 
-
-    // Paths to text files
-    private const string parentDirectoryPath = "./Assets/ImportedAssets/Resources/Text/Pilots/";
-    private const string pilotNameSubDirectoryPath = parentDirectoryPath + "PilotNames/";
-
-    public const string HumanMaleNamesPath = pilotNameSubDirectoryPath + "male_names.txt";
-    public const string HumanFemaleNamesPath = pilotNameSubDirectoryPath + "female_names.txt";
-    public const string HelicidNamesPath = pilotNameSubDirectoryPath + "helicid_names.txt";
-    public const string OshunianNamesPath = pilotNameSubDirectoryPath + "oshunian_first_names.txt";
-    public const string OshunianTitlesPath = pilotNameSubDirectoryPath + "oshunian_titles.txt";
-    public const string VestaPrefixesPath = pilotNameSubDirectoryPath + "vesta_prefixes.txt";
-    public const string VestaNamesPath = pilotNameSubDirectoryPath + "vesta_names.txt";
-
-    public const string PilotLikesPath = parentDirectoryPath + "pilot_likes.txt";
-    public const string PilotDislikesPath = parentDirectoryPath + "pilot_dislikes.txt";
-
-
-    // Pilot asset bundling 
+    #region Asset Bundling
+    // Asset file paths 
     public static string BundleLoadingPath = Application.streamingAssetsPath;
     public const string PilotTextAssetLoader = "PilotAssetsManager";
     public const string PilotTextBundleName = "pilottextbundle";
 
+    // Text asset names
+    public const string HumanMaleNames = "MaleNames";
+    public const string HumanFemaleNames = "FemaleNames";
+    public const string HelicidNames = "HelicidNames";
+    public const string OshunianNames = "OshunianNames";
+    public const string OshunianTitles= "OshunianTitles";
+    public const string VestaPrefixes = "VestaPrefixes";
+    public const string VestaNames = "VestaNames";
+    public const string PilotLikes = "PilotLikes";
+    public const string PilotDislikes = "PilotDislikes";
+    #endregion
 
-    // Pilot names 
+    #region Pilot Name Config
+    // Robot names 
     public const int RobotPrefixLength = 3;
     public const int RobotSuffixLength = 4;
-
+    #endregion
 }

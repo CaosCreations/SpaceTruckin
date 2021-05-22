@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -7,14 +8,28 @@ public class PilotAssetsManager : MonoBehaviour
 {
 	public static PilotAssetsManager Instance { get; private set; }
 
-	// Pilot names 
-	public string[] HumanMaleNames { get; private set; }
-	public string[] HumanFemaleNames { get; private set; }
-	public string[] HelicidNames { get; private set; }
-	public string[] OshunianNames { get; private set; }
-	public string[] OshunianTitles { get; private set; }
-	public string[] VestaPrefixes { get; private set; }
-	public string[] VestaNames { get; private set; }
+	// Pilot names  
+	public static string[] HumanMaleNames { get; private set; }
+	public static string[] HumanFemaleNames { get; private set; }
+	public static string[] HelicidNames { get; private set; }
+	public static string[] OshunianNames { get; private set; }
+	public static string[] OshunianTitles { get; private set; }
+	public static string[] VestaPrefixes { get; private set; }
+	public static string[] VestaNames { get; private set; }
+
+	/// <summary>
+	/// Maps bundled asset names to string array identifiers
+	/// </summary>
+	public static Dictionary<string, string[]> PilotTextData = new Dictionary<string, string[]>()
+	{
+		{ PilotsConstants.HumanMaleNames, HumanMaleNames },
+		{ PilotsConstants.HumanFemaleNames, HumanFemaleNames },
+		{ PilotsConstants.HelicidNames, HelicidNames },
+		{ PilotsConstants.OshunianNames, OshunianNames },
+		{ PilotsConstants.OshunianTitles, OshunianTitles },
+		{ PilotsConstants.VestaPrefixes, VestaPrefixes },
+		{ PilotsConstants.VestaNames, VestaNames }
+	};
 
 	/// <summary>
 	/// Species name formats:
@@ -39,6 +54,10 @@ public class PilotAssetsManager : MonoBehaviour
 	[SerializeField] private Sprite[] helicidSprites;
 	[SerializeField] private Sprite[] robotSprites;
 
+	private static AssetBundle pilotTextBundle;
+
+	public static event System.Action OnPilotTextDataLoaded;
+
 	private void Awake()
 	{
 		if (Instance == null)
@@ -54,69 +73,91 @@ public class PilotAssetsManager : MonoBehaviour
 		}
 	}
 
-	public async void Init()
-	{
-		AssetBundle pilotTextBundle = AssetBundle.LoadFromFile(
+	public void Init()
+    {
+		StartCoroutine(LoadTextAssetsFromBundle());
+    }
+
+    private IEnumerator LoadTextAssetsFromBundle()
+    {
+		// Load pilot text asset bundle "asynchronously" and store reference 
+		AssetBundleCreateRequest bundleRequest = AssetBundle.LoadFromFileAsync(
 			Path.Combine(PilotsConstants.BundleLoadingPath, PilotsConstants.PilotTextBundleName));
 
-		TextAsset humanMaleNamesAsset = AssetBundleUtils.LoadTextAsset(pilotTextBundle, PilotsConstants.HumanMaleNamesPath);
+		yield return bundleRequest;
 
-		HumanMaleNames = humanMaleNamesAsset.text.Split('\n');
-    }
+		pilotTextBundle = bundleRequest.assetBundle;
 
-	private async Task<string[]> LoadTextPoolAsync(string fileName)
-    {
-		string textPool = await DataUtils.ReadFileAsync(fileName);
-		return textPool.Split('\n');
-    }
+		if (pilotTextBundle == null)
+		{
+			Debug.LogError("Failed to load pilot text asset bundle.");
+			yield break;
+		}
+
+		// Load all individual assets from bundle 
+		AssetBundleRequest assetsRequest = pilotTextBundle.LoadAllAssetsAsync();
+		yield return assetsRequest;
+
+		Object[] allAssets = assetsRequest.allAssets;
+
+		// Cast all assets to TextAssets and split them into arrays that map to PilotTextData
+		foreach (Object asset in allAssets)
+        {
+			TextAsset textAsset = asset as TextAsset;
+			PilotTextData[textAsset.name] = textAsset.text.Split('\n');
+        }
+
+		// Fire event once loading is complete 
+		OnPilotTextDataLoaded?.Invoke();
+	}
 
 	// Combine the value returned with an initial, digit, or second portion
-	private string GenerateNamePortion(string[] namePool)
+	private static string GenerateNamePortion(string[] namePool)
 	{
 		return namePool[random.Next(0, namePool.Length)];
 	}
 
-	private char GenerateInitial()
+	private static char GenerateInitial()
 	{
 		return char.ToUpper((char)('a' + random.Next(0, 26)));
 	}
 
-	private int GenerateDigit()
+	private static int GenerateDigit()
 	{
 		return random.Next(0, 9);
 	}
 
-	public string GetRandomName(Species species)
+	public static string GetRandomName(Species species)
 	{
 		switch (species)
 		{
 			case Species.HumanMale:
-				var maleFirstName = GenerateNamePortion(Instance.HumanMaleNames);
+				var maleFirstName = GenerateNamePortion(HumanMaleNames);
 				var maleSurname = GenerateInitial();
 				return $"{maleFirstName} {maleSurname}.";
 
 			case Species.HumanFemale:
-				var femaleFirstName = GenerateNamePortion(Instance.HumanFemaleNames);
+				var femaleFirstName = GenerateNamePortion(HumanFemaleNames);
 				var femaleSurname = GenerateInitial();
 				return $"{femaleFirstName} {femaleSurname}.";
 
 			case Species.Helicid:
-				var helicidSurname = GenerateNamePortion(Instance.HelicidNames);
+				var helicidSurname = GenerateNamePortion(HelicidNames);
 				var helicidFirstName = GenerateInitial();
 
 				// Helicid surnames come first 
 				return $"{helicidSurname} {helicidFirstName}.";
 
 			case Species.Oshunian:
-				var oshunianFirstName = GenerateNamePortion(Instance.OshunianNames);
-				var oshunianSurname = GenerateNamePortion(Instance.OshunianTitles);
+				var oshunianFirstName = GenerateNamePortion(OshunianNames);
+				var oshunianSurname = GenerateNamePortion(OshunianTitles);
 
 				// No space required since the surname is a title with a space built in
 				return $"{oshunianFirstName}{oshunianSurname}";
 
 			case Species.Vesta:
-				var vestaPefix = GenerateNamePortion(Instance.VestaPrefixes);
-				var vestaName = GenerateNamePortion(Instance.VestaNames);
+				var vestaPefix = GenerateNamePortion(VestaPrefixes);
+				var vestaName = GenerateNamePortion(VestaNames);
 				return $"{vestaPefix}-{vestaName}";
 
 			case Species.Robot:

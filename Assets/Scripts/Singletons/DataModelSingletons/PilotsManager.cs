@@ -21,6 +21,9 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
+
+        // Randomise pilots once required data has loaded 
+        PilotAssetsManager.OnPilotTextDataLoaded += RandomisePilots;
     }
 
     public void Init()
@@ -99,7 +102,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
                 else if (pilot.IsRandom)
                 {
                     pilot.Species = PilotUtils.GetRandomSpecies();
-                    pilot.Name = PilotAssetsManager.Instance.GetRandomName(pilot.Species);
+                    pilot.Name = PilotAssetsManager.GetRandomName(pilot.Species);
                     RandomiseAvatar(pilot);
                 }
 
