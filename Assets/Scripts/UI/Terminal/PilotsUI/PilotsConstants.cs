@@ -40,6 +40,12 @@ public class PilotsConstants : MonoBehaviour
     public const string PilotDislikesPath = parentDirectoryPath + "pilot_dislikes.txt";
 
 
+    // Pilot asset bundling 
+    public static string BundleLoadingPath = Application.streamingAssetsPath;
+    public const string PilotTextAssetLoader = "PilotAssetsManager";
+    public const string PilotTextBundleName = "pilottextbundle";
+
+
     // Pilot names 
     public const int RobotPrefixLength = 3;
     public const int RobotSuffixLength = 4;
