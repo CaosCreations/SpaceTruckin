@@ -77,7 +77,7 @@ public class PilotAssetsManager : MonoBehaviour
 
 		yield return bundleRequest;
 
-		pilotTextBundle = bundleRequest.assetBundle;
+		pilotTextBundle = bundleRequest?.assetBundle;
 
 		if (pilotTextBundle == null)
 		{
@@ -89,13 +89,16 @@ public class PilotAssetsManager : MonoBehaviour
 		AssetBundleRequest assetsRequest = pilotTextBundle.LoadAllAssetsAsync();
 		yield return assetsRequest;
 
-		Object[] allAssets = assetsRequest.allAssets;
+		Object[] allAssets = assetsRequest?.allAssets;
 
 		// Cast all assets to TextAssets and split them into arrays that map to PilotTextData
 		foreach (Object asset in allAssets)
         {
-			TextAsset textAsset = asset as TextAsset;
-			PilotTextData[textAsset.name] = textAsset.text.RemoveCarriageReturns().Split('\n');
+			if (asset != null)
+            {
+				TextAsset textAsset = asset as TextAsset;
+				PilotTextData[textAsset.name] = textAsset.text.RemoveCarriageReturns().Split('\n');
+            }
         }
 
 		// Fire event once loading is complete 
