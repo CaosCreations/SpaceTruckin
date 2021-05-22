@@ -31,15 +31,15 @@ public class PilotsConstants : MonoBehaviour
     public const string PilotTextBundleName = "pilottextbundle";
 
     // Text asset names
-    public const string HumanMaleNames = "MaleNames";
-    public const string HumanFemaleNames = "FemaleNames";
-    public const string HelicidNames = "HelicidNames";
-    public const string OshunianNames = "OshunianNames";
-    public const string OshunianTitles= "OshunianTitles";
-    public const string VestaPrefixes = "VestaPrefixes";
-    public const string VestaNames = "VestaNames";
-    public const string PilotLikes = "PilotLikes";
-    public const string PilotDislikes = "PilotDislikes";
+    public const string HumanMaleNamesKey = "MaleNames";
+    public const string HumanFemaleNamesKey = "FemaleNames";
+    public const string HelicidNamesKey = "HelicidNames";
+    public const string OshunianNamesKey = "OshunianNames";
+    public const string OshunianTitlesKey= "OshunianTitles";
+    public const string VestaPrefixesKey = "VestaPrefixes";
+    public const string VestaNamesKey = "VestaNames";
+    public const string PilotLikesKey = "PilotLikes";
+    public const string PilotDislikesKey = "PilotDislikes";
     #endregion
 
     #region Pilot Name Config

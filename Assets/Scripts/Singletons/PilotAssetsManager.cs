@@ -1,34 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class PilotAssetsManager : MonoBehaviour
 {
 	public static PilotAssetsManager Instance { get; private set; }
 
-	// Pilot names  
-	public static string[] HumanMaleNames { get; private set; }
-	public static string[] HumanFemaleNames { get; private set; }
-	public static string[] HelicidNames { get; private set; }
-	public static string[] OshunianNames { get; private set; }
-	public static string[] OshunianTitles { get; private set; }
-	public static string[] VestaPrefixes { get; private set; }
-	public static string[] VestaNames { get; private set; }
-
 	/// <summary>
-	/// Maps bundled asset names to string array identifiers
+	/// Maps bundled asset names to string arrays 
 	/// </summary>
-	public static Dictionary<string, string[]> PilotTextData = new Dictionary<string, string[]>()
+	public static Dictionary<string, string[]> PilotTextData { get; private set; } = new Dictionary<string, string[]>()
 	{
-		{ PilotsConstants.HumanMaleNames, HumanMaleNames },
-		{ PilotsConstants.HumanFemaleNames, HumanFemaleNames },
-		{ PilotsConstants.HelicidNames, HelicidNames },
-		{ PilotsConstants.OshunianNames, OshunianNames },
-		{ PilotsConstants.OshunianTitles, OshunianTitles },
-		{ PilotsConstants.VestaPrefixes, VestaPrefixes },
-		{ PilotsConstants.VestaNames, VestaNames }
+		// Pilot names 
+		{ PilotsConstants.HumanMaleNamesKey, default },
+		{ PilotsConstants.HumanFemaleNamesKey, default },
+		{ PilotsConstants.HelicidNamesKey, default },
+		{ PilotsConstants.OshunianNamesKey, default },
+		{ PilotsConstants.OshunianTitlesKey, default },
+		{ PilotsConstants.VestaPrefixesKey, default },
+		{ PilotsConstants.VestaNamesKey, default },
+
+		// Pilot preferences 
+		{ PilotsConstants.PilotLikesKey, default },
+		{ PilotsConstants.PilotDislikesKey, default }
 	};
 
 	/// <summary>
@@ -42,10 +37,6 @@ public class PilotAssetsManager : MonoBehaviour
 	/// 
 
 	private static System.Random random;
-
-	// Pilot likes and dislikes 
-	public static string[] Likes { get; private set; }
-	public static string[] Dislikes { get; private set; }
 
 	// Pilot sprite avatars 
 	[SerializeField] private Sprite[] humanMaleSprites;
@@ -104,7 +95,7 @@ public class PilotAssetsManager : MonoBehaviour
 		foreach (Object asset in allAssets)
         {
 			TextAsset textAsset = asset as TextAsset;
-			PilotTextData[textAsset.name] = textAsset.text.Split('\n');
+			PilotTextData[textAsset.name] = textAsset.text.RemoveCarriageReturns().Split('\n');
         }
 
 		// Fire event once loading is complete 
@@ -132,32 +123,32 @@ public class PilotAssetsManager : MonoBehaviour
 		switch (species)
 		{
 			case Species.HumanMale:
-				var maleFirstName = GenerateNamePortion(HumanMaleNames);
+				var maleFirstName = PilotTextData[PilotsConstants.HumanMaleNamesKey].GetRandomElement();
 				var maleSurname = GenerateInitial();
 				return $"{maleFirstName} {maleSurname}.";
 
 			case Species.HumanFemale:
-				var femaleFirstName = GenerateNamePortion(HumanFemaleNames);
+				var femaleFirstName = PilotTextData[PilotsConstants.HumanFemaleNamesKey].GetRandomElement();
 				var femaleSurname = GenerateInitial();
 				return $"{femaleFirstName} {femaleSurname}.";
 
 			case Species.Helicid:
-				var helicidSurname = GenerateNamePortion(HelicidNames);
+				var helicidSurname = PilotTextData[PilotsConstants.HelicidNamesKey].GetRandomElement();
 				var helicidFirstName = GenerateInitial();
 
 				// Helicid surnames come first 
 				return $"{helicidSurname} {helicidFirstName}.";
 
 			case Species.Oshunian:
-				var oshunianFirstName = GenerateNamePortion(OshunianNames);
-				var oshunianSurname = GenerateNamePortion(OshunianTitles);
+				var oshunianFirstName = PilotTextData[PilotsConstants.OshunianNamesKey].GetRandomElement();
+				var oshunianSurname = PilotTextData[PilotsConstants.OshunianTitlesKey].GetRandomElement();
 
 				// No space required since the surname is a title with a space built in
 				return $"{oshunianFirstName}{oshunianSurname}";
 
 			case Species.Vesta:
-				var vestaPefix = GenerateNamePortion(VestaPrefixes);
-				var vestaName = GenerateNamePortion(VestaNames);
+				var vestaPefix = PilotTextData[PilotsConstants.VestaPrefixesKey].GetRandomElement();
+				var vestaName = PilotTextData[PilotsConstants.VestaNamesKey].GetRandomElement();
 				return $"{vestaPefix}-{vestaName}";
 
 			case Species.Robot:
@@ -183,8 +174,8 @@ public class PilotAssetsManager : MonoBehaviour
 	public static (string like, string dislike) GetRandomPreferences()
     {
 		(string like, string dislike) preferences;
-		preferences.like = Likes.GetRandomElement();
-		preferences.dislike = Dislikes.GetRandomElement();
+		preferences.like = PilotTextData[PilotsConstants.PilotLikesKey].GetRandomElement();
+		preferences.dislike = PilotTextData[PilotsConstants.PilotDislikesKey].GetRandomElement();
 
 		return preferences; 
     }
