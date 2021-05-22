@@ -14,7 +14,7 @@ public class EditorHelper : MonoBehaviour
         }
         catch (Exception ex)
         {
-            Debug.LogError($"{ex.Message}\n{ex.StackTrace}");
+            Debug.LogException(ex);
             return null;
         }
     }
@@ -30,7 +30,7 @@ public class EditorHelper : MonoBehaviour
         }
         catch (Exception ex)
         {
-            Debug.LogError($"{ex.Message}\n{ex.StackTrace}");
+            Debug.LogException(ex);
             return null;
         }
     }
