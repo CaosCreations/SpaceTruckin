@@ -22,8 +22,11 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
             return;
         }
 
-        // Randomise pilots once required data has loaded 
-        PilotAssetsManager.OnPilotTextDataLoaded += RandomisePilots;
+        if (DataUtils.IsNewGame())
+        {
+            // Randomise pilots once required data has loaded 
+            PilotAssetsManager.OnPilotTextDataLoaded += RandomisePilots;
+        }
     }
 
     public void Init()

@@ -15,7 +15,7 @@ public static class StringExtensions
 
     public static string RemoveCarriageReturns(this string self)
     {
-        return Regex.Replace(self, "\n|\r", string.Empty);
+        return self.Replace("\r", string.Empty);
     }
 
     public static string ToItalics(this string self)

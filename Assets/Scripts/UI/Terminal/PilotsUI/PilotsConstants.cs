@@ -34,7 +34,7 @@ public class PilotsConstants : MonoBehaviour
     public const string HumanMaleNamesKey = "MaleNames";
     public const string HumanFemaleNamesKey = "FemaleNames";
     public const string HelicidNamesKey = "HelicidNames";
-    public const string OshunianNamesKey = "OshunianNames";
+    public const string OshunianFirstNamesKey = "OshunianFirstNames";
     public const string OshunianTitlesKey= "OshunianTitles";
     public const string VestaPrefixesKey = "VestaPrefixes";
     public const string VestaNamesKey = "VestaNames";

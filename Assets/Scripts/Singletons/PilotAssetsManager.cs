@@ -8,7 +8,7 @@ public class PilotAssetsManager : MonoBehaviour
 	public static PilotAssetsManager Instance { get; private set; }
 
 	/// <summary>
-	/// Maps bundled asset names to string arrays 
+	/// Maps bundled asset file names to string arrays 
 	/// </summary>
 	public static Dictionary<string, string[]> PilotTextData { get; private set; } = new Dictionary<string, string[]>()
 	{
@@ -16,7 +16,7 @@ public class PilotAssetsManager : MonoBehaviour
 		{ PilotsConstants.HumanMaleNamesKey, default },
 		{ PilotsConstants.HumanFemaleNamesKey, default },
 		{ PilotsConstants.HelicidNamesKey, default },
-		{ PilotsConstants.OshunianNamesKey, default },
+		{ PilotsConstants.OshunianFirstNamesKey, default },
 		{ PilotsConstants.OshunianTitlesKey, default },
 		{ PilotsConstants.VestaPrefixesKey, default },
 		{ PilotsConstants.VestaNamesKey, default },
@@ -140,7 +140,7 @@ public class PilotAssetsManager : MonoBehaviour
 				return $"{helicidSurname} {helicidFirstName}.";
 
 			case Species.Oshunian:
-				var oshunianFirstName = PilotTextData[PilotsConstants.OshunianNamesKey].GetRandomElement();
+				var oshunianFirstName = PilotTextData[PilotsConstants.OshunianFirstNamesKey].GetRandomElement();
 				var oshunianSurname = PilotTextData[PilotsConstants.OshunianTitlesKey].GetRandomElement();
 
 				// No space required since the surname is a title with a space built in
