@@ -10,17 +10,15 @@ public class Battery : InteractableObject
     private Color depletedEmission;
     private Color chargedEmission;
 
-<<<<<<< HEAD
     [SerializeField] Rigidbody batteryContainerRigidbody;
     [SerializeField] Collider batteryModelCollider;
 
     // Shows that the player is holding any battery
     public static bool PlayerIsHoldingABattery;
-=======
+
     [SerializeField] private BatterySpawnPositionManager batterySpawnPositionManager;
 
     [SerializeField] private BoxCollider boxCollider;
->>>>>>> develop
 
     private void Awake()
     {
@@ -117,19 +115,16 @@ public class Battery : InteractableObject
 
     private void OnTriggerStay(Collider other)
     {
-<<<<<<< HEAD
+
         if (PlayerIsHoldingABattery == true)
         {
             // Don't let the player pick up a battery if they already have one
             return;
         }
 
-        if (IsPlayerColliding && Input.GetKey(PlayerConstants.ActionKey))
-=======
         if (!PlayerManager.IsPaused
             && IsPlayerColliding
             && Input.GetKey(PlayerConstants.ActionKey))
->>>>>>> develop
         {
             TakeBattery();
         }
@@ -147,20 +142,17 @@ public class Battery : InteractableObject
         if (other.CompareTag(HangarConstants.BatteryExitColliderTag))
         {
             DropBattery();
-            batterySpawnPositionManager.RespawnBattery(Container.transform, boxCollider);
+            batterySpawnPositionManager.RespawnBattery(transform, boxCollider);
             IsPlayerColliding = false;
         }
     }
 
     private void Update()
     {
-<<<<<<< HEAD
-        if (Input.GetKeyDown(PlayerConstants.DropObjectKey) && transform.parent.gameObject == PlayerManager.PlayerObject)
-=======
+
         if (!PlayerManager.IsPaused 
             && Input.GetKeyDown(PlayerConstants.DropObjectKey)
-            && PlayerIsHolding())
->>>>>>> develop
+            && transform.parent.gameObject == PlayerManager.PlayerObject)
         {
             DropBattery();
         }
@@ -178,10 +170,6 @@ public class Battery : InteractableObject
 
     public void LoadData(BatterySaveData saveData)
     {
-<<<<<<< HEAD
-        transform.position = saveData.PositionInHangar;
-=======
->>>>>>> develop
         IsCharged = saveData.IsCharged;
         SetEmission();
     }

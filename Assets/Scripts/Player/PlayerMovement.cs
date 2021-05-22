@@ -59,12 +59,8 @@ public class PlayerMovement : MonoBehaviour
         UpdateMovementVectorEvent(MovementVector);
 
         SetDirection();
-<<<<<<< HEAD
-        
-        RotateWithView(MovementVector,CameraTransform);
-=======
+
         RotateWithView(MovementVector, CameraTransform);
->>>>>>> develop
     }
 
     // Move player in FixedUpdate 
