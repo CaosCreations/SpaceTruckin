@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -55,19 +56,12 @@ public class PilotAssetsManager : MonoBehaviour
 
 	public async void Init()
 	{
-        List<Task> pilotNameTasks = new List<Task>
-        {
-            Task.Factory.StartNew(() => HumanMaleNames = LoadTextPoolAsync(PilotsConstants.HumanMaleNamesPath).Result),
-            Task.Factory.StartNew(() => HumanFemaleNames = LoadTextPoolAsync(PilotsConstants.HumanFemaleNamesPath).Result),
-            Task.Factory.StartNew(() => HelicidNames = LoadTextPoolAsync(PilotsConstants.HelicidNamesPath).Result),
-            Task.Factory.StartNew(() => OshunianNames = LoadTextPoolAsync(PilotsConstants.OshunianNamesPath).Result),
-            Task.Factory.StartNew(() => OshunianTitles = LoadTextPoolAsync(PilotsConstants.OshunianTitlesPath).Result),
-            Task.Factory.StartNew(() => VestaPrefixes = LoadTextPoolAsync(PilotsConstants.VestaPrefixesPath).Result),
-            Task.Factory.StartNew(() => VestaNames = LoadTextPoolAsync(PilotsConstants.VestaNamesPath).Result),
-            Task.Factory.StartNew(() => Likes = LoadTextPoolAsync(PilotsConstants.PilotLikesPath).Result),
-            Task.Factory.StartNew(() => Dislikes = LoadTextPoolAsync(PilotsConstants.PilotDislikesPath).Result)
-        };
-        await Task.WhenAll(pilotNameTasks).ContinueWith(x => PilotsManager.Instance.RandomisePilots());
+		AssetBundle pilotTextBundle = AssetBundle.LoadFromFile(
+			Path.Combine(PilotsConstants.BundleLoadingPath, PilotsConstants.PilotTextBundleName));
+
+		TextAsset humanMaleNamesAsset = AssetBundleUtils.LoadTextAsset(pilotTextBundle, PilotsConstants.HumanMaleNamesPath);
+
+		HumanMaleNames = humanMaleNamesAsset.text.Split('\n');
     }
 
 	private async Task<string[]> LoadTextPoolAsync(string fileName)
