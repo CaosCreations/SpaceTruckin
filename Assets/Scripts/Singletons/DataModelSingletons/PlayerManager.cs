@@ -125,7 +125,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
 
     public void EnterMenuState()
     {
-        PlayerMovement.ResetAnimator();
+        PlayerMovement.ResetDirection();
         IsPaused = true;
     }
 

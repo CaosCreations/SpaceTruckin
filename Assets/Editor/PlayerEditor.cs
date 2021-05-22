@@ -31,9 +31,19 @@ public class PlayerEditor : MonoBehaviour
     {
         try
         {
+            long moneyToGive = 1000000;
+
             var playerData = EditorHelper.GetAsset<PlayerData>();
-            playerData.PlayerMoney += 1000000;
-            playerData.PlayerTotalMoneyAcquired += 1000000;
+
+            if (Application.IsPlaying(PlayerManager.Instance))
+            {
+                PlayerManager.Instance.ReceiveMoney(moneyToGive);
+            }
+            else
+            {
+                playerData.PlayerMoney += moneyToGive;
+                playerData.PlayerTotalMoneyAcquired += moneyToGive;
+            }
             Debug.Log("Player money = " + playerData.PlayerMoney.ToString());
         }
         catch (Exception ex)

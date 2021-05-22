@@ -246,7 +246,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 658f2b18c706bf845b39e8c508954c26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasTutorialPrefab: {fileID: 0}
+  <CanvasTutorialPrefab>k__BackingField: {fileID: 2584626959981663323, guid: 05b89da4cdf08d44a918beffbebbf565,
+    type: 3}
   mainPanel: {fileID: 4755243093543081837}
   repairPanel: {fileID: 3228758013451469981}
   repairsUI: {fileID: 265225080144908526}
@@ -816,6 +817,7 @@ GameObject:
   - component: {fileID: 1017982871500080453}
   - component: {fileID: 1126714565376360205}
   - component: {fileID: 3670843309434051185}
+  - component: {fileID: 6325293314328957742}
   m_Layer: 0
   m_Name: UpgradePanel
   m_TagString: Untagged
@@ -880,6 +882,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6325293314328957742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2044206749338418916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b4fbf6d88c1b4b4fa5ebf5bced6bb2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keyCodeOverrides:
+  - <KeyCode>k__BackingField: 27
+    <IsPersistentOnDisable>k__BackingField: 0
 --- !u!1 &2150542090494762319
 GameObject:
   m_ObjectHideFlags: 0
@@ -1799,6 +1816,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd90a243147bc094da115b0284b2f47a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  keyCodeOverrides:
+  - <KeyCode>k__BackingField: 27
+    <IsPersistentOnDisable>k__BackingField: 0
   repairToolsUI: {fileID: 8135146937368305650}
   feedbackText: {fileID: 5147016854420043514}
   stopStartButton: {fileID: 6227218686519368804}
@@ -2751,6 +2771,7 @@ GameObject:
   - component: {fileID: 2180950517621340512}
   - component: {fileID: 4520417374454291621}
   - component: {fileID: 6662470387521201747}
+  - component: {fileID: 5717875275911535762}
   m_Layer: 0
   m_Name: CustomizationPanel
   m_TagString: Untagged
@@ -2815,6 +2836,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5717875275911535762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5708136476271797199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea7f0e7b7c91666409bd950980dba50d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keyCodeOverrides:
+  - <KeyCode>k__BackingField: 27
+    <IsPersistentOnDisable>k__BackingField: 0
 --- !u!1 &6709001439979991532
 GameObject:
   m_ObjectHideFlags: 0

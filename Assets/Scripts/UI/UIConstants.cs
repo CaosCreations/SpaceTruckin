@@ -17,7 +17,7 @@ public class UIConstants : MonoBehaviour
     public static Color32 Blackcurrant = new Color32(0x35, 0x2b, 0x42, 0xff);
     public static Color32 MulledWine = new Color32(0x43, 0x43, 0x6a, 0xff);
     public static Color32 MulledWineShade1 = new Color32(0x4b, 0x41, 0x58, 0xff);
-    public static Color32 Indigo = new Color32(0x4b, 0x80, 0xca, 0xff); 
+    public static Color32 Indigo = new Color32(0x4b, 0x80, 0xca, 0xff);
     public static Color32 Viking = new Color32(0x68, 0xc2, 0xd3, 0xff);
     public static Color32 AquaIsland = new Color32(0xa2, 0xdc, 0xc7, 0xff);
     public static Color32 Primrose = new Color32(0xed, 0xe1, 0x9e, 0xff);
@@ -42,23 +42,38 @@ public class UIConstants : MonoBehaviour
     // UI element colours 
     public static Color32 InactiveTabButtonColour = SpringWood;
 
+
+    // UI element text
+    public static string CloseCardCycleText = "Close";
+
+
+    // UI element dimensions 
     public static Vector3 ShipPreviewOffset = new Vector3(-3f, 0f, 0f);
     public static Vector3 ShipPreviewRotationSpeed = new Vector3(0f, 0.15f, 0f);
     public static float ShipPreviewScaleFactor = 0.85f;
 
 
-    // UI text
-    public static string CloseCardCycleText = "Close";
+    // Bed canvas 
+    public const float TimeToSleep = 4f;
+    public const float TimeToDock = 2f;
 
 
     // Regex
-    public static string TemplateBoundaryLeft = "{{";
-    public static string TemplateBoundaryRight = "}}";
+    public const char TemplateBoundaryLeftChar = '{';
+    public const char TemplateBoundaryRightChar = '}';
+    private const int numberOfBoundaryChars = 2;
+    public static string TemplateBoundaryLeft = new string(TemplateBoundaryLeftChar, numberOfBoundaryChars);
+    public static string TemplateBoundaryRight = new string(TemplateBoundaryRightChar, numberOfBoundaryChars);
+
     public static string TemplatePattern = $"({TemplateBoundaryLeft}[^}}]*){TemplateBoundaryRight}";
-    public static string UnsignedIntegerPattern = "^[0-9]*$";
+    public const string UnsignedIntegerPattern = @"^[0-9]*$";
+    public const string AlphabeticalPattern = @"^[a-zA-Z ]+$";
+    public const string AlphabeticalIncludingAccentsPattern = @"[-'0-9a-zA-ZÀ-ÿ ]";
+    public const string ConsecutiveSpacesPattern = @"[ ]{2,}"; 
 
 
     // Templates
     public const string PlayerNameTemplate = "PLAYERNAME";
+    public const string ShipNameTemplate = "SHIPNAME";
 
 }

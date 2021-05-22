@@ -7,7 +7,7 @@ public class RepairsManager : MonoBehaviour
     private RepairsUI repairsUI;
 
     public int consecutiveWins;
-    public bool IsRepairing => workstation.isRotating;
+    public bool IsRepairing => workstation.IsRotating;
 
     private void Start()
     {
@@ -23,7 +23,7 @@ public class RepairsManager : MonoBehaviour
 
     public void StopStart()
     {
-        if (workstation.isRotating)
+        if (workstation.IsRotating)
         {
             workstation.StopRotating();
         }
@@ -41,7 +41,7 @@ public class RepairsManager : MonoBehaviour
         }
 
         workstation.IncreaseRotationSpeed();
-        Debug.Log("New speed: " + workstation.currentRotationSpeed);
+        Debug.Log("New speed: " + workstation.CurrentRotationSpeed);
 
         // Decrease green zone size every n wins 
         if (IsGreenZoneShrinking())

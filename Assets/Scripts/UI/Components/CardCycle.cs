@@ -18,11 +18,26 @@ public class CardCycle : MonoBehaviour, ICyclable<string>
     private string CurrentCardContent => CyclableContent[currentIndex];
     private bool OnLastCard => currentIndex >= CyclableContent.Length - 1;
 
-    private void OnEnable()
+    public void SetupCardCycle(IDataModel dataModel = null)
     {
         currentIndex = 0;
         cardText.SetText(CurrentCardContent);
-        cardCycleButton.AddOnClick(Cycle);
+
+        if (CyclableContent.Length <= 1)
+        {
+            // Only one card, so just make the button close the container 
+            SetupCloseButton();
+        }
+        else
+        {
+            cardCycleButton.AddOnClick(Cycle);
+        }
+    }
+
+    private void SetupCloseButton()
+    {
+        cardCycleButton.AddOnClick(() => gameObject.SetActive(false));
+        cardCycleButton.SetText(UIConstants.CloseCardCycleText);
     }
 
     public void Cycle()
@@ -36,9 +51,22 @@ public class CardCycle : MonoBehaviour, ICyclable<string>
         }
     }
 
-    private void SetupCloseButton()
+    private void HandleKeyboardInput()
     {
-        cardCycleButton.AddOnClick(() => gameObject.SetActive(false));
-        cardCycleButton.SetText(UIConstants.CloseCardCycleText);
+        if (Input.GetKeyDown(PlayerConstants.NextCardKey)
+            && !OnLastCard)
+        {
+            Cycle();
+        }
+        else if (Input.GetKeyDown(PlayerConstants.ExitKey) 
+            || (Input.GetKeyDown(PlayerConstants.CloseCardCycleKey) && OnLastCard))
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
+    private void Update()
+    {
+        HandleKeyboardInput();
     }
 }

@@ -10,32 +10,31 @@ public class HangarNodeUI : UICanvasBase
     }
 
     [Header("Set In Editor")]
-    public GameObject mainPanel;
-    public GameObject repairPanel;
-    public RepairsUI repairsUI;
-    public GameObject upgradePanel;
-    public GameObject customizationPanel;
+    [SerializeField] private GameObject mainPanel;
+    [SerializeField] private GameObject repairPanel;
+    [SerializeField] private RepairsUI repairsUI;
+    [SerializeField] private GameObject upgradePanel;
+    [SerializeField] private GameObject customizationPanel;
 
-    public Slider fuelSlider;
-    public FuelButton fuelButton;
+    [SerializeField] private Slider fuelSlider;
+    [SerializeField] private FuelButton fuelButton;
 
-    public Slider hullSlider;
-    public Button hullButton;
+    [SerializeField] private Slider hullSlider;
+    [SerializeField] private Button hullButton;
 
-    public Button upgradeButton;
-    public Button startMissionButton;
-    public Button returnToQueueButton;
-    public Button customizationButton;
+    [SerializeField] private Button upgradeButton;
+    [SerializeField] private Button startMissionButton;
+    [SerializeField] private Button returnToQueueButton;
+    [SerializeField] private Button customizationButton;
 
-    public Image batteryChargeImage;
+    [SerializeField] private Image batteryChargeImage;
 
     [Header("Set at Runtime")]
-    public GameObject shipPreview;
-    public int hangarNode;
-    public Ship shipToInspect;
+    [SerializeField] private GameObject shipPreview;
+    [SerializeField] private int hangarNode;
+    [SerializeField] private Ship shipToInspect;
     private HangarSlot hangarSlot;
 
-    private bool isInSubMenu;
     private readonly long fuelCostPerUnit = 1;
     private long fuelCostAfterLicences;
     private float fuelTimer = 0;
@@ -44,7 +43,7 @@ public class HangarNodeUI : UICanvasBase
 
     private void OnEnable()
     {
-        hangarNode = UIManager.hangarNode;
+        hangarNode = UIManager.HangarNode;
         hangarSlot = HangarManager.GetSlotByNode(hangarNode);
         shipToInspect = hangarSlot.Ship;
 
@@ -75,19 +74,13 @@ public class HangarNodeUI : UICanvasBase
 
     private void Update()
     {
-        if (isInSubMenu)
+        if (Input.GetKeyDown(PlayerConstants.ExitKey))
         {
-            if (Input.GetKeyDown(PlayerConstants.ExitKey))
-            {
-                SwitchPanel(HangarPanel.Main);
-            }
+            SwitchPanel(HangarPanel.Main);
         }
-        else
+        else if (shipPreview != null)
         {
-            if (shipPreview != null)
-            {
-                shipPreview.transform.Rotate(UIConstants.ShipPreviewRotationSpeed);
-            }
+            shipPreview.transform.Rotate(UIConstants.ShipPreviewRotationSpeed);
         }
 
         CheckFueling();
@@ -157,9 +150,6 @@ public class HangarNodeUI : UICanvasBase
                 customizationPanel.SetActive(true);
                 break;
         }
-
-        isInSubMenu = !(panel == HangarPanel.Main);
-        UIManager.Instance.currentMenuOverridesEscape = isInSubMenu;
     }
 
     private void Launch(bool isStartingMission)
@@ -243,5 +233,23 @@ public class HangarNodeUI : UICanvasBase
         fuelButton.Button.interactable = FuelButtonIsInteractable();
         startMissionButton.interactable = StartMissionButtonIsInteractable();
         hullButton.interactable = !shipToInspect.IsFullyRepaired;
+    }
+
+    public override void ShowTutorial()
+    {
+        if (CanvasTutorialPrefab != null)
+        {
+            GameObject tutorial = Instantiate(CanvasTutorialPrefab, transform);
+
+            CardCycle cardCycle = tutorial.GetComponent<CardCycle>();
+
+            if (cardCycle != null)
+            {
+                // Show the name of the currently docked ship in the tutorial cards
+                cardCycle.CyclableContent.ReplaceTemplates(shipToInspect);
+
+                cardCycle.SetupCardCycle();
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider))]
 public class Battery : InteractableObject
 {
     public bool IsCharged { get; set; }
@@ -9,15 +10,25 @@ public class Battery : InteractableObject
     private Color depletedEmission;
     private Color chargedEmission;
 
+<<<<<<< HEAD
     [SerializeField] Rigidbody batteryContainerRigidbody;
     [SerializeField] Collider batteryModelCollider;
 
     // Shows that the player is holding any battery
     public static bool PlayerIsHoldingABattery;
+=======
+    [SerializeField] private BatterySpawnPositionManager batterySpawnPositionManager;
+
+    [SerializeField] private BoxCollider boxCollider;
+>>>>>>> develop
 
     private void Awake()
     {
         Init();
+        if (boxCollider == null)
+            Debug.LogError("boxCollider is null. Please assign assign the current Boxcollider to this variable." +
+                           "We need it to check collisions for various things: respawning the battery, " +
+                            "checking when the battery exits the hangar, dropping it on the ground");
     }
 
     public void Init()
@@ -106,6 +117,7 @@ public class Battery : InteractableObject
 
     private void OnTriggerStay(Collider other)
     {
+<<<<<<< HEAD
         if (PlayerIsHoldingABattery == true)
         {
             // Don't let the player pick up a battery if they already have one
@@ -113,14 +125,42 @@ public class Battery : InteractableObject
         }
 
         if (IsPlayerColliding && Input.GetKey(PlayerConstants.ActionKey))
+=======
+        if (!PlayerManager.IsPaused
+            && IsPlayerColliding
+            && Input.GetKey(PlayerConstants.ActionKey))
+>>>>>>> develop
         {
             TakeBattery();
         }
     }
 
+    // To prevent the player exits the hangar with a battery, we respawn it back into the hangar
+    public override void OnTriggerExit(Collider other)
+    {
+        if(PlayerIsColliding(other))
+        {
+            IsPlayerColliding = false;
+            return;
+        }
+
+        if (other.CompareTag(HangarConstants.BatteryExitColliderTag))
+        {
+            DropBattery();
+            batterySpawnPositionManager.RespawnBattery(Container.transform, boxCollider);
+            IsPlayerColliding = false;
+        }
+    }
+
     private void Update()
     {
+<<<<<<< HEAD
         if (Input.GetKeyDown(PlayerConstants.DropObjectKey) && transform.parent.gameObject == PlayerManager.PlayerObject)
+=======
+        if (!PlayerManager.IsPaused 
+            && Input.GetKeyDown(PlayerConstants.DropObjectKey)
+            && PlayerIsHolding())
+>>>>>>> develop
         {
             DropBattery();
         }
@@ -138,7 +178,10 @@ public class Battery : InteractableObject
 
     public void LoadData(BatterySaveData saveData)
     {
+<<<<<<< HEAD
         transform.position = saveData.PositionInHangar;
+=======
+>>>>>>> develop
         IsCharged = saveData.IsCharged;
         SetEmission();
     }

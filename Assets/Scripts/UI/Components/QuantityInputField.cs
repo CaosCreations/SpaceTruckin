@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class QuantityInputField : MonoBehaviour
@@ -10,19 +9,7 @@ public class QuantityInputField : MonoBehaviour
     {
         inputField.onValidateInput += (string input, int charIndex, char addedChar) =>
         {
-            return ValidateChar(addedChar);
+            return UIUtils.ValidateCharInput(addedChar, UIConstants.UnsignedIntegerPattern);
         };
-    }
-
-    private char ValidateChar(char addedChar)
-    {
-        if (Regex.IsMatch(addedChar.ToString(), UIConstants.UnsignedIntegerPattern)) 
-        {
-            return addedChar;
-        }
-        else
-        {
-            return '\0';
-        }
     }
 }

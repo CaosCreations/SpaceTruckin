@@ -3,21 +3,21 @@ using UnityEngine;
 
 public class Workstation : MonoBehaviour
 {
-    public static event Action OnRotationStopped;
+    public static event Action OnRotationStoppedByPlayer;
 
-    public bool isRotating;
+    public bool IsRotating { get; private set; }
+    public float CurrentRotationSpeed { get; private set; }
     private bool isDirectionReversed; 
-    public float currentRotationSpeed;
 
     private void Start()
     {
-        currentRotationSpeed = RepairsConstants.StartingSpeed;
+        CurrentRotationSpeed = RepairsConstants.StartingSpeed;
     }
 
     public void RotateWorkstation()
     {
-        float zRotation = isDirectionReversed ? currentRotationSpeed
-            : currentRotationSpeed * -1f;
+        float zRotation = isDirectionReversed ? CurrentRotationSpeed
+            : CurrentRotationSpeed * -1f;
 
         transform.eulerAngles += new Vector3(
             0f, 0f, zRotation * Time.deltaTime);
@@ -25,21 +25,25 @@ public class Workstation : MonoBehaviour
 
     public void StartRotating()
     {
-        isRotating = true;
+        IsRotating = true;
     }
 
-    public void StopRotating()
+    public void StopRotating(bool isResetting = false)
     {
-        isRotating = false;
-        OnRotationStopped?.Invoke();
+        IsRotating = false;
+
+        if (!isResetting)
+        {
+            OnRotationStoppedByPlayer?.Invoke();
+        }
     }
 
     // Increase the difficulty by decreasing the timing window 
     public void IncreaseRotationSpeed() =>
-        currentRotationSpeed += RepairsConstants.SpeedIncrease;
+        CurrentRotationSpeed += RepairsConstants.SpeedIncrease;
 
     public void ResetRotationSpeed() =>
-        currentRotationSpeed = RepairsConstants.StartingSpeed;
+        CurrentRotationSpeed = RepairsConstants.StartingSpeed;
 
     // Increase the difficulty by disorientating the player 
     public void ReverseRotationDirection() =>
@@ -47,13 +51,13 @@ public class Workstation : MonoBehaviour
 
     public void ResetWorkstation()
     {
-        StopRotating();
+        StopRotating(isResetting: true);
         transform.localEulerAngles = Vector3.zero;
     }
 
     private void Update()
     {
-        if (isRotating)
+        if (IsRotating)
         {
             RotateWorkstation();
         }
