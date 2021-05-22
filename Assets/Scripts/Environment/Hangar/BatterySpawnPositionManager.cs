@@ -9,6 +9,9 @@ public class BatterySpawnPositionManager : MonoBehaviour
     public void Awake()
     {
         // As the game starts, spawn the batteries at their initial position
+
+        // TO DO: add try catch block for index out of range error in HangarManager.Batteries[]
+        // If the index is out of range it means we don't have enough battery slots
         for (int i = 0; i < HangarManager.Batteries.Length; i++)
         {
             HangarManager.Batteries[i].transform.position = spawnPositions[i].transform.position;
