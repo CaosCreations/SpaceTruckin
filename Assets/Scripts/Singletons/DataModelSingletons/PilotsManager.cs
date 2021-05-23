@@ -102,7 +102,8 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
                 {
                     continue;
                 }
-                else if (pilot.IsRandom)
+
+                if (pilot.IsRandom)
                 {
                     pilot.Species = PilotUtils.GetRandomSpecies();
                     pilot.Name = PilotAssetsManager.GetRandomName(pilot.Species);
@@ -113,6 +114,9 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
                 RandomisePreferences(pilot);
             }
         }
+
+        // We only need to execute this callback once 
+        PilotAssetsManager.OnPilotTextDataLoaded -= RandomisePilots;
     }
 
     private void RandomiseAvatar(Pilot pilot)
