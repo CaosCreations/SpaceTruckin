@@ -12,6 +12,8 @@ public class HangarManager : MonoBehaviour
     public static Battery[] Batteries { get; private set; }
     public static GameObject BatteriesContainer { get; private set; }
 
+    public static BatterySpawnPositionManager BatterySpawnPositionManager;
+
     private void Awake()
     {
         if (Instance == null)
@@ -170,6 +172,12 @@ public class HangarManager : MonoBehaviour
         if (BatteriesContainer == null)
         {
             Debug.LogError("Batteries container not found");
+        }
+
+        BatterySpawnPositionManager = FindObjectOfType<BatterySpawnPositionManager>();
+        if(BatterySpawnPositionManager == null)
+        {
+            Debug.LogError("Battery spawn position manager not found");
         }
     }
 
