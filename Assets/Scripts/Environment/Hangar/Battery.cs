@@ -106,7 +106,7 @@ public class Battery : InteractableObject
 
         gameObject.SetParent(HangarManager.BatteriesContainer);
 
-        transform.position += PlayerManager.Instance.PlayerFacingDirection.normalized * 0.5f;
+        transform.position += PlayerManager.PlayerMovement.PlayerFacingDirection.normalized * 0.5f;
 
         batteryModelCollider.enabled = true;
     }
@@ -152,8 +152,6 @@ public class Battery : InteractableObject
         {
             DropBattery();
         }
-
-        Debug.Log("Player facing direction = " +PlayerManager.Instance.PlayerFacingDirection);
     }
 
     #region Persistence
