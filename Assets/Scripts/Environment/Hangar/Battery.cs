@@ -110,7 +110,7 @@ public class Battery : InteractableObject
 
         batteryModelCollider.enabled = true;
 
-        IsPlayerColliding = false;
+        SetPlayerIsCollidingFromInteractableObjectCollider();
     }
 
     private void OnTriggerStay(Collider other)
@@ -132,17 +132,12 @@ public class Battery : InteractableObject
     // To prevent the player exiting the hangar with a battery, we respawn it back into the hangar
     public override void OnTriggerExit(Collider other)
     {
-        if(PlayerIsColliding(other))
-        {
-            IsPlayerColliding = false;
-            return;
-        }
+        base.OnTriggerExit(other);
 
         if (other.CompareTag(HangarConstants.BatteryExitColliderTag))
         {
-            HangarManager.BatterySpawnPositionManager.RespawnBattery(transform, boxCollider);
             DropBattery();
-            IsPlayerColliding = false;
+            HangarManager.BatterySpawnPositionManager.RespawnBattery(transform, boxCollider);
         }
     }
 
