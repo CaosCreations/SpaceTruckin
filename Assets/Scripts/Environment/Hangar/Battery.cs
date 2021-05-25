@@ -109,6 +109,8 @@ public class Battery : InteractableObject
         transform.position += PlayerManager.PlayerMovement.PlayerFacingDirection.normalized * 0.5f;
 
         batteryModelCollider.enabled = true;
+
+        IsPlayerColliding = false;
     }
 
     private void OnTriggerStay(Collider other)
@@ -138,7 +140,6 @@ public class Battery : InteractableObject
 
         if (other.CompareTag(HangarConstants.BatteryExitColliderTag))
         {
-            DropBattery();
             HangarManager.BatterySpawnPositionManager.RespawnBattery(transform, boxCollider);
             IsPlayerColliding = false;
         }
