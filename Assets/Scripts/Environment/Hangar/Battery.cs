@@ -16,15 +16,9 @@ public class Battery : InteractableObject
     // Shows that the player is holding any battery
     public static bool PlayerIsHoldingABattery;
 
-    [SerializeField] private BoxCollider boxCollider;
-
     private void Awake()
     {
         Init();
-        if (boxCollider == null)
-            Debug.LogError("boxCollider is null. Please assign assign the current Boxcollider to this variable." +
-                           "We need it to check collisions for various things: respawning the battery, " +
-                            "checking when the battery exits the hangar, dropping it on the ground");
     }
 
     public void Init()
@@ -110,7 +104,7 @@ public class Battery : InteractableObject
 
         batteryModelCollider.enabled = true;
 
-        SetPlayerIsCollidingFromInteractableObjectCollider();
+        IsPlayerColliding = false;
     }
 
     private void OnTriggerStay(Collider other)
@@ -137,7 +131,7 @@ public class Battery : InteractableObject
         if (other.CompareTag(HangarConstants.BatteryExitColliderTag))
         {
             DropBattery();
-            HangarManager.BatterySpawnPositionManager.RespawnBattery(transform, boxCollider);
+            HangarManager.BatterySpawnPositionManager.RespawnBattery(transform, collider);
         }
     }
 
