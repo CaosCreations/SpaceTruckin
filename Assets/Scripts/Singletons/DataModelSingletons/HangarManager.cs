@@ -10,6 +10,7 @@ public class HangarManager : MonoBehaviour
 
     public static HangarSlot[] HangarSlots { get; private set; }
     public static BatteryInteractable[] BatteryInteractables { get; private set; }
+    public static BatteryCharging[] BatteryChargingScripts { get; private set; }
     public static GameObject BatteriesContainer { get; private set; }
 
     public static BatterySpawnPositionManager BatterySpawnPositionManager;
@@ -161,10 +162,10 @@ public class HangarManager : MonoBehaviour
             Debug.LogError("Hangar slots not found");
         }
 
-        BatteryInteractables = FindObjectsOfType<BatteryInteractable>();
-        if (BatteryInteractables.IsNullOrEmpty())
+        BatteryChargingScripts = FindObjectsOfType<BatteryCharging>();
+        if (BatteryChargingScripts.IsNullOrEmpty())
         {
-            Debug.LogError("Batteries not found");
+            Debug.LogError("Battery charging scripts not found");
         }
 
         BatteriesContainer = GameObject.FindGameObjectWithTag(
@@ -179,45 +180,51 @@ public class HangarManager : MonoBehaviour
         {
             Debug.LogError("Battery spawn position manager not found");
         }
+
+        BatteryInteractables = FindObjectsOfType<BatteryInteractable>();
+        if (BatteryInteractables == null)
+        {
+            Debug.LogError("Battery interactables not found");
+        }
     }
 
     #region Persistence
     public void SaveBatteryData()
     {
-        List<BatterySaveData> batterySaveData = new List<BatterySaveData>();
+        List<BatteryChargingSaveData> batterySaveData = new List<BatteryChargingSaveData>();
 
-        foreach (Battery battery in Batteries)
+        foreach (BatteryCharging batteryCharching in BatteryChargingScripts)
         {
-            if (battery == null)
+            if (batteryCharching == null)
             {
                 continue;
             }
 
-            batterySaveData.Add(new BatterySaveData()
+            batterySaveData.Add(new BatteryChargingSaveData()
             {
-                IsCharged = battery.IsCharged,
-                PositionInHangar = battery.transform.position
+                IsCharged = batteryCharching.IsCharged,
+                //PositionInHangar = battery.transform.position
             });
         }
         string json = JsonHelper.ListToJson(batterySaveData);
-        string folderPath = DataUtils.GetSaveFolderPath(Battery.FOLDER_NAME);
-        DataUtils.SaveFileAsync(Battery.FILE_NAME, folderPath, json);
+        string folderPath = DataUtils.GetSaveFolderPath(BatteryCharging.FOLDER_NAME);
+        DataUtils.SaveFileAsync(BatteryCharging.FILE_NAME, folderPath, json);
     }
 
     public async static void LoadBatteryDataAsync()
     {
-        string json = await DataUtils.ReadFileAsync(Battery.FILE_PATH);
-        BatterySaveData[] batterySaveData = JsonHelper.ArrayFromJson<BatterySaveData>(json);
+        string json = await DataUtils.ReadFileAsync(BatteryCharging.FILE_PATH);
+        BatteryChargingSaveData[] batterySaveData = JsonHelper.ArrayFromJson<BatteryChargingSaveData>(json);
 
         if (!batterySaveData.IsNullOrEmpty())
         {
             for (int i = 0; i < batterySaveData.Length; i++)
             {
-                if (i > Batteries.Length - 1)
+                if (i > BatteryChargingScripts.Length - 1)
                 {
                     break;
                 }
-                Batteries[i].LoadData(batterySaveData[i]);
+                BatteryChargingScripts[i].LoadData(batterySaveData[i]);
             }
         }
     }

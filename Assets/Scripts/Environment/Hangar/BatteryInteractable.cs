@@ -102,16 +102,18 @@ public class BatteryInteractable : InteractableObject
         get => DataUtils.GetSaveFilePath(FOLDER_NAME, FILE_NAME);
     }
 
-    public void LoadData(BatteryChargingSaveData saveData)
+    /*public void LoadData(BatteryPositionSaveData saveData)
     {
         IsCharged = saveData.IsCharged;
         SetEmission();
     }
+    */
     #endregion
 }
-
+/*
 [Serializable]
 public struct BatteryPositionSaveData
 {
     public Vector3 PositionInHangar;
 }
+*/

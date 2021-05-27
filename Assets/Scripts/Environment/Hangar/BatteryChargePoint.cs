@@ -7,11 +7,11 @@ public class BatteryChargePoint : InteractableObject
         if (IsPlayerColliding
             && Input.GetKey(PlayerConstants.ActionKey))
         {
-            Battery battery = other.GetComponentInChildren<Battery>();
+            BatteryCharging batteryCharging = other.GetComponentInChildren<BatteryCharging>();
             
-            if (battery != null && !battery.IsCharged)
+            if (batteryCharging != null && !batteryCharging.IsCharged)
             {
-                battery.Charge();
+                batteryCharging.Charge();
             }
         }
     }
