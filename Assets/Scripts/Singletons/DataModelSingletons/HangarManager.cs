@@ -9,7 +9,7 @@ public class HangarManager : MonoBehaviour
     [SerializeField] private GameObject shipInstancePrefab;
 
     public static HangarSlot[] HangarSlots { get; private set; }
-    public static Battery[] Batteries { get; private set; }
+    public static BatteryInteractable[] BatteryInteractables { get; private set; }
     public static GameObject BatteriesContainer { get; private set; }
 
     public static BatterySpawnPositionManager BatterySpawnPositionManager;
@@ -161,8 +161,8 @@ public class HangarManager : MonoBehaviour
             Debug.LogError("Hangar slots not found");
         }
 
-        Batteries = FindObjectsOfType<Battery>();
-        if (Batteries.IsNullOrEmpty())
+        BatteryInteractables = FindObjectsOfType<BatteryInteractable>();
+        if (BatteryInteractables.IsNullOrEmpty())
         {
             Debug.LogError("Batteries not found");
         }

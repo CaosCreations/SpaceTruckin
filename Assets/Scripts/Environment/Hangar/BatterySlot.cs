@@ -5,20 +5,20 @@ public class BatterySlot : InteractableObject
 {
     [SerializeField] private HangarSlot hangarSlot;
 
-    public void TransferEnergyToShip(Battery battery)
+    public void TransferEnergyToShip(BatteryCharging batteryCharging)
     {
-        bool canTransferEnergy = CanTransferEnergy(battery);
+        bool canTransferEnergy = CanTransferEnergy(batteryCharging);
 
         if (canTransferEnergy)
         {
             ShipsManager.EnableWarp(hangarSlot.Ship);
-            battery.Discharge();
+            batteryCharging.Discharge();
         }
         
-        LogInformation(battery, canTransferEnergy);
+        LogInformation(batteryCharging, canTransferEnergy);
     }
 
-    private bool CanTransferEnergy(Battery battery)
+    private bool CanTransferEnergy(BatteryCharging battery)
     {
         return hangarSlot != null
             && hangarSlot.Ship != null
@@ -31,16 +31,16 @@ public class BatterySlot : InteractableObject
         if (IsPlayerColliding
             && Input.GetKey(PlayerConstants.ActionKey))
         {
-            Battery battery = other.GetComponentInChildren<Battery>();
-            if (battery != null)
+            BatteryCharging batteryCharging = other.GetComponentInChildren<BatteryCharging>();
+            if (batteryCharging != null)
             {
-                TransferEnergyToShip(battery);
+                TransferEnergyToShip(batteryCharging);
             }
         }
     }
 
     #region Diagnostics
-    private void LogInformation(Battery battery, bool chargeWasSuccessful)
+    private void LogInformation(BatteryCharging batteryCharging, bool chargeWasSuccessful)
     {
         StringBuilder builder = new StringBuilder();
 
@@ -66,9 +66,9 @@ public class BatterySlot : InteractableObject
                 {
                     builder.AppendLine($"{hangarSlot.Ship.Name} (Ship) can already warp");
                 }
-                if (!battery.IsCharged)
+                if (!batteryCharging.IsCharged)
                 {
-                    builder.AppendLine($"{battery} (Battery) is not charged");
+                    builder.AppendLine($"{batteryCharging} (Battery) is not charged");
                 }
             }
         }
