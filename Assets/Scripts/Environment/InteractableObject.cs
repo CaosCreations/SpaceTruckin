@@ -5,21 +5,11 @@ public class InteractableObject : MonoBehaviour
     // Set this OnEnter and OnExit to avoiding repeatedly comparing tags
     public bool IsPlayerColliding { get; protected set; }
 
-    [SerializeField] protected Collider collider;
+    [SerializeField] new protected Collider collider;
 
     protected void SetPlayerIsColliding(Collider other)
     {
         IsPlayerColliding = other.CompareTag(PlayerConstants.PlayerTag);
-    }
-
-    public virtual void OnTriggerEnter(Collider other)
-    {
-        SetPlayerIsColliding(other);
-    }
-
-    public virtual void OnTriggerExit(Collider other)
-    {
-        SetPlayerIsColliding(other);
     }
 
     /// <summary>
@@ -43,5 +33,16 @@ public class InteractableObject : MonoBehaviour
         }
 
         IsPlayerColliding = false;
+    }
+
+    public virtual void OnTriggerEnter(Collider other)
+    {
+        SetPlayerIsColliding(other);
+    }
+
+    public virtual void OnTriggerExit(Collider other)
+    {
+        Debug.Log("On trigger exit Interactable. " + other.name);
+        SetPlayerIsColliding(other);
     }
 }
