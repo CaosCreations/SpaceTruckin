@@ -62,10 +62,9 @@ public class NoticeBoard : UICanvasBase
 
     private void PopulateScrollView()
     {
-        foreach(Mission mission in MissionsManager.Instance.Missions)
+        foreach (Mission mission in MissionsManager.Instance.Missions)
         {
-            if(mission.MoneyNeededToUnlock <= PlayerManager.Instance.TotalMoneyAcquired
-                && !mission.HasBeenAccepted)
+            if (!mission.HasBeenAccepted && mission.HasBeenUnlocked)
             {
                 GameObject scrollItem = Instantiate(scrollItemPrefab, scrollViewContent.transform);
                 NoticeBoardItem noticeBoardItem = scrollItem.GetComponent<NoticeBoardItem>();

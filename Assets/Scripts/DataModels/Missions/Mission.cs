@@ -2,6 +2,11 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
+public enum MissionUnlockCondition
+{
+    TotalMoney, ConversationNode
+}
+
 [CreateAssetMenu(fileName = "Mission", menuName = "ScriptableObjects/Mission", order = 1)]
 public partial class Mission : ScriptableObject, IDataModel
 {
@@ -9,6 +14,7 @@ public partial class Mission : ScriptableObject, IDataModel
     [SerializeField] private int missionDurationInDays;
     [SerializeField] private string missionName, customer, cargo, description;
     [SerializeField] private int fuelCost;
+    [SerializeField] private MissionUnlockCondition unlockCondition;
     [SerializeField] private long moneyNeededToUnlock;
     [SerializeField] private bool hasRandomOutcomes;
     [SerializeField] private MissionOutcome[] outcomes;
@@ -25,7 +31,7 @@ public partial class Mission : ScriptableObject, IDataModel
     [Serializable]
     public class MissionSaveData
     {
-        public bool hasBeenAccepted = false;
+        public bool hasBeenUnlocked, hasBeenAccepted;
         public int daysLeftToComplete, numberOfCompletions;
     }
 
@@ -37,6 +43,24 @@ public partial class Mission : ScriptableObject, IDataModel
     public void SaveData()
     {
         DataUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
+    }
+
+    public async Task LoadDataAsync()
+    {
+        saveData = await DataUtils.LoadFileAsync<MissionSaveData>(name, FOLDER_NAME);
+    }
+
+    [HideInInspector]
+    // Parameterless so it can subscribe to OnFinancialTransaction.
+    // We can overload it if needed to handle other conditions.
+    public void UnlockIfConditionMet()
+    {
+        HasBeenUnlocked = CanBeUnlockedWithMoney;
+    }
+
+    public void StartMission()
+    {
+        saveData.daysLeftToComplete = missionDurationInDays;
     }
 
     public async Task LoadDataAsync()
