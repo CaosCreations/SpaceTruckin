@@ -13,6 +13,11 @@ public static class StringExtensions
         return string.Empty;
     }
 
+    public static string RemoveCarriageReturns(this string self)
+    {
+        return self.Replace("\r", string.Empty);
+    }
+
     public static string ToItalics(this string self)
     {
         if (!string.IsNullOrWhiteSpace(self))

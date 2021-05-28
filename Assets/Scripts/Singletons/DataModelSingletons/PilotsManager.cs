@@ -21,6 +21,12 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
+
+        if (DataUtils.IsNewGame())
+        {
+            // Randomise pilots once required data has loaded 
+            PilotAssetsManager.OnPilotTextDataLoaded += RandomisePilots;
+        }
     }
 
     public void Init()
@@ -96,10 +102,11 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
                 {
                     continue;
                 }
-                else if (pilot.IsRandom)
+
+                if (pilot.IsRandom)
                 {
                     pilot.Species = PilotUtils.GetRandomSpecies();
-                    pilot.Name = PilotAssetsManager.Instance.GetRandomName(pilot.Species);
+                    pilot.Name = PilotAssetsManager.GetRandomName(pilot.Species);
                     RandomiseAvatar(pilot);
                 }
 
@@ -107,6 +114,9 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
                 RandomisePreferences(pilot);
             }
         }
+
+        // We only need to execute this callback once 
+        PilotAssetsManager.OnPilotTextDataLoaded -= RandomisePilots;
     }
 
     private void RandomiseAvatar(Pilot pilot)

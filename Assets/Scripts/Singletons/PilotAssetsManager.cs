@@ -1,19 +1,30 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class PilotAssetsManager : MonoBehaviour
 {
 	public static PilotAssetsManager Instance { get; private set; }
 
-	// Pilot names 
-	public string[] HumanMaleNames { get; private set; }
-	public string[] HumanFemaleNames { get; private set; }
-	public string[] HelicidNames { get; private set; }
-	public string[] OshunianNames { get; private set; }
-	public string[] OshunianTitles { get; private set; }
-	public string[] VestaPrefixes { get; private set; }
-	public string[] VestaNames { get; private set; }
+	/// <summary>
+	/// Maps bundled asset file names to string arrays 
+	/// </summary>
+	public static Dictionary<string, string[]> PilotTextData { get; private set; } = new Dictionary<string, string[]>()
+	{
+		// Pilot names 
+		{ PilotsConstants.HumanMaleNamesKey, default },
+		{ PilotsConstants.HumanFemaleNamesKey, default },
+		{ PilotsConstants.HelicidNamesKey, default },
+		{ PilotsConstants.OshunianFirstNamesKey, default },
+		{ PilotsConstants.OshunianTitlesKey, default },
+		{ PilotsConstants.VestaPrefixesKey, default },
+		{ PilotsConstants.VestaNamesKey, default },
+
+		// Pilot preferences 
+		{ PilotsConstants.PilotLikesKey, default },
+		{ PilotsConstants.PilotDislikesKey, default }
+	};
 
 	/// <summary>
 	/// Species name formats:
@@ -25,13 +36,7 @@ public class PilotAssetsManager : MonoBehaviour
 	/// </summary>
 	/// 
 
-	private readonly int robotPrefixLength = 3;
-	private readonly int robotSuffixLength = 4;
 	private static System.Random random;
-
-	// Pilot likes and dislikes 
-	public static string[] Likes { get; private set; }
-	public static string[] Dislikes { get; private set; }
 
 	// Pilot sprite avatars 
 	[SerializeField] private Sprite[] humanMaleSprites;
@@ -39,6 +44,10 @@ public class PilotAssetsManager : MonoBehaviour
 	[SerializeField] private Sprite[] vestaSprites;
 	[SerializeField] private Sprite[] helicidSprites;
 	[SerializeField] private Sprite[] robotSprites;
+
+	private static AssetBundle pilotTextBundle;
+
+	public static event System.Action OnPilotTextDataLoaded;
 
 	private void Awake()
 	{
@@ -55,87 +64,99 @@ public class PilotAssetsManager : MonoBehaviour
 		}
 	}
 
-	public async void Init()
-	{
-		List<Task> pilotNameTasks = new List<Task>
-		{
-			Task.Factory.StartNew(() => HumanMaleNames = LoadTextPoolAsync(PilotsConstants.humanMaleNamesPath).Result),
-			Task.Factory.StartNew(() => HumanFemaleNames = LoadTextPoolAsync(PilotsConstants.humanFemaleNamesPath).Result),
-			Task.Factory.StartNew(() => HelicidNames = LoadTextPoolAsync(PilotsConstants.helicidNamesPath).Result),
-			Task.Factory.StartNew(() => OshunianNames = LoadTextPoolAsync(PilotsConstants.oshunianNamesPath).Result),
-			Task.Factory.StartNew(() => OshunianTitles = LoadTextPoolAsync(PilotsConstants.oshunianTitlesPath).Result),
-			Task.Factory.StartNew(() => VestaPrefixes = LoadTextPoolAsync(PilotsConstants.vestaPrefixesPath).Result),
-			Task.Factory.StartNew(() => VestaNames = LoadTextPoolAsync(PilotsConstants.vestaNamesPath).Result),
-			Task.Factory.StartNew(() => Likes = LoadTextPoolAsync(PilotsConstants.pilotLikesPath).Result),
-			Task.Factory.StartNew(() => Dislikes = LoadTextPoolAsync(PilotsConstants.pilotDislikesPath).Result)
-		};
-		await Task.WhenAll(pilotNameTasks).ContinueWith(x => PilotsManager.Instance.RandomisePilots());
-	}
-
-	private async Task<string[]> LoadTextPoolAsync(string fileName)
+	public void Init()
     {
-		string textPool = await DataUtils.ReadFileAsync(fileName);
-		return textPool.Split('\n');
+		StartCoroutine(LoadTextAssetsFromBundle());
     }
 
-	// Combine the value returned with an initial, digit, or second portion
-	private string GenerateNamePortion(string[] namePool)
-	{
-		return namePool[random.Next(0, namePool.Length)];
+    private IEnumerator LoadTextAssetsFromBundle()
+    {
+		// Load pilot text asset bundle "asynchronously" and store reference 
+		AssetBundleCreateRequest bundleRequest = AssetBundle.LoadFromFileAsync(
+			Path.Combine(PilotsConstants.BundleLoadingPath, PilotsConstants.PilotTextBundleName));
+
+		yield return bundleRequest;
+
+		pilotTextBundle = bundleRequest?.assetBundle;
+
+		if (pilotTextBundle == null)
+		{
+			Debug.LogError("Failed to load pilot text asset bundle.");
+			yield break;
+		}
+
+		// Load all individual assets from bundle 
+		AssetBundleRequest assetsRequest = pilotTextBundle.LoadAllAssetsAsync();
+		yield return assetsRequest;
+
+		Object[] allAssets = assetsRequest?.allAssets;
+
+		// Cast all assets to TextAssets and split them into arrays that map to PilotTextData
+		foreach (Object asset in allAssets)
+        {
+			if (asset != null)
+            {
+				TextAsset textAsset = asset as TextAsset;
+				PilotTextData[textAsset.name] = textAsset.text.RemoveCarriageReturns().Split('\n');
+            }
+        }
+
+		// Fire event once loading is complete 
+		OnPilotTextDataLoaded?.Invoke();
 	}
 
-	private char GenerateInitial()
+	private static char GenerateInitial()
 	{
 		return char.ToUpper((char)('a' + random.Next(0, 26)));
 	}
 
-	private int GenerateDigit()
+	private static int GenerateDigit()
 	{
 		return random.Next(0, 9);
 	}
 
-	public string GetRandomName(Species species)
+	public static string GetRandomName(Species species)
 	{
 		switch (species)
 		{
 			case Species.HumanMale:
-				var maleFirstName = GenerateNamePortion(Instance.HumanMaleNames);
+				var maleFirstName = PilotTextData[PilotsConstants.HumanMaleNamesKey].GetRandomElement();
 				var maleSurname = GenerateInitial();
 				return $"{maleFirstName} {maleSurname}.";
 
 			case Species.HumanFemale:
-				var femaleFirstName = GenerateNamePortion(Instance.HumanFemaleNames);
+				var femaleFirstName = PilotTextData[PilotsConstants.HumanFemaleNamesKey].GetRandomElement();
 				var femaleSurname = GenerateInitial();
 				return $"{femaleFirstName} {femaleSurname}.";
 
 			case Species.Helicid:
-				var helicidSurname = GenerateNamePortion(Instance.HelicidNames);
+				var helicidSurname = PilotTextData[PilotsConstants.HelicidNamesKey].GetRandomElement();
 				var helicidFirstName = GenerateInitial();
 
 				// Helicid surnames come first 
 				return $"{helicidSurname} {helicidFirstName}.";
 
 			case Species.Oshunian:
-				var oshunianFirstName = GenerateNamePortion(Instance.OshunianNames);
-				var oshunianSurname = GenerateNamePortion(Instance.OshunianTitles);
+				var oshunianFirstName = PilotTextData[PilotsConstants.OshunianFirstNamesKey].GetRandomElement();
+				var oshunianSurname = PilotTextData[PilotsConstants.OshunianTitlesKey].GetRandomElement();
 
 				// No space required since the surname is a title with a space built in
 				return $"{oshunianFirstName}{oshunianSurname}";
 
 			case Species.Vesta:
-				var vestaPefix = GenerateNamePortion(Instance.VestaPrefixes);
-				var vestaName = GenerateNamePortion(Instance.VestaNames);
+				var vestaPefix = PilotTextData[PilotsConstants.VestaPrefixesKey].GetRandomElement();
+				var vestaName = PilotTextData[PilotsConstants.VestaNamesKey].GetRandomElement();
 				return $"{vestaPefix}-{vestaName}";
 
 			case Species.Robot:
 				var robotPrefix = string.Empty;
 				var robotSuffix = string.Empty;
 
-				for (int i = 0; i < robotPrefixLength; i++)
+				for (int i = 0; i < PilotsConstants.RobotPrefixLength; i++)
 				{
 					robotPrefix += GenerateInitial();
 				}
-				for (int i = 0; i < robotSuffixLength; i++)
+				for (int i = 0; i < PilotsConstants.RobotSuffixLength; i++)
 				{
 					robotSuffix += GenerateDigit().ToString();
 				}
@@ -150,8 +171,8 @@ public class PilotAssetsManager : MonoBehaviour
 	public static (string like, string dislike) GetRandomPreferences()
     {
 		(string like, string dislike) preferences;
-		preferences.like = Likes.GetRandomElement();
-		preferences.dislike = Dislikes.GetRandomElement();
+		preferences.like = PilotTextData[PilotsConstants.PilotLikesKey].GetRandomElement();
+		preferences.dislike = PilotTextData[PilotsConstants.PilotDislikesKey].GetRandomElement();
 
 		return preferences; 
     }
