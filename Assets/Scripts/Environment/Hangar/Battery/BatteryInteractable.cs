@@ -94,26 +94,10 @@ public class BatteryInteractable : InteractableObject
         }
     }
 
-    #region Persistence
-    public const string FOLDER_NAME = "HangarSaveData";
-    public const string FILE_NAME = "BatteryInteractableSaveData";
-    public static string FILE_PATH
-    {
-        get => DataUtils.GetSaveFilePath(FOLDER_NAME, FILE_NAME);
-    }
 
-    /*public void LoadData(BatteryPositionSaveData saveData)
+    public void LoadData(BatterySaveData saveData)
     {
-        IsCharged = saveData.IsCharged;
-        SetEmission();
+        transform.position = saveData.PositionInHangar;
     }
-    */
-    #endregion
 }
-/*
-[Serializable]
-public struct BatteryPositionSaveData
-{
-    public Vector3 PositionInHangar;
-}
-*/
+

@@ -5276,7 +5276,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 347738797}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.75, y: 0.28, z: -3.11}
+  m_LocalPosition: {x: 7.75, y: 0.28, z: -2.999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1796250474}
@@ -5293,8 +5293,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.3836517, y: 2.4822083, z: 0.22050476}
-  m_Center: {x: -0.05432892, y: 0.7411041, z: -0.15879059}
+  m_Size: {x: 1.4936676, y: 1.4042358, z: 0.056121826}
+  m_Center: {x: -0.050331116, y: 0.741333, z: -0.7427063}
 --- !u!1001 &356640506
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7489,7 +7489,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 0.6984252, y: 1}
+    m_SensorSize: {x: 0.5685039, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -9069,6 +9069,11 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 57396ed9e22f84d42bcfe35cf1986d6a,
         type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1585055934648929826, guid: 57396ed9e22f84d42bcfe35cf1986d6a,
+        type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8416272007918961125, guid: 57396ed9e22f84d42bcfe35cf1986d6a,

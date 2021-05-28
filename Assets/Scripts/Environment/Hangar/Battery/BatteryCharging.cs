@@ -56,26 +56,13 @@ public class BatteryCharging : MonoBehaviour
         meshRenderer.material.SetColor("_EmissionColor", emission);
     }
 
-    #region Persistence
-    public const string FOLDER_NAME = "HangarSaveData";
-    public const string FILE_NAME = "BatteryChargingSaveData";
-    public static string FILE_PATH
-    {
-        get => DataUtils.GetSaveFilePath(FOLDER_NAME, FILE_NAME);
-    }
-
-    public void LoadData(BatteryChargingSaveData saveData)
+    public void LoadData(BatterySaveData saveData)
     {
         IsCharged = saveData.IsCharged;
         SetEmission();
     }
-    #endregion
 }
 
-[Serializable]
-public struct BatteryChargingSaveData
-{
-    public bool IsCharged;
-}
+
 
 
