@@ -94,7 +94,8 @@ public class BatteryInteractable : InteractableObject
         }
     }
 
-
+    // At the moment, as the scene is loaded, the position of the battery is defined by the SpawnPosition Manager not the HangarManager
+    // So this function is never called
     public void LoadData(BatterySaveData saveData)
     {
         transform.position = saveData.PositionInHangar;
