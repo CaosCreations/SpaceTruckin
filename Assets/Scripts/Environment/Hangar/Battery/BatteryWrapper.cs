@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BatteryCharging))]
+[RequireComponent(typeof(BatteryInteractable))]
 public class BatteryWrapper : MonoBehaviour
 {
     public BatteryInteractable BatteryInteractable;
