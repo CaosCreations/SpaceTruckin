@@ -217,8 +217,6 @@ public class HangarManager : MonoBehaviour
                 {
                     break;
                 }
-
-                //BatteryWrappers[i].BatteryInteractable.LoadData(batterySaveData[i]);
                 BatteryWrappers[i].BatteryCharging.LoadData(batterySaveData[i]);
             }
         }
