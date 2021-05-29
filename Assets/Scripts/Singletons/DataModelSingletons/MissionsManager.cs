@@ -43,6 +43,8 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
             Debug.LogError("No mission data found");
         }
         ScheduledMissions = new List<ScheduledMission>();
+
+        CalendarManager.OnEndOfDay += UpdateMissionSchedule;
     }
 
     /// <summary>
