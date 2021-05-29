@@ -32,6 +32,9 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     { 
         get => playerData.PlayerRepairTools; set => playerData.PlayerRepairTools = value; 
     }
+
+
+
     public static bool CanRepair => Instance.RepairTools > 0;
     public static bool IsPaused { get; set; }
 
@@ -129,6 +132,8 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         Instance.PlayerName = playerName;
         Debug.Log($"Player name set to: {Instance.PlayerName}");
     }
+
+    
 
     #region Persistence
     public void SaveData()

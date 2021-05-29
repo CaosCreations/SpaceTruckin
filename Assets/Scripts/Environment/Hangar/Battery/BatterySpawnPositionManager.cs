@@ -9,9 +9,15 @@ public class BatterySpawnPositionManager : MonoBehaviour
     public void Awake()
     {
         // As the game starts, spawn the batteries at their initial position
-        for (int i = 0; i < HangarManager.Batteries.Length; i++)
+
+        if(HangarManager.BatteryWrappers.Length > spawnPositions.Length)
         {
-            HangarManager.Batteries[i].Container.transform.position = spawnPositions[i].transform.position;
+            Debug.LogError("As we start the game, there aren't enough spawn positions for all batteries. We need to add more.");
+        }
+
+        for (int i = 0; i < HangarManager.BatteryWrappers.Length; i++)
+        {
+            HangarManager.BatteryWrappers[i].BatteryInteractable.transform.position = spawnPositions[i].transform.position;
         }
     }
 
