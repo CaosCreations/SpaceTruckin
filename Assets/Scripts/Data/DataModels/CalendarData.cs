@@ -13,7 +13,7 @@ public class CalendarData : ScriptableObject, IDataModel
     public int MonthsInYear = 4;
 
     [Header("Data to update IN GAME")]
-    public CalendarSaveData SaveData;
+    public CalendarSaveData saveData;
 
     public const string FOLDER_NAME = "CalendarSaveData";
 
@@ -24,14 +24,13 @@ public class CalendarData : ScriptableObject, IDataModel
         public int CurrentMonth;
     }
 
-    Task IDataModel.LoadDataAsync()
+    public void SaveData()
     {
-        throw new NotImplementedException();
+        DataUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
     }
 
-    void IDataModel.SaveData()
+    public async Task LoadDataAsync()
     {
-        throw new NotImplementedException();
+        saveData = await DataUtils.LoadFileAsync<CalendarSaveData>(name, FOLDER_NAME);
     }
-
 }

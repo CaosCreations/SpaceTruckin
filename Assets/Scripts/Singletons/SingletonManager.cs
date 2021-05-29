@@ -5,6 +5,8 @@ public class SingletonManager : MonoBehaviour
     private void Start()
     {
         InitSingletons();
+
+        CalendarManager.OnEndOfDay += SaveAllSingletonData;
     }
 
     private void InitSingletons()
@@ -18,7 +20,7 @@ public class SingletonManager : MonoBehaviour
         PlayerManager.Instance.Init();
     }
 
-    public static void SaveAllData()
+    public static void SaveAllSingletonData()
     {
         PlayerManager.Instance.SaveData();
         MissionsManager.Instance.SaveData();
