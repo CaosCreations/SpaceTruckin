@@ -94,12 +94,12 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
             // Wrap around when we reach the end of the year, starting at 1. 
             Instance.CurrentMonth = Instance.CurrentMonth
                 .AddAndWrapAround(addend: 1, upperBound: Instance.MonthsInYear + 1, numberToWrapAroundTo: 1);
-        }
 
-        if (Instance.CurrentMonth <= 1)
-        {
-            // Increment the year whenever we enter wrap around the month.
-            Instance.CurrentYear++;
+            if (Instance.CurrentMonth <= 1)
+            {
+                // Increment the year whenever we enter wrap around the month.
+                Instance.CurrentYear++;
+            }
         }
     }
 
