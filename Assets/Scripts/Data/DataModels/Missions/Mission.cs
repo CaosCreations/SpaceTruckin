@@ -31,7 +31,10 @@ public partial class Mission : ScriptableObject, IDataModel
     [Serializable]
     public class MissionSaveData
     {
+        // Unlocked - appear in noticeboard ready to be accepted. 
+        // Accepted - appear in office terminal and can be assigned to pilots. 
         public bool hasBeenUnlocked, hasBeenAccepted;
+
         public int daysLeftToComplete, numberOfCompletions;
     }
 
@@ -60,14 +63,14 @@ public partial class Mission : ScriptableObject, IDataModel
 
                 if (HasBeenUnlocked)
                 {
-                    // This mission is unlocked, so it no longer needs to be notified of money changes. 
+                    // This mission is unlocked, so it no longer needs to be notified of any money changes. 
                     PlayerManager.OnFinancialTransaction -= UnlockIfConditionMet;
                 }
-
                 break;
+
             case MissionUnlockCondition.ConversationNode:
                 // This is called back by the Dialogue System's OnExecute() event.
-                // The event fires when a conversation node is reached. 
+                // The event fires when an associated conversation node is reached. 
                 HasBeenUnlocked = true;
                 break;
         }
