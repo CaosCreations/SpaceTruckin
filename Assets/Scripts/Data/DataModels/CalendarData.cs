@@ -28,6 +28,7 @@ public class CalendarData : ScriptableObject, IDataModel
 
     private void OnValidate()
     {
+        // Cannot be below 1 
         DaysInMonth = Mathf.Max(DaysInMonth, 1);
         MonthsInYear = Mathf.Max(MonthsInYear, 1);
 
@@ -35,6 +36,10 @@ public class CalendarData : ScriptableObject, IDataModel
         saveData.CurrentDay = Mathf.Max(saveData.CurrentDay, 1);
         saveData.CurrentMonth = Mathf.Max(saveData.CurrentMonth, 1);
         saveData.CurrentYear = Mathf.Max(saveData.CurrentYear, 1);
+
+        // Cannot be above upper bounds 
+        saveData.CurrentDay = Mathf.Min(saveData.CurrentDay, DaysInMonth);
+        saveData.CurrentMonth = Mathf.Min(saveData.CurrentMonth, MonthsInYear);
     }
 
     public void SaveData()
