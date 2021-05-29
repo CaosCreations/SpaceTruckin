@@ -76,10 +76,10 @@ public class PlayerMovement : MonoBehaviour
     {
         ResetDirection();
 
-        if (PlayerConstants.MovementAnimationMap.ContainsKey(MovementVector))
+        if (AnimationConstants.MovementAnimationMap.ContainsKey(MovementVector))
         {
             // Get the matching parameters for the player's current direction  
-            string[] activeParams = PlayerConstants.MovementAnimationMap[MovementVector];
+            string[] activeParams = AnimationConstants.MovementAnimationMap[MovementVector];
 
             // Update the state machine 
             Array.ForEach(activeParams, x => animator.SetBool(x, true));
@@ -88,10 +88,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void ResetDirection()
     {
-        animator.SetBool(PlayerConstants.AnimationUpParameter, false);
-        animator.SetBool(PlayerConstants.AnimationLeftParameter, false);
-        animator.SetBool(PlayerConstants.AnimationDownParameter, false);
-        animator.SetBool(PlayerConstants.AnimationRightParameter, false);
+        animator.SetBool(AnimationConstants.AnimationUpParameter, false);
+        animator.SetBool(AnimationConstants.AnimationLeftParameter, false);
+        animator.SetBool(AnimationConstants.AnimationDownParameter, false);
+        animator.SetBool(AnimationConstants.AnimationRightParameter, false);
     }
 
     private void ApplyGravity()
@@ -103,12 +103,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetKey(PlayerConstants.SprintKey))
         {
-            animator.SetBool(PlayerConstants.AnimationRunParameter, true);
+            animator.SetBool(AnimationConstants.AnimationRunParameter, true);
             currentSpeed = PlayerConstants.RunSpeed;
         }
         else
         {
-            animator.SetBool(PlayerConstants.AnimationRunParameter, false);
+            animator.SetBool(AnimationConstants.AnimationRunParameter, false);
             currentSpeed = PlayerConstants.WalkSpeed;
         }
     }
