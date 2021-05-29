@@ -20,7 +20,8 @@ public class NewDayReportUI : MonoBehaviour
 
     private void Awake()
     {
-        BedCanvasUI.OnEndOfDay += () => HasBeenViewed = false;
+        CalendarManager.OnEndOfDay += () => HasBeenViewed = false;
+
         terminalManager = GetComponentInParent<TerminalUIManager>();
         nextCardButton = GetComponentInChildren<Button>(includeInactive: true);
     }
