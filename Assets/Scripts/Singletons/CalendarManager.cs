@@ -18,8 +18,21 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
     public int RealTimeDayDurationInSeconds { get => calendarData.RealTimeDayDurationInSeconds; }
     public int DaysInMonth { get => calendarData.DaysInMonth; }
     public int MonthsInYear { get => calendarData.MonthsInYear; }
-    public int CurrentDay { get => calendarData.saveData.CurrentDay; }
-    public int CurrentMonth { get => calendarData.saveData.CurrentMonth; }
+    public int CurrentDay 
+    { 
+        get => calendarData.saveData.CurrentDay;
+        set => calendarData.saveData.CurrentDay = value;
+    }
+    public int CurrentMonth 
+    { 
+        get => calendarData.saveData.CurrentMonth;
+        set => calendarData.saveData.CurrentMonth = value;
+    }
+    public int CurrentYear
+    {
+        get => calendarData.saveData.CurrentYear;
+        set => calendarData.saveData.CurrentYear = value;
+    }
     #endregion
 
     private void Awake()
@@ -58,10 +71,43 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
     /// </summary>
     public static void EndDay()
     {
+        if (Instance.calendarData != null)
+        {
+            UpdateCalendarData();
+            LogCalendarData();
+        }
+
         // Notify other objects that the day has ended
         OnEndOfDay?.Invoke();
 
         Instance.ClockManager.SetupClockForNextDay();
+    }
+
+    private static void UpdateCalendarData()
+    {
+        // Wrap around when we reach the end of the month, and ensure we start at 1 instead of 0. 
+        Instance.CurrentDay = Instance.CurrentDay
+            .AddAndWrapAround(addend: 1, upperBound: Instance.DaysInMonth + 1, numberToWrapAroundTo: 1);
+
+        if (Instance.CurrentDay <= 1)
+        {
+            // Wrap around when we reach the end of the year, starting at 1. 
+            Instance.CurrentMonth = Instance.CurrentMonth
+                .AddAndWrapAround(addend: 1, upperBound: Instance.MonthsInYear + 1, numberToWrapAroundTo: 1);
+        }
+
+        if (Instance.CurrentMonth <= 1)
+        {
+            // Increment the year whenever we enter wrap around the month.
+            Instance.CurrentYear++;
+        }
+    }
+
+    private static void LogCalendarData()
+    {
+        Debug.Log("Current day: " + Instance.CurrentDay);
+        Debug.Log("Current month: " + Instance.CurrentMonth);
+        Debug.Log("Current year: " + Instance.CurrentYear);
     }
 
     #region Persistence

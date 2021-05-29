@@ -6,7 +6,7 @@ public class ClockManager : MonoBehaviour
 {
     public static TimeSpan currentTime; 
 
-    // This doesn't exist yet 
+    // This will replace OnGUI when the design is ready 
     public Text clockText; 
 
     private int currentTimeInSeconds;
@@ -21,8 +21,6 @@ public class ClockManager : MonoBehaviour
 
         CalculateTickSpeedMultiplier();
         SetupClockForNextDay();
-
-        CalendarManager.OnEndOfDay += StartClock;
     }
 
     // Calculate how quick the clock should tick relative to real time 

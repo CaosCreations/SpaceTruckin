@@ -102,6 +102,8 @@ public class UIManager : MonoBehaviour
         Instance.casetteCanvas.SetActive(false);
         Instance.noticeBoardCanvas.SetActive(false);
         Instance.mainMenuCanvas.SetActive(false);
+
+        OnCanvasDeactivated?.Invoke();
     }
 
     public static void ShowCanvas()
@@ -116,6 +118,8 @@ public class UIManager : MonoBehaviour
         {
             canvas.ShowTutorial();
         }
+
+        OnCanvasActivated?.Invoke();
     }
 
     private static UICanvasBase GetCanvasByType(UICanvasType canvasType)

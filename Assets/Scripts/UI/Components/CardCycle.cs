@@ -42,7 +42,7 @@ public class CardCycle : MonoBehaviour, ICyclable<string>
 
     public void Cycle()
     {
-        currentIndex = (currentIndex + 1) % CyclableContent.Length;
+        currentIndex = currentIndex.AddAndWrapAround(1, CyclableContent.Length);
         cardText.SetText(CurrentCardContent);
 
         if (OnLastCard)
