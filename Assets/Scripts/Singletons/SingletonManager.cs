@@ -18,6 +18,7 @@ public class SingletonManager : MonoBehaviour
         HangarManager.Instance.Init();
         MessagesManager.Instance.Init();
         PlayerManager.Instance.Init();
+        CalendarManager.Instance.Init();
     }
 
     public static void SaveAllSingletonData()
@@ -30,5 +31,6 @@ public class SingletonManager : MonoBehaviour
         HangarManager.Instance.SaveBatteryData();
         MessagesManager.Instance.SaveData();
         LicencesManager.Instance.SaveData();
+        CalendarManager.Instance.SaveData();
     }
 }

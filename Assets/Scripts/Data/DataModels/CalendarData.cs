@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "CalendarData", menuName = "ScriptableObjects/CalendarData", order = 1)]
 public class CalendarData : ScriptableObject, IDataModel
 {
     [Header("Set in Editor")]
@@ -22,6 +23,18 @@ public class CalendarData : ScriptableObject, IDataModel
     {
         public int CurrentDay;
         public int CurrentMonth;
+        public int CurrentYear;
+    }
+
+    private void OnValidate()
+    {
+        DaysInMonth = Mathf.Max(DaysInMonth, 1);
+        MonthsInYear = Mathf.Max(MonthsInYear, 1);
+
+        saveData.CurrentDay = Mathf.Max(saveData.CurrentDay, 1);
+        saveData.CurrentDay = Mathf.Max(saveData.CurrentDay, 1);
+        saveData.CurrentMonth = Mathf.Max(saveData.CurrentMonth, 1);
+        saveData.CurrentYear = Mathf.Max(saveData.CurrentYear, 1);
     }
 
     public void SaveData()

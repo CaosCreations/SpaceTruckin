@@ -3,11 +3,15 @@ using UnityEngine.UI;
 
 public class BedCanvasUI : UICanvasBase
 {
-    [Header("Set at runtime")]
-    [SerializeField] private Image backgroundImage;
+    private Image backgroundImage;
 
     private float timer;
     private float opacity;
+
+    private void Awake()
+    {
+        backgroundImage = GetComponent<Image>();
+    }
 
     private void OnEnable()
     {
