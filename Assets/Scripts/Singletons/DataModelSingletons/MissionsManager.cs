@@ -123,7 +123,8 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
     {
         foreach (Mission mission in Instance.Missions)
         {
-            if (mission.UnlockCondition == MissionUnlockCondition.TotalMoney)
+            if (!mission.HasBeenUnlocked 
+                && mission.UnlockCondition == MissionUnlockCondition.TotalMoney)
             {
                 // Unlock missions that require money and subscribe to keep them updated.
                 mission.UnlockIfConditionMet();
