@@ -59,50 +59,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collider: {fileID: 0}
   doorOpenOffset: {x: 1.3, y: 0, z: 0}
---- !u!1 &1707779711692780407
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1707779711692780404}
-  - component: {fileID: 1707779711692780405}
-  m_Layer: 0
-  m_Name: BatteryExitCollider
-  m_TagString: BatteryExit
-  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1707779711692780404
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1707779711692780407}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.04699707, y: 0.27200317, z: 0.7180023}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 8027673204680212349}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1707779711692780405
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1707779711692780407}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.4936676, y: 1.4042358, z: 0.056121826}
-  m_Center: {x: -0.050331116, y: 0.741333, z: -0.7427063}
 --- !u!1 &4499896426799817712
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,7 +89,7 @@ Transform:
   - {fileID: 3901734346527844320}
   - {fileID: 2595584981950315375}
   m_Father: {fileID: 8027673204680212349}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4793318328317779941
 GameObject:
@@ -240,9 +196,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8027673204680212349}
+  - component: {fileID: 4106686159014221617}
   m_Layer: 0
-  m_Name: OfficeDoor 1
-  m_TagString: Untagged
+  m_Name: OfficeDoor
+  m_TagString: BatteryExit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -258,8 +215,20 @@ Transform:
   m_LocalPosition: {x: 7.796997, y: 0.0079956055, z: -3.7169952}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1707779711692780404}
   - {fileID: 1707779711421612214}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &4106686159014221617
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7192977246294581562}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.3930901, y: 1.2996515, z: 0.11563015}
+  m_Center: {x: -0.04654509, y: 0.77815264, z: 0.05949402}
