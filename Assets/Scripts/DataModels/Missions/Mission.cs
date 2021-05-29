@@ -50,22 +50,27 @@ public partial class Mission : ScriptableObject, IDataModel
         saveData = await DataUtils.LoadFileAsync<MissionSaveData>(name, FOLDER_NAME);
     }
 
-    [HideInInspector]
-    // Parameterless so it can subscribe to OnFinancialTransaction.
-    // We can overload it if needed to handle other conditions.
     public void UnlockIfConditionMet()
     {
-        HasBeenUnlocked = CanBeUnlockedWithMoney;
-    }
+        switch (UnlockCondition)
+        {
+            case MissionUnlockCondition.TotalMoney:
+                // This is called back by the Player Manager's OnFinancialTransaction() event. 
+                HasBeenUnlocked = CanBeUnlockedWithMoney;
 
-    public void StartMission()
-    {
-        saveData.daysLeftToComplete = missionDurationInDays;
-    }
+                if (HasBeenUnlocked)
+                {
+                    // This mission is unlocked, so it no longer needs to be notified of money changes. 
+                    PlayerManager.OnFinancialTransaction -= UnlockIfConditionMet;
+                }
 
-    public async Task LoadDataAsync()
-    {
-        saveData = await DataUtils.LoadFileAsync<MissionSaveData>(name, FOLDER_NAME);
+                break;
+            case MissionUnlockCondition.ConversationNode:
+                // This is called back by the Dialogue System's OnExecute() event.
+                // The event fires when a conversation node is reached. 
+                HasBeenUnlocked = true;
+                break;
+        }
     }
 
     public void StartMission()
