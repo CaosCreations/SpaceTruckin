@@ -112,6 +112,7 @@ public class SaveDataEditor : MonoBehaviour
             ShipsEditor.DeleteSaveData();
             LicencesEditor.DeleteSaveData();
             PlayerEditor.DeleteSaveData();
+            CalendarEditor.DeleteSaveData();
         }
         catch (Exception ex)
         {

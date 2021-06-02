@@ -45,6 +45,8 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         ScheduledMissions = new List<ScheduledMission>();
 
         UnlockMissions();
+
+        CalendarManager.OnEndOfDay += UpdateMissionSchedule;
     }
 
     /// <summary>

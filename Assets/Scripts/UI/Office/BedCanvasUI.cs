@@ -1,17 +1,12 @@
-﻿using System.Collections;
-using UnityEngine;
-using UnityEngine.Events;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class BedCanvasUI : UICanvasBase
 {
-    [Header("Set at runtime")]
-    [SerializeField] private Image backgroundImage;
+    private Image backgroundImage;
 
     private float timer;
     private float opacity;
-
-    public static UnityAction OnEndOfDay;
 
     private void Awake()
     {
@@ -22,14 +17,14 @@ public class BedCanvasUI : UICanvasBase
     {
         timer = 0;
         opacity = 0;
-        EndDay();
+        CalendarManager.EndDay();
     }
 
-    void Update()
+    private void Update()
     {
         timer += Time.deltaTime;
 
-        if(timer < UIConstants.TimeToSleep / 2)
+        if (timer < UIConstants.TimeToSleep / 2)
         {
             opacity += Time.deltaTime / (UIConstants.TimeToSleep / 2);
         }
@@ -44,30 +39,5 @@ public class BedCanvasUI : UICanvasBase
         {
             UIManager.ClearCanvases();
         }
-    }
-
-    private void EndDay()
-    {
-        StartCoroutine(WaitForShipsToDock());
-        MissionsManager.UpdateMissionSchedule();
-        OnEndOfDay?.Invoke();
-        SaveAllData();
-    }
-
-    private void SaveAllData()
-    {
-        PlayerManager.Instance.SaveData();
-        MissionsManager.Instance.SaveData();
-        ArchivedMissionsManager.Instance.SaveData();
-        PilotsManager.Instance.SaveData();
-        ShipsManager.Instance.SaveData();
-        HangarManager.Instance.SaveBatteryData();
-        MessagesManager.Instance.SaveData();
-        LicencesManager.Instance.SaveData();
-    }
-
-    private IEnumerator WaitForShipsToDock()
-    {
-        yield return new WaitForSeconds(UIConstants.TimeToDock);
     }
 }
