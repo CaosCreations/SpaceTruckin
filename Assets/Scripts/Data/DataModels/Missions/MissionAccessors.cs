@@ -7,6 +7,17 @@
     public string Customer { get => customer; set => customer = value; }
     public string Cargo { get => cargo; set => cargo = value; }
     public string Description { get => description; set => description = value; }
+    public MissionUnlockCondition UnlockCondition { get => unlockCondition; }
+    public bool CanBeUnlockedWithMoney
+    {
+         get => UnlockCondition == MissionUnlockCondition.TotalMoney 
+            && MoneyNeededToUnlock <= PlayerManager.Instance.Money;
+    }
+    public bool HasBeenUnlocked
+    {
+        get => saveData.hasBeenUnlocked;
+        set => saveData.hasBeenUnlocked = value;
+    }
     public bool HasBeenAccepted
     {
         get => saveData.hasBeenAccepted;
@@ -27,8 +38,6 @@
     {
         get => moneyNeededToUnlock; set => moneyNeededToUnlock = value;
     }
-    //public Ship Ship => Pilot.Ship;
-    //public Pilot Pilot { get => saveData.pilot; set => saveData.pilot = value; }
     public bool HasRandomOutcomes 
     { 
         get => hasRandomOutcomes || Outcomes == null || Outcomes.Length <= 0;

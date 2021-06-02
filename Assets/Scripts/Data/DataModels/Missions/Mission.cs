@@ -2,6 +2,11 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
+public enum MissionUnlockCondition
+{
+    TotalMoney, ConversationNode
+}
+
 [CreateAssetMenu(fileName = "Mission", menuName = "ScriptableObjects/Mission", order = 1)]
 public partial class Mission : ScriptableObject, IDataModel
 {
@@ -9,6 +14,7 @@ public partial class Mission : ScriptableObject, IDataModel
     [SerializeField] private int missionDurationInDays;
     [SerializeField] private string missionName, customer, cargo, description;
     [SerializeField] private int fuelCost;
+    [SerializeField] private MissionUnlockCondition unlockCondition;
     [SerializeField] private long moneyNeededToUnlock;
     [SerializeField] private bool hasRandomOutcomes;
     [SerializeField] private MissionOutcome[] outcomes;
@@ -25,7 +31,10 @@ public partial class Mission : ScriptableObject, IDataModel
     [Serializable]
     public class MissionSaveData
     {
-        public bool hasBeenAccepted = false;
+        // Unlocked - appear in noticeboard ready to be accepted. 
+        // Accepted - appear in office terminal and can be assigned to pilots. 
+        public bool hasBeenUnlocked, hasBeenAccepted;
+
         public int daysLeftToComplete, numberOfCompletions;
     }
 
@@ -42,6 +51,29 @@ public partial class Mission : ScriptableObject, IDataModel
     public async Task LoadDataAsync()
     {
         saveData = await DataUtils.LoadFileAsync<MissionSaveData>(name, FOLDER_NAME);
+    }
+
+    public void UnlockIfConditionMet()
+    {
+        switch (UnlockCondition)
+        {
+            case MissionUnlockCondition.TotalMoney:
+                // This is called back by the Player Manager's OnFinancialTransaction() event. 
+                HasBeenUnlocked = CanBeUnlockedWithMoney;
+
+                if (HasBeenUnlocked)
+                {
+                    // This mission is unlocked, so it no longer needs to be notified of any money changes. 
+                    PlayerManager.OnFinancialTransaction -= UnlockIfConditionMet;
+                }
+                break;
+
+            case MissionUnlockCondition.ConversationNode:
+                // This is called back by the Dialogue System's OnExecute() event.
+                // The event fires when an associated conversation node is reached. 
+                HasBeenUnlocked = true;
+                break;
+        }
     }
 
     public void StartMission()
