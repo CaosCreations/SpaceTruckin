@@ -35,14 +35,16 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         else
         {
             DataUtils.CreateSaveFolder(Mission.FOLDER_NAME);
-            //DataUtils.CreateSaveFolder(ScheduledMission.FOLDER_NAME);
         }
 
         if (Missions?.Length <= 0)
         {
             Debug.LogError("No mission data found");
         }
+
         ScheduledMissions = new List<ScheduledMission>();
+
+        UnlockMissions();
 
         CalendarManager.OnEndOfDay += UpdateMissionSchedule;
     }
@@ -117,6 +119,20 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         ArchivedMissionsManager.AddToArchive(scheduled.Mission.MissionToArchive);
 
         ScheduledMissions.Remove(scheduled);
+    }
+
+    private static void UnlockMissions()
+    {
+        foreach (Mission mission in Instance.Missions)
+        {
+            if (!mission.HasBeenUnlocked 
+                && mission.UnlockCondition == MissionUnlockCondition.TotalMoney)
+            {
+                // Unlock missions that require money and subscribe to event to keep them updated.
+                mission.UnlockIfConditionMet();
+                PlayerManager.OnFinancialTransaction += mission.UnlockIfConditionMet; 
+            }
+        }
     }
 
     private static void AssignRandomOutcomes(Mission mission)
