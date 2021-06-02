@@ -1,0 +1,35 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class BatterySlotPlacement : InteractableObject
+{
+    public Transform Slot;
+
+    private BatteryInteractable batteryInteractableInSlot;
+
+    public void OnTriggerStay(Collider other)
+    {
+        Debug.Log(gameObject.name + " IsPlayerColliding =" + IsPlayerColliding);
+
+        if(!PlayerManager.IsPaused
+          && IsPlayerColliding
+          && Input.GetKey(PlayerConstants.ActionKey))
+        {
+            // Place battery
+            if(HangarManager.currentBatteryBeingHeld != null && batteryInteractableInSlot == null)
+            {
+                batteryInteractableInSlot = HangarManager.currentBatteryBeingHeld.BatteryInteractable;
+                batteryInteractableInSlot.PlaceBatteryInSlot(Slot);
+            }
+
+            // Take battery
+            else if(HangarManager.currentBatteryBeingHeld == null && batteryInteractableInSlot != null)
+            {
+                batteryInteractableInSlot.TakeBattery();
+                batteryInteractableInSlot = null;
+            }  
+        }
+    }
+
+}

@@ -52,6 +52,7 @@ MonoBehaviour:
   collider: {fileID: 8424855993406580408}
   batteryContainerRigidbody: {fileID: 1691787280572270736}
   batteryModelCollider: {fileID: 276256587078668969}
+  batteryWrapperCollider: {fileID: 8424855993406580408}
 --- !u!65 &8424855993406580408
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -63,8 +64,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.1207075, y: 0.47824097, z: 1}
-  m_Center: {x: 0.017434597, y: 0.38587952, z: 0}
+  m_Size: {x: 1.1606445, y: 0.47824097, z: 1.2236328}
+  m_Center: {x: -0.005279541, y: 0.38587952, z: 0.018325806}
 --- !u!54 &1691787280572270736
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -180,7 +181,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collider: {fileID: 0}
   batteryContainerRigidbody: {fileID: 0}
-  batteryModelCollider: {fileID: 0}
+  batteryModelCollider: {fileID: 276256587078668969}
+  batteryWrapperCollider: {fileID: 8424855993406580408}
 --- !u!1001 &2926850476172681646
 PrefabInstance:
   m_ObjectHideFlags: 0
