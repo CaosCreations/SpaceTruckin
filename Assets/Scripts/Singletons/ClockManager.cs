@@ -73,7 +73,7 @@ public class ClockManager : MonoBehaviour
     private void OnGUI()
     {
         var localStyle = new GUIStyle();
-        localStyle.normal.textColor = Color.blue;
+        localStyle.normal.textColor = Color.white;
 
         GUI.Label(new Rect(
             Camera.main.pixelWidth - 128f, Camera.main.pixelHeight - 128f, 128f, 128f), 
