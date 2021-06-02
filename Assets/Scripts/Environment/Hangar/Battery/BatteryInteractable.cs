@@ -94,6 +94,8 @@ public class BatteryInteractable : InteractableObject
 
     public void PlaceBatteryInSlot(Transform slot)
     {
+        batteryWrapperCollider.enabled = false;
+
         transform.position = slot.transform.position;
 
         PlayerIsHoldingABattery = false;
@@ -101,8 +103,6 @@ public class BatteryInteractable : InteractableObject
         gameObject.SetParent(HangarManager.BatteriesContainer);
 
         HangarManager.currentBatteryBeingHeld = null;
-
-        batteryWrapperCollider.enabled = false;
     }
 
     private void Update()

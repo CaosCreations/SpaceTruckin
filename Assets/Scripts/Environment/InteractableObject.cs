@@ -9,7 +9,8 @@ public class InteractableObject : MonoBehaviour
 
     protected void SetPlayerIsColliding(Collider other)
     {
-        IsPlayerColliding = other.CompareTag(PlayerConstants.PlayerTag);
+        if (other.CompareTag(PlayerConstants.PlayerTag) == true)
+            IsPlayerColliding = true;
     }
 
     /// <summary>
@@ -43,6 +44,10 @@ public class InteractableObject : MonoBehaviour
     public virtual void OnTriggerExit(Collider other)
     {
         Debug.Log("On trigger exit Interactable. " + other.name);
-        SetPlayerIsColliding(other);
+        if(other.CompareTag(PlayerConstants.PlayerTag) == true)
+        {
+            IsPlayerColliding = false;
+        }
+        Debug.Log("IsPlayerColliding = " + IsPlayerColliding);
     }
 }

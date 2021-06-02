@@ -8,13 +8,11 @@ public class BatterySlotPlacement : InteractableObject
 
     private BatteryInteractable batteryInteractableInSlot;
 
-    public void OnTriggerStay(Collider other)
+    public void Update()
     {
-        Debug.Log(gameObject.name + " IsPlayerColliding =" + IsPlayerColliding);
-
         if(!PlayerManager.IsPaused
           && IsPlayerColliding
-          && Input.GetKey(PlayerConstants.ActionKey))
+          && Input.GetKeyDown(PlayerConstants.ActionKey))
         {
             // Place battery
             if(HangarManager.currentBatteryBeingHeld != null && batteryInteractableInSlot == null)
