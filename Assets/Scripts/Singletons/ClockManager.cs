@@ -21,6 +21,10 @@ public class ClockManager : MonoBehaviour
 
         CalculateTickSpeedMultiplier();
         SetupClockForNextDay();
+
+#if UNITY_EDITOR
+        Application.targetFrameRate = 60;
+#endif
     }
 
     // Calculate how quick the clock should tick relative to real time 
