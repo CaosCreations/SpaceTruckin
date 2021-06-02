@@ -1,19 +1,12 @@
-﻿using System.Collections;
-using UnityEngine;
-using UnityEngine.Events;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class BedCanvasUI : UICanvasBase
 {
-    [Header("Set at runtime")]
-    public Image backgroundImage;
+    private Image backgroundImage;
 
     private float timer;
-    private const float timeToSleep = 4;
-    private const float timeToDock = 2; 
     private float opacity;
-
-    public static UnityAction OnEndOfDay;
 
     private void Awake()
     {
@@ -24,52 +17,27 @@ public class BedCanvasUI : UICanvasBase
     {
         timer = 0;
         opacity = 0;
-        EndDay();
+        CalendarManager.EndDay();
     }
 
-    void Update()
+    private void Update()
     {
         timer += Time.deltaTime;
 
-        if(timer < timeToSleep / 2)
+        if (timer < UIConstants.TimeToSleep / 2)
         {
-            opacity += Time.deltaTime / (timeToSleep / 2);
+            opacity += Time.deltaTime / (UIConstants.TimeToSleep / 2);
         }
         else
         {
-            opacity -= Time.deltaTime / (timeToSleep / 2);
+            opacity -= Time.deltaTime / (UIConstants.TimeToSleep / 2);
         }
 
         backgroundImage.color = new Color(0, 0, 0, opacity);
 
-        if (timer >= timeToSleep)
+        if (timer >= UIConstants.TimeToSleep)
         {
             UIManager.ClearCanvases();
         }
-    }
-
-    private void EndDay()
-    {
-        StartCoroutine(WaitForShipsToDock());
-        MissionsManager.UpdateMissionSchedule();
-        OnEndOfDay?.Invoke();
-        SaveAllData();
-    }
-
-    private void SaveAllData()
-    {
-        PlayerManager.Instance.SaveData();
-        MissionsManager.Instance.SaveData();
-        ArchivedMissionsManager.Instance.SaveData();
-        PilotsManager.Instance.SaveData();
-        ShipsManager.Instance.SaveData();
-        HangarManager.Instance.SaveBatteryData();
-        MessagesManager.Instance.SaveData();
-        LicencesManager.Instance.SaveData();
-    }
-
-    private IEnumerator WaitForShipsToDock()
-    {
-        yield return new WaitForSeconds(timeToDock);
     }
 }

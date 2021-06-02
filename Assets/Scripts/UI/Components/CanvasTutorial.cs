@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 
-public class CanvasTutorial : MonoBehaviour
+public class CanvasTutorial : SubMenu
 {
     [SerializeField] private CardCycle tutorialCardCycle;
 
-    private void OnDisable()
+    public override void OnDisable()
     {
         UIManager.SetCurrentCanvasHasBeenViewed(true);
+        UIManager.RemoveOverriddenKeys(uniqueKeyCodeOverrides);
         Destroy(gameObject);
     }
 }

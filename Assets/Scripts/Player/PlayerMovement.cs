@@ -10,6 +10,8 @@ public class PlayerMovement : MonoBehaviour
 {
     public static Vector3 MovementVector;
 
+    public Rigidbody PlayerRigidbody;
+
     [SerializeField] private Animator animator;
     private CharacterController characterController;
 
@@ -19,6 +21,8 @@ public class PlayerMovement : MonoBehaviour
 
     // Player movement relates to camera
     public Transform CameraTransform;
+
+    public Vector3 PlayerFacingDirection;
 
     private void Start()
     {
@@ -49,7 +53,16 @@ public class PlayerMovement : MonoBehaviour
         MovementVector.x = Input.GetAxisRaw("Horizontal");
         MovementVector.y = Input.GetAxisRaw("Vertical");
 
+        // If the player is not moving then then Movement Vector in PlayerMovement is 0
+        // As we want a direction we only take the last non 0 Movement Vector
+
+        if(MovementVector != Vector3.zero)
+        {
+            PlayerFacingDirection = new Vector3(MovementVector.x, 0f, MovementVector.y);
+        }
+
         SetDirection();
+
         RotateWithView(MovementVector, CameraTransform);
     }
 
@@ -76,10 +89,10 @@ public class PlayerMovement : MonoBehaviour
     {
         ResetDirection();
 
-        if (PlayerConstants.MovementAnimationMap.ContainsKey(MovementVector))
+        if (AnimationConstants.MovementAnimationMap.ContainsKey(MovementVector))
         {
             // Get the matching parameters for the player's current direction  
-            string[] activeParams = PlayerConstants.MovementAnimationMap[MovementVector];
+            string[] activeParams = AnimationConstants.MovementAnimationMap[MovementVector];
 
             // Update the state machine 
             Array.ForEach(activeParams, x => animator.SetBool(x, true));
@@ -88,10 +101,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void ResetDirection()
     {
-        animator.SetBool(PlayerConstants.AnimationUpParameter, false);
-        animator.SetBool(PlayerConstants.AnimationLeftParameter, false);
-        animator.SetBool(PlayerConstants.AnimationDownParameter, false);
-        animator.SetBool(PlayerConstants.AnimationRightParameter, false);
+        animator.SetBool(AnimationConstants.AnimationUpParameter, false);
+        animator.SetBool(AnimationConstants.AnimationLeftParameter, false);
+        animator.SetBool(AnimationConstants.AnimationDownParameter, false);
+        animator.SetBool(AnimationConstants.AnimationRightParameter, false);
     }
 
     private void ApplyGravity()
@@ -103,12 +116,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetKey(PlayerConstants.SprintKey))
         {
-            animator.SetBool(PlayerConstants.AnimationRunParameter, true);
+            animator.SetBool(AnimationConstants.AnimationRunParameter, true);
             currentSpeed = PlayerConstants.RunSpeed;
         }
         else
         {
-            animator.SetBool(PlayerConstants.AnimationRunParameter, false);
+            animator.SetBool(AnimationConstants.AnimationRunParameter, false);
             currentSpeed = PlayerConstants.WalkSpeed;
         }
     }

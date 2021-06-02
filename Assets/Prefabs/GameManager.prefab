@@ -148,6 +148,8 @@ GameObject:
   - component: {fileID: 4085865392418400431}
   - component: {fileID: 6202489397274892342}
   - component: {fileID: 8712058223457872494}
+  - component: {fileID: 6922048894487758194}
+  - component: {fileID: 3599417350814226549}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -369,6 +371,33 @@ MonoBehaviour:
   <AudioClips>k__BackingField:
   - {fileID: 8300000, guid: 11b51817310c31048a5e580b1f3e4f1f, type: 3}
   - {fileID: 8300000, guid: a97fa7fb8bb006140b5cd5d006524e10, type: 3}
+--- !u!114 &6922048894487758194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5745358076465076624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28606b96e0fddae4d843bfc8e3e3353e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ClockManager: {fileID: 3599417350814226549}
+  calendarData: {fileID: 11400000, guid: 0c695b610cceda04ba5d7a8cdac8d473, type: 2}
+--- !u!114 &3599417350814226549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5745358076465076624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc7c9cd4e1309f642b51d2e9fea65489, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clockText: {fileID: 0}
 --- !u!1 &7587553237234757576
 GameObject:
   m_ObjectHideFlags: 0

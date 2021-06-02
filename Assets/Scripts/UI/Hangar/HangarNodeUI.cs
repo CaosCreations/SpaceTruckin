@@ -35,7 +35,6 @@ public class HangarNodeUI : UICanvasBase
     [SerializeField] private Ship shipToInspect;
     private HangarSlot hangarSlot;
 
-    private bool isInSubMenu;
     private readonly long fuelCostPerUnit = 1;
     private long fuelCostAfterLicences;
     private float fuelTimer = 0;
@@ -75,19 +74,13 @@ public class HangarNodeUI : UICanvasBase
 
     private void Update()
     {
-        if (isInSubMenu)
+        if (Input.GetKeyDown(PlayerConstants.ExitKey))
         {
-            if (Input.GetKeyDown(PlayerConstants.ExitKey))
-            {
-                SwitchPanel(HangarPanel.Main);
-            }
+            SwitchPanel(HangarPanel.Main);
         }
-        else
+        else if (shipPreview != null)
         {
-            if (shipPreview != null)
-            {
-                shipPreview.transform.Rotate(UIConstants.ShipPreviewRotationSpeed);
-            }
+            shipPreview.transform.Rotate(UIConstants.ShipPreviewRotationSpeed);
         }
 
         CheckFueling();
@@ -157,9 +150,6 @@ public class HangarNodeUI : UICanvasBase
                 customizationPanel.SetActive(true);
                 break;
         }
-
-        isInSubMenu = !(panel == HangarPanel.Main);
-        UIManager.Instance.CurrentMenuOverridesEscape = isInSubMenu;
     }
 
     private void Launch(bool isStartingMission)

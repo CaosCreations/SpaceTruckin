@@ -47,6 +47,7 @@ public class CharacterCreationUI : MonoBehaviour
         {
             PlayerManager.SetPlayerName(CharacterName);
             invalidInputText.SetActive(false);
+
             UIManager.ClearCanvases();
         }
         else
@@ -65,7 +66,7 @@ public class CharacterCreationUI : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (UIManager.GetNonOverriddenKeyDown(PlayerConstants.ChooseNameKey))
         {
             ChooseName();
         }

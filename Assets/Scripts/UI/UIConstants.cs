@@ -53,6 +53,11 @@ public class UIConstants : MonoBehaviour
     public static float ShipPreviewScaleFactor = 0.85f;
 
 
+    // Bed canvas 
+    public const float TimeToSleep = 4f;
+    public const float TimeToDock = 2f;
+
+
     // Regex
     public const char TemplateBoundaryLeftChar = '{';
     public const char TemplateBoundaryRightChar = '}';

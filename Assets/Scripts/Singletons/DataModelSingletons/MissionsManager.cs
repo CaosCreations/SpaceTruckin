@@ -45,6 +45,8 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         ScheduledMissions = new List<ScheduledMission>();
 
         UnlockMissions();
+
+        CalendarManager.OnEndOfDay += UpdateMissionSchedule;
     }
 
     /// <summary>
@@ -126,7 +128,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
             if (!mission.HasBeenUnlocked 
                 && mission.UnlockCondition == MissionUnlockCondition.TotalMoney)
             {
-                // Unlock missions that require money and subscribe to keep them updated.
+                // Unlock missions that require money and subscribe to event to keep them updated.
                 mission.UnlockIfConditionMet();
                 PlayerManager.OnFinancialTransaction += mission.UnlockIfConditionMet; 
             }

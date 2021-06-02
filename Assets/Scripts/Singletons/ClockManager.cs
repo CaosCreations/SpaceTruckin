@@ -6,15 +6,8 @@ public class ClockManager : MonoBehaviour
 {
     public static TimeSpan currentTime; 
 
-    // This doesn't exist yet 
-    public Text clockText;
-
-    // Hide these later 
-    private TimeSpan dayStartTime = new TimeSpan(6, 0, 0); // 6am
-    private TimeSpan dayEndTime = new TimeSpan(26, 0, 0); // 2am the next day
-
-    [SerializeField]
-    private int realTimeDayDurationInSeconds = 900; // 15 mins  
+    // This will replace OnGUI when the design is ready 
+    public Text clockText; 
 
     private int currentTimeInSeconds;
     private int tickSpeedMultiplier;
@@ -27,32 +20,36 @@ public class ClockManager : MonoBehaviour
         UIManager.OnCanvasDeactivated += StartClock;
 
         CalculateTickSpeedMultiplier();
-        StartDay();
+        SetupClockForNextDay();
+
+#if UNITY_EDITOR
+        Application.targetFrameRate = 60;
+#endif
     }
 
     // Calculate how quick the clock should tick relative to real time 
     private void CalculateTickSpeedMultiplier()
     {
-        tickSpeedMultiplier = Convert.ToInt32(dayEndTime.Subtract(dayStartTime).TotalSeconds)
-            / realTimeDayDurationInSeconds;
+        tickSpeedMultiplier = Convert.ToInt32(
+            CalendarManager.Instance.DayEndTime.Subtract(CalendarManager.Instance.DayStartTime).TotalSeconds)
+                / CalendarManager.Instance.RealTimeDayDurationInSeconds;
     }
 
-    private void StartDay()
+    public void SetupClockForNextDay()
     {
         ResetClock();
         StartClock(); 
-        // Other startup logic tbd 
     }
 	
-	private void ResetClock()
+	public void ResetClock()
     {
         clockStopped = true;
-        currentTime = dayStartTime;
+        currentTime = CalendarManager.Instance.DayStartTime;
         currentTimeInSeconds = (int)currentTime.TotalSeconds;
         //clockText.text = currentTime.ToString();
     }
 
-    private void StartClock()
+    public void StartClock()
     {
         clockStopped = false;
     }
@@ -62,18 +59,11 @@ public class ClockManager : MonoBehaviour
         clockStopped = true;
     }
 
-    private void EndDay()
-    {
-        ResetClock(); 
-        // Other ending logic tbd 
-        // Game will force player to sleep if not already 
-    }
-
     private void Update()
     {
-        if (currentTime >= dayEndTime)
+        if (currentTime >= CalendarManager.Instance.DayEndTime)
         {
-            EndDay();
+            CalendarManager.EndDay();
         }
 
         if (!clockStopped)
@@ -87,7 +77,7 @@ public class ClockManager : MonoBehaviour
     private void OnGUI()
     {
         var localStyle = new GUIStyle();
-        localStyle.normal.textColor = Color.blue;
+        localStyle.normal.textColor = Color.white;
 
         GUI.Label(new Rect(
             Camera.main.pixelWidth - 128f, Camera.main.pixelHeight - 128f, 128f, 128f), 
@@ -99,6 +89,6 @@ public class ClockManager : MonoBehaviour
     {
         Debug.Log("Current time: " + currentTime);
         Debug.Log("Current time in seconds: " + currentTimeInSeconds);
-        Debug.Log("Time remaining: " + dayEndTime.Subtract(currentTime));
+        Debug.Log("Time remaining: " + CalendarManager.Instance.DayEndTime.Subtract(currentTime));
     }
 }

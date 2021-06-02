@@ -3,5 +3,6 @@
     private void OnDisable()
     {
         UIManager.SetCannotInteract();
+        UIManager.ResetOverriddenKeys();
     }
 }
