@@ -7,12 +7,6 @@ public class InteractableObject : MonoBehaviour
 
     [SerializeField] new public Collider Collider;
 
-    protected void SetPlayerIsColliding(Collider other)
-    {
-        if (other.CompareTag(PlayerConstants.PlayerTag) == true)
-            IsPlayerColliding = true;
-    }
-
     /// <summary>
     /// Can be called whenever we want to check whether the object is colliding with the player
     /// As it doesn't rely on trigger OnTriggerEnter and OnTriggerExit, it can be used in the rare situations where the object's
@@ -38,7 +32,8 @@ public class InteractableObject : MonoBehaviour
 
     public virtual void OnTriggerEnter(Collider other)
     {
-        SetPlayerIsColliding(other);
+        if (other.CompareTag(PlayerConstants.PlayerTag) == true)
+            IsPlayerColliding = true;
     }
 
     public virtual void OnTriggerExit(Collider other)

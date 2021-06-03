@@ -7,7 +7,7 @@ public class OfficeDoor : InteractableObject
 
     public override void OnTriggerEnter(Collider other)
     {
-        SetPlayerIsColliding(other);
+        base.OnTriggerEnter(other);
 
         if (IsPlayerColliding == true)
         {
@@ -17,7 +17,7 @@ public class OfficeDoor : InteractableObject
 
     public override void OnTriggerExit(Collider other)
     {
-        SetPlayerIsColliding(other);
+        base.OnTriggerExit(other);
 
         if (IsPlayerColliding == true)
         {
