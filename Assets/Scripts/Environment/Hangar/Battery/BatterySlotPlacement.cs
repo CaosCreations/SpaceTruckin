@@ -14,17 +14,24 @@ public class BatterySlotPlacement : InteractableObject
           && IsPlayerColliding
           && Input.GetKeyDown(PlayerConstants.ActionKey))
         {
-            // Place battery
-            if(HangarManager.currentBatteryBeingHeld != null && batteryInteractableInSlot == null)
+            if (BatteryInteractable.PlayerIsHoldingABattery == true && batteryInteractableInSlot == null)
             {
                 batteryInteractableInSlot = HangarManager.currentBatteryBeingHeld.BatteryInteractable;
+                
+                /// <summary>
+                /// When placing the battery in a slot, we deactivate its wrapper's collider
+                /// We do so that the battery system and the battery slot placement don't interfere with each other
+                /// Once placed, we want the player to pick up the battery when being within the slot's collider
+                ///  </summary>
+                batteryInteractableInSlot.Collider.enabled = false;
                 batteryInteractableInSlot.PlaceBatteryInSlot(Slot);
             }
 
             // Take battery
-            else if(HangarManager.currentBatteryBeingHeld == null && batteryInteractableInSlot != null)
+            else if(BatteryInteractable.PlayerIsHoldingABattery == false && batteryInteractableInSlot != null)
             {
                 batteryInteractableInSlot.TakeBattery();
+                batteryInteractableInSlot.Collider.enabled = true;
                 batteryInteractableInSlot = null;
             }  
         }

@@ -5,7 +5,7 @@ public class InteractableObject : MonoBehaviour
     // Set this OnEnter and OnExit to avoiding repeatedly comparing tags
     public bool IsPlayerColliding { get; protected set; }
 
-    [SerializeField] new protected Collider collider;
+    [SerializeField] new public Collider Collider;
 
     protected void SetPlayerIsColliding(Collider other)
     {
@@ -20,7 +20,7 @@ public class InteractableObject : MonoBehaviour
     /// </summary>
     protected void SetPlayerIsColliding()
     {
-        Collider[] colliders = Physics.OverlapBox(transform.position, collider.bounds.extents, Quaternion.identity);
+        Collider[] colliders = Physics.OverlapBox(transform.position, Collider.bounds.extents, Quaternion.identity);
 
         foreach(Collider item in colliders)
         {

@@ -8,8 +8,6 @@ public class BatteryInteractable : InteractableObject
 
     [SerializeField] Collider batteryModelCollider;
 
-    [SerializeField] Collider batteryWrapperCollider;
-
     // Shows that the player is holding any battery
     public static bool PlayerIsHoldingABattery;
 
@@ -25,8 +23,6 @@ public class BatteryInteractable : InteractableObject
         transform.localPosition = new Vector3(0f, HangarConstants.BatteryYPosition, 0f);
 
         batteryModelCollider.enabled = false;
-
-        batteryWrapperCollider.enabled = true;
 
         ConfigureRigidbody(isConnectingToPlayer: true);
 
@@ -88,14 +84,13 @@ public class BatteryInteractable : InteractableObject
         if (other.CompareTag(HangarConstants.BatteryExitColliderTag))
         {
             DropBattery();
-            HangarManager.BatterySpawnPositionManager.RespawnBattery(transform, collider);
+            HangarManager.BatterySpawnPositionManager.RespawnBattery(transform, Collider);
         }
     }
 
+
     public void PlaceBatteryInSlot(Transform slot)
     {
-        batteryWrapperCollider.enabled = false;
-
         transform.position = slot.transform.position;
 
         PlayerIsHoldingABattery = false;
@@ -108,7 +103,7 @@ public class BatteryInteractable : InteractableObject
     private void Update()
     {
         if (!PlayerManager.IsPaused 
-            && Input.GetKeyDown(PlayerConstants.DropObjectKey)
+            && Input.GetKey(PlayerConstants.DropObjectKey)
             && transform.parent.gameObject == PlayerManager.PlayerObject)
         {
             DropBattery();
