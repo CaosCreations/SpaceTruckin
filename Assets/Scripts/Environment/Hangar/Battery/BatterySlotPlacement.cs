@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BatterySlotPlacement : InteractableObject
 {
-    public Transform Slot;
+    [SerializeField] private Transform slot;
 
     private BatteryInteractable batteryInteractableInSlot;
 
@@ -14,7 +14,8 @@ public class BatterySlotPlacement : InteractableObject
           && IsPlayerColliding
           && Input.GetKeyDown(PlayerConstants.ActionKey))
         {
-            if (BatteryInteractable.PlayerIsHoldingABattery == true && batteryInteractableInSlot == null)
+            if (HangarManager.currentBatteryBeingHeld.BatteryInteractable != null
+                && batteryInteractableInSlot == null)
             {
                 batteryInteractableInSlot = HangarManager.currentBatteryBeingHeld.BatteryInteractable;
                 
@@ -24,7 +25,7 @@ public class BatterySlotPlacement : InteractableObject
                 /// Once placed, we want the player to pick up the battery when being within the slot's collider
                 ///  </summary>
                 batteryInteractableInSlot.Collider.enabled = false;
-                batteryInteractableInSlot.PlaceBatteryInSlot(Slot);
+                batteryInteractableInSlot.PlaceBatteryInSlot(slot);
             }
 
             // Take battery

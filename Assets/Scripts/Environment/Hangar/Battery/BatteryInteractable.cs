@@ -26,7 +26,7 @@ public class BatteryInteractable : InteractableObject
 
         ConfigureRigidbody(isConnectingToPlayer: true);
 
-        HangarManager.currentBatteryBeingHeld = gameObject.GetComponent<BatteryWrapper>();
+        HangarManager.currentBatteryBeingHeld = GetComponent<BatteryWrapper>();
     }
 
     private void ConfigureRigidbody(bool isConnectingToPlayer)

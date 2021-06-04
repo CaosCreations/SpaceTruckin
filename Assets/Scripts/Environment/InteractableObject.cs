@@ -5,7 +5,7 @@ public class InteractableObject : MonoBehaviour
     // Set this OnEnter and OnExit to avoiding repeatedly comparing tags
     public bool IsPlayerColliding { get; protected set; }
 
-    [SerializeField] new public Collider Collider;
+    [SerializeField] public Collider Collider;
 
     /// <summary>
     /// Can be called whenever we want to check whether the object is colliding with the player

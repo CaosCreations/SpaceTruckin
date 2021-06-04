@@ -19,7 +19,7 @@ public class OfficeDoor : InteractableObject
     {
         base.OnTriggerExit(other);
 
-        if (IsPlayerColliding == true)
+        if (other.CompareTag(PlayerConstants.PlayerTag) == true)
         {
             CloseDoor();
         }
