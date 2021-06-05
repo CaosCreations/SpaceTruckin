@@ -13,14 +13,9 @@ public class HangarEditor : MonoBehaviour
             HangarSlot hangarSlot = HangarManager.HangarSlots
                 .FirstOrDefault(x => x.IsUnlocked && x.Ship == null);
             
-            Ship ship = default;
-
-            if (hangarSlot != null)
-            {
-                ship = ShipsManager.Instance.Ships.FirstOrDefault(s => s.IsInQueue);
-
-                HangarManager.DockShip(ship, hangarSlot.Node);
-            }
+            Ship ship = ShipsManager.Instance.Ships.FirstOrDefault(s => s.IsInQueue);
+            
+            HangarManager.DockShip(ship, hangarSlot.Node);
 
             return ship;
         }
@@ -40,11 +35,38 @@ public class HangarEditor : MonoBehaviour
 
             Mission mission = MissionsManager.Instance.Missions
                 .FirstOrDefault(x => MissionsManager.GetScheduledMission(x) == null);
-            
-            if (mission != null)
+
+            MissionsManager.AddOrUpdateScheduledMission(ship.Pilot, mission);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogException(ex);
+        }
+    }
+
+    [MenuItem("Space Truckin/Hangar/Launch All Ships On Missions")]
+    private static void LaunchAllShips()
+    {
+        try
+        {
+            foreach (HangarSlot hangarSlot in HangarManager.HangarSlots)
             {
-                MissionsManager.AddOrUpdateScheduledMission(ship.Pilot, mission);
+                if (hangarSlot.Ship == null)
+                {
+                    continue;
+                }
+
+                ScheduledMission scheduled = MissionsManager.GetScheduledMission(hangarSlot.Ship);
+                scheduled.Mission.StartMission();
+
+                MissionsManager.RemoveScheduledMission(scheduled);
+
+                HangarManager.LaunchShip(hangarSlot.Node);
+                hangarSlot.LaunchShip();
             }
+
+            HangarNodeUI nodeUI = FindObjectOfType<HangarNodeUI>();
+            nodeUI.shipToInspect = null;
         }
         catch (Exception ex)
         {
