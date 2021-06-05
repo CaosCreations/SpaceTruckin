@@ -26,7 +26,7 @@ public class BatteryInteractable : InteractableObject
 
         ConfigureRigidbody(isConnectingToPlayer: true);
 
-        HangarManager.currentBatteryBeingHeld = GetComponent<BatteryWrapper>();
+        HangarManager.CurrentBatteryBeingHeld = GetComponent<BatteryWrapper>();
     }
 
     private void ConfigureRigidbody(bool isConnectingToPlayer)
@@ -58,7 +58,7 @@ public class BatteryInteractable : InteractableObject
 
         IsPlayerColliding = false;
 
-        HangarManager.currentBatteryBeingHeld = null;
+        HangarManager.CurrentBatteryBeingHeld = null;
     }
 
     private void OnTriggerStay(Collider other)
@@ -97,7 +97,7 @@ public class BatteryInteractable : InteractableObject
 
         gameObject.SetParent(HangarManager.BatteriesContainer);
 
-        HangarManager.currentBatteryBeingHeld = null;
+        HangarManager.CurrentBatteryBeingHeld = null;
     }
 
     private void Update()
