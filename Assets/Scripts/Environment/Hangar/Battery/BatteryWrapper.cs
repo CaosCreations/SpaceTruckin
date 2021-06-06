@@ -20,12 +20,9 @@ public class BatteryWrapper : MonoBehaviour
     #endregion
 }
 
-
 [Serializable]
 public struct BatterySaveData
 {
     public bool IsCharged;
     public Vector3 PositionInHangar;
 }
-
-

@@ -36,6 +36,7 @@ public partial class Mission : ScriptableObject, IDataModel
         public bool hasBeenUnlocked, hasBeenAccepted;
 
         public int daysLeftToComplete, numberOfCompletions;
+        public Date dateUnlocked;
     }
 
     private void OnValidate()
@@ -59,10 +60,10 @@ public partial class Mission : ScriptableObject, IDataModel
         {
             case MissionUnlockCondition.TotalMoney:
                 // This is called back by the Player Manager's OnFinancialTransaction() event. 
-                HasBeenUnlocked = CanBeUnlockedWithMoney;
-
-                if (HasBeenUnlocked)
+                if (CanBeUnlockedWithMoney)
                 {
+                    UnlockMission();
+
                     // This mission is unlocked, so it no longer needs to be notified of any money changes. 
                     PlayerManager.OnFinancialTransaction -= UnlockIfConditionMet;
                 }
@@ -71,9 +72,15 @@ public partial class Mission : ScriptableObject, IDataModel
             case MissionUnlockCondition.ConversationNode:
                 // This is called back by the Dialogue System's OnExecute() event.
                 // The event fires when an associated conversation node is reached. 
-                HasBeenUnlocked = true;
+                UnlockMission();
                 break;
         }
+    }
+
+    private void UnlockMission()
+    {
+        HasBeenUnlocked = true;
+        DateUnlocked = CalendarManager.GetDateNow();
     }
 
     public void StartMission()

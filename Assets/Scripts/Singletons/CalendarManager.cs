@@ -66,6 +66,16 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
         }
     }
 
+    public static Date GetDateNow()
+    {
+        return new Date
+        {
+            Day = Instance.CurrentDay,
+            Month = Instance.CurrentMonth,
+            Year = Instance.CurrentYear
+        };
+    }
+
     /// <summary>
     /// The day either ends when the player chooses to sleep or the time elapses.
     /// </summary>
