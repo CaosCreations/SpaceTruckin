@@ -32,6 +32,7 @@ public class NewDayReportUI : MonoBehaviour
     {
         reportCardInstance.SetActive(true);
         currentReportIndex = 0;
+        reportCard.nextCardButton.SetText(UIConstants.NextCardText);
         nextCardButton.AddOnClick(ShowNextReport);
         nextCardButton.onClick.Invoke();
         welcomeMessageText.ReplaceTemplates();
