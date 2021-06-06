@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5c90981045dcf564ca5a5e8e5da29649, type: 3}
-  m_Name: Artsy Fartsy_Mission3
+  m_Name: ArtsyFartsy_Mission3
   m_EditorClassIdentifier: 
   missionDurationInDays: 1
   missionName: Artsy Fartsy
@@ -28,6 +28,7 @@ MonoBehaviour:
     it off, we could nab some new Vesta customers, and it\u2019s never a bad idea
     to be in their good books.\u201D"
   fuelCost: 0
+  unlockCondition: 0
   moneyNeededToUnlock: 3000
   hasRandomOutcomes: 0
   outcomes:
@@ -36,6 +37,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5096a8f285b35a24d916c02ff8d5e371, type: 2}
   thankYouMessage: {fileID: 0}
   saveData:
-    hasBeenAccepted: 0
+    hasBeenUnlocked: 1
+    hasBeenAccepted: 1
     daysLeftToComplete: 0
-    numberOfCompletions: 0
+    numberOfCompletions: 3

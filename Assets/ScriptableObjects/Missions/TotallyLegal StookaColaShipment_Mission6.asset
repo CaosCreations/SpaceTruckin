@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5c90981045dcf564ca5a5e8e5da29649, type: 3}
-  m_Name: Totally Legal Stooka Cola Shipment_Mission6
+  m_Name: TotallyLegal StookaColaShipment_Mission6
   m_EditorClassIdentifier: 
   missionDurationInDays: 1
   missionName: Totally Legal Stooka Cola Shipment
@@ -26,6 +26,7 @@ MonoBehaviour:
     entirely unofficial and you never heard it from me\u2026 Come to think of it,
     I shouldn\u2019t have put this in writing, should I?\u201D"
   fuelCost: 0
+  unlockCondition: 0
   moneyNeededToUnlock: 6000
   hasRandomOutcomes: 0
   outcomes:
@@ -34,6 +35,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5096a8f285b35a24d916c02ff8d5e371, type: 2}
   thankYouMessage: {fileID: 0}
   saveData:
-    hasBeenAccepted: 0
+    hasBeenUnlocked: 1
+    hasBeenAccepted: 1
     daysLeftToComplete: 0
     numberOfCompletions: 0

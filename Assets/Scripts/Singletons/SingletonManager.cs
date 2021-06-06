@@ -25,6 +25,7 @@ public class SingletonManager : MonoBehaviour
     {
         PlayerManager.Instance.SaveData();
         MissionsManager.Instance.SaveData();
+        ArchivedMissionsManager.Instance.SaveData();
         PilotsManager.Instance.SaveData();
         ShipsManager.Instance.SaveData();
         HangarManager.Instance.SaveBatteryData();

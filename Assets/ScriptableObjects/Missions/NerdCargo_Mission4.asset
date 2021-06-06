@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5c90981045dcf564ca5a5e8e5da29649, type: 3}
-  m_Name: Nerd Cargo_Mission4
+  m_Name: NerdCargo_Mission4
   m_EditorClassIdentifier: 
   missionDurationInDays: 1
   missionName: Nerd Cargo
@@ -26,11 +26,13 @@ MonoBehaviour:
     the highest paying\_job, but look at us being all academic and stuff\u2026 doesn\u2019t
     it make you feel smarter?\u201D"
   fuelCost: 0
+  unlockCondition: 0
   moneyNeededToUnlock: 0
   hasRandomOutcomes: 1
   outcomes: []
   thankYouMessage: {fileID: 0}
   saveData:
-    hasBeenAccepted: 0
+    hasBeenUnlocked: 1
+    hasBeenAccepted: 1
     daysLeftToComplete: 0
     numberOfCompletions: 0

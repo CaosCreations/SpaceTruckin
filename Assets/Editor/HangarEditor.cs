@@ -51,7 +51,7 @@ public class HangarEditor : MonoBehaviour
         {
             foreach (HangarSlot hangarSlot in HangarManager.HangarSlots)
             {
-                if (hangarSlot.Ship == null)
+                if (hangarSlot.Ship == null || hangarSlot.Ship.CurrentMission == null)
                 {
                     continue;
                 }
@@ -59,14 +59,9 @@ public class HangarEditor : MonoBehaviour
                 ScheduledMission scheduled = MissionsManager.GetScheduledMission(hangarSlot.Ship);
                 scheduled.Mission.StartMission();
 
-                MissionsManager.RemoveScheduledMission(scheduled);
-
                 HangarManager.LaunchShip(hangarSlot.Node);
                 hangarSlot.LaunchShip();
             }
-
-            HangarNodeUI nodeUI = FindObjectOfType<HangarNodeUI>();
-            nodeUI.shipToInspect = null;
         }
         catch (Exception ex)
         {
