@@ -3,9 +3,9 @@
 public class UIConstants : MonoBehaviour
 {
     // Layers 
-    public static int UILayer = 5;
-    public static int ShipPreviewLayer = 9;
-    public static int RepairsMinigameLayer = 10;
+    public const int UILayer = 5;
+    public const int ShipPreviewLayer = 9;
+    public const int RepairsMinigameLayer = 10;
 
     // Colour palette
     public static Color32 SpringWood = new Color32(0xf2, 0xf0, 0xe5, 0xff);
@@ -44,13 +44,14 @@ public class UIConstants : MonoBehaviour
 
 
     // UI element text
-    public static string CloseCardCycleText = "Close";
+    public const string NextCardText = "Next";
+    public const string CloseCardCycleText = "Close";
 
 
     // UI element dimensions 
     public static Vector3 ShipPreviewOffset = new Vector3(-3f, 0f, 0f);
     public static Vector3 ShipPreviewRotationSpeed = new Vector3(0f, 0.15f, 0f);
-    public static float ShipPreviewScaleFactor = 0.85f;
+    public const float ShipPreviewScaleFactor = 0.85f;
 
 
     // Bed canvas 
