@@ -32,7 +32,7 @@ public class HangarNodeUI : UICanvasBase
     [Header("Set at Runtime")]
     [SerializeField] private GameObject shipPreview;
     [SerializeField] private int hangarNode;
-    [SerializeField] private Ship shipToInspect;
+    public Ship shipToInspect;
     private HangarSlot hangarSlot;
 
     private readonly long fuelCostPerUnit = 1;

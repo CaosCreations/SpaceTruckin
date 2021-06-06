@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5c90981045dcf564ca5a5e8e5da29649, type: 3}
-  m_Name: Ice for Earth_Mission1
+  m_Name: IceForEarth_Mission1
   m_EditorClassIdentifier: 
   missionDurationInDays: 1
   missionName: Ice For Earth
@@ -26,6 +26,7 @@ MonoBehaviour:
     the station\u2019s sewage purification system, so we can save a pretty penny
     going forward.\u201D"
   fuelCost: 35
+  unlockCondition: 0
   moneyNeededToUnlock: 0
   hasRandomOutcomes: 0
   outcomes:
@@ -34,6 +35,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4786970603a2361419f643b4f0f7b901, type: 2}
   thankYouMessage: {fileID: 11400000, guid: fef130548025a6f4083206ceb7389c39, type: 2}
   saveData:
-    hasBeenAccepted: 0
+    hasBeenUnlocked: 1
+    hasBeenAccepted: 1
     daysLeftToComplete: 0
     numberOfCompletions: 0

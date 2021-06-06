@@ -23,7 +23,7 @@ public class ArchivedMission : IDataModel
         saveData = new ArchivedMissionSaveData();
         MissionName = mission.Name;
         CompletionNumber = completionNumber;
-        FileName = $"{MissionName}_{completionNumber}";
+        FileName = $"{mission.name}_{completionNumber}";
         Pilot = pilot;
         TotalFuelLost = mission.FuelCost;
     }
