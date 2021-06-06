@@ -68,4 +68,23 @@ public class HangarEditor : MonoBehaviour
             Debug.LogException(ex);
         }
     }
+
+    [MenuItem("Space Truckin/Hangar/Assign Missions to Ships at All Nodes and Launch All On Missions")]
+    private static void AssignAndLaunchShipsAtEveryNode()
+    {
+        try
+        {
+            foreach (HangarSlot hangarSlot in HangarManager.HangarSlots)
+            {
+                DockAndAssignMission();
+            }
+
+            LaunchAllShips();
+        }
+        catch (Exception ex)
+        {
+            Debug.LogException(ex);
+            
+        }
+    }
 }
