@@ -152,7 +152,7 @@ public class HangarNodeUI : UICanvasBase
         }
     }
 
-    public void Launch(bool isStartingMission)
+    private void Launch(bool isStartingMission)
     {
         if (shipToInspect != null)
         {
