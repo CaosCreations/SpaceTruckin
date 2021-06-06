@@ -38,6 +38,13 @@ public class MissionsEditor : MonoBehaviour
             {
                 PlayerEditor.SetMoney(moneyNeeded);
             }
+
+            var missionContainer = EditorHelper.GetAsset<MissionContainer>();
+            foreach (var mission in missionContainer.missions)
+            {
+                mission.UnlockIfConditionMet();
+            }
+
             Debug.Log("All missions unlocked");
         }
         catch (Exception ex)

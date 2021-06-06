@@ -79,6 +79,12 @@ public partial class Mission : ScriptableObject, IDataModel
 
     private void UnlockMission()
     {
+        if (HasBeenUnlocked)
+        {
+            // Prevent the Date from being reset when we are testing.
+            return;
+        }
+
         HasBeenUnlocked = true;
         DateUnlocked = CalendarManager.GetDateNow();
     }

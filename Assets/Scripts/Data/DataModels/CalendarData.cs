@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
+[Serializable]
 public struct Date
 {
     public int Day;
