@@ -39,7 +39,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12939444, g: 0.12939444, b: 0.1411131, a: 1}
+  m_IndirectSpecularColor: {r: 0.12939444, g: 0.12939444, b: 0.13720673, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1044,7 +1044,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 126724484}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.65, y: 0, z: 4.87}
+  m_LocalPosition: {x: 11.65, y: 0.84, z: 4.87}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1681461466}
@@ -3730,7 +3730,7 @@ PrefabInstance:
     - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
         type: 3}
@@ -7108,11 +7108,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 259853561170085355}
+  - {fileID: 1077402961}
   - {fileID: 186152699}
-  - {fileID: 2043028205}
   - {fileID: 878506548}
   - {fileID: 126724485}
-  - {fileID: 1077402961}
   m_Father: {fileID: 1796250474}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7527,7 +7526,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.3010101, y: 1}
+    m_SensorSize: {x: 0.5102362, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -7588,7 +7587,7 @@ PrefabInstance:
     - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
         type: 3}
@@ -7800,85 +7799,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1567474518}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &658550564
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 618460163}
-    m_Modifications:
-    - target: {fileID: 923938306559941887, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_Name
-      value: Battery (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 4566604538120125738, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 1587605551}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 8.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.33999634
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: batterySpawnPositionManager
-      value: 
-      objectReference: {fileID: 878506549}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: ab766149d105a844396411ee50a5a21c, type: 3}
 --- !u!1001 &671028233
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17970,12 +17890,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1035186626}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &2043028205 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-    type: 3}
-  m_PrefabInstance: {fileID: 658550564}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2065140516
 GameObject:
   m_ObjectHideFlags: 0
@@ -18410,6 +18324,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 600489520}
     m_Modifications:
+    - target: {fileID: 6227296503768593228, guid: 7f3997ebc7a2ed047865a473c47eae31,
+        type: 3}
+      propertyPath: Collider
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7192977246294581562, guid: 7f3997ebc7a2ed047865a473c47eae31,
         type: 3}
       propertyPath: m_Name
@@ -18553,6 +18472,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1796250474}
     m_Modifications:
+    - target: {fileID: 217720782655563718, guid: b1f40fc385ae7f740beaf69a00d8b4af,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.479
+      objectReference: {fileID: 0}
+    - target: {fileID: 217720782655563718, guid: b1f40fc385ae7f740beaf69a00d8b4af,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.453
+      objectReference: {fileID: 0}
     - target: {fileID: 2693685765313322950, guid: b1f40fc385ae7f740beaf69a00d8b4af,
         type: 3}
       propertyPath: m_RootOrder

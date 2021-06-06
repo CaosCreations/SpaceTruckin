@@ -25,6 +25,8 @@ public class BatteryInteractable : InteractableObject
         batteryModelCollider.enabled = false;
 
         ConfigureRigidbody(isConnectingToPlayer: true);
+
+        HangarManager.CurrentBatteryBeingHeld = GetComponent<BatteryWrapper>();
     }
 
     private void ConfigureRigidbody(bool isConnectingToPlayer)
@@ -55,6 +57,8 @@ public class BatteryInteractable : InteractableObject
         batteryModelCollider.enabled = true;
 
         IsPlayerColliding = false;
+
+        HangarManager.CurrentBatteryBeingHeld = null;
     }
 
     private void OnTriggerStay(Collider other)
@@ -66,8 +70,8 @@ public class BatteryInteractable : InteractableObject
         }
 
         if (!PlayerManager.IsPaused
-            && IsPlayerColliding
-            && Input.GetKey(PlayerConstants.ActionKey))
+          && IsPlayerColliding
+          && Input.GetKey(PlayerConstants.ActionKey))
         {
             TakeBattery();
         }
@@ -80,14 +84,26 @@ public class BatteryInteractable : InteractableObject
         if (other.CompareTag(HangarConstants.BatteryExitColliderTag))
         {
             DropBattery();
-            HangarManager.BatterySpawnPositionManager.RespawnBattery(transform, collider);
+            HangarManager.BatterySpawnPositionManager.RespawnBattery(transform, Collider);
         }
+    }
+
+
+    public void PlaceBatteryInSlot(Transform slot)
+    {
+        transform.position = slot.transform.position;
+
+        PlayerIsHoldingABattery = false;
+
+        gameObject.SetParent(HangarManager.BatteriesContainer);
+
+        HangarManager.CurrentBatteryBeingHeld = null;
     }
 
     private void Update()
     {
         if (!PlayerManager.IsPaused 
-            && Input.GetKeyDown(PlayerConstants.DropObjectKey)
+            && Input.GetKey(PlayerConstants.DropObjectKey)
             && transform.parent.gameObject == PlayerManager.PlayerObject)
         {
             DropBattery();

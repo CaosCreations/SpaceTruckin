@@ -12,6 +12,8 @@ public class HangarManager : MonoBehaviour
     public static BatteryWrapper[] BatteryWrappers { get; private set; }
     public static GameObject BatteriesContainer { get; private set; }
 
+    public static BatteryWrapper CurrentBatteryBeingHeld;
+
     public static BatterySpawnPositionManager BatterySpawnPositionManager;
 
     private void Awake()
