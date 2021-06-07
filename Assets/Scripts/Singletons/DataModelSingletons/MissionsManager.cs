@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using PixelCrushers.DialogueSystem;
+using System;
 
-public class MissionsManager : MonoBehaviour, IDataModelManager
+public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegistrar
 {
     public static MissionsManager Instance { get; private set; }
 
@@ -45,6 +47,8 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         ScheduledMissions = new List<ScheduledMission>();
 
         UnlockMissions();
+
+        RegisterLuaFunctions();
 
         CalendarManager.OnEndOfDay += UpdateMissionSchedule;
     }
@@ -305,10 +309,43 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
             LogScheduledMissions();
         }
     }
-    
+
     public void DeleteData()
     {
         DataUtils.RecursivelyDeleteSaveData(Mission.FOLDER_NAME);
+    }
+    #endregion
+
+    #region Dialogue Database Consumers
+    public bool HasMissionBeenCompletedForCustomer(string missionName, string customerName)
+    {
+        foreach (Mission mission in Instance.Missions)
+        {
+            if (mission != null 
+                && mission.Name == missionName
+                && mission.Customer == customerName 
+                && mission.NumberOfCompletions > 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    #endregion
+
+    #region Lua Function Registration
+    public void RegisterLuaFunctions()
+    {
+        Lua.RegisterFunction(
+            "HasMissionBeenCompletedForCustomer", 
+            this, 
+            SymbolExtensions.GetMethodInfo(() => HasMissionBeenCompletedForCustomer(string.Empty, string.Empty)));
+    }
+
+    public void UnregisterLuaFunctions()
+    {
+        Lua.UnregisterFunction("HasMissionBeenCompletedForCustomer");
     }
     #endregion
 }
