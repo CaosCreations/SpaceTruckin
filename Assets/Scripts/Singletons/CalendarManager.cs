@@ -20,18 +20,18 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
     public int MonthsInYear { get => calendarData.MonthsInYear; }
     public int CurrentDay 
     { 
-        get => calendarData.saveData.CurrentDay;
-        set => calendarData.saveData.CurrentDay = value;
+        get => calendarData.CurrentDate.Day;
+        set => calendarData.CurrentDate.Day = value;
     }
     public int CurrentMonth 
     { 
-        get => calendarData.saveData.CurrentMonth;
-        set => calendarData.saveData.CurrentMonth = value;
+        get => calendarData.CurrentDate.Month;
+        set => calendarData.CurrentDate.Month = value;
     }
     public int CurrentYear
     {
-        get => calendarData.saveData.CurrentYear;
-        set => calendarData.saveData.CurrentYear = value;
+        get => calendarData.CurrentDate.Year;
+        set => calendarData.CurrentDate.Year = value;
     }
     #endregion
 

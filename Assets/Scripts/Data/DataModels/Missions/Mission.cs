@@ -81,7 +81,7 @@ public partial class Mission : ScriptableObject, IDataModel
     {
         if (HasBeenUnlocked)
         {
-            // Prevent the Date from being reset when we are testing.
+            // Prevent the Date from being reset if the mission is unlocked twice.
             return;
         }
 

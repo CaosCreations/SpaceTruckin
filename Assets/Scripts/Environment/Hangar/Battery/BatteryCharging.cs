@@ -62,7 +62,3 @@ public class BatteryCharging : MonoBehaviour
         SetEmission();
     }
 }
-
-
-
-

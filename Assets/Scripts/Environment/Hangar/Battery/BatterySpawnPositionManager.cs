@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BatterySpawnPositionManager : MonoBehaviour
@@ -10,7 +8,7 @@ public class BatterySpawnPositionManager : MonoBehaviour
     {
         // As the game starts, spawn the batteries at their initial position
 
-        if(HangarManager.BatteryWrappers.Length > spawnPositions.Length)
+        if (HangarManager.BatteryWrappers.Length > spawnPositions.Length)
         {
             Debug.LogError("As we start the game, there aren't enough spawn positions for all batteries. We need to add more.");
         }
@@ -33,7 +31,7 @@ public class BatterySpawnPositionManager : MonoBehaviour
             colliders = Physics.OverlapBox(spawnPositions[i].transform.position, boundaries.bounds.extents, Quaternion.identity);
 
             // If Physics.OverlapBox() returns nothing, it means that the space is free
-            if(colliders.Length == 0)
+            if (colliders.Length == 0)
             {
                 objectToMove.position = spawnPositions[i].transform.position;
                 return;

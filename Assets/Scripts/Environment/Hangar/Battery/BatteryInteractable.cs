@@ -1,12 +1,11 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
 public class BatteryInteractable : InteractableObject
 {
-    [SerializeField] Rigidbody batteryContainerRigidbody;
+    [SerializeField] private Rigidbody batteryContainerRigidbody;
 
-    [SerializeField] Collider batteryModelCollider;
+    [SerializeField] private Collider batteryModelCollider;
 
     // Shows that the player is holding any battery
     public static bool PlayerIsHoldingABattery;
@@ -88,7 +87,6 @@ public class BatteryInteractable : InteractableObject
         }
     }
 
-
     public void PlaceBatteryInSlot(Transform slot)
     {
         transform.position = slot.transform.position;
@@ -102,7 +100,7 @@ public class BatteryInteractable : InteractableObject
 
     private void Update()
     {
-        if (!PlayerManager.IsPaused 
+        if (!PlayerManager.IsPaused
             && Input.GetKey(PlayerConstants.DropObjectKey)
             && transform.parent.gameObject == PlayerManager.PlayerObject)
         {
@@ -117,4 +115,3 @@ public class BatteryInteractable : InteractableObject
         transform.position = saveData.PositionInHangar;
     }
 }
-
