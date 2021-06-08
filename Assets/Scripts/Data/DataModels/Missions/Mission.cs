@@ -20,7 +20,7 @@ public partial class Mission : ScriptableObject, IDataModel
     [SerializeField] private MissionOutcome[] outcomes;
     [SerializeField] private ThankYouMessage thankYouMessage;
 
-    [Header("Data to update IN GAME")] 
+    [Header("Data to update IN GAME")]
     public MissionSaveData saveData;
 
     [HideInInspector]
@@ -86,7 +86,7 @@ public partial class Mission : ScriptableObject, IDataModel
         }
 
         HasBeenUnlocked = true;
-        DateUnlocked = CalendarManager.GetDateNow();
+        DateUnlocked = CalendarManager.Instance.CurrentDate;
     }
 
     public void StartMission()
