@@ -50,7 +50,6 @@ public class CalendarData : ScriptableObject, IDataModel
         MonthsInYear = Mathf.Max(MonthsInYear, 1);
 
         CurrentDate.Day = Mathf.Max(CurrentDate.Day, 1);
-        CurrentDate.Day = Mathf.Max(CurrentDate.Day, 1);
         CurrentDate.Month = Mathf.Max(CurrentDate.Month, 1);
         CurrentDate.Year = Mathf.Max(CurrentDate.Year, 1);
 
