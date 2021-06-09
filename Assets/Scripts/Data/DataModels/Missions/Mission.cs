@@ -36,7 +36,7 @@ public partial class Mission : ScriptableObject, IDataModel
         public bool hasBeenUnlocked, hasBeenAccepted;
 
         public int daysLeftToComplete, numberOfCompletions;
-        public Date dateUnlocked;
+        public Date dateUnlocked, dateAccepted;
     }
 
     private void OnValidate()
@@ -87,6 +87,12 @@ public partial class Mission : ScriptableObject, IDataModel
 
         HasBeenUnlocked = true;
         DateUnlocked = CalendarManager.Instance.CurrentDate;
+    }
+
+    public void AcceptMission()
+    {
+        HasBeenAccepted = true;
+        DateAccepted = CalendarManager.Instance.CurrentDate;
     }
 
     public void StartMission()
