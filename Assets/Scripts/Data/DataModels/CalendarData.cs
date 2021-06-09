@@ -2,6 +2,14 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
+[Serializable]
+public struct Date
+{
+    public int Day;
+    public int Month;
+    public int Year;
+}
+
 [CreateAssetMenu(fileName = "CalendarData", menuName = "ScriptableObjects/CalendarData", order = 1)]
 public class CalendarData : ScriptableObject, IDataModel
 {
@@ -13,42 +21,51 @@ public class CalendarData : ScriptableObject, IDataModel
     public int DaysInMonth = 28;
     public int MonthsInYear = 4;
 
-    [Header("Data to update IN GAME")]
-    public CalendarSaveData saveData;
-
     public const string FOLDER_NAME = "CalendarSaveData";
+    public const string FILE_NAME = "CalendarData";
 
-    [Serializable]
-    public class CalendarSaveData
+    public static string FILE_PATH
     {
-        public int CurrentDay;
-        public int CurrentMonth;
-        public int CurrentYear;
+        get => DataUtils.GetSaveFilePath(FOLDER_NAME, FILE_NAME);
+    }
+
+    [Header("Data to update IN GAME")]
+    public Date CurrentDate;
+
+    private void OnEnable()
+    {
+        // OnValidate is only called in editor.
+        ValidateFields();
     }
 
     private void OnValidate()
+    {
+        ValidateFields();
+    }
+
+    private void ValidateFields()
     {
         // Cannot be below 1 
         DaysInMonth = Mathf.Max(DaysInMonth, 1);
         MonthsInYear = Mathf.Max(MonthsInYear, 1);
 
-        saveData.CurrentDay = Mathf.Max(saveData.CurrentDay, 1);
-        saveData.CurrentDay = Mathf.Max(saveData.CurrentDay, 1);
-        saveData.CurrentMonth = Mathf.Max(saveData.CurrentMonth, 1);
-        saveData.CurrentYear = Mathf.Max(saveData.CurrentYear, 1);
+        CurrentDate.Day = Mathf.Max(CurrentDate.Day, 1);
+        CurrentDate.Month = Mathf.Max(CurrentDate.Month, 1);
+        CurrentDate.Year = Mathf.Max(CurrentDate.Year, 1);
 
         // Cannot be above upper bounds 
-        saveData.CurrentDay = Mathf.Min(saveData.CurrentDay, DaysInMonth);
-        saveData.CurrentMonth = Mathf.Min(saveData.CurrentMonth, MonthsInYear);
+        CurrentDate.Day = Mathf.Min(CurrentDate.Day, DaysInMonth);
+        CurrentDate.Month = Mathf.Min(CurrentDate.Month, MonthsInYear);
     }
 
     public void SaveData()
     {
-        DataUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
+        DataUtils.SaveFileAsync(name, FOLDER_NAME, CurrentDate);
     }
 
     public async Task LoadDataAsync()
     {
-        saveData = await DataUtils.LoadFileAsync<CalendarSaveData>(name, FOLDER_NAME);
+        string json = await DataUtils.ReadFileAsync(FILE_PATH);
+        CurrentDate = JsonUtility.FromJson<Date>(json);
     }
 }

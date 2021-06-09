@@ -5,6 +5,6 @@ public class CalendarEditor : MonoBehaviour
     public static void DeleteSaveData()
     {
         var calendarData = EditorHelper.GetAsset<CalendarData>();
-        SaveDataEditor.NullifyFields(calendarData.saveData);
+        SaveDataEditor.DefaultStructFields(ref calendarData.CurrentDate);
     }
 }

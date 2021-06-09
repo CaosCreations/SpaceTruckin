@@ -13,25 +13,26 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
     public static UnityAction OnEndOfDay;
 
     #region Property Accessors
-    public TimeSpan DayStartTime { get => calendarData.DayStartTime; }
-    public TimeSpan DayEndTime { get => calendarData.DayEndTime; }
-    public int RealTimeDayDurationInSeconds { get => calendarData.RealTimeDayDurationInSeconds; }
-    public int DaysInMonth { get => calendarData.DaysInMonth; }
-    public int MonthsInYear { get => calendarData.MonthsInYear; }
+    public TimeSpan DayStartTime => calendarData.DayStartTime;
+    public TimeSpan DayEndTime => calendarData.DayEndTime;
+    public int RealTimeDayDurationInSeconds => calendarData.RealTimeDayDurationInSeconds;
+    public int DaysInMonth => calendarData.DaysInMonth;
+    public int MonthsInYear => calendarData.MonthsInYear;
+    public Date CurrentDate => calendarData.CurrentDate;
     public int CurrentDay 
     { 
-        get => calendarData.saveData.CurrentDay;
-        set => calendarData.saveData.CurrentDay = value;
+        get => calendarData.CurrentDate.Day;
+        set => calendarData.CurrentDate.Day = value;
     }
     public int CurrentMonth 
     { 
-        get => calendarData.saveData.CurrentMonth;
-        set => calendarData.saveData.CurrentMonth = value;
+        get => calendarData.CurrentDate.Month;
+        set => calendarData.CurrentDate.Month = value;
     }
     public int CurrentYear
     {
-        get => calendarData.saveData.CurrentYear;
-        set => calendarData.saveData.CurrentYear = value;
+        get => calendarData.CurrentDate.Year;
+        set => calendarData.CurrentDate.Year = value;
     }
     #endregion
 

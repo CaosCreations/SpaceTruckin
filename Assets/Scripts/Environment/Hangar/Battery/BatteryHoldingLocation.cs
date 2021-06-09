@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class BatteryHoldingLocation:MonoBehaviour
+public class BatteryHoldingLocation : MonoBehaviour
 {
     [SerializeField] private Transform slot;
 
@@ -14,7 +12,7 @@ public class BatteryHoldingLocation:MonoBehaviour
 
     public void Update()
     {
-        if(!PlayerManager.IsPaused
+        if (!PlayerManager.IsPaused
           && interactableObjectWithSlot.IsPlayerColliding
           && Input.GetKeyDown(PlayerConstants.ActionKey))
         {
@@ -23,7 +21,7 @@ public class BatteryHoldingLocation:MonoBehaviour
                 && batteryInteractableInSlot == null)
             {
                 batteryInteractableInSlot = HangarManager.CurrentBatteryBeingHeld.BatteryInteractable;
-                
+
                 /// <summary>
                 /// When placing the battery in a slot, we deactivate its wrapper's collider
                 /// We do so that the battery system and the battery slot placement don't interfere with each other
@@ -33,13 +31,12 @@ public class BatteryHoldingLocation:MonoBehaviour
                 batteryInteractableInSlot.PlaceBatteryInSlot(slot);
             }
 
-            else if(BatteryInteractable.PlayerIsHoldingABattery == false && batteryInteractableInSlot != null)
+            else if (BatteryInteractable.PlayerIsHoldingABattery == false && batteryInteractableInSlot != null)
             {
                 batteryInteractableInSlot.TakeBattery();
                 batteryInteractableInSlot.Collider.enabled = true;
                 batteryInteractableInSlot = null;
-            }  
+            }
         }
     }
-
 }

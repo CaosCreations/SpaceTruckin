@@ -103,6 +103,18 @@ public class SaveDataEditor : MonoBehaviour
         }
     }
 
+    public static void DefaultStructFields<T>(ref T structData) where T : struct
+    {
+        object boxedData = structData;
+
+        foreach (FieldInfo field in structData.GetType().GetFields())
+        {
+            field.SetValue(boxedData, default);
+        }
+
+        structData = (T)boxedData;
+    }
+
     private static void DeleteAllContainers()
     {
         try

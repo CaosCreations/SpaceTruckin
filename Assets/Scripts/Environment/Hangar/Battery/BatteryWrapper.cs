@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BatteryCharging))]
@@ -20,12 +18,9 @@ public class BatteryWrapper : MonoBehaviour
     #endregion
 }
 
-
 [Serializable]
 public struct BatterySaveData
 {
     public bool IsCharged;
     public Vector3 PositionInHangar;
 }
-
-

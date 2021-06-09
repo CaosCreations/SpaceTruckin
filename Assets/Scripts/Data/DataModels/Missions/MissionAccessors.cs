@@ -28,6 +28,10 @@
         get => saveData.daysLeftToComplete;
         set => saveData.daysLeftToComplete = value;
     }
+    public Date DateUnlocked 
+    { 
+        get => saveData.dateUnlocked; set => saveData.dateUnlocked = value; 
+    }
     public int NumberOfCompletions
     {
         get => saveData.numberOfCompletions;
