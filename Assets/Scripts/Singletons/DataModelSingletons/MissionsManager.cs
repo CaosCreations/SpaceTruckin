@@ -27,6 +27,11 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         }
     }
 
+    private void OnDisable()
+    {
+        UnregisterLuaFunctions();
+    }
+
     public void Init()
     {
         if (DataUtils.SaveFolderExists(Mission.FOLDER_NAME))
@@ -290,14 +295,14 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
     public void RegisterLuaFunctions()
     {
         Lua.RegisterFunction(
-            "HasMissionBeenCompletedForCustomer",
+            DialogueConstants.MissionCompletedFunctionName,
             this,
             SymbolExtensions.GetMethodInfo(() => HasMissionBeenCompletedForCustomer(string.Empty, string.Empty)));
     }
 
     public void UnregisterLuaFunctions()
     {
-        Lua.UnregisterFunction("HasMissionBeenCompletedForCustomer");
+        Lua.UnregisterFunction(DialogueConstants.MissionCompletedFunctionName);
     }
     #endregion
 
