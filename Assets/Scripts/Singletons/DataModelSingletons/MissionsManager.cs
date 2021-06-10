@@ -4,7 +4,7 @@ using System.Linq;
 using PixelCrushers.DialogueSystem;
 using System;
 
-public class MissionsManager : MonoBehaviour, IDataModelManager
+public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegistrar
 {
     public static MissionsManager Instance { get; private set; }
 
