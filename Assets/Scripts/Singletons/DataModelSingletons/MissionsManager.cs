@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Linq;
 using PixelCrushers.DialogueSystem;
+using System;
 
 public class MissionsManager : MonoBehaviour, IDataModelManager
 {
@@ -51,6 +52,8 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         ScheduledMissions = new List<ScheduledMission>();
 
         UnlockMissions();
+
+        RegisterLuaFunctions();
 
         CalendarManager.OnEndOfDay += UpdateMissionSchedule;
     }
@@ -279,8 +282,8 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         foreach (Mission mission in Instance.Missions)
         {
             if (mission != null
-                && mission.Name == missionName
-                && mission.Customer == customerName
+                && mission.Name.Equals(missionName, StringComparison.CurrentCultureIgnoreCase)
+                && mission.Customer.Equals(customerName, StringComparison.CurrentCultureIgnoreCase)
                 && mission.NumberOfCompletions > 0)
             {
                 return true;
