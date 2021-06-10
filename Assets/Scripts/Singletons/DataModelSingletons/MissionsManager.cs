@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using PixelCrushers.DialogueSystem;
 
 public class MissionsManager : MonoBehaviour, IDataModelManager
 {
@@ -266,6 +267,39 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
             }
         });
     }
+
+    #region Dialogue Integration
+    public bool HasMissionBeenCompletedForCustomer(string missionName, string customerName)
+    {
+        foreach (Mission mission in Instance.Missions)
+        {
+            if (mission != null
+                && mission.Name == missionName
+                && mission.Customer == customerName
+                && mission.NumberOfCompletions > 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    #endregion
+
+    #region Lua Function Registration
+    public void RegisterLuaFunctions()
+    {
+        Lua.RegisterFunction(
+            "HasMissionBeenCompletedForCustomer",
+            this,
+            SymbolExtensions.GetMethodInfo(() => HasMissionBeenCompletedForCustomer(string.Empty, string.Empty)));
+    }
+
+    public void UnregisterLuaFunctions()
+    {
+        Lua.UnregisterFunction("HasMissionBeenCompletedForCustomer");
+    }
+    #endregion
 
     #region Persistence
     public void SaveData()
