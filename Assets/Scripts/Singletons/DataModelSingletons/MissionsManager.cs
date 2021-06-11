@@ -102,11 +102,18 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     private static void CompleteMission(ScheduledMission scheduled)
     {
-        // Send a thank you email on first completion of the Mission.
-        if (scheduled.Mission.ThankYouMessage != null && scheduled.Mission.NumberOfCompletions <= 0)
+        if (scheduled.Mission.NumberOfCompletions <= 0)
         {
-            scheduled.Mission.ThankYouMessage.IsUnlocked = true;
+            // Send a thank you email on first completion of the Mission.
+            if (scheduled.Mission.ThankYouMessage != null)
+            {
+                scheduled.Mission.ThankYouMessage.IsUnlocked = true;
+            }
+
+            // Improve relationship with the client of the mission.
+            DialogueDatabaseManager.AddToActorFondness(scheduled.Mission.Customer, scheduled.Mission.FondnessGranted);
         }
+
         scheduled.Mission.NumberOfCompletions++;
 
         // Instantiate an Archived Mission object to store the stats of the completed Mission.
@@ -121,7 +128,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
             AssignRandomOutcomes(scheduled.Mission);
         }
 
-        // We will set the archived Mission fields throughout the outcome processing. 
+        // We will set the Archived Mission fields throughout the outcome processing. 
         scheduled.Mission.ProcessOutcomes();
 
         // Add the object to the archive once all outcomes have been processed. 

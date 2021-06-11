@@ -11,9 +11,8 @@ public enum MissionUnlockCondition
 public partial class Mission : ScriptableObject, IDataModel
 {
     [Header("Set in Editor")]
-    [SerializeField] private int missionDurationInDays;
+    [SerializeField] private int missionDurationInDays, fuelCost, fondnessGranted;
     [SerializeField] private string missionName, customer, cargo, description;
-    [SerializeField] private int fuelCost;
     [SerializeField] private MissionUnlockCondition unlockCondition;
     [SerializeField] private long moneyNeededToUnlock;
     [SerializeField] private bool hasRandomOutcomes;
