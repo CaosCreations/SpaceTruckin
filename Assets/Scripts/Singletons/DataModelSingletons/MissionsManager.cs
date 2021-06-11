@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using PixelCrushers.DialogueSystem;
+using System;
 
-public class MissionsManager : MonoBehaviour, IDataModelManager
+public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegistrar
 {
     public static MissionsManager Instance { get; private set; }
 
@@ -26,6 +28,11 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         }
     }
 
+    private void OnDisable()
+    {
+        UnregisterLuaFunctions();
+    }
+
     public void Init()
     {
         if (DataUtils.SaveFolderExists(Mission.FOLDER_NAME))
@@ -45,6 +52,8 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
         ScheduledMissions = new List<ScheduledMission>();
 
         UnlockMissions();
+
+        RegisterLuaFunctions();
 
         CalendarManager.OnEndOfDay += UpdateMissionSchedule;
     }
@@ -266,6 +275,39 @@ public class MissionsManager : MonoBehaviour, IDataModelManager
             }
         });
     }
+
+    #region Dialogue Integration
+    public bool HasMissionBeenCompletedForCustomer(string missionName, string customerName)
+    {
+        foreach (Mission mission in Instance.Missions)
+        {
+            if (mission != null
+                && mission.Name.Equals(missionName, StringComparison.CurrentCultureIgnoreCase)
+                && mission.Customer.Equals(customerName, StringComparison.CurrentCultureIgnoreCase)
+                && mission.NumberOfCompletions > 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    #endregion
+
+    #region Lua Function Registration
+    public void RegisterLuaFunctions()
+    {
+        Lua.RegisterFunction(
+            DialogueConstants.MissionCompletedFunctionName,
+            this,
+            SymbolExtensions.GetMethodInfo(() => HasMissionBeenCompletedForCustomer(string.Empty, string.Empty)));
+    }
+
+    public void UnregisterLuaFunctions()
+    {
+        Lua.UnregisterFunction(DialogueConstants.MissionCompletedFunctionName);
+    }
+    #endregion
 
     #region Persistence
     public void SaveData()
