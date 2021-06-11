@@ -9258,7 +9258,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.9466119, y: 1}
+    m_SensorSize: {x: 2.0390143, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -11434,6 +11434,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1615154180}
   - {fileID: 1972979662995259740}
   m_Father: {fileID: 1737364901}
   m_RootOrder: 9
@@ -17679,6 +17680,96 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.2171173, y: 1, z: 0.29129028}
   m_Center: {x: 0.38025665, y: 0, z: -0.049072266}
+--- !u!1001 &1615154179
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 943537761}
+    m_Modifications:
+    - target: {fileID: 1019127046796887104, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_Name
+      value: FondnessMissionTestActor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 215.887
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 380
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -247.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8553291468905247584, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: conversation
+      value: Test Fondness Increase due to Missions
+      objectReference: {fileID: 0}
+    - target: {fileID: 8553291468905247584, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: conversationActor
+      value: 
+      objectReference: {fileID: 129007670}
+    - target: {fileID: 8553291468905247584, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: conversationConversant
+      value: 
+      objectReference: {fileID: 1615154180}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d2445e2563bbe4b4a91fd4e933f67d2a, type: 3}
+--- !u!4 &1615154180 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1615154179}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1617514725
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22861,7 +22952,7 @@ PrefabInstance:
     - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
         type: 3}
@@ -22921,7 +23012,7 @@ PrefabInstance:
     - target: {fileID: 8553291468905247584, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
         type: 3}
       propertyPath: conversation
-      value: Test Lua Functions
+      value: Test Has Mission Been Completed Lua Function
       objectReference: {fileID: 0}
     - target: {fileID: 8553291468905247584, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
         type: 3}
