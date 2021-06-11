@@ -42,6 +42,7 @@
     {
         get => moneyNeededToUnlock; set => moneyNeededToUnlock = value;
     }
+    public int FondnessGranted => fondnessGranted;
     public bool HasRandomOutcomes 
     { 
         get => hasRandomOutcomes || Outcomes == null || Outcomes.Length <= 0;

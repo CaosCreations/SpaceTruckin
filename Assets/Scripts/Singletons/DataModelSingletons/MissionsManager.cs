@@ -121,11 +121,14 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
             AssignRandomOutcomes(scheduled.Mission);
         }
 
-        // We will set the archived Mission fields throughout the outcome processing. 
+        // We will set the Archived Mission fields throughout the outcome processing. 
         scheduled.Mission.ProcessOutcomes();
 
         // Add the object to the archive once all outcomes have been processed. 
         ArchivedMissionsManager.AddToArchive(scheduled.Mission.MissionToArchive);
+
+        // Improve relationship with the client of the mission.
+        DialogueManager.IncreaseActorFondess(scheduled.Mission.Customer, scheduled.Mission.FondnessGranted);
 
         ScheduledMissions.Remove(scheduled);
     }

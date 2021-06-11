@@ -19,14 +19,17 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public static int IncreaseActorFondess(string actorName, int valueToAdd)
+    public static void IncreaseActorFondess(string actorName, int valueToAdd)
     {
-        int currentFondness = DialogueLua.GetActorField(actorName, DialogueConstants.FondnessFieldName).asInt;
-        int newFondness = currentFondness + valueToAdd;
 
-        DialogueLua.SetActorField(actorName, DialogueConstants.FondnessFieldName, newFondness);
-        
-        return newFondness;
+        if (!string.IsNullOrWhiteSpace(actorName))
+        {
+            // Get the value of the fondness field from the actor in the dialogue database.
+            int currentFondness = DialogueLua.GetActorField(actorName, DialogueConstants.FondnessFieldName).asInt;
+            int newFondness = currentFondness + valueToAdd;
+
+            // Set the fondness field with the increased value.
+            DialogueLua.SetActorField(actorName, DialogueConstants.FondnessFieldName, newFondness);
+        }
     }
-
 }
