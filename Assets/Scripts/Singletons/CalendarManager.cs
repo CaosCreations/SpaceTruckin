@@ -1,11 +1,12 @@
-﻿using System;
+﻿using PixelCrushers.DialogueSystem;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class CalendarManager : MonoBehaviour, IDataModelManager
+public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegistrar
 {
     public static CalendarManager Instance { get; private set; }
-
+    
     public ClockManager ClockManager;
 
     [SerializeField] private CalendarData calendarData;
@@ -64,6 +65,13 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
         {
             Debug.LogError("No calendar data found");
         }
+
+        RegisterLuaFunctions();
+    }
+
+    private void OnDisable()
+    {
+        UnregisterLuaFunctions();
     }
 
     /// <summary>
@@ -103,6 +111,15 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
         }
     }
 
+    private static int ConvertDateToDays(int day, int month, int year)
+    {
+        // Subtract 1 as years and months start at 1, not 0. 
+        int yearsInDays = (year - 1) * Instance.MonthsInYear * Instance.DaysInMonth;
+        int monthsInDays = (month - 1) * Instance.DaysInMonth;
+
+        return yearsInDays + monthsInDays + day;
+    }
+
     private static void LogCalendarData()
     {
         Debug.Log("Current day: " + Instance.CurrentDay);
@@ -124,6 +141,29 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
     public void DeleteData()
     {
         DataUtils.RecursivelyDeleteSaveData(PlayerData.FOLDER_NAME);
+    }
+    #endregion
+
+    #region Dialogue Database Lua Functions
+    public bool DateHasPassed(int day, int month, int year = 1)
+    {
+        return ConvertDateToDays(day, month, year) 
+            >= ConvertDateToDays(CurrentDay, CurrentMonth, CurrentYear);
+    }
+    #endregion
+
+    #region Lua Function Registration
+    public void RegisterLuaFunctions()
+    {
+        Lua.RegisterFunction(
+            "DateHasPassed",
+            this,
+            SymbolExtensions.GetMethodInfo(() => DateHasPassed(0, 0, 0)));
+    }
+
+    public void UnregisterLuaFunctions()
+    {
+        Lua.UnregisterFunction("DateHasPassed");
     }
     #endregion
 }
