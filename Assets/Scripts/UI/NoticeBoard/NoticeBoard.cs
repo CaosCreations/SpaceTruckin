@@ -38,7 +38,7 @@ public class NoticeBoard : UICanvasBase
     {
         if (selectedMission != null)
         {
-            selectedMission.HasBeenAccepted = true;
+            selectedMission.AcceptMission();
             acceptJobButton.interactable = false;
             CleanScrollView();
             PopulateScrollView();

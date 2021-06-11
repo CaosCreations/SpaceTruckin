@@ -32,6 +32,10 @@
     { 
         get => saveData.dateUnlocked; set => saveData.dateUnlocked = value; 
     }
+    public Date DateAccepted
+    {
+        get => saveData.dateAccepted; set => saveData.dateAccepted = value;
+    }
     public int NumberOfCompletions
     {
         get => saveData.numberOfCompletions;
