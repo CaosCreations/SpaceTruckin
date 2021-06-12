@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PixelCrushers.DialogueSystem;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -65,6 +66,13 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
         {
             Debug.LogError("No calendar data found");
         }
+
+        RegisterLuaFunctions();
+    }
+
+    private void OnDisable()
+    {
+        UnregisterLuaFunctions();
     }
 
     /// <summary>
@@ -104,12 +112,45 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
         }
     }
 
+    private static double ConvertDateToDays(double day, double month, double year)
+    {
+        // Subtract 1 as years and months start at 1, not 0. 
+        double yearsInDays = (year - 1) * Instance.MonthsInYear * Instance.DaysInMonth;
+        double monthsInDays = (month - 1) * Instance.DaysInMonth;
+
+        return yearsInDays + monthsInDays + day;
+    }
+
     private static void LogCalendarData()
     {
         Debug.Log("Current day: " + Instance.CurrentDay);
         Debug.Log("Current month: " + Instance.CurrentMonth);
         Debug.Log("Current year: " + Instance.CurrentYear);
     }
+
+    #region Dialogue Integration
+    // Parameters must be doubles as that's the numeric type Lua tables use.
+    public bool HasDateBeenReached(double day, double month, double year = 1)
+    {
+        return ConvertDateToDays(CurrentDay, CurrentMonth, CurrentYear)
+            >= ConvertDateToDays(day, month, year);
+    }
+    #endregion
+
+    #region Lua Function Registration
+    public void RegisterLuaFunctions()
+    {
+        Lua.RegisterFunction(
+            DialogueConstants.DateReachedFunctionName,
+            this,
+            SymbolExtensions.GetMethodInfo(() => HasDateBeenReached(0, 0, 0)));
+    }
+
+    public void UnregisterLuaFunctions()
+    {
+        Lua.UnregisterFunction(DialogueConstants.DateReachedFunctionName);
+    }
+    #endregion
 
     #region Persistence
     public void SaveData()
