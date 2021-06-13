@@ -56,6 +56,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         RegisterLuaFunctions();
 
         CalendarManager.OnEndOfDay += UpdateMissionSchedule;
+        CalendarManager.OnEndOfDay += ApplyOfferExpiryConsequences;
     }
 
     /// <summary>
@@ -286,18 +287,33 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     #region Dialogue Integration
     public bool HasMissionBeenCompletedForCustomer(string missionName, string customerName)
     {
-        foreach (Mission mission in Instance.Missions)
+        Mission missionForCustomer = MissionUtils.GetMissionForCustomer(missionName, customerName);
+
+        if (missionForCustomer != null)
         {
-            if (mission != null
-                && mission.Name.Equals(missionName, StringComparison.CurrentCultureIgnoreCase)
-                && mission.Customer.Equals(customerName, StringComparison.CurrentCultureIgnoreCase)
-                && mission.NumberOfCompletions > 0)
-            {
-                return true;
-            }
+            return missionForCustomer.NumberOfCompletions > 0;
         }
 
         return false;
+    }
+
+    private static void ApplyOfferExpiryConsequences()
+    {
+        foreach (Mission mission in Instance.Missions)
+        {
+            if (mission != null
+                && mission.OfferTimeLimitInDays > 0 
+                && !mission.OfferExpiryConsequencesApplied 
+                && mission.HasOfferExpired)
+            {
+                // Deduct relationship points from the customer as the deadline has elapsed.
+                DialogueDatabaseManager.AddToActorFondness(
+                    mission.Customer, -mission.OfferExpiryFondnessDeduction);
+
+                // Prevent repeat deductions 
+                mission.OfferExpiryConsequencesApplied = true;
+            }
+        }
     }
     #endregion
 

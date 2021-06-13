@@ -10,8 +10,8 @@
     public MissionUnlockCondition UnlockCondition { get => unlockCondition; }
     public bool CanBeUnlockedWithMoney
     {
-         get => UnlockCondition == MissionUnlockCondition.TotalMoney 
-            && MoneyNeededToUnlock <= PlayerManager.Instance.Money;
+        get => UnlockCondition == MissionUnlockCondition.TotalMoney
+           && MoneyNeededToUnlock <= PlayerManager.Instance.Money;
     }
     public bool HasBeenUnlocked
     {
@@ -28,9 +28,9 @@
         get => saveData.daysLeftToComplete;
         set => saveData.daysLeftToComplete = value;
     }
-    public Date DateUnlocked 
-    { 
-        get => saveData.dateUnlocked; set => saveData.dateUnlocked = value; 
+    public Date DateUnlocked
+    {
+        get => saveData.dateUnlocked; set => saveData.dateUnlocked = value;
     }
     public Date DateAccepted
     {
@@ -47,6 +47,17 @@
         get => moneyNeededToUnlock; set => moneyNeededToUnlock = value;
     }
     public int FondnessGranted => fondnessGranted;
+    public int OfferTimeLimitInDays => offerTimeLimitInDays;
+    public bool HasOfferExpired 
+    {
+        get => CalendarUtils.HasTimePeriodElapsed(DateAccepted, offerTimeLimitInDays); 
+    }
+    public bool OfferExpiryConsequencesApplied 
+    {
+        get => saveData.offerExpiryConsequencesApplied; 
+        set => saveData.offerExpiryConsequencesApplied = value;
+    }
+    public int OfferExpiryFondnessDeduction => offerExpiryFondnessDeduction;
     public bool HasRandomOutcomes 
     { 
         get => hasRandomOutcomes || Outcomes == null || Outcomes.Length <= 0;

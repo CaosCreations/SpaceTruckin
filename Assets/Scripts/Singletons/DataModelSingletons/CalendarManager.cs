@@ -18,6 +18,7 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
     public TimeSpan DayEndTime => calendarData.DayEndTime;
     public int RealTimeDayDurationInSeconds => calendarData.RealTimeDayDurationInSeconds;
     public int DaysInMonth => calendarData.DaysInMonth;
+    public int DaysInYear => DaysInMonth * MonthsInYear;
     public int MonthsInYear => calendarData.MonthsInYear;
     public Date CurrentDate => calendarData.CurrentDate;
     public int CurrentDay 
@@ -112,15 +113,6 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    private static double ConvertDateToDays(double day, double month, double year)
-    {
-        // Subtract 1 as years and months start at 1, not 0. 
-        double yearsInDays = (year - 1) * Instance.MonthsInYear * Instance.DaysInMonth;
-        double monthsInDays = (month - 1) * Instance.DaysInMonth;
-
-        return yearsInDays + monthsInDays + day;
-    }
-
     private static void LogCalendarData()
     {
         Debug.Log("Current day: " + Instance.CurrentDay);
@@ -132,8 +124,8 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
     // Parameters must be doubles as that's the numeric type Lua tables use.
     public bool HasDateBeenReached(double day, double month, double year = 1)
     {
-        return ConvertDateToDays(CurrentDay, CurrentMonth, CurrentYear)
-            >= ConvertDateToDays(day, month, year);
+        return CalendarUtils.ConvertDateToDays(CurrentDay, CurrentMonth, CurrentYear)
+            >= CalendarUtils.ConvertDateToDays(day, month, year);
     }
     #endregion
 

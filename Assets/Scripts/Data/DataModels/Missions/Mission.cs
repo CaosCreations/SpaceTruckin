@@ -11,7 +11,8 @@ public enum MissionUnlockCondition
 public partial class Mission : ScriptableObject, IDataModel
 {
     [Header("Set in Editor")]
-    [SerializeField] private int missionDurationInDays, fuelCost, fondnessGranted;
+    [SerializeField] private int missionDurationInDays, fuelCost, fondnessGranted; 
+    [SerializeField] private int offerTimeLimitInDays, offerExpiryFondnessDeduction;
     [SerializeField] private string missionName, customer, cargo, description;
     [SerializeField] private MissionUnlockCondition unlockCondition;
     [SerializeField] private long moneyNeededToUnlock;
@@ -33,6 +34,9 @@ public partial class Mission : ScriptableObject, IDataModel
         // Unlocked - appear in noticeboard ready to be accepted. 
         // Accepted - appear in office terminal and can be assigned to pilots. 
         public bool hasBeenUnlocked, hasBeenAccepted;
+
+        // Track this so consequences of not actioning an offer aren't applied multiple times.
+        public bool offerExpiryConsequencesApplied; 
 
         public int daysLeftToComplete, numberOfCompletions;
         public Date dateUnlocked, dateAccepted;
