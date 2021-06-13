@@ -50,7 +50,7 @@
     public int OfferTimeLimitInDays => offerTimeLimitInDays;
     public bool HasOfferExpired 
     {
-        get => CalendarManager.HasTimePeriodElapsed(DateAccepted, offerTimeLimitInDays); 
+        get => CalendarUtils.HasTimePeriodElapsed(DateAccepted, offerTimeLimitInDays); 
     }
     public bool OfferExpiryConsequencesApplied 
     {

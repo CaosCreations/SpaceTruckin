@@ -303,7 +303,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
         if (missionForCustomer != null)
         {
-            return CalendarManager.HasTimePeriodElapsed(
+            return CalendarUtils.HasTimePeriodElapsed(
                 missionForCustomer.DateAccepted, missionForCustomer.OfferTimeLimitInDays);
         }
 

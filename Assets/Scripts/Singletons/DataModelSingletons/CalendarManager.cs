@@ -69,8 +69,6 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
         }
 
         RegisterLuaFunctions();
-
-        var date = ConvertDaysToDate(399);
     }
 
     private void OnDisable()
@@ -115,52 +113,6 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    private static int ConvertDateToDays(Date date)
-    {
-        // Subtract 1 as years and months start at 1, not 0. 
-        int yearsInDays = (date.Year - 1) * Instance.MonthsInYear * Instance.DaysInMonth;
-        int monthsInDays = (date.Month - 1) * Instance.DaysInMonth;
-
-        return yearsInDays + monthsInDays + date.Day;
-    }
-
-    // Used for compatibility with Lua functions
-    private static double ConvertDateToDays(double day, double month, double year)
-    {
-        // Subtract 1 as years and months start at 1, not 0. 
-        double yearsInDays = (year - 1) * Instance.MonthsInYear * Instance.DaysInMonth;
-        double monthsInDays = (month - 1) * Instance.DaysInMonth;
-
-        return yearsInDays + monthsInDays + day;
-    }
-
-    public static Date ConvertDaysToDate(int days)
-    {
-        int years = Mathf.FloorToInt(days / Instance.DaysInYear);
-        days %= Instance.DaysInYear;
-
-        int months = Mathf.FloorToInt(days / Instance.DaysInMonth);
-        days %= Instance.DaysInMonth;
-
-        return new Date() { Day = days, Month = months, Year = years };
-    }
-
-    public static bool HasTimePeriodElapsed(Date startingDate, Date period)
-    {
-        bool b = ConvertDateToDays(Instance.CurrentDate) - ConvertDateToDays(startingDate) 
-            > ConvertDateToDays(period);
-
-        return b;
-    }
-
-    public static bool HasTimePeriodElapsed(Date startingDate, int periodInDays)
-    {
-        bool b = ConvertDateToDays(Instance.CurrentDate) - ConvertDateToDays(startingDate)
-            > periodInDays;
-
-        return b;
-    }
-
     private static void LogCalendarData()
     {
         Debug.Log("Current day: " + Instance.CurrentDay);
@@ -172,8 +124,8 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
     // Parameters must be doubles as that's the numeric type Lua tables use.
     public bool HasDateBeenReached(double day, double month, double year = 1)
     {
-        return ConvertDateToDays(CurrentDay, CurrentMonth, CurrentYear)
-            >= ConvertDateToDays(day, month, year);
+        return CalendarUtils.ConvertDateToDays(CurrentDay, CurrentMonth, CurrentYear)
+            >= CalendarUtils.ConvertDateToDays(day, month, year);
     }
     #endregion
 
