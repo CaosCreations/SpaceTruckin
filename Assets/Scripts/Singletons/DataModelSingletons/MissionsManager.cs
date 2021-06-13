@@ -301,7 +301,8 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     {
         foreach (Mission mission in Instance.Missions)
         {
-            if (mission.OfferTimeLimitInDays > 0 
+            if (mission != null
+                && mission.OfferTimeLimitInDays > 0 
                 && !mission.OfferExpiryConsequencesApplied 
                 && mission.HasOfferExpired)
             {
