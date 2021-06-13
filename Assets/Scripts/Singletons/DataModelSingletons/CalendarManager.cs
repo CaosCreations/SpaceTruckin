@@ -18,6 +18,7 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
     public TimeSpan DayEndTime => calendarData.DayEndTime;
     public int RealTimeDayDurationInSeconds => calendarData.RealTimeDayDurationInSeconds;
     public int DaysInMonth => calendarData.DaysInMonth;
+    public int DaysInYear => DaysInMonth * MonthsInYear;
     public int MonthsInYear => calendarData.MonthsInYear;
     public Date CurrentDate => calendarData.CurrentDate;
     public int CurrentDay 
@@ -112,6 +113,16 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
         }
     }
 
+    private static int ConvertDateToDays(Date date)
+    {
+        // Subtract 1 as years and months start at 1, not 0. 
+        int yearsInDays = (date.Year - 1) * Instance.MonthsInYear * Instance.DaysInMonth;
+        int monthsInDays = (date.Month - 1) * Instance.DaysInMonth;
+
+        return yearsInDays + monthsInDays + date.Day;
+    }
+
+    // Used for compatibility with Lua functions
     private static double ConvertDateToDays(double day, double month, double year)
     {
         // Subtract 1 as years and months start at 1, not 0. 
@@ -119,6 +130,33 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
         double monthsInDays = (month - 1) * Instance.DaysInMonth;
 
         return yearsInDays + monthsInDays + day;
+    }
+
+    public static Date ConvertDaysToDate(int days)
+    {
+        int years = Mathf.FloorToInt(days / Instance.DaysInYear);
+        days %= years;
+
+        int months = Mathf.FloorToInt(days / Instance.DaysInMonth);
+        days %= months;
+
+        return new Date() { Day = days, Month = months, Year = years };
+    }
+
+    public static bool HasTimePeriodElapsed(Date startingDate, Date period)
+    {
+        bool b = ConvertDateToDays(Instance.CurrentDate) - ConvertDateToDays(startingDate) 
+            > ConvertDateToDays(period);
+
+        return b;
+    }
+
+    public static bool HasTimePeriodElapsed(Date startingDate, int periodInDays)
+    {
+        bool b = ConvertDateToDays(Instance.CurrentDate) - ConvertDateToDays(startingDate)
+            > periodInDays;
+
+        return b;
     }
 
     private static void LogCalendarData()

@@ -286,15 +286,24 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     #region Dialogue Integration
     public bool HasMissionBeenCompletedForCustomer(string missionName, string customerName)
     {
-        foreach (Mission mission in Instance.Missions)
+        Mission missionForCustomer = MissionUtils.GetMissionForCustomer(missionName, customerName);
+
+        if (missionForCustomer != null)
         {
-            if (mission != null
-                && mission.Name.Equals(missionName, StringComparison.CurrentCultureIgnoreCase)
-                && mission.Customer.Equals(customerName, StringComparison.CurrentCultureIgnoreCase)
-                && mission.NumberOfCompletions > 0)
-            {
-                return true;
-            }
+            return missionForCustomer.NumberOfCompletions > 0;
+        }
+
+        return false;
+    }
+
+    public bool HasOfferPeriodElapsed(string missionName, string customerName)
+    {
+        Mission missionForCustomer = MissionUtils.GetMissionForCustomer(missionName, customerName);
+
+        if (missionForCustomer != null)
+        {
+            return CalendarManager.HasTimePeriodElapsed(
+                missionForCustomer.DateAccepted, missionForCustomer.OfferTimeLimitInDays);
         }
 
         return false;

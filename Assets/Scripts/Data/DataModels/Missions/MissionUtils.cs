@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 public static class MissionUtils
 {
@@ -6,5 +8,39 @@ public static class MissionUtils
     {
         return outcomes
             .FirstOrDefault(x => x.GetType() == typeof(T)) as T;
+    }
+
+    public static List<Mission> GetMissionsForCustomer(string customerName)
+    {
+        var missionsForCustomer = new List<Mission>();
+
+        foreach (var mission in MissionsManager.Instance.Missions)
+        {
+            if (mission.Customer.Equals(customerName, StringComparison.CurrentCultureIgnoreCase))
+            {
+                missionsForCustomer.Add(mission);
+            }
+        }
+
+        return missionsForCustomer;
+    }
+
+    public static Mission GetMissionForCustomer(string missionName, string customerName)
+    {
+        return MissionsManager.Instance.Missions
+            .FirstOrDefault(x => x.Name.Equals(missionName, StringComparison.CurrentCultureIgnoreCase) 
+                && x.Customer.Equals(customerName, StringComparison.CurrentCultureIgnoreCase));
+
+        //foreach (var mission in MissionsManager.Instance.Missions)
+        //{
+        //    if (mission != null
+        //        && mission.Name.Equals(missionName, StringComparison.CurrentCultureIgnoreCase)
+        //        && mission.Customer.Equals(customerName, StringComparison.CurrentCultureIgnoreCase))
+        //    {
+        //        return mission;
+        //    }
+        //}
+
+        //return null;
     }
 }
