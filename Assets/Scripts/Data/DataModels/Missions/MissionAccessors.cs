@@ -52,7 +52,11 @@
     {
         get => CalendarManager.HasTimePeriodElapsed(DateAccepted, offerTimeLimitInDays); 
     }
-    public bool OfferExpiryConsequencesApplied => saveData.offerExpiryConsequencesApplied;
+    public bool OfferExpiryConsequencesApplied 
+    {
+        get => saveData.offerExpiryConsequencesApplied; 
+        set => saveData.offerExpiryConsequencesApplied = value;
+    }
     public int OfferExpiryFondnessDeduction => offerExpiryFondnessDeduction;
     public bool HasRandomOutcomes 
     { 

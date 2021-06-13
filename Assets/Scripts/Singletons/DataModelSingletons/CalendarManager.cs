@@ -69,6 +69,8 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
         }
 
         RegisterLuaFunctions();
+
+        var date = ConvertDaysToDate(399);
     }
 
     private void OnDisable()
@@ -135,10 +137,10 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
     public static Date ConvertDaysToDate(int days)
     {
         int years = Mathf.FloorToInt(days / Instance.DaysInYear);
-        days %= years;
+        days %= Instance.DaysInYear;
 
         int months = Mathf.FloorToInt(days / Instance.DaysInMonth);
-        days %= months;
+        days %= Instance.DaysInMonth;
 
         return new Date() { Day = days, Month = months, Year = years };
     }

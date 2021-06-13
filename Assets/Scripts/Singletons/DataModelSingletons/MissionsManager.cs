@@ -314,11 +314,16 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     {
         foreach (Mission mission in Instance.Missions)
         {
-            if (!mission.OfferExpiryConsequencesApplied && mission.HasOfferExpired)
+            if (mission.OfferTimeLimitInDays > 0 
+                && !mission.OfferExpiryConsequencesApplied 
+                && mission.HasOfferExpired)
             {
                 // Deduct relationship points from the customer as the deadline has elapsed.
                 DialogueDatabaseManager.AddToActorFondness(
                     mission.Customer, -mission.OfferExpiryFondnessDeduction);
+
+                // Prevent repeat deductions 
+                mission.OfferExpiryConsequencesApplied = true;
             }
         }
     }
