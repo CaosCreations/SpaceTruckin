@@ -297,19 +297,6 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         return false;
     }
 
-    public bool HasOfferPeriodElapsed(string missionName, string customerName)
-    {
-        Mission missionForCustomer = MissionUtils.GetMissionForCustomer(missionName, customerName);
-
-        if (missionForCustomer != null)
-        {
-            return CalendarUtils.HasTimePeriodElapsed(
-                missionForCustomer.DateAccepted, missionForCustomer.OfferTimeLimitInDays);
-        }
-
-        return false;
-    }
-
     private static void ApplyOfferExpiryConsequences()
     {
         foreach (Mission mission in Instance.Missions)

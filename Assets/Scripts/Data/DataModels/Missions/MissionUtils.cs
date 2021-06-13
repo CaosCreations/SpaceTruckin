@@ -16,7 +16,8 @@ public static class MissionUtils
 
         foreach (var mission in MissionsManager.Instance.Missions)
         {
-            if (mission.Customer.Equals(customerName, StringComparison.CurrentCultureIgnoreCase))
+            if (mission != null 
+                && mission.Customer.Equals(customerName, StringComparison.CurrentCultureIgnoreCase))
             {
                 missionsForCustomer.Add(mission);
             }
@@ -27,20 +28,16 @@ public static class MissionUtils
 
     public static Mission GetMissionForCustomer(string missionName, string customerName)
     {
-        return MissionsManager.Instance.Missions
-            .FirstOrDefault(x => x.Name.Equals(missionName, StringComparison.CurrentCultureIgnoreCase) 
-                && x.Customer.Equals(customerName, StringComparison.CurrentCultureIgnoreCase));
+        foreach (var mission in MissionsManager.Instance.Missions)
+        {
+            if (mission != null
+                && mission.Name.Equals(missionName, StringComparison.CurrentCultureIgnoreCase)
+                && mission.Customer.Equals(customerName, StringComparison.CurrentCultureIgnoreCase))
+            {
+                return mission;
+            }
+        }
 
-        //foreach (var mission in MissionsManager.Instance.Missions)
-        //{
-        //    if (mission != null
-        //        && mission.Name.Equals(missionName, StringComparison.CurrentCultureIgnoreCase)
-        //        && mission.Customer.Equals(customerName, StringComparison.CurrentCultureIgnoreCase))
-        //    {
-        //        return mission;
-        //    }
-        //}
-
-        //return null;
+        return null;
     }
 }
