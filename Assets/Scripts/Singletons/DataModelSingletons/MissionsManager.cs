@@ -56,6 +56,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         RegisterLuaFunctions();
 
         CalendarManager.OnEndOfDay += UpdateMissionSchedule;
+        CalendarManager.OnEndOfDay += ApplyOfferExpiryConsequences;
     }
 
     /// <summary>
@@ -307,6 +308,19 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         }
 
         return false;
+    }
+
+    private static void ApplyOfferExpiryConsequences()
+    {
+        foreach (Mission mission in Instance.Missions)
+        {
+            if (!mission.OfferExpiryConsequencesApplied && mission.HasOfferExpired)
+            {
+                // Deduct relationship points from the customer as the deadline has elapsed.
+                DialogueDatabaseManager.AddToActorFondness(
+                    mission.Customer, -mission.OfferExpiryFondnessDeduction);
+            }
+        }
     }
     #endregion
 
