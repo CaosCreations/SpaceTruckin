@@ -67,9 +67,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     public static List<Mission> GetSelectableMissions()
     {
         return Instance.Missions
-            .Where(x => x.HasBeenAccepted
-            && GetScheduledMission(x) == null
-            && !x.IsInProgress())
+            .Where(x => x.IsAvailableForScheduling)
             .ToList();
     }
 

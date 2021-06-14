@@ -17,6 +17,8 @@ public partial class Mission : ScriptableObject, IDataModel
     [SerializeField] private MissionUnlockCondition unlockCondition;
     [SerializeField] private long moneyNeededToUnlock;
     [SerializeField] private bool hasRandomOutcomes;
+    [SerializeField] private bool isRepeatable = true; // Default to repeatable missions
+
     [SerializeField] private MissionOutcome[] outcomes;
     [SerializeField] private ThankYouMessage thankYouMessage;
 
