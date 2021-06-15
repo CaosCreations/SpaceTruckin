@@ -2,6 +2,7 @@
 {
     // Custom Lua function names 
     public const string MissionCompletedFunctionName = "HasMissionBeenCompletedForCustomer";
+    public const string MissionOfferExpiredFunctionName = "HasMissionOfferExpired";
     public const string DateReachedFunctionName = "HasDateBeenReached";
 
 
