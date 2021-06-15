@@ -11,15 +11,23 @@ public enum MissionUnlockCondition
 public partial class Mission : ScriptableObject, IDataModel
 {
     [Header("Set in Editor")]
-    [SerializeField] private int missionDurationInDays, fuelCost, fondnessGranted; 
-    [SerializeField] private int offerTimeLimitInDays, offerExpiryFondnessDeduction;
     [SerializeField] private string missionName, customer, cargo, description;
+    [SerializeField] private int missionDurationInDays, fuelCost;
     [SerializeField] private MissionUnlockCondition unlockCondition;
     [SerializeField] private long moneyNeededToUnlock;
-    [SerializeField] private bool hasRandomOutcomes;
     [SerializeField] private bool isRepeatable = true; // Default to repeatable missions
-
+    [SerializeField] private bool hasRandomOutcomes;
     [SerializeField] private MissionOutcome[] outcomes;
+
+    [Tooltip("The number of relationship points with the customer awarded on first completion of the mission")]
+    [SerializeField] private int fondnessGranted;
+
+    [Tooltip("The time after which there are consequences for not completing the mission")]
+    [SerializeField] private int offerTimeLimitInDays;
+    
+    [Tooltip("The number of relationship points that are deducted if the time limit is exceeded")]
+    [SerializeField] private int offerExpiryFondnessDeduction;
+
     [SerializeField] private ThankYouMessage thankYouMessage;
 
     [Header("Data to update IN GAME")]
