@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public static class MissionUtils
 {
@@ -38,6 +39,7 @@ public static class MissionUtils
             }
         }
 
+        Debug.LogWarning($"{customerName}'s mission '{missionName}' cannot be found");
         return null;
     }
 }

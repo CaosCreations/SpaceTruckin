@@ -39,7 +39,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12939444, g: 0.12939444, b: 0.1411131, a: 1}
+  m_IndirectSpecularColor: {r: 0.12939444, g: 0.12939444, b: 0.13720673, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -691,6 +691,96 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d7fb93e8a6230a04cacc2945387926a7,
     type: 3}
   m_PrefabInstance: {fileID: 538797527}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &62317384
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 943537761}
+    m_Modifications:
+    - target: {fileID: 1019127046796887104, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_Name
+      value: MiscTestActor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 214.76
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 380
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -248.27
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8553291468905247584, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: conversation
+      value: Has Mission Expired Test
+      objectReference: {fileID: 0}
+    - target: {fileID: 8553291468905247584, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: conversationActor
+      value: 
+      objectReference: {fileID: 129007670}
+    - target: {fileID: 8553291468905247584, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: conversationConversant
+      value: 
+      objectReference: {fileID: 62317385}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d2445e2563bbe4b4a91fd4e933f67d2a, type: 3}
+--- !u!4 &62317385 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+    type: 3}
+  m_PrefabInstance: {fileID: 62317384}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &78128772
 PrefabInstance:
@@ -4806,6 +4896,7 @@ MonoBehaviour:
     panel: {fileID: 1587357891}
     alertText:
       m_uiText: {fileID: 239804816}
+      m_textMeshProUGUI: {fileID: 0}
     queueAlerts: 1
     dontQueueDuplicates: 0
     waitForHideAnimation: 1
@@ -7112,6 +7203,7 @@ MonoBehaviour:
   pcImage: {fileID: 0}
   pcName:
     m_uiText: {fileID: 0}
+    m_textMeshProUGUI: {fileID: 0}
   timerSlider: {fileID: 2090687668}
   buttonAlignment: 0
   showUnusedButtons: 0
@@ -7374,8 +7466,10 @@ MonoBehaviour:
   panel: {fileID: 211229085}
   label:
     m_uiText: {fileID: 640354560}
+    m_textMeshProUGUI: {fileID: 0}
   inputField:
     m_uiInputField: {fileID: 1872299375}
+    m_textMeshProInputField: {fileID: 0}
   acceptKey: 13
   cancelKey: 27
   showTouchScreenKeyboard: 0
@@ -9254,7 +9348,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.6152363, y: 1}
+    m_SensorSize: {x: 2.0452676, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -10163,8 +10257,10 @@ MonoBehaviour:
   portraitImage: {fileID: 874407585}
   portraitName:
     m_uiText: {fileID: 1166183507}
+    m_textMeshProUGUI: {fileID: 0}
   subtitleText:
     m_uiText: {fileID: 1025864347}
+    m_textMeshProUGUI: {fileID: 0}
   addSpeakerName: 0
   addSpeakerNameFormat: '{0}: {1}'
   accumulateText: 0
@@ -11428,6 +11524,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 62317385}
   - {fileID: 1615154180}
   - {fileID: 1972979662995259740}
   - {fileID: 1014738574}
@@ -12421,7 +12518,7 @@ PrefabInstance:
     - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
         type: 3}
@@ -17855,7 +17952,7 @@ PrefabInstance:
     - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
         type: 3}
@@ -20511,8 +20608,10 @@ MonoBehaviour:
   portraitImage: {fileID: 103475082}
   portraitName:
     m_uiText: {fileID: 445156465}
+    m_textMeshProUGUI: {fileID: 0}
   subtitleText:
     m_uiText: {fileID: 893675006}
+    m_textMeshProUGUI: {fileID: 0}
   addSpeakerName: 0
   addSpeakerNameFormat: '{0}: {1}'
   accumulateText: 0
@@ -22399,6 +22498,7 @@ MonoBehaviour:
   button: {fileID: 2085510648}
   label:
     m_uiText: {fileID: 385255552}
+    m_textMeshProUGUI: {fileID: 0}
   setLabelColor: 1
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &2085510647
@@ -23101,7 +23201,7 @@ PrefabInstance:
     - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
         type: 3}
