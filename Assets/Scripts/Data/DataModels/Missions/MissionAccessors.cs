@@ -63,6 +63,14 @@
         get => hasRandomOutcomes || Outcomes == null || Outcomes.Length <= 0;
         set => hasRandomOutcomes = value; 
     }
+    public bool IsRepeatable => isRepeatable;
+    public bool IsAvailableForScheduling
+    {
+        get => HasBeenAccepted 
+            && MissionsManager.GetScheduledMission(this) == null 
+            && !IsInProgress() 
+            && (IsRepeatable || NumberOfCompletions <= 0);
+    }
     public MissionOutcome[] Outcomes { get => outcomes; set => outcomes = value; }
     public ArchivedMission MissionToArchive 
     {
