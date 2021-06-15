@@ -67,10 +67,13 @@
     public bool IsAvailableForScheduling
     {
         get => HasBeenAccepted 
-            && MissionsManager.GetScheduledMission(this) == null 
-            && !IsInProgress() 
-            && (IsRepeatable || NumberOfCompletions <= 0);
+            && !IsScheduled
+            && !IsInProgress()
+
+            // If non-repeatable mission offers expire, they can no longer be scheduled. 
+            && (IsRepeatable || (!OfferExpiryConsequencesApplied && NumberOfCompletions <= 0));
     }
+    public bool IsScheduled => MissionsManager.GetScheduledMission(this) != null; 
     public MissionOutcome[] Outcomes { get => outcomes; set => outcomes = value; }
     public ArchivedMission MissionToArchive 
     {
