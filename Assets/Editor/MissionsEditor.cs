@@ -17,7 +17,7 @@ public class MissionsEditor : MonoBehaviour
             var missionContainer = EditorHelper.GetAsset<MissionContainer>();
             foreach (var mission in missionContainer.missions)
             {
-                mission.HasBeenAccepted = hasBeenAccepted;
+                mission.AcceptMission();
             }
             Debug.Log("All missions accepted is now " + hasBeenAccepted.ToString());
         }

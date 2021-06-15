@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using PixelCrushers.DialogueSystem;
+using System.Collections.Generic;
 using System.Linq;
-using PixelCrushers.DialogueSystem;
-using System;
+using UnityEngine;
 
 public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegistrar
 {
@@ -140,12 +139,12 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     {
         foreach (Mission mission in Instance.Missions)
         {
-            if (!mission.HasBeenUnlocked 
+            if (!mission.HasBeenUnlocked
                 && mission.UnlockCondition == MissionUnlockCondition.TotalMoney)
             {
                 // Unlock missions that require money and subscribe to event to keep them updated.
                 mission.UnlockIfConditionMet();
-                PlayerManager.OnFinancialTransaction += mission.UnlockIfConditionMet; 
+                PlayerManager.OnFinancialTransaction += mission.UnlockIfConditionMet;
             }
         }
     }
@@ -189,8 +188,8 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     {
         foreach (ScheduledMission scheduled in ScheduledMissions)
         {
-            if (scheduled?.Pilot != null 
-                && scheduled?.Pilot.Ship != null 
+            if (scheduled?.Pilot != null
+                && scheduled?.Pilot.Ship != null
                 && scheduled?.Pilot.Ship == ship)
             {
                 return scheduled;
@@ -203,8 +202,8 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     {
         foreach (ScheduledMission scheduled in ScheduledMissions)
         {
-            if (scheduled?.Mission != null 
-                && scheduled?.Pilot != null 
+            if (scheduled?.Mission != null
+                && scheduled?.Pilot != null
                 && scheduled?.Pilot.Ship != null
                 && scheduled.Pilot.Ship == HangarManager.GetShipByNode(node))
             {
@@ -270,14 +269,14 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     private static void LogScheduledMissions()
     {
         Debug.Log("Currently scheduled missions:\n");
-        ScheduledMissions.ForEach(x => 
+        ScheduledMissions.ForEach(x =>
         {
             string stringRepresentation = GetScheduledMissionString(x);
             if (!string.IsNullOrEmpty(stringRepresentation
                 .RemoveAllWhitespace()
                 .RemoveCharacter(',')))
             {
-                Debug.Log(GetScheduledMissionString(x)); 
+                Debug.Log(GetScheduledMissionString(x));
             }
         });
     }
@@ -300,8 +299,8 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         foreach (Mission mission in Instance.Missions)
         {
             if (mission != null
-                && mission.OfferTimeLimitInDays > 0 
-                && !mission.OfferExpiryConsequencesApplied 
+                && mission.OfferTimeLimitInDays > 0
+                && !mission.OfferExpiryConsequencesApplied
                 && mission.HasOfferExpired)
             {
                 // Deduct relationship points from the customer as the deadline has elapsed.
@@ -368,7 +367,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
             LogScheduledMissions();
         }
     }
-    
+
     public void DeleteData()
     {
         DataUtils.RecursivelyDeleteSaveData(Mission.FOLDER_NAME);
