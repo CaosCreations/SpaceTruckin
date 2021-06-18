@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public static class CalendarUtils
 {
@@ -21,6 +22,20 @@ public static class CalendarUtils
         return yearsInDays + monthsInDays + day;
     }
 
+    public static double ConvertDateToDays(double[] dateComponents)
+    {
+        if (dateComponents.Length != 3)
+        {
+            return default;
+        }
+
+        // Subtract 1 as years and months start at 1, not 0. 
+        double yearsInDays = (dateComponents[2] - 1) * CalendarManager.Instance.MonthsInYear * CalendarManager.Instance.DaysInMonth;
+        double monthsInDays = (dateComponents[1] - 1) * CalendarManager.Instance.DaysInMonth;
+
+        return yearsInDays + monthsInDays + dateComponents[0];
+    }
+
     public static Date ConvertDaysToDate(int days)
     {
         int years = Mathf.FloorToInt(days / CalendarManager.Instance.DaysInYear);
@@ -30,6 +45,17 @@ public static class CalendarUtils
         days %= CalendarManager.Instance.DaysInMonth;
 
         return new Date() { Day = days, Month = months, Year = years };
+    }
+
+    public static string ConvertDaysToDateString(double days)
+    {
+        double years = Math.Floor(days / CalendarManager.Instance.DaysInYear);
+        days %= CalendarManager.Instance.DaysInYear;
+
+        double months = Math.Floor(days / CalendarManager.Instance.DaysInMonth);
+        days %= CalendarManager.Instance.DaysInMonth;
+
+        return $"({days}, {months}, {years})";
     }
 
     public static bool HasTimePeriodElapsed(Date startingDate, Date period)
