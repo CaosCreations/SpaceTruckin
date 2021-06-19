@@ -8,5 +8,5 @@
 
     // Actor field names
     public const string FondnessFieldName = "Fondness";
-
+    public const string HasCompletedConversationTodayFieldName = "HasCompletedConversationToday";
 }
