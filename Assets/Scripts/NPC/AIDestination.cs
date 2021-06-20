@@ -1,13 +1,12 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class AIDestination : MonoBehaviour
 {
     // The NPC that will move towards the destination.
-    public NPCAgent npcAgent; 
+    public NPCAgent npcAgent;
 
     // Determines the area within which the destination can be set. 
-    private AIBoundingPlane aiBoundingPlane; 
+    private AIBoundingPlane aiBoundingPlane;
 
     private BoxCollider boxCollider;
 
@@ -23,9 +22,9 @@ public class AIDestination : MonoBehaviour
         // The x and z values of the next destination's position.
         Vector2 xzPosition = new Vector2(
             UnityEngine.Random.Range(
-                aiBoundingPlane.boundaryVertices[0].x, aiBoundingPlane.boundaryVertices[1].x),
+                aiBoundingPlane.BoundaryVertices[0].x, aiBoundingPlane.BoundaryVertices[1].x),
             UnityEngine.Random.Range(
-                aiBoundingPlane.boundaryVertices[0].z, aiBoundingPlane.boundaryVertices[2].z));
+                aiBoundingPlane.BoundaryVertices[0].z, aiBoundingPlane.BoundaryVertices[2].z));
 
         return xzPosition;
     }

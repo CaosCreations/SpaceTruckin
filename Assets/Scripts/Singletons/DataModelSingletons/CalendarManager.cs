@@ -21,7 +21,7 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
     public int DaysInYear => DaysInMonth * MonthsInYear;
     public int MonthsInYear => calendarData.MonthsInYear;
     public Date CurrentDate => calendarData.CurrentDate;
-    public int CurrentDay 
+    public int CurrentDay
     { 
         get => calendarData.CurrentDate.Day;
         set => calendarData.CurrentDate.Day = value;
@@ -111,6 +111,11 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
                 Instance.CurrentYear++;
             }
         }
+    }
+
+    public static bool DateIsToday(Date date)
+    {
+        return date.Equals(Instance.CurrentDate);
     }
 
     private static void LogCalendarData()

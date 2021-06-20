@@ -1,18 +1,25 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.UI;
+
+/// <summary>
+/// Represent a time of day in a format that can be set in the inspector.
+/// </summary>
+[Serializable]
+public struct TimeOfDay
+{
+    public int Hours;
+    public int Minutes;
+    public int Seconds;
+}
 
 public class ClockManager : MonoBehaviour
 {
-    public static TimeSpan currentTime; 
-
-    // This will replace OnGUI when the design is ready 
-    public Text clockText; 
+    public static TimeSpan CurrentTime;
 
     private int currentTimeInSeconds;
     private int tickSpeedMultiplier;
 
-    private bool clockStopped; 
+    private bool clockStopped;
 
     private void Start()
     {
@@ -23,7 +30,7 @@ public class ClockManager : MonoBehaviour
         SetupClockForNextDay();
 
 #if UNITY_EDITOR
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = PlayerConstants.EditorTargetFramerate;
 #endif
     }
 
@@ -38,15 +45,14 @@ public class ClockManager : MonoBehaviour
     public void SetupClockForNextDay()
     {
         ResetClock();
-        StartClock(); 
+        StartClock();
     }
-	
-	public void ResetClock()
+
+    public void ResetClock()
     {
         clockStopped = true;
-        currentTime = CalendarManager.Instance.DayStartTime;
-        currentTimeInSeconds = (int)currentTime.TotalSeconds;
-        //clockText.text = currentTime.ToString();
+        CurrentTime = CalendarManager.Instance.DayStartTime;
+        currentTimeInSeconds = (int)CurrentTime.TotalSeconds;
     }
 
     public void StartClock()
@@ -61,7 +67,7 @@ public class ClockManager : MonoBehaviour
 
     private void Update()
     {
-        if (currentTime >= CalendarManager.Instance.DayEndTime)
+        if (CurrentTime >= CalendarManager.Instance.DayEndTime)
         {
             CalendarManager.EndDay();
         }
@@ -69,8 +75,7 @@ public class ClockManager : MonoBehaviour
         if (!clockStopped)
         {
             currentTimeInSeconds += Convert.ToInt32(Time.deltaTime * tickSpeedMultiplier);
-            currentTime = TimeSpan.FromSeconds(currentTimeInSeconds);
-            //clockText.text = currentTime.ToString("hh':'mm");
+            CurrentTime = TimeSpan.FromSeconds(currentTimeInSeconds);
         }
     }
 
@@ -80,15 +85,15 @@ public class ClockManager : MonoBehaviour
         localStyle.normal.textColor = Color.white;
 
         GUI.Label(new Rect(
-            Camera.main.pixelWidth - 128f, Camera.main.pixelHeight - 128f, 128f, 128f), 
-            currentTime.ToString("hh':'mm"), localStyle);
+            Camera.main.pixelWidth - 128f, Camera.main.pixelHeight - 128f, 128f, 128f),
+            CurrentTime.ToString("hh':'mm"), localStyle);
 
     }
 
     private void LogClockData()
     {
-        Debug.Log("Current time: " + currentTime);
+        Debug.Log("Current time: " + CurrentTime);
         Debug.Log("Current time in seconds: " + currentTimeInSeconds);
-        Debug.Log("Time remaining: " + CalendarManager.Instance.DayEndTime.Subtract(currentTime));
+        Debug.Log("Time remaining: " + CalendarManager.Instance.DayEndTime.Subtract(CurrentTime));
     }
 }
