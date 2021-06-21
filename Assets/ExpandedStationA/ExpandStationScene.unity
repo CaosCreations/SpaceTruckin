@@ -704,6 +704,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: MiscTestActor
       objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887104, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
         type: 3}
       propertyPath: m_RootOrder
@@ -815,14 +820,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f0105f9a38c18244b96c4e0226b541f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnDate:
-    Day: 0
-    Month: 0
-    Year: 0
-  spawnTime:
-    Seconds: 45
-    Minutes: 30
-    Hours: 2
+  spawnDateTimes:
+  - SpawnDate:
+      Day: 0
+      Month: 0
+      Year: 0
+    SpawnTime:
+      Hours: 0
+      Minutes: 0
+      Seconds: 0
+    DespawnDate:
+      Day: 0
+      Month: 0
+      Year: 0
+    DespawnTime:
+      Hours: 0
+      Minutes: 0
+      Seconds: 0
+  npcObject: {fileID: 0}
 --- !u!1001 &78128772
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12560,6 +12575,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1019127046796887104, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
         type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887104, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
       propertyPath: m_TagString
       value: NPC
       objectReference: {fileID: 0}
@@ -18002,6 +18022,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: FondnessMissionTestActor
       objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887104, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1019127046796887116, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
         type: 3}
       propertyPath: m_RootOrder
@@ -23240,6 +23265,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CustomConditionTestActor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887104, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1019127046796887104, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
         type: 3}

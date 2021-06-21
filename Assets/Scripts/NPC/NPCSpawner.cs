@@ -13,20 +13,13 @@ public class NPCSpawner : MonoBehaviour
 
     private void Start()
     {
-        RemovePastSpawnDateTimes();
         CalendarManager.OnEndOfDay += CueSpawnsForToday;
+        RemovePastSpawnDateTimes();
     }
 
-    private void RemovePastSpawnDateTimes()
+    private void OnValidate()
     {
-        spawnDateTimes.ForEach(x =>
-        {
-            if (x.SpawnDate < CalendarManager.Instance.CurrentDate
-                && x.DespawnDate < CalendarManager.Instance.CurrentDate)
-            {
-                spawnDateTimes.Remove(x);
-            }
-        });
+        ValidateFields();
     }
 
     private void CueSpawnsForToday()
@@ -61,5 +54,26 @@ public class NPCSpawner : MonoBehaviour
     private IEnumerator WaitUntilSpawnTime(int secondsToWait)
     {
         yield return new WaitForSeconds(secondsToWait);
+    }
+
+    private void RemovePastSpawnDateTimes()
+    {
+        spawnDateTimes.ForEach(x =>
+        {
+            if (x.SpawnDate < CalendarManager.Instance.CurrentDate
+                && x.DespawnDate < CalendarManager.Instance.CurrentDate)
+            {
+                spawnDateTimes.Remove(x);
+            }
+        });
+    }
+
+    private void ValidateFields()
+    {
+        foreach (SpawnDateTime spawnDateTime in spawnDateTimes)
+        {
+            spawnDateTime.SpawnDate = spawnDateTime.SpawnDate.Validate();
+            spawnDateTime.DespawnDate = spawnDateTime.DespawnDate.Validate();
+        }
     }
 }
