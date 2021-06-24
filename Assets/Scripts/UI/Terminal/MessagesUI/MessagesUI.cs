@@ -33,7 +33,7 @@ public class MessagesUI : MonoBehaviour
 
     private void OnEnable()
     {
-        MessagesManager.Instance.UnlockMessages();
+        MessagesManager.Instance.UnlockMessagesRequiringMoney();
         currentFilterMode = MessageFilterMode.None;
         GoToListView();
     }

@@ -1,12 +1,20 @@
 ﻿using System;
 using UnityEngine;
 
+public enum MessageUnlockCondition
+{
+    TotalMoney, Date
+}
+
 [CreateAssetMenu(fileName = "Message", menuName = "ScriptableObjects/Messages/Message", order = 1)]
 public partial class Message : ScriptableObject, IDataModel
 {
     [Header("Set in Editor")]
-    public string messageName, sender, subject, body;
-    public int condition;
+    [SerializeField] private string messageName, sender, subject, body;
+
+    [SerializeField] private MessageUnlockCondition unlockCondition;
+    [SerializeField] private long moneyNeededToUnlock;
+    [SerializeField] private Date dateToUnlockOn;
 
     // The mission offered in the email
     [SerializeField] private Mission mission;
@@ -19,8 +27,8 @@ public partial class Message : ScriptableObject, IDataModel
     [Serializable]
     public class MessageSaveData
     {
-        [SerializeField] public bool isUnlocked;
-        [SerializeField] public bool isUnread;
+        public bool isUnlocked;
+        public bool isUnread;
     }
 
     public void SaveData()

@@ -38,16 +38,35 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    public void UnlockMessages()
+    /// <summary>
+    /// Unlock messages that have a Total Money Earned condition that the player satisfies. 
+    /// </summary>
+    public void UnlockMessagesRequiringMoney()
     {
         foreach (Message message in Instance.Messages)
         {
-            if (message != null && !message.IsUnlocked)
+            if (message != null 
+                && message.IsUnlockedWithMoney 
+                && !message.IsUnlocked 
+                && PlayerManager.Instance.CanSpendMoney(message.MoneyNeededToUnlock))
             {
-                if (PlayerManager.Instance.CanSpendMoney(message.Condition))
-                {
-                    message.IsUnlocked = true;
-                }
+                message.IsUnlocked = true;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Unlock messages that have a Date condition that equals the current Date.
+    /// </summary>
+    public void UnlockMessagesForTodaysDate() 
+    {
+        foreach (Message message in Instance.Messages)
+        {
+            if (message != null 
+                && message.IsUnlockedByDate
+                /*&& message.DateToUnlockOn == CalendarManager.Instance.CurrentDate*/)
+            {
+                message.IsUnlocked = true;
             }
         }
     }
