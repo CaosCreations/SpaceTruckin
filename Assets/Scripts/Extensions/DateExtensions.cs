@@ -9,17 +9,15 @@ public static class DateExtensions
 
     public static Date Validate(this Date self)
     {
-        Date validDate = new Date
-        {
-            // Cannot be below 1 
-            Day = Math.Max(self.Day, 1),
-            Month = Math.Max(self.Day, 1)
-        };
+        // Cannot be below 1 
+        self.Day = Math.Max(self.Day, 1);
+        self.Month = Math.Max(self.Month, 1);
+        self.Year = Math.Max(self.Year, 1);
 
-        // Cannot exceed max days in month/max months in year 
-        validDate.Day = Math.Min(self.Day, CalendarManager.Instance.DaysInMonth);
-        validDate.Month = Math.Min(self.Month, CalendarManager.Instance.MonthsInYear);
+        //// Cannot exceed max days in month/max months in year 
+        //self.Day = Math.Min(self.Day, CalendarManager.Instance.DaysInMonth);
+        //self.Month = Math.Min(self.Month, CalendarManager.Instance.MonthsInYear);
 
-        return validDate;
+        return self;
     }
 }

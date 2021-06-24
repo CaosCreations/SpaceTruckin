@@ -32,6 +32,17 @@ public static class CalendarUtils
         return new Date() { Day = days, Month = months, Year = years };
     }
 
+    public static TimeOfDay ConvertSecondsToTimeOfDay(int seconds)
+    {
+        int hours = Mathf.FloorToInt(seconds / 60);
+        seconds %= 60;
+
+        int minutes = Mathf.FloorToInt(seconds / 60);
+        seconds %= 60;
+
+        return new TimeOfDay() { Hours = hours, Minutes = minutes, Seconds = seconds };
+    }
+
     public static bool HasTimePeriodElapsed(Date startingDate, Date period)
     {
         return ConvertDateToDays(CalendarManager.Instance.CurrentDate) - ConvertDateToDays(startingDate)

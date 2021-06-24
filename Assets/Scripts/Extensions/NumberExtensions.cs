@@ -13,4 +13,14 @@ public static class NumberExtensions
     {
         return Math.Max((self + addend) % upperBound, numberToWrapAroundTo);
     }
+
+    public static int ToInGameSeconds(this int self)
+    {
+        return self * CalendarManager.Instance.ClockManager.TickSpeedMultiplier; 
+    }
+
+    public static int ToRealTimeSeconds(this int self)
+    {
+        return self / CalendarManager.Instance.ClockManager.TickSpeedMultiplier;
+    }
 }

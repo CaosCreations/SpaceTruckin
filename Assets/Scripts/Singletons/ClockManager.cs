@@ -16,8 +16,8 @@ public class ClockManager : MonoBehaviour
 {
     public static TimeSpan CurrentTime;
 
+    public int TickSpeedMultiplier { get; private set; }
     private int currentTimeInSeconds;
-    private int tickSpeedMultiplier;
 
     private bool clockStopped;
 
@@ -37,7 +37,7 @@ public class ClockManager : MonoBehaviour
     // Calculate how quick the clock should tick relative to real time 
     private void CalculateTickSpeedMultiplier()
     {
-        tickSpeedMultiplier = Convert.ToInt32(
+        TickSpeedMultiplier = Convert.ToInt32(
             CalendarManager.Instance.DayEndTime.Subtract(CalendarManager.Instance.DayStartTime).TotalSeconds)
                 / CalendarManager.Instance.RealTimeDayDurationInSeconds;
     }
@@ -74,7 +74,7 @@ public class ClockManager : MonoBehaviour
 
         if (!clockStopped)
         {
-            currentTimeInSeconds += Convert.ToInt32(Time.deltaTime * tickSpeedMultiplier);
+            currentTimeInSeconds += Convert.ToInt32(Time.deltaTime * TickSpeedMultiplier);
             CurrentTime = TimeSpan.FromSeconds(currentTimeInSeconds);
         }
     }

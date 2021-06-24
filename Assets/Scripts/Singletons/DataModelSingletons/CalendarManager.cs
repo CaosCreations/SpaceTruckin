@@ -87,10 +87,11 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
             LogCalendarData();
         }
 
+        Instance.ClockManager.SetupClockForNextDay();
+
         // Notify other objects that the day has ended
         OnEndOfDay?.Invoke();
 
-        Instance.ClockManager.SetupClockForNextDay();
     }
 
     private static void UpdateCalendarData()

@@ -33,6 +33,8 @@ public class NPCSpawner : MonoBehaviour
             .Where(x => CalendarManager.DateIsToday(x.DespawnDate))
             .ToList();
 
+        Debug.Log(ClockManager.CurrentTime);
+
         // Start coroutines that will wait until a certain time and then act
         spawnsForToday.ForEach(x => SpawnAtTime(x.SpawnTime));
 
@@ -41,7 +43,20 @@ public class NPCSpawner : MonoBehaviour
 
     private void SpawnAtTime(TimeOfDay timeOfDay)
     {
-        StartCoroutine(WaitUntilSpawnTime(timeOfDay.ToSeconds()));
+        //// Subtract the spawn's time of day from the time that the day begins 
+        //int realTimeSecondsToWait = (int)(timeOfDay
+        //    .ToRealTimeSeconds() - CalendarManager.Instance.DayStartTime.TotalSeconds);
+
+        int realTimeSecondsToWait = timeOfDay
+            .ToRealTimeSeconds() - CalendarManager.Instance.DayStartTime
+            .ToTimeOfDay()
+            .ToRealTimeSeconds();
+
+        // Todo: start coroutines at 0:00 for the current day. 
+        // Ignore the day start time. 
+
+        StartCoroutine(WaitUntilSpawnTime(realTimeSecondsToWait));
+        
         npcObject.SetActive(true);
     }
 
@@ -73,7 +88,10 @@ public class NPCSpawner : MonoBehaviour
         foreach (SpawnDateTime spawnDateTime in spawnDateTimes)
         {
             spawnDateTime.SpawnDate = spawnDateTime.SpawnDate.Validate();
+            spawnDateTime.SpawnTime = spawnDateTime.SpawnTime.Validate();
+
             spawnDateTime.DespawnDate = spawnDateTime.DespawnDate.Validate();
+            spawnDateTime.DespawnTime = spawnDateTime.DespawnTime.Validate();
         }
     }
 }
