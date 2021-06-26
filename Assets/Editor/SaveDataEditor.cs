@@ -123,6 +123,7 @@ public class SaveDataEditor : MonoBehaviour
             PilotsEditor.DeleteSaveData();
             ShipsEditor.DeleteSaveData();
             LicencesEditor.DeleteSaveData();
+            MessagesEditor.DeleteSaveData();
             PlayerEditor.DeleteSaveData();
             CalendarEditor.DeleteSaveData();
         }
