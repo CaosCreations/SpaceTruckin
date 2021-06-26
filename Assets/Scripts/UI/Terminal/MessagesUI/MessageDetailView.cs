@@ -23,8 +23,9 @@ public class MessageDetailView : MonoBehaviour
 
         Text messageBodyText = messageBody.GetComponent<Text>();
         string messageBodyContent;
-        messageBodyContent = string.IsNullOrEmpty(message.body) ? LoremIpsumGenerator.GenerateLoremIpsum(16)
-            : message.body;
+
+        messageBodyContent = string.IsNullOrEmpty(message.Body) ? LoremIpsumGenerator.GenerateLoremIpsum(16)
+            : message.Body;
 
         // Add mission information if a mission is offered in the message 
         if (message.Mission != null)
@@ -32,6 +33,7 @@ public class MessageDetailView : MonoBehaviour
             messageBodyContent += "\n\nI've got a mission for you. See the details below:";
             messageBodyContent += "\n\n" + missionDetailsUI.BuildDetailsString(message.Mission);
         }
+
         messageBodyText.SetText(messageBodyContent);
     }
 

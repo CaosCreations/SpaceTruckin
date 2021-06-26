@@ -36,18 +36,41 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
         {
             Debug.LogError("No message data");
         }
+
+        UnlockMessagesForTodaysDate();
+        CalendarManager.OnEndOfDay += UnlockMessagesForTodaysDate;
     }
 
-    public void UnlockMessages()
+    /// <summary>
+    /// Unlock messages that have a Total Money Earned condition that the player satisfies. 
+    /// </summary>
+    public void UnlockMessagesRequiringMoney()
     {
         foreach (Message message in Instance.Messages)
         {
-            if (message != null && !message.IsUnlocked)
+            if (message != null 
+                && !message.IsUnlocked 
+                && message.IsUnlockedWithMoney 
+                && PlayerManager.Instance.CanSpendMoney(message.MoneyNeededToUnlock))
             {
-                if (PlayerManager.Instance.CanSpendMoney(message.Condition))
-                {
-                    message.IsUnlocked = true;
-                }
+                message.IsUnlocked = true;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Unlock messages that have a Date condition that the current Date surpasses.
+    /// </summary>
+    public void UnlockMessagesForTodaysDate() 
+    {
+        foreach (Message message in Instance.Messages)
+        {
+            if (message != null 
+                && !message.IsUnlocked
+                && message.IsUnlockedByDate
+                && CalendarManager.Instance.CurrentDate >= message.DateToUnlockOn)
+            {
+                message.IsUnlocked = true;
             }
         }
     }

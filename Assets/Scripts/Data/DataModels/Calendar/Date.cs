@@ -37,6 +37,16 @@ public struct Date : IComparable<Date>
         return !dateA.Equals(dateB);
     }
 
+    public static bool operator >=(Date dateA, Date dateB)
+    {
+        return dateA.CompareTo(dateB) > 0 || dateA.Equals(dateB);
+    }
+
+    public static bool operator <=(Date dateA, Date dateB)
+    {
+        return dateA.CompareTo(dateB) < 0 || dateA.Equals(dateB);
+    }
+
     public override bool Equals(object obj)
     {
         return base.Equals(obj);
