@@ -34,8 +34,8 @@ public static class CalendarUtils
 
     public static TimeOfDay ConvertSecondsToTimeOfDay(int seconds)
     {
-        int hours = Mathf.FloorToInt(seconds / 60);
-        seconds %= 60;
+        int hours = Mathf.FloorToInt(seconds / 3600);
+        seconds %= 3600;
 
         int minutes = Mathf.FloorToInt(seconds / 60);
         seconds %= 60;

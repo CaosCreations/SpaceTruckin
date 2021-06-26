@@ -4,15 +4,21 @@ public static class TimeOfDayExtensions
 {
     public static int ToSeconds(this TimeOfDay self)
     {
-        int seconds = (self.Hours * 60 + self.Minutes) * 60 + self.Seconds;
+        int seconds = (self.Hours * 3600) + (self.Minutes * 60) + self.Seconds;
         return seconds; 
     }
 
     public static int ToRealTimeSeconds(this TimeOfDay self)
     {
-        int seconds = (self.Hours * 60 + self.Minutes) * 60 + self.Seconds;
-        int realTimeSeconds = seconds.ToRealTimeSeconds();
+        int inGameSeconds = self.ToSeconds();
+        int realTimeSeconds = inGameSeconds.ToRealTimeSeconds();
         return realTimeSeconds;
+    }
+
+    public static TimeSpan ToTimeSpan(this TimeOfDay self)
+    {
+        TimeSpan timeSpan = TimeSpan.FromSeconds(self.ToSeconds());
+        return timeSpan;
     }
 
     public static TimeOfDay Validate(this TimeOfDay self)

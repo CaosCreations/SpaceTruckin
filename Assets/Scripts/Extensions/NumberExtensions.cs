@@ -23,4 +23,15 @@ public static class NumberExtensions
     {
         return self / CalendarManager.Instance.ClockManager.TickSpeedMultiplier;
     }
+
+    public static float ToRealTimeSeconds(this float self)
+    {
+        return (float)(self / CalendarManager.Instance.ClockManager.TickSpeedMultiplier);
+    }
+
+    // Accept doubles as these are returned by TimeSpan.TotalSeconds 
+    public static float ToRealTimeSeconds(this double self)
+    {
+        return (float)(self / CalendarManager.Instance.ClockManager.TickSpeedMultiplier);
+    }
 }
