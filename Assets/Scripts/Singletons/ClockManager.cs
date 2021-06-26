@@ -2,7 +2,7 @@
 using UnityEngine;
 
 /// <summary>
-/// Represent a time of day in a format that can be set in the inspector.
+/// Represents a time of day in a format that can be set in the inspector.
 /// </summary>
 [Serializable]
 public struct TimeOfDay
@@ -38,7 +38,7 @@ public class ClockManager : MonoBehaviour
     private void CalculateTickSpeedMultiplier()
     {
         TickSpeedMultiplier = Convert.ToInt32(
-            CalendarManager.Instance.DayEndTime.Subtract(CalendarManager.Instance.DayStartTime).TotalSeconds)
+            CalendarManager.Instance.AwakeTimeDuration.TotalSeconds)
                 / CalendarManager.Instance.RealTimeDayDurationInSeconds;
     }
 
@@ -87,7 +87,6 @@ public class ClockManager : MonoBehaviour
         GUI.Label(new Rect(
             Camera.main.pixelWidth - 128f, Camera.main.pixelHeight - 128f, 128f, 128f),
             CurrentTime.ToString("hh':'mm"), localStyle);
-
     }
 
     private void LogClockData()

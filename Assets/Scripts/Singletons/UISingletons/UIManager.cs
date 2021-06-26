@@ -60,9 +60,9 @@ public class UIManager : MonoBehaviour
     {
         if (DataUtils.IsNewGame())
         {
-            // Show the main menu canvas for character creation
-            SetCanInteract(UICanvasType.MainMenu);
-            ShowCanvas();
+            //// Show the main menu canvas for character creation
+            //SetCanInteract(UICanvasType.MainMenu);
+            //ShowCanvas();
         }
     }
 
