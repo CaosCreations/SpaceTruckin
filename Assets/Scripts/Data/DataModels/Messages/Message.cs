@@ -28,7 +28,7 @@ public partial class Message : ScriptableObject, IDataModel
     public class MessageSaveData
     {
         public bool isUnlocked;
-        public bool isUnread;
+        public bool hasBeenRead;
     }
 
     public void SaveData()

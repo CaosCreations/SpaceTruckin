@@ -17,9 +17,9 @@
     {
         get => saveData.isUnlocked; set => saveData.isUnlocked = value;
     }
-    public bool IsUnread 
+    public bool HasBeenRead 
     {
-        get => saveData.isUnread; set => saveData.isUnread = value; 
+        get => saveData.hasBeenRead; set => saveData.hasBeenRead = value; 
     }
     public bool IsUnlockedByDate => unlockCondition == MessageUnlockCondition.Date;
     public bool IsUnlockedWithMoney => unlockCondition == MessageUnlockCondition.TotalMoney;

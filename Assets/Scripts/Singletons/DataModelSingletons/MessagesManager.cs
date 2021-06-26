@@ -36,6 +36,8 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
         {
             Debug.LogError("No message data");
         }
+
+        CalendarManager.OnEndOfDay += UnlockMessagesForTodaysDate;
     }
 
     /// <summary>
@@ -64,7 +66,7 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
         {
             if (message != null 
                 && message.IsUnlockedByDate
-                /*&& message.DateToUnlockOn == CalendarManager.Instance.CurrentDate*/)
+                && message.DateToUnlockOn == CalendarManager.Instance.CurrentDate)
             {
                 message.IsUnlocked = true;
             }
