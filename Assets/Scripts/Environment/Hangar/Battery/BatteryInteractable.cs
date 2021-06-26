@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(BoxCollider))]
 public class BatteryInteractable : InteractableObject
@@ -11,7 +12,8 @@ public class BatteryInteractable : InteractableObject
     // Shows that the player is holding any battery
     public static bool PlayerIsHoldingABattery;
 
-    public Action TakeBatteryAction;
+    [SerializeField] private UnityEvent takeBatteryEvent;
+
 
     public void TakeBattery()
     {
@@ -30,10 +32,7 @@ public class BatteryInteractable : InteractableObject
 
         HangarManager.CurrentBatteryBeingHeld = GetComponent<BatteryWrapper>();
 
-        //PlayerActionAnimation.Instance.PlayGrabBatteryAnimation();
-
-        if (TakeBatteryAction != null)
-            TakeBatteryAction.Invoke();
+        takeBatteryEvent.Invoke();
     }
 
     private void ConfigureRigidbody(bool isConnectingToPlayer)
