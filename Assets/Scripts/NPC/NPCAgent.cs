@@ -3,12 +3,13 @@ using UnityEngine.AI;
 
 public class NPCAgent: MonoBehaviour
 {
-    public GameObject destination;
+    public GameObject Destination;
     private NavMeshAgent agent;
     
-    public bool isWaiting;
-    private float waitTimeLowerBound = 1f;
-    private float waitTimeUpperBound = 4f;
+    public bool IsWaiting;
+    [SerializeField] private float waitTimeLowerBound = 1f;
+    [SerializeField] private float waitTimeUpperBound = 4f;
+
     private float timer;
     
     public Color gizmoColour; 
@@ -16,7 +17,7 @@ public class NPCAgent: MonoBehaviour
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        agent.SetDestination(destination.transform.position);
+        agent.SetDestination(Destination.transform.position);
         timer = GetTimeToWait();
     }
 
@@ -25,10 +26,7 @@ public class NPCAgent: MonoBehaviour
         return Random.Range(waitTimeLowerBound, waitTimeUpperBound);
     }
 
-    public void Wait()
-    {
-        isWaiting = true;
-    }
+    public void Wait() => IsWaiting = true;
 
     private void Update()
     {
@@ -37,14 +35,15 @@ public class NPCAgent: MonoBehaviour
             return;
         }
 
-        if (isWaiting)
+        if (IsWaiting)
         {
-            timer -= Time.deltaTime; 
+            timer -= Time.deltaTime;
+
             if (timer <= 0)
             {
                 timer = GetTimeToWait();
-                isWaiting = false;
-                agent.SetDestination(destination.transform.position);
+                IsWaiting = false;
+                agent.SetDestination(Destination.transform.position);
             }
         }
     }
