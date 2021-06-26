@@ -66,7 +66,7 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
         {
             if (message != null 
                 && message.IsUnlockedByDate
-                && message.DateToUnlockOn == CalendarManager.Instance.CurrentDate)
+                && message.DateToUnlockOn >= CalendarManager.Instance.CurrentDate)
             {
                 message.IsUnlocked = true;
             }
