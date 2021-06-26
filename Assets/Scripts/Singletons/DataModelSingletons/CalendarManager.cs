@@ -16,13 +16,14 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
     #region Property Accessors
     public TimeSpan DayStartTime => calendarData.DayStartTime;
     public TimeSpan DayEndTime => calendarData.DayEndTime;
+    public TimeSpan AwakeTimeDuration => DayEndTime.Subtract(DayStartTime);
     public int RealTimeDayDurationInSeconds => calendarData.RealTimeDayDurationInSeconds;
     public int DaysInMonth => calendarData.DaysInMonth;
     public int DaysInYear => DaysInMonth * MonthsInYear;
     public int MonthsInYear => calendarData.MonthsInYear;
     public Date CurrentDate => calendarData.CurrentDate;
-    public int CurrentDay 
-    { 
+    public int CurrentDay
+    {
         get => calendarData.CurrentDate.Day;
         set => calendarData.CurrentDate.Day = value;
     }
@@ -87,10 +88,11 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
             LogCalendarData();
         }
 
+        Instance.ClockManager.SetupClockForNextDay();
+
         // Notify other objects that the day has ended
         OnEndOfDay?.Invoke();
 
-        Instance.ClockManager.SetupClockForNextDay();
     }
 
     private static void UpdateCalendarData()
@@ -111,6 +113,11 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
                 Instance.CurrentYear++;
             }
         }
+    }
+
+    public static bool DateIsToday(Date date)
+    {
+        return date.Equals(Instance.CurrentDate);
     }
 
     private static void LogCalendarData()

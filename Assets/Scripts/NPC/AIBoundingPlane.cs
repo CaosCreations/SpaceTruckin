@@ -4,14 +4,14 @@ using UnityEngine;
 public class AIBoundingPlane : MonoBehaviour
 {
     // The corners of the bounding area within which AI destinations can be set.  
-    public List<Vector3> boundaryVertices;
+    public List<Vector3> BoundaryVertices;
 
-    private int[] vertexIndexes = new int[] { 0, 10, 110, 120 };
+    private readonly int[] vertexIndexes = new int[] { 0, 10, 110, 120 };
 
     private void Awake()
     {
         Vector3[] vertices = GetComponent<MeshFilter>().sharedMesh.vertices;
-        boundaryVertices = GetBoundaryVertices(vertices);
+        BoundaryVertices = GetBoundaryVertices(vertices);
     }
 
     /// <summary>
@@ -38,12 +38,12 @@ public class AIBoundingPlane : MonoBehaviour
     private void DrawBoundaryVertices()
     {
         Gizmos.color = Color.red;
-        if (boundaryVertices != null && boundaryVertices.Count > 0)
+        if (BoundaryVertices != null && BoundaryVertices.Count > 0)
         {
-            for (int i = 0; i < boundaryVertices.Count; i++)
+            for (int i = 0; i < BoundaryVertices.Count; i++)
             {
 
-                Gizmos.DrawSphere(boundaryVertices[i], 0.25f);
+                Gizmos.DrawSphere(BoundaryVertices[i], 0.25f);
             }
         }
     }
