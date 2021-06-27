@@ -28,8 +28,8 @@ public class ArchivedMission
     }
 
     #region Persistence
-    public const string FILE_NAME = "ArchivedMissionSaveData";
-    public const string FOLDER_NAME = "ArchivedMissionSaveData";
+    public static string FILE_NAME = "ArchivedMissionSaveData";
+    public static string FOLDER_NAME = "ArchivedMissionSaveData";
     public static string FILE_PATH
     {
         get => DataUtils.GetSaveFilePath(FOLDER_NAME, FILE_NAME);
