@@ -38,6 +38,7 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
         {
             DataUtils.CreateSaveFolder(ArchivedMission.FOLDER_NAME);
         }
+
         ArchivedMissions = new List<ArchivedMission>();
         MissionsCompletedYesterday = new List<ArchivedMission>();
 

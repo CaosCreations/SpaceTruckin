@@ -26,6 +26,7 @@ public class ArchivedMission : IDataModel
         FileName = $"{mission.name}_{completionNumber}";
         Pilot = pilot;
         TotalFuelLost = mission.FuelCost;
+        CompletionDate = CalendarManager.Instance.CurrentDate;
     }
 
     /// <summary>
@@ -43,6 +44,7 @@ public class ArchivedMission : IDataModel
         public Pilot pilot;
         public int pilotLevelAtTimeOfMission;
         public int missionsCompletedByPilotAtTimeOfMission;
+        public Date completionDate;
     }
 
     public async Task LoadDataAsync()
@@ -61,9 +63,9 @@ public class ArchivedMission : IDataModel
     public long TotalMoneyIncrease { get => saveData.totalMoneyIncrease; set => saveData.totalMoneyIncrease = value; }
     public int TotalDamageTaken { get => saveData.totalDamageTaken; set => saveData.totalDamageTaken = value; }
     public int TotalDamageReduced { get => saveData.totalDamageReduced; set => saveData.totalDamageReduced = value; }
-    public int PilotLevelAtTimeOfMission 
+    public int PilotLevelAtTimeOfMission
     {
-        get => saveData.pilotLevelAtTimeOfMission; set => saveData.pilotLevelAtTimeOfMission = value; 
+        get => saveData.pilotLevelAtTimeOfMission; set => saveData.pilotLevelAtTimeOfMission = value;
     }
     public int MissionsCompletedByPilotAtTimeOfMission
     {
@@ -71,12 +73,13 @@ public class ArchivedMission : IDataModel
         set => saveData.missionsCompletedByPilotAtTimeOfMission = value;
     }
     public double TotalPilotXpGained { get => saveData.totalPilotXpGained; set => saveData.totalPilotXpGained = value; }
-    public double TotalXpIncreaseFromLicences 
-    { 
-        get => saveData.totalXpIncreaseFromLicences; 
-        set => saveData.totalXpIncreaseFromLicences = value; 
+    public double TotalXpIncreaseFromLicences
+    {
+        get => saveData.totalXpIncreaseFromLicences;
+        set => saveData.totalXpIncreaseFromLicences = value;
     }
     public int TotalFuelLost { get => saveData.totalFuelLost; set => saveData.totalFuelLost = value; }
     public Pilot Pilot { get => saveData.pilot; set => saveData.pilot = value; }
-    public Ship Ship => Pilot.Ship; 
+    public Ship Ship => Pilot.Ship;
+    public Date CompletionDate { get => saveData.completionDate; set => saveData.completionDate = value; }
 }
