@@ -31,8 +31,7 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
     {
         if (DataUtils.SaveFolderExists(ArchivedMission.FOLDER_NAME))
         {
-            // Todo: Rework Loading using Scheduled Missions (after breaking changes)
-            //LoadDataAsync();
+            LoadDataAsync();
         }
         else
         {
@@ -65,33 +64,16 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
 
     public async void LoadDataAsync()
     {
-        // Todo: Rework this using Scheduled Missions 
-
-        //ArchivedMissions = new List<ArchivedMission>();
-
-        //if (MissionsManager.Instance.Missions != null)
-        //{
-        //    foreach (Mission mission in MissionsManager.Instance.Missions
-        //        .Where(m => m.NumberOfCompletions > 0))
-        //    {
-        //        // A mission has been completed n times, 
-        //        // so we create n archived missions.
-        //        for (int i = 0; i < mission.NumberOfCompletions; i++)
-        //        {
-        //            // We use the loop counter to construct the file name, 
-        //            // which is determined by the number of completions
-        //            // that mission had at the time it was completed.
-        //            ArchivedMission newArchivedMission = new ArchivedMission(
-        //                mission, completionNumber: i + 1);
-
-        //            await newArchivedMission.LoadDataAsync();
-        //            ArchivedMissions.Add(newArchivedMission);
-        //        }
-        //    }
-        //}
+        string json = await DataUtils.ReadFileAsync(ArchivedMission.FILE_PATH);
+        ArchivedMissions = JsonHelper.ListFromJson<ArchivedMission>(json);
     }
 
-    public void SaveData() => ArchivedMissions.ForEach(a => a.SaveData());
+    public void SaveData()
+    {
+        string json = JsonHelper.ListToJson(ArchivedMissions);
+        string folderPath = DataUtils.GetSaveFolderPath(ArchivedMission.FOLDER_NAME);
+        DataUtils.SaveFileAsync(ArchivedMission.FILE_NAME, folderPath, json);
+    }
 
     public void DeleteData() 
         => DataUtils.RecursivelyDeleteSaveData(ArchivedMission.FOLDER_NAME);
