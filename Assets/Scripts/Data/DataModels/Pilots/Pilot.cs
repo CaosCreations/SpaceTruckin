@@ -10,7 +10,7 @@ public enum Species
 public partial class Pilot : ScriptableObject
 {
     [Header("Set in Editor")]
-    public bool isRandom;
+    [SerializeField] private bool isRandom;
     [SerializeField] private string pilotName;
     [SerializeField] private string like;
     [SerializeField] private string dislike;
@@ -26,13 +26,13 @@ public partial class Pilot : ScriptableObject
     [Serializable]
     public class PilotSaveData
     {
-        public string randomName;
-        public Species randomSpecies;
-        public int level;
-        public double requiredXp;
-        public double currentXp;
-        public int missionsCompleted;
-        public bool isHired;
+        public string RandomName;
+        public Species RandomSpecies;
+        public int Level;
+        public double RequiredXp;
+        public double CurrentXp;
+        public int MissionsCompleted;
+        public bool IsHired;
     }
 
     public const string FOLDER_NAME = "PilotSaveData";
@@ -45,5 +45,20 @@ public partial class Pilot : ScriptableObject
     public async System.Threading.Tasks.Task LoadDataAsync()
     {
         saveData = await DataUtils.LoadFileAsync<PilotSaveData>(name, FOLDER_NAME);
+    }
+
+    private void OnValidate()
+    {
+        // Cannot be below 1
+        saveData.Level = Math.Max(saveData.Level, 1);
+        saveData.RequiredXp = Math.Max(saveData.RequiredXp, 1);
+        saveData.CurrentXp = Math.Max(saveData.CurrentXp, 1);
+        saveData.MissionsCompleted = Math.Max(saveData.MissionsCompleted, 1);
+
+        if (isRandom)
+        {
+            // Random pilot cannot have pre-declared name 
+            pilotName = string.Empty;
+        }
     }
 }
