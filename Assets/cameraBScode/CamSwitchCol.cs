@@ -43,6 +43,14 @@ public class CamSwitchCol : MonoBehaviour {
 
 
 		
+
+
+		if(camName=="MainHall")
+		{
+			myCurrentCam=0;
+		}
+
+		
 		if(camName=="WorkShopCam")
 		{
 			myCurrentCam=1;
@@ -56,10 +64,50 @@ public class CamSwitchCol : MonoBehaviour {
 		}
 
 
+		
+			if(camName=="DineCam")
+		{
+			myCurrentCam=4;
+		}
+
+
+
 
 			if(camName=="HangarEdge")
 		{
 			myCurrentCam=5;
+		}
+
+			if(camName=="HangarCam")
+		{
+			myCurrentCam=6;
+		}
+
+
+
+
+		
+		if(camName=="LoungeUndOffice")
+		{
+			myCurrentCam=10;
+		}
+
+		
+		if(camName=="CamToOuterCircle")
+		{
+			//20to30 for habitat ring
+			myCurrentCam=20;
+		}
+
+
+
+
+
+		
+		if(camName=="RefugeeUnder02")
+		{
+			//30to40 for refuggecamp
+			myCurrentCam=30;
 		}
 
 		
