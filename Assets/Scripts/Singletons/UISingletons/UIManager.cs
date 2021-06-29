@@ -22,6 +22,7 @@ public class UIManager : MonoBehaviour
 
     /// <summary>
     /// Keys that cannot be used for regular UI input until the override is lifted.
+    /// e.g. Escape key when in a submenu. 
     /// </summary>
     private static HashSet<KeyCode> currentlyOverriddenKeys;
 
