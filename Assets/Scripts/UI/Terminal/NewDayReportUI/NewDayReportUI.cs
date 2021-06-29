@@ -20,7 +20,6 @@ public class NewDayReportUI : MonoBehaviour
     private List<ArchivedMission> MissionsToAppearInReport { get; set; }
     public ArchivedMission CurrentMissionToReport 
     {
-        //get => ArchivedMissionsManager.Instance.MissionsCompletedYesterday[currentReportIndex];
         get => MissionsToAppearInReport[currentReportIndex];
     }
 
