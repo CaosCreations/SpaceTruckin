@@ -6,11 +6,6 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
 {
     public static ArchivedMissionsManager Instance { get; private set; }
     public List<ArchivedMission> ArchivedMissions { get; set; }
-
-    /// <summary>
-    /// Missions that were completed yesterday.
-    /// These are ready to be displayed in the daily mission report.
-    /// </summary>
     public List<ArchivedMission> MissionsCompletedYesterday { get; set; }
 
     private void Awake()
@@ -62,6 +57,34 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
         Instance.ArchivedMissions.Add(archivedMission);
     }
 
+    public static bool ThereAreMissionsToReport()
+    {
+        // Loop through in order to check for null.
+        foreach (var archivedMission in Instance.ArchivedMissions)
+        {
+            if (archivedMission != null && !archivedMission.HasBeenViewedInReport)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static List<ArchivedMission> GetMissionsToAppearInReport()
+    {
+        var missionsToAppearInReport = new List<ArchivedMission>();
+
+        foreach (var archivedMission in Instance.ArchivedMissions)
+        {
+            if (archivedMission != null && !archivedMission.HasBeenViewedInReport)
+            {
+                missionsToAppearInReport.Add(archivedMission);
+            }
+        }
+        return missionsToAppearInReport;
+    }
+
+    #region Persistence
     public async void LoadDataAsync()
     {
         string json = await DataUtils.ReadFileAsync(ArchivedMission.FILE_PATH);
@@ -77,4 +100,5 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
 
     public void DeleteData() 
         => DataUtils.RecursivelyDeleteSaveData(ArchivedMission.FOLDER_NAME);
+    #endregion
 }
