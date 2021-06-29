@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class NewDayReportUI : MonoBehaviour
@@ -12,21 +13,30 @@ public class NewDayReportUI : MonoBehaviour
     private int currentReportIndex;
 
     private TerminalUIManager terminalManager;
-    public bool HasBeenViewed { get; set; }
+
+    // We can only view the report once per day 
+    public bool HasBeenViewedToday { get; set; }
+
+    private List<ArchivedMission> MissionsToAppearInReport { get; set; }
     public ArchivedMission CurrentMissionToReport 
     {
-        get => ArchivedMissionsManager.Instance.MissionsCompletedYesterday[currentReportIndex];
+        get => MissionsToAppearInReport[currentReportIndex];
     }
 
     private void Awake()
     {
-        CalendarManager.OnEndOfDay += () => HasBeenViewed = false;
+        CalendarManager.OnEndOfDay += () => HasBeenViewedToday = false;
 
         terminalManager = GetComponentInParent<TerminalUIManager>();
         nextCardButton = GetComponentInChildren<Button>(includeInactive: true);
     }
-    
-    private void OnDisable() => HasBeenViewed = true;
+
+    private void OnEnable()
+    {
+        MissionsToAppearInReport = ArchivedMissionsManager.GetMissionsToAppearInReport();
+    }
+
+    private void OnDisable() => HasBeenViewedToday = true;
 
     public void Init()
     {
@@ -35,6 +45,8 @@ public class NewDayReportUI : MonoBehaviour
         reportCard.nextCardButton.SetText(UIConstants.NextCardText);
         nextCardButton.AddOnClick(ShowNextReport);
         nextCardButton.onClick.Invoke();
+        
+        // Insert Player Data in the welcome message, e.g. their name 
         welcomeMessageText.ReplaceTemplates();
     }
 
@@ -44,8 +56,9 @@ public class NewDayReportUI : MonoBehaviour
         {
             reportCard.ShowReport(CurrentMissionToReport);
 
-            if (currentReportIndex < ArchivedMissionsManager.Instance
-                .MissionsCompletedYesterday.Count - 1)
+            CurrentMissionToReport.HasBeenViewedInReport = true;
+
+            if (currentReportIndex < MissionsToAppearInReport.Count - 1)
             {
                 currentReportIndex++;
             }
@@ -60,9 +73,8 @@ public class NewDayReportUI : MonoBehaviour
     {
         reportCardInstance.SetActive(false);
         gameObject.SetActive(false);
-        terminalManager.missionsPanel.SetActive(true);
-        terminalManager.missionsButton.SetColour
-            (terminalManager.missionsPanel.GetImageColour());
+        terminalManager.MissionsPanel.SetActive(true);
+        terminalManager.MissionsButton.SetColour(terminalManager.MissionsPanel.GetImageColour());
     }
 
     private void Update()

@@ -13,11 +13,15 @@ public class NewDayReportCard : MonoBehaviour
 
     public void ShowReport(ArchivedMission mission)
     {
-        if (mission.Pilot.Ship.Avatar != null)
+        if (mission != null 
+            && mission.Pilot != null 
+            && mission.Pilot.Ship != null 
+            && mission.Pilot.Avatar != null)
         {
             shipAvatar.sprite = mission.Pilot.Ship.Avatar;
+
+            detailsText.SetText(BuildReportDetails(mission));
         }
-        detailsText.SetText(BuildReportDetails(mission));
     }
 
     public string BuildReportDetails(ArchivedMission mission)
