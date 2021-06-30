@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -224,12 +225,28 @@ public class UIManager : MonoBehaviour
         currentlyOverriddenKeys.UnionWith(keyCodes);
     }
 
+    public static void AddOverriddenKey(KeyCode keyCode)
+    {
+        if (!currentlyOverriddenKeys.Contains(keyCode))
+        {
+            currentlyOverriddenKeys.Add(keyCode);
+        }
+    }
+
     public static void RemoveOverriddenKeys(HashSet<KeyCodeOverride> keyCodeOverrides)
     {
         // Don't remove the persistent overridden keycodes from the list 
         var nonPersistentKeyCodes = keyCodeOverrides.ToListOfNonPersistentKeyCodes();
 
         currentlyOverriddenKeys.ExceptWith(nonPersistentKeyCodes);
+    }
+
+    public static void RemoveOverriddenKey(KeyCode keyCode)
+    {
+        if (currentlyOverriddenKeys.Contains(keyCode))
+        {
+            currentlyOverriddenKeys.Remove(keyCode);
+        }
     }
 
     public static void ResetOverriddenKeys()

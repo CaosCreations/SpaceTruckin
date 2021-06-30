@@ -34,9 +34,16 @@ public class NewDayReportUI : MonoBehaviour
     private void OnEnable()
     {
         MissionsToAppearInReport = ArchivedMissionsManager.GetMissionsToAppearInReport();
+        
+        // Don't let them exit the report until all missions have been shown.
+        UIManager.AddOverriddenKey(PlayerConstants.ExitKey);
     }
 
-    private void OnDisable() => HasBeenViewedToday = true;
+    private void OnDisable() 
+    { 
+        HasBeenViewedToday = true;
+        MissionsToAppearInReport.Clear();
+    }
 
     public void Init()
     {
@@ -75,11 +82,14 @@ public class NewDayReportUI : MonoBehaviour
         gameObject.SetActive(false);
         terminalManager.MissionsPanel.SetActive(true);
         terminalManager.MissionsButton.SetColour(terminalManager.MissionsPanel.GetImageColour());
+
+        // Allow the exit key to be used as normal now that the report has finished.
+        UIManager.RemoveOverriddenKey(PlayerConstants.ExitKey);
     }
 
     private void Update()
     {
-        if (reportCardInstance != null && Input.GetKeyDown(PlayerConstants.ExitKey))
+        if (reportCardInstance != null && UIManager.GetNonOverriddenKeyDown(PlayerConstants.ExitKey))
         {
             CloseReport();
         }
