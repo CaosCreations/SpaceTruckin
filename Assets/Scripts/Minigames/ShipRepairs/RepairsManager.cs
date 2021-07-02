@@ -6,7 +6,7 @@ public class RepairsManager : MonoBehaviour
     private GreenZone greenZone;
     private RepairsUI repairsUI;
 
-    public int consecutiveWins;
+    private int consecutiveWins;
     public bool IsRepairing => workstation.IsRotating;
 
     private void Start()
