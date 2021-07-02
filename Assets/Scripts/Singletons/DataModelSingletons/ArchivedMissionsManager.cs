@@ -59,7 +59,6 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
 
     public static bool ThereAreMissionsToReport()
     {
-        // Loop through in order to check for null.
         foreach (var archivedMission in Instance.ArchivedMissions)
         {
             if (archivedMission != null && !archivedMission.HasBeenViewedInReport)
