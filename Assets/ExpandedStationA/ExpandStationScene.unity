@@ -782,6 +782,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 62317384}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &76529594 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8985295244728592756, guid: a06f1a9e44fccb3409ddc94a08e3cac6,
+    type: 3}
+  m_PrefabInstance: {fileID: 205330823}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80085905388079347beec5821bb65aa5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &78128772
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4240,6 +4252,16 @@ PrefabInstance:
       propertyPath: batterySpawnPositionManager
       value: 
       objectReference: {fileID: 878506549}
+    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: takeBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: takeBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayAnimation
+      objectReference: {fileID: 0}
     - target: {fileID: 8317592649254769262, guid: ab766149d105a844396411ee50a5a21c,
         type: 3}
       propertyPath: batterySpawnPositionManager
@@ -4425,6 +4447,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1642353825}
     m_Modifications:
+    - target: {fileID: 404966204484952709, guid: a06f1a9e44fccb3409ddc94a08e3cac6,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1389270015817412045, guid: a06f1a9e44fccb3409ddc94a08e3cac6,
         type: 3}
       propertyPath: m_Sprite
@@ -4896,7 +4923,6 @@ MonoBehaviour:
     panel: {fileID: 1587357891}
     alertText:
       m_uiText: {fileID: 239804816}
-      m_textMeshProUGUI: {fileID: 0}
     queueAlerts: 1
     dontQueueDuplicates: 0
     waitForHideAnimation: 1
@@ -5288,6 +5314,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 251255030}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &255206711 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1728004894043373173, guid: a06f1a9e44fccb3409ddc94a08e3cac6,
+    type: 3}
+  m_PrefabInstance: {fileID: 205330823}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80085905388079347beec5821bb65aa5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &256469559
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7203,7 +7241,6 @@ MonoBehaviour:
   pcImage: {fileID: 0}
   pcName:
     m_uiText: {fileID: 0}
-    m_textMeshProUGUI: {fileID: 0}
   timerSlider: {fileID: 2090687668}
   buttonAlignment: 0
   showUnusedButtons: 0
@@ -7478,10 +7515,8 @@ MonoBehaviour:
   panel: {fileID: 211229085}
   label:
     m_uiText: {fileID: 640354560}
-    m_textMeshProUGUI: {fileID: 0}
   inputField:
     m_uiInputField: {fileID: 1872299375}
-    m_textMeshProInputField: {fileID: 0}
   acceptKey: 13
   cancelKey: 27
   showTouchScreenKeyboard: 0
@@ -9360,7 +9395,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.6090535, y: 1}
+    m_SensorSize: {x: 1.7784091, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -9478,6 +9513,16 @@ PrefabInstance:
       propertyPath: batterySpawnPositionManager
       value: 
       objectReference: {fileID: 878506549}
+    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: takeBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: takeBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayAnimation
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab766149d105a844396411ee50a5a21c, type: 3}
 --- !u!1 &649797697
@@ -10269,10 +10314,8 @@ MonoBehaviour:
   portraitImage: {fileID: 874407585}
   portraitName:
     m_uiText: {fileID: 1166183507}
-    m_textMeshProUGUI: {fileID: 0}
   subtitleText:
     m_uiText: {fileID: 1025864347}
-    m_textMeshProUGUI: {fileID: 0}
   addSpeakerName: 0
   addSpeakerNameFormat: '{0}: {1}'
   accumulateText: 0
@@ -20620,10 +20663,8 @@ MonoBehaviour:
   portraitImage: {fileID: 103475082}
   portraitName:
     m_uiText: {fileID: 445156465}
-    m_textMeshProUGUI: {fileID: 0}
   subtitleText:
     m_uiText: {fileID: 893675006}
-    m_textMeshProUGUI: {fileID: 0}
   addSpeakerName: 0
   addSpeakerNameFormat: '{0}: {1}'
   accumulateText: 0
@@ -22510,7 +22551,6 @@ MonoBehaviour:
   button: {fileID: 2085510648}
   label:
     m_uiText: {fileID: 385255552}
-    m_textMeshProUGUI: {fileID: 0}
   setLabelColor: 1
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &2085510647
@@ -23551,11 +23591,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Battery
       objectReference: {fileID: 0}
-    - target: {fileID: 1691787280572270736, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
     - target: {fileID: 4566604538120125738, guid: ab766149d105a844396411ee50a5a21c,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -23618,13 +23653,48 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
         type: 3}
-      propertyPath: batterySpawnPositionManager
-      value: 
-      objectReference: {fileID: 878506549}
-    - target: {fileID: 8317592649254769262, guid: ab766149d105a844396411ee50a5a21c,
+      propertyPath: dropBatteryEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
         type: 3}
-      propertyPath: batterySpawnPositionManager
+      propertyPath: dropBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: dropBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 878506549}
+      objectReference: {fileID: 76529594}
+    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: takeBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 255206711}
+    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: dropBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: dropBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayAnimation
+      objectReference: {fileID: 0}
+    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: takeBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayAnimation
+      objectReference: {fileID: 0}
+    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: dropBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: AnimationPlayer, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: dropBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab766149d105a844396411ee50a5a21c, type: 3}

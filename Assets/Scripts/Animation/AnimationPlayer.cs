@@ -6,10 +6,13 @@ public class AnimationPlayer: MonoBehaviour
 {
     [SerializeField] private Animator playerAnimator;
 
-    [SerializeField] private string AnimationName;
+    [SerializeField] private string animationName;
+
+    [SerializeField] private bool play;
 
     public void PlayAnimation()
     {
-        playerAnimator.SetBool(AnimationName, true);
+        Debug.Log("Playing " + animationName + " animation");
+        playerAnimator.SetBool(animationName, play);
     }
 }

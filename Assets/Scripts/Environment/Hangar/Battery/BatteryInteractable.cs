@@ -14,6 +14,8 @@ public class BatteryInteractable : InteractableObject
 
     [SerializeField] private UnityEvent takeBatteryEvent;
 
+    [SerializeField] private UnityEvent dropBatteryEvent;
+
 
     public void TakeBattery()
     {
@@ -65,6 +67,8 @@ public class BatteryInteractable : InteractableObject
         IsPlayerColliding = false;
 
         HangarManager.CurrentBatteryBeingHeld = null;
+
+        dropBatteryEvent.Invoke();
     }
 
     private void OnTriggerStay(Collider other)
