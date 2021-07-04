@@ -2,6 +2,11 @@
 
 public static class MonoBehaviourExtensions
 {
+    public static bool IsActive(this MonoBehaviour self)
+    {
+        return self.gameObject != null && self.gameObject.activeSelf;
+    }
+
     public static void SetActive(this MonoBehaviour self, bool value)
     {
         self.gameObject.SetActive(value);

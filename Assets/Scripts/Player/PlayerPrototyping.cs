@@ -1,9 +1,10 @@
 ﻿using System.Linq;
 using UnityEngine;
 
+/// <summary>To speed up prototyping. Will only be enabled in the editor</summary>
 public class PlayerPrototyping : MonoBehaviour
 {
-    private void HandleShortcuts()
+    private void HandleMenuShortcuts()
     {
         if (!Input.GetKey(PlayerConstants.PrototypingModifier))
         {
@@ -13,18 +14,18 @@ public class PlayerPrototyping : MonoBehaviour
         // Allow accessing menus remotely 
         if (Input.GetKeyDown(PlayerConstants.TerminalShortcut))
         {
-            UIManager.ShowCanvas(UICanvasType.Terminal, viaShortcut: true);
+            UIManager.ToggleCanvas(UICanvasType.Terminal);
         }
         else if (Input.GetKeyDown(PlayerConstants.NoticeboardShortcut))
         {
-            UIManager.ShowCanvas(UICanvasType.NoticeBoard, viaShortcut: true);
+            UIManager.ToggleCanvas(UICanvasType.NoticeBoard);
         }
     }
 
     private void Update()
     {
         #if UNITY_EDITOR
-            HandleShortcuts();
+            HandleMenuShortcuts();
         #endif
     }
 
@@ -36,6 +37,7 @@ public class PlayerPrototyping : MonoBehaviour
         {
             if (Input.GetKeyDown(keyCode))
             {
+                // Convert the numeric portion of the KeyCode string to an int 
                 char keyChar = keyCode.ToString().Last();
                 node = keyChar - '0';
             }

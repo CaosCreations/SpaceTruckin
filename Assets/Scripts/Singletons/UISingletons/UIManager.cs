@@ -152,6 +152,30 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public static bool IsCanvasActive(UICanvasType canvasType)
+    {
+        UICanvasBase canvas = GetCanvasByType(canvasType);
+        return canvas != null && canvas.IsActive();
+    }
+
+    public static void ToggleCanvas(UICanvasType canvasType)
+    {
+        UICanvasBase canvas = GetCanvasByType(canvasType);
+        if (canvas == null)
+        {
+            return;
+        }
+        
+        if (!canvas.IsActive())
+        {
+            ShowCanvas(canvasType, true);
+        }
+        else
+        {
+            ClearCanvases();
+        }
+    }
+
     #region Interaction
     public static void SetCanInteract(UICanvasType canvasType, int node = -1)
     {
