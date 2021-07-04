@@ -90,12 +90,33 @@ public class ClockManager : MonoBehaviour
 
     private void OnGUI()
     {
-        var localStyle = new GUIStyle();
+        var localStyle = new GUIStyle(GUI.skin.box);
         localStyle.normal.textColor = Color.white;
+        localStyle.font = FontManager.Instance.GetFontByType(FontType.Subtitle);
+        localStyle.fontSize = 18;
+
+        GUI.backgroundColor = Color.black;
 
         GUI.Label(new Rect(
-            Camera.main.pixelWidth - 128f, Camera.main.pixelHeight - 128f, 128f, 128f),
-            dateTimeText);
+            UIConstants.ClockTextXPosition, 
+            UIConstants.ClockTextYPosition, 
+            UIConstants.ClockTextWidth, 
+            UIConstants.ClockTextHeight),
+            dateTimeText,
+            localStyle);
+    }
+
+    private Texture2D MakeTex(int width, int height, Color col)
+    {
+        Color[] pix = new Color[width * height];
+        for (int i = 0; i < pix.Length; ++i)
+        {
+            pix[i] = col;
+        }
+        Texture2D result = new Texture2D(width, height);
+        result.SetPixels(pix);
+        result.Apply();
+        return result;
     }
 
     private void LogClockData()
