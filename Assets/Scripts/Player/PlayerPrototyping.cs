@@ -10,13 +10,14 @@ public class PlayerPrototyping : MonoBehaviour
             return;
         }
 
+        // Allow accessing menus remotely 
         if (Input.GetKeyDown(PlayerConstants.TerminalShortcut))
         {
-            UIManager.ShowCanvas(UICanvasType.Terminal);
+            UIManager.ShowCanvas(UICanvasType.Terminal, viaShortcut: true);
         }
         else if (Input.GetKeyDown(PlayerConstants.NoticeboardShortcut))
         {
-            UIManager.ShowCanvas(UICanvasType.NoticeBoard);
+            UIManager.ShowCanvas(UICanvasType.NoticeBoard, viaShortcut: true);
         }
     }
 

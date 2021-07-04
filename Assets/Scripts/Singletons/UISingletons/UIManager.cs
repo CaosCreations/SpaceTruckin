@@ -108,7 +108,11 @@ public class UIManager : MonoBehaviour
         OnCanvasDeactivated?.Invoke();
     }
 
-    public static void ShowCanvas(UICanvasType canvasType)
+    /// <param name="canvasType">The type of canvas to display, which is set by collision or a shortcut
+    /// </param>
+    /// <param name="viaShortcut">For shortcut access. Will not alter player prefs. 
+    /// </param>
+    public static void ShowCanvas(UICanvasType canvasType, bool viaShortcut = false)
     {
         ClearCanvases();
         PlayerManager.Instance.EnterMenuState();
@@ -116,7 +120,7 @@ public class UIManager : MonoBehaviour
         canvas.SetActive(true);
 
         // Show tutorial overlay if first time using the UI 
-        if (!CurrentCanvasHasBeenViewed())
+        if (!viaShortcut && !CurrentCanvasHasBeenViewed())
         {
             canvas.ShowTutorial();
         }
