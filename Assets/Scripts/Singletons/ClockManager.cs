@@ -16,10 +16,12 @@ public class ClockManager : MonoBehaviour
 {
     public static TimeSpan CurrentTime;
 
-    public int TickSpeedMultiplier { get; private set; }
-    private int currentTimeInSeconds;
+    public static int TickSpeedMultiplier { get; private set; }
+    private static int currentTimeInSeconds;
 
-    private bool clockStopped;
+    private static string dateTimeText;
+
+    private static bool clockStopped;
 
     private void Start()
     {
@@ -29,9 +31,9 @@ public class ClockManager : MonoBehaviour
         CalculateTickSpeedMultiplier();
         SetupClockForNextDay();
 
-        #if UNITY_EDITOR
-            Application.targetFrameRate = PlayerConstants.EditorTargetFramerate;
-        #endif
+#if UNITY_EDITOR
+        Application.targetFrameRate = PlayerConstants.EditorTargetFramerate;
+#endif
     }
 
     // Calculate how quick the clock should tick relative to real time 
@@ -76,17 +78,45 @@ public class ClockManager : MonoBehaviour
         {
             currentTimeInSeconds += Convert.ToInt32(Time.deltaTime * TickSpeedMultiplier);
             CurrentTime = TimeSpan.FromSeconds(currentTimeInSeconds);
+
+            UpdateDateTimeText();
         }
+    }
+
+    private static void UpdateDateTimeText()
+    {
+        dateTimeText = $"{CurrentTime:hh':'mm}\n{CalendarManager.Instance.CurrentDate}";
     }
 
     private void OnGUI()
     {
-        var localStyle = new GUIStyle();
+        var localStyle = new GUIStyle(GUI.skin.box);
         localStyle.normal.textColor = Color.white;
+        localStyle.font = FontManager.Instance.GetFontByType(FontType.Subtitle);
+        localStyle.fontSize = 18;
+
+        GUI.backgroundColor = Color.black;
 
         GUI.Label(new Rect(
-            Camera.main.pixelWidth - 128f, Camera.main.pixelHeight - 128f, 128f, 128f),
-            CurrentTime.ToString("hh':'mm"), localStyle);
+            UIConstants.ClockTextXPosition, 
+            UIConstants.ClockTextYPosition, 
+            UIConstants.ClockTextWidth, 
+            UIConstants.ClockTextHeight),
+            dateTimeText,
+            localStyle);
+    }
+
+    private Texture2D MakeTex(int width, int height, Color col)
+    {
+        Color[] pix = new Color[width * height];
+        for (int i = 0; i < pix.Length; ++i)
+        {
+            pix[i] = col;
+        }
+        Texture2D result = new Texture2D(width, height);
+        result.SetPixels(pix);
+        result.Apply();
+        return result;
     }
 
     private void LogClockData()
