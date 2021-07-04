@@ -6702,12 +6702,12 @@ GameObject:
   - component: {fileID: 408310966}
   - component: {fileID: 408310967}
   m_Layer: 0
-  m_Name: walrusbot_0
+  m_Name: Russell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!95 &408310963
 Animator:
   serializedVersion: 3
@@ -6787,11 +6787,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 408310962}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 21.869385, y: -6.1875916, z: 14.8081665}
+  m_LocalPosition: {x: 206.511, y: 380.299, z: -256.879}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1680628361}
-  m_RootOrder: 0
+  m_Father: {fileID: 1794754241}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &408310966
 BoxCollider:
@@ -20112,7 +20112,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1680628361}
   m_Layer: 0
-  m_Name: Stupid Unnescessary Bullshit I Will Veto
+  m_Name: Stupid Unnescessary Bullshit I Cannot Veto
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20128,8 +20128,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 3.741623, y: 0.81762695, z: -1.9751587}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 408310965}
+  m_Children: []
   m_Father: {fileID: 290250595}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -21223,6 +21222,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1617189658}
+  - {fileID: 408310965}
   m_Father: {fileID: 1214341545}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

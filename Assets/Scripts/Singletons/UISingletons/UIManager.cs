@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -74,7 +73,7 @@ public class UIManager : MonoBehaviour
             && currentCanvasType != UICanvasType.None
             && Input.GetKeyDown(PlayerConstants.ActionKey))
         {
-            ShowCanvas();
+            ShowCanvas(currentCanvasType);
         }
         else if (GetNonOverriddenKeyDown(PlayerConstants.ExitKey))
         {
@@ -85,6 +84,7 @@ public class UIManager : MonoBehaviour
         {
             interactionTextMesh.gameObject.SetActive(true);
             interactionTextMesh.SetText(GetInteractionString());
+
             interactionTextMesh.transform.position =
                 PlayerManager.PlayerMovement.transform.position + new Vector3(0, 0.5f, 0);
         }
@@ -108,15 +108,19 @@ public class UIManager : MonoBehaviour
         OnCanvasDeactivated?.Invoke();
     }
 
-    public static void ShowCanvas()
+    /// <param name="canvasType">The type of canvas to display, which is set by collision or a shortcut
+    /// </param>
+    /// <param name="viaShortcut">For shortcut access. Will not alter player prefs. 
+    /// </param>
+    public static void ShowCanvas(UICanvasType canvasType, bool viaShortcut = false)
     {
         ClearCanvases();
         PlayerManager.Instance.EnterMenuState();
-        UICanvasBase canvas = GetCanvasByType(currentCanvasType);
+        UICanvasBase canvas = GetCanvasByType(canvasType);
         canvas.SetActive(true);
 
         // Show tutorial overlay if first time using the UI 
-        if (!CurrentCanvasHasBeenViewed())
+        if (!viaShortcut && !CurrentCanvasHasBeenViewed())
         {
             canvas.ShowTutorial();
         }
@@ -145,6 +149,30 @@ public class UIManager : MonoBehaviour
             default:
                 Debug.LogError("Invalid UI type passed to GetCanvasByType");
                 return null;
+        }
+    }
+
+    public static bool IsCanvasActive(UICanvasType canvasType)
+    {
+        UICanvasBase canvas = GetCanvasByType(canvasType);
+        return canvas != null && canvas.IsActive();
+    }
+
+    public static void ToggleCanvas(UICanvasType canvasType)
+    {
+        UICanvasBase canvas = GetCanvasByType(canvasType);
+        if (canvas == null)
+        {
+            return;
+        }
+        
+        if (!canvas.IsActive())
+        {
+            ShowCanvas(canvasType, true);
+        }
+        else
+        {
+            ClearCanvases();
         }
     }
 
