@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class TerminalUIManager : UICanvasBase
 {
+    // Buttons 
     public Button MissionsButton;
     [SerializeField] private Button messagesButton;
     [SerializeField] private Button analyticsButton;
@@ -10,6 +11,7 @@ public class TerminalUIManager : UICanvasBase
     [SerializeField] private Button licencesButton;
     [SerializeField] private Text moneyText;
 
+    // Panels 
     public GameObject MissionsPanel;
     [SerializeField] private GameObject messagesPanel;
     [SerializeField] private GameObject analyticsPanel;

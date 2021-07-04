@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -74,7 +73,7 @@ public class UIManager : MonoBehaviour
             && currentCanvasType != UICanvasType.None
             && Input.GetKeyDown(PlayerConstants.ActionKey))
         {
-            ShowCanvas();
+            ShowCanvas(currentCanvasType);
         }
         else if (GetNonOverriddenKeyDown(PlayerConstants.ExitKey))
         {
@@ -85,6 +84,7 @@ public class UIManager : MonoBehaviour
         {
             interactionTextMesh.gameObject.SetActive(true);
             interactionTextMesh.SetText(GetInteractionString());
+
             interactionTextMesh.transform.position =
                 PlayerManager.PlayerMovement.transform.position + new Vector3(0, 0.5f, 0);
         }
@@ -108,11 +108,11 @@ public class UIManager : MonoBehaviour
         OnCanvasDeactivated?.Invoke();
     }
 
-    public static void ShowCanvas()
+    public static void ShowCanvas(UICanvasType canvasType)
     {
         ClearCanvases();
         PlayerManager.Instance.EnterMenuState();
-        UICanvasBase canvas = GetCanvasByType(currentCanvasType);
+        UICanvasBase canvas = GetCanvasByType(canvasType);
         canvas.SetActive(true);
 
         // Show tutorial overlay if first time using the UI 
