@@ -56,4 +56,9 @@ public struct Date : IComparable<Date>
     {
         return base.GetHashCode();
     }
+
+    public override string ToString()
+    {
+        return $"{Day}/{Month}/{Year}";
+    }
 }
