@@ -16,10 +16,12 @@ public class ClockManager : MonoBehaviour
 {
     public static TimeSpan CurrentTime;
 
-    public int TickSpeedMultiplier { get; private set; }
-    private int currentTimeInSeconds;
+    public static int TickSpeedMultiplier { get; private set; }
+    private static int currentTimeInSeconds;
 
-    private bool clockStopped;
+    private static string dateTimeText;
+
+    private static bool clockStopped;
 
     private void Start()
     {
@@ -29,9 +31,9 @@ public class ClockManager : MonoBehaviour
         CalculateTickSpeedMultiplier();
         SetupClockForNextDay();
 
-        #if UNITY_EDITOR
-            Application.targetFrameRate = PlayerConstants.EditorTargetFramerate;
-        #endif
+#if UNITY_EDITOR
+        Application.targetFrameRate = PlayerConstants.EditorTargetFramerate;
+#endif
     }
 
     // Calculate how quick the clock should tick relative to real time 
@@ -76,7 +78,14 @@ public class ClockManager : MonoBehaviour
         {
             currentTimeInSeconds += Convert.ToInt32(Time.deltaTime * TickSpeedMultiplier);
             CurrentTime = TimeSpan.FromSeconds(currentTimeInSeconds);
+
+            UpdateDateTimeText();
         }
+    }
+
+    private static void UpdateDateTimeText()
+    {
+        dateTimeText = $"{CurrentTime:hh':'mm}\n{CalendarManager.Instance.CurrentDate}";
     }
 
     private void OnGUI()
@@ -86,7 +95,7 @@ public class ClockManager : MonoBehaviour
 
         GUI.Label(new Rect(
             Camera.main.pixelWidth - 128f, Camera.main.pixelHeight - 128f, 128f, 128f),
-            CurrentTime.ToString("hh':'mm"), localStyle);
+            dateTimeText);
     }
 
     private void LogClockData()
