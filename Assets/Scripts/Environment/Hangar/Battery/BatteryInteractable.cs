@@ -107,6 +107,8 @@ public class BatteryInteractable : InteractableObject
         gameObject.SetParent(HangarManager.BatteriesContainer);
 
         HangarManager.CurrentBatteryBeingHeld = null;
+
+        dropBatteryEvent.Invoke();
     }
 
     private void Update()

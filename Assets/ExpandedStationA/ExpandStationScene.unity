@@ -1421,7 +1421,7 @@ Transform:
   - {fileID: 993038284}
   - {fileID: 2023877783}
   m_Father: {fileID: 618460163}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &129007669 stripped
 GameObject:
@@ -4180,101 +4180,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 25.470108, y: 1, z: 0.59742737}
   m_Center: {x: 0.2739029, y: 0, z: 0.10399628}
---- !u!1001 &186152698
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 618460163}
-    m_Modifications:
-    - target: {fileID: 923938306559941887, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_Name
-      value: Battery (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 11.76
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.34
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 4.68
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: batterySpawnPositionManager
-      value: 
-      objectReference: {fileID: 878506549}
-    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: takeBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: takeBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PlayAnimation
-      objectReference: {fileID: 0}
-    - target: {fileID: 8317592649254769262, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: batterySpawnPositionManager
-      value: 
-      objectReference: {fileID: 878506549}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: ab766149d105a844396411ee50a5a21c, type: 3}
---- !u!4 &186152699 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-    type: 3}
-  m_PrefabInstance: {fileID: 186152698}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &186469475
 GameObject:
   m_ObjectHideFlags: 0
@@ -7905,6 +7810,95 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 531319646}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &532316290
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 618460163}
+    m_Modifications:
+    - target: {fileID: 923938306559941887, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_Name
+      value: Battery (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4566604538120125738, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 1587605551}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 12.757996
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.33999634
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5.1679993
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: dropBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 76529594}
+    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: takeBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 255206711}
+    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: takeBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayAnimation
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ab766149d105a844396411ee50a5a21c, type: 3}
 --- !u!1001 &538797527
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8861,8 +8855,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 259853561170085355}
-  - {fileID: 1077402961}
-  - {fileID: 186152699}
+  - {fileID: 1778309370}
+  - {fileID: 1279669820}
+  - {fileID: 1328865679}
   - {fileID: 878506548}
   - {fileID: 126724485}
   m_Father: {fileID: 1796250474}
@@ -9395,7 +9390,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7784091, y: 1}
+    m_SensorSize: {x: 1.780303, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -9436,95 +9431,6 @@ MonoBehaviour:
   m_FocusTarget: {fileID: 0}
   m_FocusOffset: 0
   m_Profile: {fileID: 11400000, guid: 271aef43d25e55446b425b1cc67995d7, type: 2}
---- !u!1001 &648951960
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 618460163}
-    m_Modifications:
-    - target: {fileID: 923938306559941887, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_Name
-      value: Battery (3)
-      objectReference: {fileID: 0}
-    - target: {fileID: 4566604538120125738, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 1587605551}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 6.17
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.33999634
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.3800049
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: batterySpawnPositionManager
-      value: 
-      objectReference: {fileID: 878506549}
-    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: takeBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: takeBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PlayAnimation
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: ab766149d105a844396411ee50a5a21c, type: 3}
 --- !u!1 &649797697
 GameObject:
   m_ObjectHideFlags: 0
@@ -10994,7 +10900,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 618460163}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &878506549
 MonoBehaviour:
@@ -13286,12 +13192,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1063680234}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1077402961 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
-    type: 3}
-  m_PrefabInstance: {fileID: 648951960}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1093490237 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: aefca80ef39a6294395f561bddb16961,
@@ -14791,6 +14691,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1250549803}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1279669820 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+    type: 3}
+  m_PrefabInstance: {fileID: 532316290}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1282149616
 GameObject:
   m_ObjectHideFlags: 0
@@ -15256,6 +15162,12 @@ Transform:
   m_Father: {fileID: 839812149}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1328865679 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1768804455}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1352520580
 GameObject:
   m_ObjectHideFlags: 0
@@ -19306,6 +19218,95 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1716959323}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1768804455
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 618460163}
+    m_Modifications:
+    - target: {fileID: 923938306559941887, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_Name
+      value: Battery (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4566604538120125738, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 1587605551}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 10.757996
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.33999634
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 8.167999
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: dropBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 76529594}
+    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: takeBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 255206711}
+    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: takeBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayAnimation
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ab766149d105a844396411ee50a5a21c, type: 3}
 --- !u!1 &1769575881
 GameObject:
   m_ObjectHideFlags: 0
@@ -19381,6 +19382,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1769575881}
   m_CullTransparentMesh: 1
+--- !u!4 &1778309370 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1948383024}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1781186123 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a03b4f473cc30944d8c08b10a23fb83f,
@@ -21265,6 +21272,95 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1947837397}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1948383024
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 618460163}
+    m_Modifications:
+    - target: {fileID: 923938306559941887, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_Name
+      value: Battery (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4566604538120125738, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 1587605551}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 11.757996
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.33999634
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.9179993
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565187367321210414, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: dropBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 76529594}
+    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: takeBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 255206711}
+    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: takeBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayAnimation
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ab766149d105a844396411ee50a5a21c, type: 3}
 --- !u!4 &1955088607 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9934045a64799954c986d04d7ed6c50e,
@@ -23653,16 +23749,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
         type: 3}
-      propertyPath: dropBatteryEvent.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: dropBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
       propertyPath: dropBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 76529594}
@@ -23673,28 +23759,8 @@ PrefabInstance:
       objectReference: {fileID: 255206711}
     - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
         type: 3}
-      propertyPath: dropBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: dropBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PlayAnimation
-      objectReference: {fileID: 0}
-    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
       propertyPath: takeBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: PlayAnimation
-      objectReference: {fileID: 0}
-    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: dropBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: AnimationPlayer, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
-        type: 3}
-      propertyPath: dropBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab766149d105a844396411ee50a5a21c, type: 3}
