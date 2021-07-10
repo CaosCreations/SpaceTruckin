@@ -15,10 +15,14 @@ public class MissionsEditor : MonoBehaviour
         try
         {
             var missionContainer = EditorHelper.GetAsset<MissionContainer>();
+
             foreach (var mission in missionContainer.missions)
             {
                 mission.AcceptMission();
             }
+
+            EditorUtility.SetDirty(missionContainer);
+
             Debug.Log("All missions accepted is now " + hasBeenAccepted.ToString());
         }
         catch (Exception ex)
@@ -40,10 +44,13 @@ public class MissionsEditor : MonoBehaviour
             }
 
             var missionContainer = EditorHelper.GetAsset<MissionContainer>();
+
             foreach (var mission in missionContainer.missions)
             {
                 mission.UnlockIfConditionMet();
             }
+
+            EditorUtility.SetDirty(missionContainer);
 
             Debug.Log("All missions unlocked");
         }
@@ -59,6 +66,7 @@ public class MissionsEditor : MonoBehaviour
         try
         {
             var missionContainer = EditorHelper.GetAsset<MissionContainer>();
+            
             foreach (var mission in missionContainer.missions)
             {
                 if (mission.IsInProgress())
@@ -66,6 +74,9 @@ public class MissionsEditor : MonoBehaviour
                     mission.DaysLeftToComplete = 1;
                 }
             }
+
+            EditorUtility.SetDirty(missionContainer);
+
             Debug.Log("All in progress missions now have 1 day remaining");
         }
         catch (Exception ex)
@@ -80,6 +91,7 @@ public class MissionsEditor : MonoBehaviour
         {
             var missionContainer = EditorHelper.GetAsset<MissionContainer>();
             long highestValue = default;
+
             foreach (var mission in missionContainer.missions)
             {
                 if (mission.MoneyNeededToUnlock > highestValue)
@@ -87,7 +99,9 @@ public class MissionsEditor : MonoBehaviour
                     highestValue = mission.MoneyNeededToUnlock;
                 }
             }
+
             Debug.Log("Money needed to unlock all missions = " + highestValue.ToString());
+            
             return highestValue;
         }
         catch (Exception ex)
@@ -100,9 +114,12 @@ public class MissionsEditor : MonoBehaviour
     public static void DeleteSaveData()
     {
         var missionContainer = EditorHelper.GetAsset<MissionContainer>();
+
         foreach (var mission in missionContainer.missions)
         {
             SaveDataEditor.NullifyFields(mission.saveData);
         }
+
+        EditorUtility.SetDirty(missionContainer);
     }
 }

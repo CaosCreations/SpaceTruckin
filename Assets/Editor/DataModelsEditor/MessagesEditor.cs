@@ -10,10 +10,13 @@ public class MessagesEditor : MonoBehaviour
         try
         {
             var messageContainer = EditorHelper.GetAsset<MessageContainer>();
+
             foreach (var message in messageContainer.messages)
             {
                 message.IsUnlocked = true;
             }
+
+            EditorUtility.SetDirty(messageContainer);
         }
         catch (Exception ex)
         {
@@ -27,10 +30,13 @@ public class MessagesEditor : MonoBehaviour
         try
         {
             var messageContainer = EditorHelper.GetAsset<MessageContainer>();
+
             foreach (var message in messageContainer.messages)
             {
                 message.HasBeenRead = true;
             }
+
+            EditorUtility.SetDirty(messageContainer);
         }
         catch (Exception ex)
         {
@@ -41,9 +47,12 @@ public class MessagesEditor : MonoBehaviour
     public static void DeleteSaveData()
     {
         var messageContainer = EditorHelper.GetAsset<MessageContainer>();
+
         foreach (var message in messageContainer.messages)
         {
             SaveDataEditor.NullifyFields(message.saveData);
         }
+
+        EditorUtility.SetDirty(messageContainer);
     }
 }

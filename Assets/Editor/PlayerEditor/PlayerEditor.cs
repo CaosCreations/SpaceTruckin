@@ -10,10 +10,11 @@ public class PlayerEditor : MonoBehaviour
         try
         {
             var playerData = EditorHelper.GetAsset<PlayerData>();
+
             playerData.PlayerMoney = 0;
             playerData.PlayerTotalMoneyAcquired = 0;
 
-            if (Application.IsPlaying(PlayerManager.Instance))
+            if (EditorHelper.IsPlaying)
             {
                 PlayerManager.Instance.ReceiveMoney(0);
             }
@@ -22,7 +23,7 @@ public class PlayerEditor : MonoBehaviour
         }
         catch (Exception ex)
         {
-            Debug.LogError($"{ex.Message}\n{ex.StackTrace}");
+            Debug.LogException(ex);
         }
     }
 
@@ -35,7 +36,7 @@ public class PlayerEditor : MonoBehaviour
 
             var playerData = EditorHelper.GetAsset<PlayerData>();
 
-            if (Application.IsPlaying(PlayerManager.Instance))
+            if (EditorHelper.IsPlaying)
             {
                 PlayerManager.Instance.ReceiveMoney(moneyToGive);
             }
@@ -44,11 +45,14 @@ public class PlayerEditor : MonoBehaviour
                 playerData.PlayerMoney += moneyToGive;
                 playerData.PlayerTotalMoneyAcquired += moneyToGive;
             }
+
+            EditorUtility.SetDirty(playerData);
+
             Debug.Log("Player money = " + playerData.PlayerMoney.ToString());
         }
         catch (Exception ex)
         {
-            Debug.LogError($"{ex.Message}\n{ex.StackTrace}");
+            Debug.LogException(ex);
         }
     }
 
@@ -58,7 +62,7 @@ public class PlayerEditor : MonoBehaviour
         {
             var playerData = EditorHelper.GetAsset<PlayerData>();
             
-            if (Application.IsPlaying(PlayerManager.Instance))
+            if (EditorHelper.IsPlaying)
             {
                 playerData.PlayerMoney = 0;
                 PlayerManager.Instance.ReceiveMoney(amount);
@@ -67,17 +71,22 @@ public class PlayerEditor : MonoBehaviour
             {
                 playerData.PlayerMoney = amount;
             }
+
+            EditorUtility.SetDirty(playerData);
+
             Debug.Log("Player money = " + playerData.PlayerMoney.ToString());
         }
         catch (Exception ex)
         {
-            Debug.LogError($"{ex.Message}\n{ex.StackTrace}");
+            Debug.LogException(ex);
         }
     }
 
     public static void DeleteSaveData()
     {
         var playerData = EditorHelper.GetAsset<PlayerData>();
+
         SaveDataEditor.NullifyFields(playerData.saveData);
+        EditorUtility.SetDirty(playerData);
     }
 }
