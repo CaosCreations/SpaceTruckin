@@ -6,6 +6,7 @@ public class PilotUtils
     public static Species GetRandomSpecies()
     {
         Array possibleValues = Enum.GetValues(typeof(Species));
+
         Species randomSpecies = (Species)possibleValues
             .GetValue(random.Next(0, possibleValues.Length));
 

@@ -26,7 +26,7 @@ public class ShipsEditor : MonoBehaviour
         }
         catch (Exception ex)
         {
-            Debug.LogError($"{ex.Message}\n{ex.StackTrace}");
+            Debug.LogException(ex);
         }
     }
 
@@ -59,7 +59,7 @@ public class ShipsEditor : MonoBehaviour
         }
         catch (Exception ex)
         {
-            Debug.LogError($"{ex.Message}\n{ex.StackTrace}");
+            Debug.LogException(ex);
         }
     }
 

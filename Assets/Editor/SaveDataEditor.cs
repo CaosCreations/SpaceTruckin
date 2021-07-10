@@ -60,7 +60,7 @@ public class SaveDataEditor : MonoBehaviour
             {
                 foreach (Pilot pilot in pilotsContainer.pilots)
                 {
-                    NullifyFields(pilot.saveData);
+                    NullifyFields(pilot.PilotData);
                     EditorUtility.SetDirty(pilot);
                 }
             }

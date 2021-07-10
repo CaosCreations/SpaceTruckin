@@ -60,4 +60,13 @@ public partial class Pilot
     public bool IsRandom => isRandom;
     public Ship Ship { get => ship; }
     public Sprite Avatar { get => avatar; set => avatar = value; }
+    public int Navvy 
+    {
+        get => saveData.Attributes.Navvy; set => saveData.Attributes.Navvy = value; 
+    }
+    public int Savvy 
+    {
+        get => saveData.Attributes.Savvy; set => saveData.Attributes.Savvy = value; 
+    }
+    public PilotSaveData PilotData { get => saveData; set => saveData = value; } 
 }

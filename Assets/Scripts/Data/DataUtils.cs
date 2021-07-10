@@ -13,6 +13,7 @@ public static class DataUtils
     public static async void SaveFileAsync<T>(string fileName, string folderName, T dataModel)
     {
         string folderPath = GetSaveFolderPath(folderName);
+
         if (!Directory.Exists(folderPath))
         {
             try
@@ -47,6 +48,7 @@ public static class DataUtils
     public static async void SaveFileAsync(string fileName, string folderName, string fileContents)
     {
         string folderPath = GetSaveFolderPath(folderName);
+
         if (!Directory.Exists(folderPath))
         {
             try
@@ -60,6 +62,7 @@ public static class DataUtils
         }
 
         string filePath = Path.Combine(folderPath, fileName + FILE_EXTENSION);
+
         try
         {
             var buffer = Encoding.UTF8.GetBytes(fileContents);
@@ -114,6 +117,7 @@ public static class DataUtils
     public static void RecursivelyDeleteSaveData(string folderName)
     {
         string folderPath = GetSaveFolderPath(folderName);
+
         if (Directory.Exists(folderPath))
         {
             Directory.Delete(folderPath, recursive: true);
@@ -123,6 +127,7 @@ public static class DataUtils
     public static bool SaveFolderExists(string folderName)
     {
         string folderPath = GetSaveFolderPath(folderName);
+
         if (Directory.Exists(folderPath)) 
         {
             // Get entries so we can confirm that the folder is not empty
@@ -149,6 +154,7 @@ public static class DataUtils
     public async static Task<string> ReadFileAsync(string filePath)
     {
         string text = string.Empty;
+
         if (File.Exists(filePath))
         {
             using (StreamReader reader = File.OpenText(filePath))
@@ -158,13 +164,14 @@ public static class DataUtils
         }
         else
         {
-            Debug.Log($"File at path {filePath} does not exist");
+            Debug.LogError($"File at path {filePath} does not exist");
         }
         return text;
     }
 
     public static void LogIOError(Exception e, string filePath)
     {
+        // Include the file path in the error message 
         Debug.LogError($"Message: {e.Message}\nTrace: {e.StackTrace}\nFile path: {filePath}");
     }
 }

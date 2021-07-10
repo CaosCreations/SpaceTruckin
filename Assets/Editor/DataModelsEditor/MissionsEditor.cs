@@ -27,7 +27,7 @@ public class MissionsEditor : MonoBehaviour
         }
         catch (Exception ex)
         {
-            Debug.LogError($"{ex.Message}\n{ex.StackTrace}");
+            Debug.LogException(ex);
         }
     }
     [MenuItem("Space Truckin/Missions/Unlock All")]
@@ -56,7 +56,7 @@ public class MissionsEditor : MonoBehaviour
         }
         catch (Exception ex)
         {
-            Debug.LogError($"{ex.Message}\n{ex.StackTrace}");
+            Debug.LogException(ex);
         }
     }
 
@@ -81,7 +81,7 @@ public class MissionsEditor : MonoBehaviour
         }
         catch (Exception ex)
         {
-            Debug.LogError($"{ex.Message}\n{ex.StackTrace}");
+            Debug.LogException(ex);
         }
     }
 
@@ -106,7 +106,7 @@ public class MissionsEditor : MonoBehaviour
         }
         catch (Exception ex)
         {
-            Debug.LogError($"{ex.Message}\n{ex.StackTrace}");
+            Debug.LogException(ex);
             return default;
         }
     }

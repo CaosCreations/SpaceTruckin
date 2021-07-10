@@ -7,6 +7,12 @@ public enum Species
     HumanMale, HumanFemale, Helicid, Oshunian, Vesta, Robot
 }
 
+[Serializable]
+public struct PilotAttributes
+{
+    public int Navvy, Savvy;
+}
+
 [CreateAssetMenu(fileName = "Pilot", menuName = "ScriptableObjects/Pilot", order = 1)]
 public partial class Pilot : ScriptableObject
 {
@@ -22,7 +28,7 @@ public partial class Pilot : ScriptableObject
     [SerializeField] private Sprite avatar;
 
     [Header("Data to update IN GAME")]
-    public PilotSaveData saveData;
+    [SerializeField] private PilotSaveData saveData;
 
     [Serializable]
     public class PilotSaveData
@@ -34,6 +40,7 @@ public partial class Pilot : ScriptableObject
         public double CurrentXp;
         public int MissionsCompleted;
         public bool IsHired;
+        public PilotAttributes Attributes;
     }
 
     public const string FOLDER_NAME = "PilotSaveData";

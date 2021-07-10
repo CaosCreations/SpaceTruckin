@@ -27,7 +27,7 @@ public class PilotsEditor : MonoBehaviour
         }
         catch (Exception ex)
         {
-            Debug.LogError($"{ex.Message}\n{ex.StackTrace}");
+            Debug.LogException(ex);
         }
     }
 
@@ -51,7 +51,7 @@ public class PilotsEditor : MonoBehaviour
         }
         catch (Exception ex)
         {
-            Debug.LogError($"{ex.Message}\n{ex.StackTrace}");
+            Debug.LogException(ex);
         }
     }
 
@@ -61,7 +61,7 @@ public class PilotsEditor : MonoBehaviour
 
         foreach (var pilot in pilotsContainer.pilots)
         {
-            SaveDataEditor.NullifyFields(pilot.saveData);
+            SaveDataEditor.NullifyFields(pilot.PilotData);
         }
 
         EditorUtility.SetDirty(pilotsContainer);
