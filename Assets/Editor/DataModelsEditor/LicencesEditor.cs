@@ -23,6 +23,7 @@ public class LicencesEditor : MonoBehaviour
             {
                 licence.IsOwned = isOwned;
             }
+
             EditorUtility.SetDirty(licenceContainer);
         }
         catch (Exception ex)

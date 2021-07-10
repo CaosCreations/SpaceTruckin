@@ -19,6 +19,9 @@ public class ShipsEditor : MonoBehaviour
         {
             var playerData = EditorHelper.GetAsset<PlayerData>();
             playerData.PlayerRepairTools = numberOfTools;
+
+            EditorUtility.SetDirty(playerData);
+
             Debug.Log("Repair tools set to " + playerData.PlayerRepairTools);
         }
         catch (Exception ex)
@@ -32,6 +35,7 @@ public class ShipsEditor : MonoBehaviour
         try
         {
             var shipsContainer = EditorHelper.GetAsset<ShipsContainer>();
+
             foreach (var ship in shipsContainer.ships)
             {
                 if (isMaxedOut)
@@ -47,6 +51,9 @@ public class ShipsEditor : MonoBehaviour
                     ship.CanWarp = false;
                 }
             }
+
+            EditorUtility.SetDirty(shipsContainer);
+
             string substring = isMaxedOut ? "maxed out" : "depleted";
             Debug.Log("Ships resources are now " + substring);
         }
@@ -59,9 +66,12 @@ public class ShipsEditor : MonoBehaviour
     public static void DeleteSaveData()
     {
         var shipsContainer = EditorHelper.GetAsset<ShipsContainer>();
+        
         foreach (var ship in shipsContainer.ships)
         {
             SaveDataEditor.NullifyFields(ship.saveData);
         }
+
+        EditorUtility.SetDirty(shipsContainer);
     }
 }

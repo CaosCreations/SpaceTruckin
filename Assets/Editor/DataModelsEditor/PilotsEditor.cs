@@ -15,10 +15,14 @@ public class PilotsEditor : MonoBehaviour
         try
         {
             var pilotsContainer = EditorHelper.GetAsset<PilotsContainer>();
+
             foreach (var pilot in pilotsContainer.pilots)
             {
                 pilot.IsHired = isHired;
             }
+
+            EditorUtility.SetDirty(pilotsContainer);
+
             Debug.Log("All pilots hired is " + isHired.ToString());
         }
         catch (Exception ex)
@@ -33,12 +37,16 @@ public class PilotsEditor : MonoBehaviour
         try
         {
             var pilotsContainer = EditorHelper.GetAsset<PilotsContainer>();
+
             foreach (var pilot in pilotsContainer.pilots)
             {
                 pilot.Level = 1;
                 pilot.CurrentXp = 0;
                 pilot.RequiredXp = 0;
             }
+
+            EditorUtility.SetDirty(pilotsContainer);
+
             Debug.Log("All pilots xp and level reset");
         }
         catch (Exception ex)
@@ -50,9 +58,12 @@ public class PilotsEditor : MonoBehaviour
     public static void DeleteSaveData()
     {
         var pilotsContainer = EditorHelper.GetAsset<PilotsContainer>();
+
         foreach (var pilot in pilotsContainer.pilots)
         {
             SaveDataEditor.NullifyFields(pilot.saveData);
         }
+
+        EditorUtility.SetDirty(pilotsContainer);
     }
 }

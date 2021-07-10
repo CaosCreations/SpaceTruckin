@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEditor;
 using UnityEngine;
 
 public class CalendarEditor : MonoBehaviour
@@ -9,6 +10,7 @@ public class CalendarEditor : MonoBehaviour
         {
             var calendarData = EditorHelper.GetAsset<CalendarData>();
             calendarData.CurrentDate = date;
+            EditorUtility.SetDirty(calendarData);
 
             Debug.Log("Current date set to: " + calendarData.CurrentDate.ToString());
         }
