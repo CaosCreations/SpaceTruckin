@@ -19,7 +19,7 @@ public class LicencesEditor : MonoBehaviour
         {
             var licenceContainer = EditorHelper.GetAsset<LicenceContainer>();
 
-            foreach (var licence in licenceContainer.licences)
+            foreach (var licence in licenceContainer.Licences)
             {
                 licence.IsOwned = isOwned;
             }
@@ -50,7 +50,7 @@ public class LicencesEditor : MonoBehaviour
     public static void DeleteSaveData()
     {
         var licenceContainer = EditorHelper.GetAsset<LicenceContainer>();
-        foreach (var licence in licenceContainer.licences)
+        foreach (var licence in licenceContainer.Licences)
         {
             SaveDataEditor.NullifyFields(licence.saveData);
         }

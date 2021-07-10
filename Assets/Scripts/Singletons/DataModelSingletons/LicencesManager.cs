@@ -7,7 +7,7 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
     public static LicencesManager Instance { get; private set; }
 
     [SerializeField] private LicenceContainer licenceContainer;
-    public Licence[] Licences => licenceContainer.licences;
+    public Licence[] Licences => licenceContainer.Licences;
 
     // Total effect getters 
     public static double MoneyEffect => GetTotalPercentageEffect<MoneyEffect>();

@@ -37,7 +37,7 @@ public partial class Pilot
     }
     public string Like { get => like; set => like = value; }
     public string Dislike { get => dislike; set => dislike = value; }
-    public int HireCost { get => hireCost; }
+    public int HireCost => hireCost;
     public double CurrentXp { get => saveData.CurrentXp; set => saveData.CurrentXp = value; }
     public double RequiredXp { get => saveData.RequiredXp; set => saveData.RequiredXp = value; }
     public bool CanLevelUp { get => CurrentXp >= RequiredXp; }
@@ -58,15 +58,17 @@ public partial class Pilot
     public bool IsOnMission => PilotsManager.PilotHasMissionInProgress(this);
     public Mission CurrentMission => MissionsManager.GetMission(this);
     public bool IsRandom => isRandom;
-    public Ship Ship { get => ship; }
+    public Ship Ship => ship;
     public Sprite Avatar { get => avatar; set => avatar = value; }
-    public int Navvy 
+    public int Navigation
     {
-        get => saveData.Attributes.Navvy; set => saveData.Attributes.Navvy = value; 
+        get => saveData.Attributes.Navigation; set => saveData.Attributes.Navigation = value;
     }
-    public int Savvy 
+    public int Savviness
     {
-        get => saveData.Attributes.Savvy; set => saveData.Attributes.Savvy = value; 
+        get => saveData.Attributes.Savviness; set => saveData.Attributes.Savviness = value;
     }
-    public PilotSaveData PilotData { get => saveData; set => saveData = value; } 
+    public int LevelsNeededForAttributePointGain => levelsNeededForAttributePointGain;
+    public bool CanGainAttributePoint => LevelsNeededForAttributePointGain % Level == 0;
+    public PilotSaveData PilotData { get => saveData; set => saveData = value; }
 }

@@ -9,8 +9,8 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     [SerializeField] private MissionContainer missionContainer;
     [SerializeField] private MissionOutcomeContainer missionOutcomeContainer;
-    public Mission[] Missions { get => missionContainer.missions; }
-    public MissionOutcome[] Outcomes { get => missionOutcomeContainer.missionOutcomes; }
+    public Mission[] Missions { get => missionContainer.Missions; }
+    public MissionOutcome[] Outcomes { get => missionOutcomeContainer.MissionOutcomes; }
     public static List<ScheduledMission> ScheduledMissions;
 
     private void Awake()

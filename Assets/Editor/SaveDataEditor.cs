@@ -50,7 +50,7 @@ public class SaveDataEditor : MonoBehaviour
 
             if (selected is MissionContainer missionContainer)
             {
-                foreach (Mission mission in missionContainer.missions)
+                foreach (Mission mission in missionContainer.Missions)
                 {
                     NullifyFields(mission.saveData);
                     EditorUtility.SetDirty(mission);
@@ -58,7 +58,7 @@ public class SaveDataEditor : MonoBehaviour
             }
             else if (selected is PilotsContainer pilotsContainer)
             {
-                foreach (Pilot pilot in pilotsContainer.pilots)
+                foreach (Pilot pilot in pilotsContainer.Pilots)
                 {
                     NullifyFields(pilot.PilotData);
                     EditorUtility.SetDirty(pilot);
@@ -66,7 +66,7 @@ public class SaveDataEditor : MonoBehaviour
             }
             else if (selected is ShipsContainer shipsContainer)
             {
-                foreach (Ship ship in shipsContainer.ships)
+                foreach (Ship ship in shipsContainer.Ships)
                 {
                     NullifyFields(ship.saveData);
                     EditorUtility.SetDirty(ship);
@@ -74,7 +74,7 @@ public class SaveDataEditor : MonoBehaviour
             }
             else if (selected is MessageContainer messagesContainer)
             {
-                foreach (Message message in messagesContainer.messages)
+                foreach (Message message in messagesContainer.Messages)
                 {
                     NullifyFields(message.saveData);
                     EditorUtility.SetDirty(message);

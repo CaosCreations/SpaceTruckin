@@ -7,10 +7,15 @@ public enum Species
     HumanMale, HumanFemale, Helicid, Oshunian, Vesta, Robot
 }
 
+public enum PilotAttributeType
+{
+    Navigation, Savviness
+}
+
 [Serializable]
 public struct PilotAttributes
 {
-    public int Navvy, Savvy;
+    public int Navigation, Savviness;
 }
 
 [CreateAssetMenu(fileName = "Pilot", menuName = "ScriptableObjects/Pilot", order = 1)]
@@ -22,6 +27,7 @@ public partial class Pilot : ScriptableObject
     [SerializeField] private string like;
     [SerializeField] private string dislike;
     [SerializeField] private int hireCost;
+    [SerializeField] private int levelsNeededForAttributePointGain = 1;
     [SerializeField] private float xpThresholdExponent;
     [SerializeField] private Species species;
     [SerializeField] private Ship ship;

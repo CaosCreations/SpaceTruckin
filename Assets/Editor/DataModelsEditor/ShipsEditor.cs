@@ -36,7 +36,7 @@ public class ShipsEditor : MonoBehaviour
         {
             var shipsContainer = EditorHelper.GetAsset<ShipsContainer>();
 
-            foreach (var ship in shipsContainer.ships)
+            foreach (var ship in shipsContainer.Ships)
             {
                 if (isMaxedOut)
                 {
@@ -67,7 +67,7 @@ public class ShipsEditor : MonoBehaviour
     {
         var shipsContainer = EditorHelper.GetAsset<ShipsContainer>();
         
-        foreach (var ship in shipsContainer.ships)
+        foreach (var ship in shipsContainer.Ships)
         {
             SaveDataEditor.NullifyFields(ship.saveData);
         }

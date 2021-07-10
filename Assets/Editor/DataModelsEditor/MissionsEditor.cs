@@ -16,7 +16,7 @@ public class MissionsEditor : MonoBehaviour
         {
             var missionContainer = EditorHelper.GetAsset<MissionContainer>();
 
-            foreach (var mission in missionContainer.missions)
+            foreach (var mission in missionContainer.Missions)
             {
                 mission.AcceptMission();
             }
@@ -45,7 +45,7 @@ public class MissionsEditor : MonoBehaviour
 
             var missionContainer = EditorHelper.GetAsset<MissionContainer>();
 
-            foreach (var mission in missionContainer.missions)
+            foreach (var mission in missionContainer.Missions)
             {
                 mission.UnlockIfConditionMet();
             }
@@ -67,7 +67,7 @@ public class MissionsEditor : MonoBehaviour
         {
             var missionContainer = EditorHelper.GetAsset<MissionContainer>();
             
-            foreach (var mission in missionContainer.missions)
+            foreach (var mission in missionContainer.Missions)
             {
                 if (mission.IsInProgress())
                 {
@@ -92,7 +92,7 @@ public class MissionsEditor : MonoBehaviour
             var missionContainer = EditorHelper.GetAsset<MissionContainer>();
             long highestValue = default;
 
-            foreach (var mission in missionContainer.missions)
+            foreach (var mission in missionContainer.Missions)
             {
                 if (mission.MoneyNeededToUnlock > highestValue)
                 {
@@ -115,7 +115,7 @@ public class MissionsEditor : MonoBehaviour
     {
         var missionContainer = EditorHelper.GetAsset<MissionContainer>();
 
-        foreach (var mission in missionContainer.missions)
+        foreach (var mission in missionContainer.Missions)
         {
             SaveDataEditor.NullifyFields(mission.saveData);
         }
