@@ -65,6 +65,8 @@ public partial class Pilot : ScriptableObject
     {
         // Cannot be below 1
         saveData.Level = Math.Max(saveData.Level, 1);
+        saveData.Attributes.Navigation = Math.Max(saveData.Attributes.Navigation, 1);
+        saveData.Attributes.Savviness = Math.Max(saveData.Attributes.Savviness, 1);
 
         // Cannot be below 0 
         saveData.RequiredXp = Math.Max(saveData.RequiredXp, 0);
