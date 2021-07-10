@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public enum Species
@@ -42,7 +43,7 @@ public partial class Pilot : ScriptableObject
         DataUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
     }
 
-    public async System.Threading.Tasks.Task LoadDataAsync()
+    public async Task LoadDataAsync()
     {
         saveData = await DataUtils.LoadFileAsync<PilotSaveData>(name, FOLDER_NAME);
     }
@@ -51,9 +52,11 @@ public partial class Pilot : ScriptableObject
     {
         // Cannot be below 1
         saveData.Level = Math.Max(saveData.Level, 1);
-        saveData.RequiredXp = Math.Max(saveData.RequiredXp, 1);
-        saveData.CurrentXp = Math.Max(saveData.CurrentXp, 1);
-        saveData.MissionsCompleted = Math.Max(saveData.MissionsCompleted, 1);
+
+        // Cannot be below 0 
+        saveData.RequiredXp = Math.Max(saveData.RequiredXp, 0);
+        saveData.CurrentXp = Math.Max(saveData.CurrentXp, 0);
+        saveData.MissionsCompleted = Math.Max(saveData.MissionsCompleted, 0);
 
         if (isRandom)
         {
