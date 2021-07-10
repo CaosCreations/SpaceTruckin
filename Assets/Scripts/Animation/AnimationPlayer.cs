@@ -2,17 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimationPlayer: MonoBehaviour
+public class AnimationPlayer : MonoBehaviour
 {
-    [SerializeField] private Animator playerAnimator;
+    [SerializeField] private Animator animator;
 
-    [SerializeField] private string animationName;
-
-    [SerializeField] private bool play;
-
-    public void PlayAnimation()
+    // To call the function, select a variable in the AnimationConstants.cs file and pass it as animationParameter 
+    public void ChangeAnimation(string animationParameter, bool isOn)
     {
-        Debug.Log("Playing " + animationName + " animation");
-        playerAnimator.SetBool(animationName, play);
+        animator.SetBool(animationParameter, isOn);
     }
 }
