@@ -134,6 +134,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
                 {
                     pilot.Species = PilotUtils.GetRandomSpecies();
                     pilot.Name = PilotAssetsManager.GetRandomName(pilot.Species);
+
                     RandomiseAvatar(pilot);
                 }
 
