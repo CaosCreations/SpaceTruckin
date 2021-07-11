@@ -40,7 +40,7 @@ public partial class Pilot
     public int HireCost => hireCost;
     public double CurrentXp { get => saveData.CurrentXp; set => saveData.CurrentXp = value; }
     public double RequiredXp { get => saveData.RequiredXp; set => saveData.RequiredXp = value; }
-    public bool CanLevelUp { get => CurrentXp >= RequiredXp; }
+    public bool CanLevelUp => CurrentXp >= RequiredXp;
     public float XpThresholdExponent
     {
         get => xpThresholdExponent; set => xpThresholdExponent = value;
@@ -70,5 +70,5 @@ public partial class Pilot
     }
     public int LevelsNeededForAttributePointGain => levelsNeededForAttributePointGain;
     public bool CanGainAttributePoint => Level % LevelsNeededForAttributePointGain == 0;
-    public PilotSaveData PilotData { get => saveData; set => saveData = value; }
+    public PilotSaveData PilotData => saveData;
 }
