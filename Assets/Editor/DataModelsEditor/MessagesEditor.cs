@@ -17,6 +17,8 @@ public class MessagesEditor : MonoBehaviour
             }
 
             EditorUtility.SetDirty(messageContainer);
+
+            Debug.Log("All messages are now unlocked");
         }
         catch (Exception ex)
         {
@@ -37,6 +39,8 @@ public class MessagesEditor : MonoBehaviour
             }
 
             EditorUtility.SetDirty(messageContainer);
+
+            Debug.Log("All messages are now read");
         }
         catch (Exception ex)
         {
