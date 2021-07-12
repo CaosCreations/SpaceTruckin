@@ -5,16 +5,19 @@ public class MissionModifierOutcome : ScriptableObject
 {
     // MissionModifierOutcomes can have one or more of any kind of MissionOutcome 
     // e.g. can take damage, find a new pilot, earn money, and earn faction rep 
-    [SerializeField] private MissionOutcome[] outcomes;
+    [field: SerializeField]
+    public MissionOutcome[] Outcomes;
 
     [field: SerializeField]
     public string FlavourText { get; set; }
 
-    [field: SerializeField] 
+    [field: SerializeField]
     public Sprite Sprite { get; private set; }
 
     [field: SerializeField]
     public int AttributePointThreshold { get; private set; }
+
+    public bool HasRandomOutcomes => Outcomes == null || Outcomes.Length <= 0;
 
     public void Process(ScheduledMission scheduled)
     {
@@ -22,7 +25,7 @@ public class MissionModifierOutcome : ScriptableObject
         // Archive the modifier outcome for displaying in the new day report
         scheduled.Mission.MissionToArchive.ModifierOutcome = this;
 
-        foreach (MissionOutcome outcome in outcomes)
+        foreach (MissionOutcome outcome in Outcomes)
         {
             outcome.Process(scheduled);
         }

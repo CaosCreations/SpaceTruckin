@@ -20,12 +20,13 @@ public class MissionModifier : ScriptableObject
 
     public MissionModifierOutcome GetDecidedOutcome(Pilot pilot)
     {
-        int attributePointsToCheck = GetAttributePointsByType(pilot, DependentAttribute);
+        // The value that will be compared with the threshold that determines which outcome occurs 
+        int attributePoints = GetAttributePointsByType(pilot, DependentAttribute);
 
         // Choose the outcome with the highest attribute point bracket the Pilot is in 
         MissionModifierOutcome decidedOutcome = PossibleOutcomes
             .OrderByDescending(x => x.AttributePointThreshold)
-            .FirstOrDefault(x => attributePointsToCheck >= x.AttributePointThreshold);
+            .FirstOrDefault(x => attributePoints >= x.AttributePointThreshold);
 
         return decidedOutcome;
     }

@@ -137,7 +137,15 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
             // Decide the outcome from the possible outcomes based on the Pilot's attribute points, 
             MissionModifierOutcome modifierOutcome = scheduled.Mission.Modifier.GetDecidedOutcome(scheduled.Pilot);
 
-            modifierOutcome.Process(scheduled);
+            if (modifierOutcome != null)
+            {
+                if (modifierOutcome.HasRandomOutcomes)
+                {
+                    AssignRandomOutcomes(modifierOutcome);
+                }
+
+                modifierOutcome.Process(scheduled);
+            }
         }
 
         // Add the object to the archive once all outcomes have been processed. 
@@ -176,6 +184,24 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         if (shipDamageOutcome != null) randomOutcomes.Add(shipDamageOutcome);
 
         mission.Outcomes = randomOutcomes.ToArray();
+    }
+
+    private static void AssignRandomOutcomes(MissionModifierOutcome modifierOutcome)
+    {
+        var randomOutcomes = new List<MissionOutcome>();
+        Instance.Outcomes.Shuffle();
+
+        MoneyOutcome moneyOutcome = MissionUtils.GetOutcomeByType<MoneyOutcome>(Instance.Outcomes);
+        PilotXpOutcome pilotXpOutcome = MissionUtils.GetOutcomeByType<PilotXpOutcome>(Instance.Outcomes);
+        OmenOutcome omenOutcome = MissionUtils.GetOutcomeByType<OmenOutcome>(Instance.Outcomes);
+        ShipDamageOutcome shipDamageOutcome = MissionUtils.GetOutcomeByType<ShipDamageOutcome>(Instance.Outcomes);
+
+        if (moneyOutcome != null) randomOutcomes.Add(moneyOutcome);
+        if (pilotXpOutcome != null) randomOutcomes.Add(pilotXpOutcome);
+        if (omenOutcome != null) randomOutcomes.Add(omenOutcome);
+        if (shipDamageOutcome != null) randomOutcomes.Add(shipDamageOutcome);
+
+        modifierOutcome.Outcomes = randomOutcomes.ToArray();
     }
 
     public static ScheduledMission GetScheduledMission(Mission mission)

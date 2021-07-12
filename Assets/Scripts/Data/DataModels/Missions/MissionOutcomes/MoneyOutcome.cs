@@ -14,9 +14,11 @@ public class MoneyOutcome : MissionOutcome
         double moneyEarned = UnityEngine.Random.Range(moneyMin, moneyMax);
         double earningsAfterLicences = moneyEarned * (1 + LicencesManager.MoneyEffect);
         long earnings64 = Convert.ToInt64(earningsAfterLicences);
+
         PlayerManager.Instance.ReceiveMoney(earnings64);
 
         long moneyIncrease64 = Convert.ToInt64(earnings64 - moneyEarned);
+
         if (scheduled.Mission.MissionToArchive != null)
         {
             scheduled.Mission.MissionToArchive.TotalMoneyIncrease += moneyIncrease64;
