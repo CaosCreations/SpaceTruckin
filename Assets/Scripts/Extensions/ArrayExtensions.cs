@@ -6,6 +6,7 @@ public static class ArrayExtensions
     public static T[] Shuffle<T>(this T[] self)
     {
         int n = self.Length;
+
         while (n > 1)
         {
             int k = random.Next(n);

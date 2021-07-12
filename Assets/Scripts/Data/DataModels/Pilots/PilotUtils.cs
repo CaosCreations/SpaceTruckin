@@ -3,12 +3,23 @@
 public class PilotUtils
 {
     private static readonly Random random = new Random();
+
+    public static T GetRandomEnumElement<T>() where T : Enum
+    {
+        T[] possibleValues = (T[])Enum.GetValues(typeof(T));
+
+        T randomElement = (T)possibleValues.GetRandomElement();
+
+        return randomElement;
+    }
+
     public static Species GetRandomSpecies()
     {
-        Array possibleValues = Enum.GetValues(typeof(Species));
-        Species randomSpecies = (Species)possibleValues
-            .GetValue(random.Next(0, possibleValues.Length));
+        return GetRandomEnumElement<Species>();
+    }
 
-        return randomSpecies;
+    public static PilotAttributeType GetRandomAttributeType()
+    {
+        return GetRandomEnumElement<PilotAttributeType>();
     }
 }

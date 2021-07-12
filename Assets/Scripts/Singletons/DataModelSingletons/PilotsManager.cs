@@ -6,8 +6,8 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
 {   
     public static PilotsManager Instance { get; private set; }
 
-    public PilotsContainer pilotsContainer;
-    public Pilot[] Pilots { get => pilotsContainer.pilots; }
+    public PilotsContainer PilotsContainer;
+    public Pilot[] Pilots => PilotsContainer.Pilots;
 
     void Awake()
     {
@@ -51,6 +51,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         if (pilot != null)
         {
             pilot.CurrentXp += xpGained;
+
             if (pilot.CanLevelUp)
             {
                 LevelUpPilot(pilot);
@@ -63,6 +64,32 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
     {
         pilot.Level++;
         pilot.RequiredXp = Math.Pow(pilot.RequiredXp, pilot.XpThresholdExponent);
+
+        if (pilot.CanGainAttributePoint)
+        {
+            // Todo: Replace this choice with player input when the UI is done. 
+            PilotAttributeType attributeType = PilotUtils.GetRandomAttributeType();
+
+            GainAttributePoints(pilot, attributeType);
+        }
+    }
+
+    public static void GainAttributePoints(Pilot pilot, PilotAttributeType attributeType, int value = 1)
+    {
+        if (pilot == null)
+            return;
+
+        switch (attributeType)
+        {
+            case PilotAttributeType.Navigation:
+                pilot.Navigation += value;
+                break;
+            case PilotAttributeType.Savviness:
+                pilot.Savviness += value;
+                break;
+            default:
+                break;
+        }
     }
 
     public void HirePilot(Pilot pilot)
@@ -107,6 +134,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
                 {
                     pilot.Species = PilotUtils.GetRandomSpecies();
                     pilot.Name = PilotAssetsManager.GetRandomName(pilot.Species);
+
                     RandomiseAvatar(pilot);
                 }
 

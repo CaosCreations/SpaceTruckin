@@ -7,6 +7,17 @@ public enum Species
     HumanMale, HumanFemale, Helicid, Oshunian, Vesta, Robot
 }
 
+public enum PilotAttributeType
+{
+    Navigation, Savviness
+}
+
+[Serializable]
+public struct PilotAttributes
+{
+    public int Navigation, Savviness;
+}
+
 [CreateAssetMenu(fileName = "Pilot", menuName = "ScriptableObjects/Pilot", order = 1)]
 public partial class Pilot : ScriptableObject
 {
@@ -16,13 +27,14 @@ public partial class Pilot : ScriptableObject
     [SerializeField] private string like;
     [SerializeField] private string dislike;
     [SerializeField] private int hireCost;
+    [SerializeField] private int levelsNeededForAttributePointGain = 1;
     [SerializeField] private float xpThresholdExponent;
     [SerializeField] private Species species;
     [SerializeField] private Ship ship;
     [SerializeField] private Sprite avatar;
 
     [Header("Data to update IN GAME")]
-    public PilotSaveData saveData;
+    [SerializeField] private PilotSaveData saveData;
 
     [Serializable]
     public class PilotSaveData
@@ -34,6 +46,7 @@ public partial class Pilot : ScriptableObject
         public double CurrentXp;
         public int MissionsCompleted;
         public bool IsHired;
+        public PilotAttributes Attributes;
     }
 
     public const string FOLDER_NAME = "PilotSaveData";
@@ -52,6 +65,8 @@ public partial class Pilot : ScriptableObject
     {
         // Cannot be below 1
         saveData.Level = Math.Max(saveData.Level, 1);
+        saveData.Attributes.Navigation = Math.Max(saveData.Attributes.Navigation, 1);
+        saveData.Attributes.Savviness = Math.Max(saveData.Attributes.Savviness, 1);
 
         // Cannot be below 0 
         saveData.RequiredXp = Math.Max(saveData.RequiredXp, 0);
