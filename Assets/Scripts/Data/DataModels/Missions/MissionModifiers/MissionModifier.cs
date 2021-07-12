@@ -25,7 +25,7 @@ public class MissionModifier : ScriptableObject
         // Choose the outcome with the highest attribute point bracket the Pilot is in 
         MissionModifierOutcome decidedOutcome = PossibleOutcomes
             .OrderByDescending(x => x.AttributePointThreshold)
-            .FirstOrDefault(x => attributePointsToCheck > x.AttributePointThreshold);
+            .FirstOrDefault(x => attributePointsToCheck >= x.AttributePointThreshold);
 
         return decidedOutcome;
     }
