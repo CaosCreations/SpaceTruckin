@@ -1,7 +1,8 @@
 ﻿using System.Linq;
 using UnityEngine;
 
-public class MissionModifier
+[CreateAssetMenu(fileName = "MissionModifier", menuName = "ScriptableObjects/Missions/MissionModifiers/MissionModifier", order = 1)]
+public class MissionModifier : ScriptableObject
 {
     [field: SerializeField]
     public string Name { get; private set; }
@@ -22,11 +23,11 @@ public class MissionModifier
         int attributePointsToCheck = GetAttributePointsByType(pilot, DependentAttribute);
 
         // Choose the outcome with the highest attribute point bracket the Pilot is in 
-        MissionModifierOutcome outcomeDecided = PossibleOutcomes
+        MissionModifierOutcome decidedOutcome = PossibleOutcomes
             .OrderByDescending(x => x.AttributePointThreshold)
             .FirstOrDefault(x => attributePointsToCheck > x.AttributePointThreshold);
 
-        return outcomeDecided;
+        return decidedOutcome;
     }
 
     private int GetAttributePointsByType(Pilot pilot, PilotAttributeType attributeType)

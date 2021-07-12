@@ -14,6 +14,7 @@ public class ArchivedMission
     public int PilotLevelAtTimeOfMission;
     public int MissionsCompletedByPilotAtTimeOfMission;
     public Date CompletionDate;
+    public MissionModifierOutcome ModifierOutcome;
 
     /// <summary>Keeps track of whether the mission has been shown in the new day report.</summary>
     public bool HasBeenViewedInReport;

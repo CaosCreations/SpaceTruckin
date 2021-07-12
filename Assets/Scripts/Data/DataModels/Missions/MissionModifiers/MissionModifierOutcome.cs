@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[CreateAssetMenu(fileName = "MissionModifierOutcome", menuName = "ScriptableObjects/Missions/MissionModifiers/MissionModifierOutcome", order = 1)]
 public class MissionModifierOutcome : MissionOutcome
 {
     // MissionModifierOutcomes can have one or more of any kind of MissionOutcome 
@@ -13,6 +14,10 @@ public class MissionModifierOutcome : MissionOutcome
 
     public override void Process(ScheduledMission scheduled)
     {
+        // Todo: Abstract away archiving code
+        // Archive the modifier outcome for displaying in the new day report
+        scheduled.Mission.MissionToArchive.ModifierOutcome = this;
+
         foreach (MissionOutcome outcome in outcomes)
         {
             outcome.Process(scheduled);
