@@ -109,13 +109,15 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
             }
 
             // Improve relationship with the client of the mission.
-            DialogueDatabaseManager.AddToActorFondness(scheduled.Mission.Customer, scheduled.Mission.FondnessGranted);
+            DialogueDatabaseManager.AddToActorFondness(
+                scheduled.Mission.Customer, scheduled.Mission.FondnessGranted);
         }
 
         scheduled.Mission.NumberOfCompletions++;
 
         // Instantiate an Archived Mission object to store the stats of the completed Mission.
-        scheduled.Mission.MissionToArchive = new ArchivedMission(scheduled.Mission, scheduled.Pilot, scheduled.Mission.NumberOfCompletions);
+        scheduled.Mission.MissionToArchive = new ArchivedMission(
+            scheduled.Mission, scheduled.Pilot, scheduled.Mission.NumberOfCompletions);
 
         scheduled.Pilot.MissionsCompleted++;
         scheduled.Mission.MissionToArchive.MissionsCompletedByPilotAtTimeOfMission = scheduled.Pilot.MissionsCompleted;
@@ -126,8 +128,17 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
             AssignRandomOutcomes(scheduled.Mission);
         }
 
-        // We will set the Archived Mission fields throughout the outcome processing. 
+        // The Archived Mission fields are set throughout the outcome processing.
         scheduled.Mission.ProcessOutcomes();
+
+        // Some Missions have a MissionModifier, which gives additional outcomes based on attribute conditions,
+        if (scheduled.Mission.HasModifier)
+        {
+            // Decide the outcome from the possible outcomes based on the Pilot's attribute points, 
+            MissionModifierOutcome modifierOutcome = scheduled.Mission.Modifier.GetDecidedOutcome(scheduled.Pilot);
+
+            modifierOutcome.Process(scheduled);
+        }
 
         // Add the object to the archive once all outcomes have been processed. 
         ArchivedMissionsManager.AddToArchive(scheduled.Mission.MissionToArchive);

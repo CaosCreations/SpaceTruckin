@@ -18,6 +18,7 @@ public partial class Mission : ScriptableObject, IDataModel
     [SerializeField] private bool isRepeatable = true; // Default to repeatable missions
     [SerializeField] private bool hasRandomOutcomes;
     [SerializeField] private MissionOutcome[] outcomes;
+    [SerializeField] private MissionModifier missionModifier;
 
     [Tooltip("The number of relationship points with the customer awarded on first completion of the mission")]
     [SerializeField] private int fondnessGranted;

@@ -1,4 +1,6 @@
-﻿public partial class Mission
+﻿using System.Linq;
+
+public partial class Mission
 {
     // This class is just for property accessors. 
     // The fields are all located in Mission.cs. 
@@ -83,4 +85,9 @@
     { 
         get => thankYouMessage; set => thankYouMessage = value; 
     }
+    public bool HasModifier => missionModifier != null 
+        && missionModifier.PossibleOutcomes != null
+        && missionModifier.PossibleOutcomes.Any();
+
+    public MissionModifier Modifier => missionModifier;
 }
