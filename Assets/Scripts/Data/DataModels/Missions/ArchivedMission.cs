@@ -8,7 +8,7 @@ public class ArchivedMission
 {
     public string MissionName;
     public int CompletionNumber, TotalDamageTaken, TotalDamageReduced, TotalFuelLost;
-    public long TotalMoneyEarned, TotalMoneyIncrease;
+    public long TotalMoneyEarned, TotalMoneyIncreaseFromLicences;
     public double TotalPilotXpGained, TotalXpIncreaseFromLicences;
     public Pilot Pilot;
     public int PilotLevelAtTimeOfMission;

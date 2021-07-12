@@ -21,7 +21,7 @@ public class MoneyOutcome : MissionOutcome
 
         if (scheduled.Mission.MissionToArchive != null)
         {
-            scheduled.Mission.MissionToArchive.TotalMoneyIncrease += moneyIncrease64;
+            scheduled.Mission.MissionToArchive.TotalMoneyIncreaseFromLicences += moneyIncrease64;
             scheduled.Mission.MissionToArchive.TotalMoneyEarned += earnings64;
         }
         Debug.Log("Base money earned: " + moneyEarned);
