@@ -1423,6 +1423,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 205330823}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &129007671 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6316198362758017279, guid: a06f1a9e44fccb3409ddc94a08e3cac6,
+    type: 3}
+  m_PrefabInstance: {fileID: 205330823}
+  m_PrefabAsset: {fileID: 0}
 --- !u!143 &129007673
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1467,18 +1473,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _renderer: {fileID: 0}
   shadowOnly: 0
---- !u!114 &129007676 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 126016625095090791, guid: a06f1a9e44fccb3409ddc94a08e3cac6,
-    type: 3}
-  m_PrefabInstance: {fileID: 205330823}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 129007669}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc687b8684fce414b8007eb8a1171664, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &132877855
 GameObject:
   m_ObjectHideFlags: 0
@@ -7870,11 +7864,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7644622099517345001, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 129007671}
     - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
         type: 3}
       propertyPath: animatorManager
       value: 
-      objectReference: {fileID: 129007676}
+      objectReference: {fileID: 0}
     - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
         type: 3}
       propertyPath: dropBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -9383,7 +9382,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7738694, y: 1}
+    m_SensorSize: {x: 1.7751197, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -19283,11 +19282,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7644622099517345001, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 129007671}
     - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
         type: 3}
       propertyPath: animatorManager
       value: 
-      objectReference: {fileID: 129007676}
+      objectReference: {fileID: 0}
     - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
         type: 3}
       propertyPath: dropBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -21342,11 +21346,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7644622099517345001, guid: ab766149d105a844396411ee50a5a21c,
+        type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 129007671}
     - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
         type: 3}
       propertyPath: animatorManager
       value: 
-      objectReference: {fileID: 129007676}
+      objectReference: {fileID: 0}
     - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
         type: 3}
       propertyPath: dropBatteryEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -23750,10 +23759,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8223680205256685485, guid: ab766149d105a844396411ee50a5a21c,
+    - target: {fileID: 7644622099517345001, guid: ab766149d105a844396411ee50a5a21c,
         type: 3}
-      propertyPath: animatorManager
+      propertyPath: animator
       value: 
-      objectReference: {fileID: 129007676}
+      objectReference: {fileID: 129007671}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab766149d105a844396411ee50a5a21c, type: 3}
