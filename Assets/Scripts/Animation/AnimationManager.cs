@@ -19,8 +19,8 @@ public class AnimationManager : MonoBehaviour
         }
     }
 
-    public void PlayAnimation(Animation animation, AnimationType animationType, bool isOn)
+    public void PlayAnimation(AnimatorData animatorData, AnimationParemeterType animationParemeterType, bool isOn)
     {
-        animation.Animator.SetBool(animation.ParameterMap[animationType], isOn);
+        animatorData.Animator.SetBool(animatorData.ParameterMap[animationParemeterType], isOn);
     }
 }

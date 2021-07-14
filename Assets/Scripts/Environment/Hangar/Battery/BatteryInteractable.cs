@@ -12,7 +12,7 @@ public class BatteryInteractable : InteractableObject
     // Shows that the player is holding any battery
     public static bool PlayerIsHoldingABattery;
 
-    [SerializeField] private new Animation animation;
+    [SerializeField] private AnimatorData animatorData;
 
 
     public void TakeBattery()
@@ -32,7 +32,7 @@ public class BatteryInteractable : InteractableObject
 
         HangarManager.CurrentBatteryBeingHeld = GetComponent<BatteryWrapper>();
 
-        AnimationManager.Instance.PlayAnimation(animation, AnimationType.BatteryGrab, isOn:true);
+        AnimationManager.Instance.PlayAnimation(animatorData, AnimationParemeterType.BatteryGrab, isOn:true);
     }
 
     private void ConfigureRigidbody(bool isConnectingToPlayer)
@@ -66,7 +66,7 @@ public class BatteryInteractable : InteractableObject
 
         HangarManager.CurrentBatteryBeingHeld = null;
 
-        AnimationManager.Instance.PlayAnimation(animation, AnimationType.BatteryGrab, isOn: false);
+        AnimationManager.Instance.PlayAnimation(animatorData, AnimationParemeterType.BatteryGrab, isOn: false);
     }
 
     private void OnTriggerStay(Collider other)
@@ -106,7 +106,7 @@ public class BatteryInteractable : InteractableObject
 
         HangarManager.CurrentBatteryBeingHeld = null;
 
-        AnimationManager.Instance.PlayAnimation(animation, AnimationType.BatteryGrab, isOn: false);
+        AnimationManager.Instance.PlayAnimation(animatorData, AnimationParemeterType.BatteryGrab, isOn: false);
     }
 
     private void Update()
