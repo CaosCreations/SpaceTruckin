@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1786745985134268546}
   - component: {fileID: 5229669992225063619}
   - component: {fileID: 8907433572168489415}
-  - component: {fileID: 1665624422015728870}
+  - component: {fileID: 26075437029342011}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -205,7 +205,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.9142857, y: 1.8285714, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1665624422015728870
+--- !u!114 &26075437029342011
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -214,14 +214,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1972979662120986132}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55eaa32ed88105b4da1704cda6f1b49c, type: 3}
+  m_Script: {fileID: 11500000, guid: a25fb95602880aa4ea9cf57797afb1f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Animator: {fileID: 6316198362758017279}
-  animatorController: {fileID: 9100000, guid: 36fe5d0431bc9c346bd07d2ee0c56c84, type: 2}
-  animationParameterKeyValuePair:
-  - AnimationParameterKey: 2
-    AnimationParameterValue: batteryGrabbing
 --- !u!1 &7389477075848068926
 GameObject:
   m_ObjectHideFlags: 0
