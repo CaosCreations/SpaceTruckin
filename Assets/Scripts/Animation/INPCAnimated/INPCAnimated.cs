@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IAnimated
+public interface INPCAnimated
 {
     [SerializeField] public Animator Animator { get; set; }
 
-    public Dictionary<AnimationParameterType, string> ParameterMap { get; set; }
+    public Dictionary<NPCAnimationParameterType, string> ParameterMap { get; set; }
 }
