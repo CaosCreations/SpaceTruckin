@@ -27,8 +27,8 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
         get => calendarData.CurrentDate.Day;
         set => calendarData.CurrentDate.Day = value;
     }
-    public int CurrentMonth 
-    { 
+    public int CurrentMonth
+    {
         get => calendarData.CurrentDate.Month;
         set => calendarData.CurrentDate.Month = value;
     }
@@ -92,7 +92,6 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
 
         // Notify other objects that the day has ended
         OnEndOfDay?.Invoke();
-
     }
 
     private static void UpdateCalendarData()
