@@ -1,7 +1,7 @@
 public static class RepairsConstants 
 {
     // Workstation 
-    public static float StartingSpeed = 120f;
+    public static float StartingSpeed = 180f;
     public static float SpeedIncrease = 12f;
 
     // Green zone 

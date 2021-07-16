@@ -53,6 +53,11 @@ public class UIConstants : MonoBehaviour
     public static Vector3 ShipPreviewRotationSpeed = new Vector3(0f, 0.15f, 0f);
     public const float ShipPreviewScaleFactor = 0.85f;
 
+    public const float ClockTextWidth = 128f;
+    public const float ClockTextHeight = 64f;
+    public static float ClockTextXPosition = Camera.main.pixelWidth - 128f;
+    public static float ClockTextYPosition = /*Camera.main.pixelHeight -*/ 0f;
+
 
     // Bed canvas 
     public const float TimeToSleep = 4f;

@@ -18,13 +18,14 @@ public partial class Mission : ScriptableObject, IDataModel
     [SerializeField] private bool isRepeatable = true; // Default to repeatable missions
     [SerializeField] private bool hasRandomOutcomes;
     [SerializeField] private MissionOutcome[] outcomes;
+    [SerializeField] private MissionModifier missionModifier;
 
     [Tooltip("The number of relationship points with the customer awarded on first completion of the mission")]
     [SerializeField] private int fondnessGranted;
 
     [Tooltip("The time after which there are consequences for not completing the mission")]
     [SerializeField] private int offerTimeLimitInDays;
-    
+
     [Tooltip("The number of relationship points that are deducted if the time limit is exceeded")]
     [SerializeField] private int offerExpiryFondnessDeduction;
 
@@ -46,7 +47,7 @@ public partial class Mission : ScriptableObject, IDataModel
         public bool hasBeenUnlocked, hasBeenAccepted;
 
         // Track this so consequences of not actioning an offer aren't applied multiple times.
-        public bool offerExpiryConsequencesApplied; 
+        public bool offerExpiryConsequencesApplied;
 
         public int daysLeftToComplete, numberOfCompletions;
         public Date dateUnlocked, dateAccepted;

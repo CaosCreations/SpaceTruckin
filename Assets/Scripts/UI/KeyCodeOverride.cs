@@ -14,4 +14,9 @@ public class KeyCodeOverride
     /// </summary>
     [field: SerializeField] 
     public bool IsPersistentOnDisable { get; private set; }
+
+    public KeyCodeOverride(KeyCode keyCode)
+    {
+        KeyCode = keyCode;
+    }
 }

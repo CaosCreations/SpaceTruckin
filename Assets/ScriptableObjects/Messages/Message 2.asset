@@ -12,9 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd9d7529875deb945afe1826b70a68b9, type: 3}
   m_Name: Message 2
   m_EditorClassIdentifier: 
+  messageName: TestDate
   sender: Kim
   subject: Buy me a cardigan
   body: I'm desperate for garments. It's for my dachschund btw.
-  condition: 0
-  unlocked: 1
-  job: {fileID: 11400000, guid: 0c632302ef52a2d49a66e92d4ea1e986, type: 2}
+  unlockCondition: 1
+  moneyNeededToUnlock: 0
+  dateToUnlockOn:
+    Day: 2
+    Month: 1
+    Year: 1
+  mission: {fileID: 0}
+  saveData:
+    isUnlocked: 0
+    isUnread: 0

@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-[System.Serializable]
+[Serializable]
 public class ScheduledMission
 {
     [SerializeField] private Mission mission;
@@ -12,5 +13,15 @@ public class ScheduledMission
     public static string FILE_PATH
     {
         get => DataUtils.GetSaveFilePath(Mission.FOLDER_NAME, FILE_NAME);
+    }
+
+    public override string ToString()
+    {
+        if (mission != null && pilot != null)
+        {
+            return $"{mission.Name} (Mission), {pilot.Name} (Pilot)";
+        }
+
+        return string.Empty;
     }
 }
