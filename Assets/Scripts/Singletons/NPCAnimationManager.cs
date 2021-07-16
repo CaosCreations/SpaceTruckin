@@ -19,11 +19,11 @@ public class NPCAnimationManager : MonoBehaviour
         }
     }
 
-    public void PlayAnimation(npcAnimated nPCAnimated, NPCAnimationParameterType npcAnimationParameterType, bool isOn)
+    public void PlayAnimation(NPCAnimated npcAnimated, NPCAnimationParameterType npcAnimationParameterType, bool isOn)
     {
         if (npcAnimated.ParameterMap.ContainsKey(npcAnimationParameterType))
         {
-            npcAnimated.Animator.SetBool(nPCAnimated.ParameterMap[npcAnimationParameterType], isOn);
+            npcAnimated.Animator.SetBool(npcAnimated.ParameterMap[npcAnimationParameterType], isOn);
         }
 
         else
