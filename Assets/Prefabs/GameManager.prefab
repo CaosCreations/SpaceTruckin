@@ -642,6 +642,7 @@ MonoBehaviour:
     panel: {fileID: 1587357891}
     alertText:
       m_uiText: {fileID: 239804816}
+      m_textMeshProUGUI: {fileID: 0}
     queueAlerts: 1
     dontQueueDuplicates: 0
     waitForHideAnimation: 1
@@ -1210,6 +1211,7 @@ MonoBehaviour:
   pcImage: {fileID: 0}
   pcName:
     m_uiText: {fileID: 0}
+    m_textMeshProUGUI: {fileID: 0}
   timerSlider: {fileID: 2090687668}
   buttonAlignment: 0
   showUnusedButtons: 0
@@ -1374,8 +1376,10 @@ MonoBehaviour:
   panel: {fileID: 211229085}
   label:
     m_uiText: {fileID: 640354560}
+    m_textMeshProUGUI: {fileID: 0}
   inputField:
     m_uiInputField: {fileID: 1872299375}
+    m_textMeshProInputField: {fileID: 0}
   acceptKey: 13
   cancelKey: 27
   showTouchScreenKeyboard: 0
@@ -1985,8 +1989,10 @@ MonoBehaviour:
   portraitImage: {fileID: 874407585}
   portraitName:
     m_uiText: {fileID: 1166183507}
+    m_textMeshProUGUI: {fileID: 0}
   subtitleText:
     m_uiText: {fileID: 1025864347}
+    m_textMeshProUGUI: {fileID: 0}
   addSpeakerName: 0
   addSpeakerNameFormat: '{0}: {1}'
   accumulateText: 0
@@ -3895,8 +3901,10 @@ MonoBehaviour:
   portraitImage: {fileID: 103475082}
   portraitName:
     m_uiText: {fileID: 445156465}
+    m_textMeshProUGUI: {fileID: 0}
   subtitleText:
     m_uiText: {fileID: 893675006}
+    m_textMeshProUGUI: {fileID: 0}
   addSpeakerName: 0
   addSpeakerNameFormat: '{0}: {1}'
   accumulateText: 0
@@ -4219,6 +4227,7 @@ MonoBehaviour:
   button: {fileID: 2085510648}
   label:
     m_uiText: {fileID: 385255552}
+    m_textMeshProUGUI: {fileID: 0}
   setLabelColor: 1
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &2090687666
@@ -4558,7 +4567,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5745358076465076626}
+  - component: {fileID: 7084496073094469789}
   - component: {fileID: 667742070}
+  - component: {fileID: 4660096402002302309}
   - component: {fileID: 5745358076465076627}
   - component: {fileID: 7105066481962662059}
   - component: {fileID: 3197085279453762649}
@@ -4566,14 +4577,12 @@ GameObject:
   - component: {fileID: 2692949180829779189}
   - component: {fileID: 8710179870615699991}
   - component: {fileID: 8021603277474344776}
-  - component: {fileID: 7084496073094469789}
   - component: {fileID: 4085865392418400431}
   - component: {fileID: 6202489397274892342}
   - component: {fileID: 8712058223457872494}
   - component: {fileID: 6922048894487758194}
   - component: {fileID: 3599417350814226549}
   - component: {fileID: 4608940828257387288}
-  - component: {fileID: 4660096402002302309}
   - component: {fileID: 509416025}
   - component: {fileID: 509416040}
   - component: {fileID: 509416041}
@@ -4600,6 +4609,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7084496073094469789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5745358076465076624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0c9dbc129c65004c894a0262b8acc21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &667742070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4613,6 +4634,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerData: {fileID: 11400000, guid: 1506149f15b36014eb19522e7ab71165, type: 2}
+--- !u!114 &4660096402002302309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5745358076465076624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99a6555bb02bdd3429fc0cd8117e91f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerAnimator: {fileID: 0}
 --- !u!114 &5745358076465076627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4708,18 +4742,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   licenceContainer: {fileID: 11400000, guid: 913043d08d8a65841aaf14b6e20dd87c, type: 2}
---- !u!114 &7084496073094469789
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5745358076465076624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0c9dbc129c65004c894a0262b8acc21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4085865392418400431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4936,19 +4958,6 @@ MonoBehaviour:
   allowOnlyOneInstance: 1
   dialogueTimeMode: 0
   debugLevel: 2
---- !u!114 &4660096402002302309
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5745358076465076624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99a6555bb02bdd3429fc0cd8117e91f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerAnimator: {fileID: 0}
 --- !u!114 &509416025
 MonoBehaviour:
   m_ObjectHideFlags: 0

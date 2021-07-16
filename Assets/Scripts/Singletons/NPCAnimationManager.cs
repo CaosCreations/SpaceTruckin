@@ -11,11 +11,12 @@ public class NPCAnimationManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
-
         else
         {
-            Destroy(this);
+            Destroy(gameObject);
+            return;
         }
     }
 
