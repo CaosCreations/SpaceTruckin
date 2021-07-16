@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using UnityEngine;
 
 public static class UIUtils
 {
@@ -56,5 +57,21 @@ public static class UIUtils
         {
             return '\0';
         }
+    }
+
+    public static Texture2D GetUITexture(int width, int height, Color colour)
+    {
+        Color[] pixels = new Color[width * height];
+
+        for (int i = 0; i < pixels.Length; ++i)
+        {
+            pixels[i] = colour;
+        }
+
+        Texture2D texture = new Texture2D(width, height);
+        texture.SetPixels(pixels);
+        texture.Apply();
+
+        return texture;
     }
 }

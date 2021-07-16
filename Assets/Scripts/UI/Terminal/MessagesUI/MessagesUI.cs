@@ -33,7 +33,7 @@ public class MessagesUI : MonoBehaviour
 
     private void OnEnable()
     {
-        MessagesManager.Instance.UnlockMessages();
+        MessagesManager.Instance.UnlockMessagesRequiringMoney();
         currentFilterMode = MessageFilterMode.None;
         GoToListView();
     }
@@ -74,7 +74,9 @@ public class MessagesUI : MonoBehaviour
                 buttonHandler.Init(message, () =>
                 {
                     GoToDetailView(message);
-                    message.IsUnread = false; 
+
+                    // Set read flag to true upon opening the message  
+                    message.HasBeenRead = true; 
                 });
             }
         }
@@ -97,8 +99,8 @@ public class MessagesUI : MonoBehaviour
 
     private bool MessageIsFilteredOut(Message message)
     {
-        if (currentFilterMode == MessageFilterMode.Unread && !message.IsUnread
-            || currentFilterMode == MessageFilterMode.Read && message.IsUnread)
+        if (currentFilterMode == MessageFilterMode.Unread && !message.HasBeenRead
+            || currentFilterMode == MessageFilterMode.Read && message.HasBeenRead)
         {
             return true;
         }
@@ -106,7 +108,7 @@ public class MessagesUI : MonoBehaviour
     }
 
     private Color GetMessageColour(Message message) =>
-        message.IsUnread ? MessageConstants.UnreadColour : MessageConstants.ReadColour;
+        message.HasBeenRead ? MessageConstants.UnreadColour : MessageConstants.ReadColour;
 
     private void GoToDetailView(Message message)
     {

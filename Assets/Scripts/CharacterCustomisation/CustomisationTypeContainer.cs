@@ -3,5 +3,5 @@
 [CreateAssetMenu(fileName = "CustomisationTypeContainer", menuName = "ScriptableObjects/CustomisationOptionContainer", order = 1)]
 public class CustomisationTypeContainer : ScriptableObject
 {
-    public CustomisationType[] customisationTypes;
+    public CustomisationType[] CustomisationTypes;
 }

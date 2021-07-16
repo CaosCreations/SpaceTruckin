@@ -2,14 +2,6 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-[Serializable]
-public struct Date
-{
-    public int Day;
-    public int Month;
-    public int Year;
-}
-
 [CreateAssetMenu(fileName = "CalendarData", menuName = "ScriptableObjects/CalendarData", order = 1)]
 public class CalendarData : ScriptableObject, IDataModel
 {

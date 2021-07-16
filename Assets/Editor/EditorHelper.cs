@@ -34,4 +34,7 @@ public class EditorHelper : MonoBehaviour
             return null;
         }
     }
+
+    public static bool IsPlaying => 
+        PlayerManager.Instance != null && Application.IsPlaying(PlayerManager.Instance);
 }

@@ -1,18 +1,27 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.UI;
+
+/// <summary>
+/// Represents a time of day in a format that can be set in the inspector.
+/// </summary>
+[Serializable]
+public struct TimeOfDay
+{
+    public int Hours;
+    public int Minutes;
+    public int Seconds;
+}
 
 public class ClockManager : MonoBehaviour
 {
-    public static TimeSpan currentTime; 
+    public static TimeSpan CurrentTime;
 
-    // This will replace OnGUI when the design is ready 
-    public Text clockText; 
+    public static int TickSpeedMultiplier { get; private set; }
+    private static int currentTimeInSeconds;
 
-    private int currentTimeInSeconds;
-    private int tickSpeedMultiplier;
+    private static string dateTimeText;
 
-    private bool clockStopped; 
+    private static bool clockStopped;
 
     private void Start()
     {
@@ -23,30 +32,29 @@ public class ClockManager : MonoBehaviour
         SetupClockForNextDay();
 
 #if UNITY_EDITOR
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = PlayerConstants.EditorTargetFramerate;
 #endif
     }
 
     // Calculate how quick the clock should tick relative to real time 
     private void CalculateTickSpeedMultiplier()
     {
-        tickSpeedMultiplier = Convert.ToInt32(
-            CalendarManager.Instance.DayEndTime.Subtract(CalendarManager.Instance.DayStartTime).TotalSeconds)
+        TickSpeedMultiplier = Convert.ToInt32(
+            CalendarManager.Instance.AwakeTimeDuration.TotalSeconds)
                 / CalendarManager.Instance.RealTimeDayDurationInSeconds;
     }
 
     public void SetupClockForNextDay()
     {
         ResetClock();
-        StartClock(); 
+        StartClock();
     }
-	
-	public void ResetClock()
+
+    public void ResetClock()
     {
         clockStopped = true;
-        currentTime = CalendarManager.Instance.DayStartTime;
-        currentTimeInSeconds = (int)currentTime.TotalSeconds;
-        //clockText.text = currentTime.ToString();
+        CurrentTime = CalendarManager.Instance.DayStartTime;
+        currentTimeInSeconds = (int)CurrentTime.TotalSeconds;
     }
 
     public void StartClock()
@@ -61,34 +69,60 @@ public class ClockManager : MonoBehaviour
 
     private void Update()
     {
-        if (currentTime >= CalendarManager.Instance.DayEndTime)
+        if (CurrentTime >= CalendarManager.Instance.DayEndTime)
         {
             CalendarManager.EndDay();
         }
 
         if (!clockStopped)
         {
-            currentTimeInSeconds += Convert.ToInt32(Time.deltaTime * tickSpeedMultiplier);
-            currentTime = TimeSpan.FromSeconds(currentTimeInSeconds);
-            //clockText.text = currentTime.ToString("hh':'mm");
+            currentTimeInSeconds += Convert.ToInt32(Time.deltaTime * TickSpeedMultiplier);
+            CurrentTime = TimeSpan.FromSeconds(currentTimeInSeconds);
+
+            UpdateDateTimeText();
         }
+    }
+
+    private static void UpdateDateTimeText()
+    {
+        dateTimeText = $"{CurrentTime:hh':'mm}\n{CalendarManager.Instance.CurrentDate}";
     }
 
     private void OnGUI()
     {
-        var localStyle = new GUIStyle();
+        var localStyle = new GUIStyle(GUI.skin.box);
         localStyle.normal.textColor = Color.white;
+        localStyle.font = FontManager.Instance.GetFontByType(FontType.Subtitle);
+        localStyle.fontSize = 18;
+
+        GUI.backgroundColor = Color.black;
 
         GUI.Label(new Rect(
-            Camera.main.pixelWidth - 128f, Camera.main.pixelHeight - 128f, 128f, 128f), 
-            currentTime.ToString("hh':'mm"), localStyle);
+            UIConstants.ClockTextXPosition, 
+            UIConstants.ClockTextYPosition, 
+            UIConstants.ClockTextWidth, 
+            UIConstants.ClockTextHeight),
+            dateTimeText,
+            localStyle);
+    }
 
+    private Texture2D MakeTex(int width, int height, Color col)
+    {
+        Color[] pix = new Color[width * height];
+        for (int i = 0; i < pix.Length; ++i)
+        {
+            pix[i] = col;
+        }
+        Texture2D result = new Texture2D(width, height);
+        result.SetPixels(pix);
+        result.Apply();
+        return result;
     }
 
     private void LogClockData()
     {
-        Debug.Log("Current time: " + currentTime);
+        Debug.Log("Current time: " + CurrentTime);
         Debug.Log("Current time in seconds: " + currentTimeInSeconds);
-        Debug.Log("Time remaining: " + CalendarManager.Instance.DayEndTime.Subtract(currentTime));
+        Debug.Log("Time remaining: " + CalendarManager.Instance.DayEndTime.Subtract(CurrentTime));
     }
 }

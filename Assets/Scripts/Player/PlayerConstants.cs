@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class PlayerConstants : MonoBehaviour
 {
@@ -20,6 +21,22 @@ public class PlayerConstants : MonoBehaviour
     public const float Gravity = -9.81f;
     public const float KillFloorHeight = -25;
     public static Vector3 PlayerResetPosition = new Vector3(210f, 380f, -247f);
+    public const int EditorTargetFramerate = 60;
+
+    // Prototyping
+    public const KeyCode PrototypingModifier = KeyCode.LeftControl;
+    public const KeyCode TerminalShortcut = KeyCode.T;
+    public const KeyCode NoticeboardShortcut = KeyCode.G;
+
+    public static List<KeyCode> HangarNodeShortcuts = new List<KeyCode>()
+    {
+        KeyCode.Alpha1,
+        KeyCode.Alpha2,
+        KeyCode.Alpha3,
+        KeyCode.Alpha4,
+        KeyCode.Alpha5,
+        KeyCode.Alpha6
+    };
 
     // Misc
     public const int MaxPlayerNameLength = 24;

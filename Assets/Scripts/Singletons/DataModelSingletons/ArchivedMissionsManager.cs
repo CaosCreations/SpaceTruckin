@@ -6,11 +6,6 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
 {
     public static ArchivedMissionsManager Instance { get; private set; }
     public List<ArchivedMission> ArchivedMissions { get; set; }
-
-    /// <summary>
-    /// Missions that were completed yesterday.
-    /// These are ready to be displayed in the daily mission report.
-    /// </summary>
     public List<ArchivedMission> MissionsCompletedYesterday { get; set; }
 
     private void Awake()
@@ -31,13 +26,13 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
     {
         if (DataUtils.SaveFolderExists(ArchivedMission.FOLDER_NAME))
         {
-            // Todo: Rework Loading using Scheduled Missions (after breaking changes)
-            //LoadDataAsync();
+            LoadDataAsync();
         }
         else
         {
             DataUtils.CreateSaveFolder(ArchivedMission.FOLDER_NAME);
         }
+
         ArchivedMissions = new List<ArchivedMission>();
         MissionsCompletedYesterday = new List<ArchivedMission>();
 
@@ -62,36 +57,47 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
         Instance.ArchivedMissions.Add(archivedMission);
     }
 
-    public async void LoadDataAsync()
+    public static bool ThereAreMissionsToReport()
     {
-        // Todo: Rework this using Scheduled Missions 
-
-        //ArchivedMissions = new List<ArchivedMission>();
-
-        //if (MissionsManager.Instance.Missions != null)
-        //{
-        //    foreach (Mission mission in MissionsManager.Instance.Missions
-        //        .Where(m => m.NumberOfCompletions > 0))
-        //    {
-        //        // A mission has been completed n times, 
-        //        // so we create n archived missions.
-        //        for (int i = 0; i < mission.NumberOfCompletions; i++)
-        //        {
-        //            // We use the loop counter to construct the file name, 
-        //            // which is determined by the number of completions
-        //            // that mission had at the time it was completed.
-        //            ArchivedMission newArchivedMission = new ArchivedMission(
-        //                mission, completionNumber: i + 1);
-
-        //            await newArchivedMission.LoadDataAsync();
-        //            ArchivedMissions.Add(newArchivedMission);
-        //        }
-        //    }
-        //}
+        foreach (var archivedMission in Instance.ArchivedMissions)
+        {
+            if (archivedMission != null && !archivedMission.HasBeenViewedInReport)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public void SaveData() => ArchivedMissions.ForEach(a => a.SaveData());
+    public static List<ArchivedMission> GetMissionsToAppearInReport()
+    {
+        var missionsToAppearInReport = new List<ArchivedMission>();
+
+        foreach (var archivedMission in Instance.ArchivedMissions)
+        {
+            if (archivedMission != null && !archivedMission.HasBeenViewedInReport)
+            {
+                missionsToAppearInReport.Add(archivedMission);
+            }
+        }
+        return missionsToAppearInReport;
+    }
+
+    #region Persistence
+    public async void LoadDataAsync()
+    {
+        string json = await DataUtils.ReadFileAsync(ArchivedMission.FILE_PATH);
+        ArchivedMissions = JsonHelper.ListFromJson<ArchivedMission>(json);
+    }
+
+    public void SaveData()
+    {
+        string json = JsonHelper.ListToJson(ArchivedMissions);
+        string folderPath = DataUtils.GetSaveFolderPath(ArchivedMission.FOLDER_NAME);
+        DataUtils.SaveFileAsync(ArchivedMission.FILE_NAME, folderPath, json);
+    }
 
     public void DeleteData() 
         => DataUtils.RecursivelyDeleteSaveData(ArchivedMission.FOLDER_NAME);
+    #endregion
 }

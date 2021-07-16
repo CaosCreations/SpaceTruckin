@@ -22,6 +22,7 @@ public class UIManager : MonoBehaviour
 
     /// <summary>
     /// Keys that cannot be used for regular UI input until the override is lifted.
+    /// e.g. Escape key when in a submenu. 
     /// </summary>
     private static HashSet<KeyCode> currentlyOverriddenKeys;
 
@@ -60,9 +61,9 @@ public class UIManager : MonoBehaviour
     {
         if (DataUtils.IsNewGame())
         {
-            // Show the main menu canvas for character creation
-            SetCanInteract(UICanvasType.MainMenu);
-            ShowCanvas();
+            //// Show the main menu canvas for character creation
+            //SetCanInteract(UICanvasType.MainMenu);
+            //ShowCanvas();
         }
     }
 
@@ -72,7 +73,7 @@ public class UIManager : MonoBehaviour
             && currentCanvasType != UICanvasType.None
             && Input.GetKeyDown(PlayerConstants.ActionKey))
         {
-            ShowCanvas();
+            ShowCanvas(currentCanvasType);
         }
         else if (GetNonOverriddenKeyDown(PlayerConstants.ExitKey))
         {
@@ -83,6 +84,7 @@ public class UIManager : MonoBehaviour
         {
             interactionTextMesh.gameObject.SetActive(true);
             interactionTextMesh.SetText(GetInteractionString());
+
             interactionTextMesh.transform.position =
                 PlayerManager.PlayerMovement.transform.position + new Vector3(0, 0.5f, 0);
         }
@@ -106,15 +108,19 @@ public class UIManager : MonoBehaviour
         OnCanvasDeactivated?.Invoke();
     }
 
-    public static void ShowCanvas()
+    /// <param name="canvasType">The type of canvas to display, which is set by collision or a shortcut
+    /// </param>
+    /// <param name="viaShortcut">For shortcut access. Will not alter player prefs. 
+    /// </param>
+    public static void ShowCanvas(UICanvasType canvasType, bool viaShortcut = false)
     {
         ClearCanvases();
         PlayerManager.Instance.EnterMenuState();
-        UICanvasBase canvas = GetCanvasByType(currentCanvasType);
+        UICanvasBase canvas = GetCanvasByType(canvasType);
         canvas.SetActive(true);
 
         // Show tutorial overlay if first time using the UI 
-        if (!CurrentCanvasHasBeenViewed())
+        if (!viaShortcut && !CurrentCanvasHasBeenViewed())
         {
             canvas.ShowTutorial();
         }
@@ -143,6 +149,30 @@ public class UIManager : MonoBehaviour
             default:
                 Debug.LogError("Invalid UI type passed to GetCanvasByType");
                 return null;
+        }
+    }
+
+    public static bool IsCanvasActive(UICanvasType canvasType)
+    {
+        UICanvasBase canvas = GetCanvasByType(canvasType);
+        return canvas != null && canvas.IsActive();
+    }
+
+    public static void ToggleCanvas(UICanvasType canvasType)
+    {
+        UICanvasBase canvas = GetCanvasByType(canvasType);
+        if (canvas == null)
+        {
+            return;
+        }
+        
+        if (!canvas.IsActive())
+        {
+            ShowCanvas(canvasType, true);
+        }
+        else
+        {
+            ClearCanvases();
         }
     }
 
@@ -223,12 +253,28 @@ public class UIManager : MonoBehaviour
         currentlyOverriddenKeys.UnionWith(keyCodes);
     }
 
+    public static void AddOverriddenKey(KeyCode keyCode)
+    {
+        if (!currentlyOverriddenKeys.Contains(keyCode))
+        {
+            currentlyOverriddenKeys.Add(keyCode);
+        }
+    }
+
     public static void RemoveOverriddenKeys(HashSet<KeyCodeOverride> keyCodeOverrides)
     {
         // Don't remove the persistent overridden keycodes from the list 
         var nonPersistentKeyCodes = keyCodeOverrides.ToListOfNonPersistentKeyCodes();
 
         currentlyOverriddenKeys.ExceptWith(nonPersistentKeyCodes);
+    }
+
+    public static void RemoveOverriddenKey(KeyCode keyCode)
+    {
+        if (currentlyOverriddenKeys.Contains(keyCode))
+        {
+            currentlyOverriddenKeys.Remove(keyCode);
+        }
     }
 
     public static void ResetOverriddenKeys()

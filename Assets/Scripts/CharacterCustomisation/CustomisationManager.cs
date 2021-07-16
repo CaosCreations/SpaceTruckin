@@ -41,7 +41,7 @@ public class CustomisationManager : MonoBehaviour
         VerticalLayoutGroup verticalLayoutGroup = customisationContainer.AddComponent<VerticalLayoutGroup>();
         verticalLayoutGroup.spacing = CustomisationConstants.customisationContainerSpacing; 
 
-        foreach (CustomisationType customisationType in customisationTypeContainer.customisationTypes)
+        foreach (CustomisationType customisationType in customisationTypeContainer.CustomisationTypes)
         {
             // This is the parent object for each individual row of the customisation container  
             GameObject customisationOption = new GameObject(CustomisationConstants.customisationOptionName);
@@ -106,9 +106,9 @@ public class CustomisationManager : MonoBehaviour
 
     void LogCustomisationState()
     {
-        for (int i = 0; i < customisationTypeContainer.customisationTypes.Length; i++)
+        for (int i = 0; i < customisationTypeContainer.CustomisationTypes.Length; i++)
         {
-            Debug.Log($"Customisation Type {i} value: {customisationTypeContainer.customisationTypes[i].index}"); 
+            Debug.Log($"Customisation Type {i} value: {customisationTypeContainer.CustomisationTypes[i].index}"); 
         }
     }
 }

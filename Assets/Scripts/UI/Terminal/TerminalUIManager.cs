@@ -3,19 +3,22 @@ using UnityEngine.UI;
 
 public class TerminalUIManager : UICanvasBase
 {
-    public Button missionsButton;
-    public Button messagesButton;
-    public Button analyticsButton;
-    public Button fleetButton;
-    public Button licencesButton;
-    public Text moneyText;
+    // Buttons 
+    public Button MissionsButton;
+    [SerializeField] private Button messagesButton;
+    [SerializeField] private Button analyticsButton;
+    [SerializeField] private Button fleetButton;
+    [SerializeField] private Button licencesButton;
+    [SerializeField] private Text moneyText;
 
-    public GameObject missionsPanel;
-    public GameObject messagesPanel;
-    public GameObject analyticsPanel;
-    public GameObject fleetPanel;
-    public GameObject licencesPanel;
-    public GameObject newDayReportPanel; 
+    // Panels 
+    public GameObject MissionsPanel;
+    [SerializeField] private GameObject messagesPanel;
+    [SerializeField] private GameObject analyticsPanel;
+    [SerializeField] private GameObject fleetPanel;
+    [SerializeField] private GameObject licencesPanel;
+    [SerializeField] private GameObject newDayReportPanel; 
+
     private NewDayReportUI newDayReportUI;
     
     public enum Tab
@@ -32,8 +35,8 @@ public class TerminalUIManager : UICanvasBase
 
     private void OnEnable()
     {
-        if (ArchivedMissionsManager.WereMissionsCompletedYesterday()
-            && !newDayReportUI.HasBeenViewed)
+        if (ArchivedMissionsManager.ThereAreMissionsToReport()
+            && !newDayReportUI.HasBeenViewedToday)
         {
             ClearPanels();
             ResetTabButtonColours();
@@ -44,7 +47,7 @@ public class TerminalUIManager : UICanvasBase
 
     private void SetupButtonListeners()
     {
-        missionsButton.AddOnClick(() => TabButtonClicked(Tab.Missions));
+        MissionsButton.AddOnClick(() => TabButtonClicked(Tab.Missions));
         messagesButton.AddOnClick(() => TabButtonClicked(Tab.Messages));
         analyticsButton.AddOnClick(() => TabButtonClicked(Tab.Analytics));
         fleetButton.AddOnClick(() => TabButtonClicked(Tab.Fleet));
@@ -65,7 +68,7 @@ public class TerminalUIManager : UICanvasBase
 
     private void ClearPanels()
     {
-        missionsPanel.SetActive(false);
+        MissionsPanel.SetActive(false);
         messagesPanel.SetActive(false);
         analyticsPanel.SetActive(false);
         fleetPanel.SetActive(false);
@@ -77,7 +80,7 @@ public class TerminalUIManager : UICanvasBase
     {
         return tabClicked switch
         {
-            Tab.Missions => missionsPanel,
+            Tab.Missions => MissionsPanel,
             Tab.Messages => messagesPanel,
             Tab.Analytics => analyticsPanel,
             Tab.Fleet => fleetPanel,
@@ -95,7 +98,7 @@ public class TerminalUIManager : UICanvasBase
 
     public void ResetTabButtonColours()
     {
-        missionsButton.SetColour(UIConstants.InactiveTabButtonColour);
+        MissionsButton.SetColour(UIConstants.InactiveTabButtonColour);
         messagesButton.SetColour(UIConstants.InactiveTabButtonColour);
         analyticsButton.SetColour(UIConstants.InactiveTabButtonColour);
         fleetButton.SetColour(UIConstants.InactiveTabButtonColour);
@@ -106,7 +109,7 @@ public class TerminalUIManager : UICanvasBase
     {
         return tabClicked switch
         {
-            Tab.Missions => missionsButton,
+            Tab.Missions => MissionsButton,
             Tab.Messages => messagesButton,
             Tab.Analytics => analyticsButton,
             Tab.Fleet => fleetButton,
