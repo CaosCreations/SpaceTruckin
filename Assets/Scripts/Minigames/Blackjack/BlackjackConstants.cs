@@ -3,46 +3,46 @@
 public static class BlackjackConstants 
 { 
 	// Dimensions
-	public static int tableSpacing = 32;
-	public static int tablePaddingLeft = 32;
-	public static Vector2 cardCellSize = new Vector2(60f, 84f); 
-	public static Vector2 buttonCellSize = new Vector2(128f, 32f);
+	public const int TableSpacing = 32;
+	public const int TablePaddingLeft = 32;
+	public static readonly Vector2 CardCellSize = new Vector2(60f, 84f); 
+	public static readonly Vector2 ButtonCellSize = new Vector2(128f, 32f);
 	
 	// GameObject names 
-	public static string headerName = "BlackjackHeader"; 
-	public static string gameInfoName = "BlackjackGameInfo"; 
-	public static string tableContainerName = "BlackjackTableContainer"; 
-	public static string playerContainerName = "PlayerCardContainer"; 
-	public static string playerTotalName = "PlayerTotalText"; 
-	public static string dealerContainerName = "DealerCardContainer";
-	public static string dealerTotalName = "DealerTotalText"; 
-	public static string buttonContainerName = "BlackjackButtonContainer"; 
-	public static string newSessionButtonName = "NewBlackjackSessionButton"; 
-	public static string hitButtonName = "HitButton"; 
-	public static string standButtonName = "StandButton"; 
-	public static string newGameButtonName = "NewGameButton"; 
-	public static string quitGameButtonName = "QuitGameButton";  
+	public static readonly string HeaderName = "BlackjackHeader"; 
+	public static readonly string GameInfoName = "BlackjackGameInfo"; 
+	public static readonly string TableContainerName = "BlackjackTableContainer"; 
+	public static readonly string PlayerContainerName = "PlayerCardContainer"; 
+	public static readonly string PlayerTotalName = "PlayerTotalText"; 
+	public static readonly string DealerContainerName = "DealerCardContainer";
+	public static readonly string DealerTotalName = "DealerTotalText"; 
+	public static readonly string ButtonContainerName = "BlackjackButtonContainer"; 
+	public static readonly string NewSessionButtonName = "NewBlackjackSessionButton"; 
+	public static readonly string HitButtonName = "HitButton"; 
+	public static readonly string StandButtonName = "StandButton"; 
+	public static readonly string NewGameButtonName = "NewGameButton"; 
+	public static readonly string QuitGameButtonName = "QuitGameButton";  
 	
 	// Text 
-	public static string headerText = "Blackjack Table";
-	public static string newSessionButtonText = "Play Blackjack"; 
-	public static string hitButtonText = "Hit!";
-	public static string standButtonText = "Stand";
-	public static string newGameButtonText = "Play again";
-	public static string quitGameButtonText = "Leave table";
-	public static string dealerUnknownTotalText = "Dealer total: ?"; 
+	public static readonly string HeaderText = "Blackjack Table";
+	public static readonly string NewSessionButtonText = "Play Blackjack"; 
+	public static readonly string HitButtonText = "Hit!";
+	public static readonly string StandButtonText = "Stand";
+	public static readonly string NewGameButtonText = "Play again";
+	public static readonly string QuitGameButtonText = "Leave table";
+	public static readonly string DealerUnknownTotalText = "Dealer total: ?"; 
 	
 	// Numeric values 
-	public static int lowWager = 100; 
-	public static int mediumWager = 500;
-	public static int highWager = 1000; 
-	public static int playerStartingChips = 2500;
+	public const int LowWager = 100; 
+	public const int MediumWager = 500;
+	public const int HighWager = 1000; 
+	public const int PlayerStartingChips = 2500;
 
 	// Sprite paths 
-	public static string cardsFolderPath = "Sprites/Minigames/Blackjack/PlayingCards";
-	public static string cardbackPath = "Sprites/Minigames/Blackjack/Cardbacks/cardback1";
+	public static readonly string CardsFolderPath = "Sprites/Minigames/Blackjack/PlayingCards";
+	public static readonly string CardbackPath = "Sprites/Minigames/Blackjack/Cardbacks/cardback1";
 
 	// Misc  
-	public static string fontName = "Arial.ttf"; 
-	public static Color tableColor = Color.green; 
+	public static readonly string FontName = "Arial.ttf"; 
+	public static readonly Color TableColor = Color.green; 
 }

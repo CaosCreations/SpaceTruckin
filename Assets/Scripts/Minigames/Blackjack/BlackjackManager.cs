@@ -43,18 +43,18 @@ public class BlackjackManager : MonoBehaviour
 	private void Start()
     {
         InitialiseNewSessionButton(); 
-		blackjackPlayer.chips = BlackjackConstants.playerStartingChips;
+		blackjackPlayer.chips = BlackjackConstants.PlayerStartingChips;
     }
 
 	public void InitialiseNewSessionButton()
 	{
 		GameObject newSessionButtonObject = Instantiate(blackjackButtonPrefab);
-		newSessionButtonObject.name = BlackjackConstants.newSessionButtonName;
+		newSessionButtonObject.name = BlackjackConstants.NewSessionButtonName;
 		newSessionButtonObject.transform.parent = parentContainer.transform;
 		newSessionButtonObject.transform.localPosition = Vector2.one / 2f;
 
 		Button newSessionButton = newSessionButtonObject.GetComponent<Button>();
-		newSessionButton.GetComponentInChildren<Text>().text = BlackjackConstants.newSessionButtonText;
+		newSessionButton.GetComponentInChildren<Text>().text = BlackjackConstants.NewSessionButtonText;
 		newSessionButton.onClick.RemoveAllListeners();
 		newSessionButton.onClick.AddListener(delegate { SetupTable(); });
 	}
@@ -72,9 +72,9 @@ public class BlackjackManager : MonoBehaviour
 
 		blackjackButtonContainer = BlackjackUtils.InitialiseButtonContainer(blackjackTableContainer);
 
-		lowWagerObject = InitialiseWagerButtonObject(BlackjackConstants.lowWager);
-		mediumWagerObject = InitialiseWagerButtonObject(BlackjackConstants.mediumWager);
-		highWagerObject = InitialiseWagerButtonObject(BlackjackConstants.highWager);
+		lowWagerObject = InitialiseWagerButtonObject(BlackjackConstants.LowWager);
+		mediumWagerObject = InitialiseWagerButtonObject(BlackjackConstants.MediumWager);
+		highWagerObject = InitialiseWagerButtonObject(BlackjackConstants.HighWager);
 
         hitButtonObject = InitialisePlayButton(blackjackButtonContainer, blackjackButtonPrefab, PlayButtonType.Hit);
         standButtonObject = InitialisePlayButton(blackjackButtonContainer, blackjackButtonPrefab, PlayButtonType.Stand);
@@ -132,7 +132,7 @@ public class BlackjackManager : MonoBehaviour
 		DealCard(blackjackDealer, faceUp: true);
 
         gameInfo.GetComponent<Text>().text = $"Current chips: {blackjackPlayer.chips} | Current wager: {blackjackPlayer.wager}";
-        dealerTotal.text = BlackjackConstants.dealerUnknownTotalText;
+        dealerTotal.text = BlackjackConstants.DealerUnknownTotalText;
     }
 
 	private void DealCard(BlackjackPlayer _blackjackPlayer, bool faceUp)
@@ -290,13 +290,13 @@ public class BlackjackManager : MonoBehaviour
 		switch (buttonType)
 		{
 			case PlayButtonType.Hit:
-				return BlackjackConstants.hitButtonName;
+				return BlackjackConstants.HitButtonName;
 			case PlayButtonType.Stand:
-				return BlackjackConstants.standButtonName;
+				return BlackjackConstants.StandButtonName;
 			case PlayButtonType.NewGame:
-				return BlackjackConstants.newGameButtonName;
+				return BlackjackConstants.NewGameButtonName;
 			case PlayButtonType.QuitGame:
-				return BlackjackConstants.quitGameButtonName;
+				return BlackjackConstants.QuitGameButtonName;
 			default:
 				Debug.Log("Button type does not exist.");
 				return "";
@@ -308,13 +308,13 @@ public class BlackjackManager : MonoBehaviour
 		switch (buttonType)
 		{
 			case PlayButtonType.Hit:
-				return BlackjackConstants.hitButtonText;
+				return BlackjackConstants.HitButtonText;
 			case PlayButtonType.Stand:
-				return BlackjackConstants.standButtonText;
+				return BlackjackConstants.StandButtonText;
 			case PlayButtonType.NewGame:
-				return BlackjackConstants.newGameButtonText;
+				return BlackjackConstants.NewGameButtonText;
 			case PlayButtonType.QuitGame:
-				return BlackjackConstants.quitGameButtonText;
+				return BlackjackConstants.QuitGameButtonText;
 			default:
 				Debug.Log("Button type does not exist.");
 				return "";

@@ -24,6 +24,7 @@ public class MoneyOutcome : MissionOutcome
             scheduled.Mission.MissionToArchive.TotalMoneyIncreaseFromLicences += moneyIncrease64;
             scheduled.Mission.MissionToArchive.TotalMoneyEarned += earnings64;
         }
+
         Debug.Log("Base money earned: " + moneyEarned);
         Debug.Log("Money increase due to licences: " + (earnings64 - moneyEarned).ToString());
         Debug.Log("Total money earned: " + earnings64);

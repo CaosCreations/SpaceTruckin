@@ -13,11 +13,11 @@ public static class Deck
 
     public static void InitialiseDeck()
     {
-        cardbackSprite = Resources.Load<Sprite>(BlackjackConstants.cardbackPath);
+        cardbackSprite = Resources.Load<Sprite>(BlackjackConstants.CardbackPath);
 
 		// Sprite names have the following format: [suit][1..9, 91..94] - so that we don't need to use .OrderBy() 
 		// [suit][1..13] is not alphabetically ordered
-        cardSprites = Resources.LoadAll<Sprite>(BlackjackConstants.cardsFolderPath);
+        cardSprites = Resources.LoadAll<Sprite>(BlackjackConstants.CardsFolderPath);
         int index = 0;
 
         for (int i = 0; i < 4; i++)
