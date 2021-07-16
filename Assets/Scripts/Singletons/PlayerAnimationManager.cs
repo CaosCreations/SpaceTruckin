@@ -10,7 +10,7 @@ public class PlayerAnimationManager : MonoBehaviour
 
     public Dictionary<PlayerAnimationParameterType, string> ParameterMap { get; set; } = new Dictionary<PlayerAnimationParameterType, string>()
     {
-        { PlayerAnimationParameterType.BatteryGrab, "batteryGrabbing" },
+        { PlayerAnimationParameterType.BatteryGrab, AnimationConstants.AnimationBatteryGrabbingParameter },
     };
 
     private void Awake()

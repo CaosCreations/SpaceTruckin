@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface INPCAnimated
+public class NPCAnimated : MonoBehaviour
 {
     [SerializeField] public Animator Animator { get; set; }
 
