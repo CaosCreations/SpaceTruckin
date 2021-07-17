@@ -5,6 +5,7 @@ public class PilotXpOutcome : MissionOutcome
 {
     [SerializeField] private int xpMin;
     [SerializeField] private int xpMax;
+
     public int XpMin { get => xpMin; set => xpMin = value; }
     public int XpMax { get => xpMax; set => xpMax = value; }
 
@@ -19,11 +20,13 @@ public class PilotXpOutcome : MissionOutcome
         double xpAfterLicences = xpAfterOmens * (1 + LicencesManager.PilotXpEffect);
         
         double xpIncreaseFromLicences = xpAfterLicences - xpAfterOmens;
+
         if (scheduled.Mission.MissionToArchive != null)
         {
             scheduled.Mission.MissionToArchive.TotalXpIncreaseFromLicences += xpIncreaseFromLicences;
             scheduled.Mission.MissionToArchive.TotalPilotXpGained += PilotsManager.AwardXp(scheduled.Pilot, xpAfterLicences);
         }
+
         Debug.Log("Base pilot xp gained: " + xpGained);
         Debug.Log("Pilot xp increase from licences: " + xpIncreaseFromLicences);
         Debug.Log("Total pilot xp gained: " + xpAfterLicences);
@@ -44,7 +47,7 @@ public class PilotXpOutcome : MissionOutcome
             if (scheduled.Mission.Outcomes[i] is OmenOutcome)
             {
                 OmenOutcome omen = scheduled.Mission.Outcomes[i] as OmenOutcome;
-                coefficient += probability >= Random.Range(0f, 1f) ? omen.coefficient : omen.coefficient * -1;
+                coefficient += Probability >= Random.Range(0f, 1f) ? omen.Coefficient : omen.Coefficient * -1;
             }
         }
         return coefficient;

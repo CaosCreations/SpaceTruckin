@@ -6,10 +6,10 @@ public class MissionModifierOutcome : ScriptableObject
     // MissionModifierOutcomes can have one or more of any kind of MissionOutcome 
     // e.g. can take damage, find a new pilot, earn money, and earn faction rep 
     [field: SerializeField]
-    public MissionOutcome[] Outcomes;
+    public MissionOutcome[] Outcomes { get; set; }
 
     [field: SerializeField]
-    public string FlavourText { get; set; }
+    public string FlavourText { get; private set; }
 
     [field: SerializeField]
     public Sprite Sprite { get; private set; }

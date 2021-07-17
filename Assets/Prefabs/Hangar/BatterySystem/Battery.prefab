@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 1691787280572270736}
   - component: {fileID: 2466530580323449094}
   - component: {fileID: 4384775771453189675}
-  - component: {fileID: 7644622099517345001}
   m_Layer: 0
   m_Name: Battery
   m_TagString: Untagged
@@ -53,7 +52,6 @@ MonoBehaviour:
   Collider: {fileID: 8424855993406580408}
   batteryContainerRigidbody: {fileID: 1691787280572270736}
   batteryModelCollider: {fileID: 276256587078668969}
-  animationPlayer: {fileID: 7644622099517345001}
 --- !u!65 &8424855993406580408
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -110,19 +108,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BatteryInteractable: {fileID: 8223680205256685485}
   BatteryCharging: {fileID: 2466530580323449094}
---- !u!114 &7644622099517345001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 923938306559941887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc687b8684fce414b8007eb8a1171664, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
 --- !u!65 &276256587078668969
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -196,7 +181,6 @@ MonoBehaviour:
   Collider: {fileID: 0}
   batteryContainerRigidbody: {fileID: 0}
   batteryModelCollider: {fileID: 276256587078668969}
-  animationPlayer: {fileID: 0}
 --- !u!1001 &2926850476172681646
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -263,7 +247,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2100000, guid: f3c45a354225d92418e80904fb5817cf, type: 2}
     - target: {fileID: 919132149155446097, guid: 6a3b55f3d5701014ca3a6ff686e3d6c3,
         type: 3}
       propertyPath: m_Name

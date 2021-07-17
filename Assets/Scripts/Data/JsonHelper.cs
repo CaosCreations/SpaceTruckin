@@ -8,6 +8,7 @@ public static class JsonHelper
     {
         ArrayWrapper<T> wrapper = new ArrayWrapper<T>();
         wrapper.Items = array;
+
         string json = JsonUtility.ToJson(wrapper);
         return json;
     }

@@ -29,7 +29,7 @@ public class DragNDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
         // Unparent the job object from the available jobs UI 
         eventData.selectedObject.transform.SetParent(missionsPanel.transform);
 
-        canvasGroup.alpha = MissionConstants.dragAlpha;
+        canvasGroup.alpha = MissionConstants.DragAlpha;
         canvasGroup.blocksRaycasts = false;
     }
 
@@ -46,7 +46,7 @@ public class DragNDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
         // Raycast will pass through and hit the schedule 
         canvasGroup.blocksRaycasts = true;
 
-        canvasGroup.alpha = MissionConstants.dropAlpha;
+        canvasGroup.alpha = MissionConstants.DropAlpha;
 
         // Return to starting position if not dropped in a slot  
         //if (!jobsUI.IsInsideSlot(gameObject))

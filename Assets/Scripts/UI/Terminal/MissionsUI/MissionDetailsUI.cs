@@ -67,12 +67,14 @@ public class MissionDetailsUI : MonoBehaviour
             anchors.Item1.y = 0.05f;
             anchors.Item2.y = 0.35f;
         }
+
         return anchors;
     }
 
     public string BuildDetailsString(Mission mission)
     {
         StringBuilder builder = new StringBuilder();
+
         builder.AppendLineWithBreaks("Name: " + mission.Name.ToItalics());
         builder.AppendLineWithBreaks("Customer: " + mission.Customer.ToItalics());
         builder.AppendLineWithBreaks("Cargo: " + mission.Cargo.ToItalics());
@@ -85,27 +87,33 @@ public class MissionDetailsUI : MonoBehaviour
         builder.AppendLineWithBreaks("Description: " + mission.Description.ToItalics());
         builder.AppendLineWithBreaks("Fuel cost: " + mission.FuelCost.ToString().ToItalics());
         builder.AppendLineWithBreaks("Reward: " + BuildRewardString(mission));
+
         return builder.ToString();
     }
 
     public static string BuildRewardString(Mission mission)
     {
         StringBuilder builder = new StringBuilder();
+
         if (mission.HasRandomOutcomes)
         {
             return builder.Append("???").ToString();
         }
 
         MoneyOutcome moneyOutcome = MissionUtils.GetOutcomeByType<MoneyOutcome>(mission.Outcomes);
-        PilotXpOutcome pilotXpOutcome = MissionUtils.GetOutcomeByType<PilotXpOutcome>(mission.Outcomes);
+
         if (moneyOutcome != null)
         {
             builder.AppendLineWithBreaks("Money: " + $"${moneyOutcome.MoneyMin} - {moneyOutcome.MoneyMax}".ToItalics());
         }
+
+        PilotXpOutcome pilotXpOutcome = MissionUtils.GetOutcomeByType<PilotXpOutcome>(mission.Outcomes);
+
         if (pilotXpOutcome != null)
         {
             builder.AppendLineWithBreaks("Pilot xp: " + $"{pilotXpOutcome.XpMin} - {pilotXpOutcome.XpMax}".ToItalics());
         }
+
         return builder.ToString();
     }
 }

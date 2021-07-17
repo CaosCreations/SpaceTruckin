@@ -131,10 +131,10 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         // The Archived Mission fields are set throughout the outcome processing.
         scheduled.Mission.ProcessOutcomes();
 
-        // Some Missions have a MissionModifier, which gives additional outcomes based on attribute conditions,
+        // Some Missions have a MissionModifier, which gives additional outcomes based on attribute conditions.
         if (scheduled.Mission.HasModifier)
         {
-            // Decide the outcome from the possible outcomes based on the Pilot's attribute points, 
+            // Decide the outcome from the possible outcomes based on the Pilot's attribute points.
             MissionModifierOutcome modifierOutcome = scheduled.Mission.Modifier.GetDecidedOutcome(scheduled.Pilot);
 
             if (modifierOutcome != null)
