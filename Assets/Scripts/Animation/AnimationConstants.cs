@@ -11,6 +11,7 @@ public static class AnimationConstants
     public const string AnimationDownParameter = "KeyDown";
     public const string AnimationRightParameter = "KeyRight";
     public const string AnimationRunParameter = "RUN";
+    public const string AnimationBatteryGrabbingParameter = "batteryGrabbing";
 
     // Input vectors 
     public static readonly Vector3 Vector3UpLeft = new Vector3(-1f, 1f);
