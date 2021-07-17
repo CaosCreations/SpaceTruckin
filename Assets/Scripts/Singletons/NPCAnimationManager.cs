@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class NPCAnimationManager : MonoBehaviour
@@ -26,10 +24,9 @@ public class NPCAnimationManager : MonoBehaviour
         {
             nPCAnimated.Animator.SetBool(nPCAnimated.ParameterMap[npcAnimationParameterType], isOn);
         }
-
         else
         {
-            Debug.LogError("The playerAnimationParameterType is missing from the ParameterMap dictionary. Please add it.");
+            Debug.LogError("The NPCAnimationParameterType is missing from the ParameterMap dictionary. Please add it.");
         }
     }
 }

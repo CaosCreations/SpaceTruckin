@@ -31,7 +31,7 @@ public class BatteryHoldingLocation : MonoBehaviour
                 batteryInteractableInSlot.PlaceBatteryInSlot(slot);
             }
 
-            else if (BatteryInteractable.PlayerIsHoldingABattery == false && batteryInteractableInSlot != null)
+            else if (!BatteryInteractable.PlayerIsHoldingABattery && batteryInteractableInSlot != null)
             {
                 batteryInteractableInSlot.TakeBattery();
                 batteryInteractableInSlot.Collider.enabled = true;

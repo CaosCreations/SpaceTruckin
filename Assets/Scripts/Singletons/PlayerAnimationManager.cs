@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -33,10 +32,9 @@ public class PlayerAnimationManager : MonoBehaviour
         {
             playerAnimator.SetBool(ParameterMap[playerAnimationParameterType], isOn);
         }
-
         else
         {
-            Debug.LogError("The playerAnimationParameterType is missing from the ParameterMap dictionary. Please add it.");
+            Debug.LogError("The PlayerAnimationParameterType is missing from the ParameterMap dictionary. Please add it.");
         }
     }
 }
