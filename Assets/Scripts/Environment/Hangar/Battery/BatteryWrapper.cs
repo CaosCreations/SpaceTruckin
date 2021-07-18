@@ -11,7 +11,7 @@ public class BatteryWrapper : MonoBehaviour
     #region Persistence
     public const string FOLDER_NAME = "HangarSaveData";
     public const string FILE_NAME = "BatterySaveData";
-    public static string FILE_PATH
+    public static string FilePath
     {
         get => DataUtils.GetSaveFilePath(FOLDER_NAME, FILE_NAME);
     }

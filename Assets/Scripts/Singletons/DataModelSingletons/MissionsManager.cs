@@ -413,7 +413,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     private async void LoadScheduledMissionData()
     {
-        string json = await DataUtils.ReadFileAsync(ScheduledMission.FILE_PATH);
+        string json = await DataUtils.ReadFileAsync(ScheduledMission.FilePath);
         Debug.Log("Scheduled Mission Json to load: " + json);
 
         ScheduledMissions = JsonHelper.ListFromJson<ScheduledMission>(json);

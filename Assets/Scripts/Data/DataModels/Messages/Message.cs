@@ -22,7 +22,7 @@ public partial class Message : ScriptableObject, IDataModel
     [Header("Data to update IN GAME")]
     public MessageSaveData saveData;
 
-    public static string FOLDER_NAME = "MessageSaveData";
+    public const string FOLDER_NAME = "MessageSaveData";
 
     [Serializable]
     public class MessageSaveData

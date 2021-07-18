@@ -208,7 +208,7 @@ public class HangarManager : MonoBehaviour
 
     public async static void LoadBatteryDataAsync()
     {
-        string json = await DataUtils.ReadFileAsync(BatteryWrapper.FILE_PATH);
+        string json = await DataUtils.ReadFileAsync(BatteryWrapper.FilePath);
         BatterySaveData[] batterySaveData = JsonHelper.ArrayFromJson<BatterySaveData>(json);
 
         if (!batterySaveData.IsNullOrEmpty())

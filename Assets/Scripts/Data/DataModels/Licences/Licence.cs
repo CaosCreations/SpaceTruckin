@@ -16,7 +16,7 @@ public partial class Licence : ScriptableObject, IDataModel
     [Header("Data to update IN GAME")]
     public LicenceSaveData saveData;
 
-    public static string FOLDER_NAME = "LicenceSaveData";
+    public const string FOLDER_NAME = "LicenceSaveData";
 
     [Serializable]
     public class LicenceSaveData

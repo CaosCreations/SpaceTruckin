@@ -16,7 +16,7 @@ public class CalendarData : ScriptableObject, IDataModel
     public const string FOLDER_NAME = "CalendarSaveData";
     public const string FILE_NAME = "CalendarData";
 
-    public static string FILE_PATH
+    public static string FilePath
     {
         get => DataUtils.GetSaveFilePath(FOLDER_NAME, FILE_NAME);
     }
@@ -57,7 +57,7 @@ public class CalendarData : ScriptableObject, IDataModel
 
     public async Task LoadDataAsync()
     {
-        string json = await DataUtils.ReadFileAsync(FILE_PATH);
+        string json = await DataUtils.ReadFileAsync(FilePath);
         CurrentDate = JsonUtility.FromJson<Date>(json);
     }
 }
