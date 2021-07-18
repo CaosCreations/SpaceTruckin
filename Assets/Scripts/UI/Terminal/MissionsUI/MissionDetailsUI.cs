@@ -84,7 +84,7 @@ public class MissionDetailsUI : MonoBehaviour
             mission.Description = LoremIpsumGenerator.GenerateLoremIpsum();
         }
 
-        builder.AppendLineWithBreaks("Description: " + mission.Description.ToItalics());
+        builder.AppendLineWithBreaks("Description: " + mission.Description.ReplaceLuaTemplates().ToItalics());
         builder.AppendLineWithBreaks("Fuel cost: " + mission.FuelCost.ToString().ToItalics());
         builder.AppendLineWithBreaks("Reward: " + BuildRewardString(mission));
 

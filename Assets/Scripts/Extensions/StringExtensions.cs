@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using UnityEngine;
 
 public static class StringExtensions
 {
@@ -80,6 +81,33 @@ public static class StringExtensions
 
             self = self.Remove(match.Index, match.Length).Insert(match.Index, replacement);
         }
+
+        return self;
+    }
+
+    public static string ReplaceLuaTemplates(this string self)
+    {
+        MatchCollection matches = new Regex(UIConstants.LuaVariablePattern).Matches(self);
+
+        if (matches.Count <= 0)
+        {
+            return self;
+        }
+
+        foreach (Match match in matches.Cast<Match>().Reverse())
+        {
+            if (match.Groups.Count < 2)
+            {
+                Debug.LogError("Insufficient Lua variable regex match groups.");
+                continue;
+            }
+
+            // The 3rd match group contains the Lua variable name 
+            string replacement = DialogueDatabaseManager.GetLuaVariable(match.Groups[2].Value);
+
+            self = self.Remove(match.Index, match.Length).Insert(match.Index, replacement);
+        }
+
         return self;
     }
 

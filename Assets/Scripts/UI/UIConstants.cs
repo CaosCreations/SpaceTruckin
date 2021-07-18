@@ -75,8 +75,9 @@ public class UIConstants : MonoBehaviour
     public const string UnsignedIntegerPattern = @"^[0-9]*$";
     public const string AlphabeticalPattern = @"^[a-zA-Z ]+$";
     public const string AlphabeticalIncludingAccentsPattern = @"[-'0-9a-zA-ZÀ-ÿ ]";
-    public const string ConsecutiveSpacesPattern = @"[ ]{2,}"; 
+    public const string ConsecutiveSpacesPattern = @"[ ]{2,}";
 
+    public const string LuaVariablePattern = @"(\[var=)([A-zA-Z]*)]"; // e.g. [var=foo]
 
     // Templates
     public const string PlayerNameTemplate = "PLAYERNAME";
