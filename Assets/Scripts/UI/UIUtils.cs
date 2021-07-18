@@ -61,7 +61,7 @@ public static class UIUtils
 
     public static Texture2D GetUITexture(int width, int height, Color colour)
     {
-        Color[] pixels = new Color[width * height];
+        Color32[] pixels = new Color32[width * height];
 
         for (int i = 0; i < pixels.Length; ++i)
         {
@@ -69,7 +69,7 @@ public static class UIUtils
         }
 
         Texture2D texture = new Texture2D(width, height);
-        texture.SetPixels(pixels);
+        texture.SetPixels32(pixels);
         texture.Apply();
 
         return texture;
