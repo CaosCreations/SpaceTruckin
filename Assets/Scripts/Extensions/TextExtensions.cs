@@ -11,7 +11,12 @@ public static class TextExtensions
     public static Text SetText(this Text self, string value, FontType fontType = FontType.Paragraph)
     {
         self.font = FontManager.Instance.GetFontByType(fontType);
-        self.text = value.InsertNewLines();
+
+        self.text = value
+            .InsertNewLines()
+            .ReplaceTemplates()
+            .ReplaceLuaTemplates();
+        
         return self;
     }
 
@@ -28,5 +33,10 @@ public static class TextExtensions
     public static Text ReplaceTemplates(this Text self)
     {
         return self.SetText(self.text.ReplaceTemplates());
+    }
+
+    public static Text ReplaceLuaTemplates(this Text self)
+    {
+        return self.SetText(self.text.ReplaceLuaTemplates());
     }
 }
