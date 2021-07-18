@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class MissionsEditor : MonoBehaviour
 {
-    [MenuItem("Space Truckin/Missions/Accept All")]
-    private static void AcceptAll() => AcceptOrUnacceptAll(true);
+    [MenuItem("Space Truckin/Missions/Accept All", false, 1)]
+    private static void AcceptAll() => SetHasBeenAccepted(true);
 
-    [MenuItem("Space Truckin/Missions/Unaccept All")]
-    private static void UnacceptAll() => AcceptOrUnacceptAll(false);
+    [MenuItem("Space Truckin/Missions/Unaccept All", false, 2)]
+    private static void UnacceptAll() => SetHasBeenAccepted(false);
 
-    private static void AcceptOrUnacceptAll(bool hasBeenAccepted)
+    private static void SetHasBeenAccepted(bool hasBeenAccepted)
     {
         try
         {
@@ -30,8 +30,11 @@ public class MissionsEditor : MonoBehaviour
             Debug.LogException(ex);
         }
     }
-    [MenuItem("Space Truckin/Missions/Unlock All")]
-    private static void UnlockAll()
+
+    [MenuItem("Space Truckin/Missions/Unlock All", false, 13)]
+    private static void UnlockAll() => SetHasBeenUnlocked(true);
+
+    private static void SetHasBeenUnlocked(bool hasBeenUnlocked)
     {
         try
         {
@@ -47,7 +50,7 @@ public class MissionsEditor : MonoBehaviour
 
             foreach (var mission in missionContainer.Missions)
             {
-                mission.UnlockIfConditionMet();
+                mission.HasBeenUnlocked = hasBeenUnlocked;
             }
 
             EditorUtility.SetDirty(missionContainer);
@@ -60,7 +63,10 @@ public class MissionsEditor : MonoBehaviour
         }
     }
 
-    [MenuItem("Space Truckin/Missions/All In Progress Have 1 Day Remaining")]
+    [MenuItem("Space Truckin/Missions/Lock All", false, 14)]
+    private static void LockAll() => SetHasBeenUnlocked(false);
+
+    [MenuItem("Space Truckin/Missions/All In Progress Have 1 Day Remaining", false, 25)]
     private static void AllToOneDayRemaining()
     {
         try
