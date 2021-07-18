@@ -27,7 +27,7 @@ public class CustomisationManager : MonoBehaviour
     private void GenerateCustomisationOptions()
     {
         // This is the overarching parent object 
-        customisationContainer = new GameObject(CustomisationConstants.customisationContainerName);
+        customisationContainer = new GameObject(CustomisationConstants.CustomisationContainerName);
         customisationContainer.transform.SetParent(gameObject.transform);
         customisationContainer.transform.localPosition = Vector3.zero;
 
@@ -39,12 +39,12 @@ public class CustomisationManager : MonoBehaviour
         rectTransform.offsetMax = Vector2.zero;
 
         VerticalLayoutGroup verticalLayoutGroup = customisationContainer.AddComponent<VerticalLayoutGroup>();
-        verticalLayoutGroup.spacing = CustomisationConstants.customisationContainerSpacing; 
+        verticalLayoutGroup.spacing = CustomisationConstants.CustomisationContainerSpacing; 
 
         foreach (CustomisationType customisationType in customisationTypeContainer.CustomisationTypes)
         {
             // This is the parent object for each individual row of the customisation container  
-            GameObject customisationOption = new GameObject(CustomisationConstants.customisationOptionName);
+            GameObject customisationOption = new GameObject(CustomisationConstants.CustomisationOptionName);
             customisationOption.transform.SetParent(customisationContainer.transform);
             RectTransform customisationOptionRT = customisationOption.AddComponent<RectTransform>();
             customisationOption.AddComponent<HorizontalLayoutGroup>();
@@ -55,7 +55,7 @@ public class CustomisationManager : MonoBehaviour
             Button leftArrowBtn = leftArrow.GetComponent<Button>();
             leftArrowBtn.onClick.RemoveAllListeners(); 
 
-            GameObject imageObject = new GameObject(CustomisationConstants.customisationImageName);
+            GameObject imageObject = new GameObject(CustomisationConstants.CustomisationImageName);
             imageObject.transform.SetParent(customisationOption.transform);
             imageObject.transform.localScale = Vector2.one;
             customisationType.image = imageObject.AddComponent<Image>();

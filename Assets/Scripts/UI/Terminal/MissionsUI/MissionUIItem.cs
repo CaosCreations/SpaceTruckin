@@ -37,7 +37,7 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         if (!Mission.IsInProgress())
         {
             myRectTransform.SetParent(missionsUI.transform);
-            canvasGroup.alpha = MissionConstants.dragAlpha;
+            canvasGroup.alpha = MissionConstants.DragAlpha;
             canvasGroup.blocksRaycasts = false;
         }
     }
@@ -58,7 +58,7 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         {
             // Raycast will pass through and hit the schedule
             canvasGroup.blocksRaycasts = true;
-            canvasGroup.alpha = MissionConstants.dropAlpha;
+            canvasGroup.alpha = MissionConstants.DropAlpha;
 
             MissionScheduleSlot scheduleSlot = missionsUI.GetSlotByPosition(eventData.position);
             if (scheduleSlot != null)

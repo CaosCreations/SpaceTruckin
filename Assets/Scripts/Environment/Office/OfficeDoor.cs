@@ -9,7 +9,7 @@ public class OfficeDoor : InteractableObject
     {
         base.OnTriggerEnter(other);
 
-        if (IsPlayerColliding == true)
+        if (IsPlayerColliding)
         {
             OpenDoor();
         }
@@ -19,7 +19,7 @@ public class OfficeDoor : InteractableObject
     {
         base.OnTriggerExit(other);
 
-        if (other.CompareTag(PlayerConstants.PlayerTag) == true)
+        if (other.CompareTag(PlayerConstants.PlayerTag))
         {
             CloseDoor();
         }
@@ -37,7 +37,7 @@ public class OfficeDoor : InteractableObject
     {
         transform.parent.Translate(-doorOpenOffset);
         transform.Translate(doorOpenOffset);
-        
+
         IsPlayerColliding = false;
     }
 }

@@ -8,12 +8,13 @@ public class ArchivedMission
 {
     public string MissionName;
     public int CompletionNumber, TotalDamageTaken, TotalDamageReduced, TotalFuelLost;
-    public long TotalMoneyEarned, TotalMoneyIncrease;
+    public long TotalMoneyEarned, TotalMoneyIncreaseFromLicences;
     public double TotalPilotXpGained, TotalXpIncreaseFromLicences;
     public Pilot Pilot;
     public int PilotLevelAtTimeOfMission;
     public int MissionsCompletedByPilotAtTimeOfMission;
     public Date CompletionDate;
+    public MissionModifierOutcome ModifierOutcome;
 
     /// <summary>Keeps track of whether the mission has been shown in the new day report.</summary>
     public bool HasBeenViewedInReport;

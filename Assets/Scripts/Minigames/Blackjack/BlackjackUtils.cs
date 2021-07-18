@@ -15,7 +15,7 @@ public class BlackjackUtils : MonoBehaviour
 
     public static GameObject InitialiseTableContainer(GameObject parentObject) 
 	{
-		GameObject blackjackTableContainer = new GameObject(BlackjackConstants.tableContainerName);
+		GameObject blackjackTableContainer = new GameObject(BlackjackConstants.TableContainerName);
 		blackjackTableContainer.transform.parent = parentObject.transform;
 
 		LayoutElement layoCutElement = blackjackTableContainer.AddComponent<LayoutElement>();
@@ -24,10 +24,10 @@ public class BlackjackUtils : MonoBehaviour
         verticalLayoutGroup.childControlHeight = true;
         verticalLayoutGroup.childForceExpandWidth = true;
         verticalLayoutGroup.childForceExpandHeight = true;
-        verticalLayoutGroup.spacing = BlackjackConstants.tableSpacing; 
-		verticalLayoutGroup.padding.left = BlackjackConstants.tablePaddingLeft;
+        verticalLayoutGroup.spacing = BlackjackConstants.TableSpacing; 
+		verticalLayoutGroup.padding.left = BlackjackConstants.TablePaddingLeft;
 
-        blackjackTableContainer.AddComponent<Image>().color = BlackjackConstants.tableColor;
+        blackjackTableContainer.AddComponent<Image>().color = BlackjackConstants.TableColor;
 
         RectTransform rectTransform = blackjackTableContainer.GetComponent<RectTransform>();
         rectTransform.anchorMin = Vector2.zero; 
@@ -41,17 +41,17 @@ public class BlackjackUtils : MonoBehaviour
 	
 	public static void InitialiseHeader(GameObject parentObject) 
 	{
-		GameObject headerTextObject = new GameObject(BlackjackConstants.headerName); 
+		GameObject headerTextObject = new GameObject(BlackjackConstants.HeaderName); 
         headerTextObject.transform.parent = parentObject.transform;
         Text headerText = headerTextObject.AddComponent<Text>();
 		headerText.color = Color.black; 
-        headerText.text = BlackjackConstants.headerText;
+        headerText.text = BlackjackConstants.HeaderText;
 		SetFont(headerText);
 	}
 	
 	public static Text InitialiseGameInfo(GameObject parentObject, BlackjackPlayer blackjackPlayer) 
 	{
-		GameObject gameInfoObject = new GameObject(BlackjackConstants.gameInfoName);
+		GameObject gameInfoObject = new GameObject(BlackjackConstants.GameInfoName);
         gameInfoObject.transform.parent = parentObject.transform; 
 		Text gameInfoText = gameInfoObject.AddComponent<Text>(); 
 		gameInfoText.color = Color.black;
@@ -63,18 +63,18 @@ public class BlackjackUtils : MonoBehaviour
 	
 	public static GameObject InitialiseCardContainer(GameObject parentObject, bool isDealer) 
 	{
-		string cardContainerName = isDealer ? BlackjackConstants.dealerContainerName : BlackjackConstants.playerContainerName;
+		string cardContainerName = isDealer ? BlackjackConstants.DealerContainerName : BlackjackConstants.PlayerContainerName;
 		GameObject cardContainer = new GameObject(cardContainerName); 
 		
 		cardContainer.transform.parent = parentObject.transform;
 		
-        cardContainer.AddComponent<GridLayoutGroup>().cellSize = BlackjackConstants.cardCellSize;
+        cardContainer.AddComponent<GridLayoutGroup>().cellSize = BlackjackConstants.CardCellSize;
 		return cardContainer;
 	}
 
 	public static Text InitialiseTotalText(GameObject parentObject, bool isDealer)
     {
-		string totalObjectName = isDealer ? BlackjackConstants.dealerTotalName : BlackjackConstants.playerTotalName;
+		string totalObjectName = isDealer ? BlackjackConstants.DealerTotalName : BlackjackConstants.PlayerTotalName;
 		GameObject totalObject = new GameObject(totalObjectName);
 		totalObject.transform.parent = parentObject.transform;
 
@@ -86,14 +86,14 @@ public class BlackjackUtils : MonoBehaviour
 	
 	public static GameObject InitialiseButtonContainer(GameObject parentObject)  
 	{
-		GameObject blackjackButtonContainer = new GameObject(BlackjackConstants.buttonContainerName);
+		GameObject blackjackButtonContainer = new GameObject(BlackjackConstants.ButtonContainerName);
         blackjackButtonContainer.transform.parent = parentObject.transform;
-        blackjackButtonContainer.AddComponent<GridLayoutGroup>().cellSize = BlackjackConstants.buttonCellSize;
+        blackjackButtonContainer.AddComponent<GridLayoutGroup>().cellSize = BlackjackConstants.ButtonCellSize;
 		return blackjackButtonContainer;
 	}
 
 	public static void SetFont(Text textComponent) 
 	{
-		textComponent.font = Resources.GetBuiltinResource(typeof(Font), BlackjackConstants.fontName) as Font;
+		textComponent.font = Resources.GetBuiltinResource(typeof(Font), BlackjackConstants.FontName) as Font;
 	}
 }

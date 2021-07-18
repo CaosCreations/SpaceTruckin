@@ -14,14 +14,17 @@ public class MoneyOutcome : MissionOutcome
         double moneyEarned = UnityEngine.Random.Range(moneyMin, moneyMax);
         double earningsAfterLicences = moneyEarned * (1 + LicencesManager.MoneyEffect);
         long earnings64 = Convert.ToInt64(earningsAfterLicences);
+
         PlayerManager.Instance.ReceiveMoney(earnings64);
 
         long moneyIncrease64 = Convert.ToInt64(earnings64 - moneyEarned);
+
         if (scheduled.Mission.MissionToArchive != null)
         {
-            scheduled.Mission.MissionToArchive.TotalMoneyIncrease += moneyIncrease64;
+            scheduled.Mission.MissionToArchive.TotalMoneyIncreaseFromLicences += moneyIncrease64;
             scheduled.Mission.MissionToArchive.TotalMoneyEarned += earnings64;
         }
+
         Debug.Log("Base money earned: " + moneyEarned);
         Debug.Log("Money increase due to licences: " + (earnings64 - moneyEarned).ToString());
         Debug.Log("Total money earned: " + earnings64);
