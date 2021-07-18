@@ -86,7 +86,7 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
     #region Persistence
     public async void LoadDataAsync()
     {
-        string json = await DataUtils.ReadFileAsync(ArchivedMission.FILE_PATH);
+        string json = await DataUtils.ReadFileAsync(ArchivedMission.FilePath);
         ArchivedMissions = JsonHelper.ListFromJson<ArchivedMission>(json);
     }
 

@@ -26,7 +26,7 @@ public class PilotsConstants : MonoBehaviour
 
     #region Asset Bundling
     // Asset file paths 
-    public static string BundleLoadingPath = Application.streamingAssetsPath;
+    public static string BundleLoadingPath => Application.streamingAssetsPath;
     public const string PilotTextAssetLoader = "PilotAssetsManager";
     public const string PilotTextBundleName = "pilottextbundle";
 
