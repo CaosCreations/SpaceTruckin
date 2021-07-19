@@ -1,28 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Net.Mail;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-public enum Channel { Red = 0, Green = 1, Blue = 2 }; 
+public enum Channel { Red = 0, Green = 1, Blue = 2 };
 
 public class ColourSliders : MonoBehaviour
 {
-    public GameObject colourSliderPrefab; 
+    public GameObject colourSliderPrefab;
     private GameObject sliderContainer;
     private GameObject imageObject;
 
-    private Image sliderImage; 
+    private Image sliderImage;
     private Color startingColor = Color.black;
 
     private GameObject redSlider;
     private GameObject greenSlider;
     private GameObject blueSlider;
-
-    private void Start()
-    {
-		
-    }
 
     private void InitialiseSliderContainer()
     {
@@ -43,11 +35,11 @@ public class ColourSliders : MonoBehaviour
 
     private GameObject InitialiseSlider(Channel channel)
     {
-        GameObject sliderObject = Instantiate(colourSliderPrefab);  
-        sliderObject.transform.parent = sliderContainer.transform; 
+        GameObject sliderObject = Instantiate(colourSliderPrefab);
+        sliderObject.transform.parent = sliderContainer.transform;
 
         Slider slider = sliderObject.GetComponent<Slider>();
-        slider.minValue = 0f; 
+        slider.minValue = 0f;
         slider.maxValue = 255f;
         slider.onValueChanged.AddListener(delegate { UpdateImageColour(channel, slider.value); });
 
@@ -67,7 +59,7 @@ public class ColourSliders : MonoBehaviour
                 break;
             case Channel.Blue:
                 sliderImage.color = new Color(sliderImage.color.r, sliderImage.color.g, value / 225f);
-                break; 
+                break;
 
         }
     }

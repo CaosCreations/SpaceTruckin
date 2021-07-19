@@ -17,15 +17,15 @@ public static class HangarConstants
 
     public const bool BatteryEnableCollision = false;
 
-  
+
     // Battery rigidbody constraints 
-    public const RigidbodyConstraints BatteryRigidbodyConstraintsTaken = RigidbodyConstraints.FreezePositionY 
-        | RigidbodyConstraints.FreezeRotationX 
-        | RigidbodyConstraints.FreezeRotationY 
+    public const RigidbodyConstraints BatteryRigidbodyConstraintsTaken = RigidbodyConstraints.FreezePositionY
+        | RigidbodyConstraints.FreezeRotationX
+        | RigidbodyConstraints.FreezeRotationY
         | RigidbodyConstraints.FreezeRotationZ;
-    
-    public const RigidbodyConstraints BatteryRigidbodyConstraintsDropped = RigidbodyConstraints.FreezeRotationX 
-        | RigidbodyConstraints.FreezeRotationY 
+
+    public const RigidbodyConstraints BatteryRigidbodyConstraintsDropped = RigidbodyConstraints.FreezeRotationX
+        | RigidbodyConstraints.FreezeRotationY
         | RigidbodyConstraints.FreezeRotationZ;
 
 

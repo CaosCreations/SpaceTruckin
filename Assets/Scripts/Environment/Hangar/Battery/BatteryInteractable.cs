@@ -10,7 +10,6 @@ public class BatteryInteractable : InteractableObject
     // Shows that the player is holding any battery
     public static bool PlayerIsHoldingABattery;
 
-
     public void TakeBattery()
     {
         PlayerIsHoldingABattery = true;

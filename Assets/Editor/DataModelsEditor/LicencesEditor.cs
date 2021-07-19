@@ -41,7 +41,7 @@ public class LicencesEditor : MonoBehaviour
         try
         {
             var playerData = EditorHelper.GetAsset<PlayerData>();
-            
+
             playerData.PlayerLicencePoints += points;
             playerData.PlayerTotalLicencePointsAcquired += points;
 
@@ -56,7 +56,7 @@ public class LicencesEditor : MonoBehaviour
     public static void DeleteSaveData()
     {
         var licenceContainer = EditorHelper.GetAsset<LicenceContainer>();
-        
+
         foreach (var licence in licenceContainer.Licences)
         {
             SaveDataEditor.NullifyFields(licence.saveData);
