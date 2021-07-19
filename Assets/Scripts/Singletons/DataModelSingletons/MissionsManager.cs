@@ -27,10 +27,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         }
     }
 
-    private void OnDisable()
-    {
-        UnregisterLuaFunctions();
-    }
+    private void OnDisable() => UnregisterLuaFunctions();
 
     public void Init()
     {

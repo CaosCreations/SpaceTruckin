@@ -63,6 +63,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         }
 
         PlayerObject = GameObject.FindGameObjectWithTag(PlayerConstants.PlayerTag);
+
         if (PlayerObject != null)
         {
             PlayerMovement = PlayerObject.GetComponent<PlayerMovement>();
@@ -76,7 +77,11 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         {
             Debug.LogError("No player data found");
         }
+
+        RegisterLuaFunctions();
     }
+
+    private void OnDisable() => UnregisterLuaFunctions();
 
     public bool CanSpendMoney(long amount)
     {
@@ -139,7 +144,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         Lua.RegisterFunction(
             DialogueConstants.SpendMoneyFunctionName,
             this,
-            SymbolExtensions.GetMethodInfo(() => SpendMoney(0)));
+            SymbolExtensions.GetMethodInfo(() => SpendMoney(0D)));
     }
 
     public void UnregisterLuaFunctions()

@@ -9,7 +9,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
     public PilotsContainer PilotsContainer;
     public Pilot[] Pilots => PilotsContainer.Pilots;
 
-    void Awake()
+    private void Awake()
     {
         if (Instance == null)
         {
