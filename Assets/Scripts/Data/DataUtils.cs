@@ -128,7 +128,7 @@ public static class DataUtils
     {
         string folderPath = GetSaveFolderPath(folderName);
 
-        if (Directory.Exists(folderPath)) 
+        if (Directory.Exists(folderPath))
         {
             // Get entries so we can confirm that the folder is not empty
             IEnumerable<string> entries = Directory.EnumerateFileSystemEntries(folderPath);
@@ -138,7 +138,7 @@ public static class DataUtils
                 return true;
             }
         }
-        return false; 
+        return false;
     }
 
     public static bool IsNewGame()

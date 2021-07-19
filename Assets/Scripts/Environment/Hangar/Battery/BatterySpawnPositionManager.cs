@@ -15,6 +15,9 @@ public class BatterySpawnPositionManager : MonoBehaviour
 
         for (int i = 0; i < HangarManager.BatteryWrappers.Length; i++)
         {
+            if (HangarManager.BatteryWrappers[i] == null)
+                continue;
+
             HangarManager.BatteryWrappers[i].BatteryInteractable.transform.position = spawnPositions[i].transform.position;
         }
     }

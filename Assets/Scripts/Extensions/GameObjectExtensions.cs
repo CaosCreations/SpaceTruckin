@@ -13,6 +13,7 @@ public static class GameObjectExtensions
         {
             eventID = triggerType
         };
+
         entry.callback.RemoveAllListeners();
         entry.callback.AddListener(e => callback());
         trigger.triggers.Add(entry);
@@ -31,6 +32,7 @@ public static class GameObjectExtensions
     public static void SetSprite(this GameObject self, Sprite sprite)
     {
         Image image = self.GetComponent<Image>();
+
         if (image != null)
         {
             image.sprite = sprite;
@@ -40,20 +42,20 @@ public static class GameObjectExtensions
     public static Color GetImageColour(this GameObject self)
     {
         Image image = self.GetComponent<Image>();
+
         if (image != null)
-        {
             return image.color;
-        }
+
         return Color.white;
     }
 
     public static Text SetText(this GameObject self, string value)
     {
         Text text = self.GetComponent<Text>();
+
         if (text != null)
-        {
             return text.SetText(value);
-        }
+
         return default;
     }
 
@@ -101,6 +103,7 @@ public static class GameObjectExtensions
     public static List<GameObject> FindParentObjectsWithTag(this GameObject self, string tag)
     {
         List<GameObject> parentsWithTag = new List<GameObject>();
+
         Transform transformInTree = self.transform;
 
         while (transformInTree.parent != null)
@@ -109,8 +112,10 @@ public static class GameObjectExtensions
             {
                 parentsWithTag.Add(transformInTree.gameObject);
             }
+
             transformInTree = transformInTree.parent.transform;
         }
+
         return parentsWithTag;
     }
 
@@ -121,11 +126,11 @@ public static class GameObjectExtensions
         while (transformInTree.parent != null)
         {
             if (transformInTree.CompareTag(tag))
-            {
                 return true;
-            }
+
             transformInTree = transformInTree.parent.transform;
         }
+
         return false;
     }
 
@@ -134,10 +139,9 @@ public static class GameObjectExtensions
         foreach (Transform child in self.transform)
         {
             if (child.CompareTag(tag))
-            {
                 return child.gameObject;
-            }
         }
+
         return null;
     }
 

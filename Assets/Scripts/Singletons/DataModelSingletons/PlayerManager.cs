@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using PixelCrushers.DialogueSystem;
+using UnityEngine;
 
-public class PlayerManager : MonoBehaviour, IDataModelManager
+public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegistrar
 {
     public static PlayerManager Instance;
 
@@ -17,23 +18,16 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     }
     public long TotalMoneyAcquired
     {
-        get => playerData.PlayerTotalMoneyAcquired; 
+        get => playerData.PlayerTotalMoneyAcquired;
         set => playerData.PlayerTotalMoneyAcquired = value;
     }
-    public int LicencePoints
-    {
-        get => playerData.PlayerLicencePoints;
-    }
-    public int TotalLicencePointsAcquired
-    {
-        get => playerData.PlayerTotalLicencePointsAcquired;
-    }
-    public int RepairTools 
-    { 
-        get => playerData.PlayerRepairTools; set => playerData.PlayerRepairTools = value; 
-    }
+    public int LicencePoints => playerData.PlayerLicencePoints;
+    public int TotalLicencePointsAcquired => playerData.PlayerTotalLicencePointsAcquired;
 
-
+    public int RepairTools
+    {
+        get => playerData.PlayerRepairTools; set => playerData.PlayerRepairTools = value;
+    }
 
     public static bool CanRepair => Instance.RepairTools > 0;
     public static bool IsPaused { get; set; }
@@ -99,6 +93,12 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         OnFinancialTransaction?.Invoke();
     }
 
+    public void SpendMoney(double amount)
+    {
+        Instance.Money -= (long)amount;
+        OnFinancialTransaction?.Invoke();
+    }
+
     public void ReceiveMoney(long amount)
     {
         Instance.Money += amount;
@@ -133,7 +133,20 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         Debug.Log($"Player name set to: {Instance.PlayerName}");
     }
 
-    
+    #region Lua Function Registration
+    public void RegisterLuaFunctions()
+    {
+        Lua.RegisterFunction(
+            DialogueConstants.SpendMoneyFunctionName,
+            this,
+            SymbolExtensions.GetMethodInfo(() => SpendMoney(0)));
+    }
+
+    public void UnregisterLuaFunctions()
+    {
+        Lua.UnregisterFunction(DialogueConstants.SpendMoneyFunctionName);
+    }
+    #endregion
 
     #region Persistence
     public void SaveData()
