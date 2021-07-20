@@ -39,7 +39,7 @@ public static class StringExtensions
 
     public static string RemoveCharacter(this string self, char character)
     {
-        if (self != null && !char.IsWhiteSpace(character)) 
+        if (self != null && !char.IsWhiteSpace(character))
         {
             return self.Replace(character.ToString(), string.Empty);
         }
@@ -56,7 +56,7 @@ public static class StringExtensions
 
     public static bool IsAlphabetical(this string self, bool includeAccents = false)
     {
-        string regexPattern = includeAccents ? 
+        string regexPattern = includeAccents ?
             UIConstants.AlphabeticalIncludingAccentsPattern : UIConstants.AlphabeticalPattern;
 
         return !string.IsNullOrWhiteSpace(self) && Regex.IsMatch(self, regexPattern);
@@ -85,7 +85,7 @@ public static class StringExtensions
         return self;
     }
 
-    public static string ReplaceLuaTemplates(this string self)
+    public static string ReplaceLuaVariableTemplates(this string self)
     {
         MatchCollection matches = new Regex(UIConstants.LuaVariablePattern).Matches(self);
 
@@ -104,6 +104,34 @@ public static class StringExtensions
 
             // The 3rd match group contains the Lua variable name 
             string replacement = DialogueDatabaseManager.GetLuaVariable(match.Groups[2].Value);
+
+            self = self.Remove(match.Index, match.Length).Insert(match.Index, replacement);
+        }
+
+        return self;
+    }
+
+    public static string ReplaceLuaActorFieldTemplates(this string self)
+    {
+        MatchCollection matches = new Regex(UIConstants.LuaActorFieldPattern).Matches(self);
+
+        if (matches.Count <= 0)
+        {
+            return self;
+        }
+
+        foreach (Match match in matches.Cast<Match>().Reverse())
+        {
+            if (match.Groups.Count < 3)
+            {
+                Debug.LogError("Insufficient Lua variable regex match groups.");
+                continue;
+            }
+
+            // The 2nd group contains the actor name
+            // The 3rd group contains the field name 
+            string replacement = DialogueDatabaseManager
+                .GetActorField(actorName: match.Groups[2].Value, fieldName: match.Groups[3].Value);
 
             self = self.Remove(match.Index, match.Length).Insert(match.Index, replacement);
         }

@@ -15,7 +15,8 @@ public static class TextExtensions
         self.text = value
             .InsertNewLines()
             .ReplaceTemplates()
-            .ReplaceLuaTemplates();
+            .ReplaceLuaVariableTemplates()
+            .ReplaceLuaActorFieldTemplates();
         
         return self;
     }
@@ -37,6 +38,6 @@ public static class TextExtensions
 
     public static Text ReplaceLuaTemplates(this Text self)
     {
-        return self.SetText(self.text.ReplaceLuaTemplates());
+        return self.SetText(self.text.ReplaceLuaVariableTemplates());
     }
 }

@@ -71,13 +71,18 @@ public class UIConstants : MonoBehaviour
     public static readonly string TemplateBoundaryLeft = new string(TemplateBoundaryLeftChar, numberOfBoundaryChars);
     public static readonly string TemplateBoundaryRight = new string(TemplateBoundaryRightChar, numberOfBoundaryChars);
 
+    // e.g. {{Foo}} 
     public static readonly string TemplatePattern = $"({TemplateBoundaryLeft}[^}}]*){TemplateBoundaryRight}";
     public const string UnsignedIntegerPattern = @"^[0-9]*$";
     public const string AlphabeticalPattern = @"^[a-zA-Z ]+$";
     public const string AlphabeticalIncludingAccentsPattern = @"[-'0-9a-zA-ZÀ-ÿ ]";
     public const string ConsecutiveSpacesPattern = @"[ ]{2,}";
 
-    public const string LuaVariablePattern = @"(\[var=)([A-zA-Z]*)]"; // e.g. [var=foo]
+    // e.g. [var=Foo]
+    public const string LuaVariablePattern = @"(\[var=)([A-zA-Z]*)]";
+
+    // e.g. [Actor["Foo"].Bar]
+    public const string LuaActorFieldPattern = @"(\[Actor)\[""([A-zA-Z]*)""]\.([A-zA-Z]*)]";
 
     // Templates
     public const string PlayerNameTemplate = "PLAYERNAME";
