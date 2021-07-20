@@ -62,9 +62,9 @@ public static class StringExtensions
         return !string.IsNullOrWhiteSpace(self) && Regex.IsMatch(self, regexPattern);
     }
 
-    public static string ReplaceTemplates(this string self, IDataModel dataModel = null)
+    public static string ReplaceGameStateTemplates(this string self, IDataModel dataModel = null)
     {
-        MatchCollection matches = new Regex(UIConstants.TemplatePattern).Matches(self);
+        MatchCollection matches = new Regex(UIConstants.GameStateTemplatePattern).Matches(self);
 
         if (matches.Count <= 0)
         {
@@ -73,7 +73,7 @@ public static class StringExtensions
 
         foreach (Match match in matches.Cast<Match>().Reverse())
         {
-            string replacement = UIUtils.GetTemplateReplacement(match.Value
+            string replacement = UIUtils.GetGameStateTemplateReplacement(match.Value
                 .RemoveTemplateBoundaries()
                 .RemoveAllWhitespace()
                 .ToUpper(),
@@ -144,6 +144,14 @@ public static class StringExtensions
         return self
             .TrimStart(UIConstants.TemplateBoundaryLeftChar)
             .TrimEnd(UIConstants.TemplateBoundaryRightChar);
+    }
+
+    public static string ReplaceAllTemplates(this string self)
+    {
+        return self
+            .ReplaceGameStateTemplates()
+            .ReplaceLuaVariableTemplates()
+            .ReplaceLuaActorFieldTemplates();
     }
 
     public static string RemoveConsecutiveSpaces(this string self)

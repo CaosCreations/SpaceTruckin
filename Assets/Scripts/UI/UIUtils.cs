@@ -9,7 +9,7 @@ public static class UIUtils
     /// </summary>
     /// <param name="template">The template to replace.</param>
     /// <param name="dataModel">An optional data model used to get information about a specific object</param>
-    public static string GetTemplateReplacement(string template, IDataModel dataModel = null)
+    public static string GetGameStateTemplateReplacement(string template, IDataModel dataModel = null)
     {
         string replacement = string.Empty;
 
