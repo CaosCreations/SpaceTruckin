@@ -112,6 +112,9 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
         scheduled.Mission.NumberOfCompletions++;
 
+        // The Archived Mission fields are set throughout the outcome processing.
+        ProcessMissionOutcomes(scheduled);
+
         // Instantiate an Archived Mission object to store the stats of the completed Mission.
         scheduled.Mission.MissionToArchive = new ArchivedMission(
             scheduled.Mission, scheduled.Pilot, scheduled.Mission.NumberOfCompletions);
@@ -119,36 +122,43 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         scheduled.Pilot.MissionsCompleted++;
         scheduled.Mission.MissionToArchive.MissionsCompletedByPilotAtTimeOfMission = scheduled.Pilot.MissionsCompleted;
 
+        // Add the object to the archive once all outcomes have been processed. 
+        ArchivedMissionsManager.AddToArchive(scheduled.Mission.MissionToArchive);
+
+        ScheduledMissions.Remove(scheduled);
+    }
+
+    private static void ProcessMissionOutcomes(ScheduledMission scheduled)
+    {
         // Randomise the Mission's outcomes if flag is set or they are missing. 
         if (scheduled.Mission.HasRandomOutcomes)
         {
             AssignRandomOutcomes(scheduled.Mission);
         }
 
-        // The Archived Mission fields are set throughout the outcome processing.
         scheduled.Mission.ProcessOutcomes();
 
         // Some Missions have a MissionModifier, which gives additional outcomes based on attribute conditions.
         if (scheduled.Mission.HasModifier)
         {
-            // Decide the outcome from the possible outcomes based on the Pilot's attribute points.
-            MissionModifierOutcome modifierOutcome = scheduled.Mission.Modifier.GetDecidedOutcome(scheduled.Pilot);
-
-            if (modifierOutcome != null)
-            {
-                if (modifierOutcome.HasRandomOutcomes)
-                {
-                    AssignRandomOutcomes(modifierOutcome);
-                }
-
-                modifierOutcome.Process(scheduled);
-            }
+            ProcessMissionModifierOutcomes(scheduled);
         }
+    }
 
-        // Add the object to the archive once all outcomes have been processed. 
-        ArchivedMissionsManager.AddToArchive(scheduled.Mission.MissionToArchive);
+    private static void ProcessMissionModifierOutcomes(ScheduledMission scheduled)
+    {
+        // Decide the outcome from the possible outcomes based on the Pilot's attribute points.
+        MissionModifierOutcome modifierOutcome = scheduled.Mission.Modifier.GetDecidedOutcome(scheduled.Pilot);
 
-        ScheduledMissions.Remove(scheduled);
+        if (modifierOutcome != null)
+        {
+            if (modifierOutcome.HasRandomOutcomes)
+            {
+                AssignRandomOutcomes(modifierOutcome);
+            }
+
+            modifierOutcome.Process(scheduled);
+        }
     }
 
     private static void UnlockMissions()
@@ -250,6 +260,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     public static void AddOrUpdateScheduledMission(Pilot pilot, Mission mission)
     {
         ScheduledMission scheduledMission = GetScheduledMission(mission);
+
         if (scheduledMission != null)
         {
             scheduledMission.Pilot = pilot;
@@ -303,9 +314,11 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     private static void LogScheduledMissions()
     {
         Debug.Log("Currently scheduled missions:\n");
+
         ScheduledMissions.ForEach(x =>
         {
             string stringRepresentation = GetScheduledMissionString(x);
+
             if (!string.IsNullOrEmpty(stringRepresentation
                 .RemoveAllWhitespace()
                 .RemoveCharacter(',')))
@@ -360,7 +373,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     }
     #endregion
 
-    #region Lua Function Registration
+    #region Lua Function 
     public void RegisterLuaFunctions()
     {
         Lua.RegisterFunction(
