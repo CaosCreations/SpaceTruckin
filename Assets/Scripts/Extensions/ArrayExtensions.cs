@@ -32,7 +32,7 @@ public static class ArrayExtensions
     {
         for (int i = 0; i < self.Length; i++)
         {
-            self[i] = self[i].ReplaceTemplates(dataModel);
+            self[i] = self[i].ReplaceGameStateTemplates(dataModel);
         }
         return self;
     }

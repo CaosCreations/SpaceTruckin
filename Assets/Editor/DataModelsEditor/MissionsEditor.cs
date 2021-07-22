@@ -18,7 +18,7 @@ public class MissionsEditor : MonoBehaviour
 
             foreach (var mission in missionContainer.Missions)
             {
-                mission.AcceptMission();
+                mission.HasBeenAccepted = hasBeenAccepted;
             }
 
             EditorUtility.SetDirty(missionContainer);
