@@ -63,4 +63,12 @@ public static class MissionUtils
         Debug.LogWarning($"{customerName}'s mission '{missionName}' cannot be found");
         return null;
     }
+
+    public static void LogMissionOutcomeBreakdown(params object[] outcomeElements)
+    {
+        foreach (var element in outcomeElements)
+        {
+            Debug.Log($"{nameof(element)}: {element}");
+        }
+    }
 }

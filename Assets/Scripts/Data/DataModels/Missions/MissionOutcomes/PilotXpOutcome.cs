@@ -41,7 +41,9 @@ public class PilotXpOutcome : MissionOutcome
         // Log results 
         Debug.Log($"Base pilot xp gained: {baseXpGained}");
         Debug.Log($"Pilot xp increase from licences: {xpIncreaseFromLicences}");
-        Debug.Log($"Total pilot xp gained: {xpAfterLicences}");
+        Debug.Log($"Pilot xp increase from bonuses: {xpIncreaseFromBonuses}");
+        Debug.Log($"Total additional xp gained: {totalAdditionalXp}");
+        Debug.Log($"Total pilot xp gained: {xpAfterBonuses}");
     }
 
     /// <summary>

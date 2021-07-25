@@ -26,15 +26,15 @@ public class MoneyOutcome : MissionOutcome
 
         PlayerManager.Instance.ReceiveMoney(totalEarnings64);
  
-        // Calculate the total increase 
-        long totalMoneyIncrease64 = Convert.ToInt64(totalEarnings64 - baseMoneyEarned);
+        // Calculate the total of additional earnings  
+        long totalAdditionalMoneyEarned = Convert.ToInt64(totalEarnings64 - baseMoneyEarned);
 
         if (scheduled.MissionToArchive != null)
         {
             // Archive the earnings stats 
             scheduled.MissionToArchive.TotalMoneyIncreaseFromLicences += moneyIncreaseFromLicences;
             scheduled.MissionToArchive.TotalMoneyIncreaseFromBonuses += moneyIncreaseFromBonuses;
-            scheduled.MissionToArchive.TotalAdditionalMoneyEarned += totalMoneyIncrease64;
+            scheduled.MissionToArchive.TotalAdditionalMoneyEarned += totalAdditionalMoneyEarned;
             scheduled.MissionToArchive.TotalMoneyEarned += totalEarnings64;
         }
 
@@ -42,6 +42,7 @@ public class MoneyOutcome : MissionOutcome
         Debug.Log($"Base money earned: {baseMoneyEarned}");
         Debug.Log($"Money increase due to licences: {moneyIncreaseFromLicences}");
         Debug.Log($"Money increase due to bonuses: {moneyIncreaseFromBonuses}");
+        Debug.Log($"Total additional money earned: {totalAdditionalMoneyEarned}");
         Debug.Log($"Total money earned: {totalEarnings64}");
     }
 }
