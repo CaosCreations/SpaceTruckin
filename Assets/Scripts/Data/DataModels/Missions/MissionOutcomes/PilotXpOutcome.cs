@@ -20,12 +20,25 @@ public class PilotXpOutcome : MissionOutcome
         // Apply xp increases/decreases from Omens/Licences/Bonuses (in that order)
         double xpAfterOmens = baseXpGained * ApplyOmens(scheduled);
         double xpAfterLicences = xpAfterOmens * (1 + LicencesManager.PilotXpEffect);
-        double xpAfterBonuses = xpAfterLicences * (1 + scheduled.Bonus.XpExponent);
+        
+        double totalXpGained = xpAfterLicences;
 
         // Calculate the increases
         double xpIncreaseFromLicences = xpAfterLicences - xpAfterOmens;
-        double xpIncreaseFromBonuses = xpAfterBonuses - xpAfterLicences;
-        double totalAdditionalXp = xpAfterBonuses - baseXpGained;
+        double totalAdditionalXp = xpAfterLicences - baseXpGained;
+
+        // Not every Mission has a Bonus 
+        double xpAfterBonuses = 0d;
+        double xpIncreaseFromBonuses = 0d;
+
+        if (scheduled.Bonus != null)
+        {
+            // Calculate Bonuses if they exist 
+            xpAfterBonuses = xpAfterLicences * (1 + scheduled.Bonus.XpExponent);
+            xpIncreaseFromBonuses = xpAfterBonuses - xpAfterLicences;
+            totalAdditionalXp += xpAfterBonuses;
+            totalXpGained = xpAfterBonuses;
+        }
 
         if (scheduled.MissionToArchive != null)
         {
@@ -33,7 +46,7 @@ public class PilotXpOutcome : MissionOutcome
             scheduled.MissionToArchive.TotalXpIncreaseFromLicences += xpIncreaseFromLicences;
             scheduled.MissionToArchive.TotalXpIncreaseFromBonuses += xpIncreaseFromBonuses;
             scheduled.MissionToArchive.TotalAdditionalXpGained += totalAdditionalXp;
-            scheduled.MissionToArchive.TotalPilotXpGained += xpAfterBonuses;
+            scheduled.MissionToArchive.TotalPilotXpGained += totalXpGained;
 
             scheduled.MissionToArchive.TotalXpAfterMission += PilotsManager.AwardXp(
                 scheduled.Pilot, xpAfterBonuses);
@@ -44,7 +57,7 @@ public class PilotXpOutcome : MissionOutcome
         Debug.Log($"Pilot xp increase from licences: {xpIncreaseFromLicences}");
         Debug.Log($"Pilot xp increase from bonuses: {xpIncreaseFromBonuses}");
         Debug.Log($"Total additional xp gained: {totalAdditionalXp}");
-        Debug.Log($"Total pilot xp gained: {xpAfterBonuses}");
+        Debug.Log($"Total pilot xp gained: {totalXpGained}");
     }
 
     /// <summary>
