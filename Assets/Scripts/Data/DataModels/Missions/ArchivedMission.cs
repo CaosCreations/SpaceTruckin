@@ -13,9 +13,11 @@ public class ArchivedMission
     // Money
     public long TotalMoneyEarned, TotalAdditionalMoneyEarned;
     public double TotalMoneyIncreaseFromLicences, TotalMoneyIncreaseFromBonuses;
-    
+
     // XP 
-    public double TotalPilotXpGained, TotalXpIncreaseFromLicences, TotalXpIncreaseFromBonuses, TotalAdditionalXpGained;
+    public double TotalPilotXpGained, TotalXpIncreaseFromLicences, TotalXpIncreaseFromBonuses, 
+        TotalAdditionalXpGained, 
+        TotalXpAfterMission;
     
     // Pilot
     public Pilot Pilot;

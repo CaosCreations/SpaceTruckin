@@ -57,6 +57,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
                 LevelUpPilot(pilot);
             }
         }
+
         return pilot.CurrentXp;
     }
 

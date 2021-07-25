@@ -7,7 +7,7 @@ public enum MissionUnlockCondition
     TotalMoney, ConversationNode
 }
 
-[CreateAssetMenu(fileName = "Mission", menuName = "ScriptableObjects/Mission", order = 1)]
+[CreateAssetMenu(fileName = "Mission", menuName = "ScriptableObjects/Missions/Mission", order = 1)]
 public partial class Mission : ScriptableObject, IDataModel
 {
     [Header("Set in Editor")]

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public interface IBonus
 {
@@ -9,6 +10,7 @@ public interface IBonus
 /// <para> Multiply the rewards from MissionOutcomes by the relevant value.</para>
 /// <para> They're always greater than 1.</para>
 /// </summary>
+[Serializable]
 public struct BonusExponents
 {
     public float MoneyExponent;
@@ -18,7 +20,7 @@ public struct BonusExponents
 /// <summary>
 /// Percentage increases for Mission rewards that are agreed upon in advance of the Mission.
 /// </summary>
-[CreateAssetMenu(fileName = "Mission", menuName = "ScriptableObjects/Mission", order = 1)]
+[CreateAssetMenu(fileName = "MissionBonus", menuName = "ScriptableObjects/Missions/MissionBonus", order = 1)]
 public class MissionBonus : ScriptableObject, IBonus
 {
     [field: SerializeField] public BonusExponents BonusExponents { get; set; }

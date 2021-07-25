@@ -25,7 +25,7 @@ public class PilotXpOutcome : MissionOutcome
         // Calculate the increases
         double xpIncreaseFromLicences = xpAfterLicences - xpAfterOmens;
         double xpIncreaseFromBonuses = xpAfterBonuses - xpAfterLicences;
-        double totalAdditionalXp = xpIncreaseFromBonuses - baseXpGained;
+        double totalAdditionalXp = xpAfterBonuses - baseXpGained;
 
         if (scheduled.MissionToArchive != null)
         {
@@ -33,8 +33,9 @@ public class PilotXpOutcome : MissionOutcome
             scheduled.MissionToArchive.TotalXpIncreaseFromLicences += xpIncreaseFromLicences;
             scheduled.MissionToArchive.TotalXpIncreaseFromBonuses += xpIncreaseFromBonuses;
             scheduled.MissionToArchive.TotalAdditionalXpGained += totalAdditionalXp;
+            scheduled.MissionToArchive.TotalPilotXpGained += xpAfterBonuses;
 
-            scheduled.MissionToArchive.TotalPilotXpGained += PilotsManager.AwardXp(
+            scheduled.MissionToArchive.TotalXpAfterMission += PilotsManager.AwardXp(
                 scheduled.Pilot, xpAfterBonuses);
         }
 
