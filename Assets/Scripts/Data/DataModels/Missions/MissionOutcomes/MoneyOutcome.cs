@@ -2,47 +2,85 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "MoneyOutcome", menuName = "ScriptableObjects/Missions/Outcomes/MoneyOutcome", order = 1)]
-public class MoneyOutcome : MissionOutcome
+public class MoneyOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
 {
     [SerializeField] private long moneyMin;
     [SerializeField] private long moneyMax;
     public long MoneyMin { get => moneyMin; set => moneyMin = value; }
     public long MoneyMax { get => moneyMax; set => moneyMax = value; }
 
+    // Breakdown of the profits for this Mission 
+    private double baseMoneyEarned, earningsAfterLicences, moneyIncreaseFromLicences, 
+        earningsAfterBonuses, moneyIncreaseFromBonuses, totalEarnings;
+    
+    // The same type as the Player's balance 
+    private long totalEarnings64, totalAdditionalMoneyEarned;
+
     public override void Process(ScheduledMission scheduled)
     {
-        double baseMoneyEarned = UnityEngine.Random.Range(moneyMin, moneyMax);
+        baseMoneyEarned = UnityEngine.Random.Range(moneyMin, moneyMax);
 
-        // Apply increases to money from Licences/Bonuses 
-        double earningsAfterLicences = baseMoneyEarned * (1 + LicencesManager.MoneyEffect);
-        double earningsAfterBonuses = earningsAfterLicences * (1 + scheduled.Bonus.MoneyExponent);
+        // Apply earnings from Licences 
+        earningsAfterLicences = baseMoneyEarned * (1 + LicencesManager.MoneyEffect);
+        moneyIncreaseFromLicences = earningsAfterLicences - baseMoneyEarned;
 
-        // Calculate the individual increases 
-        double moneyIncreaseFromLicences = earningsAfterLicences - baseMoneyEarned;
-        double moneyIncreaseFromBonuses = earningsAfterBonuses - earningsAfterLicences;
+        totalEarnings = earningsAfterLicences;
 
-        // Convert to the same type as the Player's balance 
-        long totalEarnings64 = Convert.ToInt64(earningsAfterBonuses);
+        // Apply earnings from Bonuses if they exist 
+        if (scheduled.Bonus != null)
+        {
+            ApplyBonuses(scheduled);
+        }
 
+        totalEarnings64 = Convert.ToInt64(totalEarnings);
+
+        // Pay the player
         PlayerManager.Instance.ReceiveMoney(totalEarnings64);
  
         // Calculate the total of additional earnings  
-        long totalAdditionalMoneyEarned = Convert.ToInt64(totalEarnings64 - baseMoneyEarned);
+        totalAdditionalMoneyEarned = Convert.ToInt64(totalEarnings64 - baseMoneyEarned);
 
         if (scheduled.MissionToArchive != null)
         {
             // Archive the earnings stats 
-            scheduled.MissionToArchive.TotalMoneyIncreaseFromLicences += moneyIncreaseFromLicences;
-            scheduled.MissionToArchive.TotalMoneyIncreaseFromBonuses += moneyIncreaseFromBonuses;
-            scheduled.MissionToArchive.TotalAdditionalMoneyEarned += totalAdditionalMoneyEarned;
-            scheduled.MissionToArchive.TotalMoneyEarned += totalEarnings64;
+            ArchiveOutcomeElements(scheduled);
         }
 
-        // Log results 
+        LogOutcomeElements();
+
+        ResetOutcomeElements();
+    }
+
+    public void ApplyBonuses(ScheduledMission scheduled)
+    {
+        earningsAfterBonuses = earningsAfterLicences * (1 + scheduled.Bonus.MoneyExponent);
+        moneyIncreaseFromBonuses = earningsAfterBonuses - earningsAfterLicences;
+        
+        // Update the total with the added bonuses
+        totalEarnings = earningsAfterBonuses;
+    }
+
+    public void ArchiveOutcomeElements(ScheduledMission scheduled)
+    {
+        scheduled.MissionToArchive.TotalMoneyIncreaseFromLicences += moneyIncreaseFromLicences;
+        scheduled.MissionToArchive.TotalMoneyIncreaseFromBonuses += moneyIncreaseFromBonuses;
+        scheduled.MissionToArchive.TotalAdditionalMoneyEarned += totalAdditionalMoneyEarned;
+        scheduled.MissionToArchive.TotalMoneyEarned += totalEarnings64;
+    }
+
+    public void LogOutcomeElements()
+    {
         Debug.Log($"Base money earned: {baseMoneyEarned}");
         Debug.Log($"Money increase due to licences: {moneyIncreaseFromLicences}");
         Debug.Log($"Money increase due to bonuses: {moneyIncreaseFromBonuses}");
         Debug.Log($"Total additional money earned: {totalAdditionalMoneyEarned}");
         Debug.Log($"Total money earned: {totalEarnings64}");
+    }
+
+    public void ResetOutcomeElements()
+    {
+        // Default all to 0 
+        baseMoneyEarned = earningsAfterLicences = moneyIncreaseFromLicences = earningsAfterBonuses 
+            = moneyIncreaseFromBonuses = totalEarnings64 = totalAdditionalMoneyEarned = default;
     }
 }

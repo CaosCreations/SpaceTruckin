@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PilotXpOutcome", menuName = "ScriptableObjects/Missions/Outcomes/PilotXpOutcome", order = 1)]
-public class PilotXpOutcome : MissionOutcome, IBonusable
+public class PilotXpOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
 {
     [SerializeField] private int xpMin;
     [SerializeField] private int xpMax;
@@ -24,7 +24,7 @@ public class PilotXpOutcome : MissionOutcome, IBonusable
         // Apply xp increases/decreases from Omens/Licences/Bonuses (in that order)
         xpAfterOmens = baseXpGained * ApplyOmens(scheduled);
         xpAfterLicences = xpAfterOmens * (1 + LicencesManager.PilotXpEffect);
-        
+
         totalXpGained = xpAfterLicences;
 
         // Calculate the increases
@@ -43,7 +43,6 @@ public class PilotXpOutcome : MissionOutcome, IBonusable
             ArchiveOutcomeElements(scheduled);
         }
 
-        // Log results 
         LogOutcomeElements();
 
         ResetOutcomeElements();
@@ -78,7 +77,7 @@ public class PilotXpOutcome : MissionOutcome, IBonusable
         totalXpGained = xpAfterBonuses;
     }
 
-    private void ArchiveOutcomeElements(ScheduledMission scheduled)
+    public void ArchiveOutcomeElements(ScheduledMission scheduled)
     {
         scheduled.MissionToArchive.TotalXpIncreaseFromLicences += xpIncreaseFromLicences;
         scheduled.MissionToArchive.TotalXpIncreaseFromBonuses += xpIncreaseFromBonuses;
@@ -89,7 +88,7 @@ public class PilotXpOutcome : MissionOutcome, IBonusable
             scheduled.Pilot, xpAfterBonuses);
     }
 
-    private void LogOutcomeElements()
+    public void LogOutcomeElements()
     {
         Debug.Log($"Base pilot xp gained: {baseXpGained}");
         Debug.Log($"Pilot xp increase from licences: {xpIncreaseFromLicences}");
@@ -98,7 +97,7 @@ public class PilotXpOutcome : MissionOutcome, IBonusable
         Debug.Log($"Total pilot xp gained: {totalXpGained}");
     }
 
-    private void ResetOutcomeElements()
+    public void ResetOutcomeElements()
     {
         // Default values to 0
         baseXpGained = xpAfterOmens = xpAfterLicences = xpAfterBonuses = totalXpGained =
