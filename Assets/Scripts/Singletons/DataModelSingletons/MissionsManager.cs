@@ -133,7 +133,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         // Randomise the Mission's outcomes if flag is set or they are missing. 
         if (scheduled.Mission.HasRandomOutcomes)
         {
-            AssignRandomOutcomes(scheduled.Mission);
+            scheduled.Mission.Outcomes = MissionUtils.GetRandomOutcomes(Instance.Outcomes);
         }
 
         scheduled.Mission.ProcessOutcomes();
@@ -154,7 +154,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         {
             if (modifierOutcome.HasRandomOutcomes)
             {
-                AssignRandomOutcomes(modifierOutcome);
+                modifierOutcome.Outcomes = MissionUtils.GetRandomOutcomes(Instance.Outcomes);
             }
 
             modifierOutcome.Process(scheduled);
@@ -173,42 +173,6 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
                 PlayerManager.OnFinancialTransaction += mission.UnlockIfConditionMet;
             }
         }
-    }
-
-    private static void AssignRandomOutcomes(Mission mission)
-    {
-        var randomOutcomes = new List<MissionOutcome>();
-        Instance.Outcomes.Shuffle();
-
-        MoneyOutcome moneyOutcome = MissionUtils.GetOutcomeByType<MoneyOutcome>(Instance.Outcomes);
-        PilotXpOutcome pilotXpOutcome = MissionUtils.GetOutcomeByType<PilotXpOutcome>(Instance.Outcomes);
-        OmenOutcome omenOutcome = MissionUtils.GetOutcomeByType<OmenOutcome>(Instance.Outcomes);
-        ShipDamageOutcome shipDamageOutcome = MissionUtils.GetOutcomeByType<ShipDamageOutcome>(Instance.Outcomes);
-
-        if (moneyOutcome != null) randomOutcomes.Add(moneyOutcome);
-        if (pilotXpOutcome != null) randomOutcomes.Add(pilotXpOutcome);
-        if (omenOutcome != null) randomOutcomes.Add(omenOutcome);
-        if (shipDamageOutcome != null) randomOutcomes.Add(shipDamageOutcome);
-
-        mission.Outcomes = randomOutcomes.ToArray();
-    }
-
-    private static void AssignRandomOutcomes(MissionModifierOutcome modifierOutcome)
-    {
-        var randomOutcomes = new List<MissionOutcome>();
-        Instance.Outcomes.Shuffle();
-
-        MoneyOutcome moneyOutcome = MissionUtils.GetOutcomeByType<MoneyOutcome>(Instance.Outcomes);
-        PilotXpOutcome pilotXpOutcome = MissionUtils.GetOutcomeByType<PilotXpOutcome>(Instance.Outcomes);
-        OmenOutcome omenOutcome = MissionUtils.GetOutcomeByType<OmenOutcome>(Instance.Outcomes);
-        ShipDamageOutcome shipDamageOutcome = MissionUtils.GetOutcomeByType<ShipDamageOutcome>(Instance.Outcomes);
-
-        if (moneyOutcome != null) randomOutcomes.Add(moneyOutcome);
-        if (pilotXpOutcome != null) randomOutcomes.Add(pilotXpOutcome);
-        if (omenOutcome != null) randomOutcomes.Add(omenOutcome);
-        if (shipDamageOutcome != null) randomOutcomes.Add(shipDamageOutcome);
-
-        modifierOutcome.Outcomes = randomOutcomes.ToArray();
     }
 
     public static ScheduledMission GetScheduledMission(Mission mission)
