@@ -10,9 +10,9 @@ public class MoneyOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
     public long MoneyMax { get => moneyMax; set => moneyMax = value; }
 
     // Breakdown of the profits for this Mission 
-    private double baseMoneyEarned, earningsAfterLicences, moneyIncreaseFromLicences, 
+    private double baseMoneyEarned, earningsAfterLicences, moneyIncreaseFromLicences,
         earningsAfterBonuses, moneyIncreaseFromBonuses, totalEarnings;
-    
+
     // The same type as the Player's balance 
     private long totalEarnings64, totalAdditionalMoneyEarned;
 
@@ -26,8 +26,8 @@ public class MoneyOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
 
         totalEarnings = earningsAfterLicences;
 
-        // Apply earnings from Bonuses if they exist 
-        if (scheduled.Bonus != null)
+        // Apply earnings from Bonuses if they exist and the criteria are met 
+        if (scheduled.Bonus != null && scheduled.Bonus.AreCriteriaMet(scheduled))
         {
             ApplyBonuses(scheduled);
         }
@@ -36,7 +36,7 @@ public class MoneyOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
 
         // Pay the player
         PlayerManager.Instance.ReceiveMoney(totalEarnings64);
- 
+
         // Calculate the total of additional earnings  
         totalAdditionalMoneyEarned = Convert.ToInt64(totalEarnings64 - baseMoneyEarned);
 
@@ -55,7 +55,7 @@ public class MoneyOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
     {
         earningsAfterBonuses = earningsAfterLicences * (1 + scheduled.Bonus.MoneyExponent);
         moneyIncreaseFromBonuses = earningsAfterBonuses - earningsAfterLicences;
-        
+
         // Update the total with the added bonuses
         totalEarnings = earningsAfterBonuses;
     }
@@ -80,7 +80,7 @@ public class MoneyOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
     public void ResetOutcomeElements()
     {
         // Default all to 0 
-        baseMoneyEarned = earningsAfterLicences = moneyIncreaseFromLicences = earningsAfterBonuses 
+        baseMoneyEarned = earningsAfterLicences = moneyIncreaseFromLicences = earningsAfterBonuses
             = moneyIncreaseFromBonuses = totalEarnings = totalEarnings64 = totalAdditionalMoneyEarned = default;
     }
 }

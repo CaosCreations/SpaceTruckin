@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// Percentage increases for Mission rewards that are agreed upon in advance of the Mission.
@@ -24,4 +23,10 @@ public class MissionBonus : ScriptableObject, IBonus
     public float MoneyExponent => BonusExponents.MoneyExponent;
     public float XpExponent => BonusExponents.XpExponent;
     #endregion
+
+    public bool AreCriteriaMet(ScheduledMission scheduled)
+    {
+        // If there is a Pilot requirement, the assigned Pilot must match the required Pilot 
+        return pilotRequired == null || pilotRequired == scheduled.Pilot;
+    }
 }

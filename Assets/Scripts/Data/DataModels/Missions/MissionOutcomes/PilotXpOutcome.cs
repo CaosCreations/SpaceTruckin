@@ -31,8 +31,8 @@ public class PilotXpOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
 
         totalXpGained = xpAfterLicences;
 
-        // Calculate Bonuses if they exist 
-        if (scheduled.Bonus != null)
+        // Calculate Bonuses if they exist and the criteria are met 
+        if (scheduled.Bonus != null && scheduled.Bonus.AreCriteriaMet(scheduled))
         {
             ApplyBonuses(scheduled);
         }
