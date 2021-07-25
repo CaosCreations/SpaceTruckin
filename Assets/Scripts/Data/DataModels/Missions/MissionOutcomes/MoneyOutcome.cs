@@ -81,6 +81,6 @@ public class MoneyOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
     {
         // Default all to 0 
         baseMoneyEarned = earningsAfterLicences = moneyIncreaseFromLicences = earningsAfterBonuses 
-            = moneyIncreaseFromBonuses = totalEarnings64 = totalAdditionalMoneyEarned = default;
+            = moneyIncreaseFromBonuses = totalEarnings = totalEarnings64 = totalAdditionalMoneyEarned = default;
     }
 }

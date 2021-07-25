@@ -25,11 +25,11 @@ public class PilotXpOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
         xpAfterOmens = baseXpGained * ApplyOmens(scheduled);
         xpAfterLicences = xpAfterOmens * (1 + LicencesManager.PilotXpEffect);
 
-        totalXpGained = xpAfterLicences;
-
         // Calculate the increases
         xpIncreaseFromLicences = xpAfterLicences - xpAfterOmens;
         totalAdditionalXp = xpAfterLicences - baseXpGained;
+
+        totalXpGained = xpAfterLicences;
 
         // Calculate Bonuses if they exist 
         if (scheduled.Bonus != null)
@@ -73,7 +73,7 @@ public class PilotXpOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
     {
         xpAfterBonuses = xpAfterLicences * (1 + scheduled.Bonus.XpExponent);
         xpIncreaseFromBonuses = xpAfterBonuses - xpAfterLicences;
-        totalAdditionalXp += xpAfterBonuses;
+        totalAdditionalXp += xpIncreaseFromBonuses;
         totalXpGained = xpAfterBonuses;
     }
 
