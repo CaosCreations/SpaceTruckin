@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PilotXpOutcome", menuName = "ScriptableObjects/Missions/Outcomes/PilotXpOutcome", order = 1)]
-public class PilotXpOutcome : MissionOutcome
+public class PilotXpOutcome : MissionOutcome, IBonusable
 {
     [SerializeField] private int xpMin;
     [SerializeField] private int xpMax;
@@ -9,55 +9,44 @@ public class PilotXpOutcome : MissionOutcome
     public int XpMin { get => xpMin; set => xpMin = value; }
     public int XpMax { get => xpMax; set => xpMax = value; }
 
+    // Used for applying various additional XP gains and archiving stats 
+    private double baseXpGained, xpAfterOmens, xpAfterLicences, xpAfterBonuses, totalXpGained,
+        xpIncreaseFromLicences, xpIncreaseFromBonuses, totalAdditionalXp;
+
     public override void Process(ScheduledMission scheduled)
     {
         // Store the pilot's level before the xp is awarded.
         // Then we can check if they levelled up as a result of the Mission.
         scheduled.MissionToArchive.PilotLevelAtTimeOfMission = scheduled.Pilot.Level;
 
-        double baseXpGained = Random.Range(xpMin, xpMax);
+        baseXpGained = Random.Range(xpMin, xpMax);
 
         // Apply xp increases/decreases from Omens/Licences/Bonuses (in that order)
-        double xpAfterOmens = baseXpGained * ApplyOmens(scheduled);
-        double xpAfterLicences = xpAfterOmens * (1 + LicencesManager.PilotXpEffect);
+        xpAfterOmens = baseXpGained * ApplyOmens(scheduled);
+        xpAfterLicences = xpAfterOmens * (1 + LicencesManager.PilotXpEffect);
         
-        double totalXpGained = xpAfterLicences;
+        totalXpGained = xpAfterLicences;
 
         // Calculate the increases
-        double xpIncreaseFromLicences = xpAfterLicences - xpAfterOmens;
-        double totalAdditionalXp = xpAfterLicences - baseXpGained;
+        xpIncreaseFromLicences = xpAfterLicences - xpAfterOmens;
+        totalAdditionalXp = xpAfterLicences - baseXpGained;
 
-        // Not every Mission has a Bonus 
-        double xpAfterBonuses = 0d;
-        double xpIncreaseFromBonuses = 0d;
-
+        // Calculate Bonuses if they exist 
         if (scheduled.Bonus != null)
         {
-            // Calculate Bonuses if they exist 
-            xpAfterBonuses = xpAfterLicences * (1 + scheduled.Bonus.XpExponent);
-            xpIncreaseFromBonuses = xpAfterBonuses - xpAfterLicences;
-            totalAdditionalXp += xpAfterBonuses;
-            totalXpGained = xpAfterBonuses;
+            ApplyBonuses(scheduled);
         }
 
         if (scheduled.MissionToArchive != null)
         {
             // Archive Pilot XP stats 
-            scheduled.MissionToArchive.TotalXpIncreaseFromLicences += xpIncreaseFromLicences;
-            scheduled.MissionToArchive.TotalXpIncreaseFromBonuses += xpIncreaseFromBonuses;
-            scheduled.MissionToArchive.TotalAdditionalXpGained += totalAdditionalXp;
-            scheduled.MissionToArchive.TotalPilotXpGained += totalXpGained;
-
-            scheduled.MissionToArchive.TotalXpAfterMission += PilotsManager.AwardXp(
-                scheduled.Pilot, xpAfterBonuses);
+            ArchiveOutcomeElements(scheduled);
         }
 
         // Log results 
-        Debug.Log($"Base pilot xp gained: {baseXpGained}");
-        Debug.Log($"Pilot xp increase from licences: {xpIncreaseFromLicences}");
-        Debug.Log($"Pilot xp increase from bonuses: {xpIncreaseFromBonuses}");
-        Debug.Log($"Total additional xp gained: {totalAdditionalXp}");
-        Debug.Log($"Total pilot xp gained: {totalXpGained}");
+        LogOutcomeElements();
+
+        ResetOutcomeElements();
     }
 
     /// <summary>
@@ -79,5 +68,40 @@ public class PilotXpOutcome : MissionOutcome
             }
         }
         return coefficient;
+    }
+
+    public void ApplyBonuses(ScheduledMission scheduled)
+    {
+        xpAfterBonuses = xpAfterLicences * (1 + scheduled.Bonus.XpExponent);
+        xpIncreaseFromBonuses = xpAfterBonuses - xpAfterLicences;
+        totalAdditionalXp += xpAfterBonuses;
+        totalXpGained = xpAfterBonuses;
+    }
+
+    private void ArchiveOutcomeElements(ScheduledMission scheduled)
+    {
+        scheduled.MissionToArchive.TotalXpIncreaseFromLicences += xpIncreaseFromLicences;
+        scheduled.MissionToArchive.TotalXpIncreaseFromBonuses += xpIncreaseFromBonuses;
+        scheduled.MissionToArchive.TotalAdditionalXpGained += totalAdditionalXp;
+        scheduled.MissionToArchive.TotalPilotXpGained += totalXpGained;
+
+        scheduled.MissionToArchive.TotalXpAfterMission += PilotsManager.AwardXp(
+            scheduled.Pilot, xpAfterBonuses);
+    }
+
+    private void LogOutcomeElements()
+    {
+        Debug.Log($"Base pilot xp gained: {baseXpGained}");
+        Debug.Log($"Pilot xp increase from licences: {xpIncreaseFromLicences}");
+        Debug.Log($"Pilot xp increase from bonuses: {xpIncreaseFromBonuses}");
+        Debug.Log($"Total additional xp gained: {totalAdditionalXp}");
+        Debug.Log($"Total pilot xp gained: {totalXpGained}");
+    }
+
+    private void ResetOutcomeElements()
+    {
+        // Default values to 0
+        baseXpGained = xpAfterOmens = xpAfterLicences = xpAfterBonuses = totalXpGained =
+        xpIncreaseFromLicences = xpIncreaseFromBonuses = totalAdditionalXp = default;
     }
 }

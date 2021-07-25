@@ -1,22 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-public interface IBonus
-{
-    BonusExponents BonusExponents { get; set; }
-}
-
-/// <summary>
-/// <para> Multiply the rewards from MissionOutcomes by the relevant value.</para>
-/// <para> They're always greater than 1.</para>
-/// </summary>
-[Serializable]
-public struct BonusExponents
-{
-    public float MoneyExponent;
-    public float XpExponent;
-}
-
 /// <summary>
 /// Percentage increases for Mission rewards that are agreed upon in advance of the Mission.
 /// </summary>
