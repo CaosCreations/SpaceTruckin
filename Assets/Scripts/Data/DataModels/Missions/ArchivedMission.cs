@@ -1,9 +1,10 @@
-﻿/// <summary>
+﻿using System;
+/// <summary>
 /// This class holds data about past missions.
 /// The fields of this class will be set 
 /// during the processing of the mission outcomes.
 /// </summary>
-[System.Serializable]
+[Serializable]
 public class ArchivedMission
 {
     public string MissionName;

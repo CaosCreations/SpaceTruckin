@@ -5,7 +5,7 @@ public class BatteryCharging : MonoBehaviour
     public bool IsCharged { get; set; }
 
     [SerializeField] private MeshRenderer meshRenderer;
-    
+
     private Color depletedEmission;
     private Color chargedEmission;
 

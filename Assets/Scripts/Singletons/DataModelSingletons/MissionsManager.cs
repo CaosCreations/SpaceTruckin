@@ -161,6 +161,11 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         }
     }
 
+    private static void ApplyBonuses(Mission mission)
+    {
+
+    }
+
     private static void UnlockMissions()
     {
         foreach (Mission mission in Instance.Missions)

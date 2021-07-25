@@ -88,6 +88,6 @@ public partial class Mission
     public bool HasModifier => missionModifier != null
         && missionModifier.PossibleOutcomes != null
         && missionModifier.PossibleOutcomes.Any();
-
     public MissionModifier Modifier => missionModifier;
+    public MissionBonus Bonus => missionBonus;
 }
