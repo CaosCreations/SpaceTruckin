@@ -16,17 +16,25 @@ public class PilotXpOutcome : MissionOutcome
         scheduled.Mission.MissionToArchive.PilotLevelAtTimeOfMission = scheduled.Pilot.Level;
 
         double xpGained = Random.Range(xpMin, xpMax);
+
+        // Apply xp increases/decreases from Omens/Licences/Bonuses (in that order)
         double xpAfterOmens = xpGained * ApplyOmens(scheduled);
         double xpAfterLicences = xpAfterOmens * (1 + LicencesManager.PilotXpEffect);
+        double xpAfterBonuses = xpAfterLicences * (1 + scheduled.Mission.Bonus.XpExponent);
         
         double xpIncreaseFromLicences = xpAfterLicences - xpAfterOmens;
+        double xpIncreaseFromBonuses = xpAfterBonuses - xpAfterLicences;
 
         if (scheduled.Mission.MissionToArchive != null)
         {
+            // Archive Pilot XP stats 
             scheduled.Mission.MissionToArchive.TotalXpIncreaseFromLicences += xpIncreaseFromLicences;
-            scheduled.Mission.MissionToArchive.TotalPilotXpGained += PilotsManager.AwardXp(scheduled.Pilot, xpAfterLicences);
+            
+            scheduled.Mission.MissionToArchive.TotalPilotXpGained += PilotsManager.AwardXp(
+                scheduled.Pilot, xpAfterBonuses);
         }
 
+        // Log results 
         Debug.Log("Base pilot xp gained: " + xpGained);
         Debug.Log("Pilot xp increase from licences: " + xpIncreaseFromLicences);
         Debug.Log("Total pilot xp gained: " + xpAfterLicences);

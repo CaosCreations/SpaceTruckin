@@ -3,7 +3,6 @@
 public interface IBonus
 {
     BonusExponents BonusExponents { get; set; }
-    void Apply(Mission mission);
 }
 
 /// <summary>
@@ -33,13 +32,10 @@ public class MissionBonus : ScriptableObject, IBonus
     [Tooltip("Enter a value here if the bonus is only received when a particular Pilot takes the Mission.")]
     [SerializeField] private Pilot pilotRequired;
 
-    public void Apply(Mission mission)
-    {
-        
-    }
-
     #region Accessors
     public string FlavourText => flavourText;
     public Pilot PilotRequired => pilotRequired;
+    public float MoneyExponent => BonusExponents.MoneyExponent;
+    public float XpExponent => BonusExponents.XpExponent;
     #endregion
 }
