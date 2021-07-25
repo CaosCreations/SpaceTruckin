@@ -11,29 +11,37 @@ public class MoneyOutcome : MissionOutcome
 
     public override void Process(ScheduledMission scheduled)
     {
-        double moneyEarned = UnityEngine.Random.Range(moneyMin, moneyMax);
+        double baseMoneyEarned = UnityEngine.Random.Range(moneyMin, moneyMax);
 
         // Apply increases to money from Licences/Bonuses 
-        double earningsAfterLicences = moneyEarned * (1 + LicencesManager.MoneyEffect);
-        double earningsAfterBonuses = earningsAfterLicences * (1 + scheduled.Mission.Bonus.MoneyExponent);
+        double earningsAfterLicences = baseMoneyEarned * (1 + LicencesManager.MoneyEffect);
+        double earningsAfterBonuses = earningsAfterLicences * (1 + scheduled.Bonus.MoneyExponent);
 
-        long earnings64 = Convert.ToInt64(earningsAfterBonuses);
+        // Calculate the individual increases 
+        double moneyIncreaseFromLicences = earningsAfterLicences - baseMoneyEarned;
+        double moneyIncreaseFromBonuses = earningsAfterBonuses - earningsAfterLicences;
 
-        PlayerManager.Instance.ReceiveMoney(earnings64);
+        // Convert to the same type as the Player's balance 
+        long totalEarnings64 = Convert.ToInt64(earningsAfterBonuses);
 
-        // Calculate how much money was earned from Licences/Bonuses
-        long moneyIncrease64 = Convert.ToInt64(earnings64 - moneyEarned);
+        PlayerManager.Instance.ReceiveMoney(totalEarnings64);
+ 
+        // Calculate the total increase 
+        long totalMoneyIncrease64 = Convert.ToInt64(totalEarnings64 - baseMoneyEarned);
 
-        if (scheduled.Mission.MissionToArchive != null)
+        if (scheduled.MissionToArchive != null)
         {
             // Archive the earnings stats 
-            scheduled.Mission.MissionToArchive.TotalMoneyIncreaseFromLicences += moneyIncrease64;
-            scheduled.Mission.MissionToArchive.TotalMoneyEarned += earnings64;
+            scheduled.MissionToArchive.TotalMoneyIncreaseFromLicences += moneyIncreaseFromLicences;
+            scheduled.MissionToArchive.TotalMoneyIncreaseFromBonuses += moneyIncreaseFromBonuses;
+            scheduled.MissionToArchive.TotalAdditionalMoneyEarned += totalMoneyIncrease64;
+            scheduled.MissionToArchive.TotalMoneyEarned += totalEarnings64;
         }
 
         // Log results 
-        Debug.Log("Base money earned: " + moneyEarned);
-        Debug.Log("Money increase due to licences: " + (earnings64 - moneyEarned).ToString());
-        Debug.Log("Total money earned: " + earnings64);
+        Debug.Log($"Base money earned: {baseMoneyEarned}");
+        Debug.Log($"Money increase due to licences: {moneyIncreaseFromLicences}");
+        Debug.Log($"Money increase due to bonuses: {moneyIncreaseFromBonuses}");
+        Debug.Log($"Total money earned: {totalEarnings64}");
     }
 }
