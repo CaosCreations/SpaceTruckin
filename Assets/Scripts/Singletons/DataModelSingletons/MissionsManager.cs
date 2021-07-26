@@ -9,8 +9,12 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     [SerializeField] private MissionContainer missionContainer;
     [SerializeField] private MissionOutcomeContainer missionOutcomeContainer;
-    public Mission[] Missions { get => missionContainer.Missions; }
-    public MissionOutcome[] Outcomes { get => missionOutcomeContainer.MissionOutcomes; }
+    [SerializeField] private MissionBonusContainer missionBonusContainer;
+
+    public Mission[] Missions => missionContainer.Missions;
+    public MissionOutcome[] Outcomes => missionOutcomeContainer.MissionOutcomes;
+    public MissionBonus[] Bonuses => missionBonusContainer.MissionBonuses;
+
     public static List<ScheduledMission> ScheduledMissions;
 
     private void Awake()
@@ -120,7 +124,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
             scheduled.Mission, scheduled.Pilot, scheduled.Mission.NumberOfCompletions);
 
         scheduled.Pilot.MissionsCompleted++;
-        scheduled.Mission.MissionToArchive.MissionsCompletedByPilotAtTimeOfMission = scheduled.Pilot.MissionsCompleted;
+        scheduled.MissionToArchive.MissionsCompletedByPilotAtTimeOfMission = scheduled.Pilot.MissionsCompleted;
 
         // Add the object to the archive once all outcomes have been processed. 
         ArchivedMissionsManager.AddToArchive(scheduled.Mission.MissionToArchive);
@@ -143,6 +147,9 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         {
             ProcessMissionModifierOutcomes(scheduled);
         }
+
+        // Reset the Mission's Bonus, as it only applies once.
+        scheduled.Bonus = null;
     }
 
     private static void ProcessMissionModifierOutcomes(ScheduledMission scheduled)

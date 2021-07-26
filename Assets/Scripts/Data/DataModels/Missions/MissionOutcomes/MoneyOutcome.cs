@@ -47,7 +47,6 @@ public class MoneyOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
         }
 
         LogOutcomeElements();
-
         ResetOutcomeElements();
     }
 

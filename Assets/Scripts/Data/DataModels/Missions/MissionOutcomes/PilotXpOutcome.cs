@@ -44,7 +44,6 @@ public class PilotXpOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
         }
 
         LogOutcomeElements();
-
         ResetOutcomeElements();
     }
 
