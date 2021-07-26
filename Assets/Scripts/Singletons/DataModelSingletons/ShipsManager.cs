@@ -6,7 +6,7 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
 
     public GameObject shipInstancePrefab;
     [SerializeField] private ShipsContainer shipsContainer;
-    public Ship[] Ships { get => shipsContainer.Ships; }
+    public Ship[] Ships => shipsContainer.Elements;
 
     private void Awake()
     {

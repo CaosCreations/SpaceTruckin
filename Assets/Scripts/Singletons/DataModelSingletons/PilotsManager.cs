@@ -7,7 +7,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
     public static PilotsManager Instance { get; private set; }
 
     public PilotsContainer PilotsContainer;
-    public Pilot[] Pilots => PilotsContainer.Pilots;
+    public Pilot[] Pilots => PilotsContainer.Elements;
 
     private void Awake()
     {

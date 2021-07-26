@@ -11,7 +11,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     [SerializeField] private MissionOutcomeContainer missionOutcomeContainer;
     [SerializeField] private MissionBonusContainer missionBonusContainer;
 
-    public Mission[] Missions => missionContainer.Missions;
+    public Mission[] Missions => missionContainer.Elements;
     public MissionOutcome[] Outcomes => missionOutcomeContainer.MissionOutcomes;
     public MissionBonus[] Bonuses => missionBonusContainer.MissionBonuses;
 

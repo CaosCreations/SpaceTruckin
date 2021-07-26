@@ -11,7 +11,7 @@ public class MessagesEditor : MonoBehaviour
         {
             var messageContainer = EditorHelper.GetAsset<MessageContainer>();
 
-            foreach (var message in messageContainer.Messages)
+            foreach (var message in messageContainer.Elements)
             {
                 message.IsUnlocked = true;
             }
@@ -33,7 +33,7 @@ public class MessagesEditor : MonoBehaviour
         {
             var messageContainer = EditorHelper.GetAsset<MessageContainer>();
 
-            foreach (var message in messageContainer.Messages)
+            foreach (var message in messageContainer.Elements)
             {
                 message.HasBeenRead = true;
             }
@@ -52,7 +52,7 @@ public class MessagesEditor : MonoBehaviour
     {
         var messageContainer = EditorHelper.GetAsset<MessageContainer>();
 
-        foreach (var message in messageContainer.Messages)
+        foreach (var message in messageContainer.Elements)
         {
             SaveDataEditor.NullifyFields(message.saveData);
         }

@@ -12,16 +12,18 @@ public class BatteryHoldingLocation : MonoBehaviour
 
     public void Update()
     {
-        if (IsAttemptingToInteract)
+        if (!IsAttemptingToInteract)
         {
-            if (IsAbleToPutInSlot)
-            {
-                PutInSlot();
-            }
-            else if (IsAbleToTakeFromSlot)
-            {
-                TakeFromSlot();
-            }
+            return;
+        }
+
+        if (IsAbleToPutInSlot)
+        {
+            PutInSlot();
+        }
+        else if (IsAbleToTakeFromSlot)
+        {
+            TakeFromSlot();
         }
     }
 

@@ -2,7 +2,7 @@
 {
     // This class is just for property accessors. 
     // The fields are all located in Message.cs. 
-    
+
     /// <summary>
     /// The name of the message, not the object itself.
     /// </summary>
@@ -17,13 +17,16 @@
     {
         get => saveData.isUnlocked; set => saveData.isUnlocked = value;
     }
-    public bool HasBeenRead 
+    public bool HasBeenRead
     {
-        get => saveData.hasBeenRead; set => saveData.hasBeenRead = value; 
+        get => saveData.hasBeenRead; set => saveData.hasBeenRead = value;
     }
-    public bool IsUnlockedByDate => unlockCondition == MessageUnlockCondition.Date;
-    public bool IsUnlockedWithMoney => unlockCondition == MessageUnlockCondition.TotalMoney;
+    public MessageUnlockCondition UnlockCondition => unlockCondition;
+    public bool IsUnlockedByDate => UnlockCondition == MessageUnlockCondition.Date;
+    public bool IsUnlockedWithMoney => UnlockCondition == MessageUnlockCondition.TotalMoney;
     public Date DateToUnlockOn => dateToUnlockOn;
     public long MoneyNeededToUnlock { get => moneyNeededToUnlock; set => moneyNeededToUnlock = value; }
-    public Mission Mission { get => mission; set => mission = value; }
+    public Mission Mission { get => missionProposition; set => missionProposition = value; }
+    public MissionBonus MissionBonus { get => missionBonus; set => missionBonus = value; }
+    public bool HasRandomBonus => hasRandomBonus;
 }

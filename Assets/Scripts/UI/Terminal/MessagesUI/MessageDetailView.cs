@@ -3,13 +3,14 @@ using UnityEngine.UI;
 
 public class MessageDetailView : MonoBehaviour
 {
-    public Text messageSubjectText;
-    public Text messageSenderText;
-    public GameObject messageBodyPrefab;
-    public GameObject messageBodyScrollViewContent;
+    [SerializeField] private Text messageSubjectText;
+    [SerializeField] private Text messageSenderText;
+    [SerializeField] private GameObject messageBodyPrefab;
+    [SerializeField] private GameObject messageBodyScrollViewContent;
+
+    public Button MissionAcceptButton;
     
-    public Button missionAcceptButton;
-    public MissionDetailsUI missionDetailsUI;
+    [SerializeField] private MissionDetailsUI missionDetailsUI;
 
     public void SetMessageDetails(Message message)
     {
@@ -17,6 +18,7 @@ public class MessageDetailView : MonoBehaviour
         messageSenderText.SetText(message.Sender, FontType.Subtitle);
 
         GameObject messageBody = Instantiate(messageBodyPrefab, messageBodyScrollViewContent.transform);
+
         RectTransform rectTransform = messageBody.GetComponent<RectTransform>();
         rectTransform.Reset();
         rectTransform.Stretch();
@@ -24,7 +26,8 @@ public class MessageDetailView : MonoBehaviour
         Text messageBodyText = messageBody.GetComponent<Text>();
         string messageBodyContent;
 
-        messageBodyContent = string.IsNullOrEmpty(message.Body) ? LoremIpsumGenerator.GenerateLoremIpsum(16)
+        messageBodyContent = string.IsNullOrWhiteSpace(message.Body) 
+            ? LoremIpsumGenerator.GenerateLoremIpsum(16)
             : message.Body;
 
         // Add mission information if a mission is offered in the message 
@@ -37,16 +40,24 @@ public class MessageDetailView : MonoBehaviour
         messageBodyText.SetText(messageBodyContent);
     }
 
-    public void SetMissionAcceptButton(Mission mission)
+    public void SetupMissionAcceptButton(Message message)
     {
-        missionAcceptButton.SetText("Accept " + mission.Name);
+        MissionAcceptButton.SetText("Accept " + message.Mission.Name);
+        MissionAcceptButton.interactable = !message.Mission.HasBeenAccepted;
 
-        missionAcceptButton.interactable = !mission.HasBeenAccepted;
-        missionAcceptButton.AddOnClick(() =>
+        MissionAcceptButton.AddOnClick(() => AcceptMissionViaMessage(message));
+    }
+
+    private void AcceptMissionViaMessage(Message message)
+    {
+        MissionAcceptButton.SetText(MessageConstants.MissionAcceptedText);
+        MissionAcceptButton.interactable = false;
+
+        message.Mission.AcceptMission();
+
+        if (message.MissionBonus != null)
         {
-            missionAcceptButton.SetText("Mission Accepted!");
-            missionAcceptButton.interactable = false;
-            mission.HasBeenAccepted = true;
-        });
+            message.Mission.Bonus = message.MissionBonus;
+        }
     }
 }
