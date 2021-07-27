@@ -16,7 +16,17 @@ public class ColourSliders : MonoBehaviour
     private GameObject greenSlider;
     private GameObject blueSlider;
 
-    private void InitialiseSliderContainer()
+    private void Init()
+    {
+        InitSliderContainer();
+        InitImageObject();
+
+        redSlider = InitSlider(Channel.Red);
+        greenSlider = InitSlider(Channel.Green);
+        blueSlider = InitSlider(Channel.Blue);
+    }
+
+    private void InitSliderContainer()
     {
         sliderContainer = new GameObject("SliderContainer");
         sliderContainer.transform.parent = transform;
@@ -24,16 +34,15 @@ public class ColourSliders : MonoBehaviour
         sliderContainer.AddComponent<VerticalLayoutGroup>();
     }
 
-    private void InitialiseImageObject()
+    private void InitImageObject()
     {
         imageObject = new GameObject("SliderImage");
         imageObject.transform.parent = sliderContainer.transform;
         sliderImage = imageObject.AddComponent<Image>();
         sliderImage.color = startingColor;
-
     }
 
-    private GameObject InitialiseSlider(Channel channel)
+    private GameObject InitSlider(Channel channel)
     {
         GameObject sliderObject = Instantiate(colourSliderPrefab);
         sliderObject.transform.parent = sliderContainer.transform;
@@ -60,7 +69,6 @@ public class ColourSliders : MonoBehaviour
             case Channel.Blue:
                 sliderImage.color = new Color(sliderImage.color.r, sliderImage.color.g, value / 225f);
                 break;
-
         }
     }
 

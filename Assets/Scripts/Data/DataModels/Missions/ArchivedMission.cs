@@ -1,18 +1,29 @@
-﻿/// <summary>
+﻿using System;
+/// <summary>
 /// This class holds data about past missions.
 /// The fields of this class will be set 
 /// during the processing of the mission outcomes.
 /// </summary>
-[System.Serializable]
+[Serializable]
 public class ArchivedMission
 {
     public string MissionName;
     public int CompletionNumber, TotalDamageTaken, TotalDamageReduced, TotalFuelLost;
-    public long TotalMoneyEarned, TotalMoneyIncreaseFromLicences;
-    public double TotalPilotXpGained, TotalXpIncreaseFromLicences;
+
+    // Money
+    public long TotalMoneyEarned, TotalAdditionalMoneyEarned;
+    public double TotalMoneyIncreaseFromLicences, TotalMoneyIncreaseFromBonuses;
+
+    // XP 
+    public double TotalPilotXpGained, TotalXpIncreaseFromLicences, TotalXpIncreaseFromBonuses, 
+        TotalAdditionalXpGained, 
+        TotalXpAfterMission;
+    
+    // Pilot
     public Pilot Pilot;
     public int PilotLevelAtTimeOfMission;
     public int MissionsCompletedByPilotAtTimeOfMission;
+    
     public Date CompletionDate;
     public MissionModifierOutcome ModifierOutcome;
 

@@ -7,7 +7,7 @@ public enum MissionUnlockCondition
     TotalMoney, ConversationNode
 }
 
-[CreateAssetMenu(fileName = "Mission", menuName = "ScriptableObjects/Mission", order = 1)]
+[CreateAssetMenu(fileName = "Mission", menuName = "ScriptableObjects/Missions/Mission", order = 1)]
 public partial class Mission : ScriptableObject, IDataModel
 {
     [Header("Set in Editor")]
@@ -19,6 +19,7 @@ public partial class Mission : ScriptableObject, IDataModel
     [SerializeField] private bool hasRandomOutcomes;
     [SerializeField] private MissionOutcome[] outcomes;
     [SerializeField] private MissionModifier missionModifier;
+    [SerializeField] private MissionBonus missionBonus;
 
     [Tooltip("The number of relationship points with the customer awarded on first completion of the mission")]
     [SerializeField] private int fondnessGranted;
