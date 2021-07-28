@@ -379,6 +379,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     {
         string json = JsonHelper.ListToJson(ScheduledMissions);
         string folderPath = DataUtils.GetSaveFolderPath(Mission.FolderName);
+
         Debug.Log("Scheduled Mission Json to save: " + json);
         DataUtils.SaveFileAsync(ScheduledMission.FileName, folderPath, json);
     }

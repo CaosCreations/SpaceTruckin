@@ -24,14 +24,15 @@ MonoBehaviour:
   isRepeatable: 1
   hasRandomOutcomes: 1
   outcomes:
-  - {fileID: 11400000, guid: efbf1a0dc439c224fb074156ec201368, type: 2}
+  - {fileID: 0}
+  missionModifier: {fileID: 0}
   fondnessGranted: 0
   offerTimeLimitInDays: 0
   offerExpiryFondnessDeduction: 0
   thankYouMessage: {fileID: 0}
   saveData:
     hasBeenUnlocked: 0
-    hasBeenAccepted: 0
+    hasBeenAccepted: 1
     offerExpiryConsequencesApplied: 0
     daysLeftToComplete: 0
     numberOfCompletions: 0
@@ -43,3 +44,4 @@ MonoBehaviour:
       Day: 0
       Month: 0
       Year: 0
+    missionBonus: {fileID: 0}
