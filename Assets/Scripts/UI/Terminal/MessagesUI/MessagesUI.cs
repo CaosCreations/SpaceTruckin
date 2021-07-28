@@ -8,16 +8,16 @@ public enum MessageFilterMode
 
 public class MessagesUI : MonoBehaviour
 {
-    public GameObject scrollViewContent;
-    public GameObject messageItemPrefab;
-    public GameObject messagesListView;
-    public GameObject messagesDetailView;
-    public MessageDetailViewUI messageDetailViewHandler;
-    public Button backButton;
+    [SerializeField] private GameObject scrollViewContent;
+    [SerializeField] private GameObject messageItemPrefab;
+    [SerializeField] private GameObject messagesListView;
+    [SerializeField] private GameObject messagesDetailView;
+    [SerializeField] private MessageDetailViewUI messageDetailViewHandler;
+    [SerializeField] private Button backButton;
 
-    public GameObject filterButtonContainer;
-    public Button unreadFilterButton;
-    public Button readFilterButton;
+    [SerializeField] private GameObject filterButtonContainer;
+    [SerializeField] private Button unreadFilterButton;
+    [SerializeField] private Button readFilterButton;
 
     // Determines what kinds of messages will appear in the list
     private MessageFilterMode currentFilterMode;

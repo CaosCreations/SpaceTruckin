@@ -27,9 +27,9 @@ public class MessageDetailViewUI : MonoBehaviour
             MissionAcceptButton.SetActive(false);
         }
 
-        // Apply the bonus if the message contains a MissionBonus. 
+        // Apply the bonus if the message contains a MissionBonus and is unread. 
         // Not necessarily to the same Mission that is offered.
-        if (message.HasMissionBonus)
+        if (!message.HasBeenRead && message.HasMissionBonus)
         {
             message.MissionToApplyBonusTo.Bonus = message.MissionBonus;
         }
@@ -47,9 +47,8 @@ public class MessageDetailViewUI : MonoBehaviour
         rectTransform.Stretch();
 
         Text messageBodyText = messageBody.GetComponent<Text>();
-        string messageBodyContent;
 
-        messageBodyContent = string.IsNullOrWhiteSpace(message.Body)
+        string messageBodyContent = string.IsNullOrWhiteSpace(message.Body)
             ? LoremIpsumGenerator.GenerateLoremIpsum(MessageConstants.EmailLoremCount)
             : message.Body;
 
