@@ -13,7 +13,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     public Mission[] Missions => missionContainer.Elements;
     public MissionOutcome[] Outcomes => missionOutcomeContainer.MissionOutcomes;
-    public MissionBonus[] Bonuses => missionBonusContainer.MissionBonuses;
+    public MissionBonus[] Bonuses => missionBonusContainer.Elements;
 
     public static List<ScheduledMission> ScheduledMissions;
 
