@@ -35,13 +35,13 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     public void Init()
     {
-        if (DataUtils.SaveFolderExists(Mission.FOLDER_NAME))
+        if (DataUtils.SaveFolderExists(Mission.FolderName))
         {
             LoadDataAsync();
         }
         else
         {
-            DataUtils.CreateSaveFolder(Mission.FOLDER_NAME);
+            DataUtils.CreateSaveFolder(Mission.FolderName);
         }
 
         if (Missions?.Length <= 0)
@@ -378,9 +378,9 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     private void SaveScheduledMissionData()
     {
         string json = JsonHelper.ListToJson(ScheduledMissions);
-        string folderPath = DataUtils.GetSaveFolderPath(Mission.FOLDER_NAME);
+        string folderPath = DataUtils.GetSaveFolderPath(Mission.FolderName);
         Debug.Log("Scheduled Mission Json to save: " + json);
-        DataUtils.SaveFileAsync(ScheduledMission.FILE_NAME, folderPath, json);
+        DataUtils.SaveFileAsync(ScheduledMission.FileName, folderPath, json);
     }
 
     public async void LoadDataAsync()
@@ -406,7 +406,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     public void DeleteData()
     {
-        DataUtils.RecursivelyDeleteSaveData(Mission.FOLDER_NAME);
+        DataUtils.RecursivelyDeleteSaveData(Mission.FolderName);
     }
     #endregion
 }

@@ -202,8 +202,8 @@ public class HangarManager : MonoBehaviour
             });
         }
         string json = JsonHelper.ListToJson(batterySaveData);
-        string folderPath = DataUtils.GetSaveFolderPath(BatteryWrapper.FOLDER_NAME);
-        DataUtils.SaveFileAsync(BatteryWrapper.FILE_NAME, folderPath, json);
+        string folderPath = DataUtils.GetSaveFolderPath(BatteryWrapper.FolderName);
+        DataUtils.SaveFileAsync(BatteryWrapper.FileName, folderPath, json);
     }
 
     public async static void LoadBatteryDataAsync()

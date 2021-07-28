@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Collections.Generic;
+using UnityEngine;
 
 public class LicencesManager : MonoBehaviour, IDataModelManager
 {
@@ -17,7 +17,7 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
     public static double HangarSlotUnlockEffect => GetTotalHangarSlotEffect();
 
     public static int NumberOfTiers => Instance.Licences.Max(x => x.Tier);
-    
+
     private void Awake()
     {
         if (Instance == null)
@@ -34,13 +34,13 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        if (DataUtils.SaveFolderExists(Licence.FOLDER_NAME))
+        if (DataUtils.SaveFolderExists(Licence.FolderName))
         {
             LoadDataAsync();
         }
         else
         {
-            DataUtils.CreateSaveFolder(Licence.FOLDER_NAME);
+            DataUtils.CreateSaveFolder(Licence.FolderName);
         }
 
         if (Licences == null)
@@ -72,7 +72,7 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
             .Where(x => x.Effect is T && x.IsOwned)
             .ToList()
             .ForEach(y => effects.Add(y.Effect as T));
-        
+
         return effects;
     }
 

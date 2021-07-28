@@ -20,16 +20,16 @@ public partial class Message : ScriptableObject, IDataModel
     [Tooltip("The mission offered in the email")]
     [SerializeField] private Mission missionProposition;
 
-    // Todo: Check if storing the Mission on the Bonus works better here
-    [SerializeField] private Mission missionToApplyBonusTo;
-
+    // The Mission Bonus and which Mission to bind it to 
+    [Tooltip("The bonus offered in the email. It is not necessarily applied to the proposed Mission")]
     [SerializeField] private MissionBonus missionBonus;
+    [SerializeField] private Mission missionToApplyBonusTo;
     [SerializeField] private bool hasRandomBonus;
 
     [Header("Data to update IN GAME")]
     public MessageSaveData saveData;
 
-    public const string FOLDER_NAME = "MessageSaveData";
+    public const string FolderName = "MessageSaveData";
 
     [Serializable]
     public class MessageSaveData
@@ -40,11 +40,11 @@ public partial class Message : ScriptableObject, IDataModel
 
     public void SaveData()
     {
-        DataUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
+        DataUtils.SaveFileAsync(name, FolderName, saveData);
     }
 
     public async Task LoadDataAsync()
     {
-        saveData = await DataUtils.LoadFileAsync<MessageSaveData>(name, FOLDER_NAME);
+        saveData = await DataUtils.LoadFileAsync<MessageSaveData>(name, FolderName);
     }
 }

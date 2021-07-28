@@ -143,7 +143,7 @@ public static class DataUtils
 
     public static bool IsNewGame()
     {
-        return !SaveFolderExists(PlayerData.FOLDER_NAME);
+        return !SaveFolderExists(PlayerData.FolderName);
     }
 
     public static void CreateSaveFolder(string folderName)

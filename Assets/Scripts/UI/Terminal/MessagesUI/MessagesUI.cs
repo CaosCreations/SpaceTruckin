@@ -12,7 +12,7 @@ public class MessagesUI : MonoBehaviour
     public GameObject messageItemPrefab;
     public GameObject messagesListView;
     public GameObject messagesDetailView;
-    public MessageDetailView messageDetailViewHandler;
+    public MessageDetailViewUI messageDetailViewHandler;
     public Button backButton;
 
     public GameObject filterButtonContainer;
@@ -120,19 +120,12 @@ public class MessagesUI : MonoBehaviour
 
     private void GoToDetailView(Message message)
     {
+        // Hide the list view
         messagesListView.SetActive(false);
         filterButtonContainer.SetActive(false);
+        
+        // Show the detail view 
         messagesDetailView.SetActive(true);
-        messageDetailViewHandler.SetMessageDetails(message);
-
-        if (message.Mission != null)
-        {
-            messageDetailViewHandler.SetupMissionAcceptButton(message);
-            messageDetailViewHandler.MissionAcceptButton.SetActive(true);
-        }
-        else
-        {
-            messageDetailViewHandler.MissionAcceptButton.SetActive(false);
-        }
+        messageDetailViewHandler.SetupDetailView(message);
     }
 }

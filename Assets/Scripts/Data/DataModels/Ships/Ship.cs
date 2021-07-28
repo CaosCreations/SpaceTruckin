@@ -14,7 +14,7 @@ public partial class Ship : ScriptableObject, IDataModel
     [Header("Data to update IN GAME")]
     public ShipSaveData saveData;
 
-    public const string FOLDER_NAME = "ShipSaveData";
+    public const string FolderName = "ShipSaveData";
 
     [Serializable]
     public class ShipSaveData
@@ -48,11 +48,11 @@ public partial class Ship : ScriptableObject, IDataModel
 
     public void SaveData()
     {
-        DataUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
+        DataUtils.SaveFileAsync(name, FolderName, saveData);
     }
 
     public async System.Threading.Tasks.Task LoadDataAsync()
     {
-        saveData = await DataUtils.LoadFileAsync<ShipSaveData>(name, FOLDER_NAME);
+        saveData = await DataUtils.LoadFileAsync<ShipSaveData>(name, FolderName);
     }
 }

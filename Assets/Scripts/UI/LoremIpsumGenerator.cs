@@ -5,6 +5,7 @@
     public static string GenerateLoremIpsum(int passageCount = 1)
     {
         string loremIpsum = string.Empty;
+
         for (int i = 0; i < passageCount; i++)
         {
             loremIpsum += LoremIpsumPassage;

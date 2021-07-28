@@ -24,13 +24,13 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        if (DataUtils.SaveFolderExists(Ship.FOLDER_NAME))
+        if (DataUtils.SaveFolderExists(Ship.FolderName))
         {
             LoadDataAsync();
         }
         else
         {
-            DataUtils.CreateSaveFolder(Ship.FOLDER_NAME);
+            DataUtils.CreateSaveFolder(Ship.FolderName);
         }
 
         if (Ships == null)
@@ -86,7 +86,7 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
 
     public void DeleteData()
     {
-        DataUtils.RecursivelyDeleteSaveData(Ship.FOLDER_NAME);
+        DataUtils.RecursivelyDeleteSaveData(Ship.FolderName);
     }
     #endregion
 }

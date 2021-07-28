@@ -36,13 +36,13 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
             Debug.LogError("No pilot data");
         }
 
-        if (DataUtils.SaveFolderExists(Pilot.FOLDER_NAME))
+        if (DataUtils.SaveFolderExists(Pilot.FolderName))
         {
             LoadDataAsync();
         }
         else
         {
-            DataUtils.CreateSaveFolder(Pilot.FOLDER_NAME);
+            DataUtils.CreateSaveFolder(Pilot.FolderName);
         }
     }
 
@@ -192,7 +192,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
 
     public void DeleteData()
     {
-        DataUtils.RecursivelyDeleteSaveData(Pilot.FOLDER_NAME);
+        DataUtils.RecursivelyDeleteSaveData(Pilot.FolderName);
     }
     #endregion
 }

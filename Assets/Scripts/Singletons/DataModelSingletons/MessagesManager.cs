@@ -23,13 +23,13 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        if (DataUtils.SaveFolderExists(Message.FOLDER_NAME))
+        if (DataUtils.SaveFolderExists(Message.FolderName))
         {
             LoadDataAsync();
         }
         else
         {
-            DataUtils.CreateSaveFolder(Message.FOLDER_NAME);
+            DataUtils.CreateSaveFolder(Message.FolderName);
         }
 
         if (Messages == null)

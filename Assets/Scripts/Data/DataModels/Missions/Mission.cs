@@ -38,7 +38,7 @@ public partial class Mission : ScriptableObject, IDataModel
     [HideInInspector]
     private ArchivedMission missionToArchive;
 
-    public const string FOLDER_NAME = "MissionSaveData";
+    public const string FolderName = "MissionSaveData";
 
     [Serializable]
     public class MissionSaveData
@@ -61,12 +61,12 @@ public partial class Mission : ScriptableObject, IDataModel
 
     public void SaveData()
     {
-        DataUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
+        DataUtils.SaveFileAsync(name, FolderName, saveData);
     }
 
     public async Task LoadDataAsync()
     {
-        saveData = await DataUtils.LoadFileAsync<MissionSaveData>(name, FOLDER_NAME);
+        saveData = await DataUtils.LoadFileAsync<MissionSaveData>(name, FolderName);
     }
 
     public void UnlockIfConditionMet()

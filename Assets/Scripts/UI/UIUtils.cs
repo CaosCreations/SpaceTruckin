@@ -53,10 +53,8 @@ public static class UIUtils
         {
             return addedChar;
         }
-        else
-        {
-            return '\0';
-        }
+
+        return '\0';
     }
 
     public static Texture2D GetUITexture(int width, int height, Color colour)

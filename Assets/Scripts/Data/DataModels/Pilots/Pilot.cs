@@ -49,16 +49,16 @@ public partial class Pilot : ScriptableObject
         public PilotAttributes Attributes;
     }
 
-    public const string FOLDER_NAME = "PilotSaveData";
+    public const string FolderName = "PilotSaveData";
 
     public void SaveData()
     {
-        DataUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
+        DataUtils.SaveFileAsync(name, FolderName, saveData);
     }
 
     public async Task LoadDataAsync()
     {
-        saveData = await DataUtils.LoadFileAsync<PilotSaveData>(name, FOLDER_NAME);
+        saveData = await DataUtils.LoadFileAsync<PilotSaveData>(name, FolderName);
     }
 
     private void OnValidate()

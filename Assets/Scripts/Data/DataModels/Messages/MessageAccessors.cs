@@ -26,7 +26,9 @@
     public bool IsUnlockedWithMoney => UnlockCondition == MessageUnlockCondition.TotalMoney;
     public Date DateToUnlockOn => dateToUnlockOn;
     public long MoneyNeededToUnlock { get => moneyNeededToUnlock; set => moneyNeededToUnlock = value; }
-    public Mission Mission { get => missionProposition; set => missionProposition = value; }
+    public Mission MissionProposition { get => missionProposition; set => missionProposition = value; }
     public MissionBonus MissionBonus { get => missionBonus; set => missionBonus = value; }
+    public Mission MissionToApplyBonusTo { get => missionToApplyBonusTo; set => missionToApplyBonusTo = value; }
     public bool HasRandomBonus => hasRandomBonus;
+    public bool HasMissionBonus => hasRandomBonus || MissionBonus != null && MissionToApplyBonusTo != null;
 }
