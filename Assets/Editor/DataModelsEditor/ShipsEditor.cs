@@ -70,6 +70,7 @@ public class ShipsEditor : MonoBehaviour
         foreach (var ship in shipsContainer.Elements)
         {
             SaveDataEditor.NullifyFields(ship.saveData);
+            EditorUtility.SetDirty(ship);
         }
 
         EditorUtility.SetDirty(shipsContainer);

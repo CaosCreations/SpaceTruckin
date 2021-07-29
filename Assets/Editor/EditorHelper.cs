@@ -35,6 +35,6 @@ public class EditorHelper : MonoBehaviour
         }
     }
 
-    public static bool IsPlaying => 
-        PlayerManager.Instance != null && Application.IsPlaying(PlayerManager.Instance);
+    public static bool IsPlaying
+        => PlayerManager.Instance != null && Application.IsPlaying(PlayerManager.Instance);
 }

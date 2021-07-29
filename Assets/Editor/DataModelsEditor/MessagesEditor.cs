@@ -60,6 +60,7 @@ public class MessagesEditor : MonoBehaviour
         foreach (var message in messageContainer.Elements)
         {
             SaveDataEditor.NullifyFields(message.saveData);
+            EditorUtility.SetDirty(message);
         }
 
         EditorUtility.SetDirty(messageContainer);
