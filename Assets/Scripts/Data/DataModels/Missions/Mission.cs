@@ -19,6 +19,7 @@ public partial class Mission : ScriptableObject, IDataModel
     [SerializeField] private bool hasRandomOutcomes;
     [SerializeField] private MissionOutcome[] outcomes;
     [SerializeField] private MissionModifier missionModifier;
+    [SerializeField] private MissionBonus missionBonus;
 
     [Tooltip("The number of relationship points with the customer awarded on first completion of the mission")]
     [SerializeField] private int fondnessGranted;
