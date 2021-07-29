@@ -12,6 +12,7 @@ public class SingletonManager : MonoBehaviour
     private void InitSingletons()
     {
         MissionsManager.Instance.Init();
+        PilotsManager.Instance.Init();
         ArchivedMissionsManager.Instance.Init();
         PilotAssetsManager.Instance.Init();
         ShipsManager.Instance.Init();
