@@ -27,7 +27,12 @@ public class MessagesEditor : MonoBehaviour
     }
 
     [MenuItem("Space Truckin/Messages/Read All")]
-    private static void ReadAll()
+    private static void ReadAll() => SetHasBeenRead(true);
+
+    [MenuItem("Space Truckin/Messages/Unread All")]
+    private static void UnreadAll() => SetHasBeenRead(false);
+
+    private static void SetHasBeenRead(bool hasBeenRead)
     {
         try
         {
@@ -35,12 +40,12 @@ public class MessagesEditor : MonoBehaviour
 
             foreach (var message in messageContainer.Elements)
             {
-                message.HasBeenRead = true;
+                message.HasBeenRead = hasBeenRead;
             }
 
             EditorUtility.SetDirty(messageContainer);
 
-            Debug.Log("All messages are now read");
+            Debug.Log("All messages read = " + hasBeenRead.ToString());
         }
         catch (Exception ex)
         {
