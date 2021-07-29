@@ -10,14 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b12db2f090b41b44b25748cdc8f946e, type: 3}
-  m_Name: ThankYouMessage
+  m_Name: ThankYouMessage1
   m_EditorClassIdentifier: 
-  messageName: Thanks
-  sender: Foo
-  subject: Bar
-  body: Baz
-  condition: 0
-  mission: {fileID: 0}
+  messageName: 
+  sender: 
+  subject: 
+  body: 
+  unlockCondition: 0
+  moneyNeededToUnlock: 0
+  dateToUnlockOn:
+    Day: 0
+    Month: 0
+    Year: 0
+  missionProposition: {fileID: 0}
+  missionBonus: {fileID: 0}
+  missionToApplyBonusTo: {fileID: 0}
+  hasRandomBonus: 0
   saveData:
     isUnlocked: 0
-    isUnread: 0
+    hasBeenRead: 0
