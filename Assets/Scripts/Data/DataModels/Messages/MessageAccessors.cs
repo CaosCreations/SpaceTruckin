@@ -30,5 +30,5 @@
     public MissionBonus MissionBonus { get => missionBonus; set => missionBonus = value; }
     public Mission MissionToApplyBonusTo { get => missionToApplyBonusTo; set => missionToApplyBonusTo = value; }
     public bool HasRandomBonus => hasRandomBonus;
-    public bool HasMissionBonus => hasRandomBonus || MissionBonus != null && MissionToApplyBonusTo != null;
+    public bool HasMissionBonus => (HasRandomBonus || MissionBonus != null) && MissionToApplyBonusTo != null;
 }

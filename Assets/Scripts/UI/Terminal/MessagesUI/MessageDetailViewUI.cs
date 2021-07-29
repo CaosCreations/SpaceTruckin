@@ -31,7 +31,9 @@ public class MessageDetailViewUI : MonoBehaviour
         // Not necessarily to the same Mission that is offered.
         if (!message.HasBeenRead && message.HasMissionBonus)
         {
-            message.MissionToApplyBonusTo.Bonus = message.MissionBonus;
+            message.MissionToApplyBonusTo.Bonus = message.HasRandomBonus
+                ? MissionsManager.GetRandomBonus()
+                : message.MissionBonus;
         }
     }
 

@@ -299,6 +299,16 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         });
     }
 
+    public static MissionBonus GetRandomBonus(bool isPilotSpecific = false)
+    {
+        MissionBonus randomBonus = Instance.Bonuses.GetRandomElement();
+
+        if (isPilotSpecific)
+            randomBonus.RequiredPilot = PilotsManager.GetRandomHiredPilot();
+
+        return randomBonus;
+    }
+
     #region Dialogue Integration
     public bool HasMissionBeenCompletedForCustomer(string missionName, string customerName)
     {

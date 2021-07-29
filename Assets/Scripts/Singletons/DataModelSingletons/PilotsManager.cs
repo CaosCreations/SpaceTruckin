@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 public class PilotsManager : MonoBehaviour, IDataModelManager
-{   
+{
     public static PilotsManager Instance { get; private set; }
 
     public PilotsContainer PilotsContainer;
@@ -101,9 +101,9 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    public static Pilot[] HiredPilots => Instance.Pilots.Where(p => p.IsHired).ToArray();
+    public static Pilot[] HiredPilots => Instance.Pilots.Where(p => p != null && p.IsHired).ToArray();
 
-    public static Pilot[] PilotsForHire => Instance.Pilots.Where(p => !p.IsHired).ToArray();
+    public static Pilot[] PilotsForHire => Instance.Pilots.Where(p => p != null && !p.IsHired).ToArray();
 
     public static Pilot[] PilotsInQueue => Instance.Pilots
             .Where(p => p.Ship.IsInQueue)
@@ -151,7 +151,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
     private void RandomiseAvatar(Pilot pilot)
     {
         Sprite randomAvatar = PilotAssetsManager.GetRandomAvatar(pilot.Species);
-        
+
         if (randomAvatar != null)
         {
             pilot.Avatar = randomAvatar;
@@ -172,6 +172,8 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
             pilot.Dislike = preferences.dislike;
         }
     }
+
+    public static Pilot GetRandomHiredPilot() => HiredPilots.GetRandomElement();
 
     #region Persistence
     public void SaveData()
