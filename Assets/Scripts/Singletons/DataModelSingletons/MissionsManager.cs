@@ -11,9 +11,9 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     [SerializeField] private MissionOutcomeContainer missionOutcomeContainer;
     [SerializeField] private MissionBonusContainer missionBonusContainer;
 
-    public Mission[] Missions => missionContainer.Missions;
+    public Mission[] Missions => missionContainer.Elements;
     public MissionOutcome[] Outcomes => missionOutcomeContainer.MissionOutcomes;
-    public MissionBonus[] Bonuses => missionBonusContainer.MissionBonuses;
+    public MissionBonus[] Bonuses => missionBonusContainer.Elements;
 
     public static List<ScheduledMission> ScheduledMissions;
 
@@ -35,13 +35,13 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     public void Init()
     {
-        if (DataUtils.SaveFolderExists(Mission.FOLDER_NAME))
+        if (DataUtils.SaveFolderExists(Mission.FolderName))
         {
             LoadDataAsync();
         }
         else
         {
-            DataUtils.CreateSaveFolder(Mission.FOLDER_NAME);
+            DataUtils.CreateSaveFolder(Mission.FolderName);
         }
 
         if (Missions?.Length <= 0)
@@ -299,6 +299,16 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         });
     }
 
+    public static MissionBonus GetRandomBonus(bool isPilotSpecific = false)
+    {
+        MissionBonus randomBonus = Instance.Bonuses.GetRandomElement();
+
+        if (isPilotSpecific)
+            randomBonus.RequiredPilot = PilotsManager.GetRandomHiredPilot();
+
+        return randomBonus;
+    }
+
     #region Dialogue Integration
     public bool HasMissionBeenCompletedForCustomer(string missionName, string customerName)
     {
@@ -378,9 +388,10 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     private void SaveScheduledMissionData()
     {
         string json = JsonHelper.ListToJson(ScheduledMissions);
-        string folderPath = DataUtils.GetSaveFolderPath(Mission.FOLDER_NAME);
+        string folderPath = DataUtils.GetSaveFolderPath(Mission.FolderName);
+
         Debug.Log("Scheduled Mission Json to save: " + json);
-        DataUtils.SaveFileAsync(ScheduledMission.FILE_NAME, folderPath, json);
+        DataUtils.SaveFileAsync(ScheduledMission.FileName, folderPath, json);
     }
 
     public async void LoadDataAsync()
@@ -406,7 +417,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     public void DeleteData()
     {
-        DataUtils.RecursivelyDeleteSaveData(Mission.FOLDER_NAME);
+        DataUtils.RecursivelyDeleteSaveData(Mission.FolderName);
     }
     #endregion
 }

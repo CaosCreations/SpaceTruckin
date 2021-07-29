@@ -19,7 +19,6 @@ public partial class Mission : ScriptableObject, IDataModel
     [SerializeField] private bool hasRandomOutcomes;
     [SerializeField] private MissionOutcome[] outcomes;
     [SerializeField] private MissionModifier missionModifier;
-    [SerializeField] private MissionBonus missionBonus;
 
     [Tooltip("The number of relationship points with the customer awarded on first completion of the mission")]
     [SerializeField] private int fondnessGranted;
@@ -35,10 +34,9 @@ public partial class Mission : ScriptableObject, IDataModel
     [Header("Data to update IN GAME")]
     public MissionSaveData saveData;
 
-    [HideInInspector]
     private ArchivedMission missionToArchive;
 
-    public const string FOLDER_NAME = "MissionSaveData";
+    public const string FolderName = "MissionSaveData";
 
     [Serializable]
     public class MissionSaveData
@@ -52,6 +50,7 @@ public partial class Mission : ScriptableObject, IDataModel
 
         public int daysLeftToComplete, numberOfCompletions;
         public Date dateUnlocked, dateAccepted;
+        public MissionBonus missionBonus;
     }
 
     private void OnValidate()
@@ -61,12 +60,12 @@ public partial class Mission : ScriptableObject, IDataModel
 
     public void SaveData()
     {
-        DataUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
+        DataUtils.SaveFileAsync(name, FolderName, saveData);
     }
 
     public async Task LoadDataAsync()
     {
-        saveData = await DataUtils.LoadFileAsync<MissionSaveData>(name, FOLDER_NAME);
+        saveData = await DataUtils.LoadFileAsync<MissionSaveData>(name, FolderName);
     }
 
     public void UnlockIfConditionMet()

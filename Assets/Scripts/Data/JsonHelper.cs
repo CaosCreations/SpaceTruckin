@@ -6,8 +6,10 @@ public static class JsonHelper
 {
     public static string ArrayToJson<T>(T[] array)
     {
-        ArrayWrapper<T> wrapper = new ArrayWrapper<T>();
-        wrapper.Items = array;
+        ArrayWrapper<T> wrapper = new ArrayWrapper<T>
+        {
+            Items = array
+        };
 
         string json = JsonUtility.ToJson(wrapper);
         return json;

@@ -7,7 +7,7 @@ public class PlayerData : ScriptableObject, IDataModel
     [Header("Data to update IN GAME")]
     public PlayerSaveData saveData;
 
-    public const string FOLDER_NAME = "PlayerSaveData";
+    public const string FolderName = "PlayerSaveData";
 
     [Serializable]
     public class PlayerSaveData
@@ -57,11 +57,11 @@ public class PlayerData : ScriptableObject, IDataModel
 
     public void SaveData()
     {
-        DataUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
+        DataUtils.SaveFileAsync(name, FolderName, saveData);
     }
 
     public async System.Threading.Tasks.Task LoadDataAsync()
     {
-        saveData = await DataUtils.LoadFileAsync<PlayerSaveData>(name, FOLDER_NAME);
+        saveData = await DataUtils.LoadFileAsync<PlayerSaveData>(name, FolderName);
     }
 }

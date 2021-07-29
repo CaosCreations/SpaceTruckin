@@ -1,20 +1,23 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public enum MessageFilterMode { None, Unread, Read }
+public enum MessageFilterMode 
+{ 
+    None, Unread, Read 
+}
 
 public class MessagesUI : MonoBehaviour
 {
-    public GameObject scrollViewContent;
-    public GameObject messageItemPrefab;
-    public GameObject messagesListView;
-    public GameObject messagesDetailView;
-    public MessageDetailView messageDetailViewHandler;
-    public Button backButton;
+    [SerializeField] private GameObject scrollViewContent;
+    [SerializeField] private GameObject messageItemPrefab;
+    [SerializeField] private GameObject messagesListView;
+    [SerializeField] private GameObject messagesDetailView;
+    [SerializeField] private MessageDetailViewUI messageDetailViewHandler;
+    [SerializeField] private Button backButton;
 
-    public GameObject filterButtonContainer;
-    public Button unreadFilterButton;
-    public Button readFilterButton;
+    [SerializeField] private GameObject filterButtonContainer;
+    [SerializeField] private Button unreadFilterButton;
+    [SerializeField] private Button readFilterButton;
 
     // Determines what kinds of messages will appear in the list
     private MessageFilterMode currentFilterMode;
@@ -33,7 +36,7 @@ public class MessagesUI : MonoBehaviour
 
     private void OnEnable()
     {
-        MessagesManager.Instance.UnlockMessagesRequiringMoney();
+        MessagesManager.UnlockMessages();
         currentFilterMode = MessageFilterMode.None;
         GoToListView();
     }
@@ -43,16 +46,14 @@ public class MessagesUI : MonoBehaviour
         messagesListView.SetActive(true);
         filterButtonContainer.SetActive(true);
         messagesDetailView.SetActive(false);
+
         CleanScrollView();
         AddMessages();
     }
 
     private void CleanScrollView()
     {
-        foreach (Transform child in scrollViewContent.transform)
-        {
-            Destroy(child.gameObject);
-        }
+        scrollViewContent.transform.DestroyDirectChildren();
     }
 
     private void AddMessages()
@@ -71,15 +72,21 @@ public class MessagesUI : MonoBehaviour
                 newMessage.GetComponent<Image>().color = GetMessageColour(message);
 
                 MessageButtonHandler buttonHandler = newMessage.GetComponent<MessageButtonHandler>();
-                buttonHandler.Init(message, () =>
-                {
-                    GoToDetailView(message);
 
-                    // Set read flag to true upon opening the message  
-                    message.HasBeenRead = true; 
-                });
+                SetupButtonHandler(buttonHandler, message);
             }
         }
+    }
+
+    private void SetupButtonHandler(MessageButtonHandler buttonHandler, Message message)
+    {
+        buttonHandler.Init(message, () =>
+        {
+            GoToDetailView(message);
+
+            // Set read flag to true upon opening the message  
+            message.HasBeenRead = true;
+        });
     }
 
     private void FilterMessages(MessageFilterMode filterMode)
@@ -93,6 +100,7 @@ public class MessagesUI : MonoBehaviour
         {
             currentFilterMode = filterMode;
         }
+
         CleanScrollView();
         AddMessages();
     }
@@ -107,24 +115,17 @@ public class MessagesUI : MonoBehaviour
         return false;
     }
 
-    private Color GetMessageColour(Message message) =>
-        message.HasBeenRead ? MessageConstants.UnreadColour : MessageConstants.ReadColour;
+    private Color GetMessageColour(Message message)
+        => message.HasBeenRead ? MessageConstants.UnreadColour : MessageConstants.ReadColour;
 
     private void GoToDetailView(Message message)
     {
+        // Hide the list view
         messagesListView.SetActive(false);
         filterButtonContainer.SetActive(false);
+        
+        // Show the detail view 
         messagesDetailView.SetActive(true);
-        messageDetailViewHandler.SetMessageDetails(message);
-
-        if (message.Mission != null)
-        {
-            messageDetailViewHandler.SetMissionAcceptButton(message.Mission);
-            messageDetailViewHandler.missionAcceptButton.gameObject.SetActive(true);
-        }
-        else
-        {
-            messageDetailViewHandler.missionAcceptButton.gameObject.SetActive(false);
-        }
+        messageDetailViewHandler.SetupDetailView(message);
     }
 }

@@ -13,7 +13,8 @@ public class CustomisationManager : MonoBehaviour
         Color.red, Color.green, Color.blue, Color.yellow, Color.white, Color.black, Color.cyan, Color.grey
     };
 
-    public enum Direction { Left = 0, Right = 1 };
+    // Direction specific to the customisation UI
+    private enum Direction { Left = 0, Right = 1 };
 
     private void Start()
     {
@@ -38,7 +39,7 @@ public class CustomisationManager : MonoBehaviour
         VerticalLayoutGroup verticalLayoutGroup = customisationContainer.AddComponent<VerticalLayoutGroup>();
         verticalLayoutGroup.spacing = CustomisationConstants.CustomisationContainerSpacing;
 
-        foreach (CustomisationType customisationType in customisationTypeContainer.CustomisationTypes)
+        foreach (CustomisationType customisationType in customisationTypeContainer.Elements)
         {
             // This is the parent object for each individual row of the customisation container  
             GameObject customisationOption = new GameObject(CustomisationConstants.CustomisationOptionName);
@@ -103,9 +104,9 @@ public class CustomisationManager : MonoBehaviour
 
     void LogCustomisationState()
     {
-        for (int i = 0; i < customisationTypeContainer.CustomisationTypes.Length; i++)
+        for (int i = 0; i < customisationTypeContainer.Elements.Length; i++)
         {
-            Debug.Log($"Customisation Type {i} value: {customisationTypeContainer.CustomisationTypes[i].Index}");
+            Debug.Log($"Customisation Type {i} value: {customisationTypeContainer.Elements[i].Index}");
         }
     }
 }

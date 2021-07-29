@@ -89,5 +89,5 @@ public partial class Mission
         && missionModifier.PossibleOutcomes != null
         && missionModifier.PossibleOutcomes.Any();
     public MissionModifier Modifier => missionModifier;
-    public MissionBonus Bonus { get => missionBonus; set => missionBonus = value; }
+    public MissionBonus Bonus { get => saveData.missionBonus; set => saveData.missionBonus = value; }
 }

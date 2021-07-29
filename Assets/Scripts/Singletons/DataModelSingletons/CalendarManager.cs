@@ -55,13 +55,13 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        if (DataUtils.SaveFolderExists(CalendarData.FOLDER_NAME))
+        if (DataUtils.SaveFolderExists(CalendarData.FolderName))
         {
             LoadDataAsync();
         }
         else
         {
-            DataUtils.CreateSaveFolder(CalendarData.FOLDER_NAME);
+            DataUtils.CreateSaveFolder(CalendarData.FolderName);
         }
 
         if (calendarData == null)
@@ -163,7 +163,7 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
 
     public void DeleteData()
     {
-        DataUtils.RecursivelyDeleteSaveData(PlayerData.FOLDER_NAME);
+        DataUtils.RecursivelyDeleteSaveData(PlayerData.FolderName);
     }
     #endregion
 }

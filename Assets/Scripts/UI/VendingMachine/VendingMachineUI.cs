@@ -4,19 +4,19 @@ using UnityEngine.UI;
 public class VendingMachineUI : UICanvasBase
 {
     // Items indices correspond to the keys on the keypad 
-    public VendingMachineItemContainer vendingMachineItemContainer;
-    private VendingMachineItem[] Items { get => vendingMachineItemContainer.items; }
+    [SerializeField] private VendingMachineItemContainer vendingMachineItemContainer;
+    private VendingMachineItem[] Items { get => vendingMachineItemContainer.Elements; }
 
-    public GameObject itemContainer;
-    public GameObject keypadContainer;
+    [SerializeField] private GameObject itemContainer;
+    [SerializeField] private GameObject keypadContainer;
 
-    public GameObject itemPrefab;
-    public GameObject keyPrefab;
+    [SerializeField] private GameObject itemPrefab;
+    [SerializeField] private GameObject keyPrefab;
 
-    public Text feedbackText;
+    [SerializeField] private Text feedbackText;
 
     // Store corresponding gameObjects to provide purchase feedback  
-    private GameObject[] itemObjects;
+    [SerializeField] private GameObject[] itemObjects;
 
     // Hide these later on 
     private Color positiveFeedbackColour = Color.green;
@@ -56,7 +56,7 @@ public class VendingMachineUI : UICanvasBase
 
     private void AssignKeyCodes()
     {
-        for (byte i = 0; i < Items.Length; i++)
+        for (int i = 0; i < Items.Length; i++)
         {
             Items[i].keyCode = i;
         }
@@ -92,8 +92,8 @@ public class VendingMachineUI : UICanvasBase
             itemObject.GetComponent<Image>().color = Color.white;
         }
     }
-    
-    public void CleanUI()
+
+    private void CleanUI()
     {
         feedbackText.Clear();
         ResetAllColours();

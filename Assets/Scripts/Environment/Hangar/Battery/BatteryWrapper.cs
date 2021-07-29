@@ -9,11 +9,11 @@ public class BatteryWrapper : MonoBehaviour
     public BatteryCharging BatteryCharging;
 
     #region Persistence
-    public const string FOLDER_NAME = "HangarSaveData";
-    public const string FILE_NAME = "BatterySaveData";
+    public const string FolderName = "HangarSaveData";
+    public const string FileName = "BatterySaveData";
     public static string FilePath
     {
-        get => DataUtils.GetSaveFilePath(FOLDER_NAME, FILE_NAME);
+        get => DataUtils.GetSaveFilePath(FolderName, FileName);
     }
     #endregion
 }

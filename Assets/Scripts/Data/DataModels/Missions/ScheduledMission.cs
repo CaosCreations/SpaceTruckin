@@ -12,8 +12,8 @@ public class ScheduledMission
     public ArchivedMission MissionToArchive => Mission.MissionToArchive;
     public MissionBonus Bonus { get => Mission.Bonus; set => Mission.Bonus = value; }
 
-    public const string FILE_NAME = "ScheduledMissionSaveData"; // We store them in all in one file
-    public static string FilePath => DataUtils.GetSaveFilePath(Mission.FOLDER_NAME, FILE_NAME);
+    public const string FileName = "ScheduledMissionSaveData"; // We store them in all in one file
+    public static string FilePath => DataUtils.GetSaveFilePath(Mission.FolderName, FileName);
 
     public override string ToString()
     {

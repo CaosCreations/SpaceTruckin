@@ -24,13 +24,13 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        if (DataUtils.SaveFolderExists(ArchivedMission.FOLDER_NAME))
+        if (DataUtils.SaveFolderExists(ArchivedMission.FolderName))
         {
             LoadDataAsync();
         }
         else
         {
-            DataUtils.CreateSaveFolder(ArchivedMission.FOLDER_NAME);
+            DataUtils.CreateSaveFolder(ArchivedMission.FolderName);
         }
 
         ArchivedMissions = new List<ArchivedMission>();
@@ -93,11 +93,11 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
     public void SaveData()
     {
         string json = JsonHelper.ListToJson(ArchivedMissions);
-        string folderPath = DataUtils.GetSaveFolderPath(ArchivedMission.FOLDER_NAME);
-        DataUtils.SaveFileAsync(ArchivedMission.FILE_NAME, folderPath, json);
+        string folderPath = DataUtils.GetSaveFolderPath(ArchivedMission.FolderName);
+        DataUtils.SaveFileAsync(ArchivedMission.FileName, folderPath, json);
     }
 
     public void DeleteData() 
-        => DataUtils.RecursivelyDeleteSaveData(ArchivedMission.FOLDER_NAME);
+        => DataUtils.RecursivelyDeleteSaveData(ArchivedMission.FolderName);
     #endregion
 }

@@ -6,8 +6,8 @@ public class PilotXpOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
     [SerializeField] private int xpMin;
     [SerializeField] private int xpMax;
 
-    public int XpMin { get => xpMin; set => xpMin = value; }
     public int XpMax { get => xpMax; set => xpMax = value; }
+    public int XpMin { get => xpMin; set => xpMin = value; }
 
     // Used for applying various additional XP gains and archiving stats 
     private double baseXpGained, xpAfterOmens, xpAfterLicences, xpAfterBonuses, totalXpGained,

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public enum MessageUnlockCondition
@@ -16,13 +17,19 @@ public partial class Message : ScriptableObject, IDataModel
     [SerializeField] private long moneyNeededToUnlock;
     [SerializeField] private Date dateToUnlockOn;
 
-    // The mission offered in the email
-    [SerializeField] private Mission mission;
+    [Tooltip("The mission offered in the email")]
+    [SerializeField] private Mission missionProposition;
+
+    // The Mission Bonus and which Mission to bind it to 
+    [Tooltip("The bonus offered in the email. It is not necessarily applied to the proposed Mission")]
+    [SerializeField] private MissionBonus missionBonus;
+    [SerializeField] private Mission missionToApplyBonusTo;
+    [SerializeField] private bool hasRandomBonus;
 
     [Header("Data to update IN GAME")]
     public MessageSaveData saveData;
 
-    public const string FOLDER_NAME = "MessageSaveData";
+    public const string FolderName = "MessageSaveData";
 
     [Serializable]
     public class MessageSaveData
@@ -33,11 +40,11 @@ public partial class Message : ScriptableObject, IDataModel
 
     public void SaveData()
     {
-        DataUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
+        DataUtils.SaveFileAsync(name, FolderName, saveData);
     }
 
-    public async System.Threading.Tasks.Task LoadDataAsync()
+    public async Task LoadDataAsync()
     {
-        saveData = await DataUtils.LoadFileAsync<MessageSaveData>(name, FOLDER_NAME);
+        saveData = await DataUtils.LoadFileAsync<MessageSaveData>(name, FolderName);
     }
 }

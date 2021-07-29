@@ -13,12 +13,12 @@ public class CalendarData : ScriptableObject, IDataModel
     public int DaysInMonth = 28;
     public int MonthsInYear = 4;
 
-    public const string FOLDER_NAME = "CalendarSaveData";
-    public const string FILE_NAME = "CalendarData";
+    public const string FolderName = "CalendarSaveData";
+    public const string FileName = "CalendarData";
 
     public static string FilePath
     {
-        get => DataUtils.GetSaveFilePath(FOLDER_NAME, FILE_NAME);
+        get => DataUtils.GetSaveFilePath(FolderName, FileName);
     }
 
     [Header("Data to update IN GAME")]
@@ -52,7 +52,7 @@ public class CalendarData : ScriptableObject, IDataModel
 
     public void SaveData()
     {
-        DataUtils.SaveFileAsync(name, FOLDER_NAME, CurrentDate);
+        DataUtils.SaveFileAsync(name, FolderName, CurrentDate);
     }
 
     public async Task LoadDataAsync()

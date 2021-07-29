@@ -25,7 +25,7 @@ public class MissionBonus : ScriptableObject, IBonus
 
     #region Accessors
     public string FlavourText => flavourText;
-    public Pilot RequiredPilot => requiredPilot;
+    public Pilot RequiredPilot { get => requiredPilot; set => requiredPilot = value; }
     public float MoneyExponent => BonusExponents.MoneyExponent;
     public float XpExponent => BonusExponents.XpExponent;
     #endregion

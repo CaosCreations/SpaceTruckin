@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "CustomisationTypeContainer", menuName = "ScriptableObjects/CustomisationOptionContainer", order = 1)]
-public class CustomisationTypeContainer : ScriptableObject
+public class CustomisationTypeContainer : ScriptableObject, IScriptableObjectContainer<CustomisationType>
 {
-    public CustomisationType[] CustomisationTypes;
+    [field: SerializeField]
+    public CustomisationType[] Elements { get; set; }
 }

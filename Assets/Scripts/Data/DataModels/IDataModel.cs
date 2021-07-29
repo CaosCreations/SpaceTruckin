@@ -1,5 +1,7 @@
-﻿public interface IDataModel
+﻿using System.Threading.Tasks;
+
+public interface IDataModel
 { 
     void SaveData();
-    System.Threading.Tasks.Task LoadDataAsync();
+    Task LoadDataAsync();
 }

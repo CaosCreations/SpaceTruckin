@@ -53,13 +53,13 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
     public void Init()
     {
-        if (DataUtils.SaveFolderExists(PlayerData.FOLDER_NAME))
+        if (DataUtils.SaveFolderExists(PlayerData.FolderName))
         {
             LoadDataAsync();
         }
         else
         {
-            DataUtils.CreateSaveFolder(PlayerData.FOLDER_NAME);
+            DataUtils.CreateSaveFolder(PlayerData.FolderName);
         }
 
         PlayerObject = GameObject.FindGameObjectWithTag(PlayerConstants.PlayerTag);
@@ -166,7 +166,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
     public void DeleteData()
     {
-        DataUtils.RecursivelyDeleteSaveData(PlayerData.FOLDER_NAME);
+        DataUtils.RecursivelyDeleteSaveData(PlayerData.FolderName);
     }
     #endregion
 }

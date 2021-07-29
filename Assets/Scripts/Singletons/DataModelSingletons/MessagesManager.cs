@@ -5,7 +5,7 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
     public static MessagesManager Instance { get; private set; }
 
     [SerializeField] private MessageContainer messageContainer;
-    public Message[] Messages { get => messageContainer.Messages; }
+    public Message[] Messages { get => messageContainer.Elements; }
 
     private void Awake()
     {
@@ -23,13 +23,13 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        if (DataUtils.SaveFolderExists(Message.FOLDER_NAME))
+        if (DataUtils.SaveFolderExists(Message.FolderName))
         {
             LoadDataAsync();
         }
         else
         {
-            DataUtils.CreateSaveFolder(Message.FOLDER_NAME);
+            DataUtils.CreateSaveFolder(Message.FolderName);
         }
 
         if (Messages == null)
@@ -37,20 +37,31 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
             Debug.LogError("No message data");
         }
 
-        UnlockMessagesForTodaysDate();
-        CalendarManager.OnEndOfDay += UnlockMessagesForTodaysDate;
+        UnlockMessages();
+        CalendarManager.OnEndOfDay += UnlockMessages;
+    }
+
+    public static void UnlockMessages()
+    {
+        foreach (Message message in Instance.Messages)
+        {
+            if (IsMessageUnlockable(message))
+            {
+                message.IsUnlocked = true;
+            }
+        }
     }
 
     /// <summary>
     /// Unlock messages that have a Total Money Earned condition that the player satisfies. 
     /// </summary>
-    public void UnlockMessagesRequiringMoney()
+    public static void UnlockMessagesRequiringMoney()
     {
         foreach (Message message in Instance.Messages)
         {
-            if (message != null 
-                && !message.IsUnlocked 
-                && message.IsUnlockedWithMoney 
+            if (message != null
+                && !message.IsUnlocked
+                && message.IsUnlockedWithMoney
                 && PlayerManager.Instance.CanSpendMoney(message.MoneyNeededToUnlock))
             {
                 message.IsUnlocked = true;
@@ -61,17 +72,36 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
     /// <summary>
     /// Unlock messages that have a Date condition that the current Date surpasses.
     /// </summary>
-    public void UnlockMessagesForTodaysDate() 
+    public static void UnlockMessagesForTodaysDate()
     {
         foreach (Message message in Instance.Messages)
         {
-            if (message != null 
+            if (message != null
                 && !message.IsUnlocked
                 && message.IsUnlockedByDate
                 && CalendarManager.Instance.CurrentDate >= message.DateToUnlockOn)
             {
                 message.IsUnlocked = true;
             }
+        }
+    }
+
+    private static bool IsMessageUnlockable(Message message)
+    {
+        if (message == null || message.IsUnlocked)
+            return false;
+
+        switch (message.UnlockCondition)
+        {
+            case MessageUnlockCondition.TotalMoney:
+                return message.IsUnlockedWithMoney
+                    && PlayerManager.Instance.CanSpendMoney(message.MoneyNeededToUnlock);
+
+            case MessageUnlockCondition.Date:
+                return CalendarManager.Instance.CurrentDate >= message.DateToUnlockOn;
+
+            default:
+                return false;
         }
     }
 

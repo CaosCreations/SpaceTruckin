@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c90981045dcf564ca5a5e8e5da29649, type: 3}
   m_Name: VestaCactusMilk_Mission
   m_EditorClassIdentifier: 
-  missionName: 
+  missionName: Vesta Cactus Milk
   customer: Barry [BAR-8362]
   cargo: 'Vesta Cactus Milk: 10 gallons'
   description: "Hey friendo! Here\u2019s the order update I said I\u2019d shoot you!
@@ -24,14 +24,15 @@ MonoBehaviour:
   isRepeatable: 1
   hasRandomOutcomes: 1
   outcomes:
-  - {fileID: 11400000, guid: efbf1a0dc439c224fb074156ec201368, type: 2}
+  - {fileID: 0}
+  missionModifier: {fileID: 0}
   fondnessGranted: 0
   offerTimeLimitInDays: 0
   offerExpiryFondnessDeduction: 0
   thankYouMessage: {fileID: 0}
   saveData:
     hasBeenUnlocked: 0
-    hasBeenAccepted: 0
+    hasBeenAccepted: 1
     offerExpiryConsequencesApplied: 0
     daysLeftToComplete: 0
     numberOfCompletions: 0
@@ -43,3 +44,4 @@ MonoBehaviour:
       Day: 0
       Month: 0
       Year: 0
+    missionBonus: {fileID: 0}
