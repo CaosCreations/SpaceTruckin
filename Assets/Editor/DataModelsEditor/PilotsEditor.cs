@@ -62,6 +62,7 @@ public class PilotsEditor : MonoBehaviour
         foreach (var pilot in pilotsContainer.Elements)
         {
             SaveDataEditor.NullifyFields(pilot.PilotData);
+            EditorUtility.SetDirty(pilot);
         }
 
         EditorUtility.SetDirty(pilotsContainer);

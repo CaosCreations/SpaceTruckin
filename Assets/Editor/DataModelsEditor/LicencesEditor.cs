@@ -60,6 +60,9 @@ public class LicencesEditor : MonoBehaviour
         foreach (var licence in licenceContainer.Elements)
         {
             SaveDataEditor.NullifyFields(licence.saveData);
+            EditorUtility.SetDirty(licence);
         }
+
+        EditorUtility.SetDirty(licenceContainer);
     }
 }

@@ -124,6 +124,7 @@ public class MissionsEditor : MonoBehaviour
         foreach (var mission in missionContainer.Elements)
         {
             SaveDataEditor.NullifyFields(mission.saveData);
+            EditorUtility.SetDirty(mission);
         }
 
         EditorUtility.SetDirty(missionContainer);
