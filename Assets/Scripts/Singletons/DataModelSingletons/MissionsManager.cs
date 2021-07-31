@@ -352,9 +352,25 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
             }
         }
     }
+
+    private static void GiveMissionBonus(string missionName, bool isPilotSpecific = false)
+    {
+        MissionBonus missionBonus = GetRandomBonus(isPilotSpecific);
+
+        Mission mission = Instance.Missions.FirstOrDefault(x => x.Name.Equals(missionName));
+
+        if (mission != null)
+        {
+            mission.Bonus = missionBonus;
+        }
+        else
+        {
+            Debug.LogError($"Mission '{missionName}' does not exist. Fix the name in Lua function '{nameof(GiveMissionBonus)}'");
+        }
+    }
     #endregion
 
-    #region Lua Function 
+    #region Lua Function Registration
     public void RegisterLuaFunctions()
     {
         Lua.RegisterFunction(
@@ -366,12 +382,18 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
             DialogueConstants.MissionOfferExpiredFunctionName,
             this,
             SymbolExtensions.GetMethodInfo(() => HasMissionOfferExpired(string.Empty, string.Empty)));
+
+        Lua.RegisterFunction(
+            DialogueConstants.GiveMissionBonusFunctionName,
+            this,
+            SymbolExtensions.GetMethodInfo(() => GiveMissionBonus(string.Empty, false)));
     }
 
     public void UnregisterLuaFunctions()
     {
         Lua.UnregisterFunction(DialogueConstants.MissionCompletedFunctionName);
         Lua.UnregisterFunction(DialogueConstants.MissionOfferExpiredFunctionName);
+        Lua.UnregisterFunction(DialogueConstants.GiveMissionBonusFunctionName);
     }
     #endregion
 
