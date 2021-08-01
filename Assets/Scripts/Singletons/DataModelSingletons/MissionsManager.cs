@@ -44,10 +44,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
             DataUtils.CreateSaveFolder(Mission.FolderName);
         }
 
-        if (Missions?.Length <= 0)
-        {
-            Debug.LogError("No mission data found");
-        }
+        LogMissionDataStatus();
 
         ScheduledMissions = new List<ScheduledMission>();
 
@@ -182,6 +179,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         }
     }
 
+    #region Scheduled Missions
     public static ScheduledMission GetScheduledMission(Mission mission)
     {
         return ScheduledMissions.FirstOrDefault(x => x.Mission == mission);
@@ -298,16 +296,50 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
             }
         });
     }
+    #endregion
 
+    #region Bonuses
     public static MissionBonus GetRandomBonus(bool isPilotSpecific = false)
     {
-        MissionBonus randomBonus = Instance.Bonuses.GetRandomElement();
+        var randomBonus = Instance.Bonuses.GetRandomItem();
 
-        if (isPilotSpecific)
-            randomBonus.RequiredPilot = PilotsManager.GetRandomHiredPilot();
+        if (randomBonus == null)
+        {
+            Debug.LogError("There are no Bonuses in the container");
+            return null;
+        }
+
+        randomBonus.RequiredPilot = isPilotSpecific ? PilotsManager.GetRandomHiredPilot() : null;
 
         return randomBonus;
     }
+
+    /// <summary>
+    /// Gets a random Bonus that is not assigned to a Mission (i.e. is null on that Mission field) 
+    /// </summary>
+    /// <param name="isPilotSpecific"></param>
+    /// <returns></returns>
+    public static MissionBonus GetRandomBonusNotAttachedToAMission(bool isPilotSpecific = false)
+    {
+        var availableBonuses = Instance.Bonuses
+            .Where(x => !Instance.Missions.Any(
+                y => y != null
+                && (y.Bonus != null
+                || y.Bonus != x)));
+
+        if (availableBonuses.IsNullOrEmpty())
+        {
+            Debug.LogError("There are no Bonuses in the container that are not already tied to a Mission");
+            return null;
+        }
+
+        var randomBonus = availableBonuses.GetRandomItem();
+
+        randomBonus.RequiredPilot = isPilotSpecific ? PilotsManager.GetRandomHiredPilot() : null;
+
+        return randomBonus;
+    }
+    #endregion
 
     #region Dialogue Integration
     public bool HasMissionBeenCompletedForCustomer(string missionName, string customerName)
@@ -352,25 +384,9 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
             }
         }
     }
-
-    private static void GiveMissionBonus(string missionName, bool isPilotSpecific = false)
-    {
-        MissionBonus missionBonus = GetRandomBonus(isPilotSpecific);
-
-        Mission mission = Instance.Missions.FirstOrDefault(x => x.Name.Equals(missionName));
-
-        if (mission != null)
-        {
-            mission.Bonus = missionBonus;
-        }
-        else
-        {
-            Debug.LogError($"Mission '{missionName}' does not exist. Fix the name in Lua function '{nameof(GiveMissionBonus)}'");
-        }
-    }
     #endregion
 
-    #region Lua Function Registration
+    #region Lua Function 
     public void RegisterLuaFunctions()
     {
         Lua.RegisterFunction(
@@ -382,18 +398,12 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
             DialogueConstants.MissionOfferExpiredFunctionName,
             this,
             SymbolExtensions.GetMethodInfo(() => HasMissionOfferExpired(string.Empty, string.Empty)));
-
-        Lua.RegisterFunction(
-            DialogueConstants.GiveMissionBonusFunctionName,
-            this,
-            SymbolExtensions.GetMethodInfo(() => GiveMissionBonus(string.Empty, false)));
     }
 
     public void UnregisterLuaFunctions()
     {
         Lua.UnregisterFunction(DialogueConstants.MissionCompletedFunctionName);
         Lua.UnregisterFunction(DialogueConstants.MissionOfferExpiredFunctionName);
-        Lua.UnregisterFunction(DialogueConstants.GiveMissionBonusFunctionName);
     }
     #endregion
 
@@ -440,6 +450,23 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     public void DeleteData()
     {
         DataUtils.RecursivelyDeleteSaveData(Mission.FolderName);
+    }
+    #endregion
+
+    #region Logging
+    /// <summary>
+    /// Logs if any scriptable object container's are null or empty
+    /// </summary>
+    private static void LogMissionDataStatus()
+    {
+        if (Instance.Missions.IsNullOrEmpty())
+            Debug.LogError("No Mission data found");
+
+        if (Instance.Outcomes.IsNullOrEmpty())
+            Debug.LogError("No MissionOutcome data found");
+
+        if (Instance.Bonuses.IsNullOrEmpty())
+            Debug.LogError("No MissionBonus data found");
     }
     #endregion
 }
