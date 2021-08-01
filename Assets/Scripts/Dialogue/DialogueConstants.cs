@@ -5,9 +5,10 @@
     public const string MissionOfferExpiredFunctionName = "HasMissionOfferExpired";
     public const string DateReachedFunctionName = "HasDateBeenReached";
     public const string SpendMoneyFunctionName = "SpendMoney";
-
+    public const string GiveMissionBonusFunctionName = "GiveMissionBonus";
 
     // Actor field names
     public const string FondnessFieldName = "Fondness";
     public const string HasCompletedConversationTodayFieldName = "HasCompletedConversationToday";
+
 }
