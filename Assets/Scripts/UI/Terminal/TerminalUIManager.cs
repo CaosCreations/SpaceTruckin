@@ -26,7 +26,7 @@ public class TerminalUIManager : UICanvasBase
         Missions, Messages, Analytics, Fleet, Licences
     }
 
-    private void Start()
+    private void Awake()
     {
         SetupButtonListeners();
         TabButtonClicked(Tab.Missions);
