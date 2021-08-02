@@ -84,7 +84,7 @@ public class PilotXpOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
         scheduled.MissionToArchive.TotalPilotXpGained += totalXpGained;
 
         scheduled.MissionToArchive.TotalXpAfterMission += PilotsManager.AwardXp(
-            scheduled.Pilot, xpAfterBonuses);
+            scheduled.Pilot, totalXpGained);
     }
 
     public void LogOutcomeElements()
