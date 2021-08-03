@@ -34,7 +34,7 @@ public class PlayerAnimationManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("The PlayerAnimationParameterType is missing from the ParameterMap dictionary. Please add it.");
+            Debug.LogError($"The PlayerAnimationParameterType '{nameof(playerAnimationParameterType)}' is missing from the ParameterMap dictionary.");
         }
     }
 }

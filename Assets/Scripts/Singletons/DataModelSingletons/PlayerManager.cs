@@ -7,6 +7,10 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
     [Header("Set In Editor")]
     [SerializeField] private PlayerData playerData;
+
+    public static event System.Action OnFinancialTransaction;
+
+    #region Property Accessors
     public string PlayerName
     {
         get => playerData.PlayerName; set => playerData.PlayerName = value;
@@ -34,8 +38,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
     public static GameObject PlayerObject { get; private set; }
     public static PlayerMovement PlayerMovement { get; private set; }
-
-    public static event System.Action OnFinancialTransaction;
+    #endregion
 
     private void Awake()
     {
