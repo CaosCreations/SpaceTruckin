@@ -113,12 +113,12 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
         scheduled.Mission.NumberOfCompletions++;
 
-        // The Archived Mission fields are set throughout the outcome processing.
-        ProcessMissionOutcomes(scheduled);
-
         // Instantiate an Archived Mission object to store the stats of the completed Mission.
         scheduled.Mission.MissionToArchive = new ArchivedMission(
             scheduled.Mission, scheduled.Pilot, scheduled.Mission.NumberOfCompletions);
+
+        // The Archived Mission fields are set throughout the outcome processing.
+        ProcessMissionOutcomes(scheduled);
 
         scheduled.Pilot.MissionsCompleted++;
         scheduled.MissionToArchive.MissionsCompletedByPilotAtTimeOfMission = scheduled.Pilot.MissionsCompleted;
