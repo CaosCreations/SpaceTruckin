@@ -9,7 +9,7 @@ public static class UIUtils
     /// </summary>
     /// <param name="template">The template to replace.</param>
     /// <param name="dataModel">An optional data model used to get information about a specific object</param>
-    public static string GetTemplateReplacement(string template, IDataModel dataModel = null)
+    public static string GetGameStateTemplateReplacement(string template, IDataModel dataModel = null)
     {
         string replacement = string.Empty;
 
@@ -53,15 +53,13 @@ public static class UIUtils
         {
             return addedChar;
         }
-        else
-        {
-            return '\0';
-        }
+
+        return '\0';
     }
 
     public static Texture2D GetUITexture(int width, int height, Color colour)
     {
-        Color[] pixels = new Color[width * height];
+        Color32[] pixels = new Color32[width * height];
 
         for (int i = 0; i < pixels.Length; ++i)
         {
@@ -69,7 +67,7 @@ public static class UIUtils
         }
 
         Texture2D texture = new Texture2D(width, height);
-        texture.SetPixels(pixels);
+        texture.SetPixels32(pixels);
         texture.Apply();
 
         return texture;

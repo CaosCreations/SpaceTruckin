@@ -27,8 +27,8 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
         get => calendarData.CurrentDate.Day;
         set => calendarData.CurrentDate.Day = value;
     }
-    public int CurrentMonth 
-    { 
+    public int CurrentMonth
+    {
         get => calendarData.CurrentDate.Month;
         set => calendarData.CurrentDate.Month = value;
     }
@@ -55,13 +55,13 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        if (DataUtils.SaveFolderExists(CalendarData.FOLDER_NAME))
+        if (DataUtils.SaveFolderExists(CalendarData.FolderName))
         {
             LoadDataAsync();
         }
         else
         {
-            DataUtils.CreateSaveFolder(CalendarData.FOLDER_NAME);
+            DataUtils.CreateSaveFolder(CalendarData.FolderName);
         }
 
         if (calendarData == null)
@@ -92,7 +92,6 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
 
         // Notify other objects that the day has ended
         OnEndOfDay?.Invoke();
-
     }
 
     private static void UpdateCalendarData()
@@ -164,7 +163,7 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
 
     public void DeleteData()
     {
-        DataUtils.RecursivelyDeleteSaveData(PlayerData.FOLDER_NAME);
+        DataUtils.RecursivelyDeleteSaveData(PlayerData.FolderName);
     }
     #endregion
 }

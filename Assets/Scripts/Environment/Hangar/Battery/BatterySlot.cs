@@ -14,7 +14,7 @@ public class BatterySlot : InteractableObject
             ShipsManager.EnableWarp(hangarSlot.Ship);
             batteryCharging.Discharge();
         }
-        
+
         LogInformation(batteryCharging, canTransferEnergy);
     }
 

@@ -16,7 +16,7 @@ public class PilotsEditor : MonoBehaviour
         {
             var pilotsContainer = EditorHelper.GetAsset<PilotsContainer>();
 
-            foreach (var pilot in pilotsContainer.Pilots)
+            foreach (var pilot in pilotsContainer.Elements)
             {
                 pilot.IsHired = isHired;
             }
@@ -38,7 +38,7 @@ public class PilotsEditor : MonoBehaviour
         {
             var pilotsContainer = EditorHelper.GetAsset<PilotsContainer>();
 
-            foreach (var pilot in pilotsContainer.Pilots)
+            foreach (var pilot in pilotsContainer.Elements)
             {
                 pilot.Level = 1;
                 pilot.CurrentXp = 0;
@@ -59,9 +59,10 @@ public class PilotsEditor : MonoBehaviour
     {
         var pilotsContainer = EditorHelper.GetAsset<PilotsContainer>();
 
-        foreach (var pilot in pilotsContainer.Pilots)
+        foreach (var pilot in pilotsContainer.Elements)
         {
             SaveDataEditor.NullifyFields(pilot.PilotData);
+            EditorUtility.SetDirty(pilot);
         }
 
         EditorUtility.SetDirty(pilotsContainer);

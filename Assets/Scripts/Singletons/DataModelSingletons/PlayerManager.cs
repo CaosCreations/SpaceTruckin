@@ -1,11 +1,16 @@
-﻿using UnityEngine;
+﻿using PixelCrushers.DialogueSystem;
+using UnityEngine;
 
-public class PlayerManager : MonoBehaviour, IDataModelManager
+public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegistrar
 {
     public static PlayerManager Instance;
 
     [Header("Set In Editor")]
     [SerializeField] private PlayerData playerData;
+
+    public static event System.Action OnFinancialTransaction;
+
+    #region Property Accessors
     public string PlayerName
     {
         get => playerData.PlayerName; set => playerData.PlayerName = value;
@@ -17,31 +22,23 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     }
     public long TotalMoneyAcquired
     {
-        get => playerData.PlayerTotalMoneyAcquired; 
+        get => playerData.PlayerTotalMoneyAcquired;
         set => playerData.PlayerTotalMoneyAcquired = value;
     }
-    public int LicencePoints
-    {
-        get => playerData.PlayerLicencePoints;
-    }
-    public int TotalLicencePointsAcquired
-    {
-        get => playerData.PlayerTotalLicencePointsAcquired;
-    }
-    public int RepairTools 
-    { 
-        get => playerData.PlayerRepairTools; set => playerData.PlayerRepairTools = value; 
-    }
+    public int LicencePoints => playerData.PlayerLicencePoints;
+    public int TotalLicencePointsAcquired => playerData.PlayerTotalLicencePointsAcquired;
 
-
+    public int RepairTools
+    {
+        get => playerData.PlayerRepairTools; set => playerData.PlayerRepairTools = value;
+    }
 
     public static bool CanRepair => Instance.RepairTools > 0;
     public static bool IsPaused { get; set; }
 
     public static GameObject PlayerObject { get; private set; }
     public static PlayerMovement PlayerMovement { get; private set; }
-
-    public static event System.Action OnFinancialTransaction;
+    #endregion
 
     private void Awake()
     {
@@ -59,16 +56,17 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        if (DataUtils.SaveFolderExists(PlayerData.FOLDER_NAME))
+        if (DataUtils.SaveFolderExists(PlayerData.FolderName))
         {
             LoadDataAsync();
         }
         else
         {
-            DataUtils.CreateSaveFolder(PlayerData.FOLDER_NAME);
+            DataUtils.CreateSaveFolder(PlayerData.FolderName);
         }
 
         PlayerObject = GameObject.FindGameObjectWithTag(PlayerConstants.PlayerTag);
+
         if (PlayerObject != null)
         {
             PlayerMovement = PlayerObject.GetComponent<PlayerMovement>();
@@ -82,7 +80,11 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         {
             Debug.LogError("No player data found");
         }
+
+        RegisterLuaFunctions();
     }
+
+    private void OnDisable() => UnregisterLuaFunctions();
 
     public bool CanSpendMoney(long amount)
     {
@@ -96,6 +98,12 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
     public void SpendMoney(long amount)
     {
         Instance.Money -= amount;
+        OnFinancialTransaction?.Invoke();
+    }
+
+    public void SpendMoney(double amount)
+    {
+        Instance.Money -= (long)amount;
         OnFinancialTransaction?.Invoke();
     }
 
@@ -133,7 +141,20 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
         Debug.Log($"Player name set to: {Instance.PlayerName}");
     }
 
-    
+    #region Lua Function Registration
+    public void RegisterLuaFunctions()
+    {
+        Lua.RegisterFunction(
+            DialogueConstants.SpendMoneyFunctionName,
+            this,
+            SymbolExtensions.GetMethodInfo(() => SpendMoney(0D)));
+    }
+
+    public void UnregisterLuaFunctions()
+    {
+        Lua.UnregisterFunction(DialogueConstants.SpendMoneyFunctionName);
+    }
+    #endregion
 
     #region Persistence
     public void SaveData()
@@ -148,7 +169,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager
 
     public void DeleteData()
     {
-        DataUtils.RecursivelyDeleteSaveData(PlayerData.FOLDER_NAME);
+        DataUtils.RecursivelyDeleteSaveData(PlayerData.FolderName);
     }
     #endregion
 }

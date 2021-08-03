@@ -16,7 +16,7 @@ public partial class Licence : ScriptableObject, IDataModel
     [Header("Data to update IN GAME")]
     public LicenceSaveData saveData;
 
-    public static string FOLDER_NAME = "LicenceSaveData";
+    public const string FolderName = "LicenceSaveData";
 
     [Serializable]
     public class LicenceSaveData
@@ -27,11 +27,11 @@ public partial class Licence : ScriptableObject, IDataModel
 
     public void SaveData()
     {
-        DataUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
+        DataUtils.SaveFileAsync(name, FolderName, saveData);
     }
 
     public async Task LoadDataAsync()
     {
-        saveData = await DataUtils.LoadFileAsync<LicenceSaveData>(name, FOLDER_NAME);
+        saveData = await DataUtils.LoadFileAsync<LicenceSaveData>(name, FolderName);
     }
 }

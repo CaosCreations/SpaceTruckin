@@ -12,7 +12,7 @@ public class NPCSpawner : MonoBehaviour
     private void Start()
     {
         CalendarManager.OnEndOfDay += CueSpawnsForToday;
-        
+
         // If we have passed any spawn dates set in the inspector when the game starts,
         // then remove them from the List.
         RemovePastSpawnDateTimes();

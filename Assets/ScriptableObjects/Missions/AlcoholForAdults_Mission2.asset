@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c90981045dcf564ca5a5e8e5da29649, type: 3}
   m_Name: AlcoholForAdults_Mission2
   m_EditorClassIdentifier: 
-  missionDurationInDays: 1
   missionName: Alcohol for adults
   customer: Chris M.P.
   cargo: 10 Kegs of Oshunian Ale <br> 5 Cases of Myorjiin Energy Drink <br> 5 Cases
@@ -25,21 +24,30 @@ MonoBehaviour:
     so it will be a whole day\u2019s journey through the disputed asteroid belt.
     It\u2019s risky, I know, but did I mention they paid upfront? You can probably
     squeeze a hefty tip out of them too.\u201D"
+  missionDurationInDays: 1
   fuelCost: 35
   unlockCondition: 0
   moneyNeededToUnlock: 1000
+  isRepeatable: 1
   hasRandomOutcomes: 1
-  outcomes:
-  - {fileID: 11400000, guid: cd808da8f4f8bf544a83cb5dad3bb0e9, type: 2}
-  - {fileID: 11400000, guid: 4786970603a2361419f643b4f0f7b901, type: 2}
-  - {fileID: 11400000, guid: 5096a8f285b35a24d916c02ff8d5e371, type: 2}
+  outcomes: []
+  missionModifier: {fileID: 11400000, guid: 19df9cfaac1f5de4b8fb064a33cc0f3c, type: 2}
+  missionBonus: {fileID: 11400000, guid: c5ccf81c396bf094a96dfa76f73b4d1b, type: 2}
+  fondnessGranted: 0
+  offerTimeLimitInDays: 0
+  offerExpiryFondnessDeduction: 0
   thankYouMessage: {fileID: 11400000, guid: fef130548025a6f4083206ceb7389c39, type: 2}
   saveData:
     hasBeenUnlocked: 1
     hasBeenAccepted: 1
+    offerExpiryConsequencesApplied: 0
     daysLeftToComplete: 0
-    numberOfCompletions: 0
+    numberOfCompletions: 1
     dateUnlocked:
+      Day: 1
+      Month: 1
+      Year: 1
+    dateAccepted:
       Day: 1
       Month: 1
       Year: 1

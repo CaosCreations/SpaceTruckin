@@ -5,7 +5,7 @@ public class InteractableObject : MonoBehaviour
     // Set this OnEnter and OnExit to avoiding repeatedly comparing tags
     public bool IsPlayerColliding { get; protected set; }
 
-    [SerializeField] public Collider Collider;
+    public Collider Collider;
 
     /// <summary>
     /// Can be called whenever we want to check whether the object is colliding with the player
@@ -16,9 +16,9 @@ public class InteractableObject : MonoBehaviour
     {
         Collider[] colliders = Physics.OverlapBox(transform.position, Collider.bounds.extents, Quaternion.identity);
 
-        foreach(Collider item in colliders)
+        foreach (Collider item in colliders)
         {
-            Debug.Log(item.name);   
+            Debug.Log(item.name);
 
             if (item.CompareTag(PlayerConstants.PlayerTag))
             {
@@ -32,17 +32,21 @@ public class InteractableObject : MonoBehaviour
 
     public virtual void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(PlayerConstants.PlayerTag) == true)
+        if (other.CompareTag(PlayerConstants.PlayerTag))
+        {
             IsPlayerColliding = true;
+        }
     }
 
     public virtual void OnTriggerExit(Collider other)
     {
         Debug.Log("On trigger exit Interactable. " + other.name);
-        if(other.CompareTag(PlayerConstants.PlayerTag) == true)
+
+        if (other.CompareTag(PlayerConstants.PlayerTag))
         {
             IsPlayerColliding = false;
         }
+
         Debug.Log("IsPlayerColliding = " + IsPlayerColliding);
     }
 }

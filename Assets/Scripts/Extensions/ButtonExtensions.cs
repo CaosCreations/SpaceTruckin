@@ -14,6 +14,7 @@ public static class ButtonExtensions
     public static void SetText(this Button self, string text, FontType fontType = FontType.Button)
     {
         Text buttonText = self.GetComponentInChildren<Text>();
+
         if (buttonText != null && !string.IsNullOrWhiteSpace(text))
         {
             buttonText.SetText(text, fontType);
@@ -23,6 +24,7 @@ public static class ButtonExtensions
     public static void SetColour(this Button self, Color newColour)
     {
         Image image = self.GetComponent<Image>();
+
         if (image != null)
         {
             image.color = newColour;

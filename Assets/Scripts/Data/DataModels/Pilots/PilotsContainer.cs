@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "PilotsContainer", menuName = "ScriptableObjects/PilotContainer", order = 1)]
-public class PilotsContainer : ScriptableObject
+public class PilotsContainer : ScriptableObject, IScriptableObjectContainer<Pilot>
 {
-    public Pilot[] Pilots; 
+    [field: SerializeField]
+    public Pilot[] Elements { get; set; } 
 }

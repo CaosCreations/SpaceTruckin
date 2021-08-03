@@ -1,4 +1,6 @@
-﻿public partial class Mission
+﻿using System.Linq;
+
+public partial class Mission
 {
     // This class is just for property accessors. 
     // The fields are all located in Mission.cs. 
@@ -48,39 +50,44 @@
     }
     public int FondnessGranted => fondnessGranted;
     public int OfferTimeLimitInDays => offerTimeLimitInDays;
-    public bool HasOfferExpired 
+    public bool HasOfferExpired
     {
-        get => CalendarUtils.HasTimePeriodElapsed(DateAccepted, offerTimeLimitInDays); 
+        get => CalendarUtils.HasTimePeriodElapsed(DateAccepted, offerTimeLimitInDays);
     }
-    public bool OfferExpiryConsequencesApplied 
+    public bool OfferExpiryConsequencesApplied
     {
-        get => saveData.offerExpiryConsequencesApplied; 
+        get => saveData.offerExpiryConsequencesApplied;
         set => saveData.offerExpiryConsequencesApplied = value;
     }
     public int OfferExpiryFondnessDeduction => offerExpiryFondnessDeduction;
-    public bool HasRandomOutcomes 
-    { 
+    public bool HasRandomOutcomes
+    {
         get => hasRandomOutcomes || Outcomes == null || Outcomes.Length <= 0;
-        set => hasRandomOutcomes = value; 
+        set => hasRandomOutcomes = value;
     }
     public bool IsRepeatable => isRepeatable;
     public bool IsAvailableForScheduling
     {
-        get => HasBeenAccepted 
+        get => HasBeenAccepted
             && !IsScheduled
             && !IsInProgress()
 
             // If non-repeatable mission offers expire, they can no longer be scheduled. 
             && (IsRepeatable || (!OfferExpiryConsequencesApplied && NumberOfCompletions <= 0));
     }
-    public bool IsScheduled => MissionsManager.GetScheduledMission(this) != null; 
+    public bool IsScheduled => MissionsManager.GetScheduledMission(this) != null;
     public MissionOutcome[] Outcomes { get => outcomes; set => outcomes = value; }
-    public ArchivedMission MissionToArchive 
+    public ArchivedMission MissionToArchive
     {
-        get => missionToArchive; set => missionToArchive = value; 
+        get => missionToArchive; set => missionToArchive = value;
     }
-    public ThankYouMessage ThankYouMessage 
-    { 
-        get => thankYouMessage; set => thankYouMessage = value; 
+    public ThankYouMessage ThankYouMessage
+    {
+        get => thankYouMessage; set => thankYouMessage = value;
     }
+    public bool HasModifier => missionModifier != null
+        && missionModifier.PossibleOutcomes != null
+        && missionModifier.PossibleOutcomes.Any();
+    public MissionModifier Modifier => missionModifier;
+    public MissionBonus Bonus { get => saveData.missionBonus; set => saveData.missionBonus = value; }
 }

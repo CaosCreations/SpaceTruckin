@@ -56,7 +56,7 @@ public class PlayerMovement : MonoBehaviour
         // If the player is not moving then then Movement Vector in PlayerMovement is 0
         // As we want a direction we only take the last non 0 Movement Vector
 
-        if(MovementVector != Vector3.zero)
+        if (MovementVector != Vector3.zero)
         {
             PlayerFacingDirection = new Vector3(MovementVector.x, 0f, MovementVector.y);
         }

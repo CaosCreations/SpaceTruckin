@@ -91,4 +91,27 @@ public class DialogueDatabaseManager : MonoBehaviour
                 actorKey.ToString(), DialogueConstants.HasCompletedConversationTodayFieldName, false);
         }
     }
+
+    // Todo: Make these methods generic or make more with different return types 
+    public static string GetLuaVariable(string variableName)
+    {
+        if (DialogueUtils.VariableExists(variableName))
+        {
+            return DialogueLua.GetVariable(variableName).asString;
+        }
+
+        Debug.LogError($"Lua variable '{variableName}' does not exist");
+        return string.Empty;
+    }
+
+    public static string GetActorField(string actorName, string fieldName)
+    {
+        if (DialogueUtils.ActorFieldExists(actorName, fieldName))
+        {
+            return DialogueLua.GetActorField(actorName, fieldName).asString;
+        }
+
+        Debug.LogError($"Lua actor '{actorName}' field '{fieldName}' does not exist");
+        return string.Empty;
+    }
 }

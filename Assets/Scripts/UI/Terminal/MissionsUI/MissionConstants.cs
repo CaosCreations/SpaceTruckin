@@ -1,46 +1,44 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MissionConstants : MonoBehaviour
 {
     // AvailableJobsContainer dimensions  
-    public static Vector2 availableJobsContainerAnchorMin = Vector2.zero;
-    public static Vector2 availableJobsContainerAnchorMax = new Vector2(0.5f, 1f);
-    public static Vector2 availableJobsContainerLocalPosition = new Vector2(-0.5f, -0.5f); 
-    public static Vector2 availableJobsContainerLocalScale = new Vector2(0.75f, 0.75f);
-    public static Vector2 availableJobsGridCellSize = new Vector2(128f, 128f);
-    public static Vector2 availableJobsGridSpacing = new Vector2(64f, 64f);
-    public static Vector2 availableJobsContainerLeftPadding = new Vector2(64f, 64f);
+    public static readonly Vector2 AvailableJobsContainerAnchorMin = Vector2.zero;
+    public static readonly Vector2 AvailableJobsContainerAnchorMax = new Vector2(0.5f, 1f);
+    public static readonly Vector2 AvailableJobsContainerLocalPosition = new Vector2(-0.5f, -0.5f);
+    public static readonly Vector2 AvailableJobsContainerLocalScale = new Vector2(0.75f, 0.75f);
+    public static readonly Vector2 AvailableJobsGridCellSize = new Vector2(128f, 128f);
+    public static readonly Vector2 AvailableJobsGridSpacing = new Vector2(64f, 64f);
+    public static readonly Vector2 AvailableJobsContainerLeftPadding = new Vector2(64f, 64f);
 
     // ScheduleContainer dimensions 
-    public static int scheduleSlots = 14; 
-    public static Vector2 scheduleContainerAnchorMin = new Vector2(0.5f, 0f);
-    public static Vector2 scheduleContainerAnchorMax = Vector2.one;
-    public static Vector2 scheduleContainerLocalScale = new Vector2(0.75f, 0.75f);
-    public static int scheduleContainerSpacing = 32;
-    public static int scheduleContainerLeftPadding = 32;
+    public const int ScheduleSlots = 14;
+    public static readonly Vector2 ScheduleContainerAnchorMin = new Vector2(0.5f, 0f);
+    public static readonly Vector2 ScheduleContainerAnchorMax = Vector2.one;
+    public static readonly Vector2 ScheduleContainerLocalScale = new Vector2(0.75f, 0.75f);
+    public const int ScheduleContainerSpacing = 32;
+    public const int ScheduleContainerLeftPadding = 32;
 
     // Common dimensions 
-    public static int gridTopPadding = 16; 
-    public static int gridLeftPadding = 16;
-    public static Vector2 gridCellSize = new Vector2(80f, 80f);  
-    public static Vector2 gridSpacing = new Vector2(32f, 32f); 
+    public const int GridTopPadding = 16;
+    public const int GridLeftPadding = 16;
+    public static readonly Vector2 GridCellSize = new Vector2(80f, 80f);
+    public static readonly Vector2 GridSpacing = new Vector2(32f, 32f);
 
     // Game object names 
-    public static string availableJobsContainerName = "AvailableJobsContainer";
-    public static string scheduleContainerName = "ScheduleContainer";
-    public static string scheduleSlotName = "ScheduleSlot";
+    public const string AvailableJobsContainerName = "AvailableJobsContainer";
+    public const string ScheduleContainerName = "ScheduleContainer";
+    public const string ScheduleSlotName = "ScheduleSlot";
 
     // Sprite paths
-    public static string jobSystemFolderPath = "Sprites/JobSystem/";
-    public static string containerBackgroundSpritePath = jobSystemFolderPath + "ScheduleBackground";
-    public static string scheduleSlotSpritePath = jobSystemFolderPath + "ScheduleSlot";
-    public static string jobSpritePath = jobSystemFolderPath + "Briefcase"; 
+    public const string JobSystemFolderPath = "Sprites/JobSystem/";
+    public const string ContainerBackgroundSpritePath = JobSystemFolderPath + "ScheduleBackground";
+    public const string ScheduleSlotSpritePath = JobSystemFolderPath + "ScheduleSlot";
+    public const string JobSpritePath = JobSystemFolderPath + "Briefcase";
 
     // Drag and drop parameters 
-    public static float dragAlpha = 0.5f;
-    public static float dropAlpha = 1f; 
+    public const float DragAlpha = 0.5f;
+    public const float DropAlpha = 1f;
 
 
 }

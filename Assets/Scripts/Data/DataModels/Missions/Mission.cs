@@ -7,7 +7,7 @@ public enum MissionUnlockCondition
     TotalMoney, ConversationNode
 }
 
-[CreateAssetMenu(fileName = "Mission", menuName = "ScriptableObjects/Mission", order = 1)]
+[CreateAssetMenu(fileName = "Mission", menuName = "ScriptableObjects/Missions/Mission", order = 1)]
 public partial class Mission : ScriptableObject, IDataModel
 {
     [Header("Set in Editor")]
@@ -18,13 +18,14 @@ public partial class Mission : ScriptableObject, IDataModel
     [SerializeField] private bool isRepeatable = true; // Default to repeatable missions
     [SerializeField] private bool hasRandomOutcomes;
     [SerializeField] private MissionOutcome[] outcomes;
+    [SerializeField] private MissionModifier missionModifier;
 
     [Tooltip("The number of relationship points with the customer awarded on first completion of the mission")]
     [SerializeField] private int fondnessGranted;
 
     [Tooltip("The time after which there are consequences for not completing the mission")]
     [SerializeField] private int offerTimeLimitInDays;
-    
+
     [Tooltip("The number of relationship points that are deducted if the time limit is exceeded")]
     [SerializeField] private int offerExpiryFondnessDeduction;
 
@@ -33,10 +34,9 @@ public partial class Mission : ScriptableObject, IDataModel
     [Header("Data to update IN GAME")]
     public MissionSaveData saveData;
 
-    [HideInInspector]
     private ArchivedMission missionToArchive;
 
-    public const string FOLDER_NAME = "MissionSaveData";
+    public const string FolderName = "MissionSaveData";
 
     [Serializable]
     public class MissionSaveData
@@ -46,10 +46,11 @@ public partial class Mission : ScriptableObject, IDataModel
         public bool hasBeenUnlocked, hasBeenAccepted;
 
         // Track this so consequences of not actioning an offer aren't applied multiple times.
-        public bool offerExpiryConsequencesApplied; 
+        public bool offerExpiryConsequencesApplied;
 
         public int daysLeftToComplete, numberOfCompletions;
         public Date dateUnlocked, dateAccepted;
+        public MissionBonus missionBonus;
     }
 
     private void OnValidate()
@@ -59,12 +60,12 @@ public partial class Mission : ScriptableObject, IDataModel
 
     public void SaveData()
     {
-        DataUtils.SaveFileAsync(name, FOLDER_NAME, saveData);
+        DataUtils.SaveFileAsync(name, FolderName, saveData);
     }
 
     public async Task LoadDataAsync()
     {
-        saveData = await DataUtils.LoadFileAsync<MissionSaveData>(name, FOLDER_NAME);
+        saveData = await DataUtils.LoadFileAsync<MissionSaveData>(name, FolderName);
     }
 
     public void UnlockIfConditionMet()

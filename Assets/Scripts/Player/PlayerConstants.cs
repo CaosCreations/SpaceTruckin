@@ -8,7 +8,7 @@ public class PlayerConstants : MonoBehaviour
     public const KeyCode ExitKey = KeyCode.Escape;
     public const KeyCode DropObjectKey = KeyCode.Q;
     public const KeyCode RespawnKey = KeyCode.R;
-    public static KeyCode SprintKey = KeyCode.LeftShift;
+    public const KeyCode SprintKey = KeyCode.LeftShift;
     public const KeyCode NextCardKey = KeyCode.RightArrow;
     public const KeyCode CloseCardCycleKey = KeyCode.Return;
     public const KeyCode ChooseNameKey = KeyCode.Return;
@@ -20,7 +20,7 @@ public class PlayerConstants : MonoBehaviour
     public const float RunSpeed = 7f;
     public const float Gravity = -9.81f;
     public const float KillFloorHeight = -25;
-    public static Vector3 PlayerResetPosition = new Vector3(210f, 380f, -247f);
+    public static readonly Vector3 PlayerResetPosition = new Vector3(210f, 380f, -247f);
     public const int EditorTargetFramerate = 60;
 
     // Prototyping
@@ -28,7 +28,7 @@ public class PlayerConstants : MonoBehaviour
     public const KeyCode TerminalShortcut = KeyCode.T;
     public const KeyCode NoticeboardShortcut = KeyCode.G;
 
-    public static List<KeyCode> HangarNodeShortcuts = new List<KeyCode>()
+    public static readonly List<KeyCode> HangarNodeShortcuts = new List<KeyCode>()
     {
         KeyCode.Alpha1,
         KeyCode.Alpha2,

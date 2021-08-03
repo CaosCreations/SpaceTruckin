@@ -12,4 +12,14 @@ public static class DialogueUtils
     {
         return Lua.Environment.GetValue("Actor") is LuaTable actorsTable ? actorsTable : null;
     }
+
+    public static bool VariableExists(string variableName)
+    {
+        return DialogueLua.DoesVariableExist(variableName);
+    }
+
+    public static bool ActorFieldExists(string actorName, string fieldName)
+    {
+        return DialogueLua.GetActorField(actorName, fieldName).luaValue != null;
+    }
 }

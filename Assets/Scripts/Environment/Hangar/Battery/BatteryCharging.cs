@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class BatteryCharging : MonoBehaviour
 {
     public bool IsCharged { get; set; }
 
     [SerializeField] private MeshRenderer meshRenderer;
+
     private Color depletedEmission;
     private Color chargedEmission;
 

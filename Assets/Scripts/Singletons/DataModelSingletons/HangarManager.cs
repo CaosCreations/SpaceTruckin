@@ -28,6 +28,7 @@ public class HangarManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
         FindSceneObjects();
     }
 
@@ -41,6 +42,7 @@ public class HangarManager : MonoBehaviour
         if (ship != null && NodeIsValid(node))
         {
             HangarSlot slot = GetSlotByNode(node);
+
             if (slot != null && slot.IsUnlocked)
             {
                 slot.Ship = ship;
@@ -158,12 +160,14 @@ public class HangarManager : MonoBehaviour
     private static void FindSceneObjects()
     {
         HangarSlots = FindObjectsOfType<HangarSlot>();
+
         if (HangarSlots == null)
         {
             Debug.LogError("Hangar slots not found");
         }
 
         BatteryWrappers = FindObjectsOfType<BatteryWrapper>();
+        
         if (BatteryWrappers.IsNullOrEmpty())
         {
             Debug.LogError("Battery wrappers are not found");
@@ -171,12 +175,14 @@ public class HangarManager : MonoBehaviour
 
         BatteriesContainer = GameObject.FindGameObjectWithTag(
             HangarConstants.BatteriesContainerTag);
+        
         if (BatteriesContainer == null)
         {
             Debug.LogError("Batteries container not found");
         }
 
         BatterySpawnPositionManager = FindObjectOfType<BatterySpawnPositionManager>();
+        
         if(BatterySpawnPositionManager == null)
         {
             Debug.LogError("Battery spawn position manager not found");
@@ -202,13 +208,13 @@ public class HangarManager : MonoBehaviour
             });
         }
         string json = JsonHelper.ListToJson(batterySaveData);
-        string folderPath = DataUtils.GetSaveFolderPath(BatteryWrapper.FOLDER_NAME);
-        DataUtils.SaveFileAsync(BatteryWrapper.FILE_NAME, folderPath, json);
+        string folderPath = DataUtils.GetSaveFolderPath(BatteryWrapper.FolderName);
+        DataUtils.SaveFileAsync(BatteryWrapper.FileName, folderPath, json);
     }
 
     public async static void LoadBatteryDataAsync()
     {
-        string json = await DataUtils.ReadFileAsync(BatteryWrapper.FILE_PATH);
+        string json = await DataUtils.ReadFileAsync(BatteryWrapper.FilePath);
         BatterySaveData[] batterySaveData = JsonHelper.ArrayFromJson<BatterySaveData>(json);
 
         if (!batterySaveData.IsNullOrEmpty())

@@ -8,7 +8,7 @@ using UnityEngine;
 
 public static class DataUtils
 {
-    public const string FILE_EXTENSION = ".truckin";
+    public const string FileExtension = ".truckin";
 
     public static async void SaveFileAsync<T>(string fileName, string folderName, T dataModel)
     {
@@ -25,7 +25,7 @@ public static class DataUtils
                 Debug.LogError($"{e.Message}\n{e.StackTrace}");
             }
         }
-        string filePath = Path.Combine(folderPath, fileName + FILE_EXTENSION);
+        string filePath = Path.Combine(folderPath, fileName + FileExtension);
         string fileContents = JsonUtility.ToJson(dataModel);
 
         try
@@ -61,7 +61,7 @@ public static class DataUtils
             }
         }
 
-        string filePath = Path.Combine(folderPath, fileName + FILE_EXTENSION);
+        string filePath = Path.Combine(folderPath, fileName + FileExtension);
 
         try
         {
@@ -83,7 +83,7 @@ public static class DataUtils
     public static async Task<T> LoadFileAsync<T>(string fileName, string folderName) where T : class, new()
     {
         string folderPath = GetSaveFolderPath(folderName);
-        string filePath = Path.Combine(folderPath, fileName + FILE_EXTENSION);
+        string filePath = Path.Combine(folderPath, fileName + FileExtension);
 
         if (File.Exists(filePath))
         {
@@ -111,7 +111,7 @@ public static class DataUtils
 
     public static string GetSaveFilePath(string folderName, string fileName)
     {
-        return Path.GetFullPath(Path.Combine(Application.persistentDataPath, folderName, fileName + FILE_EXTENSION));
+        return Path.GetFullPath(Path.Combine(Application.persistentDataPath, folderName, fileName + FileExtension));
     }
 
     public static void RecursivelyDeleteSaveData(string folderName)
@@ -128,7 +128,7 @@ public static class DataUtils
     {
         string folderPath = GetSaveFolderPath(folderName);
 
-        if (Directory.Exists(folderPath)) 
+        if (Directory.Exists(folderPath))
         {
             // Get entries so we can confirm that the folder is not empty
             IEnumerable<string> entries = Directory.EnumerateFileSystemEntries(folderPath);
@@ -138,12 +138,12 @@ public static class DataUtils
                 return true;
             }
         }
-        return false; 
+        return false;
     }
 
     public static bool IsNewGame()
     {
-        return !SaveFolderExists(PlayerData.FOLDER_NAME);
+        return !SaveFolderExists(PlayerData.FolderName);
     }
 
     public static void CreateSaveFolder(string folderName)

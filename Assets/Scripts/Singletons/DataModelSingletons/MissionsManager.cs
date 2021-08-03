@@ -9,8 +9,12 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     [SerializeField] private MissionContainer missionContainer;
     [SerializeField] private MissionOutcomeContainer missionOutcomeContainer;
-    public Mission[] Missions { get => missionContainer.Missions; }
-    public MissionOutcome[] Outcomes { get => missionOutcomeContainer.MissionOutcomes; }
+    [SerializeField] private MissionBonusContainer missionBonusContainer;
+
+    public Mission[] Missions => missionContainer.Elements;
+    public MissionOutcome[] Outcomes => missionOutcomeContainer.MissionOutcomes;
+    public MissionBonus[] Bonuses => missionBonusContainer.Elements;
+
     public static List<ScheduledMission> ScheduledMissions;
 
     private void Awake()
@@ -27,26 +31,20 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         }
     }
 
-    private void OnDisable()
-    {
-        UnregisterLuaFunctions();
-    }
+    private void OnDisable() => UnregisterLuaFunctions();
 
     public void Init()
     {
-        if (DataUtils.SaveFolderExists(Mission.FOLDER_NAME))
+        if (DataUtils.SaveFolderExists(Mission.FolderName))
         {
             LoadDataAsync();
         }
         else
         {
-            DataUtils.CreateSaveFolder(Mission.FOLDER_NAME);
+            DataUtils.CreateSaveFolder(Mission.FolderName);
         }
 
-        if (Missions?.Length <= 0)
-        {
-            Debug.LogError("No mission data found");
-        }
+        LogMissionDataStatus();
 
         ScheduledMissions = new List<ScheduledMission>();
 
@@ -109,30 +107,62 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
             }
 
             // Improve relationship with the client of the mission.
-            DialogueDatabaseManager.AddToActorFondness(scheduled.Mission.Customer, scheduled.Mission.FondnessGranted);
+            DialogueDatabaseManager.AddToActorFondness(
+                scheduled.Mission.Customer, scheduled.Mission.FondnessGranted);
         }
 
         scheduled.Mission.NumberOfCompletions++;
 
+        // The Archived Mission fields are set throughout the outcome processing.
+        ProcessMissionOutcomes(scheduled);
+
         // Instantiate an Archived Mission object to store the stats of the completed Mission.
-        scheduled.Mission.MissionToArchive = new ArchivedMission(scheduled.Mission, scheduled.Pilot, scheduled.Mission.NumberOfCompletions);
+        scheduled.Mission.MissionToArchive = new ArchivedMission(
+            scheduled.Mission, scheduled.Pilot, scheduled.Mission.NumberOfCompletions);
 
         scheduled.Pilot.MissionsCompleted++;
-        scheduled.Mission.MissionToArchive.MissionsCompletedByPilotAtTimeOfMission = scheduled.Pilot.MissionsCompleted;
-
-        // Randomise the Mission's outcomes if flag is set or they are missing. 
-        if (scheduled.Mission.HasRandomOutcomes)
-        {
-            AssignRandomOutcomes(scheduled.Mission);
-        }
-
-        // We will set the Archived Mission fields throughout the outcome processing. 
-        scheduled.Mission.ProcessOutcomes();
+        scheduled.MissionToArchive.MissionsCompletedByPilotAtTimeOfMission = scheduled.Pilot.MissionsCompleted;
 
         // Add the object to the archive once all outcomes have been processed. 
         ArchivedMissionsManager.AddToArchive(scheduled.Mission.MissionToArchive);
 
         ScheduledMissions.Remove(scheduled);
+    }
+
+    private static void ProcessMissionOutcomes(ScheduledMission scheduled)
+    {
+        // Randomise the Mission's outcomes if flag is set or they are missing. 
+        if (scheduled.Mission.HasRandomOutcomes)
+        {
+            scheduled.Mission.Outcomes = MissionUtils.GetRandomOutcomes(Instance.Outcomes);
+        }
+
+        scheduled.Mission.ProcessOutcomes();
+
+        // Some Missions have a MissionModifier, which gives additional outcomes based on attribute conditions.
+        if (scheduled.Mission.HasModifier)
+        {
+            ProcessMissionModifierOutcomes(scheduled);
+        }
+
+        // Reset the Mission's Bonus, as it only applies once.
+        scheduled.Bonus = null;
+    }
+
+    private static void ProcessMissionModifierOutcomes(ScheduledMission scheduled)
+    {
+        // Decide the outcome from the possible outcomes based on the Pilot's attribute points.
+        MissionModifierOutcome modifierOutcome = scheduled.Mission.Modifier.GetDecidedOutcome(scheduled.Pilot);
+
+        if (modifierOutcome != null)
+        {
+            if (modifierOutcome.HasRandomOutcomes)
+            {
+                modifierOutcome.Outcomes = MissionUtils.GetRandomOutcomes(Instance.Outcomes);
+            }
+
+            modifierOutcome.Process(scheduled);
+        }
     }
 
     private static void UnlockMissions()
@@ -149,24 +179,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         }
     }
 
-    private static void AssignRandomOutcomes(Mission mission)
-    {
-        var randomOutcomes = new List<MissionOutcome>();
-        Instance.Outcomes.Shuffle();
-
-        MoneyOutcome moneyOutcome = MissionUtils.GetOutcomeByType<MoneyOutcome>(Instance.Outcomes);
-        PilotXpOutcome pilotXpOutcome = MissionUtils.GetOutcomeByType<PilotXpOutcome>(Instance.Outcomes);
-        OmenOutcome omenOutcome = MissionUtils.GetOutcomeByType<OmenOutcome>(Instance.Outcomes);
-        ShipDamageOutcome shipDamageOutcome = MissionUtils.GetOutcomeByType<ShipDamageOutcome>(Instance.Outcomes);
-
-        if (moneyOutcome != null) randomOutcomes.Add(moneyOutcome);
-        if (pilotXpOutcome != null) randomOutcomes.Add(pilotXpOutcome);
-        if (omenOutcome != null) randomOutcomes.Add(omenOutcome);
-        if (shipDamageOutcome != null) randomOutcomes.Add(shipDamageOutcome);
-
-        mission.Outcomes = randomOutcomes.ToArray();
-    }
-
+    #region Scheduled Missions
     public static ScheduledMission GetScheduledMission(Mission mission)
     {
         return ScheduledMissions.FirstOrDefault(x => x.Mission == mission);
@@ -216,6 +229,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     public static void AddOrUpdateScheduledMission(Pilot pilot, Mission mission)
     {
         ScheduledMission scheduledMission = GetScheduledMission(mission);
+
         if (scheduledMission != null)
         {
             scheduledMission.Pilot = pilot;
@@ -269,9 +283,11 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     private static void LogScheduledMissions()
     {
         Debug.Log("Currently scheduled missions:\n");
+
         ScheduledMissions.ForEach(x =>
         {
             string stringRepresentation = GetScheduledMissionString(x);
+
             if (!string.IsNullOrEmpty(stringRepresentation
                 .RemoveAllWhitespace()
                 .RemoveCharacter(',')))
@@ -280,6 +296,50 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
             }
         });
     }
+    #endregion
+
+    #region Bonuses
+    public static MissionBonus GetRandomBonus(bool isPilotSpecific = false)
+    {
+        var randomBonus = Instance.Bonuses.GetRandomItem();
+
+        if (randomBonus == null)
+        {
+            Debug.LogError("There are no Bonuses in the container");
+            return null;
+        }
+
+        randomBonus.RequiredPilot = isPilotSpecific ? PilotsManager.GetRandomHiredPilot() : null;
+
+        return randomBonus;
+    }
+
+    /// <summary>
+    /// Gets a random Bonus that is not assigned to a Mission (i.e. is null on that Mission field) 
+    /// </summary>
+    /// <param name="isPilotSpecific"></param>
+    /// <returns></returns>
+    public static MissionBonus GetRandomBonusNotAttachedToAMission(bool isPilotSpecific = false)
+    {
+        var availableBonuses = Instance.Bonuses
+            .Where(x => !Instance.Missions.Any(
+                y => y != null
+                && (y.Bonus != null
+                || y.Bonus != x)));
+
+        if (availableBonuses.IsNullOrEmpty())
+        {
+            Debug.LogError("There are no Bonuses in the container that are not already tied to a Mission");
+            return null;
+        }
+
+        var randomBonus = availableBonuses.GetRandomItem();
+
+        randomBonus.RequiredPilot = isPilotSpecific ? PilotsManager.GetRandomHiredPilot() : null;
+
+        return randomBonus;
+    }
+    #endregion
 
     #region Dialogue Integration
     public bool HasMissionBeenCompletedForCustomer(string missionName, string customerName)
@@ -326,7 +386,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     }
     #endregion
 
-    #region Lua Function Registration
+    #region Lua Function 
     public void RegisterLuaFunctions()
     {
         Lua.RegisterFunction(
@@ -360,9 +420,10 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     private void SaveScheduledMissionData()
     {
         string json = JsonHelper.ListToJson(ScheduledMissions);
-        string folderPath = DataUtils.GetSaveFolderPath(Mission.FOLDER_NAME);
+        string folderPath = DataUtils.GetSaveFolderPath(Mission.FolderName);
+
         Debug.Log("Scheduled Mission Json to save: " + json);
-        DataUtils.SaveFileAsync(ScheduledMission.FILE_NAME, folderPath, json);
+        DataUtils.SaveFileAsync(ScheduledMission.FileName, folderPath, json);
     }
 
     public async void LoadDataAsync()
@@ -376,7 +437,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     private async void LoadScheduledMissionData()
     {
-        string json = await DataUtils.ReadFileAsync(ScheduledMission.FILE_PATH);
+        string json = await DataUtils.ReadFileAsync(ScheduledMission.FilePath);
         Debug.Log("Scheduled Mission Json to load: " + json);
 
         ScheduledMissions = JsonHelper.ListFromJson<ScheduledMission>(json);
@@ -388,7 +449,24 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     public void DeleteData()
     {
-        DataUtils.RecursivelyDeleteSaveData(Mission.FOLDER_NAME);
+        DataUtils.RecursivelyDeleteSaveData(Mission.FolderName);
+    }
+    #endregion
+
+    #region Logging
+    /// <summary>
+    /// Logs if any scriptable object container's are null or empty
+    /// </summary>
+    private static void LogMissionDataStatus()
+    {
+        if (Instance.Missions.IsNullOrEmpty())
+            Debug.LogError("No Mission data found");
+
+        if (Instance.Outcomes.IsNullOrEmpty())
+            Debug.LogError("No MissionOutcome data found");
+
+        if (Instance.Bonuses.IsNullOrEmpty())
+            Debug.LogError("No MissionBonus data found");
     }
     #endregion
 }

@@ -1,28 +1,28 @@
-public static class RepairsConstants 
+public static class RepairsConstants
 {
     // Workstation 
-    public static float StartingSpeed = 180f;
-    public static float SpeedIncrease = 12f;
+    public const float StartingSpeed = 180f;
+    public const float SpeedIncrease = 12f;
 
     // Green zone 
-    public static float SizeDecrease = 0.01f; 
+    public const float SizeDecrease = 0.01f;
 
     // Difficulty increase-related 
-    public static float RotationReversalThreshold = 3f; 
-    public static float RotationReversalUpperBound = 5f;
-    public static float GreenZoneShrinkInterval = 3f;
+    public const float RotationReversalThreshold = 3f;
+    public const float RotationReversalUpperBound = 5f;
+    public const float GreenZoneShrinkInterval = 3f;
 
     // UI 
-    public static string SuccessMessage = "Success!";
-    public static string FailureMessage = "Failure!";
-    public static string StartButtonText = "Start Repairing";
-    public static string StopButtonText = "Stop Repairing";
-    public static string ToolsCostText = "Cost to purchase: $";
+    public const string SuccessMessage = "Success!";
+    public const string FailureMessage = "Failure!";
+    public const string StartButtonText = "Start Repairing";
+    public const string StopButtonText = "Stop Repairing";
+    public const string ToolsCostText = "Cost to purchase: $";
 
     // Tools
-    public static int CostPerTool = 10;
+    public const int CostPerTool = 10;
 
     // Gameplay 
-    public static int HullRepairedPerWin = 15;
+    public const int HullRepairedPerWin = 15;
 
 }

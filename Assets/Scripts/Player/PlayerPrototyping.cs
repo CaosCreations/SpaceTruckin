@@ -24,9 +24,9 @@ public class PlayerPrototyping : MonoBehaviour
 
     private void Update()
     {
-        #if UNITY_EDITOR
-            HandleMenuShortcuts();
-        #endif
+#if UNITY_EDITOR
+        HandleMenuShortcuts();
+#endif
     }
 
     public int GetHangarNodeFromKey()

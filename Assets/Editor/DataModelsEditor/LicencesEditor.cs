@@ -19,7 +19,7 @@ public class LicencesEditor : MonoBehaviour
         {
             var licenceContainer = EditorHelper.GetAsset<LicenceContainer>();
 
-            foreach (var licence in licenceContainer.Licences)
+            foreach (var licence in licenceContainer.Elements)
             {
                 licence.IsOwned = isOwned;
             }
@@ -41,7 +41,7 @@ public class LicencesEditor : MonoBehaviour
         try
         {
             var playerData = EditorHelper.GetAsset<PlayerData>();
-            
+
             playerData.PlayerLicencePoints += points;
             playerData.PlayerTotalLicencePointsAcquired += points;
 
@@ -56,10 +56,13 @@ public class LicencesEditor : MonoBehaviour
     public static void DeleteSaveData()
     {
         var licenceContainer = EditorHelper.GetAsset<LicenceContainer>();
-        
-        foreach (var licence in licenceContainer.Licences)
+
+        foreach (var licence in licenceContainer.Elements)
         {
             SaveDataEditor.NullifyFields(licence.saveData);
+            EditorUtility.SetDirty(licence);
         }
+
+        EditorUtility.SetDirty(licenceContainer);
     }
 }

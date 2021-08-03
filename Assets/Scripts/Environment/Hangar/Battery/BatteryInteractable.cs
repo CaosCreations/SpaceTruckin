@@ -18,7 +18,6 @@ public class BatteryInteractable : InteractableObject
 
         // We place the battery above the player's head
         // We offset it's position towards the direction the player is facing
-
         transform.localPosition = new Vector3(0f, HangarConstants.BatteryYPosition, 0f);
 
         batteryModelCollider.enabled = false;
@@ -26,6 +25,8 @@ public class BatteryInteractable : InteractableObject
         ConfigureRigidbody(isConnectingToPlayer: true);
 
         HangarManager.CurrentBatteryBeingHeld = GetComponent<BatteryWrapper>();
+
+        PlayerAnimationManager.Instance.PlayAnimation(PlayerAnimationParameterType.BatteryGrab, isOn: true);
     }
 
     private void ConfigureRigidbody(bool isConnectingToPlayer)
@@ -58,6 +59,8 @@ public class BatteryInteractable : InteractableObject
         IsPlayerColliding = false;
 
         HangarManager.CurrentBatteryBeingHeld = null;
+
+        PlayerAnimationManager.Instance.PlayAnimation(PlayerAnimationParameterType.BatteryGrab, isOn: false);
     }
 
     private void OnTriggerStay(Collider other)
@@ -96,6 +99,8 @@ public class BatteryInteractable : InteractableObject
         gameObject.SetParent(HangarManager.BatteriesContainer);
 
         HangarManager.CurrentBatteryBeingHeld = null;
+
+        PlayerAnimationManager.Instance.PlayAnimation(PlayerAnimationParameterType.BatteryGrab, isOn: false);
     }
 
     private void Update()
