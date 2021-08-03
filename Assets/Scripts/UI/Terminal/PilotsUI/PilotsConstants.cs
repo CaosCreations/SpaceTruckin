@@ -47,4 +47,8 @@ public class PilotsConstants : MonoBehaviour
     public const int RobotPrefixLength = 3;
     public const int RobotSuffixLength = 4;
     #endregion
+
+    #region Validation
+    public const int MinimumRequiredXp = 1250;
+    #endregion
 }

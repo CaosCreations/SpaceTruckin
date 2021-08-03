@@ -73,6 +73,9 @@ public partial class Pilot : ScriptableObject
         saveData.CurrentXp = Math.Max(saveData.CurrentXp, 0);
         saveData.MissionsCompleted = Math.Max(saveData.MissionsCompleted, 0);
 
+        // Cannot be below custom threshold 
+        saveData.RequiredXp = Math.Max(saveData.RequiredXp, PilotsConstants.MinimumRequiredXp);
+
         if (isRandom)
         {
             // Random pilot cannot have pre-declared name 
