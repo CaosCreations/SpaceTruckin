@@ -35,6 +35,9 @@ public class EditorHelper : MonoBehaviour
         }
     }
 
+    public static bool AssetWithNameExists(string assetName, string[] foldersToSearchIn)
+        => AssetDatabase.FindAssets(assetName, foldersToSearchIn).Length > 0;
+
     public static bool IsPlaying
         => PlayerManager.Instance != null && Application.IsPlaying(PlayerManager.Instance);
 }
