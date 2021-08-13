@@ -7,6 +7,8 @@ public class LightingManager : MonoBehaviour
 
     [SerializeField] private LightingData lightingData;
 
+    [SerializeField] private Light stationLight;
+
     #region Property Accessors 
     public static TimeSpan LightsOutTime => Instance.lightingData.LightsOutTime;
     #endregion
@@ -34,11 +36,11 @@ public class LightingManager : MonoBehaviour
 
     public static void TurnOnTheLights()
     {
-        SetLightIntensity(Instance.lightingData.StationLight, Instance.lightingData.DayTimeIntensity);
+        SetLightIntensity(Instance.stationLight, Instance.lightingData.DayTimeIntensity);
     }
 
     public static void DimTheLights()
     {
-        SetLightIntensity(Instance.lightingData.StationLight, Instance.lightingData.NightTimeIntensity);
+        SetLightIntensity(Instance.stationLight, Instance.lightingData.NightTimeIntensity);
     }
 }

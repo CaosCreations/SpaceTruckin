@@ -63,7 +63,7 @@ public class ClockManager : MonoBehaviour
             CalendarManager.EndDay();
         }
 
-        if (CurrentTime >= LightingManager.LightsOutTime)
+        if (CurrentTime == LightingManager.LightsOutTime)
         {
             LightingManager.DimTheLights();
         }
