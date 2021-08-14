@@ -10,6 +10,7 @@ public class LightingData : ScriptableObject
 
     [field: SerializeField] public float DayTimeIntensity { get; private set; }
     [field: SerializeField] public float NightTimeIntensity { get; private set; }
+    [field: SerializeField] public float LightChangeDurationInSeconds { get; private set; }
 
     private void OnValidate()
     {
