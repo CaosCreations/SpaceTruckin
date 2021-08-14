@@ -56,7 +56,7 @@ public class LightingManager : MonoBehaviour
     public static void TurnOnTheLights()
     {
         Array.ForEach(Instance.lightsToControl, 
-            (x) => SetLightIntensity(x, DayTimeIntensity, LightChangeDurationInSeconds));
+            (x) => SetLightIntensity(x, DayTimeIntensity));
     }
 
     public static void DimTheLights()
