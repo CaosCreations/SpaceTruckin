@@ -65,7 +65,7 @@ public class ClockManager : MonoBehaviour
 
         if (CurrentTime == LightingManager.LightsOutTime)
         {
-            LightingManager.DimTheLights();
+            LightingManager.TurnOffTheLights();
         }
 
         if (!clockStopped)

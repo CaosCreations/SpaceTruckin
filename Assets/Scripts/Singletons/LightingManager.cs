@@ -35,33 +35,35 @@ public class LightingManager : MonoBehaviour
 
     private static void SetLightIntensity(Light light, float targetIntensity, float secondsToWait = 0)
     {
-        float timePerTick = secondsToWait / 100;
-        float intensityPerTick = targetIntensity / (secondsToWait + 1) / 100;
-
-        if (targetIntensity < light.intensity)
-            intensityPerTick *= -1;
-
-        Instance.StartCoroutine(WaitForLights(light, targetIntensity, intensityPerTick, timePerTick));
+        Instance.StartCoroutine(WaitForIntensityToChange(light, targetIntensity, secondsToWait));
     }
 
-    private static IEnumerator WaitForLights(Light light, float targetIntensity, float intensityPerTick, float timePerTick)
+    private static IEnumerator WaitForIntensityToChange(Light light, float targetIntensity, float secondsToWait)
     {
-        while (light.intensity != targetIntensity)
+        float numberOfTicks = 100;
+
+        float timePerTick = (float)Math.Max(0.0001D, secondsToWait) / numberOfTicks/* * Time.deltaTime*/;
+
+        float intensityPerTick = (targetIntensity - light.intensity) * timePerTick);
+
+        while (numberOfTicks >= 0)
         {
             light.intensity += intensityPerTick;
+            numberOfTicks--;
+
             yield return new WaitForSeconds(timePerTick);
         }
     }
 
     public static void TurnOnTheLights()
     {
-        Array.ForEach(Instance.lightsToControl, 
+        Array.ForEach(Instance.lightsToControl,
             (x) => SetLightIntensity(x, DayTimeIntensity));
     }
 
-    public static void DimTheLights()
+    public static void TurnOffTheLights()
     {
-        Array.ForEach(Instance.lightsToControl, 
+        Array.ForEach(Instance.lightsToControl,
             (x) => SetLightIntensity(x, NightTimeIntensity, LightChangeDurationInSeconds));
     }
 }
