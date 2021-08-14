@@ -15,6 +15,7 @@ public class LightingManager : MonoBehaviour
     private static float LightChangeDurationInSeconds => Instance.lightingData.LightChangeDurationInSeconds;
     private static float DayTimeIntensity => Instance.lightingData.DayTimeIntensity;
     private static float NightTimeIntensity => Instance.lightingData.NightTimeIntensity;
+    private static float LightChangeTickCount => Instance.lightingData.LightChangeTickCount;
     #endregion
 
     private void Awake()
@@ -40,16 +41,16 @@ public class LightingManager : MonoBehaviour
 
     private static IEnumerator WaitForIntensityToChange(Light light, float targetIntensity, float secondsToWait)
     {
-        float numberOfTicks = 100;
+        float timePerTick = (float)Math.Max(0.0001D, secondsToWait) / LightChangeTickCount/* * Time.deltaTime*/;
 
-        float timePerTick = (float)Math.Max(0.0001D, secondsToWait) / numberOfTicks/* * Time.deltaTime*/;
+        float intensityPerTick = (targetIntensity - light.intensity) * timePerTick;
 
-        float intensityPerTick = (targetIntensity - light.intensity) * timePerTick);
+        float counter = LightChangeTickCount;
 
-        while (numberOfTicks >= 0)
+        while (counter >= 0)
         {
             light.intensity += intensityPerTick;
-            numberOfTicks--;
+            counter--;
 
             yield return new WaitForSeconds(timePerTick);
         }
