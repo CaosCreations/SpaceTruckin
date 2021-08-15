@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -40,4 +41,12 @@ public class EditorHelper : MonoBehaviour
 
     public static bool IsPlaying
         => PlayerManager.Instance != null && Application.IsPlaying(PlayerManager.Instance);
+
+    public static T ConvertRuntimeType<T>(string value)
+        // Account for the parsing of enums 
+        => typeof(T).IsEnum ? (T)Enum.Parse(typeof(T), value) : (T)Convert.ChangeType(value, typeof(T));
+
+    public static object ConvertRuntimeType(string value, Type type)
+        // Account for the parsing of enums
+        => type.IsEnum ? Enum.Parse(type, value) : Convert.ChangeType(value, type);
 }

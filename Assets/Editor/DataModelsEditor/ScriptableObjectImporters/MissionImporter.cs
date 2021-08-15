@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -7,7 +8,7 @@ using UnityEngine;
 public class MissionImporter : MonoBehaviour
 {
     [MenuItem("Space Truckin/Missions/Import Missions From CSV")]
-    private static void ImportMissionsFromCsv()
+    private static void ImportScriptableObjectsFromCsv()
     {
         try
         {
@@ -35,33 +36,44 @@ public class MissionImporter : MonoBehaviour
         {
             string[] csvFields = csvRow.Split(',');
 
-            Mission newMission = ScriptableObject.CreateInstance<Mission>();
+            Mission importedMission = ScriptableObject.CreateInstance<Mission>();
 
-            PropertyInfo[] missionProperties = newMission.GetType().GetProperties();
+            PropertyInfo[] missionProperties = importedMission.GetType().GetProperties();
+
+            PropertyInfo[] propertiesToImport = missionProperties
+                .Where(x => EditorConstants.MissionImportPropertyOrder.Contains(x.Name))
+                .ToArray();
+
+            // Order that matches the CSV columns
+            //Array.Sort(EditorConstants.MissionImportPropertyOrder, propertiesToImport);
 
             for (int i = 0; i < csvFields.Length; i++)
             {
-                missionProperties[i].SetValue(newMission, csvFields[i]);
+                // Do type conversion
+                object castedValue = EditorHelper.ConvertRuntimeType(csvFields[i], propertiesToImport[i].PropertyType);
+
+                propertiesToImport[i].SetValue(importedMission, castedValue, null);
             }
 
-            EditorUtility.SetDirty(newMission);
+            EditorUtility.SetDirty(importedMission);
 
-            string assetName = $"{EditorConstants.ImportedMissionsPath}/{newMission.Name.Trim()}";
+            string assetName = $"{EditorConstants.ImportedMissionsPath}/{importedMission.Name.Trim()}_ImportedMission";
 
-            if (EditorHelper.AssetWithNameExists(newMission.Name, new[] { EditorConstants.ImportedMissionsPath }))
+            if (EditorHelper.AssetWithNameExists(importedMission.Name, new[] { EditorConstants.ImportedMissionsPath }))
             {
                 // Enforce unique names 
                 assetName += GUID.Generate().ToString();
             }
 
             // Associate the new SO with an asset so it can persist 
-            AssetDatabase.CreateAsset(newMission, $"{assetName}.asset");
+            AssetDatabase.CreateAsset(importedMission, $"{assetName}.asset");
             AssetDatabase.SaveAssets();
 
-            Selection.activeObject = newMission;
+            Selection.activeObject = importedMission;
         }
         catch
         {
+            // Bubble up
             throw;
         }
     }

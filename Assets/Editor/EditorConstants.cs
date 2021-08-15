@@ -8,4 +8,22 @@ public static class EditorConstants
     public static readonly BuildTarget AssetBundleBuildTarget = EditorUserBuildSettings.activeBuildTarget;
 
     public const string ImportedMissionsPath = "Assets/ScriptableObjects/Missions/ImportedMissions";
+
+    // Scriptable object importing 
+    public static readonly string[] MissionImportPropertyOrder = new string[]
+    {
+        "Name",
+        "Customer",
+        "Cargo",
+        "Description",
+        "DurationInDays",
+        "FuelCost",
+        "UnlockCondition",
+        "MoneyNeededToUnlock",
+        "IsRepeatable",
+        "HasRandomOutcomes",
+        "FondnessGranted",
+        "OfferTimeLimitInDays",
+        "OfferExpiryFondnessDeduction",
+    };
 }

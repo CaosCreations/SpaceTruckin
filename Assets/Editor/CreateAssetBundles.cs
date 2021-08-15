@@ -16,7 +16,5 @@ public class CreateAssetBundles
             EditorConstants.AssetBundleDirectory,
             EditorConstants.AssetBundleOptions,
             EditorConstants.AssetBundleBuildTarget);
-
-
     }
 }
