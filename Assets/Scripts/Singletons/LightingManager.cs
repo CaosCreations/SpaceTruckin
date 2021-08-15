@@ -52,7 +52,8 @@ public class LightingManager : MonoBehaviour
             light.intensity += intensityPerTick;
             counter--;
 
-            yield return new WaitForSeconds(timePerTick);
+            // On very low frame rates, we may have to use FixedUpdate or InvokeRepeating
+            yield return new WaitForSecondsRealtime(timePerTick);
         }
     }
 
