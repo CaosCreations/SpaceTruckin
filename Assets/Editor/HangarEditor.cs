@@ -12,9 +12,9 @@ public class HangarEditor : MonoBehaviour
         {
             HangarSlot hangarSlot = HangarManager.HangarSlots
                 .FirstOrDefault(x => x.IsUnlocked && x.Ship == null);
-            
+
             Ship ship = ShipsManager.Instance.Ships.FirstOrDefault(s => s.IsInQueue);
-            
+
             HangarManager.DockShip(ship, hangarSlot.Node);
 
             return ship;
@@ -84,7 +84,6 @@ public class HangarEditor : MonoBehaviour
         catch (Exception ex)
         {
             Debug.LogException(ex);
-            
         }
     }
 }
