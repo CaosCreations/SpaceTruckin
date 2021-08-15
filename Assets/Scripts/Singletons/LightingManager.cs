@@ -41,13 +41,13 @@ public class LightingManager : MonoBehaviour
 
     private static IEnumerator WaitForIntensityToChange(Light light, float targetIntensity, float secondsToWait)
     {
-        float timePerTick = (float)Math.Max(0.0001D, secondsToWait) / LightChangeTickCount/* * Time.deltaTime*/;
+        float timePerTick = (float)Math.Max(0.0001D, secondsToWait) / LightChangeTickCount;
 
-        float intensityPerTick = (targetIntensity - light.intensity) * timePerTick;
+        float intensityPerTick = (targetIntensity - light.intensity) / LightChangeTickCount;
 
         float counter = LightChangeTickCount;
 
-        while (counter >= 0)
+        while (counter > 0)
         {
             light.intensity += intensityPerTick;
             counter--;
