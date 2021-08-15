@@ -45,9 +45,6 @@ public class MissionImporter : MonoBehaviour
                 .ToArray()
                 .SortByMatchingPropertyNameKeys(EditorConstants.MissionImportPropertyKeys);
 
-            // Order that matches the CSV columns
-            //Array.Sort(EditorConstants.MissionImportPropertyOrder, propertiesToImport);
-
             for (int i = 0; i < csvFields.Length; i++)
             {
                 // Do type conversion
