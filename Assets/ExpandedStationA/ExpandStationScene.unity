@@ -13032,7 +13032,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2.002193, y: 1}
+    m_SensorSize: {x: 1.9058577, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -28715,6 +28715,27 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 534159691061212733, guid: fd1f7cd9cb681f74aa0d051027142d87,
+        type: 3}
+      propertyPath: lightingData
+      value: 
+      objectReference: {fileID: 11400000, guid: b106b7b71a5024d4dabe17eae3a2be75,
+        type: 2}
+    - target: {fileID: 534159691061212733, guid: fd1f7cd9cb681f74aa0d051027142d87,
+        type: 3}
+      propertyPath: stationLight
+      value: 
+      objectReference: {fileID: 186469476}
+    - target: {fileID: 534159691061212733, guid: fd1f7cd9cb681f74aa0d051027142d87,
+        type: 3}
+      propertyPath: lightsToControl.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 534159691061212733, guid: fd1f7cd9cb681f74aa0d051027142d87,
+        type: 3}
+      propertyPath: lightsToControl.Array.data[0]
+      value: 
+      objectReference: {fileID: 186469476}
     - target: {fileID: 4608940828257387288, guid: fd1f7cd9cb681f74aa0d051027142d87,
         type: 3}
       propertyPath: displaySettings.dialogueUI

@@ -1,17 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-/// <summary>
-/// Represents a time of day in a format that can be set in the inspector.
-/// </summary>
-[Serializable]
-public struct TimeOfDay
-{
-    public int Hours;
-    public int Minutes;
-    public int Seconds;
-}
-
 public class ClockManager : MonoBehaviour
 {
     public static TimeSpan CurrentTime;
@@ -74,6 +63,11 @@ public class ClockManager : MonoBehaviour
             CalendarManager.EndDay();
         }
 
+        if (CurrentTime == LightingManager.LightsOutTime)
+        {
+            LightingManager.TurnOffTheLights();
+        }
+
         if (!clockStopped)
         {
             currentTimeInSeconds += Convert.ToInt32(Time.deltaTime * TickSpeedMultiplier);
@@ -98,25 +92,12 @@ public class ClockManager : MonoBehaviour
         GUI.backgroundColor = Color.black;
 
         GUI.Label(new Rect(
-            UIConstants.ClockTextXPosition, 
-            UIConstants.ClockTextYPosition, 
-            UIConstants.ClockTextWidth, 
+            UIConstants.ClockTextXPosition,
+            UIConstants.ClockTextYPosition,
+            UIConstants.ClockTextWidth,
             UIConstants.ClockTextHeight),
             dateTimeText,
             localStyle);
-    }
-
-    private Texture2D MakeTex(int width, int height, Color col)
-    {
-        Color[] pix = new Color[width * height];
-        for (int i = 0; i < pix.Length; ++i)
-        {
-            pix[i] = col;
-        }
-        Texture2D result = new Texture2D(width, height);
-        result.SetPixels(pix);
-        result.Apply();
-        return result;
     }
 
     private void LogClockData()
