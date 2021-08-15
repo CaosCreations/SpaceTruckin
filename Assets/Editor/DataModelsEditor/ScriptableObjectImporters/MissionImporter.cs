@@ -38,11 +38,12 @@ public class MissionImporter : MonoBehaviour
 
             Mission importedMission = ScriptableObject.CreateInstance<Mission>();
 
-            PropertyInfo[] missionProperties = importedMission.GetType().GetProperties();
-
-            PropertyInfo[] propertiesToImport = missionProperties
-                .Where(x => EditorConstants.MissionImportPropertyOrder.Contains(x.Name))
-                .ToArray();
+            PropertyInfo[] propertiesToImport = importedMission
+                .GetType()
+                .GetProperties()
+                .Where(x => EditorConstants.MissionImportPropertyKeys.Contains(x.Name))
+                .ToArray()
+                .SortByMatchingPropertyNameKeys(EditorConstants.MissionImportPropertyKeys);
 
             // Order that matches the CSV columns
             //Array.Sort(EditorConstants.MissionImportPropertyOrder, propertiesToImport);
@@ -50,9 +51,9 @@ public class MissionImporter : MonoBehaviour
             for (int i = 0; i < csvFields.Length; i++)
             {
                 // Do type conversion
-                object castedValue = EditorHelper.ConvertRuntimeType(csvFields[i], propertiesToImport[i].PropertyType);
+                object convertedValue = EditorHelper.ConvertRuntimeType(csvFields[i], propertiesToImport[i].PropertyType);
 
-                propertiesToImport[i].SetValue(importedMission, castedValue, null);
+                propertiesToImport[i].SetValue(importedMission, convertedValue);
             }
 
             EditorUtility.SetDirty(importedMission);

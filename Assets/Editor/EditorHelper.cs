@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -39,7 +38,7 @@ public class EditorHelper : MonoBehaviour
     public static bool AssetWithNameExists(string assetName, string[] foldersToSearchIn)
         => AssetDatabase.FindAssets(assetName, foldersToSearchIn).Length > 0;
 
-    public static bool IsPlaying
+    public static bool IsInPlayMode
         => PlayerManager.Instance != null && Application.IsPlaying(PlayerManager.Instance);
 
     public static T ConvertRuntimeType<T>(string value)

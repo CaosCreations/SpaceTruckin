@@ -10,7 +10,7 @@ public static class EditorConstants
     public const string ImportedMissionsPath = "Assets/ScriptableObjects/Missions/ImportedMissions";
 
     // Scriptable object importing 
-    public static readonly string[] MissionImportPropertyOrder = new string[]
+    public static readonly string[] MissionImportPropertyKeys = new string[]
     {
         "Name",
         "Customer",

@@ -14,7 +14,7 @@ public class PlayerEditor : MonoBehaviour
             playerData.PlayerMoney = 0;
             playerData.PlayerTotalMoneyAcquired = 0;
 
-            if (EditorHelper.IsPlaying)
+            if (EditorHelper.IsInPlayMode)
             {
                 PlayerManager.Instance.ReceiveMoney(0);
             }
@@ -36,7 +36,7 @@ public class PlayerEditor : MonoBehaviour
 
             var playerData = EditorHelper.GetAsset<PlayerData>();
 
-            if (EditorHelper.IsPlaying)
+            if (EditorHelper.IsInPlayMode)
             {
                 PlayerManager.Instance.ReceiveMoney(moneyToGive);
             }
@@ -62,7 +62,7 @@ public class PlayerEditor : MonoBehaviour
         {
             var playerData = EditorHelper.GetAsset<PlayerData>();
             
-            if (EditorHelper.IsPlaying)
+            if (EditorHelper.IsInPlayMode)
             {
                 playerData.PlayerMoney = 0;
                 PlayerManager.Instance.ReceiveMoney(amount);
