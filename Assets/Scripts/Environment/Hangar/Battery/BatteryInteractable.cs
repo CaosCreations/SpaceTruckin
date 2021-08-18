@@ -65,7 +65,7 @@ public class BatteryInteractable : InteractableObject
 
     private void OnTriggerStay(Collider other)
     {
-        if (PlayerIsHoldingABattery == true)
+        if (PlayerIsHoldingABattery)
         {
             // Don't let the player pick up a battery if they already have one
             return;
