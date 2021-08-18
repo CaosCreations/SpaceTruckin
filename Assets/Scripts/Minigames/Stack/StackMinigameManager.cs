@@ -39,7 +39,7 @@ public class StackMinigameManager : MonoBehaviour
 
     private void Update()
     {
-        if (gameRunning == false)
+        if (!gameRunning)
             return;
 
         cubeMover.MoveCube();

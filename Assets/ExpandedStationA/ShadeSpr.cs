@@ -1,24 +1,25 @@
 ﻿using UnityEngine;
 
-public class ShadeSpr : MonoBehaviour 
+public class ShadeSpr : MonoBehaviour
 {
-	public Renderer _renderer;
-	public bool shadowOnly;
+    public Renderer _renderer;
+    public bool shadowOnly;
 
-	void Start () 
-	{
-		if (_renderer == null) 
-		{
-			Debug.Log("Renderer is empty");
-		} 
-
-		GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On; 
-		GetComponent<Renderer>().receiveShadows = true;
-		
-		//TESTE
-		if (shadowOnly == true)
+    private void Start()
+    {
+        if (_renderer == null)
         {
-			GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
+            Debug.Log("Renderer is empty");
+
+            _renderer = GetComponent<Renderer>();
         }
-	}
+
+        _renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+        _renderer.receiveShadows = true;
+
+        if (shadowOnly)
+        {
+            _renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
+        }
+    }
 }
