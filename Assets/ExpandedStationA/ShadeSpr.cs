@@ -2,8 +2,8 @@
 
 public class ShadeSpr : MonoBehaviour
 {
-    public Renderer _renderer;
-    public bool shadowOnly;
+    private Renderer _renderer;
+    private bool shadowOnly;
 
     private void Start()
     {
