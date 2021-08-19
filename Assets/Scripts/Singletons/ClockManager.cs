@@ -65,7 +65,7 @@ public class ClockManager : MonoBehaviour
 
         if (CurrentTime == LightingManager.LightsOutTime)
         {
-            LightingManager.TransitionExternalLightsOff();
+            LightingManager.ChangeInternalLighting(LightingState.Night);
         }
 
         if (!clockStopped)

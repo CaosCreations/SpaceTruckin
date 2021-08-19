@@ -38,7 +38,7 @@ public class LightingManager : MonoBehaviour
             return;
         }
 
-        CalendarManager.OnEndOfDay += TransitionExternalLightsOn;
+        CalendarManager.OnEndOfDay += () => ChangeInternalLighting(LightingState.Day);
     }
 
     private static void SetLightIntensity(Light light, float targetIntensity, float secondsToWait = 0)
@@ -73,7 +73,7 @@ public class LightingManager : MonoBehaviour
         }
     }
 
-    public static void ChangeInternalLights(LightingState lightingState)
+    public static void ChangeInternalLighting(LightingState lightingState)
     {
         switch (lightingState)
         {
