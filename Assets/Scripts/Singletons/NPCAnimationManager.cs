@@ -18,15 +18,15 @@ public class NPCAnimationManager : MonoBehaviour
         }
     }
 
-    public void PlayAnimation(NPCAnimated nPCAnimated, NPCAnimationParameterType npcAnimationParameterType, bool isOn)
+    public void PlayAnimation(NPCAnimated npcAnimated, NPCAnimationParameterType npcAnimationParameterType, bool isOn)
     {
-        if (nPCAnimated.ParameterMap.ContainsKey(npcAnimationParameterType))
+        if (npcAnimated.ParameterMap.ContainsKey(npcAnimationParameterType))
         {
-            nPCAnimated.Animator.SetBool(nPCAnimated.ParameterMap[npcAnimationParameterType], isOn);
+            npcAnimated.Animator.SetBool(npcAnimated.ParameterMap[npcAnimationParameterType], isOn);
         }
         else
         {
-            Debug.LogError("The NPCAnimationParameterType is missing from the ParameterMap dictionary. Please add it.");
+            Debug.LogError($"The NPCAnimationParameterType '{nameof(npcAnimationParameterType)}' is missing from the ParameterMap dictionary. Please add it.");
         }
     }
 }
