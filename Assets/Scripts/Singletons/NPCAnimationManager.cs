@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class NPCAnimationManager : MonoBehaviour
@@ -26,7 +27,9 @@ public class NPCAnimationManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"The NPCAnimationParameterType '{nameof(npcAnimationParameterType)}' is missing from the ParameterMap dictionary. Please add it.");
+            string parameterTypeName = Enum.GetName(typeof(NPCAnimationParameterType), npcAnimationParameterType);
+
+            Debug.LogError($"The NPCAnimationParameterType '{parameterTypeName}' is missing from the ParameterMap Dictionary. Please add it.");
         }
     }
 }
