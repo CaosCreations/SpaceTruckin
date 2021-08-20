@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class NPCAnimationManager : MonoBehaviour
@@ -18,15 +19,17 @@ public class NPCAnimationManager : MonoBehaviour
         }
     }
 
-    public void PlayAnimation(NPCAnimated nPCAnimated, NPCAnimationParameterType npcAnimationParameterType, bool isOn)
+    public void PlayAnimation(NPCAnimated npcAnimated, NPCAnimationParameterType npcAnimationParameterType, bool isOn)
     {
-        if (nPCAnimated.ParameterMap.ContainsKey(npcAnimationParameterType))
+        if (npcAnimated.ParameterMap.ContainsKey(npcAnimationParameterType))
         {
-            nPCAnimated.Animator.SetBool(nPCAnimated.ParameterMap[npcAnimationParameterType], isOn);
+            npcAnimated.Animator.SetBool(npcAnimated.ParameterMap[npcAnimationParameterType], isOn);
         }
         else
         {
-            Debug.LogError("The NPCAnimationParameterType is missing from the ParameterMap dictionary. Please add it.");
+            string parameterTypeName = Enum.GetName(typeof(NPCAnimationParameterType), npcAnimationParameterType);
+
+            Debug.LogError($"The NPCAnimationParameterType '{parameterTypeName}' is missing from the ParameterMap Dictionary. Please add it.");
         }
     }
 }
