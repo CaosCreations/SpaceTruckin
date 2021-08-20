@@ -16,7 +16,7 @@ public static class ObjectExtensions
             textToLog += objectDescription + " ";
         }
 
-        textToLog += $"Object of type {self.GetType()} is null";
+        textToLog += $"Object {nameof(self)} is null";
         Debug.LogError(textToLog);
     }
 }
