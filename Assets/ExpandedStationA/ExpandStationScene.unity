@@ -2316,8 +2316,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adfbf10908c7511478c1627713c1defc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _renderer: {fileID: 0}
-  shadowOnly: 0
 --- !u!95 &129007679 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 6316198362758017279, guid: a06f1a9e44fccb3409ddc94a08e3cac6,
@@ -7415,8 +7413,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adfbf10908c7511478c1627713c1defc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _renderer: {fileID: 0}
-  shadowOnly: 0
 --- !u!65 &319016692
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7734,8 +7730,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adfbf10908c7511478c1627713c1defc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _renderer: {fileID: 0}
-  shadowOnly: 0
 --- !u!65 &334914712
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8694,8 +8688,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adfbf10908c7511478c1627713c1defc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _renderer: {fileID: 0}
-  shadowOnly: 0
 --- !u!1 &418381506
 GameObject:
   m_ObjectHideFlags: 0
@@ -13032,7 +13024,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.9058577, y: 1}
+    m_SensorSize: {x: 1.7903564, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -17989,8 +17981,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adfbf10908c7511478c1627713c1defc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _renderer: {fileID: 0}
-  shadowOnly: 0
 --- !u!65 &957251203
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -27539,7 +27529,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 11.57
+  m_Intensity: 0
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -28733,9 +28723,34 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 534159691061212733, guid: fd1f7cd9cb681f74aa0d051027142d87,
         type: 3}
+      propertyPath: internalDayLights.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 534159691061212733, guid: fd1f7cd9cb681f74aa0d051027142d87,
+        type: 3}
       propertyPath: lightsToControl.Array.data[0]
       value: 
       objectReference: {fileID: 186469476}
+    - target: {fileID: 534159691061212733, guid: fd1f7cd9cb681f74aa0d051027142d87,
+        type: 3}
+      propertyPath: internalNightLights.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 534159691061212733, guid: fd1f7cd9cb681f74aa0d051027142d87,
+        type: 3}
+      propertyPath: internalDayLights.Array.data[0]
+      value: 
+      objectReference: {fileID: 603249606}
+    - target: {fileID: 534159691061212733, guid: fd1f7cd9cb681f74aa0d051027142d87,
+        type: 3}
+      propertyPath: internalNightLights.Array.data[0]
+      value: 
+      objectReference: {fileID: 2017550633}
+    - target: {fileID: 534159691061212733, guid: fd1f7cd9cb681f74aa0d051027142d87,
+        type: 3}
+      propertyPath: internalNightLights.Array.data[1]
+      value: 
+      objectReference: {fileID: 1635889542}
     - target: {fileID: 4608940828257387288, guid: fd1f7cd9cb681f74aa0d051027142d87,
         type: 3}
       propertyPath: displaySettings.dialogueUI
@@ -33582,7 +33597,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 11.57
+  m_Intensity: 0
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208

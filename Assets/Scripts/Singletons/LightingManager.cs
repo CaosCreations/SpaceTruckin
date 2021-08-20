@@ -14,7 +14,7 @@ public class LightingManager : MonoBehaviour
     /// <summary> Artifical lights that are on during the night </summary>
     [SerializeField] private Light[] internalNightLights;
 
-    /// <summary> Natural lights outside of the station </summary>
+    /// <summary> Natural light outside of the station. There is only one. </summary>
     [SerializeField] private Light[] externalLights;
 
     #region Property Accessors 
@@ -22,7 +22,9 @@ public class LightingManager : MonoBehaviour
     private static float LightChangeDurationInSeconds => Instance.lightingData.ExternalLightChangeDurationInSeconds;
     private static float InternalDayLightsIntensity => Instance.lightingData.InternalDayLightsIntensity;
     private static float InternalNightLightsIntensity => Instance.lightingData.InternalNightLightsIntensity;
-    private static float LightChangeTickCount => Instance.lightingData.ExternalLightChangeTickCount;
+    private static float ExternalLightsMinimumIntensity => Instance.lightingData.ExternalLightMinimumIntensity;
+    private static float ExternalLightsMaximumIntensity => Instance.lightingData.ExternalLightMaximumIntensity;
+    private static float ExternalLightChangeTickCount => Instance.lightingData.ExternalLightChangeTickCount;
     #endregion
 
     private void Awake()
@@ -41,12 +43,12 @@ public class LightingManager : MonoBehaviour
         CalendarManager.OnEndOfDay += () => ChangeInternalLighting(LightingState.Day);
     }
 
-    private static void SetLightIntensity(Light light, float targetIntensity, float secondsToWait = 0)
+    private static void SetLightIntensity(Light light, float targetIntensity, float secondsToWait = 0, float numberOfTicks = 1)
     {
         if (secondsToWait > 0)
         {
             // Handle gradual transitions 
-            Instance.StartCoroutine(WaitForIntensityToChange(light, targetIntensity, secondsToWait));
+            Instance.StartCoroutine(WaitForIntensityToChange(light, targetIntensity, secondsToWait, numberOfTicks));
         }
         else
         {
@@ -55,13 +57,13 @@ public class LightingManager : MonoBehaviour
         }
     }
 
-    private static IEnumerator WaitForIntensityToChange(Light light, float targetIntensity, float secondsToWait)
+    private static IEnumerator WaitForIntensityToChange(Light light, float targetIntensity, float secondsToWait, float numberOfTicks)
     {
-        float timePerTick = (float)Math.Max(0.0001D, secondsToWait) / LightChangeTickCount;
+        float timePerTick = (float)Math.Max(0.0001D, secondsToWait) / (float)Math.Max(0.0001D, numberOfTicks);
 
-        float intensityPerTick = (targetIntensity - light.intensity) / LightChangeTickCount;
+        float intensityPerTick = (targetIntensity - light.intensity) / numberOfTicks;
 
-        float counter = LightChangeTickCount;
+        float counter = numberOfTicks;
 
         while (counter > 0)
         {
