@@ -42,9 +42,9 @@ public class AmbientSoundEffectManager : AudioManager, ISoundEffectManager<Ambie
         Instance.PlayAudioClip(GetClipBySoundEffectType(effectType));
     }
 
-    public AudioClip GetClipBySoundEffectType(AmbientSoundEffectType soundEffect)
+    public AudioClip GetClipBySoundEffectType(AmbientSoundEffectType effectType)
     {
-        return soundEffect switch
+        return effectType switch
         {
             AmbientSoundEffectType.AsteroidAir => Instance.asteroidAirClip,
             _ => default,
