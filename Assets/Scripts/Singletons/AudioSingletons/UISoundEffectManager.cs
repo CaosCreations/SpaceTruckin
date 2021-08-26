@@ -5,16 +5,17 @@ public enum UISoundEffectType
     Confirm, Back, Error, Select, SelectMechanical
 }
 
-public class SoundEffectsManager : AudioManager
+public class UISoundEffectManager : AudioManager, ISoundEffectManager<UISoundEffectType>
 {
-    public static SoundEffectsManager Instance { get; private set; }
+    public static UISoundEffectManager Instance { get; private set; }
 
-    // Audio clips for UI 
+    #region AudioClips
     [SerializeField] private AudioClip confirmClip;
     [SerializeField] private AudioClip backClip;
     [SerializeField] private AudioClip errorClip;
     [SerializeField] private AudioClip selectClip;
     [SerializeField] private AudioClip selectMechancialClip;
+    #endregion
 
     private void Awake()
     {
@@ -25,7 +26,7 @@ public class SoundEffectsManager : AudioManager
 
             if (audioSource == null)
             {
-                Debug.LogError($"Audio source in {nameof(SoundEffectsManager)} not found");
+                Debug.LogError($"Audio source in {nameof(UISoundEffectManager)} not found");
             }
         }
         else
@@ -35,12 +36,12 @@ public class SoundEffectsManager : AudioManager
         }
     }
 
-    public static void PlayUISoundEffect(UISoundEffectType soundEffect)
+    public void PlaySoundEffect(UISoundEffectType effectType)
     {
-        Instance.PlayAudioClip(GetClipBySoundEffectType(soundEffect));
+        Instance.PlayAudioClip(GetClipBySoundEffectType(effectType));
     }
 
-    private static AudioClip GetClipBySoundEffectType(UISoundEffectType soundEffect)
+    public AudioClip GetClipBySoundEffectType(UISoundEffectType soundEffect)
     {
         return soundEffect switch
         {
@@ -52,4 +53,5 @@ public class SoundEffectsManager : AudioManager
             _ => default,
         };
     }
+
 }
