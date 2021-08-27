@@ -7,7 +7,7 @@ public class PlayerAnimationManager : AnimationManager<PlayerAnimationParameterT
 
     [SerializeField] private Animator playerAnimator;
 
-    public Dictionary<PlayerAnimationParameterType, string> ParameterMap { get; set; } = new Dictionary<PlayerAnimationParameterType, string>()
+    private Dictionary<PlayerAnimationParameterType, string> ParameterMap { get; set; } = new Dictionary<PlayerAnimationParameterType, string>()
     {
         { PlayerAnimationParameterType.BatteryGrab, AnimationConstants.AnimationBatteryGrabbingParameter },
     };
