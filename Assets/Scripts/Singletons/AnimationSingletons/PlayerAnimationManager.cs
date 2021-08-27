@@ -34,7 +34,7 @@ public class PlayerAnimationManager : AnimationManager<PlayerAnimationParameterT
         }
         else
         {
-            LogMissingParameterType(playerAnimationParameterType);
+            LogMissingParameterMapping(playerAnimationParameterType);
         }
     }
 }

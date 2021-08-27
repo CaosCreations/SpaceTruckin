@@ -12,19 +12,25 @@ public class NPCAnimated : MonoBehaviour
     };
 
     // Used to choose a random idle animation each day 
-    private List<string> idleAnimationKeys = new List<string>();
+    private List<string> idleParameterNames = new List<string>();
 
     private void RefreshIdleAnimation()
     {
         Animator.SetAllBoolParameters(false);
-        ParameterMap[NPCAnimationParameterType.Idle] = idleAnimationKeys.GetRandomItem();
+        ParameterMap[NPCAnimationParameterType.Idle] = idleParameterNames.GetRandomItem();
 
         NPCAnimationManager.Instance.PlayAnimation(this, NPCAnimationParameterType.Idle, true);
     }
 
     private void Start()
     {
-        idleAnimationKeys = AnimationUtils.GetIdleAnimationKeys(Animator);
+        idleParameterNames = AnimationUtils.GetIdleParameterNames(Animator);
+
+        if (idleParameterNames.IsNullOrEmpty())
+        {
+            Debug.LogError($"No idle animation parameter keys found on {nameof(NPCAnimated)}");
+        }
+
         ParameterMap.Add(NPCAnimationParameterType.Idle, default);
 
         RefreshIdleAnimation();

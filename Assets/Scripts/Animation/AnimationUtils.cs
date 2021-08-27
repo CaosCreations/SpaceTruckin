@@ -5,7 +5,7 @@ using UnityEngine;
 
 public static class AnimationUtils
 {
-    public static List<string> GetIdleAnimationKeys(Animator animator)
+    public static List<string> GetIdleParameterNames(Animator animator)
     {
         var idleAnimationKeys = animator.parameters
             .Select(x => x.name)
