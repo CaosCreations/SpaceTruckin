@@ -15,12 +15,18 @@ public class NPCAnimated : MonoBehaviour
     private string CurrentIdleKey { get; set; }
     private List<string> idleAnimationKeys = new List<string>();
 
-    private void RandomiseIdleKey() => CurrentIdleKey = idleAnimationKeys.GetRandomItem();
+    private void RefreshIdleAnimation()
+    {
+        Animator.SetAllBoolParameters(false);
+        CurrentIdleKey = idleAnimationKeys.GetRandomItem();
+        
+        NPCAnimationManager.Instance.PlayAnimation(this, NPCAnimationParameterType.Idle, true);
+    }
 
     private void Awake()
     {
         idleAnimationKeys = AnimationUtils.GetIdleAnimationKeys(Animator);
-        CalendarManager.OnEndOfDay += RandomiseIdleKey;
+        CalendarManager.OnEndOfDay += RefreshIdleAnimation;
 
         ParameterMap.Add(NPCAnimationParameterType.Idle, CurrentIdleKey);
     }
