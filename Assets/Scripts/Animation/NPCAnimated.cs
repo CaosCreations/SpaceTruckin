@@ -12,22 +12,22 @@ public class NPCAnimated : MonoBehaviour
     };
 
     // Used to choose a random idle animation each day 
-    private string CurrentIdleKey { get; set; }
     private List<string> idleAnimationKeys = new List<string>();
 
     private void RefreshIdleAnimation()
     {
         Animator.SetAllBoolParameters(false);
-        CurrentIdleKey = idleAnimationKeys.GetRandomItem();
-        
+        ParameterMap[NPCAnimationParameterType.Idle] = idleAnimationKeys.GetRandomItem();
+
         NPCAnimationManager.Instance.PlayAnimation(this, NPCAnimationParameterType.Idle, true);
     }
 
-    private void Awake()
+    private void Start()
     {
         idleAnimationKeys = AnimationUtils.GetIdleAnimationKeys(Animator);
-        CalendarManager.OnEndOfDay += RefreshIdleAnimation;
+        ParameterMap.Add(NPCAnimationParameterType.Idle, default);
 
-        ParameterMap.Add(NPCAnimationParameterType.Idle, CurrentIdleKey);
+        RefreshIdleAnimation();
+        CalendarManager.OnEndOfDay += RefreshIdleAnimation;
     }
 }
