@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAnimationManager : MonoBehaviour
+public class PlayerAnimationManager : AnimationManager<PlayerAnimationParameterType>
 {
     public static PlayerAnimationManager Instance;
 
@@ -34,7 +34,7 @@ public class PlayerAnimationManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"The PlayerAnimationParameterType '{nameof(playerAnimationParameterType)}' is missing from the ParameterMap dictionary.");
+            LogMissingParameterType(playerAnimationParameterType);
         }
     }
 }
