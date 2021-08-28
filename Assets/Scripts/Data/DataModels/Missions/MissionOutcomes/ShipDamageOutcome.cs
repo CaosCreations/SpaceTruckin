@@ -10,8 +10,8 @@ public class ShipDamageOutcome : MissionOutcome
 
     public override void Process(ScheduledMission scheduled)
     {
-        int shipDamageTaken = (int)(shipDamage * (1 - LicencesManager.ShipDamageEffect));
-        int damageReduced = shipDamage - shipDamageTaken;
+        int shipDamageTaken = (int)(BaseDamage * (1 - LicencesManager.ShipDamageEffect));
+        int damageReduced = BaseDamage - shipDamageTaken;
 
         ShipsManager.DamageShip(scheduled.Pilot.Ship, Math.Max(0, shipDamageTaken));
 
@@ -21,7 +21,7 @@ public class ShipDamageOutcome : MissionOutcome
             scheduled.Mission.MissionToArchive.TotalDamageReduced += damageReduced;
         }
 
-        Debug.Log("Base ship damage: " + shipDamage);
+        Debug.Log("Base ship damage: " + BaseDamage);
         Debug.Log("Ship damage reduction from licences: " + damageReduced.ToString());
         Debug.Log("Total ship damage taken: " + shipDamageTaken);
     }
