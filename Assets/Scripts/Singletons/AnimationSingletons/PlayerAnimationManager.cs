@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAnimationManager : MonoBehaviour
+public class PlayerAnimationManager : AnimationManager<PlayerAnimationParameterType>
 {
     public static PlayerAnimationManager Instance;
 
     [SerializeField] private Animator playerAnimator;
 
-    public Dictionary<PlayerAnimationParameterType, string> ParameterMap { get; set; } = new Dictionary<PlayerAnimationParameterType, string>()
+    private Dictionary<PlayerAnimationParameterType, string> ParameterMap { get; set; } = new Dictionary<PlayerAnimationParameterType, string>()
     {
         { PlayerAnimationParameterType.BatteryGrab, AnimationConstants.AnimationBatteryGrabbingParameter },
     };
@@ -34,7 +34,7 @@ public class PlayerAnimationManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"The PlayerAnimationParameterType '{nameof(playerAnimationParameterType)}' is missing from the ParameterMap dictionary.");
+            LogMissingParameterMapping(playerAnimationParameterType);
         }
     }
 }

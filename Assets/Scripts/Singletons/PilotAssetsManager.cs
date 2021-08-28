@@ -12,7 +12,7 @@ using UnityEngine;
 ///		Vesta: [Prefix-[Name]
 ///		Robot: [Alphabetical prefix]-[Numerical suffix]
 /// </summary>
-/// 
+///
 public class PilotAssetsManager : MonoBehaviour
 {
     public static PilotAssetsManager Instance { get; private set; }

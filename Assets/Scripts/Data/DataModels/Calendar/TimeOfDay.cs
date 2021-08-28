@@ -9,9 +9,4 @@ public struct TimeOfDay
     public int Hours;
     public int Minutes;
     public int Seconds;
-
-    public TimeSpan ToTimeSpan()
-    {
-        return new TimeSpan(Hours, Minutes, Seconds);
-    }
 }

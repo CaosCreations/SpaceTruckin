@@ -1,9 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
-public enum LightingState 
+public enum LightingState
 {
-    Day, Night 
+    Day, Night
 }
 
 [CreateAssetMenu(fileName = "LightingData", menuName = "ScriptableObjects/LightingData", order = 1)]
