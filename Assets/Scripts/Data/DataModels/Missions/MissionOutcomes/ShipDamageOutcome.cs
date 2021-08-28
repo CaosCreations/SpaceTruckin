@@ -6,7 +6,7 @@ using UnityEngine;
 public class ShipDamageOutcome : MissionOutcome
 {
     [SerializeField] private int shipDamage;
-    public int Damage => shipDamage;
+    public int BaseDamage => shipDamage;
 
     public override void Process(ScheduledMission scheduled)
     {
