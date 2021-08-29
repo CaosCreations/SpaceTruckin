@@ -22,4 +22,9 @@ public static class DialogueUtils
     {
         return DialogueLua.GetActorField(actorName, fieldName).luaValue != null;
     }
+
+    public static bool IsConversationActive()
+    {
+        return DialogueManager.IsConversationActive;
+    }
 }

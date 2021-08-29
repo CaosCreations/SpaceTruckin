@@ -37,4 +37,9 @@ public class PlayerAnimationManager : AnimationManager<PlayerAnimationParameterT
             LogMissingParameterMapping(playerAnimationParameterType);
         }
     }
+
+    public static void ResetBoolParameters()
+    {
+        Instance.playerAnimator.SetAllBoolParameters(false);
+    }
 }
