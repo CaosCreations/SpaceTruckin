@@ -1,5 +1,9 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public static class UIUtils
 {
@@ -71,5 +75,81 @@ public static class UIUtils
         texture.Apply();
 
         return texture;
+    }
+
+    /// <summary>
+    /// Gets all event system raycast results for the current mouse position.
+    /// </summary>
+    public static List<RaycastResult> GetEventSystemRaycastResults()
+    {
+        PointerEventData eventData = new PointerEventData(EventSystem.current)
+        {
+            position = Input.mousePosition
+        };
+
+        List<RaycastResult> raycastResults = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, raycastResults);
+        return raycastResults;
+    }
+
+    public static bool IsPointerOverLayer(int layerNumber)
+    {
+        List<RaycastResult> raycastResults = GetEventSystemRaycastResults();
+
+        for (int i = 0; i < raycastResults.Count; i++)
+        {
+            if (raycastResults[i].gameObject.layer == layerNumber)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static bool IsPointerOverTag(string tagName)
+    {
+        List<RaycastResult> raycastResults = GetEventSystemRaycastResults();
+
+        for (int i = 0; i < raycastResults.Count; i++)
+        {
+            if (raycastResults[i].gameObject.CompareTag(tagName))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static bool IsPointerOverTag(string[] tagNames)
+    {
+        List<RaycastResult> raycastResults = GetEventSystemRaycastResults();
+
+        for (int i = 0; i < raycastResults.Count; i++)
+        {
+            if (tagNames.Any(x => raycastResults[i].gameObject.CompareTag(x)))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static bool IsPointerOverObjectType(Type objectType)
+    {
+        List<RaycastResult> raycastResults = GetEventSystemRaycastResults();
+
+        for (int i = 0; i < raycastResults.Count; i++)
+        {
+            if (raycastResults[i].gameObject.GetType() == objectType
+                || raycastResults[i].gameObject.GetComponent(objectType))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

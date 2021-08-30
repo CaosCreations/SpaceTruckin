@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum UICanvasType
 {
@@ -28,6 +29,8 @@ public class UIManager : MonoBehaviour
 
     private TextMeshPro interactionTextMesh;
     private static UICanvasType currentCanvasType;
+
+    private static bool IsPointerOverButton => UIUtils.IsPointerOverObjectType(typeof(Button));
 
     public static int HangarNode;
 
@@ -75,10 +78,24 @@ public class UIManager : MonoBehaviour
         {
             ShowCanvas(currentCanvasType);
         }
+        // Don't clear canvases if there is KeyCode override in place
         else if (GetNonOverriddenKeyDown(PlayerConstants.ExitKey))
         {
             ClearCanvases();
         }
+        // Play an Error sound effect if a non-interactable region is clicked
+        else if (PlayerManager.IsPaused 
+            && Input.GetMouseButtonDown(0) 
+            && !IsPointerOverButton)
+        {
+            UISoundEffectManager.Instance.PlaySoundEffect(UISoundEffectType.Error);
+        }
+
+        SetInteractionTextMesh();
+    }
+
+    private void SetInteractionTextMesh()
+    {
 
         if (currentCanvasType != UICanvasType.None)
         {
@@ -165,7 +182,7 @@ public class UIManager : MonoBehaviour
         {
             return;
         }
-        
+
         if (!canvas.IsActive())
         {
             ShowCanvas(canvasType, true);
