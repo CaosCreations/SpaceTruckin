@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public enum MessageFilterMode 
-{ 
-    None, Unread, Read 
+public enum MessageFilterMode
+{
+    None, Unread, Read
 }
 
 public class MessagesUI : MonoBehaviour
@@ -123,7 +123,7 @@ public class MessagesUI : MonoBehaviour
         // Hide the list view
         messagesListView.SetActive(false);
         filterButtonContainer.SetActive(false);
-        
+
         // Show the detail view 
         messagesDetailView.SetActive(true);
         messageDetailViewHandler.SetupDetailView(message);
