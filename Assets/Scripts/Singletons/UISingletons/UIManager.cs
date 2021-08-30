@@ -84,8 +84,8 @@ public class UIManager : MonoBehaviour
             ClearCanvases();
         }
         // Play an Error sound effect if a non-interactable region is clicked
-        else if (PlayerManager.IsPaused 
-            && Input.GetMouseButtonDown(0) 
+        else if (PlayerManager.IsPaused
+            && Input.GetMouseButtonDown(0)
             && !IsPointerOverButton)
         {
             UISoundEffectManager.Instance.PlaySoundEffect(UISoundEffectType.Error);
@@ -96,7 +96,6 @@ public class UIManager : MonoBehaviour
 
     private void SetInteractionTextMesh()
     {
-
         if (currentCanvasType != UICanvasType.None)
         {
             interactionTextMesh.gameObject.SetActive(true);
