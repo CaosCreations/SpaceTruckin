@@ -146,26 +146,17 @@ public class UIManager : MonoBehaviour
 
     private static UICanvasBase GetCanvasByType(UICanvasType canvasType)
     {
-        switch (canvasType)
+        return canvasType switch
         {
-            case UICanvasType.Terminal:
-                return Instance.terminalCanvas;
-            case UICanvasType.Hangar:
-                return Instance.hangarNodeCanvas;
-            case UICanvasType.Vending:
-                return Instance.vendingCanvas;
-            case UICanvasType.Cassette:
-                return Instance.casetteCanvas;
-            case UICanvasType.NoticeBoard:
-                return Instance.noticeBoardCanvas;
-            case UICanvasType.Bed:
-                return Instance.bedCanvas;
-            case UICanvasType.MainMenu:
-                return Instance.mainMenuCanvas;
-            default:
-                Debug.LogError("Invalid UI type passed to GetCanvasByType");
-                return null;
-        }
+            UICanvasType.Terminal => Instance.terminalCanvas,
+            UICanvasType.Hangar => Instance.hangarNodeCanvas,
+            UICanvasType.Vending => Instance.vendingCanvas,
+            UICanvasType.Cassette => Instance.casetteCanvas,
+            UICanvasType.NoticeBoard => Instance.noticeBoardCanvas,
+            UICanvasType.Bed => Instance.bedCanvas,
+            UICanvasType.MainMenu => Instance.mainMenuCanvas,
+            _ => null,
+        };
     }
 
     public static bool IsCanvasActive(UICanvasType canvasType)
@@ -179,6 +170,7 @@ public class UIManager : MonoBehaviour
         UICanvasBase canvas = GetCanvasByType(canvasType);
         if (canvas == null)
         {
+            Debug.LogError($"UICanvasBase of type '{nameof(canvasType)}' not found");
             return;
         }
 

@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c90981045dcf564ca5a5e8e5da29649, type: 3}
   m_Name: TotallyLegalStookaColaShipment_Mission6
   m_EditorClassIdentifier: 
-  missionDurationInDays: 1
   missionName: Totally Legal Stooka Cola Shipment
   customer: Red Nebula Privateer Group
   cargo: "\u201CStooka Cola\u201D Crates"
@@ -25,17 +24,33 @@ MonoBehaviour:
     risky, but they pay well, and they\u2019ll need us a lot. Obviously, this is
     entirely unofficial and you never heard it from me\u2026 Come to think of it,
     I shouldn\u2019t have put this in writing, should I?\u201D"
+  missionDurationInDays: 1
   fuelCost: 0
   unlockCondition: 0
   moneyNeededToUnlock: 6000
+  isRepeatable: 1
   hasRandomOutcomes: 0
   outcomes:
   - {fileID: 11400000, guid: cd808da8f4f8bf544a83cb5dad3bb0e9, type: 2}
   - {fileID: 11400000, guid: 4786970603a2361419f643b4f0f7b901, type: 2}
   - {fileID: 11400000, guid: 5096a8f285b35a24d916c02ff8d5e371, type: 2}
+  missionModifier: {fileID: 0}
+  fondnessGranted: 0
+  offerTimeLimitInDays: 0
+  offerExpiryFondnessDeduction: 0
   thankYouMessage: {fileID: 0}
   saveData:
-    hasBeenUnlocked: 1
-    hasBeenAccepted: 1
+    hasBeenUnlocked: 0
+    hasBeenAccepted: 0
+    offerExpiryConsequencesApplied: 0
     daysLeftToComplete: 0
     numberOfCompletions: 0
+    dateUnlocked:
+      Day: 0
+      Month: 0
+      Year: 0
+    dateAccepted:
+      Day: 0
+      Month: 0
+      Year: 0
+    missionBonus: {fileID: 0}

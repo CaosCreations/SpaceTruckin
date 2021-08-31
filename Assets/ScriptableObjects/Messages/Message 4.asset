@@ -12,8 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd9d7529875deb945afe1826b70a68b9, type: 3}
   m_Name: Message 4
   m_EditorClassIdentifier: 
+  messageName: 
   sender: asdh
   subject: ahsdad
   body: adsusd
-  condition: 2500
-  unlocked: 0
+  unlockCondition: 0
+  moneyNeededToUnlock: 0
+  dateToUnlockOn:
+    Day: 0
+    Month: 0
+    Year: 0
+  missionProposition: {fileID: 0}
+  missionBonus: {fileID: 0}
+  missionToApplyBonusTo: {fileID: 0}
+  hasRandomBonus: 0
+  saveData:
+    isUnlocked: 1
+    hasBeenRead: 0
