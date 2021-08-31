@@ -13,7 +13,7 @@ public class AmbientSoundEffectManager : SoundEffectsManager<AmbientSoundEffectM
 
     private void Start()
     {
-        Instance.PlaySoundEffect(AmbientSoundEffect.AsteroidAir);
+        PlaySoundEffect(AmbientSoundEffect.AsteroidAir);
     }
 
     public override AudioClip GetClipBySoundEffectType(AmbientSoundEffect effectType)
