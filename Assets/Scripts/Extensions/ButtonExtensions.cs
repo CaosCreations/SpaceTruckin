@@ -5,11 +5,11 @@ using UnityEngine.UI;
 public static class ButtonExtensions
 {
     public static Button AddOnClick(this Button self, UnityAction callback,
-        UISoundEffectType soundEffect = UISoundEffectType.Confirm)
+        UISoundEffect soundEffect = UISoundEffect.Confirm)
     {
         self.onClick.RemoveAllListeners();
         self.onClick.AddListener(callback);
-        self.onClick.AddListener(() => UISoundEffectManager.Instance.PlaySoundEffect(soundEffect));
+        self.onClick.AddListener(() => UISoundEffectsManager.Instance.PlaySoundEffect(soundEffect));
 
         return self;
     }
