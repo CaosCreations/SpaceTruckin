@@ -4720,6 +4720,7 @@ GameObject:
   - component: {fileID: 8073252609653081764}
   - component: {fileID: 2209266962481434282}
   - component: {fileID: 7836775514158014719}
+  - component: {fileID: 8532800599552025212}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -5219,6 +5220,25 @@ MonoBehaviour:
   <AudioClips>k__BackingField: []
   doorOpeningClip: {fileID: 0}
   doorClosingClip: {fileID: 0}
+--- !u!114 &8532800599552025212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5745358076465076624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d3d2208f2edcd240bcb8b6b4320774e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMixer: {fileID: 24100000, guid: 420e73383fed53046b92403e0b98700b, type: 2}
+  audioListener: {fileID: 0}
+  masterGroup: {fileID: 24300002, guid: 420e73383fed53046b92403e0b98700b, type: 2}
+  musicGroup: {fileID: -699883527485123393, guid: 420e73383fed53046b92403e0b98700b,
+    type: 2}
+  soundEffectsGroup: {fileID: 5862370729138954595, guid: 420e73383fed53046b92403e0b98700b,
+    type: 2}
 --- !u!1 &6468706116591643091
 GameObject:
   m_ObjectHideFlags: 0
