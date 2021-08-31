@@ -88,7 +88,7 @@ public class UIManager : MonoBehaviour
             && Input.GetMouseButtonDown(0)
             && !IsPointerOverButton)
         {
-            UISoundEffectManager.Instance.PlaySoundEffect(UISoundEffect.Error);
+            UISoundEffectsManager.Instance.PlaySoundEffect(UISoundEffect.Error);
         }
 
         SetInteractionTextMesh();

@@ -9,7 +9,7 @@ public static class ButtonExtensions
     {
         self.onClick.RemoveAllListeners();
         self.onClick.AddListener(callback);
-        self.onClick.AddListener(() => UISoundEffectManager.Instance.PlaySoundEffect(soundEffect));
+        self.onClick.AddListener(() => UISoundEffectsManager.Instance.PlaySoundEffect(soundEffect));
 
         return self;
     }

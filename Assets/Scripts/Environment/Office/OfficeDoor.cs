@@ -32,7 +32,7 @@ public class OfficeDoor : InteractableObject
 
         IsPlayerColliding = true;
 
-        InteractionSoundEffectManager.Instance
+        InteractionSoundEffectsManager.Instance
             .PlaySoundEffect(InteractionSoundEffect.DoorOpening);
     }
 
@@ -43,7 +43,7 @@ public class OfficeDoor : InteractableObject
 
         IsPlayerColliding = false;
 
-        InteractionSoundEffectManager.Instance
+        InteractionSoundEffectsManager.Instance
             .PlaySoundEffect(InteractionSoundEffect.DoorClosing);
     }
 }

@@ -5,7 +5,7 @@ public enum InteractionSoundEffect
     DoorOpening, DoorClosing
 }
 
-public class InteractionSoundEffectManager : SoundEffectsManager<InteractionSoundEffectManager, InteractionSoundEffect>
+public class InteractionSoundEffectsManager : SoundEffectsManager<InteractionSoundEffectsManager, InteractionSoundEffect>
 {
     #region AudioClips
     [SerializeField] private AudioClip doorOpeningClip;

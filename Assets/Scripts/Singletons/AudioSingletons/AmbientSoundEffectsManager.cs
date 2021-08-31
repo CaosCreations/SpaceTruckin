@@ -5,7 +5,7 @@ public enum AmbientSoundEffect
     AsteroidAir
 }
 
-public class AmbientSoundEffectManager : SoundEffectsManager<AmbientSoundEffectManager, AmbientSoundEffect>
+public class AmbientSoundEffectsManager : SoundEffectsManager<AmbientSoundEffectsManager, AmbientSoundEffect>
 {
     #region AudioClips
     [SerializeField] private AudioClip asteroidAirClip;

@@ -5,7 +5,7 @@ public enum UISoundEffect
     Confirm, Back, Error, Select, SelectMechanical
 }
 
-public class UISoundEffectManager : SoundEffectsManager<UISoundEffectManager, UISoundEffect>
+public class UISoundEffectsManager : SoundEffectsManager<UISoundEffectsManager, UISoundEffect>
 {
     #region AudioClips
     [SerializeField] private AudioClip confirmClip;
