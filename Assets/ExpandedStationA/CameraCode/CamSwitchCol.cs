@@ -49,10 +49,22 @@ public class CamSwitchCol : MonoBehaviour {
 		}
 
 		
+		if(camName=="DinerCam")
+		{
+			myCurrentCam=2;
+		}
+
+		
 
 			if(camName=="BarCam")
 		{
 			myCurrentCam=3;
+		}
+
+
+				if(camName=="YogaCam")
+		{
+			myCurrentCam=4;
 		}
 
 
