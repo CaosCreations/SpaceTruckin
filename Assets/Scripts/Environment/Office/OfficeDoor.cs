@@ -31,6 +31,9 @@ public class OfficeDoor : InteractableObject
         transform.Translate(-doorOpenOffset);
 
         IsPlayerColliding = true;
+
+        InteractionSoundEffectManager.Instance
+            .PlaySoundEffect(InteractionSoundEffect.DoorOpening);
     }
 
     public void CloseDoor()
@@ -39,5 +42,8 @@ public class OfficeDoor : InteractableObject
         transform.Translate(doorOpenOffset);
 
         IsPlayerColliding = false;
+
+        InteractionSoundEffectManager.Instance
+            .PlaySoundEffect(InteractionSoundEffect.DoorClosing);
     }
 }
