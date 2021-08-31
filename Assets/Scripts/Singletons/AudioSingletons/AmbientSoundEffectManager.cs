@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
-public enum AmbientSoundEffectType
+public enum AmbientSoundEffect
 {
     AsteroidAir
 }
 
-public class AmbientSoundEffectManager : AudioManager, ISoundEffectManager<AmbientSoundEffectType>
+public class AmbientSoundEffectManager : AudioManager, ISoundEffectManager<AmbientSoundEffect>
 {
     public static AmbientSoundEffectManager Instance { get; private set; }
 
@@ -34,19 +34,19 @@ public class AmbientSoundEffectManager : AudioManager, ISoundEffectManager<Ambie
 
     private void Start()
     {
-        Instance.PlaySoundEffect(AmbientSoundEffectType.AsteroidAir);
+        Instance.PlaySoundEffect(AmbientSoundEffect.AsteroidAir);
     }
 
-    public void PlaySoundEffect(AmbientSoundEffectType effectType)
+    public void PlaySoundEffect(AmbientSoundEffect effectType)
     {
         Instance.PlayAudioClip(GetClipBySoundEffectType(effectType));
     }
 
-    public AudioClip GetClipBySoundEffectType(AmbientSoundEffectType effectType)
+    public AudioClip GetClipBySoundEffectType(AmbientSoundEffect effectType)
     {
         return effectType switch
         {
-            AmbientSoundEffectType.AsteroidAir => Instance.asteroidAirClip,
+            AmbientSoundEffect.AsteroidAir => Instance.asteroidAirClip,
             _ => default,
         };
     }

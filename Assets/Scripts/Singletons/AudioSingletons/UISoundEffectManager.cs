@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
-public enum UISoundEffectType
+public enum UISoundEffect
 {
     Confirm, Back, Error, Select, SelectMechanical
 }
 
-public class UISoundEffectManager : AudioManager, ISoundEffectManager<UISoundEffectType>
+public class UISoundEffectManager : AudioManager, ISoundEffectManager<UISoundEffect>
 {
     public static UISoundEffectManager Instance { get; private set; }
 
@@ -36,20 +36,20 @@ public class UISoundEffectManager : AudioManager, ISoundEffectManager<UISoundEff
         }
     }
 
-    public void PlaySoundEffect(UISoundEffectType effectType)
+    public void PlaySoundEffect(UISoundEffect effectType)
     {
         Instance.PlayAudioClip(GetClipBySoundEffectType(effectType));
     }
 
-    public AudioClip GetClipBySoundEffectType(UISoundEffectType soundEffect)
+    public AudioClip GetClipBySoundEffectType(UISoundEffect effectType)
     {
-        return soundEffect switch
+        return effectType switch
         {
-            UISoundEffectType.Confirm => Instance.confirmClip,
-            UISoundEffectType.Back => Instance.backClip,
-            UISoundEffectType.Error => Instance.errorClip,
-            UISoundEffectType.Select => Instance.selectClip,
-            UISoundEffectType.SelectMechanical => Instance.selectMechancialClip,
+            UISoundEffect.Confirm => Instance.confirmClip,
+            UISoundEffect.Back => Instance.backClip,
+            UISoundEffect.Error => Instance.errorClip,
+            UISoundEffect.Select => Instance.selectClip,
+            UISoundEffect.SelectMechanical => Instance.selectMechancialClip,
             _ => default,
         };
     }
