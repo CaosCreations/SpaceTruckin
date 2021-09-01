@@ -1,14 +1,15 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-public abstract class Singleton<T> : MonoBehaviour
+public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
-    public static Singleton<T> Instance;
+    public static T Instance { get; private set; }
 
     private void Awake()
     {
         if (Instance == null)
         {
-            Instance = this;
+            Instance = FindObjectOfType<T>() ?? Activator.CreateInstance<T>();
             DontDestroyOnLoad(gameObject);
         }
         else

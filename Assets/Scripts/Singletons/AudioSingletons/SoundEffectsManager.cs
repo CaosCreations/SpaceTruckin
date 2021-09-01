@@ -6,7 +6,7 @@ public abstract class SoundEffectsManager<TInstance, TSoundEffect> : AudioManage
     where TInstance : class
     where TSoundEffect : Enum
 {
-    public static SoundEffectsManager<TInstance, TSoundEffect> Instance;
+    public static SoundEffectsManager<TInstance, TSoundEffect> Instance { get; private set; }
 
     private void Awake()
     {
