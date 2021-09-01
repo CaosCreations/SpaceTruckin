@@ -74,6 +74,22 @@ public class CamSwitchCol : MonoBehaviour {
 			myCurrentCam=5;
 		}
 
+
+
+
+
+
+			if(camName=="SpacePort")
+		{
+			myCurrentCam=10;
+		}
+
+		
+			if(camName=="RefugeCampI")
+		{
+			myCurrentCam=11;
+		}
+
 		
 			
 
