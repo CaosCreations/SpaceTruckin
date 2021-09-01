@@ -9,12 +9,12 @@ public class AudioVolumeSlider : MonoBehaviour
 
     [SerializeField] private MixerGroup mixerGroup;
 
-    private void Start()
+    private void Awake()
     {
-        volumeSlider = GetComponent<Slider>();
+        volumeSlider = GetComponentInChildren<Slider>();
         volumeSlider.AddOnValueChanged(SlideVolume);
 
-        sliderText = GetComponent<Text>();
+        sliderText = GetComponentInChildren<Text>();
         sliderText.SetText(Enum.GetName(typeof(MixerGroup), mixerGroup));
     }
 

@@ -6,13 +6,14 @@ using UnityEngine.UI;
 
 public enum UICanvasType
 {
-    None, Terminal, Vending, Hangar, Cassette, NoticeBoard, MainMenu, Bed
+    None, Terminal, Vending, Hangar, Cassette, NoticeBoard, MainMenu, PauseMenu, Bed
 }
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager Instance;
+    public static UIManager Instance { get; private set; }
 
+    #region Canvases
     [SerializeField] private UICanvasBase bedCanvas;
     [SerializeField] private UICanvasBase terminalCanvas;
     [SerializeField] private UICanvasBase vendingCanvas;
@@ -20,6 +21,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private UICanvasBase casetteCanvas;
     [SerializeField] private UICanvasBase noticeBoardCanvas;
     [SerializeField] private UICanvasBase mainMenuCanvas;
+    [SerializeField] private UICanvasBase pauseMenuCanvas;
+    #endregion
 
     /// <summary>
     /// Keys that cannot be used for regular UI input until the override is lifted.
@@ -72,23 +75,32 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        if (!PlayerManager.IsPaused
-            && currentCanvasType != UICanvasType.None
-            && Input.GetKeyDown(PlayerConstants.ActionKey))
+        if (!PlayerManager.IsPaused)
         {
-            ShowCanvas(currentCanvasType);
+            // Show pause menu 
+            if (Input.GetKeyDown(PlayerConstants.PauseKey))
+            {
+                ShowCanvas(UICanvasType.PauseMenu);
+            }
+            // Open new menu if one is available 
+            else if (currentCanvasType != UICanvasType.None
+                && Input.GetKeyDown(PlayerConstants.ActionKey))
+            {
+                ShowCanvas(currentCanvasType);
+            }
         }
-        // Don't clear canvases if there is KeyCode override in place
-        else if (GetNonOverriddenKeyDown(PlayerConstants.ExitKey))
+        else
         {
-            ClearCanvases();
-        }
-        // Play an Error sound effect if a non-interactable region is clicked
-        else if (PlayerManager.IsPaused
-            && Input.GetMouseButtonDown(0)
-            && !IsPointerOverButton)
-        {
-            UISoundEffectsManager.Instance.PlaySoundEffect(UISoundEffect.Error);
+            // Close the menu with a keypress unless that key is overridden
+            if (GetNonOverriddenKeyDown(PlayerConstants.ExitKey))
+            {
+                ClearCanvases();
+            }
+            // Play an Error sound effect if a non-interactable region is clicked
+            else if (Input.GetMouseButtonDown(0) && !IsPointerOverButton)
+            {
+                UISoundEffectsManager.Instance.PlaySoundEffect(UISoundEffect.Error);
+            }
         }
 
         SetInteractionTextMesh();
@@ -120,6 +132,7 @@ public class UIManager : MonoBehaviour
         Instance.casetteCanvas.SetActive(false);
         Instance.noticeBoardCanvas.SetActive(false);
         Instance.mainMenuCanvas.SetActive(false);
+        Instance.pauseMenuCanvas.SetActive(false);
 
         OnCanvasDeactivated?.Invoke();
     }
@@ -132,11 +145,12 @@ public class UIManager : MonoBehaviour
     {
         ClearCanvases();
         PlayerManager.Instance.EnterMenuState();
+
         UICanvasBase canvas = GetCanvasByType(canvasType);
         canvas.SetActive(true);
 
         // Show tutorial overlay if first time using the UI 
-        if (!viaShortcut && !CurrentCanvasHasBeenViewed())
+        if (!viaShortcut && canvas.CanvasTutorialPrefab != null && !CurrentCanvasHasBeenViewed())
         {
             canvas.ShowTutorial();
         }
@@ -155,6 +169,7 @@ public class UIManager : MonoBehaviour
             UICanvasType.NoticeBoard => Instance.noticeBoardCanvas,
             UICanvasType.Bed => Instance.bedCanvas,
             UICanvasType.MainMenu => Instance.mainMenuCanvas,
+            UICanvasType.PauseMenu => Instance.pauseMenuCanvas,
             _ => null,
         };
     }
