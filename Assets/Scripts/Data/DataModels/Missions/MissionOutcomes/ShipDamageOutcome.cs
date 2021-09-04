@@ -1,12 +1,19 @@
 ﻿using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ShipDamageOutcome", menuName = "ScriptableObjects/Missions/Outcomes/ShipDamageOutcome", order = 1)]
+public enum ShipDamageType
+{
+    Hull, Engine
+}
 
+[CreateAssetMenu(fileName = "ShipDamageOutcome", menuName = "ScriptableObjects/Missions/Outcomes/ShipDamageOutcome", order = 1)]
 public class ShipDamageOutcome : MissionOutcome
 {
     [SerializeField] private int shipDamage;
     public int BaseDamage => shipDamage;
+
+    [SerializeField] private ShipDamageType damageType;
+    public ShipDamageType DamageType => damageType;
 
     public override void Process(ScheduledMission scheduled)
     {

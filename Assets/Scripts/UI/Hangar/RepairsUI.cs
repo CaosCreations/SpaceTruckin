@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,7 +36,7 @@ public class RepairsUI : SubMenu
             SetupMinigame();
         }
     }
-    
+
     public void UpdateUI(bool wasSuccessful)
     {
         repairToolsUI.UpdateToolsText();
@@ -49,7 +50,7 @@ public class RepairsUI : SubMenu
         StringBuilder builder = new StringBuilder();
         builder.AppendLine(
             wasSuccessful ? RepairsConstants.SuccessMessage : RepairsConstants.FailureMessage);
-        
+
         builder.AppendLine($"You have {PlayerManager.Instance.RepairTools} tools remaining.");
 
         feedbackText.SetText(builder.ToString());
@@ -64,8 +65,13 @@ public class RepairsUI : SubMenu
     {
         if (repairsMinigameInstance == null)
         {
-            repairsMinigameInstance = Instantiate(repairsMinigamePrefab, transform);
-            repairsMinigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer);
+            //repairsMinigameInstance = Instantiate(repairsMinigamePrefab, transform);
+            //repairsMinigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer);
+            //repairsManager = repairsMinigameInstance.GetComponent<RepairsManager>();
+
+            MinigamePrefab prefabType = GetMinigameTypeByDamageType(ShipDamageType.Engine);
+            repairsMinigameInstance = MinigamePrefabManager.Instance.InitPrefab(prefabType);
+
             repairsManager = repairsMinigameInstance.GetComponent<RepairsManager>();
         }
     }
@@ -98,5 +104,17 @@ public class RepairsUI : SubMenu
     {
         stopStartButton.interactable = PlayerManager.CanRepair
             && !ShipToRepair.IsFullyRepaired;
+    }
+
+    private MinigamePrefab GetMinigameTypeByDamageType(ShipDamageType damageType)
+    {
+        return damageType switch
+        {
+            ShipDamageType.Engine => MinigamePrefab.Wheel,
+            ShipDamageType.Hull => MinigamePrefab.Stack,
+            _ => throw new ArgumentOutOfRangeException(),
+        };
+
+        // Todo: Better default handling here
     }
 }
