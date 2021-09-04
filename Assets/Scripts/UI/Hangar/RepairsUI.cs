@@ -65,12 +65,9 @@ public class RepairsUI : SubMenu
     {
         if (repairsMinigameInstance == null)
         {
-            //repairsMinigameInstance = Instantiate(repairsMinigamePrefab, transform);
-            //repairsMinigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer);
-            //repairsManager = repairsMinigameInstance.GetComponent<RepairsManager>();
-
             MinigamePrefab prefabType = GetMinigameTypeByDamageType(ShipDamageType.Engine);
-            repairsMinigameInstance = MinigamePrefabManager.Instance.InitPrefab(prefabType);
+            repairsMinigameInstance = MinigamePrefabManager.Instance.InitPrefab(prefabType, transform);
+            repairsMinigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer);
 
             repairsManager = repairsMinigameInstance.GetComponent<RepairsManager>();
         }

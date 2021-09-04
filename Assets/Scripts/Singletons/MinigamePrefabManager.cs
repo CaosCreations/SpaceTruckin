@@ -33,7 +33,7 @@ public class MinigamePrefabManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"{nameof(wheelMinigamePrefab)} on {nameof(MinigamePrefabManager)} is null.");
+            Debug.LogError($"{nameof(wheelMinigamePrefab)} on {nameof(MinigamePrefabManager)} is null. Attach the reference.");
         }
 
         if (stackMinigamePrefab && !PrefabMap.ContainsKey(MinigamePrefab.Stack))
@@ -42,7 +42,7 @@ public class MinigamePrefabManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"{nameof(stackMinigamePrefab)} on {nameof(MinigamePrefabManager)} is null.");
+            Debug.LogError($"{nameof(stackMinigamePrefab)} on {nameof(MinigamePrefabManager)} is null. Attach the reference");
         }
     }
 
@@ -85,13 +85,14 @@ public class MinigamePrefabManager : MonoBehaviour
     private void Start()
     {
         MapPrefabs();
+        MapInstances();
     }
 
-    public GameObject InitPrefab(MinigamePrefab minigamePrefab)
+    public GameObject InitPrefab(MinigamePrefab minigamePrefab, Transform parent)
     {
         DestroyExistingInstances();
 
-        InstanceMap[minigamePrefab] = Instantiate(PrefabMap[minigamePrefab]);
+        InstanceMap[minigamePrefab] = Instantiate(PrefabMap[minigamePrefab], parent);
         return InstanceMap[minigamePrefab];
     }
 
