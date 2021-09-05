@@ -14,7 +14,7 @@ public class RepairsUI : SubMenu
     [SerializeField] private GameObject repairsMinigamePrefab;
     private GameObject repairsMinigameInstance;
     private GameObject repairsMinigameUIInstance;
-    private RepairsManager repairsManager;
+    private WheelManager repairsManager;
 
     public Ship ShipToRepair { get; set; }
 
@@ -34,7 +34,7 @@ public class RepairsUI : SubMenu
             UpdateHullResourceBar();
             SetButtonInteractability();
 
-            SetupMinigame();
+            InitMinigame();
         }
     }
 
@@ -62,7 +62,7 @@ public class RepairsUI : SubMenu
         feedbackText.Clear();
     }
 
-    public void SetupMinigame()
+    public void InitMinigame()
     {
         if (repairsMinigameInstance == null)
         {
@@ -72,25 +72,7 @@ public class RepairsUI : SubMenu
 
             repairsMinigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer);
 
-            repairsManager = repairsMinigameInstance.GetComponent<RepairsManager>();
-        }
-    }
-
-    private void HandleStopStart()
-    {
-        if (repairsManager != null)
-        {
-            repairsManager.StopStart();
-
-            if (repairsManager.IsRepairing)
-            {
-                stopStartButton.SetText(RepairsConstants.StopButtonText);
-                feedbackText.Clear();
-            }
-            else
-            {
-                stopStartButton.SetText(RepairsConstants.StartButtonText);
-            }
+            repairsManager = repairsMinigameInstance.GetComponent<WheelManager>();
         }
     }
 

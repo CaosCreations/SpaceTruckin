@@ -1,20 +1,21 @@
 ﻿using System;
 using UnityEngine;
 
-public class Workstation : MonoBehaviour
+public class Wheel : MonoBehaviour
 {
-    public static event Action OnRotationStoppedByPlayer;
+    public static event Action OnRotationStarted;
+    public static event Action OnRotationStopped;
 
     public bool IsRotating { get; private set; }
     public float CurrentRotationSpeed { get; private set; }
-    private bool isDirectionReversed; 
+    private bool isDirectionReversed;
 
     private void Start()
     {
         CurrentRotationSpeed = RepairsConstants.StartingSpeed;
     }
 
-    public void RotateWorkstation()
+    public void RotateWheel()
     {
         float zRotation = isDirectionReversed ? CurrentRotationSpeed
             : CurrentRotationSpeed * -1f;
@@ -26,6 +27,7 @@ public class Workstation : MonoBehaviour
     public void StartRotating()
     {
         IsRotating = true;
+        OnRotationStopped.Invoke();
     }
 
     public void StopRotating(bool isResetting = false)
@@ -34,7 +36,7 @@ public class Workstation : MonoBehaviour
 
         if (!isResetting)
         {
-            OnRotationStoppedByPlayer?.Invoke();
+            OnRotationStopped.Invoke();
         }
     }
 
@@ -49,7 +51,7 @@ public class Workstation : MonoBehaviour
     public void ReverseRotationDirection() =>
         isDirectionReversed = !isDirectionReversed;
 
-    public void ResetWorkstation()
+    public void ResetWheel()
     {
         StopRotating(isResetting: true);
         transform.localEulerAngles = Vector3.zero;
@@ -59,7 +61,7 @@ public class Workstation : MonoBehaviour
     {
         if (IsRotating)
         {
-            RotateWorkstation();
+            RotateWheel();
         }
     }
 }

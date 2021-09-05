@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 
-public class Indicator : MonoBehaviour
+public class WheelIndicator : MonoBehaviour
 {
-    private RepairsManager repairsManager;
+    private WheelManager repairsManager;
     private bool isInsideGreenZone; 
 
     private void Start()
     {
-        repairsManager = GetComponentInParent<RepairsManager>();
-        Workstation.OnRotationStoppedByPlayer += DetermineOutcome; 
+        repairsManager = GetComponentInParent<WheelManager>();
+        Wheel.OnRotationStopped += DetermineOutcome; 
     }
 
     public void DetermineOutcome()

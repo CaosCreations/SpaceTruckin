@@ -2,7 +2,7 @@
 
 public class ShipsManager : MonoBehaviour, IDataModelManager
 {
-    public static ShipsManager Instance;
+    public static ShipsManager Instance { get; private set; }
 
     public GameObject shipInstancePrefab;
     [SerializeField] private ShipsContainer shipsContainer;
@@ -45,6 +45,20 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         {
             ship.CurrentHullIntegrity = Mathf.Max(
                 0, ship.CurrentHullIntegrity - damage);
+        }
+    }
+
+    public static void RepairShip()
+    {
+        Ship ship = HangarManager.GetShipByNode(UIManager.HangarNode);
+
+        if (ship != null)
+        {
+            RepairShip(ship);
+        }
+        else
+        {
+            Debug.LogError($"Cannot repair ship at node {UIManager.HangarNode} as the ship is null.");
         }
     }
 
