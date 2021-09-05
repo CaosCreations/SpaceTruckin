@@ -10,7 +10,7 @@ public class MinigamePrefabManager : MonoBehaviour
 {
     public static MinigamePrefabManager Instance { get; private set; }
 
-    #region Prefab GameObjects
+    #region GameObjects
     // Gameplay 
     [SerializeField] private GameObject wheelMinigamePrefab;
     [SerializeField] private GameObject stackMinigamePrefab;
@@ -40,106 +40,58 @@ public class MinigamePrefabManager : MonoBehaviour
     private readonly Dictionary<MinigamePrefab, GameObject> uiInstanceMap =
         new Dictionary<MinigamePrefab, GameObject>();
 
+    private void MapPrefab(MinigamePrefab prefabType,
+        Dictionary<MinigamePrefab, GameObject> prefabMap,
+        GameObject prefab)
+    {
+        if (prefab && !prefabMap.ContainsKey(prefabType))
+        {
+            prefabMap.Add(prefabType, prefab);
+        }
+        else
+        {
+            Debug.LogError($"{nameof(prefab)} on {nameof(MinigamePrefabManager)} is null. Attach the reference.");
+        }
+    }
+
     private void MapPrefabs()
     {
-        if (wheelMinigamePrefab && !prefabMap.ContainsKey(MinigamePrefab.Wheel))
-        {
-            prefabMap.Add(MinigamePrefab.Wheel, wheelMinigamePrefab);
-        }
-        else
-        {
-            Debug.LogError($"{nameof(wheelMinigamePrefab)} on {nameof(MinigamePrefabManager)} is null. Attach the reference.");
-        }
+        // Wheel
+        MapPrefab(MinigamePrefab.Wheel, prefabMap, wheelMinigamePrefab);
+        MapPrefab(MinigamePrefab.Wheel, uiPrefabMap, wheelMinigameUIPrefab);
 
-        if (wheelMinigameUIPrefab && !prefabMap.ContainsKey(MinigamePrefab.Wheel))
-        {
-            uiPrefabMap.Add(MinigamePrefab.Wheel, wheelMinigameUIPrefab);
-        }
-        else
-        {
-            Debug.LogError($"{nameof(wheelMinigameUIPrefab)} on {nameof(MinigamePrefabManager)} is null. Attach the reference.");
-        }
+        // Stack
+        MapPrefab(MinigamePrefab.Stack, prefabMap, stackMinigamePrefab);
+        MapPrefab(MinigamePrefab.Stack, uiPrefabMap, stackMinigameUIPrefab);
+    }
 
-        if (stackMinigamePrefab && !prefabMap.ContainsKey(MinigamePrefab.Stack))
+    private void MapInstance(MinigamePrefab prefabType,
+        Dictionary<MinigamePrefab, GameObject> instanceMap,
+        GameObject instance)
+    {
+        if (!instanceMap.ContainsKey(prefabType))
         {
-            prefabMap.Add(MinigamePrefab.Stack, stackMinigamePrefab);
+            instanceMap.Add(prefabType, instance);
         }
         else
         {
-            Debug.LogError($"{nameof(stackMinigamePrefab)} on {nameof(MinigamePrefabManager)} is null. Attach the reference");
-        }
-
-        if (wheelMinigameUIPrefab && !prefabMap.ContainsKey(MinigamePrefab.Stack))
-        {
-            uiPrefabMap.Add(MinigamePrefab.Stack, wheelMinigameUIPrefab);
-        }
-        else
-        {
-            Debug.LogError($"{nameof(stackMinigameUIPrefab)} on {nameof(MinigamePrefabManager)} is null. Attach the reference.");
+            Debug.LogWarning($"{nameof(instance)} on {nameof(MinigamePrefabManager)} is already mapped.");
         }
     }
 
     private void MapInstances()
     {
-        if (!instanceMap.ContainsKey(MinigamePrefab.Wheel))
-        {
-            instanceMap.Add(MinigamePrefab.Wheel, wheelMinigameInstance);
-        }
-        else
-        {
-            Debug.LogWarning($"{nameof(wheelMinigameInstance)} on {nameof(MinigamePrefabManager)} is already mapped.");
-        }
+        // Wheel
+        MapInstance(MinigamePrefab.Wheel, instanceMap, wheelMinigameInstance);
+        MapInstance(MinigamePrefab.Wheel, uiInstanceMap, wheelMinigameUIInstance);
 
-        if (!uiInstanceMap.ContainsKey(MinigamePrefab.Wheel))
-        {
-            instanceMap.Add(MinigamePrefab.Wheel, wheelMinigameUIInstance);
-        }
-        else
-        {
-            Debug.LogWarning($"{nameof(wheelMinigameUIInstance)} on {nameof(MinigamePrefabManager)} is already mapped.");
-        }
-
-        if (!instanceMap.ContainsKey(MinigamePrefab.Stack))
-        {
-            instanceMap.Add(MinigamePrefab.Stack, stackMinigameInstance);
-        }
-        else
-        {
-            Debug.LogError($"{nameof(stackMinigameInstance)} on {nameof(MinigamePrefabManager)} is already mapped.");
-        }
-
-        if (!uiInstanceMap.ContainsKey(MinigamePrefab.Stack))
-        {
-            instanceMap.Add(MinigamePrefab.Stack, stackMinigameUIInstance);
-        }
-        else
-        {
-            Debug.LogWarning($"{nameof(stackMinigameUIInstance)} on {nameof(MinigamePrefabManager)} is already mapped.");
-        }
+        // Stack
+        MapInstance(MinigamePrefab.Stack, instanceMap, stackMinigameInstance);
+        MapInstance(MinigamePrefab.Stack, uiInstanceMap, stackMinigameUIInstance);
     }
     #endregion
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-    }
-
-    private void Start()
-    {
-        MapPrefabs();
-        MapInstances();
-    }
-
-    #region Prefab Instantiation
+    #region Instantiation
     public GameObject InitPrefab(MinigamePrefab prefabType, Transform parent)
     {
         DestroyExistingInstances();
@@ -184,4 +136,24 @@ public class MinigamePrefabManager : MonoBehaviour
         return uiInstanceMap.ContainsKey(prefabType);
     }
     #endregion
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
+
+    private void Start()
+    {
+        MapPrefabs();
+        MapInstances();
+    }
 }

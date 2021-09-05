@@ -13,6 +13,7 @@ public class RepairsUI : SubMenu
 
     [SerializeField] private GameObject repairsMinigamePrefab;
     private GameObject repairsMinigameInstance;
+    private GameObject repairsMinigameUIInstance;
     private RepairsManager repairsManager;
 
     public Ship ShipToRepair { get; set; }
@@ -67,6 +68,8 @@ public class RepairsUI : SubMenu
         {
             MinigamePrefab prefabType = GetMinigameTypeByDamageType(ShipDamageType.Engine);
             repairsMinigameInstance = MinigamePrefabManager.Instance.InitPrefab(prefabType, transform);
+            repairsMinigameUIInstance = MinigamePrefabManager.Instance.InitUIPrefab(prefabType, transform);
+
             repairsMinigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer);
 
             repairsManager = repairsMinigameInstance.GetComponent<RepairsManager>();
