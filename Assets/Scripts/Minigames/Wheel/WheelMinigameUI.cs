@@ -4,15 +4,19 @@ using UnityEngine.UI;
 
 public class WheelMinigameUI : MonoBehaviour
 {
-    [SerializeField] private Button stopStartButton;
+    private Button stopStartButton;
+
+    // Todo: Add feedback text to the reworked prefab
     [SerializeField] private Text feedbackText;
 
     private void Start()
     {
+        stopStartButton = GetComponent<Button>();
+
         Wheel.OnRotationStarted += SetStopButtonState;
         Wheel.OnRotationStopped += SetStartButtonState;
     }
-
+    
     private void SetStartButtonState()
     {
         stopStartButton.SetText(RepairsConstants.StartButtonText);

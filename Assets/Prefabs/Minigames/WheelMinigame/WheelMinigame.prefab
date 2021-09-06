@@ -33,7 +33,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.25, z: 0}
   m_LocalScale: {x: 0.2, y: 0.5, z: 1}
   m_Children: []
-  m_Father: {fileID: 5263344082489575953}
+  m_Father: {fileID: 634302271007372074}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5263344080641189395
@@ -353,7 +353,7 @@ GameObject:
   - component: {fileID: 5263344081888968115}
   - component: {fileID: 5263344081888968114}
   m_Layer: 10
-  m_Name: Workstation
+  m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -372,7 +372,7 @@ Transform:
   m_Children:
   - {fileID: 5263344082132020961}
   - {fileID: 5263344081969556767}
-  m_Father: {fileID: 5263344082489575953}
+  m_Father: {fileID: 634302271007372074}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5263344081888968114
@@ -387,8 +387,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b704c3ca7658f44f871df4fb5c74b59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isRotating: 0
-  currentRotationSpeed: 0
 --- !u!1 &5263344081969556760
 GameObject:
   m_ObjectHideFlags: 0
@@ -1908,7 +1906,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5263344082489575953}
-  - component: {fileID: 5263344082489575954}
   m_Layer: 10
   m_Name: WheelMinigame
   m_TagString: Untagged
@@ -1927,21 +1924,52 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 5263344081888968115}
-  - {fileID: 5263344080641189865}
+  - {fileID: 634302271007372074}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5263344082489575954
+--- !u!1 &8530877567934739040
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 634302271007372074}
+  - component: {fileID: 8001230164436103618}
+  m_Layer: 10
+  m_Name: WheelMinigameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &634302271007372074
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8530877567934739040}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 5263344081888968115}
+  - {fileID: 5263344080641189865}
+  m_Father: {fileID: 5263344082489575953}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8001230164436103618
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5263344082489575955}
+  m_GameObject: {fileID: 8530877567934739040}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fbbba726916b63f4d8aacfdab6f1f09f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  consecutiveWins: 0

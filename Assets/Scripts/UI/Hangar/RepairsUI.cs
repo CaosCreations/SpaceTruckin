@@ -11,17 +11,10 @@ public class RepairsUI : SubMenu
     [SerializeField] private ResourceBar hullResourceBar;
     [SerializeField] private ShipDetails shipDetails;
 
-    [SerializeField] private GameObject repairsMinigamePrefab;
     private GameObject repairsMinigameInstance;
     private GameObject repairsMinigameUIInstance;
-    private WheelManager repairsManager;
 
     public Ship ShipToRepair { get; set; }
-
-    private void Start()
-    {
-        stopStartButton.AddOnClick(HandleStopStart);
-    }
 
     public void Init(Ship shipToRepair)
     {
@@ -67,12 +60,10 @@ public class RepairsUI : SubMenu
         if (repairsMinigameInstance == null)
         {
             MinigamePrefab prefabType = GetMinigameTypeByDamageType(ShipDamageType.Engine);
-            repairsMinigameInstance = MinigamePrefabManager.Instance.InitPrefab(prefabType, transform);
             repairsMinigameUIInstance = MinigamePrefabManager.Instance.InitUIPrefab(prefabType, transform);
+            repairsMinigameInstance = MinigamePrefabManager.Instance.InitPrefab(prefabType, transform);
 
             repairsMinigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer);
-
-            repairsManager = repairsMinigameInstance.GetComponent<WheelManager>();
         }
     }
 

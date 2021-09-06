@@ -1,10 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public class WheelManager : MonoBehaviour
 {
     private Wheel wheel;
     private GreenZone greenZone;
-    //private RepairsUI repairsUI;
     private WheelMinigameUI wheelMinigameUI;
 
     private int consecutiveWins;
@@ -15,8 +15,23 @@ public class WheelManager : MonoBehaviour
         wheel = GetComponentInChildren<Wheel>();
         greenZone = GetComponentInChildren<GreenZone>();
 
-        wheelMinigameUI = GetComponentInParent<WheelMinigameUI>();
-        wheelMinigameUI.AddStopStartListener(StopStart);
+        // Todo: Make a better embedded repairs UI prefab structure to get references recursively
+        //wheelMinigameUI = GetComponentInParent<WheelMinigameUI>();
+
+        // Todo: Ensure only one instance of a repairs minigame UI (button) exists at one time
+        wheelMinigameUI = GameObject
+            .FindGameObjectsWithTag(RepairsConstants.RepairsButtonTag)
+            .FirstOrDefault()
+            .GetComponent<WheelMinigameUI>();
+
+        if (wheelMinigameUI == null)
+        {
+            Debug.LogError($"{nameof(WheelMinigameUI)} is null in {nameof(WheelManager)}. Cannot find reference.");
+        }
+        else
+        {
+            wheelMinigameUI.AddStopStartListener(StopStart);
+        }
     }
 
     private void OnDisable()
@@ -62,18 +77,17 @@ public class WheelManager : MonoBehaviour
         consecutiveWins = 0;
         wheel.ResetRotationSpeed();
         greenZone.ResetSize();
-        //repairsUI.UpdateUI(wasSuccessful: false);
     }
 
     public bool IsGreenZoneShrinking
     {
-        get => consecutiveWins % RepairsConstants.GreenZoneShrinkInterval == 0 
+        get => consecutiveWins % RepairsConstants.GreenZoneShrinkInterval == 0
             && consecutiveWins > 0;
     }
 
     public bool IsDirectionReversing
     {
-        get => Random.Range(0, RepairsConstants.RotationReversalUpperBound) 
+        get => Random.Range(0, RepairsConstants.RotationReversalUpperBound)
             > RepairsConstants.RotationReversalThreshold;
     }
 }

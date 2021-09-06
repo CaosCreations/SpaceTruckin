@@ -25,4 +25,7 @@ public static class RepairsConstants
     // Gameplay 
     public const int HullRepairedPerWin = 15;
 
+    // Tags
+    public const string RepairsButtonTag = "RepairsButton";
+
 }
