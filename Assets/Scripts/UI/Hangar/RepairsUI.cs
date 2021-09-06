@@ -16,6 +16,11 @@ public class RepairsUI : SubMenu
 
     public Ship ShipToRepair { get; set; }
 
+    private void Awake()
+    {
+        RepairsMinigameManager.OnMinigameAttemptFinished += UpdateUI;
+    }
+
     public void Init(Ship shipToRepair)
     {
         if (shipToRepair != null)

@@ -15,7 +15,7 @@ public class WheelManager : MonoBehaviour
         wheel = GetComponentInChildren<Wheel>();
         greenZone = GetComponentInChildren<GreenZone>();
 
-        // Todo: Make a better embedded repairs UI prefab structure to get references recursively
+        // Todo: Make a better embedded repairs UI prefab structure to get references recursively (without tags)
         //wheelMinigameUI = GetComponentInParent<WheelMinigameUI>();
 
         // Todo: Ensure only one instance of a repairs minigame UI (button) exists at one time
@@ -68,8 +68,6 @@ public class WheelManager : MonoBehaviour
         {
             wheel.ReverseRotationDirection();
         }
-
-        //repairsUI.UpdateUI(wasSuccessful: true);
     }
 
     public void PlayerLoses()

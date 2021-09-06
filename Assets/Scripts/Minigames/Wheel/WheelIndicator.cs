@@ -2,33 +2,35 @@
 
 public class WheelIndicator : MonoBehaviour
 {
-    private WheelManager repairsManager;
-    private bool isInsideGreenZone; 
+    private WheelManager wheelManager;
+    private bool isInsideGreenZone;
 
     private void Start()
     {
-        repairsManager = GetComponentInParent<WheelManager>();
-        Wheel.OnRotationStopped += DetermineOutcome; 
+        wheelManager = GetComponentInParent<WheelManager>();
+        Wheel.OnRotationStopped += DetermineOutcome;
     }
 
     public void DetermineOutcome()
     {
         // Expend a tool regardless of whether the player wins
         PlayerManager.Instance.RepairTools--;
-     
+
         if (isInsideGreenZone)
         {
-            repairsManager.PlayerWins();
+            wheelManager.PlayerWins();
         }
         else
         {
-            repairsManager.PlayerLoses();
+            wheelManager.PlayerLoses();
         }
+
+        RepairsMinigameManager.FinishMinigameAttempt(isInsideGreenZone);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        isInsideGreenZone = true; 
+        isInsideGreenZone = true;
     }
 
     private void OnTriggerExit(Collider other)
