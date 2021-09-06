@@ -15,13 +15,8 @@ public class WheelManager : MonoBehaviour
         wheel = GetComponentInChildren<Wheel>();
         greenZone = GetComponentInChildren<GreenZone>();
 
-        // Todo: Make a better embedded repairs UI prefab structure to get references recursively (without tags)
-        //wheelMinigameUI = GetComponentInParent<WheelMinigameUI>();
-
-        // Todo: Ensure only one instance of a repairs minigame UI (button) exists at one time
-        wheelMinigameUI = GameObject
-            .FindGameObjectsWithTag(RepairsConstants.RepairsButtonTag)
-            .FirstOrDefault()
+        wheelMinigameUI = RepairsMinigamesManager
+            .GetCurrentRepairsButtonObject()
             .GetComponent<WheelMinigameUI>();
 
         if (wheelMinigameUI == null)

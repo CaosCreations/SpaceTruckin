@@ -27,7 +27,7 @@ public class Wheel : MonoBehaviour
     public void StartRotating()
     {
         IsRotating = true;
-        OnRotationStopped.Invoke();
+        OnRotationStarted.Invoke();
     }
 
     public void StopRotating(bool isResetting = false)

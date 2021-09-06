@@ -14,7 +14,7 @@ public class WheelIndicator : MonoBehaviour
     public void DetermineOutcome()
     {
         // Expend a tool regardless of whether the player wins
-        PlayerManager.Instance.RepairTools--;
+        PlayerManager.Instance.RepairTools = Mathf.Max(0, PlayerManager.Instance.RepairTools - 1);
 
         if (isInsideGreenZone)
         {
@@ -25,7 +25,7 @@ public class WheelIndicator : MonoBehaviour
             wheelManager.PlayerLoses();
         }
 
-        RepairsMinigameManager.FinishMinigameAttempt(isInsideGreenZone);
+        RepairsMinigamesManager.FinishMinigameAttempt(isInsideGreenZone);
     }
 
     private void OnTriggerEnter(Collider other)

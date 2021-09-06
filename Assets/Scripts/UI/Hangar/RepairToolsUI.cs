@@ -11,12 +11,18 @@ public class RepairToolsUI : MonoBehaviour
     private int currentQuantity;
     private int TotalCost => currentQuantity * RepairsConstants.CostPerTool;
 
-    [SerializeField] private Button stopStartRepairsButton;
+    private Button startRepairsButton;
 
     private void Start()
     {
         buyButton.AddOnClick(BuyTools);
         quantityInput.AddOnValueChanged(HandleOnValueChanged);
+
+        startRepairsButton = RepairsMinigamesManager
+            .GetCurrentRepairsButtonObject()
+            .GetComponent<Button>();
+
+        startRepairsButton.interactable = PlayerManager.CanRepair;
     }
 
     private void OnEnable()
@@ -30,7 +36,7 @@ public class RepairToolsUI : MonoBehaviour
         {
             PlayerManager.Instance.SpendMoney(TotalCost);
             PlayerManager.Instance.RepairTools += currentQuantity;
-            stopStartRepairsButton.interactable = PlayerManager.CanRepair;
+            startRepairsButton.interactable = PlayerManager.CanRepair;
             UpdateToolsText();
             UpdateToolsCostText();
         }
