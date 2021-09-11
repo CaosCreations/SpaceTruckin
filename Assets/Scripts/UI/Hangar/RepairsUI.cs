@@ -7,7 +7,8 @@ public class RepairsUI : SubMenu
 {
     [SerializeField] private RepairToolsUI repairToolsUI;
     [SerializeField] private Text feedbackText;
-    [SerializeField] private Button stopStartButton;
+    [SerializeField] private Button repairsMinigameButton;
+
     [SerializeField] private ResourceBar hullResourceBar;
     [SerializeField] private ShipDetails shipDetails;
 
@@ -28,10 +29,11 @@ public class RepairsUI : SubMenu
             ShipToRepair = shipToRepair;
             shipDetails.Init(shipToRepair);
             feedbackText.Clear();
-            stopStartButton.SetText(RepairsConstants.StartButtonText);
             UpdateHullResourceBar();
             SetButtonInteractability();
+            repairToolsUI.SetInteractableCondition(shipToRepair);
 
+            repairsMinigameButton.SetText(RepairsConstants.StartButtonText);
             InitMinigame();
         }
     }
@@ -47,6 +49,7 @@ public class RepairsUI : SubMenu
     private void UpdateFeedbackText(bool wasSuccessful)
     {
         StringBuilder builder = new StringBuilder();
+
         builder.AppendLine(
             wasSuccessful ? RepairsConstants.SuccessMessage : RepairsConstants.FailureMessage);
 
@@ -65,7 +68,7 @@ public class RepairsUI : SubMenu
         if (repairsMinigameInstance == null)
         {
             MinigamePrefab prefabType = GetMinigameTypeByDamageType(ShipDamageType.Engine);
-            repairsMinigameUIInstance = MinigamePrefabManager.Instance.InitUIPrefab(prefabType, transform);
+            //repairsMinigameUIInstance = MinigamePrefabManager.Instance.InitUIPrefab(prefabType, transform);
             repairsMinigameInstance = MinigamePrefabManager.Instance.InitPrefab(prefabType, transform);
 
             repairsMinigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer);
@@ -80,7 +83,7 @@ public class RepairsUI : SubMenu
 
     private void SetButtonInteractability()
     {
-        stopStartButton.interactable = PlayerManager.CanRepair
+        repairsMinigameButton.interactable = PlayerManager.CanRepair
             && !ShipToRepair.IsFullyRepaired;
     }
 

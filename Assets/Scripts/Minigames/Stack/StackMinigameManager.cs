@@ -16,9 +16,8 @@ public class StackMinigameManager : MonoBehaviour
 
     private StackMinigameUI stackMinigameUI;
 
-    [SerializeField] private Button stackButton;
-
-    [SerializeField] private Button replayButton;
+    private Button stackButton;
+    private Button replayButton;
 
     private List<GameObject> StackedCubes { get; set; } = new List<GameObject>();
 
@@ -30,11 +29,11 @@ public class StackMinigameManager : MonoBehaviour
 
         cubeMover = GetComponentInChildren<CubeMover>();
 
-        stackButton.onClick.RemoveAllListeners();
-        stackButton.onClick.AddListener(DoPlayButton);
+        stackButton = RepairsMinigamesManager.GetRepairsMinigameButton(RepairsMinigameButton.A);
+        stackButton = RepairsMinigamesManager.GetRepairsMinigameButton(RepairsMinigameButton.B);
 
-        replayButton.onClick.RemoveAllListeners();
-        replayButton.onClick.AddListener(ResetGame);
+        stackButton.AddOnClick(DoPlayButton);
+        replayButton.AddOnClick(ResetGame);
     }
 
     private void Update()

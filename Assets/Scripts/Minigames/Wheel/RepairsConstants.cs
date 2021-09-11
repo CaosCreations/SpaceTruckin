@@ -26,6 +26,8 @@ public static class RepairsConstants
     public const int HullRepairedPerWin = 15;
 
     // Tags
-    public const string RepairsButtonTag = "RepairsButton";
+    public const string RepairsMinigameButtonATag = "RepairsMinigameButtonA";
+    public const string RepairsMinigameButtonBTag = "RepairsMinigameButtonB";
+    public const string RepairsMinigameFeedbackTextTag = "RepairsMinigameFeedbackText";
 
 }

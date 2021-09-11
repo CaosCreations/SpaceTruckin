@@ -14,10 +14,7 @@ public class WheelManager : MonoBehaviour
     {
         wheel = GetComponentInChildren<Wheel>();
         greenZone = GetComponentInChildren<GreenZone>();
-
-        wheelMinigameUI = RepairsMinigamesManager
-            .GetCurrentRepairsButtonObject()
-            .GetComponent<WheelMinigameUI>();
+        wheelMinigameUI = GetComponent<WheelMinigameUI>();
 
         if (wheelMinigameUI == null)
         {

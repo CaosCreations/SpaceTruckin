@@ -19,15 +19,19 @@ public class RepairToolsUI : MonoBehaviour
         quantityInput.AddOnValueChanged(HandleOnValueChanged);
 
         startRepairsButton = RepairsMinigamesManager
-            .GetCurrentRepairsButtonObject()
+            .GetRepairsMinigameButton()
             .GetComponent<Button>();
-
-        startRepairsButton.interactable = PlayerManager.CanRepair;
     }
 
     private void OnEnable()
     {
         ResetValues();
+    }
+
+    public void SetInteractableCondition(Ship shipToRepair)
+    {
+        startRepairsButton.interactable = PlayerManager.CanRepair
+            && !shipToRepair.IsFullyRepaired;
     }
 
     private void BuyTools()
