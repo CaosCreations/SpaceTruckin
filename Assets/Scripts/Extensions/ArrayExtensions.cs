@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 public static class ArrayExtensions
 {
@@ -34,6 +35,21 @@ public static class ArrayExtensions
         {
             self[i] = self[i].ReplaceGameStateTemplates(dataModel);
         }
+
         return self;
+    }
+
+    public static PropertyInfo[] SortByMatchingPropertyNameKeys(this PropertyInfo[] self, string[] keys)
+    {
+        PropertyInfo[] sortedProperties = new PropertyInfo[self.Length];
+
+        foreach (PropertyInfo property in self)
+        {
+            int keyIndex = Array.IndexOf(keys, property.Name);
+
+            sortedProperties[keyIndex] = property;
+        }
+
+        return sortedProperties;
     }
 }

@@ -65,6 +65,22 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
             DataUtils.CreateSaveFolder(PlayerData.FolderName);
         }
 
+        FindSceneObjects();
+
+        RegisterLuaFunctions();
+
+        // Pause when a conversation starts and unpause when it ends
+        DialogueManager.Instance.conversationStarted += (t) =>
+        {
+            IsPaused = true;
+            PlayerAnimationManager.ResetBoolParameters();
+        };
+
+        DialogueManager.Instance.conversationEnded += (t) => IsPaused = false;
+    }
+
+    private static void FindSceneObjects()
+    {
         PlayerObject = GameObject.FindGameObjectWithTag(PlayerConstants.PlayerTag);
 
         if (PlayerObject != null)
@@ -76,12 +92,10 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
             Debug.LogError("Player object not found");
         }
 
-        if (playerData == null)
+        if (Instance.playerData == null)
         {
             Debug.LogError("No player data found");
         }
-
-        RegisterLuaFunctions();
     }
 
     private void OnDisable() => UnregisterLuaFunctions();

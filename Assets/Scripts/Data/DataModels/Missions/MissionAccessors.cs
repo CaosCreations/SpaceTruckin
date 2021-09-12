@@ -9,7 +9,10 @@ public partial class Mission
     public string Customer { get => customer; set => customer = value; }
     public string Cargo { get => cargo; set => cargo = value; }
     public string Description { get => description; set => description = value; }
-    public MissionUnlockCondition UnlockCondition { get => unlockCondition; }
+    public MissionUnlockCondition UnlockCondition
+    {
+        get => unlockCondition; set => unlockCondition = value;
+    }
     public bool CanBeUnlockedWithMoney
     {
         get => UnlockCondition == MissionUnlockCondition.TotalMoney
@@ -24,6 +27,11 @@ public partial class Mission
     {
         get => saveData.hasBeenAccepted;
         set => saveData.hasBeenAccepted = value;
+    }
+    public int DurationInDays
+    {
+        get => missionDurationInDays;
+        set => missionDurationInDays = value;
     }
     public int DaysLeftToComplete
     {
@@ -48,8 +56,14 @@ public partial class Mission
     {
         get => moneyNeededToUnlock; set => moneyNeededToUnlock = value;
     }
-    public int FondnessGranted => fondnessGranted;
-    public int OfferTimeLimitInDays => offerTimeLimitInDays;
+    public int FondnessGranted
+    {
+        get => fondnessGranted; set => fondnessGranted = value;
+    }
+    public int OfferTimeLimitInDays
+    {
+        get => offerTimeLimitInDays; set => offerTimeLimitInDays = value;
+    }
     public bool HasOfferExpired
     {
         get => CalendarUtils.HasTimePeriodElapsed(DateAccepted, offerTimeLimitInDays);
@@ -59,13 +73,16 @@ public partial class Mission
         get => saveData.offerExpiryConsequencesApplied;
         set => saveData.offerExpiryConsequencesApplied = value;
     }
-    public int OfferExpiryFondnessDeduction => offerExpiryFondnessDeduction;
+    public int OfferExpiryFondnessDeduction
+    {
+        get => offerExpiryFondnessDeduction; set => offerExpiryFondnessDeduction = value;
+    }
     public bool HasRandomOutcomes
     {
         get => hasRandomOutcomes || Outcomes == null || Outcomes.Length <= 0;
         set => hasRandomOutcomes = value;
     }
-    public bool IsRepeatable => isRepeatable;
+    public bool IsRepeatable { get => isRepeatable; set => isRepeatable = value; }
     public bool IsAvailableForScheduling
     {
         get => HasBeenAccepted

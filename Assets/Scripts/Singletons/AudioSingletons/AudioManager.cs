@@ -3,7 +3,7 @@
 /// <summary>Represents the possible states of an AudioSource</summary>
 public enum AudioState
 {
-    Playing, Paused, Stopped  
+    Playing, Paused, Stopped
 }
 
 public class AudioManager : MonoBehaviour
@@ -28,7 +28,7 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            audioClip.LogErrorIfNull();
+            Debug.LogError($"Audio clip {nameof(audioClip)} not found");
         }
     }
 

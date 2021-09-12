@@ -13,6 +13,9 @@ public static class AnimationConstants
     public const string AnimationRunParameter = "RUN";
     public const string AnimationBatteryGrabbingParameter = "batteryGrabbing";
 
+    public const string NpcWalkParameter = "Walk";
+    public const string NpcIdleParameterPrefix = "Idle";
+
     // Input vectors 
     public static readonly Vector3 Vector3UpLeft = new Vector3(-1f, 1f);
     public static readonly Vector3 Vector3DownLeft = new Vector3(-1f, -1f);

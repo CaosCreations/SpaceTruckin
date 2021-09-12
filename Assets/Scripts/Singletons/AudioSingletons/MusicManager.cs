@@ -14,7 +14,10 @@ public class MusicManager : AudioManager
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
-            audioSource.LogErrorIfNull();
+            if (audioSource == null)
+            {
+                Debug.LogError($"Audio source in {nameof(MusicManager)} not found");
+            }
         }
         else
         {

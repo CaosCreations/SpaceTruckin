@@ -5,7 +5,7 @@ public static class TimeOfDayExtensions
     public static int ToSeconds(this TimeOfDay self)
     {
         int seconds = (self.Hours * 3600) + (self.Minutes * 60) + self.Seconds;
-        return seconds; 
+        return seconds;
     }
 
     public static int ToRealTimeSeconds(this TimeOfDay self)
@@ -17,8 +17,7 @@ public static class TimeOfDayExtensions
 
     public static TimeSpan ToTimeSpan(this TimeOfDay self)
     {
-        TimeSpan timeSpan = TimeSpan.FromSeconds(self.ToSeconds());
-        return timeSpan;
+        return new TimeSpan(self.Hours, self.Minutes, self.Seconds);
     }
 
     public static TimeOfDay Validate(this TimeOfDay self)

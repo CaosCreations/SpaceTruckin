@@ -14,6 +14,7 @@ public class MessageDetailViewUI : MonoBehaviour
 
     public void SetupDetailView(Message message)
     {
+        ResetMessageDetails();
         SetMessageDetails(message);
 
         // Setup the mission accept button if the message offers a Mission 
@@ -62,6 +63,11 @@ public class MessageDetailViewUI : MonoBehaviour
         }
 
         messageBodyText.SetText(messageBodyContent);
+    }
+
+    private void ResetMessageDetails()
+    {
+        messageBodyScrollViewContent.transform.DestroyDirectChildren();
     }
 
     public void SetupMissionAcceptButton(Message message)

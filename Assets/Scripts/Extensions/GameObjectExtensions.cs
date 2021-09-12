@@ -9,6 +9,7 @@ public static class GameObjectExtensions
     public static void AddCustomEvent(this GameObject self, EventTriggerType triggerType, Action callback)
     {
         EventTrigger trigger = self.AddComponent<EventTrigger>();
+
         EventTrigger.Entry entry = new EventTrigger.Entry
         {
             eventID = triggerType
@@ -23,9 +24,11 @@ public static class GameObjectExtensions
     {
         self.name = name;
         self.transform.parent = parent.transform;
+
         RectTransform rectTransform = self.AddComponent<RectTransform>();
         rectTransform.Reset();
         rectTransform.SetAnchors(anchors);
+
         return self;
     }
 
