@@ -15,11 +15,16 @@ public class StackMinigameUI : MonoBehaviour
 
         replayButton = RepairsMinigamesManager
             .GetRepairsMinigameButton(RepairsMinigameButton.B);
+
+        //outcomeText = RepairsMinigamesManager
+        //    .GetRepairsMinigameFeedbackText();
     }
 
     public void SetGameUI(GameState gameState)
     {
-        outcomeText.SetText(GetGameOutcomeText(gameState));
+        // Todo: Get reference to outcome (feedback) text 
+
+        //outcomeText.SetText(GetGameOutcomeText(gameState));
 
         switch (gameState)
         {

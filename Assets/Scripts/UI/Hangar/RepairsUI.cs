@@ -14,8 +14,6 @@ public class RepairsUI : SubMenu
 
     private GameObject repairsMinigameInstance;
 
-    public Ship ShipToRepair { get; set; }
-
     private void Awake()
     {
         RepairsMinigamesManager.OnMinigameAttemptFinished += UpdateUI;
@@ -71,7 +69,7 @@ public class RepairsUI : SubMenu
     {
         if (repairsMinigameInstance == null)
         {
-            RepairsMinigame minigameType = GetMinigameTypeByDamageType(ShipDamageType.Engine);
+            RepairsMinigame minigameType = GetMinigameTypeByDamageType(ShipDamageType.Hull);
             repairsMinigameInstance = MinigamePrefabManager.Instance.InitPrefab(minigameType, transform);
 
             RepairsMinigamesManager.SetButtonVisibility(minigameType);
