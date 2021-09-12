@@ -25,6 +25,7 @@ public class RepairsMinigamesManager : MonoBehaviour
     public Button ButtonA;
     public Button ButtonB;
 
+    #region Init
     private void Awake()
     {
         if (Instance == null)
@@ -41,9 +42,12 @@ public class RepairsMinigamesManager : MonoBehaviour
 
     private void Start()
     {
+        // Todo: Change execution order
+
         //ButtonA = GetRepairsMinigameButton(RepairsMinigameButton.A);
         //ButtonB = GetRepairsMinigameButton(RepairsMinigameButton.B);
     }
+    #endregion
 
     // Temporary workaround 
     public static void FinishMinigameAttempt(bool isSuccessfulAttempt)
@@ -63,6 +67,7 @@ public class RepairsMinigamesManager : MonoBehaviour
                 buttonB.SetActive(false);
                 break;
             case RepairsMinigame.Stack:
+                // Stack requires 2 buttons 
                 buttonA.SetActive(true);
                 buttonB.SetActive(true);
                 break;

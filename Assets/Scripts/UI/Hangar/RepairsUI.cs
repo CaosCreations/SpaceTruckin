@@ -13,7 +13,6 @@ public class RepairsUI : SubMenu
     [SerializeField] private ShipDetails shipDetails;
 
     private GameObject repairsMinigameInstance;
-    private GameObject repairsMinigameUIInstance;
 
     public Ship ShipToRepair { get; set; }
 
@@ -22,16 +21,21 @@ public class RepairsUI : SubMenu
         RepairsMinigamesManager.OnMinigameAttemptFinished += UpdateUI;
     }
 
+    public override void OnDisable()
+    {
+        base.OnDisable();
+        ShipsManager.ShipBeingRepaired = null;
+    }
+
     public void Init(Ship shipToRepair)
     {
         if (shipToRepair != null)
         {
-            ShipToRepair = shipToRepair;
+            ShipsManager.ShipBeingRepaired = shipToRepair;
             shipDetails.Init(shipToRepair);
             feedbackText.Clear();
             UpdateHullResourceBar();
             SetButtonInteractability();
-            repairToolsUI.SetInteractableCondition(shipToRepair);
 
             repairsMinigameButton.SetText(RepairsConstants.StartButtonText);
             InitMinigame();
@@ -77,14 +81,13 @@ public class RepairsUI : SubMenu
 
     private void UpdateHullResourceBar()
     {
-        float hullPercentage = ShipToRepair.GetHullPercent();
+        float hullPercentage = ShipsManager.ShipBeingRepaired.GetHullPercentage();
         hullResourceBar.SetResourceValue(hullPercentage);
     }
 
     private void SetButtonInteractability()
     {
-        repairsMinigameButton.interactable = PlayerManager.CanRepair
-            && !ShipToRepair.IsFullyRepaired;
+        repairsMinigameButton.interactable = ShipsManager.CanRepair;
     }
 
     private RepairsMinigame GetMinigameTypeByDamageType(ShipDamageType damageType)

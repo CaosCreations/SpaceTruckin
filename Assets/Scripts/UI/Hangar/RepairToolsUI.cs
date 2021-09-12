@@ -27,10 +27,9 @@ public class RepairToolsUI : MonoBehaviour
         ResetValues();
     }
 
-    public void SetInteractableCondition(Ship shipToRepair)
+    public void SetButtonInteractability()
     {
-        startRepairsButton.interactable = PlayerManager.CanRepair
-            && !shipToRepair.IsFullyRepaired;
+        startRepairsButton.interactable = ShipsManager.CanRepair;
     }
 
     private void BuyTools()
@@ -41,6 +40,7 @@ public class RepairToolsUI : MonoBehaviour
             PlayerManager.Instance.RepairTools += currentQuantity;
             UpdateToolsText();
             UpdateToolsCostText();
+            SetButtonInteractability();
         }
         else
         {

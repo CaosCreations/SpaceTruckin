@@ -225,7 +225,7 @@ public class HangarNodeUI : UICanvasBase
     private void SetSliderValues()
     {
         fuelSlider.value = shipToInspect.GetFuelPercent();
-        hullSlider.value = shipToInspect.GetHullPercent();
+        hullSlider.value = shipToInspect.GetHullPercentage();
     }
 
     private void SetButtonInteractability()

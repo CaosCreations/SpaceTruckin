@@ -8,6 +8,10 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
     [SerializeField] private ShipsContainer shipsContainer;
     public Ship[] Ships => shipsContainer.Elements;
 
+    public static Ship ShipBeingRepaired { get; set; }
+    public static bool CanRepair => PlayerManager.CanRepair 
+        && !ShipBeingRepaired.IsFullyRepaired;
+
     private void Awake()
     {
         if (Instance == null)
@@ -50,11 +54,9 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
 
     public static void RepairShip()
     {
-        Ship ship = HangarManager.GetShipByNode(UIManager.HangarNode);
-
-        if (ship != null)
+        if (ShipBeingRepaired != null)
         {
-            RepairShip(ship);
+            RepairShip(ShipBeingRepaired);
         }
         else
         {
