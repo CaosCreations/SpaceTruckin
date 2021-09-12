@@ -3,16 +3,27 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+#region Enums
+public enum RepairsMinigame
+{
+    Wheel, Stack
+}
+
 public enum RepairsMinigameButton
 {
     A, B
 }
+#endregion
 
 public class RepairsMinigamesManager : MonoBehaviour
 {
     public static RepairsMinigamesManager Instance { get; private set; }
 
     public static event Action<bool> OnMinigameAttemptFinished;
+
+    // Todo: Store references only here
+    public Button ButtonA;
+    public Button ButtonB;
 
     private void Awake()
     {
@@ -28,9 +39,36 @@ public class RepairsMinigamesManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        //ButtonA = GetRepairsMinigameButton(RepairsMinigameButton.A);
+        //ButtonB = GetRepairsMinigameButton(RepairsMinigameButton.B);
+    }
+
+    // Temporary workaround 
     public static void FinishMinigameAttempt(bool isSuccessfulAttempt)
     {
         OnMinigameAttemptFinished.Invoke(isSuccessfulAttempt);
+    }
+
+    public static void SetButtonVisibility(RepairsMinigame minigameType)
+    {
+        var buttonA = GetRepairsMinigameButton(RepairsMinigameButton.A);
+        var buttonB = GetRepairsMinigameButton(RepairsMinigameButton.B);
+
+        switch (minigameType)
+        {
+            case RepairsMinigame.Wheel:
+                buttonA.SetActive(true);
+                buttonB.SetActive(false);
+                break;
+            case RepairsMinigame.Stack:
+                buttonA.SetActive(true);
+                buttonB.SetActive(true);
+                break;
+            default:
+                break;
+        }
     }
 
     #region Find References

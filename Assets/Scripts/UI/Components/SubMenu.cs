@@ -9,12 +9,14 @@ public class SubMenu : MonoBehaviour
     // Set of unique overrides 
     protected HashSet<KeyCodeOverride> uniqueKeyCodeOverrides;
 
+    private void OnValidate()
+    {
+        SetUniqueOverrides();
+    }
+
     private void Awake()
     {
-        if (keyCodeOverrides != null)
-        {
-            uniqueKeyCodeOverrides = keyCodeOverrides.ToHashSet();
-        }
+        SetUniqueOverrides();
     }
 
     public virtual void OnEnable()
@@ -25,5 +27,18 @@ public class SubMenu : MonoBehaviour
     public virtual void OnDisable()
     {
         UIManager.RemoveOverriddenKeys(uniqueKeyCodeOverrides);
+    }
+
+    private void SetUniqueOverrides()
+    {
+        if (keyCodeOverrides != null)
+        {
+            uniqueKeyCodeOverrides = keyCodeOverrides.ToHashSet();
+        }
+        else
+        {
+            Debug.LogError(
+                $"{nameof(keyCodeOverrides)} is null in {nameof(SubMenu)}. Cannot set {nameof(uniqueKeyCodeOverrides)}");
+        }
     }
 }

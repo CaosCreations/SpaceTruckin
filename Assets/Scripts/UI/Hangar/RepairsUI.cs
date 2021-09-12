@@ -67,10 +67,10 @@ public class RepairsUI : SubMenu
     {
         if (repairsMinigameInstance == null)
         {
-            MinigamePrefab prefabType = GetMinigameTypeByDamageType(ShipDamageType.Engine);
-            //repairsMinigameUIInstance = MinigamePrefabManager.Instance.InitUIPrefab(prefabType, transform);
-            repairsMinigameInstance = MinigamePrefabManager.Instance.InitPrefab(prefabType, transform);
+            RepairsMinigame minigameType = GetMinigameTypeByDamageType(ShipDamageType.Engine);
+            repairsMinigameInstance = MinigamePrefabManager.Instance.InitPrefab(minigameType, transform);
 
+            RepairsMinigamesManager.SetButtonVisibility(minigameType);
             repairsMinigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer);
         }
     }
@@ -87,12 +87,12 @@ public class RepairsUI : SubMenu
             && !ShipToRepair.IsFullyRepaired;
     }
 
-    private MinigamePrefab GetMinigameTypeByDamageType(ShipDamageType damageType)
+    private RepairsMinigame GetMinigameTypeByDamageType(ShipDamageType damageType)
     {
         return damageType switch
         {
-            ShipDamageType.Engine => MinigamePrefab.Wheel,
-            ShipDamageType.Hull => MinigamePrefab.Stack,
+            ShipDamageType.Engine => RepairsMinigame.Wheel,
+            ShipDamageType.Hull => RepairsMinigame.Stack,
             _ => throw new ArgumentOutOfRangeException(),
         };
 

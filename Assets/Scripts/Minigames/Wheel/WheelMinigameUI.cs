@@ -13,7 +13,7 @@ public class WheelMinigameUI : MonoBehaviour
         Wheel.OnRotationStarted += SetStopButtonState;
         Wheel.OnRotationStopped += SetStartButtonState;
 
-        wheelMinigameButton = RepairsMinigamesManager.GetRepairsMinigameButton();
+        wheelMinigameButton = RepairsMinigamesManager.GetRepairsMinigameButton(RepairsMinigameButton.A);
         feedbackText = RepairsMinigamesManager.GetRepairsMinigameFeedbackText();
     }
 

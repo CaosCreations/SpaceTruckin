@@ -30,7 +30,7 @@ public class StackMinigameManager : MonoBehaviour
         cubeMover = GetComponentInChildren<CubeMover>();
 
         stackButton = RepairsMinigamesManager.GetRepairsMinigameButton(RepairsMinigameButton.A);
-        stackButton = RepairsMinigamesManager.GetRepairsMinigameButton(RepairsMinigameButton.B);
+        replayButton = RepairsMinigamesManager.GetRepairsMinigameButton(RepairsMinigameButton.B);
 
         stackButton.AddOnClick(DoPlayButton);
         replayButton.AddOnClick(ResetGame);

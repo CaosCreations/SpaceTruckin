@@ -13,14 +13,13 @@ public class RepairToolsUI : MonoBehaviour
 
     private Button startRepairsButton;
 
-    private void Start()
+    private void Awake()
     {
         buyButton.AddOnClick(BuyTools);
         quantityInput.AddOnValueChanged(HandleOnValueChanged);
 
         startRepairsButton = RepairsMinigamesManager
-            .GetRepairsMinigameButton()
-            .GetComponent<Button>();
+            .GetRepairsMinigameButton(RepairsMinigameButton.A);
     }
 
     private void OnEnable()
@@ -40,7 +39,6 @@ public class RepairToolsUI : MonoBehaviour
         {
             PlayerManager.Instance.SpendMoney(TotalCost);
             PlayerManager.Instance.RepairTools += currentQuantity;
-            startRepairsButton.interactable = PlayerManager.CanRepair;
             UpdateToolsText();
             UpdateToolsCostText();
         }
@@ -108,7 +106,7 @@ public class RepairToolsUI : MonoBehaviour
         toolsCostText.color = UIConstants.SpringWood;
     }
 
-    #region Diagnostics
+    #region Logging
     private void LogErrors()
     {
         if (currentQuantity <= 0)
