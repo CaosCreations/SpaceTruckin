@@ -86,7 +86,8 @@ public class UIManager : MonoBehaviour
         // Play an Error sound effect if a non-interactable region is clicked
         else if (PlayerManager.IsPaused
             && Input.GetMouseButtonDown(0)
-            && !IsPointerOverButton)
+            && !IsPointerOverButton
+            && !DialogueUtils.IsConversationActive)
         {
             UISoundEffectsManager.Instance.PlaySoundEffect(UISoundEffect.Error);
         }
