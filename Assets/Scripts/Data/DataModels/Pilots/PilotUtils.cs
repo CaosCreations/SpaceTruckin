@@ -8,7 +8,7 @@ public class PilotUtils
     {
         T[] possibleValues = (T[])Enum.GetValues(typeof(T));
 
-        T randomElement = (T)possibleValues.GetRandomElement();
+        T randomElement = possibleValues.GetRandomElement();
 
         return randomElement;
     }
