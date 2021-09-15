@@ -13,7 +13,11 @@ public class ShipDamageOutcome : MissionOutcome
     public int BaseDamage => shipDamage;
 
     [SerializeField] private ShipDamageType damageType;
-    public ShipDamageType DamageType => damageType;
+    public ShipDamageType DamageType => hasRandomDamageType
+        ? damageType
+        : ShipUtils.GetRandomDamageType();
+
+    [SerializeField] private bool hasRandomDamageType;
 
     public override void Process(ScheduledMission scheduled)
     {
@@ -26,6 +30,7 @@ public class ShipDamageOutcome : MissionOutcome
         {
             scheduled.Mission.MissionToArchive.TotalDamageTaken += shipDamageTaken;
             scheduled.Mission.MissionToArchive.TotalDamageReduced += damageReduced;
+            scheduled.Mission.MissionToArchive.DamageType = DamageType;
         }
 
         Debug.Log("Base ship damage: " + BaseDamage);

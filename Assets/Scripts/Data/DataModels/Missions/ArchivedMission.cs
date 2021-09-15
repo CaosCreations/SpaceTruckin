@@ -9,21 +9,22 @@ public class ArchivedMission
 {
     public string MissionName;
     public int CompletionNumber, TotalDamageTaken, TotalDamageReduced, TotalFuelLost;
+    public ShipDamageType DamageType;
 
     // Money
     public long TotalMoneyEarned, TotalAdditionalMoneyEarned;
     public double TotalMoneyIncreaseFromLicences, TotalMoneyIncreaseFromBonuses;
 
     // XP 
-    public double TotalPilotXpGained, TotalXpIncreaseFromLicences, TotalXpIncreaseFromBonuses, 
-        TotalAdditionalXpGained, 
+    public double TotalPilotXpGained, TotalXpIncreaseFromLicences, TotalXpIncreaseFromBonuses,
+        TotalAdditionalXpGained,
         TotalXpAfterMission;
-    
+
     // Pilot
     public Pilot Pilot;
     public int PilotLevelAtTimeOfMission;
     public int MissionsCompletedByPilotAtTimeOfMission;
-    
+
     public Date CompletionDate;
     public MissionModifierOutcome ModifierOutcome;
 
