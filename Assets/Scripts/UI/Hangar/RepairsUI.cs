@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,36 +7,39 @@ public class RepairsUI : SubMenu
 {
     [SerializeField] private RepairToolsUI repairToolsUI;
     [SerializeField] private Text feedbackText;
-    [SerializeField] private Button stopStartButton;
+    [SerializeField] private Button repairsMinigameButton;
+
     [SerializeField] private ResourceBar hullResourceBar;
     [SerializeField] private ShipDetails shipDetails;
 
-    [SerializeField] private GameObject repairsMinigamePrefab;
     private GameObject repairsMinigameInstance;
-    private RepairsManager repairsManager;
 
-    public Ship ShipToRepair { get; set; }
-
-    private void Start()
+    private void Awake()
     {
-        stopStartButton.AddOnClick(HandleStopStart);
+        RepairsMinigamesManager.OnMinigameAttemptFinished += UpdateUI;
+    }
+
+    public override void OnDisable()
+    {
+        base.OnDisable();
+        ShipsManager.ShipBeingRepaired = null;
     }
 
     public void Init(Ship shipToRepair)
     {
         if (shipToRepair != null)
         {
-            ShipToRepair = shipToRepair;
+            ShipsManager.ShipBeingRepaired = shipToRepair;
             shipDetails.Init(shipToRepair);
             feedbackText.Clear();
-            stopStartButton.SetText(RepairsConstants.StartButtonText);
             UpdateHullResourceBar();
             SetButtonInteractability();
 
-            SetupMinigame();
+            repairsMinigameButton.SetText(RepairsConstants.StartButtonText);
+            InitMinigame();
         }
     }
-    
+
     public void UpdateUI(bool wasSuccessful)
     {
         repairToolsUI.UpdateToolsText();
@@ -47,9 +51,10 @@ public class RepairsUI : SubMenu
     private void UpdateFeedbackText(bool wasSuccessful)
     {
         StringBuilder builder = new StringBuilder();
+
         builder.AppendLine(
             wasSuccessful ? RepairsConstants.SuccessMessage : RepairsConstants.FailureMessage);
-        
+
         builder.AppendLine($"You have {PlayerManager.Instance.RepairTools} tools remaining.");
 
         feedbackText.SetText(builder.ToString());
@@ -60,43 +65,38 @@ public class RepairsUI : SubMenu
         feedbackText.Clear();
     }
 
-    public void SetupMinigame()
+    public void InitMinigame()
     {
         if (repairsMinigameInstance == null)
         {
-            repairsMinigameInstance = Instantiate(repairsMinigamePrefab, transform);
+            RepairsMinigame minigameType = GetMinigameTypeByDamageType(ShipDamageType.Engine);
+            repairsMinigameInstance = MinigamePrefabManager.Instance.InitPrefab(minigameType, transform);
+
+            RepairsMinigamesManager.SetButtonVisibility(minigameType);
             repairsMinigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer);
-            repairsManager = repairsMinigameInstance.GetComponent<RepairsManager>();
-        }
-    }
-
-    private void HandleStopStart()
-    {
-        if (repairsManager != null)
-        {
-            repairsManager.StopStart();
-
-            if (repairsManager.IsRepairing)
-            {
-                stopStartButton.SetText(RepairsConstants.StopButtonText);
-                feedbackText.Clear();
-            }
-            else
-            {
-                stopStartButton.SetText(RepairsConstants.StartButtonText);
-            }
         }
     }
 
     private void UpdateHullResourceBar()
     {
-        float hullPercentage = ShipToRepair.GetHullPercent();
+        float hullPercentage = ShipsManager.ShipBeingRepaired.GetHullPercentage();
         hullResourceBar.SetResourceValue(hullPercentage);
     }
 
     private void SetButtonInteractability()
     {
-        stopStartButton.interactable = PlayerManager.CanRepair
-            && !ShipToRepair.IsFullyRepaired;
+        repairsMinigameButton.interactable = ShipsManager.CanRepair;
+    }
+
+    private RepairsMinigame GetMinigameTypeByDamageType(ShipDamageType damageType)
+    {
+        return damageType switch
+        {
+            ShipDamageType.Engine => RepairsMinigame.Wheel,
+            ShipDamageType.Hull => RepairsMinigame.Stack,
+            _ => throw new ArgumentOutOfRangeException(),
+        };
+
+        // Todo: Better default handling here
     }
 }

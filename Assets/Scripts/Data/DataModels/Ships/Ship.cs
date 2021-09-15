@@ -24,7 +24,7 @@ public partial class Ship : ScriptableObject, IDataModel
         public bool canWarp;
     }
     
-    public float GetHullPercent()
+    public float GetHullPercentage()
     {
         return saveData.currentHullIntegrity / maxHullIntegrity;
     }
