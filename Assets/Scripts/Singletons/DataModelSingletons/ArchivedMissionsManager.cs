@@ -6,7 +6,6 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
 {
     public static ArchivedMissionsManager Instance { get; private set; }
     public List<ArchivedMission> ArchivedMissions { get; set; }
-    public List<ArchivedMission> MissionsCompletedYesterday { get; set; }
 
     private void Awake()
     {
@@ -34,7 +33,6 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
         }
 
         ArchivedMissions = new List<ArchivedMission>();
-        MissionsCompletedYesterday = new List<ArchivedMission>();
 
         if (ArchivedMissions == null)
         {
@@ -42,45 +40,30 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
         }
     }
 
-    public static bool WereMissionsCompletedYesterday()
-    {
-        return Instance.MissionsCompletedYesterday != null
-            && Instance.MissionsCompletedYesterday.Any();
-    }
-
-    public static void ResetMissionsCompletedYesterday()
-        => Instance.MissionsCompletedYesterday.Clear();
-
     public static void AddToArchive(ArchivedMission archivedMission)
     {
-        Instance.MissionsCompletedYesterday.Add(archivedMission);
         Instance.ArchivedMissions.Add(archivedMission);
+    }
+
+    public static List<ArchivedMission> GetMissionsCompletedYesterday()
+    {
+        return Instance.ArchivedMissions
+            .Where(x => x != null
+            && x.CompletionDate.ToDays() == CalendarManager.Instance.CurrentDate.ToDays() - 1)
+            .ToList();
     }
 
     public static bool ThereAreMissionsToReport()
     {
-        foreach (var archivedMission in Instance.ArchivedMissions)
-        {
-            if (archivedMission != null && !archivedMission.HasBeenViewedInReport)
-            {
-                return true;
-            }
-        }
-        return false;
+        return Instance.ArchivedMissions
+            .Any(x => x != null && !x.HasBeenViewedInReport);
     }
 
     public static List<ArchivedMission> GetMissionsToAppearInReport()
     {
-        var missionsToAppearInReport = new List<ArchivedMission>();
-
-        foreach (var archivedMission in Instance.ArchivedMissions)
-        {
-            if (archivedMission != null && !archivedMission.HasBeenViewedInReport)
-            {
-                missionsToAppearInReport.Add(archivedMission);
-            }
-        }
-        return missionsToAppearInReport;
+        return Instance.ArchivedMissions
+            .Where(x => x != null && !x.HasBeenViewedInReport)
+            .ToList();
     }
 
     #region Persistence
@@ -97,7 +80,7 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
         DataUtils.SaveFileAsync(ArchivedMission.FileName, folderPath, json);
     }
 
-    public void DeleteData() 
+    public void DeleteData()
         => DataUtils.RecursivelyDeleteSaveData(ArchivedMission.FolderName);
     #endregion
 }
