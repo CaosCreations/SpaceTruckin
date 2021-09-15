@@ -27,7 +27,7 @@ public class Wheel : MonoBehaviour
     public void StartRotating()
     {
         IsRotating = true;
-        OnRotationStarted.Invoke();
+        OnRotationStarted?.Invoke();
     }
 
     public void StopRotating(bool isResetting = false)
@@ -36,7 +36,7 @@ public class Wheel : MonoBehaviour
 
         if (!isResetting)
         {
-            OnRotationStopped.Invoke();
+            OnRotationStopped?.Invoke();
         }
     }
 

@@ -29,7 +29,7 @@ public partial class Ship : ScriptableObject, IDataModel
         return saveData.currentHullIntegrity / maxHullIntegrity;
     }
 
-    public float GetFuelPercent()
+    public float GetFuelPercentage()
     {
         return (float)saveData.currentFuel / maxFuel;
     }

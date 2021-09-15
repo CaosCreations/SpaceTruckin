@@ -66,6 +66,18 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
             .ToList();
     }
 
+    public static ArchivedMission GetMostRecentMissionByPilot(Pilot pilot)
+    {
+        return Instance.ArchivedMissions
+            .OrderByDescending(x => x.CompletionDate)
+            .FirstOrDefault();
+    }
+
+    public static IEnumerable<ArchivedMission> GetArchivedMissionsByPilot(Pilot pilot)
+    {
+        return Instance.ArchivedMissions.Where(x => x != null && x.Pilot == pilot);
+    }
+
     #region Persistence
     public async void LoadDataAsync()
     {

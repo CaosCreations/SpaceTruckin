@@ -7,6 +7,6 @@ public class ChangeMovingCubeDirectionCollider : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        CollisionWithMovingCubeEvent.Invoke();
+        CollisionWithMovingCubeEvent?.Invoke();
     }
 }

@@ -8,9 +8,9 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
     [SerializeField] private ShipsContainer shipsContainer;
     public Ship[] Ships => shipsContainer.Elements;
 
-    public static Ship ShipBeingRepaired { get; set; }
-    public static bool CanRepair => PlayerManager.CanRepair 
-        && !ShipBeingRepaired.IsFullyRepaired;
+    public static ShipUnderRepair ShipUnderRepair;
+    public static bool CanRepair => PlayerManager.CanRepair
+        && !ShipUnderRepair.IsFullyRepaired;
 
     private void Awake()
     {
@@ -41,6 +41,9 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         {
             Debug.LogError("No ship data");
         }
+
+        HangarNodeUI.OnHangarNodeTerminalOpened += SetupShipUnderRepair;
+        HangarNodeUI.OnHangarNodeTerminalClosed += ResetShipUnderRepair;
     }
 
     public static void DamageShip(Ship ship, int damage)
@@ -54,9 +57,9 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
 
     public static void RepairShip()
     {
-        if (ShipBeingRepaired != null)
+        if (ShipUnderRepair.Ship != null)
         {
-            RepairShip(ShipBeingRepaired);
+            RepairShip(ShipUnderRepair.Ship);
         }
         else
         {
@@ -81,6 +84,19 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
     public static void EnableWarp(Ship ship)
     {
         ship.CanWarp = true;
+    }
+
+    private static void SetupShipUnderRepair(Ship ship)
+    {
+        ShipUnderRepair.Ship = ship;
+
+        ShipUnderRepair.DamageType = ArchivedMissionsManager
+            .GetMostRecentMissionByPilot(ShipUnderRepair.Pilot).DamageType;
+    }
+
+    private static void ResetShipUnderRepair()
+    {
+        ShipUnderRepair.Reset();
     }
 
     #region Persistence
