@@ -62,7 +62,7 @@ public class RepairsUI : SubMenu
     {
         if (repairsMinigameInstance == null)
         {
-            RepairsMinigame minigameType = GetMinigameTypeByDamageType(ShipDamageType.Engine);
+            RepairsMinigame minigameType = GetMinigameTypeByDamageType(ShipsManager.ShipUnderRepair.DamageType);
             repairsMinigameInstance = MinigamePrefabManager.Instance.InitPrefab(minigameType, transform);
 
             RepairsMinigamesManager.SetButtonVisibility(minigameType);
