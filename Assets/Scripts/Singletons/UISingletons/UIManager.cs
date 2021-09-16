@@ -132,7 +132,7 @@ public class UIManager : MonoBehaviour
     public static void ShowCanvas(UICanvasType canvasType, bool viaShortcut = false)
     {
         ClearCanvases();
-        PlayerManager.Instance.EnterMenuState();
+        PlayerManager.EnterPausedState();
         UICanvasBase canvas = GetCanvasByType(canvasType);
         canvas.SetActive(true);
 

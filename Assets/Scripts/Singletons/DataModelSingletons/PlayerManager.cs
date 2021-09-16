@@ -1,5 +1,6 @@
 ﻿using PixelCrushers.DialogueSystem;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegistrar
 {
@@ -143,7 +144,13 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         }
     }
 
-    public void EnterMenuState()
+    public static void EnterPausedState()
+    {
+        PlayerMovement.ResetDirection();
+        IsPaused = true;
+    }
+
+    public static void EnterPausedState(PlayableDirector playableDirector)
     {
         PlayerMovement.ResetDirection();
         IsPaused = true;
