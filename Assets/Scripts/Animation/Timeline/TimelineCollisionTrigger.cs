@@ -5,6 +5,8 @@ public class TimelineCollisionTrigger : MonoBehaviour
 {
     [SerializeField] protected PlayableDirector playableDirector;
 
+    protected virtual void Awake() { }
+
     protected virtual void PlayTimeline()
     {
         playableDirector.Play();

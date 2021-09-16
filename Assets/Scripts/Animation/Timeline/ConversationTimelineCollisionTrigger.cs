@@ -6,7 +6,7 @@ public class ConversationTimelineCollisionTrigger : TimelineCollisionTrigger
 {
     [SerializeField] private string conversationName;
 
-    private void Awake()
+    protected override void Awake()
     {
         // Restrict movement when timeline starts 
         playableDirector.played += PlayerManager.EnterPausedState;
