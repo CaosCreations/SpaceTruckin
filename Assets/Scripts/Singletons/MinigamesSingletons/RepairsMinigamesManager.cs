@@ -52,7 +52,7 @@ public class RepairsMinigamesManager : MonoBehaviour
     // Temporary workaround 
     public static void FinishMinigameAttempt(bool isSuccessfulAttempt)
     {
-        OnMinigameAttemptFinished.Invoke(isSuccessfulAttempt);
+        OnMinigameAttemptFinished?.Invoke(isSuccessfulAttempt);
     }
 
     public static void SetButtonVisibility(RepairsMinigame minigameType)

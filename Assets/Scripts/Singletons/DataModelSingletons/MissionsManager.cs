@@ -70,9 +70,6 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     public static void UpdateMissionSchedule()
     {
-        // Reset yesterday's Missions, so today's will take their place. 
-        ArchivedMissionsManager.ResetMissionsCompletedYesterday();
-
         foreach (ScheduledMission scheduled in ScheduledMissions.ToList())
         {
             if (scheduled?.Mission == null || scheduled?.Pilot == null)

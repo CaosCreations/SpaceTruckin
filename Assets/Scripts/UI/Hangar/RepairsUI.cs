@@ -19,17 +19,10 @@ public class RepairsUI : SubMenu
         RepairsMinigamesManager.OnMinigameAttemptFinished += UpdateUI;
     }
 
-    public override void OnDisable()
-    {
-        base.OnDisable();
-        ShipsManager.ShipBeingRepaired = null;
-    }
-
     public void Init(Ship shipToRepair)
     {
         if (shipToRepair != null)
         {
-            ShipsManager.ShipBeingRepaired = shipToRepair;
             shipDetails.Init(shipToRepair);
             feedbackText.Clear();
             UpdateHullResourceBar();
@@ -69,7 +62,7 @@ public class RepairsUI : SubMenu
     {
         if (repairsMinigameInstance == null)
         {
-            RepairsMinigame minigameType = GetMinigameTypeByDamageType(ShipDamageType.Engine);
+            RepairsMinigame minigameType = GetMinigameTypeByDamageType(ShipsManager.ShipUnderRepair.DamageType);
             repairsMinigameInstance = MinigamePrefabManager.Instance.InitPrefab(minigameType, transform);
 
             RepairsMinigamesManager.SetButtonVisibility(minigameType);
@@ -79,8 +72,7 @@ public class RepairsUI : SubMenu
 
     private void UpdateHullResourceBar()
     {
-        float hullPercentage = ShipsManager.ShipBeingRepaired.GetHullPercentage();
-        hullResourceBar.SetResourceValue(hullPercentage);
+        hullResourceBar.SetResourceValue(ShipsManager.ShipUnderRepair.HullPercentage);
     }
 
     private void SetButtonInteractability()
