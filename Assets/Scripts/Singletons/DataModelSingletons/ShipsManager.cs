@@ -8,7 +8,7 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
     [SerializeField] private ShipsContainer shipsContainer;
     public Ship[] Ships => shipsContainer.Elements;
 
-    public static ShipUnderRepair ShipUnderRepair;
+    public static ShipUnderRepair ShipUnderRepair = new ShipUnderRepair();
     public static bool CanRepair => PlayerManager.CanRepair
         && !ShipUnderRepair.IsFullyRepaired;
 

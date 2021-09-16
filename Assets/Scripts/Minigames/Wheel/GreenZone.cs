@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GreenZone : MonoBehaviour
 {
@@ -15,12 +13,12 @@ public class GreenZone : MonoBehaviour
     public void ReduceSize()
     {
         transform.localScale += new Vector3(
-            -RepairsConstants.SizeDecrease, 0f, 0f); 
+            -RepairsConstants.SizeDecrease, 0f, 0f);
     }
 
     public void ResetSize()
     {
         transform.localScale = new Vector3(
-            startingXScale, transform.localScale.y, transform.localScale.z); 
+            startingXScale, transform.localScale.y, transform.localScale.z);
     }
 }
