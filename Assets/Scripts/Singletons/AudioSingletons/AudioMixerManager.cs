@@ -17,7 +17,7 @@ public class AudioMixerManager : Singleton<AudioMixerManager>
     [SerializeField] private AudioMixerGroup soundEffectsGroup;
     #endregion
 
-    #region Mappings
+    #region Mapping
     private static readonly Dictionary<MixerGroup, string> VolumeParameterMap = new Dictionary<MixerGroup, string>
     {
         { MixerGroup.Master, "MasterVolume" },
@@ -34,7 +34,7 @@ public class AudioMixerManager : Singleton<AudioMixerManager>
         }
         else
         {
-            audioMixer.SetFloat(VolumeParameterMap[mixerGroup], value);
+            audioMixer.SetFloat(VolumeParameterMap[mixerGroup], value.ToDecibels());
         }
     }
 }

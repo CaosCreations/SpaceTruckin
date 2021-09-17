@@ -11,9 +11,19 @@ public class AudioVolumeSlider : MonoBehaviour
 
     private void Awake()
     {
-        volumeSlider = GetComponentInChildren<Slider>();
-        volumeSlider.AddOnValueChanged(SlideVolume);
+        InitSlider();
+        InitSliderText();
+    }
 
+    private void InitSlider()
+    {
+        volumeSlider = GetComponentInChildren<Slider>();
+        volumeSlider.value = UIConstants.DefaultVolumeSliderValue;
+        volumeSlider.AddOnValueChanged(SlideVolume);
+    }
+
+    private void InitSliderText()
+    {
         sliderText = GetComponentInChildren<Text>();
         sliderText.SetText(Enum.GetName(typeof(MixerGroup), mixerGroup));
     }

@@ -15,7 +15,7 @@ public static class NumberExtensions
 
     public static int ToInGameSeconds(this int self)
     {
-        return self * ClockManager.TickSpeedMultiplier; 
+        return self * ClockManager.TickSpeedMultiplier;
     }
 
     public static int ToRealTimeSeconds(this int self)
@@ -32,5 +32,15 @@ public static class NumberExtensions
     public static float ToRealTimeSeconds(this double self)
     {
         return (float)(self / ClockManager.TickSpeedMultiplier);
+    }
+
+    public static float ToDecibels(this float self)
+    {
+        return (float)Math.Log10(self) * 20;
+    }
+
+    public static float FromDecibels(this float self)
+    {
+        return (float)Math.Pow(10, self / 20);
     }
 }
