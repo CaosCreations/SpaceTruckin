@@ -1,8 +1,7 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(BatteryCharging))]
-[RequireComponent(typeof(BatteryInteractable))]
+[RequireComponent(typeof(BatteryCharging), typeof(BatteryInteractable))]
 public class BatteryWrapper : MonoBehaviour
 {
     public BatteryInteractable BatteryInteractable;
