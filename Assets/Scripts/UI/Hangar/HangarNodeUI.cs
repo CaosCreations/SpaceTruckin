@@ -57,9 +57,7 @@ public class HangarNodeUI : UICanvasBase
             return;
         }
 
-        PopulateUI();
-        SetButtonInteractability();
-        SetBatteryChargeImage();
+        SetupUIElements();
 
         fuelCostAfterLicences = GetFuelCostAfterLicences();
         Debug.Log("Fuel cost per unit after licence effect: " + fuelCostAfterLicences);
@@ -67,10 +65,18 @@ public class HangarNodeUI : UICanvasBase
         OnHangarNodeTerminalOpened?.Invoke(shipToInspect);
     }
 
+    private void SetupUIElements()
+    {
+        PopulateUI();
+        SetButtonInteractability();
+        SetBatteryChargeImage();
+    }
+
     private void OnDisable()
     {
         Destroy(shipPreview);
-        
+        MinigamePrefabManager.DestroyPrefabs();
+
         if (ThisNodeIsEmpty)
         {
             UIManager.SetCannotInteract();

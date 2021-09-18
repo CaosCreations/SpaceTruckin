@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -62,7 +61,13 @@ public class RepairsUI : SubMenu
     {
         if (repairsMinigameInstance == null)
         {
-            RepairsMinigame minigameType = GetMinigameTypeByDamageType(ShipsManager.ShipUnderRepair.DamageType);
+            // Damage type affects which minigame to play (which part of the ship to repair)
+            //RepairsMinigame minigameType = RepairsMinigamesManager
+            //    .GetMinigameTypeByDamageType(ShipsManager.ShipUnderRepair.DamageType);
+
+            // Todo: Don't hard-code this once we have multiple minigames
+            RepairsMinigame minigameType = RepairsMinigame.Wheel;
+
             repairsMinigameInstance = MinigamePrefabManager.Instance.InitPrefab(minigameType, transform);
 
             RepairsMinigamesManager.SetButtonVisibility(minigameType);
@@ -78,17 +83,5 @@ public class RepairsUI : SubMenu
     private void SetButtonInteractability()
     {
         repairsMinigameButton.interactable = ShipsManager.CanRepair;
-    }
-
-    private RepairsMinigame GetMinigameTypeByDamageType(ShipDamageType damageType)
-    {
-        return damageType switch
-        {
-            ShipDamageType.Engine => RepairsMinigame.Wheel,
-            ShipDamageType.Hull => RepairsMinigame.Stack,
-            _ => throw new ArgumentOutOfRangeException(),
-        };
-
-        // Todo: Better default handling here
     }
 }

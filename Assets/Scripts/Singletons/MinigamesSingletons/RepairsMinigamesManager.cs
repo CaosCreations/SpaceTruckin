@@ -130,5 +130,17 @@ public class RepairsMinigamesManager : MonoBehaviour
             _ => string.Empty,
         };
     }
+
+    public static RepairsMinigame GetMinigameTypeByDamageType(ShipDamageType damageType)
+    {
+        return damageType switch
+        {
+            ShipDamageType.Engine => RepairsMinigame.Wheel,
+            ShipDamageType.Hull => RepairsMinigame.Stack,
+            _ => throw new ArgumentOutOfRangeException(),
+        };
+
+        // Todo: Better default handling here
+    }
     #endregion
 }

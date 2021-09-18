@@ -23,16 +23,16 @@ public class MinigamePrefabManager : MonoBehaviour
     #endregion
 
     #region Mapping
-    private readonly Dictionary<RepairsMinigame, GameObject> prefabMap =
+    private static readonly Dictionary<RepairsMinigame, GameObject> prefabMap =
         new Dictionary<RepairsMinigame, GameObject>();
 
-    private readonly Dictionary<RepairsMinigame, GameObject> instanceMap =
+    private static readonly Dictionary<RepairsMinigame, GameObject> instanceMap =
         new Dictionary<RepairsMinigame, GameObject>();
 
-    private readonly Dictionary<RepairsMinigame, GameObject> uiPrefabMap =
+    private static readonly Dictionary<RepairsMinigame, GameObject> uiPrefabMap =
     new Dictionary<RepairsMinigame, GameObject>();
 
-    private readonly Dictionary<RepairsMinigame, GameObject> uiInstanceMap =
+    private static readonly Dictionary<RepairsMinigame, GameObject> uiInstanceMap =
         new Dictionary<RepairsMinigame, GameObject>();
 
     private void MapPrefab(RepairsMinigame prefabType,
@@ -110,7 +110,12 @@ public class MinigamePrefabManager : MonoBehaviour
         return instanceMap[prefabType];
     }
 
-    private void DestroyExistingInstances()
+    public static void DestroyPrefabs()
+    {
+        DestroyExistingInstances();
+    }
+
+    private static void DestroyExistingInstances()
     {
         foreach (var mapping in instanceMap)
         {

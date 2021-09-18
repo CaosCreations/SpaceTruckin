@@ -77,32 +77,47 @@ public class UIManager : MonoBehaviour
     {
         if (!PlayerManager.IsPaused)
         {
-            // Show pause menu 
-            if (Input.GetKeyDown(PlayerConstants.PauseKey))
-            {
-                ShowCanvas(UICanvasType.PauseMenu);
-            }
-            // Open new menu if one is available 
-            else if (currentCanvasType != UICanvasType.None
-                && Input.GetKeyDown(PlayerConstants.ActionKey))
+            HandleUnpausedInput();
+        }
+        // Play an Error sound effect if a non-interactable region is clicked
+        else
+        {
+            HandlePausedInput();
+        }
+
+        SetInteractionTextMesh();
+    }
+
+    private void HandleUnpausedInput()
+    {
+        // If we are not in a menu/in range of a UI activator
+        if (currentCanvasType != UICanvasType.None)
+        {
+            if (Input.GetKeyDown(PlayerConstants.ActionKey))
             {
                 ShowCanvas(currentCanvasType);
             }
         }
-        else
+        else if (Input.GetKeyDown(PlayerConstants.PauseKey))
         {
-            ClearCanvases();
+            ShowCanvas(UICanvasType.PauseMenu);
         }
+    }
+
+    private void HandlePausedInput()
+    {
         // Play an Error sound effect if a non-interactable region is clicked
-        else if (PlayerManager.IsPaused
-            && Input.GetMouseButtonDown(0)
+        if (Input.GetMouseButtonDown(0)
             && !IsPointerOverButton
             && !DialogueUtils.IsConversationActive)
         {
             UISoundEffectsManager.Instance.PlaySoundEffect(UISoundEffect.Error);
         }
-
-        SetInteractionTextMesh();
+        // Don't clear canvases if there is KeyCode override in place, e.g. in Submenu
+        else if (GetNonOverriddenKeyDown(PlayerConstants.ExitKey))
+        {
+            ClearCanvases();
+        }
     }
 
     private void SetInteractionTextMesh()
