@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class NPCAnimationManager : AnimationManager<NPCAnimationParameterType>
 {
-    public static NPCAnimationManager Instance;
+    public static NPCAnimationManager Instance { get; private set; }
 
     private void Awake()
     {

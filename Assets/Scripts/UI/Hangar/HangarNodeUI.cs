@@ -41,6 +41,9 @@ public class HangarNodeUI : UICanvasBase
     private readonly float fuelTimerInterval = 0.025f;
     private bool ThisNodeIsEmpty => shipToInspect == null || shipToInspect.IsLaunched;
 
+    public static event Action<Ship> OnHangarNodeTerminalOpened;
+    public static event Action OnHangarNodeTerminalClosed;
+
     private void OnEnable()
     {
         hangarNode = UIManager.HangarNode;
@@ -60,6 +63,8 @@ public class HangarNodeUI : UICanvasBase
 
         fuelCostAfterLicences = GetFuelCostAfterLicences();
         Debug.Log("Fuel cost per unit after licence effect: " + fuelCostAfterLicences);
+
+        OnHangarNodeTerminalOpened?.Invoke(shipToInspect);
     }
 
     private void OnDisable()
@@ -70,6 +75,8 @@ public class HangarNodeUI : UICanvasBase
         {
             UIManager.SetCannotInteract();
         }
+
+        OnHangarNodeTerminalClosed?.Invoke();
     }
 
     private void Update()
@@ -119,7 +126,7 @@ public class HangarNodeUI : UICanvasBase
         {
             PlayerManager.Instance.SpendMoney(fuelCostAfterLicences);
             shipToInspect.CurrentFuel++;
-            fuelSlider.value = shipToInspect.GetFuelPercent();
+            fuelSlider.value = shipToInspect.GetFuelPercentage();
             fuelTimer = 0;
             SetButtonInteractability();
         }
@@ -224,8 +231,8 @@ public class HangarNodeUI : UICanvasBase
 
     private void SetSliderValues()
     {
-        fuelSlider.value = shipToInspect.GetFuelPercent();
-        hullSlider.value = shipToInspect.GetHullPercent();
+        fuelSlider.value = shipToInspect.GetFuelPercentage();
+        hullSlider.value = shipToInspect.GetHullPercentage();
     }
 
     private void SetButtonInteractability()

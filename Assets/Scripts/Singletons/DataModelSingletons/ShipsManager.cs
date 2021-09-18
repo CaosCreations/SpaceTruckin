@@ -2,11 +2,15 @@
 
 public class ShipsManager : MonoBehaviour, IDataModelManager
 {
-    public static ShipsManager Instance;
+    public static ShipsManager Instance { get; private set; }
 
     public GameObject shipInstancePrefab;
     [SerializeField] private ShipsContainer shipsContainer;
     public Ship[] Ships => shipsContainer.Elements;
+
+    public static ShipUnderRepair ShipUnderRepair = new ShipUnderRepair();
+    public static bool CanRepair => PlayerManager.CanRepair
+        && !ShipUnderRepair.IsFullyRepaired;
 
     private void Awake()
     {
@@ -37,6 +41,9 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         {
             Debug.LogError("No ship data");
         }
+
+        HangarNodeUI.OnHangarNodeTerminalOpened += SetupShipUnderRepair;
+        HangarNodeUI.OnHangarNodeTerminalClosed += ResetShipUnderRepair;
     }
 
     public static void DamageShip(Ship ship, int damage)
@@ -45,6 +52,18 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         {
             ship.CurrentHullIntegrity = Mathf.Max(
                 0, ship.CurrentHullIntegrity - damage);
+        }
+    }
+
+    public static void RepairShip()
+    {
+        if (ShipUnderRepair.Ship != null)
+        {
+            RepairShip(ShipUnderRepair.Ship);
+        }
+        else
+        {
+            Debug.LogError($"Cannot repair ship at node {UIManager.HangarNode} as the ship is null.");
         }
     }
 
@@ -65,6 +84,19 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
     public static void EnableWarp(Ship ship)
     {
         ship.CanWarp = true;
+    }
+
+    private static void SetupShipUnderRepair(Ship ship)
+    {
+        ShipUnderRepair.Ship = ship;
+
+        ShipUnderRepair.DamageType = ArchivedMissionsManager
+            .GetMostRecentMissionByPilot(ShipUnderRepair.Pilot).DamageType;
+    }
+
+    private static void ResetShipUnderRepair()
+    {
+        ShipUnderRepair.Reset();
     }
 
     #region Persistence

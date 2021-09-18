@@ -24,12 +24,12 @@ public partial class Ship : ScriptableObject, IDataModel
         public bool canWarp;
     }
     
-    public float GetHullPercent()
+    public float GetHullPercentage()
     {
         return saveData.currentHullIntegrity / maxHullIntegrity;
     }
 
-    public float GetFuelPercent()
+    public float GetFuelPercentage()
     {
         return (float)saveData.currentFuel / maxFuel;
     }

@@ -91,16 +91,15 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            // Close the menu with a keypress unless that key is overridden
-            if (GetNonOverriddenKeyDown(PlayerConstants.ExitKey))
-            {
-                ClearCanvases();
-            }
-            // Play an Error sound effect if a non-interactable region is clicked
-            else if (Input.GetMouseButtonDown(0) && !IsPointerOverButton)
-            {
-                UISoundEffectsManager.Instance.PlaySoundEffect(UISoundEffect.Error);
-            }
+            ClearCanvases();
+        }
+        // Play an Error sound effect if a non-interactable region is clicked
+        else if (PlayerManager.IsPaused
+            && Input.GetMouseButtonDown(0)
+            && !IsPointerOverButton
+            && !DialogueUtils.IsConversationActive)
+        {
+            UISoundEffectsManager.Instance.PlaySoundEffect(UISoundEffect.Error);
         }
 
         SetInteractionTextMesh();
@@ -144,8 +143,7 @@ public class UIManager : MonoBehaviour
     public static void ShowCanvas(UICanvasType canvasType, bool viaShortcut = false)
     {
         ClearCanvases();
-        PlayerManager.Instance.EnterMenuState();
-
+        PlayerManager.EnterPausedState();
         UICanvasBase canvas = GetCanvasByType(canvasType);
         canvas.SetActive(true);
 

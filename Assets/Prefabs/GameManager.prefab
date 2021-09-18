@@ -4719,8 +4719,9 @@ GameObject:
   - component: {fileID: 534159691061212733}
   - component: {fileID: 8073252609653081764}
   - component: {fileID: 2209266962481434282}
-  - component: {fileID: 7836775514158014719}
-  - component: {fileID: 8532800599552025212}
+  - component: {fileID: 4606672259965314146}
+  - component: {fileID: 3833695464893520106}
+  - component: {fileID: 3980787166964603015}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -5008,7 +5009,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab8b685e62a9aeb4a9472b30ec2d86d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialDatabase: {fileID: 11400000, guid: 8991a5a5ba162834cac3289fa359f8f6, type: 2}
+  initialDatabase: {fileID: 11400000, guid: 1fe95450e9068405a9e0206f87d85c87, type: 2}
   displaySettings:
     conversationOverrideSettings:
       useOverrides: 0
@@ -5204,7 +5205,7 @@ MonoBehaviour:
   audioSource: {fileID: 6073611583677837093}
   <AudioClips>k__BackingField: []
   asteroidAirClip: {fileID: 8300000, guid: bd60a58fde264c342ac6e49ee59c1828, type: 3}
---- !u!114 &7836775514158014719
+--- !u!114 &4606672259965314146
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5220,7 +5221,7 @@ MonoBehaviour:
   <AudioClips>k__BackingField: []
   doorOpeningClip: {fileID: 0}
   doorClosingClip: {fileID: 0}
---- !u!114 &8532800599552025212
+--- !u!114 &3833695464893520106
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5229,16 +5230,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 5745358076465076624}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d3d2208f2edcd240bcb8b6b4320774e, type: 3}
+  m_Script: {fileID: 11500000, guid: e38ef76228421dd48a9e9b7e3c11c17a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioMixer: {fileID: 24100000, guid: 420e73383fed53046b92403e0b98700b, type: 2}
-  audioListener: {fileID: 0}
-  masterGroup: {fileID: 24300002, guid: 420e73383fed53046b92403e0b98700b, type: 2}
-  musicGroup: {fileID: -699883527485123393, guid: 420e73383fed53046b92403e0b98700b,
-    type: 2}
-  soundEffectsGroup: {fileID: 5862370729138954595, guid: 420e73383fed53046b92403e0b98700b,
-    type: 2}
+  wheelMinigamePrefab: {fileID: 5263344082489575955, guid: e211fc24895059f4080ea8466258edbe,
+    type: 3}
+  stackMinigamePrefab: {fileID: 8823503229815484820, guid: e378b57b812157f46affb23812c9936a,
+    type: 3}
+  wheelMinigameUIPrefab: {fileID: 5691919120717954885, guid: 2e47e5ce3a6a20f499b76519a07e1653,
+    type: 3}
+  stackMinigameUIPrefab: {fileID: 1087140782914782038, guid: 728eb041a646ec745b6238ea9ed5343b,
+    type: 3}
+--- !u!114 &3980787166964603015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5745358076465076624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be7f3fa27ae0a9e4d9a4c8a364a27194, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ButtonA: {fileID: 0}
+  ButtonB: {fileID: 0}
 --- !u!1 &6468706116591643091
 GameObject:
   m_ObjectHideFlags: 0

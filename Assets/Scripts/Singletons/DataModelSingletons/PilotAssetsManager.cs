@@ -20,7 +20,7 @@ public class PilotAssetsManager : MonoBehaviour
     /// <summary>
     /// Maps bundled asset file names to string arrays 
     /// </summary>
-    public static Dictionary<string, string[]> PilotTextData { get; private set; } = new Dictionary<string, string[]>()
+    public static Dictionary<string, string[]> PilotTextData { get; private set; } = new Dictionary<string, string[]>
     {
 		// Pilot names 
 		{ PilotsConstants.HumanMaleNamesKey, default },
