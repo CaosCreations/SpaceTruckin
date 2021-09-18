@@ -88,4 +88,8 @@ public class UIConstants : MonoBehaviour
     public const string PlayerNameTemplate = "PLAYERNAME";
     public const string ShipNameTemplate = "SHIPNAME";
 
+
+    // Settings 
+    public const float DefaultVolumeSliderValue = 1f; 
+
 }

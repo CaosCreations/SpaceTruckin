@@ -11,6 +11,7 @@ public static class PlayerPrefsManager
     public static readonly string NoticeBoardHasBeenViewedKey = "NoticeBoardHasBeenViewed";
     public static readonly string BedHasBeenViewedKey = "BedHasBeenViewed";
     public static readonly string MainMenuHasBeenViewedKey = "MainMenuHasBeenViewed";
+    public static readonly string PauseMenuHasBeenViewedKey = "PauseMenuHasBeenViewed";
 
     public static bool GetHasBeenViewedPref(UICanvasType canvasType)
     {
@@ -49,6 +50,9 @@ public static class PlayerPrefsManager
                 break;
             case UICanvasType.MainMenu:
                 key = MainMenuHasBeenViewedKey;
+                break;
+            case UICanvasType.PauseMenu:
+                key = PauseMenuHasBeenViewedKey;
                 break;
             default:
                 Debug.LogError("Invalid UI type passed to PlayerPrefsManager.GetHasBeenViewedKey");

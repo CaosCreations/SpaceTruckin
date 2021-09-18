@@ -3,7 +3,7 @@
 public class UICanvasBase : MonoBehaviour
 {
     [field: SerializeField] public GameObject CanvasTutorialPrefab { get; private set; }
-    
+
     public virtual void ShowTutorial()
     {
         if (CanvasTutorialPrefab != null)

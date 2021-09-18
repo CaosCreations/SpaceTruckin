@@ -152,4 +152,9 @@ public static class UIUtils
 
         return false;
     }
+
+    public static bool AreAnyCanvasesActive()
+    {
+        return UnityEngine.Object.FindObjectsOfType<UICanvasBase>().Any();
+    }
 }
