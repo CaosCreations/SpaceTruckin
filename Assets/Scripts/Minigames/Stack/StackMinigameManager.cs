@@ -16,9 +16,8 @@ public class StackMinigameManager : MonoBehaviour
 
     private StackMinigameUI stackMinigameUI;
 
-    [SerializeField] private Button stackButton;
-
-    [SerializeField] private Button replayButton;
+    private Button stackButton;
+    private Button replayButton;
 
     private List<GameObject> StackedCubes { get; set; } = new List<GameObject>();
 
@@ -26,15 +25,17 @@ public class StackMinigameManager : MonoBehaviour
 
     private void Awake()
     {
-        stackMinigameUI = GetComponentInChildren<StackMinigameUI>();
+        stackMinigameUI = GetComponent<StackMinigameUI>();
 
         cubeMover = GetComponentInChildren<CubeMover>();
 
-        stackButton.onClick.RemoveAllListeners();
-        stackButton.onClick.AddListener(DoPlayButton);
+        stackButton = RepairsMinigamesManager.GetRepairsMinigameButton(RepairsMinigameButton.A);
+        replayButton = RepairsMinigamesManager.GetRepairsMinigameButton(RepairsMinigameButton.B);
 
-        replayButton.onClick.RemoveAllListeners();
-        replayButton.onClick.AddListener(ResetGame);
+        stackButton.AddOnClick(DoPlayButton);
+        replayButton.AddOnClick(ResetGame);
+
+        SetLocalPosition();
     }
 
     private void Update()
@@ -48,6 +49,16 @@ public class StackMinigameManager : MonoBehaviour
     private void OnEnable()
     {
         ResetGame();
+    }
+
+    private void SetLocalPosition()
+    {
+        transform.localPosition = Vector3.zero;
+
+        foreach (Transform child in transform)
+        {
+            child.localPosition = Vector3.zero;
+        }
     }
 
     // When the player presses the play button, he or she attempts to stack the current moving cube on top of the cube below

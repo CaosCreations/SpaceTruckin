@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerAnimationManager : AnimationManager<PlayerAnimationParameterType>
 {
-    public static PlayerAnimationManager Instance;
+    public static PlayerAnimationManager Instance { get; private set; }
 
     [SerializeField] private Animator playerAnimator;
 

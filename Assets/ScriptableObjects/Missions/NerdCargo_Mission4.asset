@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c90981045dcf564ca5a5e8e5da29649, type: 3}
   m_Name: NerdCargo_Mission4
   m_EditorClassIdentifier: 
-  missionDurationInDays: 1
   missionName: Nerd Cargo
   customer: Professor Woglob Gouji PhD.
   cargo: Pink Fungus Samples
@@ -25,14 +24,30 @@ MonoBehaviour:
     need us consistently, so we\u2019ll have a steady stream of work. It\u2019s not
     the highest paying\_job, but look at us being all academic and stuff\u2026 doesn\u2019t
     it make you feel smarter?\u201D"
+  missionDurationInDays: 1
   fuelCost: 0
   unlockCondition: 0
   moneyNeededToUnlock: 0
+  isRepeatable: 1
   hasRandomOutcomes: 1
   outcomes: []
+  missionModifier: {fileID: 0}
+  fondnessGranted: 0
+  offerTimeLimitInDays: 0
+  offerExpiryFondnessDeduction: 0
   thankYouMessage: {fileID: 0}
   saveData:
     hasBeenUnlocked: 1
-    hasBeenAccepted: 1
+    hasBeenAccepted: 0
+    offerExpiryConsequencesApplied: 0
     daysLeftToComplete: 0
     numberOfCompletions: 0
+    dateUnlocked:
+      Day: 1
+      Month: 1
+      Year: 1
+    dateAccepted:
+      Day: 0
+      Month: 0
+      Year: 0
+    missionBonus: {fileID: 0}

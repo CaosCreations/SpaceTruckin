@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c90981045dcf564ca5a5e8e5da29649, type: 3}
   m_Name: CreatureTransport_Mission7
   m_EditorClassIdentifier: 
-  missionDurationInDays: 1
   missionName: Creature Transport
   customer: L.O.P. Health & Disease Control Department
   cargo: "Species \u201CSR388\u201D"
@@ -27,17 +26,33 @@ MonoBehaviour:
     a shipment of these predators to all planets we can, just in case this parasite
     finds its way off that moon\u2026 which, the way this year has been going, has
     probably already happened.\u201D"
+  missionDurationInDays: 1
   fuelCost: 35
   unlockCondition: 0
   moneyNeededToUnlock: 7000
+  isRepeatable: 1
   hasRandomOutcomes: 0
   outcomes:
   - {fileID: 11400000, guid: cd808da8f4f8bf544a83cb5dad3bb0e9, type: 2}
   - {fileID: 11400000, guid: 4786970603a2361419f643b4f0f7b901, type: 2}
   - {fileID: 11400000, guid: 5096a8f285b35a24d916c02ff8d5e371, type: 2}
+  missionModifier: {fileID: 0}
+  fondnessGranted: 0
+  offerTimeLimitInDays: 0
+  offerExpiryFondnessDeduction: 0
   thankYouMessage: {fileID: 0}
   saveData:
-    hasBeenUnlocked: 1
-    hasBeenAccepted: 1
+    hasBeenUnlocked: 0
+    hasBeenAccepted: 0
+    offerExpiryConsequencesApplied: 0
     daysLeftToComplete: 0
-    numberOfCompletions: 1
+    numberOfCompletions: 0
+    dateUnlocked:
+      Day: 0
+      Month: 0
+      Year: 0
+    dateAccepted:
+      Day: 0
+      Month: 0
+      Year: 0
+    missionBonus: {fileID: 0}
