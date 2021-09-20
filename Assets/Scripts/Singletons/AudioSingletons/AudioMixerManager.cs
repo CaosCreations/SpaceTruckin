@@ -9,7 +9,7 @@ public enum MixerGroup
 
 public class AudioMixerManager : Singleton<AudioMixerManager>
 {
-    [SerializeField] private readonly AudioMixer audioMixer;
+    [SerializeField] private AudioMixer audioMixer;
 
     #region Mixer Groups
     [SerializeField] private AudioMixerGroup masterGroup;
@@ -31,28 +31,35 @@ public class AudioMixerManager : Singleton<AudioMixerManager>
         LoadMixerPlayerPrefs();
     }
 
-    public void SetMixerGroupVolume(MixerGroup mixerGroup, float value)
+    public float SetMixerGroupVolume(MixerGroup mixerGroup, float value)
     {
         if (!VolumeParameterMap.ContainsKey(mixerGroup))
         {
             Debug.LogError($"MixerGroup parameter {nameof(mixerGroup)} is not mapped");
+            return default;
         }
-        else
-        {
-            // Convert to db 
-            audioMixer.SetFloat(VolumeParameterMap[mixerGroup], value.ToDecibels());
-        }
+
+        // Convert normalised value to db 
+        float decibels = value.ToDecibels();
+
+        // Set mixer level
+        audioMixer.SetFloat(VolumeParameterMap[mixerGroup], decibels);
+
+        // Save to player prefs
+        PlayerPrefsManager.SetMixerGroupVolumePref(mixerGroup, value);
+
+        return decibels;
     }
 
     private void LoadMixerPlayerPrefs()
     {
-        SetMixerGroupVolume(MixerGroup.Master, 
-            PlayerPrefsManager.GetMixerGroupVolumePref(MixerGroup.Master));
+        SetMixerGroupVolume(MixerGroup.Master,
+            PlayerPrefsManager.GetMixerGroupVolumePref(MixerGroup.Master).ToDecibels());
 
-        SetMixerGroupVolume(MixerGroup.Music, 
-            PlayerPrefsManager.GetMixerGroupVolumePref(MixerGroup.Music));
+        SetMixerGroupVolume(MixerGroup.Music,
+            PlayerPrefsManager.GetMixerGroupVolumePref(MixerGroup.Music).ToDecibels());
 
-        SetMixerGroupVolume(MixerGroup.SoundEffects, 
-            PlayerPrefsManager.GetMixerGroupVolumePref(MixerGroup.SoundEffects));
+        SetMixerGroupVolume(MixerGroup.SoundEffects,
+            PlayerPrefsManager.GetMixerGroupVolumePref(MixerGroup.SoundEffects).ToDecibels());
     }
 }

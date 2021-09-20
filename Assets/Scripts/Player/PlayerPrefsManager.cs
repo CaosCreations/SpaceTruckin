@@ -63,25 +63,25 @@ public static class PlayerPrefsManager
     #endregion
 
     #region Audio
-    // Audio volume slider levels 
+    // Audio mixer group level keys
     private const string MasterVolumeKey = "MasterVolumeLevel";
     private const string MusicVolumeKey = "MasterVolumeLevel";
     private const string SoundEffectVolumeKey = "SoundEffectVolumeLevel";
 
-    // Defaults
-    private const float MasterVolumeDefault = 100f;
-    private const float MusicVolumeDefault = 100f;
-    private const float SoundEffectVolumeDefault = 100f;
+    // Defaults levels
+    private const float MasterVolumeDefault = 0.8f;
+    private const float MusicVolumeDefault = 0.8f;
+    private const float SoundEffectVolumeDefault = 0.4f;
 
     public static float GetMixerGroupVolumePref(MixerGroup mixerGroup)
     {
         string key = GetMixerGroupVolumeKey(mixerGroup);
-        return GetInt(key);
+        return GetFloat(key, GetMixerGroupDefaultVolume(mixerGroup));
     }
 
-    public static void SetMixerGroupVolumePref(UICanvasType canvasType, float value)
+    public static void SetMixerGroupVolumePref(MixerGroup mixerGroup, float value)
     {
-        string key = GetHasBeenViewedKey(canvasType);
+        string key = GetMixerGroupVolumeKey(mixerGroup);
         SetFloat(key, value);
     }
 
@@ -104,6 +104,22 @@ public static class PlayerPrefsManager
                 return default;
         }
         return key;
+    }
+
+    private static float GetMixerGroupDefaultVolume(MixerGroup mixerGroup)
+    {
+        switch (mixerGroup)
+        {
+            case MixerGroup.Master:
+                return MasterVolumeDefault;
+            case MixerGroup.Music:
+                return MusicVolumeDefault;
+            case MixerGroup.SoundEffects:
+                return SoundEffectVolumeDefault;
+            default:
+                Debug.LogError("Invalid Mixer group type passed to PlayerPrefsManager.GetMixerGroupDefaultVolume");
+                return default;
+        }
     }
     #endregion
 
