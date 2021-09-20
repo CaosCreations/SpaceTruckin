@@ -9,7 +9,7 @@ public enum MixerGroup
 
 public class AudioMixerManager : Singleton<AudioMixerManager>
 {
-    [SerializeField] private AudioMixer audioMixer;
+    [SerializeField] private readonly AudioMixer audioMixer;
 
     #region Mixer Groups
     [SerializeField] private AudioMixerGroup masterGroup;
@@ -26,6 +26,11 @@ public class AudioMixerManager : Singleton<AudioMixerManager>
     };
     #endregion 
 
+    private void Start()
+    {
+        LoadMixerPlayerPrefs();
+    }
+
     public void SetMixerGroupVolume(MixerGroup mixerGroup, float value)
     {
         if (!VolumeParameterMap.ContainsKey(mixerGroup))
@@ -37,5 +42,17 @@ public class AudioMixerManager : Singleton<AudioMixerManager>
             // Convert to db 
             audioMixer.SetFloat(VolumeParameterMap[mixerGroup], value.ToDecibels());
         }
+    }
+
+    private void LoadMixerPlayerPrefs()
+    {
+        SetMixerGroupVolume(MixerGroup.Master, 
+            PlayerPrefsManager.GetMixerGroupVolumePref(MixerGroup.Master));
+
+        SetMixerGroupVolume(MixerGroup.Music, 
+            PlayerPrefsManager.GetMixerGroupVolumePref(MixerGroup.Music));
+
+        SetMixerGroupVolume(MixerGroup.SoundEffects, 
+            PlayerPrefsManager.GetMixerGroupVolumePref(MixerGroup.SoundEffects));
     }
 }

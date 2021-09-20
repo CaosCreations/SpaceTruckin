@@ -4,12 +4,12 @@ using UnityEngine.UI;
 
 public class RepairsUI : SubMenu
 {
-    [SerializeField] private RepairToolsUI repairToolsUI;
-    [SerializeField] private Text feedbackText;
-    [SerializeField] private Button repairsMinigameButton;
+    [SerializeField] private readonly RepairToolsUI repairToolsUI;
+    [SerializeField] private readonly Text feedbackText;
+    [SerializeField] private readonly Button repairsMinigameButton;
 
-    [SerializeField] private ResourceBar hullResourceBar;
-    [SerializeField] private ShipDetails shipDetails;
+    [SerializeField] private readonly ResourceBar hullResourceBar;
+    [SerializeField] private readonly ShipDetails shipDetails;
 
     private GameObject repairsMinigameInstance;
 

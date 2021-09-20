@@ -30,7 +30,7 @@ public class MinigamePrefabManager : MonoBehaviour
         new Dictionary<RepairsMinigame, GameObject>();
 
     private static readonly Dictionary<RepairsMinigame, GameObject> uiPrefabMap =
-    new Dictionary<RepairsMinigame, GameObject>();
+        new Dictionary<RepairsMinigame, GameObject>();
 
     private static readonly Dictionary<RepairsMinigame, GameObject> uiInstanceMap =
         new Dictionary<RepairsMinigame, GameObject>();

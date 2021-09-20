@@ -4,14 +4,14 @@ public static class PlayerPrefsManager
 {
     #region UI
     // Viewed UI keys - used to check if the player has seen the UI before
-    public static readonly string TerminalHasBeenViewedKey = "TerminalHasBeenViewed";
-    public static readonly string HangarHasBeenViewedKey = "HangarHasBeenViewed";
-    public static readonly string VendingHasBeenViewedKey = "VendingHasBeenViewed";
-    public static readonly string CasetteHasBeenViewedKey = "CasetteHasBeenViewed";
-    public static readonly string NoticeBoardHasBeenViewedKey = "NoticeBoardHasBeenViewed";
-    public static readonly string BedHasBeenViewedKey = "BedHasBeenViewed";
-    public static readonly string MainMenuHasBeenViewedKey = "MainMenuHasBeenViewed";
-    public static readonly string PauseMenuHasBeenViewedKey = "PauseMenuHasBeenViewed";
+    private const string TerminalHasBeenViewedKey = "TerminalHasBeenViewed";
+    private const string HangarHasBeenViewedKey = "HangarHasBeenViewed";
+    private const string VendingHasBeenViewedKey = "VendingHasBeenViewed";
+    private const string CasetteHasBeenViewedKey = "CasetteHasBeenViewed";
+    private const string NoticeBoardHasBeenViewedKey = "NoticeBoardHasBeenViewed";
+    private const string BedHasBeenViewedKey = "BedHasBeenViewed";
+    private const string MainMenuHasBeenViewedKey = "MainMenuHasBeenViewed";
+    private const string PauseMenuHasBeenViewedKey = "PauseMenuHasBeenViewed";
 
     public static bool GetHasBeenViewedPref(UICanvasType canvasType)
     {
@@ -60,7 +60,51 @@ public static class PlayerPrefsManager
         }
         return key;
     }
+    #endregion
 
+    #region Audio
+    // Audio volume slider levels 
+    private const string MasterVolumeKey = "MasterVolumeLevel";
+    private const string MusicVolumeKey = "MasterVolumeLevel";
+    private const string SoundEffectVolumeKey = "SoundEffectVolumeLevel";
+
+    // Defaults
+    private const float MasterVolumeDefault = 100f;
+    private const float MusicVolumeDefault = 100f;
+    private const float SoundEffectVolumeDefault = 100f;
+
+    public static float GetMixerGroupVolumePref(MixerGroup mixerGroup)
+    {
+        string key = GetMixerGroupVolumeKey(mixerGroup);
+        return GetInt(key);
+    }
+
+    public static void SetMixerGroupVolumePref(UICanvasType canvasType, float value)
+    {
+        string key = GetHasBeenViewedKey(canvasType);
+        SetFloat(key, value);
+    }
+
+    private static string GetMixerGroupVolumeKey(MixerGroup mixerGroup)
+    {
+        string key;
+        switch (mixerGroup)
+        {
+            case MixerGroup.Master:
+                key = MasterVolumeKey;
+                break;
+            case MixerGroup.Music:
+                key = MusicVolumeKey;
+                break;
+            case MixerGroup.SoundEffects:
+                key = SoundEffectVolumeKey;
+                break;
+            default:
+                Debug.LogError("Invalid Mixer group type passed to PlayerPrefsManager.GetMixerGroupVolumeKey");
+                return default;
+        }
+        return key;
+    }
     #endregion
 
     private static bool GetBool(string key, int defaultValue = 0)
@@ -81,5 +125,15 @@ public static class PlayerPrefsManager
     private static void SetInt(string key, int value)
     {
         PlayerPrefs.SetInt(key, value);
+    }
+
+    private static float GetFloat(string key, float defaultValue = 0)
+    {
+        return PlayerPrefs.GetFloat(key, defaultValue);
+    }
+
+    private static void SetFloat(string key, float value)
+    {
+        PlayerPrefs.SetFloat(key, value);
     }
 }
