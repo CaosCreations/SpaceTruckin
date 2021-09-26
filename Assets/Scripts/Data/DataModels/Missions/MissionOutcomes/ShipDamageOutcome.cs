@@ -13,7 +13,7 @@ public class ShipDamageOutcome : MissionOutcome
     public int BaseDamage => shipDamage;
 
     [SerializeField] private ShipDamageType damageType;
-    public ShipDamageType DamageType => hasRandomDamageType
+    public ShipDamageType DamageType => !hasRandomDamageType
         ? damageType
         : ShipUtils.GetRandomDamageType();
 
