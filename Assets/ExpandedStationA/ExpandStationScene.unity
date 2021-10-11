@@ -39,7 +39,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12939444, g: 0.12939444, b: 0.13720673, a: 1}
+  m_IndirectSpecularColor: {r: 0.12939444, g: 0.12939444, b: 0.1411131, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -13960,7 +13960,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.9592326, y: 1}
+    m_SensorSize: {x: 1.3010101, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -15763,7 +15763,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 156360fefb7669a49b8e89eb700703e8, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -15772,8 +15772,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: ea98217a9c10ced489bf5263b0a127e0, type: 3}
-  m_Type: 1
-  m_PreserveAspect: 0
+  m_Type: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -25803,8 +25803,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -77.10502}
+  m_SizeDelta: {x: 0, y: -154.20998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1447549177
 MonoBehaviour:
@@ -27774,7 +27774,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: ea98217a9c10ced489bf5263b0a127e0, type: 3}
-  m_Type: 1
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -30355,9 +30355,17 @@ PrefabInstance:
       propertyPath: playerMovement
       value: 
       objectReference: {fileID: 129007674}
+    - target: {fileID: 727599626, guid: fd1f7cd9cb681f74aa0d051027142d87, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: dcf0d941b8cb0344b9b4be99a1ed16fe, type: 2}
     - target: {fileID: 727599628, guid: fd1f7cd9cb681f74aa0d051027142d87, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 727599628, guid: fd1f7cd9cb681f74aa0d051027142d87, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 85
       objectReference: {fileID: 0}
     - target: {fileID: 874407588, guid: fd1f7cd9cb681f74aa0d051027142d87, type: 3}
       propertyPath: m_AnchorMax.y
@@ -30459,6 +30467,10 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1447549180, guid: fd1f7cd9cb681f74aa0d051027142d87, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: dcf0d941b8cb0344b9b4be99a1ed16fe, type: 2}
     - target: {fileID: 1448425034, guid: fd1f7cd9cb681f74aa0d051027142d87, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -30507,6 +30519,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1587357895, guid: fd1f7cd9cb681f74aa0d051027142d87, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: dcf0d941b8cb0344b9b4be99a1ed16fe, type: 2}
     - target: {fileID: 1587357898, guid: fd1f7cd9cb681f74aa0d051027142d87, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -30527,6 +30543,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1909595374, guid: fd1f7cd9cb681f74aa0d051027142d87, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: dcf0d941b8cb0344b9b4be99a1ed16fe, type: 2}
     - target: {fileID: 2085510645, guid: fd1f7cd9cb681f74aa0d051027142d87, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
