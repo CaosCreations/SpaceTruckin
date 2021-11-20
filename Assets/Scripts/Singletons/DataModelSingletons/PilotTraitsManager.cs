@@ -18,7 +18,7 @@ public class PilotTraitsManager : MonoBehaviour
     }
 
     /// <summary>
-    ///     Gets the aggregate coefficient, i.e. the total from all trait effects.
+    ///     Gets the aggregate number that will added to the success chance, i.e. the total from all trait effects.
     /// </summary>
     /// <param name="traitEffects"></param>
     /// <returns></returns>
@@ -35,7 +35,7 @@ public class PilotTraitsManager : MonoBehaviour
     }
 
     /// <summary>
-    ///     Gets the number we multiple the mission probability by based on the configuration.
+    ///     Gets the number we will add to the normalised mission probability based on the configuration.
     /// </summary>
     public static float GetMissionChanceEffect(MissionPilotTraitEffect traitEffect)
     {
