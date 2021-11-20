@@ -4,7 +4,7 @@
 ///     Traits increase/decrease the probability of succeeding a given <see cref="Mission"/>.
 ///     For some Missions, they are favourable and others they are not.
 /// </summary>
-[CreateAssetMenu(fileName = "PilotTrait", menuName = "ScriptableObjects/PilotTrait", order = 1)]
+[CreateAssetMenu(fileName = "PilotTrait", menuName = "ScriptableObjects/Pilots/PilotTrait", order = 1)]
 public class PilotTrait : ScriptableObject
 {
     [SerializeField] private string traitName;
