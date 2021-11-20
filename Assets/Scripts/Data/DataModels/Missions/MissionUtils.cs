@@ -24,10 +24,17 @@ public static class MissionUtils
         OmenOutcome omenOutcome = GetOutcomeByType<OmenOutcome>(outcomesToChooseFrom);
         ShipDamageOutcome shipDamageOutcome = GetOutcomeByType<ShipDamageOutcome>(outcomesToChooseFrom);
 
-        if (moneyOutcome != null) randomOutcomes.Add(moneyOutcome);
-        if (pilotXpOutcome != null) randomOutcomes.Add(pilotXpOutcome);
-        if (omenOutcome != null) randomOutcomes.Add(omenOutcome);
-        if (shipDamageOutcome != null) randomOutcomes.Add(shipDamageOutcome);
+        if (moneyOutcome != null)
+            randomOutcomes.Add(moneyOutcome);
+
+        if (pilotXpOutcome != null)
+            randomOutcomes.Add(pilotXpOutcome);
+
+        if (omenOutcome != null)
+            randomOutcomes.Add(omenOutcome);
+
+        if (shipDamageOutcome != null)
+            randomOutcomes.Add(shipDamageOutcome);
 
         return randomOutcomes.ToArray();
     }
