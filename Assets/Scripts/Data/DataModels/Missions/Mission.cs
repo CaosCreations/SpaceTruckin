@@ -20,6 +20,12 @@ public partial class Mission : ScriptableObject, IDataModel
     [SerializeField] private MissionOutcome[] outcomes;
     [SerializeField] private MissionModifier missionModifier;
 
+    [SerializeField] private float successChance;
+    private bool wasSuccessful;
+
+    [Tooltip("The Pilot traits that affect this mission, and whether the effect is positive/negative")]
+    [SerializeField] private MissionPilotTraitEffects missionPilotTraitEffects;
+
     [Tooltip("The number of relationship points with the customer awarded on first completion of the mission")]
     [SerializeField] private int fondnessGranted;
 

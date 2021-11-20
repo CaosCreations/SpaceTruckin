@@ -103,20 +103,31 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
                 scheduled.Mission.ThankYouMessage.IsUnlocked = true;
             }
 
+            // Todo: Success/failure of mission affects client relationship change?*
+
             // Improve relationship with the client of the mission.
             DialogueDatabaseManager.AddToActorFondness(
                 scheduled.Mission.Customer, scheduled.Mission.FondnessGranted);
         }
 
+        // Success of the mission depends on factors such as Pilot traits
+        scheduled.Mission.WasSuccessful = DetermineIfMissionWasSuccessful(scheduled.Mission);
+
+        // Todo: Don't increment if mission failed?*
         scheduled.Mission.NumberOfCompletions++;
 
         // Instantiate an Archived Mission object to store the stats of the completed Mission.
         scheduled.Mission.MissionToArchive = new ArchivedMission(
             scheduled.Mission, scheduled.Pilot, scheduled.Mission.NumberOfCompletions);
 
-        // The Archived Mission fields are set throughout the outcome processing.
-        ProcessMissionOutcomes(scheduled);
+        // Todo: Some outcomes are processed regardless of whether the mission succeeded?*
+        if (scheduled.Mission.WasSuccessful)
+        {
+            // The Archived Mission fields are set throughout the outcome processing.
+            ProcessMissionOutcomes(scheduled);
+        }
 
+        // Todo: Don't increment if mission failed?* 
         scheduled.Pilot.MissionsCompleted++;
         scheduled.MissionToArchive.MissionsCompletedByPilotAtTimeOfMission = scheduled.Pilot.MissionsCompleted;
 
@@ -124,6 +135,25 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         ArchivedMissionsManager.AddToArchive(scheduled.Mission.MissionToArchive);
 
         ScheduledMissions.Remove(scheduled);
+    }
+
+    private static bool DetermineIfMissionWasSuccessful(Mission mission)
+    {
+        float totalSuccessChance = DetermineTotalSuccessChance(mission.PilotTraitEffects,
+            mission.SuccessChance);
+
+        return totalSuccessChance >= Random.Range(0f, 1f);
+    }
+
+    private static float DetermineTotalSuccessChance(MissionPilotTraitEffects traitEffects,
+        float baseSuccessChance)
+    {
+        float successChance = baseSuccessChance;
+
+        // Add on the value from the PilotTrait effects that influences the success chance 
+        successChance += PilotTraitsManager.GetTotalMissionChanceEffect(traitEffects);
+
+        return successChance;
     }
 
     private static void ProcessMissionOutcomes(ScheduledMission scheduled)
