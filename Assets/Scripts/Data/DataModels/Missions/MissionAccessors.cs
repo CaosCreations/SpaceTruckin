@@ -82,6 +82,8 @@ public partial class Mission
         get => hasRandomOutcomes || Outcomes == null || Outcomes.Length <= 0;
         set => hasRandomOutcomes = value;
     }
+    public float SuccessChance => successChance;
+    public bool WasSuccessful { get => wasSuccessful; set => wasSuccessful = value; }
     public bool IsRepeatable { get => isRepeatable; set => isRepeatable = value; }
     public bool IsAvailableForScheduling
     {
@@ -107,4 +109,5 @@ public partial class Mission
         && missionModifier.PossibleOutcomes.Any();
     public MissionModifier Modifier => missionModifier;
     public MissionBonus Bonus { get => saveData.missionBonus; set => saveData.missionBonus = value; }
+    public MissionPilotTraitEffects PilotTraitEffects => missionPilotTraitEffects;
 }

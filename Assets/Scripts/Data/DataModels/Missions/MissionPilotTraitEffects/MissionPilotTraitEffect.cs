@@ -1,8 +1,13 @@
 ﻿using System;
+using UnityEngine;
 
 [Serializable]
 public class MissionPilotTraitEffect
 {
-    public PilotTrait pilotTrait;
-    public bool hasPositiveEffect;
+
+    [field: SerializeField]
+    public PilotTrait PilotTrait { get; set; }
+
+    [field: SerializeField]
+    public bool HasPositiveEffect { get; set; }
 }

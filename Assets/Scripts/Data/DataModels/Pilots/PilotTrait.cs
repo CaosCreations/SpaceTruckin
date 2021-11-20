@@ -10,13 +10,13 @@ public class PilotTrait : ScriptableObject
     [SerializeField] private string traitName;
     public string Name => traitName;
 
-    [Tooltip("If the trait improves the chance of success of a mission, this is the coefficient. " +
+    [Tooltip("If the trait improves the chance of success of a mission, this is added to the coefficient. " +
         "Must be greater than 0.")]
     [SerializeField] private float positiveMissionProbabilityEffect;
     public float PositiveMissionProbabilityEffect => positiveMissionProbabilityEffect;
 
-    [Tooltip("If the trait decreases the chance of success of a mission, this is the coefficient. " +
-        "Must be greater than 0 and less than 1.")]
+    [Tooltip("If the trait decreases the chance of success of a mission, this is subtracted from the coefficient. " +
+        "Must be greater than 0.")]
     [SerializeField] private float negativeMissionProbabilityEffect;
     public float NegativeMissionProbabilityEffect => NegativeMissionProbabilityEffect;
 
