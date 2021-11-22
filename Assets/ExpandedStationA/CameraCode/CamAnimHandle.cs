@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CamAnimHandle : MonoBehaviour {
-
-	Transform cTrans;
+public class CamAnimHandle : MonoBehaviour 
+{
 
 	Animator anim;
 
@@ -14,10 +13,9 @@ public class CamAnimHandle : MonoBehaviour {
 
 	public static bool new_camHandler;
 
-	public int camadress;
-
 	private Dictionary<CameraSwitches, string> cameraSwitchDictionary = new Dictionary<CameraSwitches, string>()
 	{
+		{CameraSwitches.Default ,AnimationConstants.DefaultSwitchTriggerParameter},
 		{CameraSwitches.WorkShop,AnimationConstants.WorkShopSwitchTriggerParameter},
 		{CameraSwitches.Dinner,AnimationConstants.DinnerSwitchTriggerParameter},
 		{CameraSwitches.Bar,AnimationConstants.BarSwitchTriggerParameter},
@@ -41,44 +39,32 @@ public class CamAnimHandle : MonoBehaviour {
 
 	private void Start () 
 	{
-		cTrans = GetComponent<Transform>();
 		anim = GetComponent<Animator>();
 		anim.SetBool("TopCam",true);
+		SwitchCamera(CameraSwitches.Default);
 	}
 
-	private void switchCameraFirstPhase()
+	public void SwitchCamera(CameraSwitches cameraSwitch)
 	{
-		camadress = CamSwitchCol.myCurrentCam;
-	}
-
-
-	// Update is called once per frame
-	private void Update () 
-	{
-		anim.SetInteger("MYCURRENTCAM",camadress);
+		anim.SetTrigger(cameraSwitchDictionary[cameraSwitch]);
 
 		if (CamSwitchCol.isTouchingCanChange == true)
 		{
-			anim.SetBool("AnglePov", true);
 			anim.SetBool("TopCam", false);
-			
+			anim.SetBool("AnglePov", true);
 		}
 
-		// anim.SetBool("AngleCam",true);
-
-		if(CamSwitchSecondPhase.isTouchingCanSecChange==true)
+		if (CamSwitchSecondPhase.isTouchingCanSecChange == true)
 		{
-			anim.SetBool("TopCam",true);
-			anim.SetBool("AnglePov",false);
-			camadress=0;
+			anim.SetBool("TopCam", true);
+			anim.SetBool("AnglePov", false);
 		}
-
-		// anim.SetBool("AngleCam",true);
 	}
 }
 
 public enum CameraSwitches
 {
+	Default,
 	WorkShop,
 	Dinner,
 	Bar,
