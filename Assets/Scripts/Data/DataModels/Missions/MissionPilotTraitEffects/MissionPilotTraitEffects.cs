@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 // Cannot think of a better name for this right now
 
@@ -11,10 +10,6 @@ using UnityEngine;
     menuName = "ScriptableObjects/Missions/MissionPilotTraitEffects", order = 1)]
 public class MissionPilotTraitEffects : ScriptableObject
 {
-    //[SerializeField] private SerialisableDictionary<PilotTrait, bool> TraitEffects;
-
-    [SerializeField] private List<MissionPilotTraitEffect> missionPilotTraitEffects;
-    public List<MissionPilotTraitEffect> PilotTraitEffects => missionPilotTraitEffects;
-
-
+    [SerializeField] private MissionPilotTraitEffect[] missionPilotTraitEffects;
+    public MissionPilotTraitEffect[] PilotTraitEffects => missionPilotTraitEffects;
 }

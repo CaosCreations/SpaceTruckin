@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "PilotSpeciesTrait", menuName = "ScriptableObjects/PilotSpeciesTrait", order = 1)]
+[CreateAssetMenu(fileName = "PilotSpeciesTrait", menuName = "ScriptableObjects/Pilots/PilotSpeciesTrait", order = 1)]
 public class PilotSpeciesTrait : PilotTrait
 {
     [SerializeField] private Species species;

@@ -1,8 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public class PilotTraitsManager : MonoBehaviour
 {
     public static PilotTraitsManager Instance { get; private set; }
+
+    [field: SerializeField]
+    public PilotSpeciesTrait[] SpeciesTraits { get; set; } // These are universal 
 
     private void Awake()
     {
@@ -21,14 +25,15 @@ public class PilotTraitsManager : MonoBehaviour
     ///     Gets the aggregate number that will added to the success chance, i.e. the total from all trait effects.
     /// </summary>
     /// <param name="traitEffects"></param>
-    /// <returns></returns>
-    public static float GetTotalMissionChanceEffect(MissionPilotTraitEffects traitEffects)
+    public static float GetTotalMissionChanceEffect(Pilot pilot, MissionPilotTraitEffects traitEffects)
     {
+        var traitEffectsForPilot = GetTraitEffectsForPilot(pilot, traitEffects);
+
         float totalChanceEffect = default;
 
-        foreach (MissionPilotTraitEffect effect in traitEffects.PilotTraitEffects)
+        foreach (var traitEffect in traitEffectsForPilot)
         {
-            totalChanceEffect += GetMissionChanceEffect(effect);
+            totalChanceEffect += GetMissionChanceEffect(traitEffect);
         }
 
         return totalChanceEffect;
@@ -37,10 +42,26 @@ public class PilotTraitsManager : MonoBehaviour
     /// <summary>
     ///     Gets the number we will add to the normalised mission probability based on the configuration.
     /// </summary>
-    public static float GetMissionChanceEffect(MissionPilotTraitEffect traitEffect)
+    private static float GetMissionChanceEffect(MissionPilotTraitEffect traitEffect)
     {
         return traitEffect.HasPositiveEffect
             ? traitEffect.PilotTrait.PositiveMissionProbabilityEffect
             : -traitEffect.PilotTrait.NegativeMissionProbabilityEffect;
+    }
+
+    private static MissionPilotTraitEffect[] GetTraitEffectsForPilot(Pilot pilot,
+        MissionPilotTraitEffects traitEffects)
+    {
+        var speciesTraits = GetSpeciesTraitsBySpecies(pilot.Species);
+
+        return traitEffects.PilotTraitEffects
+            .Where(x => pilot.Traits
+            .Contains(x?.PilotTrait) || speciesTraits != null && speciesTraits.Contains(x?.PilotTrait))
+            .ToArray();
+    }
+
+    private static PilotSpeciesTrait[] GetSpeciesTraitsBySpecies(Species species)
+    {
+        return Instance.SpeciesTraits.Where(x => x?.Species == species).ToArray();
     }
 }

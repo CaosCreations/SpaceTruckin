@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PlayerData", menuName = "ScriptableObjects/PlayerData", order = 1)]
@@ -60,7 +61,7 @@ public class PlayerData : ScriptableObject, IDataModel
         DataUtils.SaveFileAsync(name, FolderName, saveData);
     }
 
-    public async System.Threading.Tasks.Task LoadDataAsync()
+    public async Task LoadDataAsync()
     {
         saveData = await DataUtils.LoadFileAsync<PlayerSaveData>(name, FolderName);
     }
