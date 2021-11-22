@@ -32,6 +32,7 @@ public partial class Pilot : ScriptableObject
     [SerializeField] private Species species;
     [SerializeField] private Ship ship;
     [SerializeField] private Sprite avatar;
+    [SerializeField] private PilotTrait[] traits;
 
     [Header("Data to update IN GAME")]
     [SerializeField] private PilotSaveData saveData;

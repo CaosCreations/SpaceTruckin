@@ -111,7 +111,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         }
 
         // Success of the mission depends on factors such as Pilot traits
-        scheduled.Mission.WasSuccessful = DetermineIfMissionWasSuccessful(scheduled.Mission);
+        scheduled.Mission.WasSuccessful = DetermineIfMissionWasSuccessful(scheduled);
 
         // Todo: Don't increment if mission failed?*
         scheduled.Mission.NumberOfCompletions++;
@@ -137,21 +137,19 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         ScheduledMissions.Remove(scheduled);
     }
 
-    private static bool DetermineIfMissionWasSuccessful(Mission mission)
+    private static bool DetermineIfMissionWasSuccessful(ScheduledMission scheduled)
     {
-        float totalSuccessChance = DetermineTotalSuccessChance(mission.PilotTraitEffects,
-            mission.SuccessChance);
-
+        float totalSuccessChance = GetTotalSuccessChance(scheduled);
         return totalSuccessChance >= Random.Range(0f, 1f);
     }
 
-    private static float DetermineTotalSuccessChance(MissionPilotTraitEffects traitEffects,
-        float baseSuccessChance)
+    private static float GetTotalSuccessChance(ScheduledMission scheduled)
     {
-        float successChance = baseSuccessChance;
+        float successChance = scheduled.Mission.SuccessChance;
 
         // Add on the value from the PilotTrait effects that influences the success chance 
-        successChance += PilotTraitsManager.GetTotalMissionChanceEffect(traitEffects);
+        successChance += PilotTraitsManager.GetTotalMissionChanceEffect(scheduled.Pilot,
+            scheduled.Mission.PilotTraitEffects);
 
         return successChance;
     }
