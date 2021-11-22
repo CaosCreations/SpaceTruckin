@@ -6,7 +6,7 @@ public class CamSwitchCol : MonoBehaviour {
 
 	public static bool isTouchingCanChange;
 	public static int myCurrentCam;
-	public string camName;
+	[SerializeField] private AnimationConstants.CameraSwitches camName;
 
 	public void OnTriggerEnter(Collider collider)
 	{
@@ -18,7 +18,7 @@ public class CamSwitchCol : MonoBehaviour {
 			//if(myCurrentCam==0){myCurrentCam+=1;}
 			//	else if(myCurrentCam==1){myCurrentCam-=1;}
 
-
+			/*
 			if(camName=="WorkShopCam")
 			{
 				myCurrentCam=1;
@@ -113,6 +113,8 @@ public class CamSwitchCol : MonoBehaviour {
 			{
 				myCurrentCam=22;
 			}
+
+			*/
 		}
 	}
 
@@ -128,7 +130,6 @@ public class CamSwitchCol : MonoBehaviour {
 
 			//else 
 			//if(myCurrentCam==1){myCurrentCam-=1;}
-			
 		}
 	}
 }

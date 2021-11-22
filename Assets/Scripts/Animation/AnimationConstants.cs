@@ -55,4 +55,30 @@ public static class AnimationConstants
     };
 
     #endregion
+
+    #region Camera Animation
+
+    // Camera switches animation parameter triggers
+    public const string DefaultSwitchTriggerParameter = "DefaultSwitchTrigger";
+    public const string WorkShopSwitchTriggerParameter = "WorkShopSwitchTrigger";
+    public const string DinnerSwitchTriggerParameter = "DinnerSwitchTrigger";
+    public const string BarSwitchTriggerParameter = "BarSwitchTrigger";
+    public const string YogaSwitchTriggerParameter = "YogaSwitchTrigger";
+    public const string HangarEdgeSwitchTriggerParameter = "HangarEdgeSwitchTrigger";
+    public const string OfficeLoungetSwitchTriggerParameter = "OfficeLoungeSwitchTrigger";
+    public const string HangarSwitchTriggerParameter = "HangarSwitchTrigger";
+    public const string WashingStablishmentSwitchTriggerParameter = "WashingStablishmentSwitchTrigger";
+    public const string AbbandonedTankTriggerParameter = "AbbandonedTankSwitchTrigger";
+    public const string SpacePortSwitchTriggerParameter = "SpacePortSwitchTrigger";
+    public const string RefugeCampISwitchTriggerParameter = "RefugeCampISwitchTrigger";
+    public const string AbbandonedStorageRoomSwitchTriggerParameter = "AbbandonedStorageRoomSwitchTrigger";
+    public const string StationMainOfiiceSwitchTriggerParameter = "StationMainOfiiceSwitchTrigger";
+    public const string AbandonedTankSwitchTriggerParameter = "AbandonedTankSwitchTrigger";
+    public const string NorthEastCorridorTriggerParameter = "NorthEastCorridorSwitchTrigger";
+    public const string PPHQTriggerParameter = "PPHQSwitchTrigger";
+    public const string RefugeUnd01SwitchTriggerParameter = "RefugeUnd01SwitchTrigger";
+    public const string RefugeUnd02SwitchTriggerParameter = "RefugeUnd02SwitchTrigger";
+    public const string RefugeUnd03SwitchTriggerParameter = "RefugeUnd03SwitchTrigger";
+
+    #endregion
 }

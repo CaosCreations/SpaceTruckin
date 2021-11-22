@@ -34,8 +34,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: HangarEdgeSwitchTrigger
     m_EventTreshold: 5
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4250333556110878469}
@@ -59,8 +59,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: NorthEastCorridorSwitchTrigger
     m_EventTreshold: 15
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1145619173011858941}
@@ -139,8 +139,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: DefaultSwitchTrigger
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102543410117466610}
@@ -221,8 +221,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: DinnerSwitchTrigger
     m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3447248292231284945}
@@ -249,8 +249,8 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: TopCam
     m_EventTreshold: 0
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: DefaultSwitchTrigger
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102543410117466610}
@@ -301,8 +301,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: PPHQSwitchTrigger
     m_EventTreshold: 16
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 7127100511748407641}
@@ -326,8 +326,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: RefugeUnd01SwitchTrigger
     m_EventTreshold: 20
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -2419497633646150588}
@@ -351,8 +351,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: DefaultSwitchTrigger
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102543410117466610}
@@ -431,9 +431,9 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
-    m_EventTreshold: 11
+  - m_ConditionMode: 1
+    m_ConditionEvent: RefugeCampISwitchTrigger
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7478460242209210451}
   m_Solo: 0
@@ -456,8 +456,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: RefugeCampISwitchTrigger
     m_EventTreshold: 11
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7478460242209210451}
@@ -508,8 +508,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: DefaultSwitchTrigger
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102543410117466610}
@@ -587,8 +587,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: DefaultSwitchTrigger
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102543410117466610}
@@ -642,8 +642,8 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: TopCam
     m_EventTreshold: 0
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: DefaultSwitchTrigger
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102543410117466610}
@@ -667,9 +667,9 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
-    m_EventTreshold: 11
+  - m_ConditionMode: 1
+    m_ConditionEvent: RefugeCampISwitchTrigger
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7478460242209210451}
   m_Solo: 0
@@ -698,25 +698,145 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: AnglePov
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: new_camHandler
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: MYCURRENTCAM
     m_Type: 3
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
+  - m_Name: DefaultSwitchTrigger
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: WorkShopSwitchTrigger
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: BarSwitchTrigger
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: YogaSwitchTrigger
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: HangarEdgeSwitchTrigger
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: OfficeLoungeSwitchTrigger
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: HangarSwitchTrigger
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: WashingStablishmentSwitchTrigger
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: AbbandonedTankSwitchTrigger
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: SpacePortSwitchTrigger
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: RefugeCampISwitchTrigger
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: AbbandonedStorageRoomSwitchTrigger
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: StationMainOfiiceSwitchTrigger
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: AbandonedTankSwitchTrigger
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: NorthEastCorridorSwitchTrigger
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: PPHQSwitchTrigger
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: RefugeUnd01SwitchTrigger
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: RefugeUnd02SwitchTrigger
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: RefugeUnd03SwitchTrigger
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: DinnerSwitchTrigger
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -738,8 +858,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: SpacePortSwitchTrigger
     m_EventTreshold: 10
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7789805201205192511}
@@ -763,8 +883,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: WashingStablishmentSwitchTrigger
     m_EventTreshold: 8
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 564228945091258463}
@@ -791,8 +911,8 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: TopCam
     m_EventTreshold: 0
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: DefaultSwitchTrigger
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102543410117466610}
@@ -843,8 +963,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: DefaultSwitchTrigger
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102543410117466610}
@@ -871,8 +991,8 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: TopCam
     m_EventTreshold: 0
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: DefaultSwitchTrigger
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102543410117466610}
@@ -899,8 +1019,8 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: AnglePov
     m_EventTreshold: 0
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: WorkShopSwitchTrigger
     m_EventTreshold: 1
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102692941509875490}
@@ -994,16 +1114,16 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 1102543410117466610}
-    m_Position: {x: 336, y: 108, z: 0}
+    m_Position: {x: 320, y: 90, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102692941509875490}
     m_Position: {x: 470, y: 280, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -9168296040772482337}
-    m_Position: {x: 614.3577, y: 47.49942, z: 0}
+    m_Position: {x: 740, y: -420, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2812741286482148506}
-    m_Position: {x: 590, y: 160, z: 0}
+    m_Position: {x: 870, y: 240, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4250333556110878469}
     m_Position: {x: 1210, y: 220, z: 0}
@@ -1097,8 +1217,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: DefaultSwitchTrigger
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102543410117466610}
@@ -1122,8 +1242,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: AbandonedTankSwitchTrigger
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102543410117466610}
@@ -1147,8 +1267,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: DefaultSwitchTrigger
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102543410117466610}
@@ -1172,8 +1292,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: AbbandonedStorageRoomSwitchTrigger
     m_EventTreshold: 12
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -5732317863053530027}
@@ -1252,8 +1372,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: HangarEdgeSwitchTrigger
     m_EventTreshold: 5
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4250333556110878469}
@@ -1277,8 +1397,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: HangarSwitchTrigger
     m_EventTreshold: 7
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -8036751657900959219}
@@ -1302,8 +1422,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: OfficeLoungeSwitchTrigger
     m_EventTreshold: 6
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 3121409137960829634}
@@ -1327,8 +1447,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: HangarSwitchTrigger
     m_EventTreshold: 7
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -8036751657900959219}
@@ -1352,8 +1472,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: StationMainOfiiceSwitchTrigger
     m_EventTreshold: 13
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4107328757020821018}
@@ -1377,8 +1497,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: YogaSwitchTrigger
     m_EventTreshold: 4
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7974865121046241087}
@@ -1402,8 +1522,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: OfficeLoungeSwitchTrigger
     m_EventTreshold: 6
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 3121409137960829634}
@@ -1427,8 +1547,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: DefaultSwitchTrigger
     m_EventTreshold: 14
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 3195665450246418471}
@@ -1479,8 +1599,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: BarSwitchTrigger
     m_EventTreshold: 3
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -2812741286482148506}
@@ -1531,8 +1651,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: DefaultSwitchTrigger
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102543410117466610}
@@ -1556,8 +1676,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: RefugeCampISwitchTrigger
     m_EventTreshold: 11
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7478460242209210451}
@@ -1581,8 +1701,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: DefaultSwitchTrigger
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102543410117466610}
@@ -1606,9 +1726,9 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
-    m_EventTreshold: 21
+  - m_ConditionMode: 1
+    m_ConditionEvent: RefugeUnd02SwitchTrigger
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6530099625961815449}
   m_Solo: 0
@@ -1631,8 +1751,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: MYCURRENTCAM
+  - m_ConditionMode: 1
+    m_ConditionEvent: RefugeUnd03SwitchTrigger
     m_EventTreshold: 22
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -1447911252091441004}
