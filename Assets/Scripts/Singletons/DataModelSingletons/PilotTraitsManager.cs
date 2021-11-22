@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 
 public class PilotTraitsManager : MonoBehaviour
@@ -28,13 +27,13 @@ public class PilotTraitsManager : MonoBehaviour
     /// <param name="traitEffects"></param>
     public static float GetTotalMissionChanceEffect(Pilot pilot, MissionPilotTraitEffects traitEffects)
     {
-        IEnumerable<MissionPilotTraitEffect> traitEffectsForPilot = GetTraitEffectsForPilot(pilot, traitEffects);
+        var traitEffectsForPilot = GetTraitEffectsForPilot(pilot, traitEffects);
 
         float totalChanceEffect = default;
 
-        foreach (MissionPilotTraitEffect effect in traitEffectsForPilot)
+        foreach (var traitEffect in traitEffectsForPilot)
         {
-            totalChanceEffect += GetMissionChanceEffect(effect);
+            totalChanceEffect += GetMissionChanceEffect(traitEffect);
         }
 
         return totalChanceEffect;
@@ -50,17 +49,19 @@ public class PilotTraitsManager : MonoBehaviour
             : -traitEffect.PilotTrait.NegativeMissionProbabilityEffect;
     }
 
-    private static IEnumerable<MissionPilotTraitEffect> GetTraitEffectsForPilot(Pilot pilot,
+    private static MissionPilotTraitEffect[] GetTraitEffectsForPilot(Pilot pilot,
         MissionPilotTraitEffects traitEffects)
     {
-        IEnumerable<PilotSpeciesTrait> speciesTraits = GetSpeciesTraitsBySpecies(pilot.Species);
+        var speciesTraits = GetSpeciesTraitsBySpecies(pilot.Species);
 
         return traitEffects.PilotTraitEffects
-            .Where(x => pilot.Traits.Contains(x?.PilotTrait) || speciesTraits.Contains(x?.PilotTrait));
+            .Where(x => pilot.Traits
+            .Contains(x?.PilotTrait) || speciesTraits != null && speciesTraits.Contains(x?.PilotTrait))
+            .ToArray();
     }
 
-    private static IEnumerable<PilotSpeciesTrait> GetSpeciesTraitsBySpecies(Species species)
+    private static PilotSpeciesTrait[] GetSpeciesTraitsBySpecies(Species species)
     {
-        return Instance.SpeciesTraits.Where(x => x?.Species == species);
+        return Instance.SpeciesTraits.Where(x => x?.Species == species).ToArray();
     }
 }

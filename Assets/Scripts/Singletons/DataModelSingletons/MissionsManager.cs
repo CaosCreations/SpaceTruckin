@@ -139,17 +139,20 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     private static bool DetermineIfMissionWasSuccessful(ScheduledMission scheduled)
     {
-        float totalSuccessChance = GetTotalSuccessChance(scheduled);
+        float totalSuccessChance = GetTotalMissionSuccessChance(scheduled);
         return totalSuccessChance >= Random.Range(0f, 1f);
     }
 
-    private static float GetTotalSuccessChance(ScheduledMission scheduled)
+    private static float GetTotalMissionSuccessChance(ScheduledMission scheduled)
     {
         float successChance = scheduled.Mission.SuccessChance;
 
-        // Add on the value from the PilotTrait effects that influences the success chance 
-        successChance += PilotTraitsManager.GetTotalMissionChanceEffect(scheduled.Pilot,
-            scheduled.Mission.PilotTraitEffects);
+        if (scheduled.Mission.PilotTraitEffects != null)
+        {
+            // Add on the value from the PilotTrait effects that influences the success chance 
+            successChance += PilotTraitsManager.GetTotalMissionChanceEffect(scheduled.Pilot,
+                scheduled.Mission.PilotTraitEffects);
+        }
 
         return successChance;
     }

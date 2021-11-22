@@ -18,7 +18,7 @@ public struct PilotAttributes
     public int Navigation, Savviness;
 }
 
-[CreateAssetMenu(fileName = "Pilot", menuName = "ScriptableObjects/Pilot", order = 1)]
+[CreateAssetMenu(fileName = "Pilot", menuName = "ScriptableObjects/Pilots/Pilot", order = 1)]
 public partial class Pilot : ScriptableObject
 {
     [Header("Set in Editor")]
