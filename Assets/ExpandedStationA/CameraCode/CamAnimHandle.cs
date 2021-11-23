@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CamAnimHandle : MonoBehaviour 
 {
-
 	Animator anim;
 
 	public static bool top_camHandler;
@@ -40,25 +39,12 @@ public class CamAnimHandle : MonoBehaviour
 	private void Start () 
 	{
 		anim = GetComponent<Animator>();
-		anim.SetBool("TopCam",true);
 		SwitchCamera(CameraSwitches.Default);
 	}
 
 	public void SwitchCamera(CameraSwitches cameraSwitch)
 	{
 		anim.SetTrigger(cameraSwitchDictionary[cameraSwitch]);
-
-		if (CamSwitchCol.isTouchingCanChange == true)
-		{
-			anim.SetBool("TopCam", false);
-			anim.SetBool("AnglePov", true);
-		}
-
-		if (CamSwitchSecondPhase.isTouchingCanSecChange == true)
-		{
-			anim.SetBool("TopCam", true);
-			anim.SetBool("AnglePov", false);
-		}
 	}
 }
 

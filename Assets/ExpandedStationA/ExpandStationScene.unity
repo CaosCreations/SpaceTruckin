@@ -39,7 +39,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12939444, g: 0.12939444, b: 0.1411131, a: 1}
+  m_IndirectSpecularColor: {r: 0.12939444, g: 0.12939444, b: 0.13720673, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1267,7 +1267,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 42733989}
   m_LocalRotation: {x: 0.17016709, y: 0.0029561657, z: -0.0005105578, w: 0.9854107}
-  m_LocalPosition: {x: 9.140015, y: 19.550415, z: -6.9919434}
+  m_LocalPosition: {x: 36.950027, y: 19.550446, z: -7.7019653}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 606660618}
@@ -1599,7 +1599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d769414ef66e0840975a9d08da4a29e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCurrentCam: 0
+  camAnimHandle: {fileID: 132877858}
 --- !u!65 &58062321
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1670,7 +1670,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7832bc808b08b9a4791b07d10d5cad9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camName: northEastCorridor
+  camSwitch: 15
+  camAnimHandle: {fileID: 132877858}
 --- !u!4 &61549915 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d7fb93e8a6230a04cacc2945387926a7,
@@ -2203,7 +2204,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7832bc808b08b9a4791b07d10d5cad9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camName: DinerCam
+  camSwitch: 2
+  camAnimHandle: {fileID: 132877858}
 --- !u!1001 &102621289
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2491,7 +2493,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 104037934}
   m_LocalRotation: {x: 0.2164396, y: 0, z: 0, w: 0.97629607}
-  m_LocalPosition: {x: 9.173935, y: 20.073914, z: -6.777405}
+  m_LocalPosition: {x: 36.983932, y: 20.073914, z: -7.4874268}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2060443675}
@@ -3362,7 +3364,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cba46d0ce82386c49a8ae945ba1b2964, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camadress: 0
 --- !u!95 &132877859
 Animator:
   serializedVersion: 3
@@ -4065,7 +4066,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7832bc808b08b9a4791b07d10d5cad9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camName: SpacePort
+  camSwitch: 10
+  camAnimHandle: {fileID: 132877858}
 --- !u!4 &168066661 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9934045a64799954c986d04d7ed6c50e,
@@ -6307,7 +6309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d769414ef66e0840975a9d08da4a29e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCurrentCam: 0
+  camAnimHandle: {fileID: 132877858}
 --- !u!65 &185130452
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6816,7 +6818,7 @@ PrefabInstance:
     - target: {fileID: 1972979662120986136, guid: a06f1a9e44fccb3409ddc94a08e3cac6,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 209.27
+      value: 237.08
       objectReference: {fileID: 0}
     - target: {fileID: 1972979662120986136, guid: a06f1a9e44fccb3409ddc94a08e3cac6,
         type: 3}
@@ -6826,7 +6828,7 @@ PrefabInstance:
     - target: {fileID: 1972979662120986136, guid: a06f1a9e44fccb3409ddc94a08e3cac6,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -261.18
+      value: -261.89
       objectReference: {fileID: 0}
     - target: {fileID: 1972979662120986136, guid: a06f1a9e44fccb3409ddc94a08e3cac6,
         type: 3}
@@ -7590,7 +7592,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d769414ef66e0840975a9d08da4a29e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCurrentCam: 0
+  camAnimHandle: {fileID: 132877858}
 --- !u!65 &230641611
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9185,7 +9187,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 332546761}
   m_LocalRotation: {x: 0.17016709, y: 0.0029561657, z: -0.0005105578, w: 0.9854107}
-  m_LocalPosition: {x: 9.140015, y: 19.550415, z: -6.9919434}
+  m_LocalPosition: {x: 36.950027, y: 19.550446, z: -7.7019653}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1617502145}
@@ -9503,7 +9505,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7832bc808b08b9a4791b07d10d5cad9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camName: Hangarcam
+  camSwitch: 7
+  camAnimHandle: {fileID: 132877858}
 --- !u!65 &350406106
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10271,7 +10274,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 402893567}
   m_LocalRotation: {x: 0.17364816, y: 0, z: 0, w: 0.9848078}
-  m_LocalPosition: {x: 9.173935, y: 20.274353, z: -8.857086}
+  m_LocalPosition: {x: 36.983932, y: 20.274384, z: -9.567108}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1921746976}
@@ -10828,7 +10831,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7832bc808b08b9a4791b07d10d5cad9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camName: WashingStablishment
+  camSwitch: 8
+  camAnimHandle: {fileID: 132877858}
 --- !u!1001 &444249230
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12029,7 +12033,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7832bc808b08b9a4791b07d10d5cad9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camName: officeLounge
+  camSwitch: 13
+  camAnimHandle: {fileID: 132877858}
 --- !u!65 &486637233
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12382,7 +12387,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7832bc808b08b9a4791b07d10d5cad9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camName: RefugeUnd03
+  camSwitch: 0
+  camAnimHandle: {fileID: 0}
 --- !u!65 &516349270
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13273,7 +13279,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7832bc808b08b9a4791b07d10d5cad9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camName: abbandonedStorageRoom
+  camSwitch: 12
+  camAnimHandle: {fileID: 132877858}
 --- !u!1001 &550904018
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14026,7 +14033,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7832bc808b08b9a4791b07d10d5cad9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camName: BarCam
+  camSwitch: 3
+  camAnimHandle: {fileID: 132877858}
 --- !u!1 &582184706
 GameObject:
   m_ObjectHideFlags: 0
@@ -14875,7 +14883,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7832bc808b08b9a4791b07d10d5cad9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camName: StationMainOfiice
+  camSwitch: 13
+  camAnimHandle: {fileID: 132877858}
 --- !u!65 &617035191
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15789,7 +15798,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 645763171}
   m_LocalRotation: {x: 0.13052616, y: 0, z: 0, w: 0.9914449}
-  m_LocalPosition: {x: 9.173935, y: 19.608765, z: -9.066925}
+  m_LocalPosition: {x: 36.983932, y: 19.608765, z: -9.776978}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 999529398}
@@ -17246,7 +17255,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7832bc808b08b9a4791b07d10d5cad9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camName: Hangarcam
+  camSwitch: 7
+  camAnimHandle: {fileID: 132877858}
 --- !u!65 &707204068
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17723,7 +17733,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7832bc808b08b9a4791b07d10d5cad9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camName: officeLounge
+  camSwitch: 6
+  camAnimHandle: {fileID: 132877858}
 --- !u!65 &730059908
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -19174,7 +19185,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7832bc808b08b9a4791b07d10d5cad9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camName: WorkShopCam
+  camSwitch: 1
+  camAnimHandle: {fileID: 132877858}
 --- !u!65 &849697870
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -21470,7 +21482,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 962483167}
   m_LocalRotation: {x: 0.13052616, y: -0, z: -0, w: 0.9914449}
-  m_LocalPosition: {x: 209.27, y: 382.17056, z: -268.90738}
+  m_LocalPosition: {x: 237.08, y: 382.17056, z: -269.61743}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1642353825}
@@ -21668,7 +21680,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7832bc808b08b9a4791b07d10d5cad9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camName: RefugeCampI
+  camSwitch: 0
+  camAnimHandle: {fileID: 0}
 --- !u!1 &973445009
 GameObject:
   m_ObjectHideFlags: 0
@@ -23421,7 +23434,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7832bc808b08b9a4791b07d10d5cad9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camName: RefugeCampI
+  camSwitch: 0
+  camAnimHandle: {fileID: 0}
 --- !u!1 &1062014013
 GameObject:
   m_ObjectHideFlags: 0
@@ -23890,7 +23904,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d769414ef66e0840975a9d08da4a29e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCurrentCam: 0
+  camAnimHandle: {fileID: 132877858}
 --- !u!65 &1093093437
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -24116,7 +24130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d769414ef66e0840975a9d08da4a29e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCurrentCam: 0
+  camAnimHandle: {fileID: 132877858}
 --- !u!65 &1115740647
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -24187,7 +24201,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7832bc808b08b9a4791b07d10d5cad9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camName: YogaCam
+  camSwitch: 4
+  camAnimHandle: {fileID: 132877858}
 --- !u!1 &1116791462
 GameObject:
   m_ObjectHideFlags: 0
@@ -24726,7 +24741,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d769414ef66e0840975a9d08da4a29e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCurrentCam: 0
+  camAnimHandle: {fileID: 132877858}
 --- !u!65 &1146470217
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -26433,7 +26448,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7832bc808b08b9a4791b07d10d5cad9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camName: PPHQ
+  camSwitch: 15
+  camAnimHandle: {fileID: 132877858}
 --- !u!1 &1262046565
 GameObject:
   m_ObjectHideFlags: 0
@@ -26844,7 +26860,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7832bc808b08b9a4791b07d10d5cad9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camName: RefugeUnd02
+  camSwitch: 0
+  camAnimHandle: {fileID: 0}
 --- !u!65 &1284676886
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -27069,7 +27086,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7832bc808b08b9a4791b07d10d5cad9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camName: HangarEdge
+  camSwitch: 5
+  camAnimHandle: {fileID: 132877858}
 --- !u!1 &1302757229
 GameObject:
   m_ObjectHideFlags: 3
@@ -27450,7 +27468,6 @@ GameObject:
   - component: {fileID: 1335066825}
   - component: {fileID: 1335066826}
   - component: {fileID: 1335066827}
-  - component: {fileID: 1335066828}
   m_Layer: 0
   m_Name: camToAbandonedTank
   m_TagString: Untagged
@@ -27484,7 +27501,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7832bc808b08b9a4791b07d10d5cad9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camName: AbandonedTank
+  camSwitch: 9
+  camAnimHandle: {fileID: 132877858}
 --- !u!65 &1335066827
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -27498,19 +27516,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1.0667114}
   m_Center: {x: 0, y: 0, z: 0.40621948}
---- !u!114 &1335066828
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1335066824}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7832bc808b08b9a4791b07d10d5cad9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  camName: AbandonedTank
 --- !u!1001 &1346996171
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30742,7 +30747,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7832bc808b08b9a4791b07d10d5cad9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camName: RefugeUnd01
+  camSwitch: 0
+  camAnimHandle: {fileID: 0}
 --- !u!65 &1557669943
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -31464,7 +31470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d769414ef66e0840975a9d08da4a29e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCurrentCam: 0
+  camAnimHandle: {fileID: 0}
 --- !u!65 &1611805869
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -37133,7 +37139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d769414ef66e0840975a9d08da4a29e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCurrentCam: 0
+  camAnimHandle: {fileID: 132877858}
 --- !u!65 &1896492641
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -39316,7 +39322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d769414ef66e0840975a9d08da4a29e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCurrentCam: 0
+  camAnimHandle: {fileID: 132877858}
 --- !u!65 &2003271291
 BoxCollider:
   m_ObjectHideFlags: 0

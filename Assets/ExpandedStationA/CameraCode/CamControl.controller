@@ -51,31 +51,6 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
---- !u!1101 &-8314701697270134812
-AnimatorStateTransition:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: NorthEastCorridorSwitchTrigger
-    m_EventTreshold: 15
-  m_DstStateMachine: {fileID: 0}
-  m_DstState: {fileID: 1145619173011858941}
-  m_Solo: 0
-  m_Mute: 0
-  m_IsExit: 0
-  serializedVersion: 3
-  m_TransitionDuration: 0
-  m_TransitionOffset: 0
-  m_ExitTime: 0.75
-  m_HasExitTime: 0
-  m_HasFixedDuration: 1
-  m_InterruptionSource: 0
-  m_OrderedInterruption: 1
-  m_CanTransitionToSelf: 1
 --- !u!1102 &-8036751657900959219
 AnimatorState:
   serializedVersion: 6
@@ -246,9 +221,6 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: TopCam
-    m_EventTreshold: 0
   - m_ConditionMode: 1
     m_ConditionEvent: DefaultSwitchTrigger
     m_EventTreshold: 0
@@ -693,18 +665,6 @@ AnimatorController:
   m_Name: CamControl
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: TopCam
-    m_Type: 4
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: AnglePov
-    m_Type: 4
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
   - m_Name: new_camHandler
     m_Type: 4
     m_DefaultFloat: 0
@@ -909,9 +869,6 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: TopCam
-    m_EventTreshold: 0
-  - m_ConditionMode: 1
     m_ConditionEvent: DefaultSwitchTrigger
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
@@ -989,9 +946,6 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: TopCam
-    m_EventTreshold: 0
-  - m_ConditionMode: 1
     m_ConditionEvent: DefaultSwitchTrigger
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
@@ -1016,9 +970,6 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: AnglePov
-    m_EventTreshold: 0
   - m_ConditionMode: 1
     m_ConditionEvent: WorkShopSwitchTrigger
     m_EventTreshold: 1
@@ -1059,7 +1010,6 @@ AnimatorState:
   - {fileID: 3085473798144625732}
   - {fileID: 4502224095232046740}
   - {fileID: 6215232871516945450}
-  - {fileID: -8314701697270134812}
   - {fileID: -5449684080022985957}
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
@@ -1243,7 +1193,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: AbandonedTankSwitchTrigger
+    m_ConditionEvent: DefaultSwitchTrigger
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102543410117466610}
@@ -1548,7 +1498,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: DefaultSwitchTrigger
+    m_ConditionEvent: AbandonedTankSwitchTrigger
     m_EventTreshold: 14
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 3195665450246418471}

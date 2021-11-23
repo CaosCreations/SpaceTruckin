@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CamSwitchCol : MonoBehaviour {
-
-	public static bool isTouchingCanChange;
+public class CamSwitchCol : MonoBehaviour 
+{
 	[SerializeField] private CameraSwitches camSwitch;
 
 	[SerializeField] private CamAnimHandle camAnimHandle;
@@ -13,18 +12,7 @@ public class CamSwitchCol : MonoBehaviour {
 	{
 		if (collider.tag == "Player")
 		{
-			isTouchingCanChange=true;
-
 			camAnimHandle.SwitchCamera(camSwitch);
-		}
-	}
-
-		
-	public void OnTriggerExit(Collider collider)
-	{
-		if (collider.tag == "Player")
-		{
-			isTouchingCanChange=false;
 		}
 	}
 }
