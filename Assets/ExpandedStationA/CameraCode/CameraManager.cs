@@ -5,12 +5,19 @@ using Cinemachine;
 
 public class CameraManager : MonoBehaviour
 {
+    public static CameraManager Instance;
+
     private CinemachineVirtualCamera currentVirtualCamera;
 
     [SerializeField] private CinemachineVirtualCamera startingVirtualCamera;
 
     private void Awake()
     {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+
         currentVirtualCamera = startingVirtualCamera;
     }
 
