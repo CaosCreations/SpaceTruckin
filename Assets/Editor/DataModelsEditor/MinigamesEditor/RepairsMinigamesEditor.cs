@@ -4,7 +4,7 @@ using UnityEngine;
 public class RepairsMinigamesEditor : MonoBehaviour
 {
     [MenuItem("Space Truckin/Minigames/Init Minigame")]
-    private static void InitStackMinigame() => InitMinigame();
+    private static void InitMinigameSession() => InitMinigame();
 
     private static void InitMinigame()
     {
