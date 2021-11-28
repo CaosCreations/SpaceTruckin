@@ -18,7 +18,7 @@ public class PilotTrait : ScriptableObject
     [Tooltip("If the trait decreases the chance of success of a mission, this is subtracted from the normalised value. " +
         "Must be greater than 0.")]
     [SerializeField] private float negativeMissionProbabilityEffect;
-    public float NegativeMissionProbabilityEffect => NegativeMissionProbabilityEffect;
+    public float NegativeMissionProbabilityEffect => negativeMissionProbabilityEffect;
 
     [SerializeField] private Sprite traitSprite;
     public Sprite Sprite => traitSprite;
