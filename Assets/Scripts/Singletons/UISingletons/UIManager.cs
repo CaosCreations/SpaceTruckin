@@ -34,6 +34,10 @@ public class UIManager : MonoBehaviour
     private static UICanvasType currentCanvasType;
 
     private static bool IsPointerOverButton => UIUtils.IsPointerOverObjectType(typeof(Button));
+    private static bool IsErrorInput => Input.GetMouseButtonDown(0)
+        && !IsPointerOverButton
+        && !DialogueUtils.IsConversationActive
+        && currentCanvasType != UICanvasType.Bed;
 
     public static int HangarNode;
 
@@ -107,14 +111,14 @@ public class UIManager : MonoBehaviour
     private void HandlePausedInput()
     {
         // Play an Error sound effect if a non-interactable region is clicked
-        if (Input.GetMouseButtonDown(0)
-            && !IsPointerOverButton
-            && !DialogueUtils.IsConversationActive)
+        if (IsErrorInput)
         {
             UISoundEffectsManager.Instance.PlaySoundEffect(UISoundEffect.Error);
+            return;
         }
-        // Don't clear canvases if there is KeyCode override in place, e.g. in Submenu
-        else if (GetNonOverriddenKeyDown(PlayerConstants.ExitKey))
+
+        // Don't clear canvases if there is KeyCode override in place, e.g. in Submenus
+        if (GetNonOverriddenKeyDown(PlayerConstants.ExitKey))
         {
             ClearCanvases();
         }
@@ -163,7 +167,7 @@ public class UIManager : MonoBehaviour
         canvas.SetActive(true);
 
         // Show tutorial overlay if first time using the UI 
-        if (!viaShortcut && canvas.CanvasTutorialPrefab != null && !CurrentCanvasHasBeenViewed())
+        if (!viaShortcut && canvas.CanvasTutorialPrefab != null && !HasCurrentCanvasBeenViewed())
         {
             canvas.ShowTutorial();
         }
@@ -262,7 +266,7 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region PlayerPrefs
-    private static bool CurrentCanvasHasBeenViewed()
+    private static bool HasCurrentCanvasBeenViewed()
     {
         return PlayerPrefsManager.GetHasBeenViewedPref(currentCanvasType);
     }
