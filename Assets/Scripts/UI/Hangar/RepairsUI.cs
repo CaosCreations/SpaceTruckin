@@ -68,10 +68,12 @@ public class RepairsUI : SubMenu
             // Todo: Don't hard-code this once we have multiple minigames
             RepairsMinigame minigameType = RepairsMinigame.Wheel;
 
-            repairsMinigameInstance = MinigamePrefabManager.Instance.InitPrefab(minigameType, transform);
+            repairsMinigameInstance = RepairsMinigamesManager.InitMinigame(minigameType, transform);
 
-            RepairsMinigamesManager.SetButtonVisibility(minigameType);
-            repairsMinigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer);
+            //repairsMinigameInstance = MinigamePrefabManager.Instance.InitPrefab(minigameType, transform);
+
+            //RepairsMinigamesManager.SetButtonVisibility(minigameType);
+            //repairsMinigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer);
         }
     }
 

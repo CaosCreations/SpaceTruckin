@@ -6,15 +6,17 @@ using UnityEngine;
 public class HangarEditor : MonoBehaviour
 {
     [MenuItem("Space Truckin/Hangar/Dock Ship at First Available Node")]
-    private static Ship DockShipAtAvailableNode()
+    public static Ship DockShipAtAvailableNode(out int hangarNode)
     {
+        hangarNode = -1;
         try
         {
             HangarSlot hangarSlot = HangarManager.HangarSlots
                 .FirstOrDefault(x => x.IsUnlocked && x.Ship == null);
 
-            Ship ship = ShipsManager.Instance.Ships.FirstOrDefault(s => s.IsInQueue);
+            hangarNode = hangarSlot.Node;
 
+            Ship ship = ShipsManager.Instance.Ships.FirstOrDefault(s => s.IsInQueue);
             HangarManager.DockShip(ship, hangarSlot.Node);
 
             return ship;
@@ -31,7 +33,7 @@ public class HangarEditor : MonoBehaviour
     {
         try
         {
-            Ship ship = DockShipAtAvailableNode();
+            Ship ship = DockShipAtAvailableNode(out int hangarNode);
 
             Mission mission = MissionsManager.Instance.Missions
                 .FirstOrDefault(x => MissionsManager.GetScheduledMission(x) == null);
