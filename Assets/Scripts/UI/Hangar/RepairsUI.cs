@@ -65,13 +65,10 @@ public class RepairsUI : SubMenu
             //RepairsMinigame minigameType = RepairsMinigamesManager
             //    .GetMinigameTypeByDamageType(ShipsManager.ShipUnderRepair.DamageType);
 
-            // Todo: Don't hard-code this once we have multiple minigames
+            // Todo: Don't hard-code this once we have multiple minigames setup
             RepairsMinigame minigameType = RepairsMinigame.Wheel;
 
-            repairsMinigameInstance = MinigamePrefabManager.Instance.InitPrefab(minigameType, transform);
-
-            RepairsMinigamesManager.SetButtonVisibility(minigameType);
-            repairsMinigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer);
+            repairsMinigameInstance = RepairsMinigamesManager.InitMinigame(minigameType, transform);
         }
     }
 

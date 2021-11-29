@@ -32,14 +32,14 @@ public class HangarNodeUI : UICanvasBase
     [Header("Set at Runtime")]
     [SerializeField] private GameObject shipPreview;
     [SerializeField] private int hangarNode;
-    public Ship shipToInspect;
+    public Ship ShipToInspect;
     private HangarSlot hangarSlot;
 
     private readonly long fuelCostPerUnit = 1;
     private long fuelCostAfterLicences;
     private float fuelTimer = 0;
     private readonly float fuelTimerInterval = 0.025f;
-    private bool ThisNodeIsEmpty => shipToInspect == null || shipToInspect.IsLaunched;
+    private bool ThisNodeIsEmpty => ShipToInspect == null || ShipToInspect.IsLaunched;
 
     public static event Action<Ship> OnHangarNodeTerminalOpened;
     public static event Action OnHangarNodeTerminalClosed;
@@ -48,7 +48,7 @@ public class HangarNodeUI : UICanvasBase
     {
         hangarNode = UIManager.HangarNode;
         hangarSlot = HangarManager.GetSlotByNode(hangarNode);
-        shipToInspect = hangarSlot.Ship;
+        ShipToInspect = hangarSlot.Ship;
 
         // There is no ship at this node, don't open UI
         if (ThisNodeIsEmpty)
@@ -62,7 +62,7 @@ public class HangarNodeUI : UICanvasBase
         fuelCostAfterLicences = GetFuelCostAfterLicences();
         Debug.Log("Fuel cost per unit after licence effect: " + fuelCostAfterLicences);
 
-        OnHangarNodeTerminalOpened?.Invoke(shipToInspect);
+        OnHangarNodeTerminalOpened?.Invoke(ShipToInspect);
     }
 
     private void SetupUIElements()
@@ -114,7 +114,7 @@ public class HangarNodeUI : UICanvasBase
 
     private void SetupShipPreview()
     {
-        shipPreview = Instantiate(shipToInspect.ShipPrefab, transform);
+        shipPreview = Instantiate(ShipToInspect.ShipPrefab, transform);
         shipPreview.transform.localScale *= UIConstants.ShipPreviewScaleFactor;
         shipPreview.transform.position += UIConstants.ShipPreviewOffset;
         shipPreview.SetLayerRecursively(UIConstants.ShipPreviewLayer);
@@ -126,19 +126,19 @@ public class HangarNodeUI : UICanvasBase
 
         if (fuelButton.IsFueling
             && fuelTimer > fuelTimerInterval
-            && shipToInspect.CurrentFuel < shipToInspect.MaxFuel
+            && ShipToInspect.CurrentFuel < ShipToInspect.MaxFuel
             && PlayerManager.Instance.CanSpendMoney(fuelCostPerUnit)
             )
         {
             PlayerManager.Instance.SpendMoney(fuelCostAfterLicences);
-            shipToInspect.CurrentFuel++;
-            fuelSlider.value = shipToInspect.GetFuelPercentage();
+            ShipToInspect.CurrentFuel++;
+            fuelSlider.value = ShipToInspect.GetFuelPercentage();
             fuelTimer = 0;
             SetButtonInteractability();
         }
     }
 
-    private void SwitchPanel(HangarPanel panel)
+    public void SwitchPanel(HangarPanel panel)
     {
         mainPanel.SetActive(false);
         repairPanel.SetActive(false);
@@ -154,7 +154,7 @@ public class HangarNodeUI : UICanvasBase
                 break;
             case HangarPanel.Repair:
                 repairPanel.SetActive(true);
-                repairsUI.Init(shipToInspect);
+                repairsUI.Init(ShipToInspect);
                 break;
             case HangarPanel.Upgrade:
                 upgradePanel.SetActive(true);
@@ -167,12 +167,12 @@ public class HangarNodeUI : UICanvasBase
 
     private void Launch(bool isStartingMission)
     {
-        if (shipToInspect != null)
+        if (ShipToInspect != null)
         {
             // Launch ship regardless of mission status 
             HangarManager.LaunchShip(hangarNode);
 
-            ScheduledMission scheduled = MissionsManager.GetScheduledMission(shipToInspect);
+            ScheduledMission scheduled = MissionsManager.GetScheduledMission(ShipToInspect);
             if (scheduled != null)
             {
                 // If starting a mission, start it. Otherwise unschedule and return ship to queue. 
@@ -187,12 +187,12 @@ public class HangarNodeUI : UICanvasBase
                 }
             }
 
-            shipToInspect = null;
+            ShipToInspect = null;
             UIManager.ClearCanvases();
         }
         else
         {
-            Debug.Log($"{shipToInspect} (Ship) has no fuel!");
+            Debug.Log($"{ShipToInspect} (Ship) has no fuel!");
         }
     }
 
@@ -208,17 +208,17 @@ public class HangarNodeUI : UICanvasBase
 
     private bool FuelButtonIsInteractable()
     {
-        return shipToInspect.CurrentFuel < shipToInspect.MaxFuel
+        return ShipToInspect.CurrentFuel < ShipToInspect.MaxFuel
             && PlayerManager.Instance.CanSpendMoney(fuelCostPerUnit);
     }
 
     private bool StartMissionButtonIsInteractable()
     {
-        if (shipToInspect.CurrentMission != null)
+        if (ShipToInspect.CurrentMission != null)
         {
-            return shipToInspect.CurrentFuel >= shipToInspect.CurrentMission.FuelCost
-                && shipToInspect.CurrentHullIntegrity > 0
-                && shipToInspect.CanWarp;
+            return ShipToInspect.CurrentFuel >= ShipToInspect.CurrentMission.FuelCost
+                && ShipToInspect.CurrentHullIntegrity > 0
+                && ShipToInspect.CanWarp;
         }
         return false;
     }
@@ -230,22 +230,22 @@ public class HangarNodeUI : UICanvasBase
 
     private void SetBatteryChargeImage()
     {
-        batteryChargeImage.color = shipToInspect.CanWarp ?
+        batteryChargeImage.color = ShipToInspect.CanWarp ?
             HangarConstants.ChargedBatteryImageColour :
             HangarConstants.DepletedBatteryImageColour;
     }
 
     private void SetSliderValues()
     {
-        fuelSlider.value = shipToInspect.GetFuelPercentage();
-        hullSlider.value = shipToInspect.GetHullPercentage();
+        fuelSlider.value = ShipToInspect.GetFuelPercentage();
+        hullSlider.value = ShipToInspect.GetHullPercentage();
     }
 
     private void SetButtonInteractability()
     {
         fuelButton.Button.interactable = FuelButtonIsInteractable();
         startMissionButton.interactable = StartMissionButtonIsInteractable();
-        hullButton.interactable = !shipToInspect.IsFullyRepaired;
+        hullButton.interactable = !ShipToInspect.IsFullyRepaired;
     }
 
     public override void ShowTutorial()
@@ -259,7 +259,7 @@ public class HangarNodeUI : UICanvasBase
             if (cardCycle != null)
             {
                 // Show the name of the currently docked ship in the tutorial cards
-                cardCycle.CyclableContent.ReplaceTemplates(shipToInspect);
+                cardCycle.CyclableContent.ReplaceTemplates(ShipToInspect);
 
                 cardCycle.SetupCardCycle();
             }

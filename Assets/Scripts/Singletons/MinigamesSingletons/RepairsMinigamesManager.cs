@@ -49,6 +49,14 @@ public class RepairsMinigamesManager : MonoBehaviour
     }
     #endregion
 
+    public static GameObject InitMinigame(RepairsMinigame minigameType, Transform parent)
+    {
+        GameObject repairsMinigameInstance = MinigamePrefabManager.Instance.InitPrefab(minigameType, parent);
+        SetButtonVisibility(minigameType);
+        repairsMinigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer); ;
+        return repairsMinigameInstance;
+    }
+
     // Temporary workaround 
     public static void FinishMinigameAttempt(bool isSuccessfulAttempt)
     {
