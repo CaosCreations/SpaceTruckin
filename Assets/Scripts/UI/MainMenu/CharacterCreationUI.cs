@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterCreationUI : MonoBehaviour
+public class CharacterCreationUI : UICanvasBase
 {
     [SerializeField] private InputField characterNameInput;
     [SerializeField] private Text invalidInputText;
@@ -10,7 +10,7 @@ public class CharacterCreationUI : MonoBehaviour
     private string CharacterName 
     {
         get => characterNameInput.text; set => characterNameInput.text = value; 
-    } 
+    }
 
     private void Start()
     {

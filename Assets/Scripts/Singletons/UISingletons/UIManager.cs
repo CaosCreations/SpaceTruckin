@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
-public enum UICanvasType
-{
-    None, Terminal, Vending, Hangar, Cassette, NoticeBoard, MainMenu, PauseMenu, Bed
-}
 
 public class UIManager : MonoBehaviour
 {
@@ -69,12 +66,7 @@ public class UIManager : MonoBehaviour
 
     public void Init()
     {
-        if (DataUtils.IsNewGame())
-        {
-            //// Show the main menu canvas for character creation
-            //SetCanInteract(UICanvasType.MainMenu);
-            //ShowCanvas();
-        }
+        //SceneManager.LoadSceneAsync(EnvironmentConstants.TitleScreenSceneName);
     }
 
     private void Update()
