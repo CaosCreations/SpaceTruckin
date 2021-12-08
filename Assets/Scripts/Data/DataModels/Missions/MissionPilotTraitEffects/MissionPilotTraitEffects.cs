@@ -11,5 +11,5 @@
 public class MissionPilotTraitEffects : ScriptableObject
 {
     [SerializeField] private MissionPilotTraitEffect[] missionPilotTraitEffects;
-    public MissionPilotTraitEffect[] PilotTraitEffects => missionPilotTraitEffects;
+    public MissionPilotTraitEffect[] Effects => missionPilotTraitEffects;
 }

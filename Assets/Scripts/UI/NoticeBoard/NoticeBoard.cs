@@ -5,16 +5,17 @@ public class NoticeBoard : UICanvasBase
 {
     [Header("Set in prefab")]
     // Left Panel
-    public GameObject scrollViewContent;
-    public GameObject scrollItemPrefab;
+    [SerializeField] private GameObject scrollViewContent;
+    [SerializeField] private GameObject scrollItemPrefab;
 
     // Right Panel
-    public Text jobNameText;
-    public Text customerNameText;
-    public Text cargoText;
-    public Text descriptionText;
-    public Text rewardText;
-    public Button acceptJobButton;
+    [SerializeField] private Text jobNameText;
+    [SerializeField] private Text customerNameText;
+    [SerializeField] private Text cargoText;
+    [SerializeField] private Text descriptionText;
+    [SerializeField] private Text rewardText;
+    [SerializeField] private Text statsText;
+    [SerializeField] private Button acceptJobButton;
 
     [Header("Set in game")]
     public Mission selectedMission;
@@ -80,7 +81,8 @@ public class NoticeBoard : UICanvasBase
         customerNameText.SetText(selectedMission.Customer);
         cargoText.SetText(selectedMission.Cargo);
         descriptionText.SetText(selectedMission.Description);
-        rewardText.SetText(MissionDetailsUI.BuildRewardString(missionToSelect));
+        rewardText.SetText(MissionDetailsUI.BuildRewardString(selectedMission));
+        statsText.SetText(PreMissionStatsUI.BuildTraitEffectsStatsText(selectedMission.PilotTraitEffects.Effects));
         acceptJobButton.interactable = true;
     }
 }

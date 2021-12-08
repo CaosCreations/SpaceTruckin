@@ -14,11 +14,10 @@ public class PilotTraitsManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            return;
         }
-        else
-        {
-            Destroy(gameObject);
-        }
+
+        Destroy(gameObject);
     }
 
     /// <summary>
@@ -42,19 +41,19 @@ public class PilotTraitsManager : MonoBehaviour
     /// <summary>
     ///     Gets the number we will add to the normalised mission probability based on the configuration.
     /// </summary>
-    private static float GetMissionChanceEffect(MissionPilotTraitEffect traitEffect)
+    public static float GetMissionChanceEffect(MissionPilotTraitEffect traitEffect)
     {
         return traitEffect.HasPositiveEffect
             ? traitEffect.PilotTrait.PositiveMissionProbabilityEffect
             : -traitEffect.PilotTrait.NegativeMissionProbabilityEffect;
     }
 
-    private static MissionPilotTraitEffect[] GetTraitEffectsForPilot(Pilot pilot,
+    public static MissionPilotTraitEffect[] GetTraitEffectsForPilot(Pilot pilot,
         MissionPilotTraitEffects traitEffects)
     {
         var speciesTraits = GetSpeciesTraitsBySpecies(pilot.Species);
 
-        return traitEffects.PilotTraitEffects
+        return traitEffects.Effects
             .Where(x => pilot.Traits
             .Contains(x?.PilotTrait) || speciesTraits != null && speciesTraits.Contains(x?.PilotTrait))
             .ToArray();
