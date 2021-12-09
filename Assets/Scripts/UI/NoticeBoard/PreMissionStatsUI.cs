@@ -9,7 +9,7 @@ public class PreMissionStatsUI : MonoBehaviour
 {
     public static string BuildTraitEffectsStatsText(MissionPilotTraitEffect[] traitEffects)
     {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder().AppendLine("Trait effects:");
 
         foreach (var effect in traitEffects)
         {
@@ -20,9 +20,7 @@ public class PreMissionStatsUI : MonoBehaviour
                 continue;
             }
 
-            builder
-                .AppendLine("Trait effects:")
-                .AppendLineWithBreaks($"{effect.PilotTrait.Name}: {GetPercentageTraitEffectText(effect)}", 1);
+            builder.AppendLine($"{effect.PilotTrait.Name}: {GetPercentageTraitEffectText(effect)}.");
         }
 
         return builder.ToString();
