@@ -13,6 +13,9 @@ public class PreMissionStatsUI : MonoBehaviour
 
         foreach (var effect in traitEffects)
         {
+            if (effect == null || effect.PilotTrait == null)
+                continue;
+
             if (effect.PilotTrait.PositiveMissionProbabilityEffect <= 0
                 && effect.PilotTrait.NegativeMissionProbabilityEffect <= 0)
             {
