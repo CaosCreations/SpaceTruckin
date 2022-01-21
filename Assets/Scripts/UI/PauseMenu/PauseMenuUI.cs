@@ -7,7 +7,6 @@ public class PauseMenuUI : UICanvasBase
 
     private void Awake()
     {
-        mainMenuButton.onClick.RemoveAllListeners();
         mainMenuButton.AddOnClick(ShowMainMenuCanvas);
     }
 
