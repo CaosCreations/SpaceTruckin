@@ -3,12 +3,12 @@ using UnityEngine.UI;
 
 public class PauseMenuUI : UICanvasBase
 {
-    [SerializeField] private Button MainMenuButton;
+    [SerializeField] private Button mainMenuButton;
 
     private void Awake()
     {
-        MainMenuButton.onClick.RemoveAllListeners();
-        MainMenuButton.onClick.AddListener(ShowMainMenuCanvas);
+        mainMenuButton.onClick.RemoveAllListeners();
+        mainMenuButton.AddOnClick(ShowMainMenuCanvas);
     }
 
     private void ShowMainMenuCanvas()
