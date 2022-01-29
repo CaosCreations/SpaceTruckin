@@ -9862,10 +9862,11 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: "Yeah, we slither, [name], it\u2019s fine. Anyway, the station needs
-          a new set of exhaust vents for air circulation, the current ones are ancient,
-          like, 30 years old or something. I\u2019ll shoot the order to your terminal!
-          And if you have any questions about the station, just let me know."
+        value: "Yeah, we slither, [lua(GetPlayerName())], it\u2019s fine. Anyway,
+          the station needs a new set of exhaust vents for air circulation, the current
+          ones are ancient, like, 30 years old or something. I\u2019ll shoot the
+          order to your terminal! And if you have any questions about the station,
+          just let me know."
         type: 0
         typeString: 
       - title: Sequence
@@ -9899,7 +9900,7 @@ MonoBehaviour:
             m_CallState: 2
       canvasRect:
         serializedVersion: 2
-        x: 277.5
+        x: 278.4804
         y: 520
         width: 160
         height: 30
@@ -10145,8 +10146,8 @@ MonoBehaviour:
         y: 520
         width: 160
         height: 30
-    canvasScrollPosition: {x: 0, y: 0}
-    canvasZoom: 0.6
+    canvasScrollPosition: {x: 116.15743, y: 324.14066}
+    canvasZoom: 1.0199996
   - id: 7
     fields:
     - title: Title
