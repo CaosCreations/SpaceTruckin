@@ -156,6 +156,11 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         IsPaused = true;
     }
 
+    public string GetPlayerName()
+    {
+        return PlayerName;
+    }
+
     public static void SetPlayerName(string playerName)
     {
         Instance.PlayerName = playerName;
@@ -169,11 +174,18 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
             DialogueConstants.SpendMoneyFunctionName,
             this,
             SymbolExtensions.GetMethodInfo(() => SpendMoney(0D)));
+
+        Lua.RegisterFunction(
+            DialogueConstants.GetPlayerNameFunctionName,
+            this,
+            SymbolExtensions.GetMethodInfo(() => GetPlayerName()));
     }
 
     public void UnregisterLuaFunctions()
     {
         Lua.UnregisterFunction(DialogueConstants.SpendMoneyFunctionName);
+
+        Lua.UnregisterFunction(DialogueConstants.GetPlayerNameFunctionName);
     }
     #endregion
 
