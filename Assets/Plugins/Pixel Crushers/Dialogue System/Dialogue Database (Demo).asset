@@ -1154,11 +1154,11 @@ MonoBehaviour:
       - title: Title
         value: 
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       - title: Description
         value: 
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       - title: Actor
         value: 1
         type: 5
@@ -1170,15 +1170,15 @@ MonoBehaviour:
       - title: Menu Text
         value: 
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       - title: Dialogue Text
         value: Buy Helicid Summer Cocktail*
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       - title: Sequence
         value: 
         type: 0
-        typeString: 
+        typeString: CustomFieldType_Text
       conversationID: 1
       isRoot: 0
       isGroup: 0
@@ -2068,8 +2068,8 @@ MonoBehaviour:
         y: 470
         width: 160
         height: 30
-    canvasScrollPosition: {x: 0, y: 0}
-    canvasZoom: 0.61
+    canvasScrollPosition: {x: 35.616905, y: 0}
+    canvasZoom: 0.87999976
   - id: 2
     fields:
     - title: Title
@@ -13129,10 +13129,22 @@ MonoBehaviour:
       userScript: 
       onExecute:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: 011a1eb78a340d04496af391fc3d644f, type: 2}
+            m_TargetAssemblyTypeName: TimelineConversationAsset, Assembly-CSharp-firstpass
+            m_MethodName: PlayPlayableAsset
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 1
       canvasRect:
         serializedVersion: 2
-        x: 1759.7036
+        x: 1760.8491
         y: 128.43958
         width: 160
         height: 30
@@ -13946,8 +13958,8 @@ MonoBehaviour:
         y: 460.3968
         width: 160
         height: 30
-    canvasScrollPosition: {x: 0, y: 0}
-    canvasZoom: 0.3930008
+    canvasScrollPosition: {x: 732.9448, y: 0}
+    canvasZoom: 0.42300108
   - id: 9
     fields:
     - title: Title
