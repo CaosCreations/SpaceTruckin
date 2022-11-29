@@ -11,6 +11,7 @@ public class ClockManager : MonoBehaviour
     private static string dateTimeText;
 
     private static bool clockStopped;
+    private static bool showOnGui = false;
 
     private void Start()
     {
@@ -79,11 +80,20 @@ public class ClockManager : MonoBehaviour
 
     private static void UpdateDateTimeText()
     {
-        dateTimeText = $"{CurrentTime:hh':'mm}\n{CalendarManager.Instance.CurrentDate}";
+        dateTimeText = GetDateTimeText();
+    }
+
+    public static string GetDateTimeText()
+    {
+        var dateTimeText = $"{CurrentTime:hh':'mm}\n{CalendarManager.Instance.CurrentDate}";
+        return dateTimeText;
     }
 
     private void OnGUI()
     {
+        if (!showOnGui)
+            return;
+
         var localStyle = new GUIStyle(GUI.skin.box);
         localStyle.normal.textColor = Color.white;
         localStyle.font = FontManager.Instance.GetFontByType(FontType.Subtitle);

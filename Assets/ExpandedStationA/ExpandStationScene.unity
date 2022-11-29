@@ -6069,6 +6069,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1389270015817412045, guid: a06f1a9e44fccb3409ddc94a08e3cac6,
         type: 3}
+      propertyPath: m_Size.x
+      value: 0.9142857
+      objectReference: {fileID: 0}
+    - target: {fileID: 1389270015817412045, guid: a06f1a9e44fccb3409ddc94a08e3cac6,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 1.8285714
+      objectReference: {fileID: 0}
+    - target: {fileID: 1389270015817412045, guid: a06f1a9e44fccb3409ddc94a08e3cac6,
+        type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -5799401743799433383, guid: a594afc2cca99ee428dc2c0a62c62e87,
@@ -6687,7 +6697,6 @@ MonoBehaviour:
     panel: {fileID: 1587357891}
     alertText:
       m_uiText: {fileID: 239804816}
-      m_textMeshProUGUI: {fileID: 0}
     queueAlerts: 1
     dontQueueDuplicates: 0
     waitForHideAnimation: 1
@@ -10695,7 +10704,6 @@ MonoBehaviour:
   pcImage: {fileID: 0}
   pcName:
     m_uiText: {fileID: 0}
-    m_textMeshProUGUI: {fileID: 0}
   timerSlider: {fileID: 2090687668}
   buttonAlignment: 0
   showUnusedButtons: 0
@@ -11192,10 +11200,8 @@ MonoBehaviour:
   panel: {fileID: 211229085}
   label:
     m_uiText: {fileID: 640354560}
-    m_textMeshProUGUI: {fileID: 0}
   inputField:
     m_uiInputField: {fileID: 1872299375}
-    m_textMeshProInputField: {fileID: 0}
   acceptKey: 13
   cancelKey: 27
   showTouchScreenKeyboard: 0
@@ -14180,7 +14186,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7795275, y: 1}
+    m_SensorSize: {x: 1.997669, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -15876,10 +15882,8 @@ MonoBehaviour:
   portraitImage: {fileID: 874407585}
   portraitName:
     m_uiText: {fileID: 1166183507}
-    m_textMeshProUGUI: {fileID: 0}
   subtitleText:
     m_uiText: {fileID: 1025864347}
-    m_textMeshProUGUI: {fileID: 0}
   addSpeakerName: 0
   addSpeakerNameFormat: '{0}: {1}'
   accumulateText: 0
@@ -25130,7 +25134,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 0.45714286, y: 0.45714286}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -28065,7 +28069,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: BatteryRechargeStation (Instance)
   m_Shader: {fileID: 4800000, guid: 2d142fba1fed7bb4ca4db0c4016ee5ce, type: 3}
-  m_ShaderKeywords: _ALPHATEST_ON _EMISSION
+  m_ShaderKeywords: 
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -34159,10 +34163,8 @@ MonoBehaviour:
   portraitImage: {fileID: 103475082}
   portraitName:
     m_uiText: {fileID: 445156465}
-    m_textMeshProUGUI: {fileID: 0}
   subtitleText:
     m_uiText: {fileID: 893675006}
-    m_textMeshProUGUI: {fileID: 0}
   addSpeakerName: 0
   addSpeakerNameFormat: '{0}: {1}'
   accumulateText: 0
@@ -36781,7 +36783,6 @@ MonoBehaviour:
   button: {fileID: 2085510648}
   label:
     m_uiText: {fileID: 385255552}
-    m_textMeshProUGUI: {fileID: 0}
   setLabelColor: 1
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &2085510647
