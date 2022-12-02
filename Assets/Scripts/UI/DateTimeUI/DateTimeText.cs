@@ -8,13 +8,6 @@ public class DateTimeText : MonoBehaviour
     [SerializeField]
     private Text dateTimeText;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        //dateTimeText = GetComponentInChildren<Text>();
-    }
-
-    // Update is called once per frame
     void Update()
     {
         if (dateTimeText == null)
