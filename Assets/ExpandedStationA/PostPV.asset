@@ -1,39 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-7295205334112043944
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b77c5407dc277943b591ade9e6b18c5, type: 3}
-  m_Name: LensDistortion
-  m_EditorClassIdentifier: 
-  active: 0
-  enabled:
-    overrideState: 1
-    value: 1
-  intensity:
-    overrideState: 1
-    value: -100
-  intensityX:
-    overrideState: 1
-    value: 1
-  intensityY:
-    overrideState: 1
-    value: 0.5
-  centerX:
-    overrideState: 1
-    value: 0.06
-  centerY:
-    overrideState: 0
-    value: 0
-  scale:
-    overrideState: 0
-    value: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49,7 +15,6 @@ MonoBehaviour:
   settings:
   - {fileID: 7637835931723150423}
   - {fileID: 3240798981676174560}
-  - {fileID: -7295205334112043944}
 --- !u!114 &3240798981676174560
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -62,22 +27,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 556797029e73b2347956b6579e77e05b, type: 3}
   m_Name: DepthOfField
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   enabled:
     overrideState: 1
     value: 1
   focusDistance:
     overrideState: 1
-    value: 4.16
+    value: 7
   aperture:
     overrideState: 1
-    value: 22
+    value: 2.3
   focalLength:
     overrideState: 1
-    value: 114.4
+    value: 50
   kernelSize:
     overrideState: 1
-    value: 1
+    value: 0
 --- !u!114 &7637835931723150423
 MonoBehaviour:
   m_ObjectHideFlags: 3

@@ -49,6 +49,12 @@ public class CamSwitchCol : MonoBehaviour {
 		}
 
 		
+		if(camName=="DinerCam")
+		{
+			myCurrentCam=2;
+		}
+
+		
 
 			if(camName=="BarCam")
 		{
@@ -56,10 +62,105 @@ public class CamSwitchCol : MonoBehaviour {
 		}
 
 
+				if(camName=="YogaCam")
+		{
+			myCurrentCam=4;
+		}
+
+
 
 			if(camName=="HangarEdge")
 		{
 			myCurrentCam=5;
+		}
+
+			if(camName=="officeLounge")
+		{
+			myCurrentCam=6;
+		}
+
+		
+			if(camName=="Hangarcam")
+		{
+			myCurrentCam=7;
+		}
+
+
+			if(camName=="WashingStablishment")
+		{
+			myCurrentCam=8;
+		}
+
+		
+			if(camName=="abbandonedTank")
+		{
+			myCurrentCam=9;
+		}
+
+		
+
+
+
+
+
+
+			if(camName=="SpacePort")
+		{
+			myCurrentCam=10;
+		}
+
+		
+			if(camName=="RefugeCampI")
+		{
+			myCurrentCam=11;
+		}
+
+
+				if(camName=="abbandonedStorageRoom")
+		{
+			myCurrentCam=12;
+		}
+
+					if(camName=="StationMainOfiice")
+		{
+			myCurrentCam=13;
+		}
+
+					if(camName=="AbandonedTank")
+		{
+			myCurrentCam=14;
+		}
+
+		
+					if(camName=="northEastCorridor")
+		{
+			myCurrentCam=15;
+		}
+
+			
+					if(camName=="PPHQ")
+		{
+			myCurrentCam=16;
+		}
+
+
+
+
+		
+
+		
+						if(camName=="RefugeUnd01")
+		{
+			myCurrentCam=20;
+		}
+
+						if(camName=="RefugeUnd02")
+		{
+			myCurrentCam=21;
+		}
+						if(camName=="RefugeUnd03")
+		{
+			myCurrentCam=22;
 		}
 
 		
