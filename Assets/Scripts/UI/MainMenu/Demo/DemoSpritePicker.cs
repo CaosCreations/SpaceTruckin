@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DemoSpritePicker : MonoBehaviour
+public class DemoSpritePicker : MonoBehaviour, ISpritePicker
 {
     [SerializeField]
     private GameObject charSprite1;
@@ -26,5 +26,7 @@ public class DemoSpritePicker : MonoBehaviour
             SelectedSpriteName = charSprite2.name;
         else
             Debug.LogError("No sprites are active.");
+
+        //PlayerManager.SetSpriteName(SelectedSpriteName);
     }
 }

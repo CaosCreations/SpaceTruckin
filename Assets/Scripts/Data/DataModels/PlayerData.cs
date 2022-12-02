@@ -14,6 +14,7 @@ public class PlayerData : ScriptableObject, IDataModel
     public class PlayerSaveData
     {
         public string playerName;
+        public string playerSpriteName;
 
         public long playerMoney;
         public long playerTotalMoneyAcquired; // Used to unlock missions
@@ -27,6 +28,11 @@ public class PlayerData : ScriptableObject, IDataModel
     public string PlayerName
     {
         get => saveData.playerName; set => saveData.playerName = value;
+    }
+
+    public string SpriteName
+    {
+        get => saveData.playerSpriteName; set => saveData.playerSpriteName = value;
     }
 
     public long PlayerMoney

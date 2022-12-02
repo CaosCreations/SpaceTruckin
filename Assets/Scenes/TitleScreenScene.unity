@@ -872,6 +872,56 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 548012974}
   m_CullTransparentMesh: 1
+--- !u!1 &586386094
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 586386095}
+  - component: {fileID: 586386096}
+  m_Layer: 0
+  m_Name: TitleScreenUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &586386095
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 586386094}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 472.03073, y: 197.82349, z: -128.72882}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &586386096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 586386094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 384637e5071d62a49bbad5c5b1c2f533, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playButton: {fileID: 853513608}
+  optionsButton: {fileID: 548012976}
+  creditsButton: {fileID: 1847947874}
+  backButton: {fileID: 635423247}
+  mainButtonCanvas: {fileID: 481610505}
+  mainButtonContainer: {fileID: 779304876}
+  characterCreationCanvas: {fileID: 1610818386}
 --- !u!1 &635423245
 GameObject:
   m_ObjectHideFlags: 0
@@ -1079,7 +1129,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 648267140}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a68e1686ff0916546aa418b01670ff59, type: 3}
+  m_Script: {fileID: 11500000, guid: 199be880f324e154fb46c6ae593b4fdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spritePicker: {fileID: 1610818391}
@@ -1509,7 +1559,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &958833671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1954,7 +2004,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1231528523}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a68e1686ff0916546aa418b01670ff59, type: 3}
+  m_Script: {fileID: 11500000, guid: 199be880f324e154fb46c6ae593b4fdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spritePicker: {fileID: 1610818391}
@@ -2022,7 +2072,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1362712197
 GameObject:
@@ -2624,7 +2674,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1610818386}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0f516cd1cb99784ea16f1b62ffdd23b, type: 3}
+  m_Script: {fileID: 11500000, guid: 57af53e99fb4b8149960d7b314173b31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   charSprite1: {fileID: 227597340}
@@ -2764,7 +2814,7 @@ GameObject:
   - component: {fileID: 1997008953}
   - component: {fileID: 1997008952}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: StationCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
