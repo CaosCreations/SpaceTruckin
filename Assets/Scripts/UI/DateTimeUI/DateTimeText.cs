@@ -8,13 +8,25 @@ public class DateTimeText : MonoBehaviour
     [SerializeField]
     private Text dateTimeText;
 
-    void Update()
+    private void Update()
+    {
+        if (dateTimeText == null
+            || dateTimeText.gameObject == null
+            || !dateTimeText.gameObject.activeSelf)
+        {
+            return;
+        }
+
+        dateTimeText.text = ClockManager.GetDateTimeText();
+    }
+
+    public void SetActive(bool active)
     {
         if (dateTimeText == null)
         {
-            Debug.LogError(nameof(dateTimeText) + " was null. Cannot update text.");
+            Debug.LogWarning("Can't set datetime text object to active/inactive because it is null.");
             return;
         }
-        dateTimeText.text = ClockManager.GetDateTimeText();
+        dateTimeText.SetActive(active);
     }
 }

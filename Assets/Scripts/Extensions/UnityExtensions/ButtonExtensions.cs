@@ -7,11 +7,23 @@ public static class ButtonExtensions
     public static Button AddOnClick(this Button self, UnityAction callback,
         UISoundEffect soundEffect = UISoundEffect.Confirm)
     {
+        if (self == null)
+        {
+            Debug.LogWarning("Button passed to AddOnClick extension was null");
+            return self;
+        }
+
         self.onClick.RemoveAllListeners();
         self.onClick.AddListener(callback);
 
         if (UISoundEffectsManager.Instance != null)
+        {
             self.onClick.AddListener(() => UISoundEffectsManager.Instance.PlaySoundEffect(soundEffect));
+        }
+        else
+        {
+            Debug.LogWarning("Could not add sound fx listener as the manager instance was null.");
+        }
 
         return self;
     }

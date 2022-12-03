@@ -44,4 +44,13 @@ public class SceneLoadingManager : MonoBehaviour
             Debug.LogError($"Unable to load scene with name '{sceneName}'.\n{ex.Message}\n{ex.StackTrace}");
         }
     }
+
+    public static string GetSceneNameByEnum(Scenes scene)
+    {
+        if (!scenesMapping.TryGetValue(scene, out var sceneName))
+        {
+            throw new System.Exception($"Unable to get scene name from enum value: {scene}. It is unmapped.");
+        }
+        return sceneName;
+    }
 }

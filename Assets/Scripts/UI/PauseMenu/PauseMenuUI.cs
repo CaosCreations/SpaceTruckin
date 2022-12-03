@@ -7,12 +7,15 @@ public class PauseMenuUI : UICanvasBase
 
     private void Awake()
     {
-        mainMenuButton.AddOnClick(ShowMainMenuCanvas);
+        mainMenuButton.AddOnClick(GoToTitleScreen);
     }
 
-    private void ShowMainMenuCanvas()
+    private void GoToTitleScreen()
     {
-        UIManager.ShowCanvas(canvasType: UICanvasType.MainMenu, viaShortcut: false);
-    }
+        if (SceneLoadingManager.Instance == null)
+            throw new System.Exception("SceneLoadingManager object not found. Unable to go back to title screen.");
 
+        UIManager.ClearCanvases();
+        SceneLoadingManager.LoadScene(Scenes.TitleScreen);
+    }
 }
