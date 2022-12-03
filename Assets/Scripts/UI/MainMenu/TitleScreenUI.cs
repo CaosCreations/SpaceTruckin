@@ -11,13 +11,17 @@ public class TitleScreenUI : MonoBehaviour
 
     [SerializeField] private GameObject mainButtonCanvas;
     [SerializeField] private GameObject mainButtonContainer;
+
+    [SerializeField] private GameObject optionsCanvas;
+    [SerializeField] private GameObject creditsCanvas;
     [SerializeField] private GameObject characterCreationCanvas;
 
     private void Start()
     {
+        mainButtonCanvas.SetActive(true);
         mainButtonContainer.SetActive(true);
-        characterCreationCanvas.SetActive(false);
         backButton.SetActive(false);
+        ResetSecondaryCanvases();
         AddListeners();
     }
 
@@ -27,12 +31,14 @@ public class TitleScreenUI : MonoBehaviour
         optionsButton.AddOnClick(OnOptionsButton);
         creditsButton.AddOnClick(OnCreditsButton);
         backButton.AddOnClick(OnBackButton);
+        confirmCharacterButton.AddOnClick(OnConfirmButton);
     }
 
     private void OnPlayButton()
     {
-        mainButtonContainer.SetActive(false);
+        ResetSecondaryCanvases();
         characterCreationCanvas.SetActive(true);
+        mainButtonContainer.SetActive(false);
         backButton.SetActive(true);
     }
 
@@ -48,8 +54,23 @@ public class TitleScreenUI : MonoBehaviour
 
     private void OnBackButton()
     {
+        ResetSecondaryCanvases();
         mainButtonContainer.SetActive(true);
-        characterCreationCanvas.SetActive(false);
         backButton.SetActive(false);
+    }
+
+    private void OnConfirmButton()
+    {
+        if (SceneLoadingManager.Instance == null)
+            throw new System.Exception("SceneLoadingManager object not found. Unable to confirm character selection");
+
+        SceneLoadingManager.LoadScene(Scenes.MainStation);
+    }
+
+    private void ResetSecondaryCanvases()
+    {
+        optionsCanvas.SetActive(false);
+        creditsCanvas.SetActive(false);
+        characterCreationCanvas.SetActive(false);
     }
 }
