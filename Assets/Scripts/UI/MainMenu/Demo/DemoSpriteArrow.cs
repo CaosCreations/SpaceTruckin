@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(DemoSpritePicker))]
 public class DemoSpriteArrow : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField]
