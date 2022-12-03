@@ -44,12 +44,18 @@ public class TitleScreenUI : MonoBehaviour
 
     private void OnOptionsButton()
     {
-
+        ResetSecondaryCanvases();
+        optionsCanvas.SetActive(true);
+        mainButtonContainer.SetActive(false);
+        backButton.SetActive(true);
     }
 
     private void OnCreditsButton()
     {
-
+        ResetSecondaryCanvases();
+        creditsCanvas.SetActive(true);
+        backButton.SetActive(true);
+        mainButtonContainer.SetActive(false);
     }
 
     private void OnBackButton()

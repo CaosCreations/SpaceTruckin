@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 public static class NumberExtensions
 {
@@ -36,11 +37,11 @@ public static class NumberExtensions
 
     public static float ToDecibels(this float self)
     {
-        return (float)Math.Log10(self) * 20;
+        return (float)Mathf.Log10(self) * 20;
     }
 
     public static float FromDecibels(this float self)
     {
-        return (float)Math.Pow(10, self / 20);
+        return (float)Mathf.Pow(10, self / 20);
     }
 }

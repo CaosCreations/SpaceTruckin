@@ -35,7 +35,8 @@ public class AudioMixerManager : Singleton<AudioMixerManager>
         else
         {
             // Convert to db 
-            audioMixer.SetFloat(VolumeParameterMap[mixerGroup], value.ToDecibels());
+            value = value.ToDecibels();
+            audioMixer.SetFloat(VolumeParameterMap[mixerGroup], value);
         }
     }
 }

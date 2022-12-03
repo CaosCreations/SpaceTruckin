@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+[RequireComponent(typeof(DemoSpritePicker))]
 public class DemoSpriteArrow : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField]
@@ -11,6 +12,7 @@ public class DemoSpriteArrow : MonoBehaviour, IPointerClickHandler
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
 
+        UISoundEffectsManager.Instance.PlaySoundEffect(UISoundEffect.Confirm);
         spritePicker.PickSprite();
     }
 }
