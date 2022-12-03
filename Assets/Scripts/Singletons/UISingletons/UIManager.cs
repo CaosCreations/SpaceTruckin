@@ -9,6 +9,9 @@ public enum UICanvasType
     None, Terminal, Vending, Hangar, Cassette, NoticeBoard, MainMenu, PauseMenu, Bed
 }
 
+/// <summary>
+/// Station-specific UI logic.
+/// </summary>
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
