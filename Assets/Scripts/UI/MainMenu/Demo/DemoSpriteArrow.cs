@@ -11,6 +11,7 @@ public class DemoSpriteArrow : MonoBehaviour, IPointerClickHandler
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
 
+        UISoundEffectsManager.Instance.PlaySoundEffect(UISoundEffect.Confirm);
         spritePicker.PickSprite();
     }
 }

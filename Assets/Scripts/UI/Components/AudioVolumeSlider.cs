@@ -15,6 +15,11 @@ public class AudioVolumeSlider : MonoBehaviour
         InitSliderText();
     }
 
+    private void OnEnable()
+    {
+        SlideVolume();
+    }
+
     private void InitSlider()
     {
         volumeSlider = GetComponentInChildren<Slider>();

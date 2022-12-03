@@ -10,7 +10,8 @@ public static class TextExtensions
 
     public static Text SetText(this Text self, string value, FontType fontType = FontType.Paragraph)
     {
-        self.font = FontManager.Instance.GetFontByType(fontType);
+        if (FontManager.Instance != null)
+            self.font = FontManager.Instance.GetFontByType(fontType);
 
         self.text = value
             .InsertNewLines()
