@@ -16,6 +16,10 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
     {
         get => playerData.PlayerName; set => playerData.PlayerName = value;
     }
+    public string SpriteName
+    {
+        get => playerData.SpriteName; set => playerData.SpriteName = value;
+    }
     public long Money
     {
         get => playerData.PlayerMoney;
@@ -165,6 +169,12 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
     {
         Instance.PlayerName = playerName;
         Debug.Log($"Player name set to: {Instance.PlayerName}");
+    }
+
+    public static void SetSpriteName(string spriteName)
+    {
+        Instance.SpriteName = spriteName;
+        Debug.Log($"Player name set to: {Instance.SpriteName}");
     }
 
     #region Lua Function Registration
