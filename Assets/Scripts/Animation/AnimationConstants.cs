@@ -55,4 +55,9 @@ public static class AnimationConstants
     };
 
     #endregion
+
+    #region UI Animation
+    public const string OpenCharCreationTrigger = "OpenCharCreation";
+    public const string CloseCharCreationTrigger = "CloseCharCreation";
+    #endregion
 }

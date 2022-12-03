@@ -14,7 +14,16 @@ public class TitleScreenUI : MonoBehaviour
 
     [SerializeField] private GameObject optionsCanvas;
     [SerializeField] private GameObject creditsCanvas;
+
     [SerializeField] private GameObject characterCreationCanvas;
+    [SerializeField] private GameObject characterCreationContainer;
+
+    private void Awake()
+    {
+        // Buttons with multiple listeners
+        playButton.onClick.RemoveAllListeners();
+        backButton.onClick.RemoveAllListeners();
+    }
 
     private void Start()
     {
@@ -27,7 +36,10 @@ public class TitleScreenUI : MonoBehaviour
 
     private void AddListeners()
     {
-        playButton.AddOnClick(OnPlayButton);
+        // Buttons with multiple listeners
+        playButton.onClick.AddListener(OnPlayButton);
+        backButton.onClick.AddListener(OnBackButton);
+
         optionsButton.AddOnClick(OnOptionsButton);
         creditsButton.AddOnClick(OnCreditsButton);
         backButton.AddOnClick(OnBackButton);
@@ -37,7 +49,7 @@ public class TitleScreenUI : MonoBehaviour
     private void OnPlayButton()
     {
         ResetSecondaryCanvases();
-        characterCreationCanvas.SetActive(true);
+        characterCreationContainer.SetActive(true);
         mainButtonContainer.SetActive(false);
         backButton.SetActive(true);
     }
@@ -77,6 +89,7 @@ public class TitleScreenUI : MonoBehaviour
     {
         optionsCanvas.SetActive(false);
         creditsCanvas.SetActive(false);
-        characterCreationCanvas.SetActive(false);
+        //characterCreationContainer.SetActive(false);
+        characterCreationContainer.SetActive(false);
     }
 }
