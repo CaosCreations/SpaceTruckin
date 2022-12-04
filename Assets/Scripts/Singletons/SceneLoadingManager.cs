@@ -72,7 +72,8 @@ public class SceneLoadingManager : MonoBehaviour
             if (loadingBarSlider != null)
                 loadingBarSlider.value = progress;
 
-            yield return null;
+            //yield return null;
+            yield return new WaitForEndOfFrame();
         }
         Debug.Log("Finished loading scene async.");
     }
