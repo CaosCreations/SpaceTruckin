@@ -3,24 +3,34 @@ using UnityEngine.UI;
 
 public class TitleScreenUI : MonoBehaviour
 {
+    // Buttons
     [SerializeField] private Button playButton;
     [SerializeField] private Button optionsButton;
     [SerializeField] private Button creditsButton;
     [SerializeField] private Button backButton;
     [SerializeField] private Button confirmCharacterButton;
 
+    // Main button canvas children
     [SerializeField] private GameObject mainButtonCanvas;
     [SerializeField] private GameObject mainButtonContainer;
 
+    // Secondary canvases 
     [SerializeField] private GameObject optionsCanvas;
     [SerializeField] private GameObject creditsCanvas;
     [SerializeField] private GameObject characterCreationCanvas;
+    [SerializeField] private GameObject loadingScreenCanvas;
+
+    [SerializeField] private GameObject stationBackground;
+    private Slider loadingBarSlider;
 
     private void Start()
     {
         mainButtonCanvas.SetActive(true);
         mainButtonContainer.SetActive(true);
         backButton.SetActive(false);
+        stationBackground.SetActive(true);
+        loadingBarSlider = loadingScreenCanvas.GetComponentInChildren<Slider>();
+
         ResetSecondaryCanvases();
         AddListeners();
     }
@@ -70,7 +80,14 @@ public class TitleScreenUI : MonoBehaviour
         if (SceneLoadingManager.Instance == null)
             throw new System.Exception("SceneLoadingManager object not found. Unable to confirm character selection");
 
-        SceneLoadingManager.LoadScene(Scenes.MainStation);
+        ResetSecondaryCanvases();
+        backButton.SetActive(false);
+        mainButtonCanvas.SetActive(false);
+        stationBackground.SetActive(false);
+        loadingScreenCanvas.SetActive(true);
+
+        // Load scene after confirmation
+        SceneLoadingManager.Instance.LoadSceneAsync(Scenes.MainStation, loadingBarSlider);
     }
 
     private void ResetSecondaryCanvases()
@@ -78,5 +95,6 @@ public class TitleScreenUI : MonoBehaviour
         optionsCanvas.SetActive(false);
         creditsCanvas.SetActive(false);
         characterCreationCanvas.SetActive(false);
+        loadingScreenCanvas.SetActive(false);
     }
 }
