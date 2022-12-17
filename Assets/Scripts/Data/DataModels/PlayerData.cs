@@ -23,6 +23,8 @@ public class PlayerData : ScriptableObject, IDataModel
         public int playerTotalLicencePointsAcquired; // Used to unlock licence tiers
 
         public int playerRepairTools; // Used to attempt the repairs minigame 
+
+        public Animator animator; // Set during character select
     }
 
     public string PlayerName
@@ -60,6 +62,11 @@ public class PlayerData : ScriptableObject, IDataModel
     public int PlayerRepairTools
     {
         get => saveData.playerRepairTools; set => saveData.playerRepairTools = value;
+    }
+
+    public Animator PlayerAnimator
+    {
+        get => saveData.animator; set => saveData.animator = value;
     }
 
     public void SaveData()
