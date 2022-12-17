@@ -10,7 +10,7 @@ public class CharacterCreationUI : MonoBehaviour
     private string CharacterName 
     {
         get => characterNameInput.text; set => characterNameInput.text = value; 
-    } 
+    }
 
     private void Start()
     {

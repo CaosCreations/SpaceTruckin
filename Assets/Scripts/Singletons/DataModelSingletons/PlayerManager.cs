@@ -43,6 +43,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
     public static GameObject PlayerObject { get; private set; }
     public static PlayerMovement PlayerMovement { get; private set; }
+    public Animator Animator { get => playerData.PlayerAnimator; set => playerData.PlayerAnimator = value; }
     #endregion
 
     private void Awake()
