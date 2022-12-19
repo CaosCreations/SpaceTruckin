@@ -35,7 +35,7 @@ public class DemoCharacterPicker : DemoSpritePicker
             return;
         }
 
-        // Set sprite animator to use in-game based on input 
-        PlayerManager.Instance.Animator = SelectedCharacter.Animator;
+        // Set the prefab to use in-game based on input 
+        PlayerManager.Instance.PlayerPrefab = SelectedCharacter.Prefab;
     }
 }

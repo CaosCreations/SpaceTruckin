@@ -25,6 +25,11 @@ public class TimelineManager : MonoBehaviour
 
     private void Start()
     {
+        RegisterEvents();
+    }
+
+    private void RegisterEvents()
+    {
         SceneManager.activeSceneChanged += (Scene previous, Scene next) =>
         {
             if (SceneLoadingManager.GetSceneNameByEnum(Scenes.TitleScreen) == next.name)

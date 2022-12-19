@@ -24,7 +24,7 @@ public class PlayerData : ScriptableObject, IDataModel
 
         public int playerRepairTools; // Used to attempt the repairs minigame 
 
-        public Animator animator; // Set during character select
+        public GameObject prefab; // Set during character select
     }
 
     public string PlayerName
@@ -64,9 +64,12 @@ public class PlayerData : ScriptableObject, IDataModel
         get => saveData.playerRepairTools; set => saveData.playerRepairTools = value;
     }
 
-    public Animator PlayerAnimator
+    [field: SerializeField]
+    public Vector3 StationSpawnPosition { get; set; }
+
+    public GameObject PlayerPrefab
     {
-        get => saveData.animator; set => saveData.animator = value;
+        get => saveData.prefab; set => saveData.prefab = value;
     }
 
     public void SaveData()

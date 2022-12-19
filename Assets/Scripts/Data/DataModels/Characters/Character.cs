@@ -10,5 +10,5 @@ public class Character : ScriptableObject
     public Sprite PreviewSprite { get; set; }
 
     [field: SerializeField]
-    public Animator Animator { get; set; }
+    public GameObject Prefab { get; set; }
 }
