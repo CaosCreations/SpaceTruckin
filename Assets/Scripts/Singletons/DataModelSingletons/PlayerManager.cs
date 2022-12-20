@@ -64,8 +64,9 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
             return;
         }
 
-        // Todo: Temporary until we move singleton manager manager out of station scene
-        Init();
+        // Todo: Temporary until we move singleton manager out of station scene
+        //Init();
+        RegisterEvents();
     }
 
     public void Init()
@@ -101,7 +102,10 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         // Init prefab when scene loads 
         SceneManager.activeSceneChanged += (Scene previous, Scene next) =>
         {
-            InstantiatePlayer();
+            if (SceneLoadingManager.GetSceneNameByEnum(Scenes.MainStation) == next.name)
+            {
+                InstantiatePlayer();
+            }
         };
     }
 
