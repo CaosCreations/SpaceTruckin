@@ -26,7 +26,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        characterController = GetComponent<CharacterController>();
+        if (!TryGetComponent(out characterController))
+        {
+            throw new NullReferenceException("Character controller component not found in Player Movement script.");
+        }
 
         // Initialize the player's Camera
         if (Camera.main != null)
