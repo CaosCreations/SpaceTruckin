@@ -125,6 +125,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: 91e5e8de2eea72a4581cc27b6c395216, type: 2}
+--- !u!1 &10884987 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 681613085724592415, guid: 689aaf94f41e78c4292d37ced16ba8ed,
+    type: 3}
+  m_PrefabInstance: {fileID: 1302945407254984332}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &11465593
 GameObject:
   m_ObjectHideFlags: 0
@@ -16403,6 +16409,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1272430354}
     m_Modifications:
+    - target: {fileID: 975445818079797909, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 2.0231628
+      objectReference: {fileID: 0}
+    - target: {fileID: 975445818079797909, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 1.2110901
+      objectReference: {fileID: 0}
+    - target: {fileID: 975445818079797909, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 1.9311523
+      objectReference: {fileID: 0}
+    - target: {fileID: 975445818079797909, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_Center.x
+      value: 0.46861267
+      objectReference: {fileID: 0}
+    - target: {fileID: 975445818079797909, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_Center.y
+      value: -0.10044861
+      objectReference: {fileID: 0}
+    - target: {fileID: 975445818079797909, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_Center.z
+      value: -0.07406616
+      objectReference: {fileID: 0}
+    - target: {fileID: 975445818079797909, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1019127046796887104, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
         type: 3}
       propertyPath: m_Name
@@ -16466,7 +16507,7 @@ PrefabInstance:
     - target: {fileID: 8553291468905247584, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
         type: 3}
       propertyPath: trigger
-      value: 16
+      value: 32
       objectReference: {fileID: 0}
     - target: {fileID: 8553291468905247584, guid: d2445e2563bbe4b4a91fd4e933f67d2a,
         type: 3}
@@ -21648,6 +21689,54 @@ Animator:
     type: 3}
   m_PrefabInstance: {fileID: 1302945407254984332}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1657388728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10884987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 963d6358c55a0f44d8de57bee560f184, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useDefaultGUI: 1
+  guiSkin: {fileID: 11400000, guid: dbe874f440d0cf84cb5c28fd70e8123c, type: 2}
+  guiStyleName: label
+  alignment: 1
+  color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  textStyle: 1
+  textStyleColor: {r: 0, g: 0, b: 0, a: 1}
+  defaultUseMessage: (Press E to talk)
+  useKey: 101
+  useButton: Fire2
+  enableTouch: 0
+  touchArea:
+    origin: 0
+    alignment: 0
+    x:
+      scale: 0
+      value: 0
+    y:
+      scale: 0
+      value: 0
+    width:
+      scale: 0
+      value: 0
+    height:
+      scale: 0
+      value: 0
+    minPixelWidth: 0
+    minPixelHeight: 0
+  broadcastToChildren: 1
+  actorTransform: {fileID: 129007670}
+  onSelectedUsable:
+    m_PersistentCalls:
+      m_Calls: []
+  onDeselectedUsable:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1670726274
 GameObject:
   m_ObjectHideFlags: 0
@@ -29015,7 +29104,7 @@ PrefabInstance:
     - target: {fileID: 681613085724592415, guid: 689aaf94f41e78c4292d37ced16ba8ed,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1302945406712062508, guid: 689aaf94f41e78c4292d37ced16ba8ed,
         type: 3}
@@ -29122,6 +29211,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -6.983734
       objectReference: {fileID: 0}
+    - target: {fileID: 1302945407346177717, guid: 689aaf94f41e78c4292d37ced16ba8ed,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1302945407348996268, guid: 689aaf94f41e78c4292d37ced16ba8ed,
         type: 3}
       propertyPath: m_ChildCameras.Array.size
@@ -29192,7 +29286,33 @@ PrefabInstance:
       propertyPath: internalNightLights.Array.data[1]
       value: 
       objectReference: {fileID: 1635889542}
-    m_RemovedComponents: []
+    - target: {fileID: 6523315453271322056, guid: 689aaf94f41e78c4292d37ced16ba8ed,
+        type: 3}
+      propertyPath: useKey
+      value: 101
+      objectReference: {fileID: 0}
+    - target: {fileID: 6523315453271322056, guid: 689aaf94f41e78c4292d37ced16ba8ed,
+        type: 3}
+      propertyPath: selectAt
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6523315453271322056, guid: 689aaf94f41e78c4292d37ced16ba8ed,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6523315453271322056, guid: 689aaf94f41e78c4292d37ced16ba8ed,
+        type: 3}
+      propertyPath: tooFarMessage
+      value: Too far away
+      objectReference: {fileID: 0}
+    - target: {fileID: 6523315453271322056, guid: 689aaf94f41e78c4292d37ced16ba8ed,
+        type: 3}
+      propertyPath: defaultUseMessage
+      value: (Press E to talk)
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6523315453271322056, guid: 689aaf94f41e78c4292d37ced16ba8ed, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 689aaf94f41e78c4292d37ced16ba8ed, type: 3}
 --- !u!4 &1302945407254984333 stripped
 Transform:
