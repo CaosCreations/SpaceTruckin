@@ -1,6 +1,7 @@
 ﻿using PixelCrushers.DialogueSystem;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegistrar
 {
@@ -43,6 +44,11 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
     public static GameObject PlayerObject { get; private set; }
     public static PlayerMovement PlayerMovement { get; private set; }
+    public GameObject PlayerPrefab { get => playerData.PlayerPrefab; set => playerData.PlayerPrefab = value; }
+    public Vector3 StationSpawnPosition => playerData.StationSpawnPosition;
+
+    [SerializeField]
+    private Transform playerParentTransform;
     #endregion
 
     private void Awake()
@@ -57,6 +63,9 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
             Destroy(gameObject);
             return;
         }
+
+        // Todo: Temporary until we move singleton manager manager out of station scene
+        Init();
     }
 
     public void Init()
@@ -70,18 +79,42 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
             DataUtils.CreateSaveFolder(PlayerData.FolderName);
         }
 
-        FindSceneObjects();
-
+        //FindSceneObjects();
         RegisterLuaFunctions();
+        RegisterEvents();
+    }
 
-        // Pause when a conversation starts and unpause when it ends
-        DialogueManager.Instance.conversationStarted += (t) =>
+    private void RegisterEvents()
+    {
+        if (DialogueManager.Instance != null)
         {
-            IsPaused = true;
-            PlayerAnimationManager.ResetBoolParameters();
-        };
+            // Pause when a conversation starts and unpause when it ends
+            DialogueManager.Instance.conversationStarted += (t) =>
+            {
+                IsPaused = true;
+                PlayerAnimationManager.ResetBoolParameters();
+            };
 
-        DialogueManager.Instance.conversationEnded += (t) => IsPaused = false;
+            DialogueManager.Instance.conversationEnded += (t) => IsPaused = false;
+        }
+
+        // Init prefab when scene loads 
+        SceneManager.activeSceneChanged += (Scene previous, Scene next) =>
+        {
+            InstantiatePlayer();
+        };
+    }
+
+    private void InstantiatePlayer()
+    {
+        if (PlayerPrefab == null)
+        {
+            throw new System.Exception("Player prefab was null. Cannot instantiate player.");
+        }
+
+        PlayerObject = Instantiate(PlayerPrefab, playerParentTransform);
+        PlayerObject.transform.position = StationSpawnPosition;
+        PlayerMovement = PlayerObject.GetComponent<PlayerMovement>();
     }
 
     private static void FindSceneObjects()
@@ -150,7 +183,9 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
     public static void EnterPausedState()
     {
-        PlayerMovement.ResetDirection();
+        if (PlayerMovement != null)
+            PlayerMovement.ResetDirection();
+
         IsPaused = true;
     }
 
@@ -180,6 +215,9 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
     #region Lua Function Registration
     public void RegisterLuaFunctions()
     {
+        if (DialogueManager.Instance == null)
+            return;
+
         Lua.RegisterFunction(
             DialogueConstants.SpendMoneyFunctionName,
             this,

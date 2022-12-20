@@ -88,7 +88,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 199be880f324e154fb46c6ae593b4fdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spritePicker: {fileID: 588002412581621110}
+  spritePicker: {fileID: 1610818387}
 --- !u!1 &588002412402843284
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 588002412581621108}
   - component: {fileID: 588002412581621109}
   - component: {fileID: 588002412581621106}
-  - component: {fileID: 588002412581621110}
+  - component: {fileID: 1610818387}
   m_Layer: 5
   m_Name: CharacterCreationCanvas
   m_TagString: Untagged
@@ -274,7 +274,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &588002412581621110
+--- !u!114 &1610818387
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -283,12 +283,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 588002412581621107}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57af53e99fb4b8149960d7b314173b31, type: 3}
+  m_Script: {fileID: 11500000, guid: fa0b0ba3705406c40a24c4302d621825, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   charSprite1: {fileID: 588002413312733757}
   charSprite2: {fileID: 588002413358250639}
   SelectedSpriteName: 
+  char1: {fileID: 11400000, guid: 34cb086fd4f112f428591935f407bf8d, type: 2}
+  char2: {fileID: 11400000, guid: d9860a6271bd9584ea4c3efadf293493, type: 2}
+  SelectedCharacter: {fileID: 0}
 --- !u!1 &588002413102288400
 GameObject:
   m_ObjectHideFlags: 0
@@ -873,7 +876,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 199be880f324e154fb46c6ae593b4fdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spritePicker: {fileID: 588002412581621110}
+  spritePicker: {fileID: 1610818387}
 --- !u!1 &588002413776313816
 GameObject:
   m_ObjectHideFlags: 0

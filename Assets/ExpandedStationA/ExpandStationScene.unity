@@ -29015,7 +29015,7 @@ PrefabInstance:
     - target: {fileID: 681613085724592415, guid: 689aaf94f41e78c4292d37ced16ba8ed,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1302945406712062508, guid: 689aaf94f41e78c4292d37ced16ba8ed,
         type: 3}
@@ -29194,6 +29194,12 @@ PrefabInstance:
       objectReference: {fileID: 1635889542}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 689aaf94f41e78c4292d37ced16ba8ed, type: 3}
+--- !u!4 &1302945407254984333 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1302945406712062509, guid: 689aaf94f41e78c4292d37ced16ba8ed,
+    type: 3}
+  m_PrefabInstance: {fileID: 1302945407254984332}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1390731359182535925
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29862,6 +29868,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3017533293377341496, guid: 2fcf08562f8fc8d44a18bd6289c54dbd,
+        type: 3}
+      propertyPath: playerParentTransform
+      value: 
+      objectReference: {fileID: 1302945407254984333}
     - target: {fileID: 3017533293377341498, guid: 2fcf08562f8fc8d44a18bd6289c54dbd,
         type: 3}
       propertyPath: m_Name
