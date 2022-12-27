@@ -71,17 +71,19 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         }
 
         FindSceneObjects();
-
         RegisterLuaFunctions();
 
-        // Pause when a conversation starts and unpause when it ends
-        DialogueManager.Instance.conversationStarted += (t) =>
+        if (DialogueManager.Instance != null)
         {
-            IsPaused = true;
-            PlayerAnimationManager.ResetBoolParameters();
-        };
+            // Pause when a conversation starts and unpause when it ends
+            DialogueManager.Instance.conversationStarted += (t) =>
+            {
+                IsPaused = true;
+                PlayerAnimationManager.ResetBoolParameters();
+            };
 
-        DialogueManager.Instance.conversationEnded += (t) => IsPaused = false;
+            DialogueManager.Instance.conversationEnded += (t) => IsPaused = false;
+        }
     }
 
     private static void FindSceneObjects()
