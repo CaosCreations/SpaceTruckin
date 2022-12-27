@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum AmbientSoundEffect
 {
@@ -13,7 +14,13 @@ public class AmbientSoundEffectsManager : SoundEffectsManager<AmbientSoundEffect
 
     private void Start()
     {
-        PlaySoundEffect(AmbientSoundEffect.AsteroidAir);
+        SceneManager.activeSceneChanged += (Scene previous, Scene next) =>
+        {
+            if (SceneLoadingManager.GetSceneNameByEnum(Scenes.MainStation) == next.name)
+            {
+                PlaySoundEffect(AmbientSoundEffect.AsteroidAir);
+            }
+        };
     }
 
     public override AudioClip GetClipBySoundEffectType(AmbientSoundEffect effectType)

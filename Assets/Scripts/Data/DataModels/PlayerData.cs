@@ -23,6 +23,8 @@ public class PlayerData : ScriptableObject, IDataModel
         public int playerTotalLicencePointsAcquired; // Used to unlock licence tiers
 
         public int playerRepairTools; // Used to attempt the repairs minigame 
+
+        public GameObject prefab; // Set during character select
     }
 
     public string PlayerName
@@ -60,6 +62,14 @@ public class PlayerData : ScriptableObject, IDataModel
     public int PlayerRepairTools
     {
         get => saveData.playerRepairTools; set => saveData.playerRepairTools = value;
+    }
+
+    [field: SerializeField]
+    public Vector3 StationSpawnPosition { get; set; }
+
+    public GameObject PlayerPrefab
+    {
+        get => saveData.prefab; set => saveData.prefab = value;
     }
 
     public void SaveData()

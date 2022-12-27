@@ -25,9 +25,14 @@ public class TimelineManager : MonoBehaviour
 
     private void Start()
     {
+        RegisterEvents();
+    }
+
+    private void RegisterEvents()
+    {
         SceneManager.activeSceneChanged += (Scene previous, Scene next) =>
         {
-            if (SceneLoadingManager.GetSceneNameByEnum(Scenes.TitleScreen) == next.name)
+            if (SceneLoadingManager.GetSceneNameByEnum(Scenes.MainStation) == next.name)
             {
                 var onStationLoadCutscene = GetCutsceneByOnLoadSceneName(next.name);
 
