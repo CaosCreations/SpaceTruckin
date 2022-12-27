@@ -9,6 +9,9 @@ public class TimelineManager : MonoBehaviour
     [SerializeField]
     private CutsceneContainer cutsceneContainer;
 
+    [SerializeField]
+    private PlayableDirector playableDirector;
+
     private void Awake()
     {
         if (Instance == null)
@@ -32,6 +35,7 @@ public class TimelineManager : MonoBehaviour
     {
         SceneManager.activeSceneChanged += (Scene previous, Scene next) =>
         {
+            // Opening station entry cutscene
             if (SceneLoadingManager.GetSceneNameByEnum(Scenes.MainStation) == next.name)
             {
                 var onStationLoadCutscene = GetCutsceneByOnLoadSceneName(next.name);
@@ -42,14 +46,15 @@ public class TimelineManager : MonoBehaviour
                     return;
                 }
 
-                PlayTimeline(onStationLoadCutscene.Director);
+                PlayTimeline(onStationLoadCutscene.PlayableAsset);
             }
         };
     }
 
-    public static void PlayTimeline(PlayableDirector playableDirector)
+    public static void PlayTimeline(PlayableAsset playableAsset)
     {
-        playableDirector.Play();
+        Instance.playableDirector.playableAsset = playableAsset;
+        Instance.playableDirector.Play();
     }
 
     public Cutscene GetCutsceneByName(string name)

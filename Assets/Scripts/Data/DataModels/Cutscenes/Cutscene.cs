@@ -6,5 +6,5 @@ public class Cutscene : ScriptableObject
 {
     public string Name;
     public string OnSceneLoadName;
-    public PlayableDirector Director;
+    public PlayableAsset PlayableAsset;
 }
