@@ -1,4 +1,5 @@
 ﻿using PixelCrushers.DialogueSystem;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
@@ -45,6 +46,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
     public static GameObject PlayerObject { get; private set; }
     public static PlayerMovement PlayerMovement { get; private set; }
     public GameObject PlayerPrefab { get => playerData.PlayerPrefab; set => playerData.PlayerPrefab = value; }
+    public Animator PlayerAnimator { get => playerData.PlayerAnimator; set => playerData.PlayerAnimator = value; }
     public Vector3 StationSpawnPosition => playerData.StationSpawnPosition;
 
     [SerializeField]
@@ -104,12 +106,12 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         {
             if (SceneLoadingManager.GetSceneNameByEnum(Scenes.MainStation) == next.name)
             {
-                InstantiatePlayer();
+                InitPlayer();
             }
         };
     }
 
-    private void InstantiatePlayer()
+    private void InitPlayer()
     {
         if (PlayerPrefab == null)
         {
@@ -119,6 +121,17 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         PlayerObject = Instantiate(PlayerPrefab, playerParentTransform);
         PlayerObject.transform.position = StationSpawnPosition;
         PlayerMovement = PlayerObject.GetComponent<PlayerMovement>();
+        
+        // Animator field setup 
+        Animator targetAnimator = PlayerObject.GetComponent<Animator>();
+        FieldInfo[] sourceFields = PlayerAnimator.GetType().GetFields(BindingFlags.Public |
+                                                              BindingFlags.NonPublic |
+                                                              BindingFlags.Instance);
+        for (int i = 0; i < sourceFields.Length; i++)
+        {
+            var value = sourceFields[i].GetValue(targetAnimator);
+            sourceFields[i].SetValue(targetAnimator, value);
+        }
     }
 
     private static void FindSceneObjects()
