@@ -28,7 +28,7 @@ public class TimelineManager : MonoBehaviour
 
     private void Start()
     {
-        RegisterEvents();
+        //RegisterEvents();
     }
 
     private void RegisterEvents()
@@ -51,7 +51,17 @@ public class TimelineManager : MonoBehaviour
         };
     }
 
-    public static void PlayTimeline(PlayableAsset playableAsset)
+    public static void PlayCutscene(string cutsceneName)
+    {
+        var cutscene = Instance.GetCutsceneByName(cutsceneName);
+
+        if (cutscene == null)
+            throw new System.Exception("Cannot play cutscene with name: " + cutsceneName);
+
+        PlayTimeline(cutscene.PlayableAsset);
+    }
+
+    private static void PlayTimeline(PlayableAsset playableAsset)
     {
         Instance.playableDirector.playableAsset = playableAsset;
         Instance.playableDirector.Play();
@@ -64,6 +74,7 @@ public class TimelineManager : MonoBehaviour
             if (cutscene.Name == name)
                 return cutscene;
         }
+        Debug.LogError("Cannot find cutscene with name: " + name);
         return null;
     }
 

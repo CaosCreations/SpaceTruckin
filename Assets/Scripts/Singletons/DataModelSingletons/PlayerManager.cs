@@ -47,9 +47,9 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
     public GameObject PlayerPrefab { get => playerData.PlayerPrefab; set => playerData.PlayerPrefab = value; }
     public Animator PlayerAnimator { get => playerData.PlayerAnimator; set => playerData.PlayerAnimator = value; }
     public Vector3 StationSpawnPosition => playerData.StationSpawnPosition;
-    public AnimatorSettings PlayerAnimatorSettings 
-    { 
-        get => playerData.AnimatorSettings; set => playerData.AnimatorSettings = value; 
+    public AnimatorSettings PlayerAnimatorSettings
+    {
+        get => playerData.AnimatorSettings; set => playerData.AnimatorSettings = value;
     }
 
     [SerializeField]
@@ -109,22 +109,18 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         {
             if (SceneLoadingManager.GetSceneNameByEnum(Scenes.MainStation) == next.name)
             {
-                SetupPlayerObject();
+                SetupPlayer();
             }
         };
     }
 
-    private void SetupPlayerObject()
+    public void SetupPlayer()
     {
         PlayerObject = GameObject.FindGameObjectWithTag(PlayerConstants.PlayerTag);
 
-        if (PlayerObject != null)
+        if (PlayerObject == null)
         {
-            PlayerMovement = PlayerObject.GetComponent<PlayerMovement>();
-        }
-        else
-        {
-            Debug.LogError("Player object not found");
+            throw new System.Exception("Player object not found");
         }
 
         if (Instance.playerData == null)
@@ -134,9 +130,8 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
         PlayerMovement = PlayerObject.GetComponent<PlayerMovement>();
 
-        var playerAnimator = PlayerObject.GetComponent<Animator>();
-
         // Animator field setup 
+        var playerAnimator = PlayerObject.GetComponent<Animator>();
         var animatorSettingsMapper = new PlayerAnimatorSettingsMapper();
         animatorSettingsMapper.MapSettings(playerAnimator, PlayerAnimatorSettings);
     }
