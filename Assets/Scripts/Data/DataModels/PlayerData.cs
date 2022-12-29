@@ -26,6 +26,7 @@ public class PlayerData : ScriptableObject, IDataModel
 
         public GameObject prefab; // Set during character select
         public Animator animator; // Set during character select
+        public AnimatorSettings animatorSettings;
     }
 
     public string PlayerName
@@ -76,6 +77,11 @@ public class PlayerData : ScriptableObject, IDataModel
     public Animator PlayerAnimator
     {
         get => saveData.animator; set => saveData.animator = value;
+    }
+
+    public AnimatorSettings AnimatorSettings
+    {
+        get => saveData.animatorSettings; set => saveData.animatorSettings = value;
     }
 
     public void SaveData()

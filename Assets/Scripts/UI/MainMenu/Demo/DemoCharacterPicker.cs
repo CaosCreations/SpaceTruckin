@@ -38,5 +38,6 @@ public class DemoCharacterPicker : DemoSpritePicker
         // Set the prefab to use in-game based on input 
         PlayerManager.Instance.PlayerPrefab = SelectedCharacter.Prefab;
         PlayerManager.Instance.PlayerAnimator = SelectedCharacter.Animator;
+        PlayerManager.Instance.PlayerAnimatorSettings = SelectedCharacter.AnimatorSettings;
     }
 }

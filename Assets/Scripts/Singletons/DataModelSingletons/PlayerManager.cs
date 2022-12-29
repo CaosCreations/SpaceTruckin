@@ -1,5 +1,4 @@
 ﻿using PixelCrushers.DialogueSystem;
-using System.Reflection;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
@@ -48,6 +47,10 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
     public GameObject PlayerPrefab { get => playerData.PlayerPrefab; set => playerData.PlayerPrefab = value; }
     public Animator PlayerAnimator { get => playerData.PlayerAnimator; set => playerData.PlayerAnimator = value; }
     public Vector3 StationSpawnPosition => playerData.StationSpawnPosition;
+    public AnimatorSettings PlayerAnimatorSettings 
+    { 
+        get => playerData.AnimatorSettings; set => playerData.AnimatorSettings = value; 
+    }
 
     [SerializeField]
     private Transform playerParentTransform;
@@ -66,9 +69,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
             return;
         }
 
-        // Todo: Temporary until we move singleton manager out of station scene
-        //Init();
-        RegisterEvents();
+        RegisterSceneChangeEvents();
     }
 
     public void Init()
@@ -82,12 +83,11 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
             DataUtils.CreateSaveFolder(PlayerData.FolderName);
         }
 
-        //FindSceneObjects();
         RegisterLuaFunctions();
-        RegisterEvents();
+        RegisterDialogueEvents();
     }
 
-    private void RegisterEvents()
+    private void RegisterDialogueEvents()
     {
         if (DialogueManager.Instance != null)
         {
@@ -100,41 +100,21 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
             DialogueManager.Instance.conversationEnded += (t) => IsPaused = false;
         }
+    }
 
-        // Init prefab when scene loads 
+    private void RegisterSceneChangeEvents()
+    {
+        // Setup player when station scene loads 
         SceneManager.activeSceneChanged += (Scene previous, Scene next) =>
         {
             if (SceneLoadingManager.GetSceneNameByEnum(Scenes.MainStation) == next.name)
             {
-                InitPlayer();
+                SetupPlayerObject();
             }
         };
     }
 
-    private void InitPlayer()
-    {
-        if (PlayerPrefab == null)
-        {
-            throw new System.Exception("Player prefab was null. Cannot instantiate player.");
-        }
-
-        PlayerObject = Instantiate(PlayerPrefab, playerParentTransform);
-        PlayerObject.transform.position = StationSpawnPosition;
-        PlayerMovement = PlayerObject.GetComponent<PlayerMovement>();
-        
-        // Animator field setup 
-        Animator targetAnimator = PlayerObject.GetComponent<Animator>();
-        FieldInfo[] sourceFields = PlayerAnimator.GetType().GetFields(BindingFlags.Public |
-                                                              BindingFlags.NonPublic |
-                                                              BindingFlags.Instance);
-        for (int i = 0; i < sourceFields.Length; i++)
-        {
-            var value = sourceFields[i].GetValue(targetAnimator);
-            sourceFields[i].SetValue(targetAnimator, value);
-        }
-    }
-
-    private static void FindSceneObjects()
+    private void SetupPlayerObject()
     {
         PlayerObject = GameObject.FindGameObjectWithTag(PlayerConstants.PlayerTag);
 
@@ -151,17 +131,21 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         {
             Debug.LogError("No player data found");
         }
+
+        PlayerMovement = PlayerObject.GetComponent<PlayerMovement>();
+
+        var playerAnimator = PlayerObject.GetComponent<Animator>();
+
+        // Animator field setup 
+        var animatorSettingsMapper = new PlayerAnimatorSettingsMapper();
+        animatorSettingsMapper.MapSettings(playerAnimator, PlayerAnimatorSettings);
     }
 
     private void OnDisable() => UnregisterLuaFunctions();
 
     public bool CanSpendMoney(long amount)
     {
-        if (amount <= Instance.Money)
-        {
-            return true;
-        }
-        return false;
+        return amount <= Instance.Money;
     }
 
     public void SpendMoney(long amount)

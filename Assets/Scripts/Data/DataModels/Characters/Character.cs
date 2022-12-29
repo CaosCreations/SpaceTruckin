@@ -14,4 +14,7 @@ public class Character : ScriptableObject
 
     [field: SerializeField]
     public Animator Animator { get; set; }
+
+    [field: SerializeField]
+    public AnimatorSettings AnimatorSettings { get; set; }
 }
