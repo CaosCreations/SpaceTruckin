@@ -2,5 +2,5 @@
 
 public interface IAnimatorSettingsMapper
 {
-    public Animator MapSettings(Animator source, Animator target);
+    public Animator MapSettings(Animator target, AnimatorSettings settings);
 }

@@ -63,6 +63,7 @@ public class TimelineManager : MonoBehaviour
 
     private static void PlayTimeline(PlayableAsset playableAsset)
     {
+        Instance.playableDirector.gameObject.SetActive(true);
         Instance.playableDirector.playableAsset = playableAsset;
         Instance.playableDirector.Play();
     }
@@ -86,5 +87,22 @@ public class TimelineManager : MonoBehaviour
                 return cutscene;
         }
         return null;
+    }
+
+    public void SetDirectorBindings()
+    {
+        if (!PlayerManager.PlayerObject.TryGetComponent<Animator>(out var playerAnimator))
+        {
+            throw new System.Exception("Unable to get player animator to bind to Timeline director");
+        }
+
+        foreach (var binding in playableDirector.playableAsset.outputs)
+        {
+            if (binding.streamName == "playerAnim" || binding.streamName == "Animation Track")
+            {
+                Debug.Log($"Setting binding with name: '{binding.streamName}' to player animator object");
+                playableDirector.SetGenericBinding(binding.sourceObject, playerAnimator);
+            }
+        }
     }
 }

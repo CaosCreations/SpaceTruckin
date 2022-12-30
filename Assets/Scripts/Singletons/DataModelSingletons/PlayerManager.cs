@@ -202,12 +202,6 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         Debug.Log($"Player name set to: {Instance.PlayerName}");
     }
 
-    public static void SetSpriteName(string spriteName)
-    {
-        Instance.SpriteName = spriteName;
-        Debug.Log($"Player name set to: {Instance.SpriteName}");
-    }
-
     #region Lua Function Registration
     public void RegisterLuaFunctions()
     {
