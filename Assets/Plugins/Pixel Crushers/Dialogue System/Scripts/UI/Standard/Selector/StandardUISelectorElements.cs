@@ -39,6 +39,9 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("Text element for use message (e.g., 'Press spacebar to use').")]
         public UITextField useMessageText = null;
 
+        [Tooltip("Use In Range and Out Of Range text colors defined below.")]
+        public bool useRangeColors = true;
+
         [Tooltip("Set text elements to this color when selector is in range to use selection.")]
         public Color inRangeColor = Color.yellow;
 
@@ -79,6 +82,14 @@ namespace PixelCrushers.DialogueSystem
         {
             get { return (m_instances.Count > 0) ? m_instances[0] : null; }
         }
+
+#if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void InitStaticVariables()
+        {
+            m_instances = new List<StandardUISelectorElements>();
+        }
+#endif
 
         private void Awake()
         {

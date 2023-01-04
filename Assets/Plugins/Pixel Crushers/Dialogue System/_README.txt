@@ -1,7 +1,7 @@
 /*
 ------------------------------
   Dialogue System for Unity  
-       Version 2.2.16
+       Version 2.2.33
         
   Copyright © Pixel Crushers
 ------------------------------
@@ -19,15 +19,12 @@ Getting Started:
 o Follow the 5 minute quick start guide in the Getting Started section of the manual.
 o Read the documentation and/or watch the tutorial videos.
 o Play the scene in the Demo folder.
-o On Unity 2018+, if you want to use 2D physics you must define scripting symbol USE_PHYSICS2D.
-  (Tools > Pixel Crushers > Dialogue System > Welcome Window)
-
-
-Upgrade Notes:
---------------
-o Re-import any Third Party Support packages that you imported in a previous release.
-o If upgrading from version 1.x, please read the Upgrade Guide:
-  http://www.pixelcrushers.com/dialogue_system/manual2x/html/getting_started.html
+o IMPORTANT NOTE FOR 2D:
+  If you want to use 2D physics you must define scripting symbol USE_PHYSICS2D.
+  (Tick checkbox in Tools > Pixel Crushers > Dialogue System > Welcome Window.)
+o IMPORTANT NOTE FOR TEXTMESH PRO:
+  If you want to use TextMesh Pro you must define scripting symbol TMP_PRESENT.
+  (Tick checkbox in Tools > Pixel Crushers > Dialogue System > Welcome Window.)
 
 
 Documentation:
@@ -38,6 +35,13 @@ o Download a copy: https://www.pixelcrushers.com/dialogue_system/manual2x/Docume
   If you download a copy for offline use, do not unzip it into your Assets folder! It 
   contains Doxygen-generated JavaScript files; if these are in the Assets folder, Unity 
   will try to compile them and fail. Unzip it outside of your Assets folder.
+
+
+Upgrade Notes:
+--------------
+o Re-import any Third Party Support packages that you imported in a previous release.
+o If upgrading from version 1.x, please read the Upgrade Guide:
+  http://www.pixelcrushers.com/dialogue_system/manual2x/html/getting_started.html
 
 
 Need Help?

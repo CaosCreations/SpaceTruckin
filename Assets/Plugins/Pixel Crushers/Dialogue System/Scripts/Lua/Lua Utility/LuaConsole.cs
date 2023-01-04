@@ -37,6 +37,12 @@ namespace PixelCrushers.DialogueSystem
         public bool visible = false;
 
         /// <summary>
+        /// Optional GUI Skin to style console window.
+        /// </summary>
+        [Tooltip("Optional GUI Skin to style console window.")]
+        public GUISkin guiSkin;
+
+        /// <summary>
         /// The minimum size of the console window.
         /// </summary>
         [Tooltip("Minimum size of console window.")]
@@ -97,8 +103,12 @@ namespace PixelCrushers.DialogueSystem
             }
 
             // If visible, draw:
-            if (visible && pauseGameWhileOpen) Time.timeScale = 0;
-            if (visible) DrawConsole();
+            if (visible)
+            {
+                if (Event.current.type == EventType.Repaint) GUI.skin = UnityGUI.UnityGUITools.GetValidGUISkin(guiSkin);
+                if (pauseGameWhileOpen) Time.timeScale = 0;
+                DrawConsole();
+            }
         }
 
         private void DrawConsole()

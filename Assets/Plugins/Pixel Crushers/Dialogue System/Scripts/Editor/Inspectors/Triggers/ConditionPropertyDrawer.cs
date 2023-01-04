@@ -33,7 +33,7 @@ namespace PixelCrushers.DialogueSystem
             luaConditionWizardHeight = luaConditionsProperty.isExpanded ? luaConditionWizard.GetHeight() : 0;
             height += luaConditionWizardHeight;
             height += GetTextAreaArrayHeight(luaConditionsProperty);
-            height += GetArrayHeight(questConditionsProperty);
+            height += GetQuestConditionsHeight(questConditionsProperty);
             height += GetArrayHeight(acceptedTagsProperty);
             height += GetArrayHeight(acceptedGameObjectsProperty);
             return height;
@@ -132,7 +132,7 @@ namespace PixelCrushers.DialogueSystem
                             var height = EditorTools.textAreaGuiStyle.CalcHeight(new GUIContent(element.stringValue), luaFieldWidth) + 2f;
                             rect = new Rect(x + 96f, y, width - 96f, height);
                             y += height;
-                            element.stringValue = EditorGUI.TextArea(rect, element.stringValue);
+                            element.stringValue = EditorGUI.TextArea(rect, element.stringValue, EditorTools.textAreaGuiStyle);
                         }
                     }
 
@@ -168,7 +168,7 @@ namespace PixelCrushers.DialogueSystem
                     }
 
                     // Quest conditions:
-                    rect = new Rect(x, y, width, GetArrayHeight(questConditionsProperty));
+                    rect = new Rect(x, y, width, GetQuestConditionsHeight(questConditionsProperty));
                     EditorGUI.PropertyField(rect, questConditionsProperty, true);
                     y += rect.height;
 
@@ -221,6 +221,21 @@ namespace PixelCrushers.DialogueSystem
                 if (luaFieldWidth == 0) luaFieldWidth = Screen.width - 34f;
                 height += EditorTools.textAreaGuiStyle.CalcHeight(new GUIContent(element.stringValue), luaFieldWidth) + 2f;
 
+            }
+            return height;
+        }
+
+        private float GetQuestConditionsHeight(SerializedProperty questConditionsProperty)
+        {
+            var height = GetArrayHeight(questConditionsProperty);
+            for (int i = 0; i < questConditionsProperty.arraySize; i++)
+            {
+                height += EditorGUIUtility.singleLineHeight;
+                var questConditionProperty = questConditionsProperty.GetArrayElementAtIndex(i);
+                if (questConditionProperty.FindPropertyRelative("checkQuestEntry").boolValue)
+                {
+                    height += EditorGUIUtility.singleLineHeight;
+                }
             }
             return height;
         }

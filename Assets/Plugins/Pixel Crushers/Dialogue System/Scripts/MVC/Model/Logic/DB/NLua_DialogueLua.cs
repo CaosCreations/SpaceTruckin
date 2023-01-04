@@ -36,6 +36,14 @@ namespace PixelCrushers.DialogueSystem
         public static bool includeSimStatus = true;
 
         /// <summary>
+        /// DANGEROUS: Version 2.2.5 introduced a fix that replaces "/" with "_" in table indices.
+        /// In some existing projects with many forward slashes, it may not be practical to globally
+        /// search and replace all variable names in Conditions and Script fields. In this case,
+        /// you can revert the fix (and not replace "/" with "_") by setting this bool to false.
+        /// </summary>
+        public static bool replaceSlashWithUnderscore = true;
+
+        /// <summary>
         /// The status table used by the Chat Mapper GetStatus() and SetStatus() Lua functions. 
         /// See the online Chat Mapper manual for more details: http://www.chatmapper.com
         /// </summary>
@@ -47,15 +55,54 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         private static Dictionary<string, float> relationshipTable = new Dictionary<string, float>();
 
+        private static bool isRegistering = false;
+        private static bool hasCachedParticipants = false;
+        private static string cachedActorName;
+        private static string cachedConversantName;
+        private static string cachedActorIndex;
+        private static string cachedConversantIndex;
+
+#if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void InitStaticVariables()
+        {
+            isRegistering = false;
+            hasCachedParticipants = false;
+            includeSimStatus = true;
+            statusTable = new Dictionary<string, string>();
+            relationshipTable = new Dictionary<string, float>();
+            if (DialogueManager.instance != null) DialogueManager.instance.StartCoroutine(RegisterLuaFunctionsAfterFrame());
+            else RegisterLuaFunctions();
+        }
+#endif
+
         /// <summary>
         /// Initializes the DialogueLua class. Registers the Chat Mapper functions (xxxStatus() and 
         /// xxxRelationship()), and initializes the Chat Mapper tables.
         /// </summary>
         static DialogueLua()
         {
+            InitializeChatMapperVariables();
+            RegisterLuaFunctions();
+        }
+
+        public static void RegisterLuaFunctions()
+        {
             RegisterChatMapperFunctions();
             RegisterDialogueSystemFunctions();
-            InitializeChatMapperVariables();
+        }
+
+        static System.Collections.IEnumerator RegisterLuaFunctionsAfterFrame()
+        {
+            isRegistering = true;
+            yield return new WaitForEndOfFrame();
+            RegisterLuaFunctions();
+            isRegistering = false;
+            if (hasCachedParticipants)
+            {
+                hasCachedParticipants = false;
+                SetParticipants(cachedActorName, cachedConversantName, cachedActorIndex, cachedConversantIndex);
+            }
         }
 
         /// <summary>
@@ -64,6 +111,9 @@ namespace PixelCrushers.DialogueSystem
         public static void InitializeChatMapperVariables()
         {
             Lua.Run("Actor = {}; Item = {}; Quest = Item; Location = {}; Conversation = {}; Variable = {}; Variable[\"Alert\"] = \"\"", DialogueDebug.LogInfo);
+            Lua.Run("unassigned='unassigned'; active='active'; success='success'; failure='failure'; abandoned='abandoned'", DialogueDebug.LogInfo);
+            statusTable.Clear();
+            relationshipTable.Clear();
         }
 
         /// <summary>
@@ -124,6 +174,14 @@ namespace PixelCrushers.DialogueSystem
             SetVariable("Conversant", conversantName);
             SetVariable("ActorIndex", StringToTableIndex(string.IsNullOrEmpty(actorIndex) ? actorName : actorIndex));
             SetVariable("ConversantIndex", StringToTableIndex(string.IsNullOrEmpty(conversantIndex) ? actorName : conversantIndex));
+            if (isRegistering) // Cache participants to set after Lua funcs are registered.
+            {
+                hasCachedParticipants = true;
+                cachedActorName = actorName;
+                cachedConversantName = conversantName;
+                cachedActorIndex = actorIndex;
+                cachedConversantIndex = conversantIndex;
+            }
         }
 
         /// <summary>
@@ -300,7 +358,7 @@ namespace PixelCrushers.DialogueSystem
             {
                 if (!string.IsNullOrEmpty(field.title))
                 {
-                    sb.AppendFormat("{0} = {1}, ", new System.Object[] { StringToTableIndex(field.title), FieldValueAsString(field) });
+                    sb.AppendFormat("{0} = {1}, ", new System.Object[] { StringToFieldName(field.title), FieldValueAsString(field) });
                 }
             }
             if (!string.IsNullOrEmpty(extraField)) sb.Append(extraField);
@@ -634,9 +692,16 @@ namespace PixelCrushers.DialogueSystem
         /// </param>
         public static string StringToTableIndex(string s)
         {
-            //---Was: return string.IsNullOrEmpty(s) ? string.Empty : SpacesToUnderscores(DoubleQuotesToSingle(s)).Replace('-', '_');
-            return string.IsNullOrEmpty(s) ? string.Empty : SpacesToUnderscores(DoubleQuotesToSingle(s.Replace('\"', '_'))).Replace('-', '_').
-                Replace('(', '_').Replace(')', '_');
+            if (replaceSlashWithUnderscore)
+            {
+                return string.IsNullOrEmpty(s) ? string.Empty : SpacesToUnderscores(DoubleQuotesToSingle(s.Replace('\"', '_'))).Replace('-', '_').
+                    Replace('(', '_').Replace(')', '_').Replace("/", "_");
+            }
+            else
+            {
+                return string.IsNullOrEmpty(s) ? string.Empty : SpacesToUnderscores(DoubleQuotesToSingle(s.Replace('\"', '_'))).Replace('-', '_').
+                    Replace('(', '_').Replace(')', '_');
+            }
         }
 
         private static Lua.Result SafeGetLuaResult(string luaCode)
@@ -840,6 +905,20 @@ namespace PixelCrushers.DialogueSystem
         }
 
         /// <summary>
+        /// Returns a list of all runtime variable names.
+        /// </summary>
+        public static string[] GetAllVariables()
+        {
+            var list = new List<string>();
+            var variableTable = Lua.Run("return Variable").asTable;
+            if (variableTable != null)
+            {
+                list.AddRange(variableTable.keys);
+            }
+            return list.ToArray();
+        }
+
+        /// <summary>
         /// Checks if a variable exists in the Lua Variable table.
         /// </summary>
         /// <returns><c>true</c> if the variable exists, <c>false</c> otherwise.</returns>
@@ -896,6 +975,30 @@ namespace PixelCrushers.DialogueSystem
             else
             {
                 return StringToTableIndex(s + "_" + Localization.Language);
+            }
+        }
+
+        /// <summary>
+        /// Returns the version of a string usable as the field of an element in a Chat Mapper table.
+        /// </summary>
+        public static string StringToFieldName(string s)
+        {
+            return StringToTableIndex(s).Replace('.', '_');
+        }
+
+        /// <summary>
+        /// Returns a StringToFieldName() value after adding the current language code
+        /// to the end of s.
+        /// </summary>
+        public static string StringToLocalizedFieldName(string s)
+        {
+            if (Localization.IsDefaultLanguage || string.IsNullOrEmpty(s))
+            {
+                return StringToFieldName(s);
+            }
+            else
+            {
+                return StringToFieldName(s + "_" + Localization.Language);
             }
         }
 

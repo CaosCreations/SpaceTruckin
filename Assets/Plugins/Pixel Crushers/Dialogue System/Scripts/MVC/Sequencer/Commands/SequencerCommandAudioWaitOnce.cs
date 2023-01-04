@@ -98,7 +98,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
                             var audioClip = asset as AudioClip;
                             if (audioClip == null)
                             {
-                                if (DialogueDebug.logWarnings) Debug.LogWarning(string.Format("{0}: Sequencer: AudioWait() command: Clip '{1}' wasn't found.", new System.Object[] { DialogueDebug.Prefix, audioClipName }));
+                                if (DialogueDebug.logWarnings && Sequencer.reportMissingAudioFiles) Debug.LogWarning(string.Format("{0}: Sequencer: AudioWait() command: Clip '{1}' wasn't found.", new System.Object[] { DialogueDebug.Prefix, audioClipName }));
                                 _stopTime = 0;
                             }
                             else
@@ -107,7 +107,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
                                 {
                                     if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: Sequencer: AudioWait(): waiting but not playing '{1}'; audio is muted.", new System.Object[] { DialogueDebug.Prefix, audioClipName }));
                                 }
-                                else
+                                else if (_audioSource != null) // Check in case AudioSource was destroyed while loading Addressable.
                                 {
                                     if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: Sequencer: AudioWait(): playing '{1}'.", new System.Object[] { DialogueDebug.Prefix, audioClipName }));
                                     _currentClip = audioClip;
@@ -199,12 +199,12 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
         {
             if (_audioSource != null)
             {
-                DialogueManager.UnloadAsset(_currentClip);
                 if (_audioSource.isPlaying && (_audioSource.clip == _currentClip))
                 {
                     _audioSource.Stop();
                 }
                 if (_restoreOriginalClip) _audioSource.clip = _originalClip;
+                DialogueManager.UnloadAsset(_currentClip);
             }
         }
 

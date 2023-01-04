@@ -19,6 +19,6 @@ namespace PixelCrushers.DialogueSystem
         public CustomLuaReturnType returnValue = CustomLuaReturnType.None;
     }
 
-    public enum CustomLuaParameterType { Bool, Double, String, Actor, Quest, QuestEntry, Variable, None, Item, QuestState }
+    public enum CustomLuaParameterType { Bool, Double, String, Actor, Quest, QuestEntry, Variable, None, Item, QuestState, VariableName }
     public enum CustomLuaReturnType { None, Bool, Double, String }
 }

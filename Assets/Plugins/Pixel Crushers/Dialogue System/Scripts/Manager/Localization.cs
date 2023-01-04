@@ -74,7 +74,7 @@ namespace PixelCrushers.DialogueSystem
         private static int m_currentLanguageID = -1;
         private static bool m_useDefaultIfUndefined = true;
 
-#if UNITY_2019_3_OR_NEWER
+#if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void InitStaticVariables()
         {

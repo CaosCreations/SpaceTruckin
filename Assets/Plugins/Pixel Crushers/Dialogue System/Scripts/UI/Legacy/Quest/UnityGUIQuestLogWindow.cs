@@ -132,8 +132,9 @@ namespace PixelCrushers.DialogueSystem.UnityGUI
         /// Start this instance by hiding the GUI root. We only need to activate it when the window
         /// is open.
         /// </summary>
-        public void Start()
+        protected override void Start()
         {
+            base.Start();
             if (guiRoot != null) guiRoot.gameObject.SetActive(false);
         }
 

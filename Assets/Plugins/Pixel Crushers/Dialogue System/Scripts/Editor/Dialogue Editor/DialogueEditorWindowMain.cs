@@ -2,7 +2,6 @@
 
 using UnityEngine;
 using UnityEditor;
-using System.IO;
 
 namespace PixelCrushers.DialogueSystem.DialogueEditor
 {
@@ -30,7 +29,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 {
                     Selection.activeObject = DialogueEditorWindow.instance.database;
                 }
-                if (DialogueDatabaseEditor.instance != null) DialogueDatabaseEditor.instance.Repaint();
+                DialogueDatabaseEditor.RepaintInstances();
             }
         }
         [SerializeField]
@@ -61,12 +60,14 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private const string CompleteUndoKey = "PixelCrushers.DialogueSystem.DialogueEditor.registerCompleteObjectUndo";
         private const string ShowNodeEditorKey = "PixelCrushers.DialogueSystem.DialogueEditor.ShowNodeEditor";
         private const string ShowDatabaseNameKey = "PixelCrushers.DialogueSystem.DialogueEditor.ShowDatabaseName";
+        private const string SyncOnOpenKey = "PixelCrushers.DialogueSystem.DialogueEditor.SyncOnOpen";
         private const string AutoBackupKey = "PixelCrushers.DialogueSystem.DialogueEditor.AutoBackupFrequency";
         private const string AutoBackupFolderKey = "PixelCrushers.DialogueSystem.DialogueEditor.AutoBackupFolder";
         private const string AddNewNodesToRightKey = "PixelCrushers.DialogueSystem.DialogueEditor.AddNewNodesToRight";
         private const string TrimWhitespaceAroundPipesKey = "PixelCrushers.DialogueSystem.DialogueEditor.TrimWhitespaceAroundPipes";
         private const string LocalizationLanguagesKey = "PixelCrushers.DialogueSystem.DialogueEditor.LocalizationLanguages";
         private const string SequencerDragDropCommandsKey = "PixelCrushers.DialogueSystem.DialogueEditor.SequencerDragDropCommands";
+        private const string DialogueEditorPrefsKey = "PixelCrushers.DialogueSystem.DialogueEditor.Prefs";
 
         private const float RuntimeUpdateFrequency = 0.5f;
         private float timeSinceLastRuntimeUpdate = 0;
@@ -78,13 +79,32 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private bool showDatabaseName = true;
 
+        private bool syncOnOpen = true;
+
+        private DialogueEditorPrefs prefs = null;
+
+        private const float MinWidth = 720f;
+        private const float MinHeight = 240f;
+
+        public static void ResetPosition()
+        {
+            if (instance == null)
+            {
+                instance = OpenDialogueEditorWindow();
+            }
+            instance.position = new Rect(0f, 0f, MinWidth, MinHeight);
+        }
+
         private void OnEnable()
         {
             if (debug) Debug.Log("<color=green>Dialogue Editor: OnEnable (Selection.activeObject=" + Selection.activeObject + ", database=" + database + ")</color>", Selection.activeObject);
             instance = this;
-            template = TemplateTools.LoadFromEditorPrefs();
-            minSize = new Vector2(720, 240);
-            if (Selection.activeObject != null)
+            minSize = new Vector2(MinWidth, MinHeight);
+            if (database != null)
+            {
+                LoadTemplateFromDatabase();
+            }
+            else if (Selection.activeObject != null)
             {
                 SelectObject(Selection.activeObject);
             }
@@ -101,9 +121,9 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             EditorApplication.playmodeStateChanged -= OnPlaymodeStateChanged;
             EditorApplication.playmodeStateChanged += OnPlaymodeStateChanged;
 #endif
-            //nodeStyle = null;
             showQuickDialogueTextEntry = false;
             LoadEditorSettings();
+            if (database == null) template = TemplateTools.LoadFromEditorPrefs();
         }
 
         private void OnDisable()
@@ -114,10 +134,15 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 #else
             EditorApplication.playmodeStateChanged -= OnPlaymodeStateChanged;
 #endif
+            //--- No need to save assets after entering play mode? This was a workaround for Asset Database bugs.
+            //try
+            //{
+            //    EditorApplication.delayCall += AssetDatabase.SaveAssets;
+            //}
+            //catch (System.NullReferenceException) { } // Some Unity versions w/disabled domain reloading don't allow when entering play mode.
             SaveTemplate();
             inspectorSelection = null;
             instance = null;
-            //nodeStyle = null;
             SaveEditorSettings();
         }
 
@@ -131,6 +156,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         {
             registerCompleteObjectUndo = EditorPrefs.GetBool(CompleteUndoKey, true);
             showDatabaseName = EditorPrefs.GetBool(ShowDatabaseNameKey, true);
+            syncOnOpen = EditorPrefs.GetBool(SyncOnOpenKey, true);
             autoBackupFrequency = EditorPrefs.GetFloat(AutoBackupKey, DefaultAutoBackupFrequency);
             autoBackupFolder = EditorPrefs.GetString(AutoBackupFolderKey, string.Empty);
             timeForNextAutoBackup = Time.realtimeSinceStartup + autoBackupFrequency;
@@ -138,18 +164,22 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             trimWhitespaceAroundPipes = EditorPrefs.GetBool(TrimWhitespaceAroundPipesKey, true);
             if (EditorPrefs.HasKey(LocalizationLanguagesKey)) localizationLanguages = JsonUtility.FromJson<LocalizationLanguages>(EditorPrefs.GetString(LocalizationLanguagesKey));
             if (EditorPrefs.HasKey(SequencerDragDropCommandsKey)) SequenceEditorTools.RestoreDragDropCommands(EditorPrefs.GetString(SequencerDragDropCommandsKey));
+            if (EditorPrefs.HasKey(DialogueEditorPrefsKey)) prefs = JsonUtility.FromJson<DialogueEditorPrefs>(EditorPrefs.GetString(DialogueEditorPrefsKey));
+            if (prefs == null) prefs = new DialogueEditorPrefs();
         }
 
         private void SaveEditorSettings()
-        { 
+        {
             EditorPrefs.SetBool(CompleteUndoKey, registerCompleteObjectUndo);
             EditorPrefs.SetBool(ShowDatabaseNameKey, showDatabaseName);
+            EditorPrefs.SetBool(SyncOnOpenKey, syncOnOpen);
             EditorPrefs.SetFloat(AutoBackupKey, autoBackupFrequency);
             EditorPrefs.SetString(AutoBackupFolderKey, autoBackupFolder);
             EditorPrefs.SetBool(AddNewNodesToRightKey, addNewNodesToRight);
             EditorPrefs.SetBool(TrimWhitespaceAroundPipesKey, trimWhitespaceAroundPipes);
             EditorPrefs.SetString(LocalizationLanguagesKey, JsonUtility.ToJson(localizationLanguages));
             EditorPrefs.SetString(SequencerDragDropCommandsKey, SequenceEditorTools.SaveDragDropCommands());
+            EditorPrefs.SetString(DialogueEditorPrefsKey, JsonUtility.ToJson(prefs));
         }
 
         private void LoadTemplateFromDatabase()
@@ -181,6 +211,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private void HandlePlayModeStateChanged()
         {
             if (debug) Debug.Log("<color=cyan>Dialogue Editor: OnPlaymodeStateChanged - isPlaying=" + EditorApplication.isPlaying + "/" + EditorApplication.isPlayingOrWillChangePlaymode + "</color>");
+            if (!EditorApplication.isPlaying) AssetDatabase.SaveAssets();
             toolbar.UpdateTabNames(template.treatItemsAsQuests);
             currentConversationState = null;
             currentRuntimeEntry = null;
@@ -238,6 +269,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     ResetConversationNodeEditor();
                     UpdateReferencesByID();
                 }
+                if (syncOnOpen) database.SyncAll();
                 Repaint();
             }
         }
@@ -290,19 +322,27 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         public void OnGUI()
         {
-            try
+            Event e = Event.current;
+            if (e.type == EventType.ValidateCommand && e.commandName == "UndoRedoPerformed")
             {
-                if (instance == null) instance = this;
-                RecordUndo();
-                var isInNodeEditor = (toolbar.Current == Toolbar.Tab.Conversations) && showNodeEditor;
-                if (!isInNodeEditor) DrawDatabaseName(); // Node editor draws name after grid.
-                DrawToolbar();
-                DrawMainBody();
+                HandleUndo();
             }
-            catch (System.ArgumentException)
+            else
             {
-                // Not ideal to hide ArgumentException, but window can change layout during a repaint,
-                // which can cause this exception.
+                try
+                {
+                    if (instance == null) instance = this;
+                    RecordUndo();
+                    var isInNodeEditor = (toolbar.Current == Toolbar.Tab.Conversations) && showNodeEditor;
+                    if (!isInNodeEditor) DrawDatabaseName(); // Node editor draws name after grid.
+                    DrawToolbar();
+                    DrawMainBody();
+                }
+                catch (System.ArgumentException)
+                {
+                    // Not ideal to hide ArgumentException, but window can change layout during a repaint,
+                    // which can cause this exception.
+                }
             }
         }
 
@@ -371,6 +411,10 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     UpdateConversationTitles();
                     ResetNodeEditorConversationList();
                 }
+                if (toolbar.current == Toolbar.Tab.Database)
+                {
+                    ResetDatabaseTab();
+                }
                 if (toolbar.Current == Toolbar.Tab.Items)
                 {
                     BuildLanguageListFromItems();
@@ -388,7 +432,8 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             {
                 DrawCurrentSection();
             }
-            else {
+            else
+            {
                 DrawNoDatabaseSection();
             }
         }
@@ -427,7 +472,8 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                         {
                             DrawWatchSection();
                         }
-                        else {
+                        else
+                        {
                             DrawTemplateSection();
                         }
                         break;
@@ -445,86 +491,6 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 if (EditorGUI.EndChangeCheck()) SetDatabaseDirty("Standard Editor Change");
             }
             catch (System.InvalidOperationException) { }
-        }
-
-        private void RecordUndo()
-        {
-            if (database == null) return;
-            var eventType = Event.current.type;
-            if (eventType == EventType.MouseUp || eventType == EventType.MouseDrag ||
-                eventType == EventType.KeyUp || eventType == EventType.ContextClick)
-            {
-                if (registerCompleteObjectUndo)
-                {
-                    Undo.RegisterCompleteObjectUndo(database, "Dialogue Database");
-                }
-                else
-                {
-                    Undo.RecordObject(database, "Dialogue Database");
-                }
-            }
-        }
-
-        public void SetDatabaseDirty(string reason)
-        {
-            if (debug)
-            {
-                if (database == null)
-                {
-                    if (string.IsNullOrEmpty(reason))
-                    {
-                        Debug.LogWarning("Dialogue Editor wants to mark database to be saved, but it doesn't have a reference to a database!");
-                    }
-                    else {
-                        Debug.LogWarning("Dialogue Editor wants to mark database to be saved after change '" + reason + "', but it doesn't have a reference to a database!");
-                    }
-                }
-                else {
-                    if (string.IsNullOrEmpty(reason))
-                    {
-                        Debug.Log("Dialogue Editor marking database '" + database.name + "' to be saved.", database);
-                    }
-                    else {
-                        Debug.Log("Dialogue Editor marking database '" + database.name + "' to be saved after change '" + reason + "'.", database);
-                    }
-                }
-            }
-            if (database != null) EditorUtility.SetDirty(database);
-        }
-
-        private void MakeAutoBackup()
-        {
-            if (database == null) return;
-            try
-            {
-                var path = AssetDatabase.GetAssetPath(database);
-                if (path.EndsWith("(Auto-Backup).asset"))
-                {
-                    Debug.Log("Dialogue Editor: Not creating an auto-backup. You're already editing the auto-backup file.");
-                    return;
-                }
-                var backupPath = Path.GetDirectoryName(path) + "/" + Path.GetFileNameWithoutExtension(path) + " (Auto-Backup).asset";
-                if (!string.IsNullOrEmpty(autoBackupFolder))
-                {
-                    backupPath = autoBackupFolder + "/" + Path.GetFileNameWithoutExtension(path) + " (Auto-Backup).asset";
-                }
-                if (debug) Debug.Log("Dialogue Editor: Making auto-backup " + backupPath);
-                EditorUtility.DisplayProgressBar("Dialogue Editor Auto-Backup", "Creating auto-backup " + Path.GetFileNameWithoutExtension(backupPath), 0);
-                AssetDatabase.DeleteAsset(backupPath);
-                AssetDatabase.CopyAsset(path, backupPath);
-                AssetDatabase.Refresh();
-#if !(UNITY_4_6 || UNITY_4_7 || UNITY_4_8 || UNITY_4_9)
-                if (!string.IsNullOrEmpty(AssetImporter.GetAtPath(backupPath).assetBundleName))
-                {
-                    AssetImporter.GetAtPath(backupPath).assetBundleVariant = string.Empty;
-                    AssetImporter.GetAtPath(backupPath).assetBundleName = string.Empty;
-                }
-#endif
-            }
-            finally
-            {
-                EditorUtility.ClearProgressBar();
-            }
         }
 
     }

@@ -5,17 +5,24 @@
 
 
 
-using UnityEngine;
-using UnityEditor;
+using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using UnityEngine;
+using UnityEditor;
 
 namespace PixelCrushers.DialogueSystem
 {
+    //*** Rename TemplateConverterPrefs here and in the ConverterWindowTemplate class definition below.
+    [Serializable]
+    public class TemplateConverterPrefs : AbstractConverterWindowPrefs
+    {
+        //*** Add any settings your window needs to remember here.
+    }
 
-    //*** Rename ConverterWindowTempalte to the name of your converter class:
-    public class ConverterWindowTemplate : AbstractConverterWindow
+    //*** Rename ConverterWindowTemplate to the name of your converter class:
+    public class ConverterWindowTemplate : AbstractConverterWindow<TemplateConverterPrefs>
     {
 
         //*** Set the source file extension here:

@@ -19,7 +19,7 @@ namespace PixelCrushers.DialogueSystem.Articy
 
         public List<ConversionSetting> list = new List<ConversionSetting>();
 
-        public enum DropdownOverrideMode { UseGlobalSetting, Int, String }
+        public enum DropdownOverrideMode { UseGlobalSetting, Int, TechnicalName, DisplayName }
 
         [Serializable]
         public class DropdownOverrideSetting

@@ -18,7 +18,7 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("Toggle the quest log window when this input button is presed.")]
         public string buttonName = string.Empty;
 
-        [Tooltip("Use this quest log window. If unassigned, will automatically find quest log window in scene.")]
+        [Tooltip("(Optional) Use this quest log window. If unassigned, will automatically find quest log window in scene. If you assign a window, assign a scene instance, not an uninstantiated prefab.")]
         public QuestLogWindow questLogWindow;
 
         public QuestLogWindow runtimeQuestLogWindow

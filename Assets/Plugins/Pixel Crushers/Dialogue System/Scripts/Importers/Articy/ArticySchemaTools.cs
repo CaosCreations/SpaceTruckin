@@ -13,15 +13,15 @@ namespace PixelCrushers.DialogueSystem.Articy
     public static class ArticySchemaTools
     {
 
-        public static ArticyData LoadArticyDataFromXmlData(string xmlData, Encoding encoding, bool convertDropdownAsString = false)
+        public static ArticyData LoadArticyDataFromXmlData(string xmlData, Encoding encoding, ConverterPrefs.ConvertDropdownsModes convertDropdownAs = ConverterPrefs.ConvertDropdownsModes.Int)
         {
             if (Articy_3_1.Articy_3_1_Tools.IsSchema(xmlData))
             {
-                return Articy_3_1.Articy_3_1_Tools.LoadArticyDataFromXmlData(xmlData, encoding, convertDropdownAsString);
+                return Articy_3_1.Articy_3_1_Tools.LoadArticyDataFromXmlData(xmlData, encoding, convertDropdownAs);
             }
             else if (Articy_2_4.Articy_2_4_Tools.IsSchema(xmlData))
             {
-                return Articy_2_4.Articy_2_4_Tools.LoadArticyDataFromXmlData(xmlData, encoding, convertDropdownAsString);
+                return Articy_2_4.Articy_2_4_Tools.LoadArticyDataFromXmlData(xmlData, encoding, convertDropdownAs);
             }
             else if (Articy_2_2.Articy_2_2_Tools.IsSchema(xmlData))
             {
@@ -41,11 +41,11 @@ namespace PixelCrushers.DialogueSystem.Articy
         {
             if (Articy_3_1.Articy_3_1_Tools.IsSchema(xmlData))
             {
-                return Articy_3_1.Articy_3_1_Tools.LoadArticyDataFromXmlData(xmlData, prefs.Encoding, prefs.ConvertDropdownsAsString, prefs);
+                return Articy_3_1.Articy_3_1_Tools.LoadArticyDataFromXmlData(xmlData, prefs.Encoding, prefs.ConvertDropdownsAs, prefs);
             }
             else if (Articy_2_4.Articy_2_4_Tools.IsSchema(xmlData))
             {
-                return Articy_2_4.Articy_2_4_Tools.LoadArticyDataFromXmlData(xmlData, prefs.Encoding, prefs.ConvertDropdownsAsString, prefs);
+                return Articy_2_4.Articy_2_4_Tools.LoadArticyDataFromXmlData(xmlData, prefs.Encoding, prefs.ConvertDropdownsAs, prefs);
             }
             else if (Articy_2_2.Articy_2_2_Tools.IsSchema(xmlData))
             {

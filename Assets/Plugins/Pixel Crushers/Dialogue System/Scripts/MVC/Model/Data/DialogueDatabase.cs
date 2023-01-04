@@ -47,6 +47,12 @@ namespace PixelCrushers.DialogueSystem
         public EmphasisSetting[] emphasisSettings = new EmphasisSetting[NumEmphasisSettings];
 
         /// <summary>
+        /// Assign IDs of assets (actors, items, conversations, etc.) from this base value.
+        /// Useful for multiple databases.
+        /// </summary>
+        public int baseID = 1;
+
+        /// <summary>
         /// The actors in the database.
         /// </summary>
         public List<Actor> actors = new List<Actor>();
@@ -219,7 +225,7 @@ namespace PixelCrushers.DialogueSystem
         /// </param>
         public Actor GetActor(string actorName)
         {
-            //return actors.Find(a => string.Equals(a.Name, actorName));
+            if (string.IsNullOrEmpty(actorName)) return null;
             SetupCaches();
             return actorNameCache.ContainsKey(actorName) ? actorNameCache[actorName] : actors.Find(a => string.Equals(a.Name, actorName));
         }
@@ -245,7 +251,7 @@ namespace PixelCrushers.DialogueSystem
         /// <param name="itemName">The item's name (the value of the Name field).</param>
         public Item GetItem(string itemName)
         {
-            //return items.Find(i => string.Equals(i.Name, itemName));
+            if (string.IsNullOrEmpty(itemName)) return null;
             SetupCaches();
             return itemNameCache.ContainsKey(itemName) ? itemNameCache[itemName] : items.Find(i => string.Equals(i.Name, itemName));
         }
@@ -271,7 +277,7 @@ namespace PixelCrushers.DialogueSystem
         /// <param name="locationName">The location's name (value of the Name field).</param>
         public Location GetLocation(string locationName)
         {
-            //return locations.Find(l => string.Equals(l.Name, locationName));
+            if (string.IsNullOrEmpty(locationName)) return null;
             SetupCaches();
             return locationNameCache.ContainsKey(locationName) ? locationNameCache[locationName] : locations.Find(l => string.Equals(l.Name, locationName));
         }
@@ -297,7 +303,7 @@ namespace PixelCrushers.DialogueSystem
         /// <param name="variableName">Variable name.</param>
         public Variable GetVariable(string variableName)
         {
-            //return variables.Find(v => string.Equals(v.Name, variableName));
+            if (string.IsNullOrEmpty(variableName)) return null;
             SetupCaches();
             return variableNameCache.ContainsKey(variableName) ? variableNameCache[variableName] : variables.Find(v => string.Equals(v.Name, variableName));
         }
@@ -339,7 +345,7 @@ namespace PixelCrushers.DialogueSystem
         /// </param>
         public Conversation GetConversation(string conversationTitle)
         {
-            //return conversations.Find(c => string.Equals(c.Title, conversationTitle));
+            if (string.IsNullOrEmpty(conversationTitle)) return null;
             SetupCaches();
             return conversationTitleCache.ContainsKey(conversationTitle) ? conversationTitleCache[conversationTitle] : conversations.Find(c => string.Equals(c.Title, conversationTitle));
         }
@@ -600,6 +606,8 @@ namespace PixelCrushers.DialogueSystem
             ResetCache();
         }
 
+        #region Sync
+
         /// <summary>
         /// Syncs all assets from their source databases if assigned in syncInfo.
         /// </summary>
@@ -617,11 +625,45 @@ namespace PixelCrushers.DialogueSystem
         public void SyncActors()
         {
             ResetCache();
-            if (!syncInfo.syncActors || syncInfo.syncActorsDatabase == null) return;
-            actors.RemoveAll(x => (syncInfo.syncActorsDatabase.GetActor(x.id) != null));
-            foreach (Actor actor in syncInfo.syncActorsDatabase.actors)
+            if (!syncInfo.syncActors || syncInfo.syncActorsDatabase == null || syncInfo.syncActorsDatabase == this) return;
+
+            // Identify actors in sync DB that have been renamed:
+            var renamedActors = new Dictionary<string, string>(); // <old, new> Lua indices
+            foreach (Actor sourceActor in syncInfo.syncActorsDatabase.actors)
             {
-                actors.Add(new Actor(actor));
+                var myActor = GetActor(sourceActor.id);
+                if (myActor != null && myActor.Name != sourceActor.Name)
+                {
+                    renamedActors.Add(DialogueLua.StringToTableIndex(myActor.Name), DialogueLua.StringToTableIndex(sourceActor.Name));
+                }
+            }
+
+            // Copy actors from sync DB to this DB, replacing those in this DB that have same ID:
+            actors.RemoveAll(x => (syncInfo.syncActorsDatabase.GetActor(x.id) != null));
+            for (int i = 0; i < syncInfo.syncActorsDatabase.actors.Count; i++)
+            {
+                actors.Insert(i, new Actor(syncInfo.syncActorsDatabase.actors[i]));
+            }
+
+            // Update any renamed actors in dialogue entry Conditions and Scripts:
+            foreach (Conversation conversation in conversations)
+            {
+                foreach (DialogueEntry entry in conversation.dialogueEntries)
+                {
+                    foreach (var kvp in renamedActors)
+                    {
+                        var oldLuaIndex = kvp.Key;
+                        var newLuaIndex = kvp.Value;
+                        if (entry.conditionsString.Contains(oldLuaIndex))
+                        {
+                            entry.conditionsString = ReplaceLuaIndex(entry.conditionsString, "Actor", oldLuaIndex, newLuaIndex);
+                        }
+                        if (entry.userScript.Contains(oldLuaIndex))
+                        {
+                            entry.userScript = ReplaceLuaIndex(entry.userScript, "Actor", oldLuaIndex, newLuaIndex);
+                        }
+                    }
+                }
             }
         }
 
@@ -631,11 +673,45 @@ namespace PixelCrushers.DialogueSystem
         public void SyncItems()
         {
             ResetCache();
-            if (!syncInfo.syncItems || syncInfo.syncItemsDatabase == null) return;
-            items.RemoveAll(x => (syncInfo.syncItemsDatabase.GetItem(x.id) != null));
-            foreach (Item item in syncInfo.syncItemsDatabase.items)
+            if (!syncInfo.syncItems || syncInfo.syncItemsDatabase == null || syncInfo.syncItemsDatabase == this) return;
+
+            // Identify items in sync DB that have been renamed:
+            var renamedItems = new Dictionary<string, string>(); // <old, new> Lua indices
+            foreach (Item sourceItem in syncInfo.syncItemsDatabase.items)
             {
-                items.Add(new Item(item));
+                var myItem = GetItem(sourceItem.id);
+                if (myItem != null && myItem.Name != sourceItem.Name)
+                {
+                    renamedItems.Add(DialogueLua.StringToTableIndex(myItem.Name), DialogueLua.StringToTableIndex(sourceItem.Name));
+                }
+            }
+
+            // Copy items from sync DB to this DB, replacing those in this DB that have same ID:
+            items.RemoveAll(x => (syncInfo.syncItemsDatabase.GetItem(x.id) != null));
+            for (int i = 0; i < syncInfo.syncItemsDatabase.items.Count; i++)
+            {
+                items.Insert(i, new Item(syncInfo.syncItemsDatabase.items[i]));
+            }
+
+            // Update any renamed items in dialogue entry Conditions and Scripts:
+            foreach (Conversation conversation in conversations)
+            {
+                foreach (DialogueEntry entry in conversation.dialogueEntries)
+                {
+                    foreach (var kvp in renamedItems)
+                    {
+                        var oldLuaIndex = kvp.Key;
+                        var newLuaIndex = kvp.Value;
+                        if (entry.conditionsString.Contains(oldLuaIndex))
+                        {
+                            entry.conditionsString = ReplaceLuaIndex(entry.conditionsString, "Item", oldLuaIndex, newLuaIndex);
+                        }
+                        if (entry.userScript.Contains(oldLuaIndex))
+                        {
+                            entry.userScript = ReplaceLuaIndex(entry.userScript, "Item", oldLuaIndex, newLuaIndex);
+                        }
+                    }
+                }
             }
         }
 
@@ -645,11 +721,45 @@ namespace PixelCrushers.DialogueSystem
         public void SyncLocations()
         {
             ResetCache();
-            if (!syncInfo.syncLocations || syncInfo.syncLocationsDatabase == null) return;
-            locations.RemoveAll(x => (syncInfo.syncLocationsDatabase.GetLocation(x.id) != null));
-            foreach (Location location in syncInfo.syncLocationsDatabase.locations)
+            if (!syncInfo.syncLocations || syncInfo.syncLocationsDatabase == null || syncInfo.syncLocationsDatabase == this) return;
+
+            // Identify locations in sync DB that have been renamed:
+            var renamedLocations = new Dictionary<string, string>(); // <old, new> Lua indices
+            foreach (Location sourceLocation in syncInfo.syncLocationsDatabase.locations)
             {
-                locations.Add(new Location(location));
+                var myLocation = GetLocation(sourceLocation.id);
+                if (myLocation != null && myLocation.Name != sourceLocation.Name)
+                {
+                    renamedLocations.Add(DialogueLua.StringToTableIndex(myLocation.Name), DialogueLua.StringToTableIndex(sourceLocation.Name));
+                }
+            }
+
+            // Copy locations from sync DB to this DB, replacing those in this DB that have same ID:
+            locations.RemoveAll(x => (syncInfo.syncLocationsDatabase.GetLocation(x.id) != null));
+            for (int i = 0; i < syncInfo.syncLocationsDatabase.locations.Count; i++)
+            {
+                locations.Insert(i, new Location(syncInfo.syncLocationsDatabase.locations[i]));
+            }
+
+            // Update any renamed locations in dialogue entry Conditions and Scripts:
+            foreach (Conversation conversation in conversations)
+            {
+                foreach (DialogueEntry entry in conversation.dialogueEntries)
+                {
+                    foreach (var kvp in renamedLocations)
+                    {
+                        var oldLuaIndex = kvp.Key;
+                        var newLuaIndex = kvp.Value;
+                        if (entry.conditionsString.Contains(oldLuaIndex))
+                        {
+                            entry.conditionsString = ReplaceLuaIndex(entry.conditionsString, "Location", oldLuaIndex, newLuaIndex);
+                        }
+                        if (entry.userScript.Contains(oldLuaIndex))
+                        {
+                            entry.userScript = ReplaceLuaIndex(entry.userScript, "Location", oldLuaIndex, newLuaIndex);
+                        }
+                    }
+                }
             }
         }
 
@@ -659,13 +769,55 @@ namespace PixelCrushers.DialogueSystem
         public void SyncVariables()
         {
             ResetCache();
-            if (!syncInfo.syncVariables || syncInfo.syncVariablesDatabase == null) return;
-            variables.RemoveAll(x => (syncInfo.syncVariablesDatabase.GetVariable(x.id) != null));
-            foreach (Variable variable in syncInfo.syncVariablesDatabase.variables)
+            if (!syncInfo.syncVariables || syncInfo.syncVariablesDatabase == null || syncInfo.syncVariablesDatabase == this) return;
+
+            // Identify variables in sync DB that have been renamed:
+            var renamedVariables = new Dictionary<string, string>(); // <old, new> Lua indices
+            foreach (Variable sourceVariable in syncInfo.syncVariablesDatabase.variables)
             {
-                variables.Add(new Variable(variable));
+                var myVariable = GetVariable(sourceVariable.id);
+                if (myVariable != null && myVariable.Name != sourceVariable.Name)
+                {
+                    renamedVariables.Add(DialogueLua.StringToTableIndex(myVariable.Name), DialogueLua.StringToTableIndex(sourceVariable.Name));
+                }
+            }
+
+            // Copy variables from sync DB to this DB, replacing those in this DB that have same ID:
+            variables.RemoveAll(x => (syncInfo.syncVariablesDatabase.GetVariable(x.id) != null));
+            for (int i = 0; i < syncInfo.syncVariablesDatabase.variables.Count; i++)
+            {
+                variables.Insert(i, new Variable(syncInfo.syncVariablesDatabase.variables[i]));
+            }
+
+            // Update any renamed variables in dialogue entry Conditions and Scripts:
+            foreach (Conversation conversation in conversations)
+            {
+                foreach (DialogueEntry entry in conversation.dialogueEntries)
+                {
+                    foreach (var kvp in renamedVariables)
+                    {
+                        var oldLuaIndex = kvp.Key;
+                        var newLuaIndex = kvp.Value;
+                        if (entry.conditionsString.Contains(oldLuaIndex))
+                        {
+                            entry.conditionsString = ReplaceLuaIndex(entry.conditionsString, "Variable", oldLuaIndex, newLuaIndex);
+                        }
+                        if (entry.userScript.Contains(oldLuaIndex))
+                        {
+                            entry.userScript = ReplaceLuaIndex(entry.userScript, "Variable", oldLuaIndex, newLuaIndex);
+                        }
+                    }
+                }
             }
         }
+
+        private string ReplaceLuaIndex(string luaCode, string tableName, string oldLuaIndex, string newLuaIndex)
+        {
+            return luaCode.Replace(tableName + "[\"" + oldLuaIndex + "\"]", tableName + "[\"" + newLuaIndex + "\"]").
+                    Replace(tableName + "['" + oldLuaIndex + "']", tableName + "['" + newLuaIndex + "']");
+        }
+
+        #endregion
 
         /// <summary>
         /// Checks if a list of assets contains an asset with a specified name.
@@ -811,6 +963,15 @@ namespace PixelCrushers.DialogueSystem
         public const string InvalidEntrytag = "invalid_entrytag";
         public const string VoiceOverFileFieldName = DialogueSystemFields.VoiceOverFile;
 
+        public delegate string GetCustomEntrytagDelegate(Conversation conversation, DialogueEntry entry);
+        public static GetCustomEntrytagDelegate getCustomEntrytag = null;
+
+
+        //--- Was manually specifying invalid filename chars: private static Regex entrytagRegex = new Regex("[;:,!\'\"\t\r\n\\/\\?\\[\\] ]");
+        private static Regex entrytagRegex = new Regex(string.Format("[{0}]", Regex.Escape(" " + new string(System.IO.Path.GetInvalidFileNameChars()) + new string(System.IO.Path.GetInvalidPathChars()))));
+        private static Regex actorNameLineNumberEntrytagRegex = new Regex("[,\"\t\r\n\\/<>?]");
+
+
         /// <summary>
         /// Gets the entrytag string of a dialogue entry.
         /// </summary>
@@ -822,32 +983,39 @@ namespace PixelCrushers.DialogueSystem
         {
             if (conversation == null || entry == null) return InvalidEntrytag;
             Actor actor = null;
-            Regex regex = new Regex("[;:,!\'\"\t\r\n\\/\\?\\[\\] ]");
             switch (entrytagFormat)
             {
                 case EntrytagFormat.ActorName_ConversationID_EntryID:
                     actor = GetActor(entry.ActorID);
                     if (actor == null) return InvalidEntrytag;
-                    return string.Format("{0}_{1}_{2}", regex.Replace(actor.Name, "_"), conversation.id, entry.id);
+                    return string.Format("{0}_{1}_{2}", entrytagRegex.Replace(actor.Name, "_"), conversation.id, entry.id);
                 case EntrytagFormat.ConversationTitle_EntryID:
-                    return string.Format("{0}_{1}", regex.Replace(conversation.Title, "_"), entry.id);
+                    return string.Format("{0}_{1}", entrytagRegex.Replace(conversation.Title, "_"), entry.id);
                 case EntrytagFormat.ActorNameLineNumber:
                     actor = GetActor(entry.ActorID);
                     if (actor == null) return InvalidEntrytag;
                     int lineNumber = (conversation.id * 500) + entry.id;
-                    return string.Format("{0}{1}", new Regex("[,\"\t\r\n\\/<>?]").Replace(actor.Name, "_"), lineNumber);
+                    return string.Format("{0}{1}", actorNameLineNumberEntrytagRegex.Replace(actor.Name, "_"), lineNumber);
                 case EntrytagFormat.ConversationID_ActorName_EntryID:
                     actor = GetActor(entry.ActorID);
                     if (actor == null) return InvalidEntrytag;
-                    return string.Format("{0}_{1}_{2}", conversation.id, regex.Replace(actor.Name, "_"), entry.id);
+                    return string.Format("{0}_{1}_{2}", conversation.id, entrytagRegex.Replace(actor.Name, "_"), entry.id);
                 case EntrytagFormat.ActorName_ConversationTitle_EntryDescriptor:
                     actor = GetActor(entry.ActorID);
                     if (actor == null) { return InvalidEntrytag; }
                     var entryDesc = !string.IsNullOrEmpty(entry.Title) ? entry.Title
                         : (!string.IsNullOrEmpty(entry.currentMenuText) ? entry.currentMenuText : entry.id.ToString());
-                    return string.Format("{0}_{1}_{2}", regex.Replace(actor.Name, "_"), regex.Replace(conversation.Title, "_"), regex.Replace(entryDesc, "_"));
+                    return string.Format("{0}_{1}_{2}", entrytagRegex.Replace(actor.Name, "_"), entrytagRegex.Replace(conversation.Title, "_"), entrytagRegex.Replace(entryDesc, "_"));
                 case EntrytagFormat.VoiceOverFile:
-                    return (entry == null) ? InvalidEntrytag : Field.LookupValue(entry.fields, VoiceOverFileFieldName);
+                    if (entry == null) return InvalidEntrytag;
+                    var voiceOverFile = Field.LookupValue(entry.fields, VoiceOverFileFieldName);
+                    return (voiceOverFile == null) ? InvalidEntrytag : entrytagRegex.Replace(voiceOverFile, "_");
+                case EntrytagFormat.Title:
+                    if (entry == null) return InvalidEntrytag;
+                    var title = Field.LookupValue(entry.fields, DialogueSystemFields.Title);
+                    return (title == null) ? InvalidEntrytag : entrytagRegex.Replace(title, "_");
+                case EntrytagFormat.Custom:
+                    return (getCustomEntrytag != null) ? getCustomEntrytag(conversation, entry) : InvalidEntrytag;
                 default:
                     return InvalidEntrytag;
             }

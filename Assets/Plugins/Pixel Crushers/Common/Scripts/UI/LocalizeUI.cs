@@ -1,5 +1,4 @@
-// Recompile at 5/16/2021 2:53:21 PM
-// Copyright (c) Pixel Crushers. All rights reserved.
+﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
 using System.Collections.Generic;
@@ -15,14 +14,24 @@ namespace PixelCrushers
         [SerializeField]
         private TextTable m_textTable;
 
+        [Tooltip("Overrides the UILocalizationManager's Localized Fonts.")]
+        [SerializeField]
+        private LocalizedFonts m_localizedFonts;
+
         [Tooltip("(Optional) If assigned, use this instead of the UI element's text's value as the field lookup value.")]
         [SerializeField]
         private string m_fieldName = string.Empty;
 
         public TextTable textTable
         {
-            get { return (m_textTable != null) ? m_textTable : (UILocalizationManager.instance.textTable != null) ? UILocalizationManager.instance.textTable : GlobalTextTable.textTable; }
+            get { return m_textTable; }
             set { m_textTable = value; }
+        }
+
+        public LocalizedFonts localizedFonts
+        {
+            get { return m_localizedFonts; }
+            set { m_localizedFonts = value; }
         }
 
         public string fieldName
@@ -60,6 +69,12 @@ namespace PixelCrushers
         }
 
 #if TMP_PRESENT
+        private TMPro.TextMeshPro m_textMeshPro;
+        public TMPro.TextMeshPro textMeshPro
+        {
+            get { return m_textMeshPro; }
+            set { m_textMeshPro = value; }
+        }
         private TMPro.TextMeshProUGUI m_textMeshProUGUI;
         public TMPro.TextMeshProUGUI textMeshProUGUI
         {
@@ -83,21 +98,24 @@ namespace PixelCrushers
         public virtual void UpdateText()
         {
             if (!started) return;
-            var textTable = this.textTable;
-            var language = UILocalizationManager.instance.currentLanguage;
+            var language = (UILocalizationManager.instance != null) ? UILocalizationManager.instance.currentLanguage : string.Empty;
 
             // Skip if no text table or language set:
-            if (textTable == null)
+            if (textTable == null && (UILocalizationManager.instance == null || UILocalizationManager.instance.textTable == null))
             {
                 Debug.LogWarning("No localized text table is assigned to " + name + " or a UI Localized Manager component.", this);
                 return;
             }
 
-            if (!textTable.HasLanguage(language))
+            if (!HasLanguage(language))
             {
-                Debug.LogWarning("Text table " + textTable.name + " does not have a language '" + language + "'.", textTable);
-                return;
+                Debug.LogWarning("Text table does not have a language '" + language + "'.", textTable);
+                //return; //--- Allow to continue and use default language value.
             }
+
+            // Get LocalizedFonts asset:
+            var localizedFonts = (m_localizedFonts != null) ? m_localizedFonts : UILocalizationManager.instance.localizedFonts;
+            var localizedFont = (localizedFonts != null) ? localizedFonts.GetFont(language) : null;
 
             // Make sure we have localizable UI components:
             if (text == null && dropdown == null)
@@ -107,9 +125,11 @@ namespace PixelCrushers
             }
             var hasLocalizableComponent = text != null || dropdown != null;
 #if TMP_PRESENT
+            var localizedTextMeshProFont = (localizedFonts != null) ? localizedFonts.GetTextMeshProFont(language) : null;
             if (!m_lookedForTMP)
             {
                 m_lookedForTMP = true;
+                textMeshPro = GetComponent<TMPro.TextMeshPro>();
                 textMeshProUGUI = GetComponent<TMPro.TextMeshProUGUI>();
             }
             hasLocalizableComponent = hasLocalizableComponent || textMeshProUGUI != null;
@@ -133,13 +153,14 @@ namespace PixelCrushers
             // Localize Text:
             if (text != null)
             {
-                if (!textTable.HasField(fieldName))
+                if (!HasField(fieldName))
                 {
-                    Debug.LogWarning("Text table " + textTable.name + " does not have a field '" + fieldName + "'.", textTable);
+                    Debug.LogWarning("Text table does not have a field '" + fieldName + "'.", textTable);
                 }
                 else
                 {
                     text.text = GetLocalizedText(fieldName);
+                    if (localizedFont != null) text.font = localizedFont;
                 }
             }
 
@@ -154,13 +175,35 @@ namespace PixelCrushers
                     }
                 }
                 dropdown.captionText.text = GetLocalizedText(fieldNames[dropdown.value]);
+                if (localizedFont != null)
+                {
+                    dropdown.captionText.font = localizedFont;
+                    dropdown.itemText.font = localizedFont;
+                }
             }
 
 #if TMP_PRESENT
             if (!m_lookedForTMP)
             {
                 m_lookedForTMP = true;
+                textMeshPro = GetComponent<TMPro.TextMeshPro>();
                 textMeshProUGUI = GetComponent<TMPro.TextMeshProUGUI>();
+            }
+            if (textMeshPro != null)
+            {
+                if (string.IsNullOrEmpty(fieldName))
+                {
+                    fieldName = (textMeshPro != null) ? textMeshPro.text : string.Empty;
+                }
+                if (!HasField(fieldName))
+                {
+                    Debug.LogWarning("Text table does not have a field '" + fieldName + "'.", textTable);
+                }
+                else
+                {
+                    textMeshPro.text = GetLocalizedText(fieldName);
+                    if (localizedTextMeshProFont != null) textMeshPro.font = localizedTextMeshProFont;
+                }
             }
             if (textMeshProUGUI != null)
             {
@@ -168,24 +211,37 @@ namespace PixelCrushers
                 {
                     fieldName = (textMeshProUGUI != null) ? textMeshProUGUI.text : string.Empty;
                 }
-                if (!textTable.HasField(fieldName))
+                if (!HasField(fieldName))
                 {
-                    Debug.LogWarning("Text table " + textTable.name + " does not have a field '" + fieldName + "'.", textTable);
+                    Debug.LogWarning("Text table does not have a field '" + fieldName + "'.", textTable);
                 }
                 else
                 {
                     textMeshProUGUI.text = GetLocalizedText(fieldName);
+                    if (localizedTextMeshProFont != null) textMeshProUGUI.font = localizedTextMeshProFont;
                 }
             }
 #endif
 
         }
 
+        protected virtual bool HasLanguage(string language)
+        {
+            return (textTable != null && textTable.HasLanguage(language)) ||
+                UILocalizationManager.instance.HasLanguage(language);
+        }
+
+        protected virtual bool HasField(string fieldName)
+        {
+            return (textTable != null && textTable.HasField(fieldName)) ||
+                UILocalizationManager.instance.HasField(fieldName);
+        }
+
         protected virtual string GetLocalizedText(string fieldName)
         {
             return (textTable != null && textTable.HasField(fieldName))
                 ? textTable.GetFieldTextForLanguage(fieldName, GlobalTextTable.currentLanguage)
-                : GlobalTextTable.Lookup(fieldName);
+                : UILocalizationManager.instance.GetLocalizedText(fieldName); //---Was: GlobalTextTable.Lookup(fieldName);
         }
 
         /// <summary>

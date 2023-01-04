@@ -57,6 +57,9 @@ namespace PixelCrushers.DialogueSystem
 
         public QuestEntryStateIndicatorLevel[] questEntryStateIndicatorLevels = new QuestEntryStateIndicatorLevel[0];
 
+        [Tooltip("When starting component, do not invoke any OnEnterState() events.")]
+        public bool suppressOnEnterStateEventsOnStart = false;
+
         protected QuestStateDispatcher m_questStateDispatcher;
         protected QuestStateDispatcher questStateDispatcher
         {
@@ -106,6 +109,8 @@ namespace PixelCrushers.DialogueSystem
             set { m_started = value; }
         }
 
+        protected bool m_suppressOnEnterStateEvent = false;
+
         protected virtual void OnApplicationQuit()
         {
             enabled = false;
@@ -126,7 +131,9 @@ namespace PixelCrushers.DialogueSystem
                 {
                     questStateDispatcher.AddListener(this);
                 }
+                m_suppressOnEnterStateEvent = suppressOnEnterStateEventsOnStart;
                 UpdateIndicator();
+                m_suppressOnEnterStateEvent = false;
             }
         }
 
@@ -160,7 +167,10 @@ namespace PixelCrushers.DialogueSystem
                 {
                     if (DialogueDebug.logInfo) Debug.Log("Dialogue System: " + name + ": Quest '" + questName + "' changed to state " + questState + ".", this);
                     if (questStateIndicator != null) questStateIndicator.SetIndicatorLevel(this, questStateIndicatorLevel.indicatorLevel);
-                    questStateIndicatorLevel.onEnterState.Invoke();
+                    if (!m_suppressOnEnterStateEvent)
+                    {
+                        questStateIndicatorLevel.onEnterState.Invoke();
+                    }
                 }
             }
 
@@ -173,7 +183,10 @@ namespace PixelCrushers.DialogueSystem
                 {
                     if (DialogueDebug.logInfo) Debug.Log("Dialogue System: " + name + ": Quest '" + questName + "' entry " + questEntryStateIndicatorLevel.entryNumber + " changed to state " + questEntryState + ".", this);
                     if (questStateIndicator != null) questStateIndicator.SetIndicatorLevel(this, questEntryStateIndicatorLevel.indicatorLevel);
-                    questEntryStateIndicatorLevel.onEnterState.Invoke();
+                    if (!m_suppressOnEnterStateEvent)
+                    {
+                        questEntryStateIndicatorLevel.onEnterState.Invoke();
+                    }
                 }
             }
         }

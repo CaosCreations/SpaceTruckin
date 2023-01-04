@@ -125,30 +125,36 @@ namespace PixelCrushers
             {
                 path = path.Replace("/", "\\");
             }
-            string[] filenames = Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories);
-            var found = string.Empty;
-            var recompileAtText = "// Recompile at " + DateTime.Now + "\r\n";
-            var searchString = "#if " + symbol;
-            foreach (string filename in filenames)
+            if (!Directory.Exists(path))
             {
-                var text = File.ReadAllText(filename);
-                if (text.Contains(searchString))
+                Debug.Log("It looks like you've moved this Pixel Crushers asset. In the Project view, please right-click on the folder in its new location and select Reimport.");
+            }
+            else
+            { 
+                string[] filenames = Directory.GetFiles(path, "*.cs", SearchOption.AllDirectories);
+                var found = string.Empty;
+                var recompileAtText = "// Recompile at " + DateTime.Now + "\r\n";
+                var searchString = "#if " + symbol;
+                foreach (string filename in filenames)
                 {
-                    found += filename + "\n";
-                    if (text.StartsWith("// Recompile at "))
+                    var text = File.ReadAllText(filename);
+                    if (text.Contains(searchString))
                     {
-                        var lines = File.ReadAllLines(filename);
-                        lines[0] = recompileAtText;
-                        File.WriteAllLines(filename, lines);
-                    }
-                    else
-                    {
-                        text = recompileAtText + text;
-                        File.WriteAllText(filename, text);
+                        found += filename + "\n";
+                        if (text.StartsWith("// Recompile at "))
+                        {
+                            var lines = File.ReadAllLines(filename);
+                            lines[0] = recompileAtText;
+                            File.WriteAllLines(filename, lines);
+                        }
+                        else
+                        {
+                            text = recompileAtText + text;
+                            File.WriteAllText(filename, text);
+                        }
                     }
                 }
             }
-            //Debug.Log("Touched: " + found);
         }
 
         //=============================================================

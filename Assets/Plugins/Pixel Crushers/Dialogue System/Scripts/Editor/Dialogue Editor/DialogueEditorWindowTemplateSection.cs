@@ -161,9 +161,13 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             {
                 database.actors.ForEach(x => ScrubField(x.fields, fieldTitleToRemove));
             }
-            else if (string.Equals(currentTemplateFoldout, "Items") || string.Equals(currentTemplateFoldout, "Quests"))
+            else if (string.Equals(currentTemplateFoldout, "Items"))
             {
-                database.items.ForEach(x => ScrubField(x.fields, fieldTitleToRemove));
+                database.items.ForEach(x => { if (x.IsItem) ScrubField(x.fields, fieldTitleToRemove); });
+            }
+            else if (string.Equals(currentTemplateFoldout, "Quests"))
+            {
+                database.items.ForEach(x => { if (!x.IsItem) ScrubField(x.fields, fieldTitleToRemove); });
             }
             else if (string.Equals(currentTemplateFoldout, "Locations"))
             {

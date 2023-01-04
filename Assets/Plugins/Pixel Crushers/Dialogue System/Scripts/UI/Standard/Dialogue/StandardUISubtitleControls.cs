@@ -104,7 +104,15 @@ namespace PixelCrushers.DialogueSystem
         {
             if (actor == null) return;
             if (customPanel == null) customPanel = actor.IsPlayer ? m_defaultPCPanel : m_defaultNPCPanel;
-            m_actorIdOverridePanel[actor.id] = GetPanelFromNumber(subtitlePanelNumber, customPanel);
+            var panel = GetPanelFromNumber(subtitlePanelNumber, customPanel);
+            if (panel == null)
+            {
+                m_actorIdOverridePanel.Remove(actor.id);
+            }
+            else
+            {
+                m_actorIdOverridePanel[actor.id] = panel;
+            }
         }
 
         /// <summary>
@@ -130,13 +138,17 @@ namespace PixelCrushers.DialogueSystem
                     panel = GetPanelFromNumber(subtitlePanelNumber, customPanel);
                     break;
             }
-            if (panel != null)
+            if (panel == null)
+            {
+                m_actorPanelCache.Remove(dialogueActor.transform);
+            }
+            else
             {
                 m_actorPanelCache[dialogueActor.transform] = panel;
-                if (actor != null && m_actorIdOverridePanel.ContainsKey(actor.id))
-                {
-                    m_actorIdOverridePanel.Remove(actor.id);
-                }
+            }
+            if (actor != null && m_actorIdOverridePanel.ContainsKey(actor.id))
+            {
+                m_actorIdOverridePanel.Remove(actor.id);
             }
         }
 
@@ -171,7 +183,7 @@ namespace PixelCrushers.DialogueSystem
             return panel;
         }
 
-        private StandardUISubtitlePanel GetActorTransformPanel(Transform speakerTransform, StandardUISubtitlePanel defaultPanel, out DialogueActor dialogueActor)
+        public StandardUISubtitlePanel GetActorTransformPanel(Transform speakerTransform, StandardUISubtitlePanel defaultPanel, out DialogueActor dialogueActor)
         {
             dialogueActor = null;
             if (speakerTransform == null) return defaultPanel;
@@ -205,13 +217,13 @@ namespace PixelCrushers.DialogueSystem
             return dialogueActor != null && dialogueActor.GetSubtitlePanelNumber() == SubtitlePanelNumber.UseBarkUI;
         }
 
-        private StandardUISubtitlePanel GetDialogueActorPanel(DialogueActor dialogueActor)
+        public StandardUISubtitlePanel GetDialogueActorPanel(DialogueActor dialogueActor)
         {
             if (dialogueActor == null) return null;
             return GetPanelFromNumber(dialogueActor.standardDialogueUISettings.subtitlePanelNumber, dialogueActor.standardDialogueUISettings.customSubtitlePanel);
         }
 
-        private StandardUISubtitlePanel GetPanelFromNumber(SubtitlePanelNumber subtitlePanelNumber, StandardUISubtitlePanel customPanel)
+        public StandardUISubtitlePanel GetPanelFromNumber(SubtitlePanelNumber subtitlePanelNumber, StandardUISubtitlePanel customPanel)
         {
             switch (subtitlePanelNumber)
             {
@@ -257,6 +269,7 @@ namespace PixelCrushers.DialogueSystem
             {
                 m_useBarkUIs.Remove(dialogueActor.transform);
             }
+            m_actorPanelCache[dialogueActor.transform] = GetPanelFromNumber(subtitlePanelNumber, dialogueActor.standardDialogueUISettings.customSubtitlePanel);
         }
 
         #endregion
@@ -274,7 +287,7 @@ namespace PixelCrushers.DialogueSystem
         /// so the cache can be restored when loading a game. Only saves built-in panel numbers,
         /// not custom panels.
         /// </summary>
-        public virtual void RecordActorPanelCache(out List<string> actorGOs, out List<SubtitlePanelNumber> actorGOPanels, 
+        public virtual void RecordActorPanelCache(out List<string> actorGOs, out List<SubtitlePanelNumber> actorGOPanels,
             out List<int> actorIDs, out List<SubtitlePanelNumber> actorIDPanels)
         {
             actorGOs = new List<string>();
@@ -333,7 +346,8 @@ namespace PixelCrushers.DialogueSystem
                     m_actorIdOverridePanel[m_queuedActorIDs[i]] = panel;
                 }
             }
-            finally {
+            finally
+            {
                 m_queuedActorGOs = null;
                 m_queuedActorGOPanels = null;
                 m_queuedActorIDs = null;
@@ -356,6 +370,20 @@ namespace PixelCrushers.DialogueSystem
         #region Show & Hide
 
         /// <summary>
+        /// Sets the panel that will receive focus for the specified subtitle.
+        /// When delaying the display of the subtitle while the main dialogue
+        /// panel is opening, we still need a reference to the subtitle panel
+        /// to handle continue button stuff once the main panel is open.
+        /// 
+        /// </summary>
+        public StandardUISubtitlePanel StageFocusedPanel(Subtitle subtitle)
+        {
+            DialogueActor dialogueActor;
+            m_focusedPanel = GetPanel(subtitle, out dialogueActor);
+            return m_focusedPanel;
+        }
+
+        /// <summary>
         /// Shows a subtitle. Opens a subtitle panel and sets the content. If the speaker
         /// has a DialogueActor component, this may dictate which panel opens.
         /// </summary>
@@ -367,7 +395,7 @@ namespace PixelCrushers.DialogueSystem
             var panel = GetPanel(subtitle, out dialogueActor);
             if (SubtitleUsesBarkUI(subtitle))
             {
-                DialogueManager.BarkString(subtitle.formattedText.text, subtitle.speakerInfo.transform, subtitle.listenerInfo.transform, subtitle.sequence);
+                DialogueManager.instance.StartCoroutine(BarkController.Bark(subtitle));
             }
             else if (panel == null)
             {
@@ -386,16 +414,15 @@ namespace PixelCrushers.DialogueSystem
                     var previousPanel = m_lastPanelUsedByActor[actorID];
                     if (m_lastActorToUsePanel.ContainsKey(previousPanel) && m_lastActorToUsePanel[previousPanel] == actorID)
                     {
-                        if (previousPanel.hasFocus) previousPanel.Unfocus();
+                        if (previousPanel.hasFocus || previousPanel.isFocusing) previousPanel.Unfocus();
                         if (previousPanel.isOpen) previousPanel.Close();
                     }
                 }
-                m_lastActorToUsePanel[panel] = actorID;
-                m_lastPanelUsedByActor[actorID] = panel;
+                SetLastActorToUsePanel(panel, actorID);
 
                 // Focus the panel and show the subtitle:
                 m_focusedPanel = panel;
-                if (panel.addSpeakerName)
+                if (panel.addSpeakerName && !string.IsNullOrEmpty(subtitle.speakerInfo.Name))
                 {
                     subtitle.formattedText.text = string.Format(panel.addSpeakerNameFormat, new object[] { subtitle.speakerInfo.Name, subtitle.formattedText.text });
                 }
@@ -403,8 +430,8 @@ namespace PixelCrushers.DialogueSystem
                 {
                     subtitle.formattedText.text = dialogueActor.AdjustSubtitleColor(subtitle);
                 }
-                panel.ShowSubtitle(subtitle);
                 SupercedeOtherPanels(panel);
+                panel.ShowSubtitle(subtitle);
             }
         }
 
@@ -443,11 +470,34 @@ namespace PixelCrushers.DialogueSystem
             {
                 if (m_builtinPanels[i] != null) m_builtinPanels[i].Close();
             }
+            for (int i = 0; i < m_customPanels.Count; i++)
+            {
+                if (m_customPanels[i] != null) m_customPanels[i].Close();
+            }
             foreach (var kvp in m_actorPanelCache)
             {
                 if (kvp.Value != null) kvp.Value.Close();
             }
             //--- No longer clear cache when closing subtitles because SetDialoguePanel may close them: ClearCache();
+        }
+
+        public bool AreAnyPanelsClosing()
+        {
+            if (m_defaultNPCPanel != null && m_defaultNPCPanel.panelState == UIPanel.PanelState.Closing) return true;
+            if (m_defaultPCPanel != null && m_defaultPCPanel.panelState == UIPanel.PanelState.Closing) return true;
+            for (int i = 0; i < m_builtinPanels.Count; i++)
+            {
+                if (m_builtinPanels[i] != null && m_builtinPanels[i].panelState == UIPanel.PanelState.Closing) return true;
+            }
+            for (int i = 0; i < m_customPanels.Count; i++)
+            {
+                if (m_customPanels[i] != null && m_customPanels[i].panelState == UIPanel.PanelState.Closing) return true;
+            }
+            foreach (var kvp in m_actorPanelCache)
+            {
+                if (kvp.Value != null && kvp.Value.panelState == UIPanel.PanelState.Closing) return true;
+            }
+            return false;
         }
 
         protected virtual void SupercedeOtherPanels(StandardUISubtitlePanel newPanel)
@@ -457,7 +507,7 @@ namespace PixelCrushers.DialogueSystem
         }
 
         protected virtual void SupercedeOtherPanelsInList(List<StandardUISubtitlePanel> list, StandardUISubtitlePanel newPanel)
-        { 
+        {
             for (int i = 0; i < list.Count; i++)
             {
                 var panel = list[i];
@@ -481,7 +531,7 @@ namespace PixelCrushers.DialogueSystem
             for (int i = 0; i < m_builtinPanels.Count; i++)
             {
                 var panel = m_builtinPanels[i];
-                if (panel != null && panel.isOpen && panel.hasFocus) panel.Unfocus();
+                if (panel != null && panel.isOpen && (panel.hasFocus || panel.isFocusing)) panel.Unfocus();
             }
         }
 
@@ -544,7 +594,7 @@ namespace PixelCrushers.DialogueSystem
         /// Searches the current conversation for any DialogueActors who use subtitle
         /// panels that are configured to appear when the conversation starts.
         /// </summary>
-        public void OpenSubtitlePanelsOnStartConversation()
+        public void OpenSubtitlePanelsOnStartConversation(StandardDialogueUI ui)
         {
             ApplyQueuedActorPanelCache();
 
@@ -557,18 +607,18 @@ namespace PixelCrushers.DialogueSystem
             var mainActorID = conversation.ActorID;
             var mainActor = DialogueManager.masterDatabase.GetActor(DialogueActor.GetActorName(DialogueManager.currentActor));
             if (mainActor != null) mainActorID = mainActor.id;
-            CheckActorIDOnStartConversation(mainActorID, checkedActorIDs, checkedPanels);
-            CheckActorIDOnStartConversation(conversation.ConversantID, checkedActorIDs, checkedPanels);
+            CheckActorIDOnStartConversation(mainActorID, checkedActorIDs, checkedPanels, ui);
+            CheckActorIDOnStartConversation(conversation.ConversantID, checkedActorIDs, checkedPanels, ui);
 
             // Check other actors:
             for (int i = 0; i < conversation.dialogueEntries.Count; i++)
             {
                 var actorID = conversation.dialogueEntries[i].ActorID;
-                CheckActorIDOnStartConversation(actorID, checkedActorIDs, checkedPanels);
+                CheckActorIDOnStartConversation(actorID, checkedActorIDs, checkedPanels, ui);
             }
         }
 
-        private void CheckActorIDOnStartConversation(int actorID, HashSet<int> checkedActorIDs, HashSet<StandardUISubtitlePanel> checkedPanels)
+        private void CheckActorIDOnStartConversation(int actorID, HashSet<int> checkedActorIDs, HashSet<StandardUISubtitlePanel> checkedPanels, StandardDialogueUI ui)
         {
             if (checkedActorIDs.Contains(actorID)) return;
             checkedActorIDs.Add(actorID);
@@ -581,18 +631,23 @@ namespace PixelCrushers.DialogueSystem
             {
                 panel = m_actorIdOverridePanel[actor.id];
             }
-            if (panel == null && Debug.isDebugBuild) Debug.LogWarning("Dialogue System: Can't determine what subtitle panel to use for " + actor.Name, actorTransform);
+            if (panel == null && actorTransform == null && Debug.isDebugBuild) Debug.LogWarning("Dialogue System: Can't determine what subtitle panel to use for " + actor.Name, actorTransform);
             if (panel == null || checkedPanels.Contains(panel)) return;
+            panel.dialogueUI = ui;
             checkedPanels.Add(panel);
             if (panel.visibility == UIVisibility.AlwaysFromStart)
             {
                 var actorPortrait = (dialogueActor != null && dialogueActor.GetPortraitSprite() != null) ? dialogueActor.GetPortraitSprite() : actor.GetPortraitSprite();
                 var actorName = CharacterInfo.GetLocalizedDisplayNameInDatabase(actor.Name);
                 panel.OpenOnStartConversation(actorPortrait, actorName, dialogueActor);
-
-                m_lastActorToUsePanel[panel] = actorID;
-                m_lastPanelUsedByActor[actorID] = panel;
+                SetLastActorToUsePanel(panel, actorID);
             }
+        }
+
+        public void SetLastActorToUsePanel(StandardUISubtitlePanel panel, int actorID)
+        {
+            m_lastActorToUsePanel[panel] = actorID;
+            m_lastPanelUsedByActor[actorID] = panel;
         }
 
         protected Transform GetActorTransform(string actorName)
@@ -622,7 +677,7 @@ namespace PixelCrushers.DialogueSystem
                 var actorPanel = GetActorTransformPanel(actorTransform, actor.IsPlayer ? m_defaultPCPanel : m_defaultNPCPanel, out dialogueActor);
                 if (m_actorIdOverridePanel.ContainsKey(actor.id))
                 {
-                    panel = m_actorIdOverridePanel[actor.id];
+                    actorPanel = m_actorIdOverridePanel[actor.id];
                 }
                 if (actorPanel == panel)
                 {

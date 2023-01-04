@@ -14,7 +14,7 @@ namespace PixelCrushers.DialogueSystem
     {
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            int fieldCount = 3;
+            int fieldCount = 4;
             return fieldCount * EditorGUIUtility.singleLineHeight;
         }
 
@@ -75,7 +75,12 @@ namespace PixelCrushers.DialogueSystem
                     if (clip.start > startConversationTime &&
                         clip.asset.GetType() == typeof(ContinueConversationClip))
                     {
-                        numContinues++;
+                        var continueClip = clip.asset as ContinueConversationClip;
+                        if (continueClip.template != null &&
+                            continueClip.template.operation == ContinueConversationBehaviour.Operation.Continue)
+                        {
+                            numContinues++;
+                        }
                     }
                 }
             }

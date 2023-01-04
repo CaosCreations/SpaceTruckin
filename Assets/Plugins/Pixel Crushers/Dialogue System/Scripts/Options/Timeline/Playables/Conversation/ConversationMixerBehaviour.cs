@@ -33,6 +33,10 @@ namespace PixelCrushers.DialogueSystem
                     StartConversationBehaviour input = inputPlayable.GetBehaviour();
                     if (Application.isPlaying)
                     {
+                        if (input.exclusive)
+                        {
+                            DialogueManager.StopAllConversations();
+                        }
                         if (input.jumpToSpecificEntry && input.entryID > 0)
                         {
                             DialogueManager.StartConversation(input.conversation, actorTransform, input.conversant, input.entryID);

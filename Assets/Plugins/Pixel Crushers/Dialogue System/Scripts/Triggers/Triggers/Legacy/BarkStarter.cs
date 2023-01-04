@@ -16,7 +16,7 @@ namespace PixelCrushers.DialogueSystem
         /// <summary>
         /// Specifies the order to run through the list of barks.
         /// 
-        /// - Random: Choose a random bark from the conversation.
+        /// - Random: Choose a random bark from the conversation, avoiding sequential repeats if possible.
         /// - Sequential: Choose the barks in order from first to last, looping at the end.
         /// </summary>
         [Tooltip("The order in which to bark dialogue entries.")]

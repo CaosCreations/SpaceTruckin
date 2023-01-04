@@ -45,6 +45,7 @@ namespace PixelCrushers.DialogueSystem
         private AbstractUsableUI usableUI = null;
         private bool started = false;
         private string originalDefaultUseMessage;
+        private bool previousUseDefaultGUI;
 
         protected float CurrentDistance
         {
@@ -54,7 +55,12 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        private StandardUISelectorElements elements = null;
+        private StandardUISelectorElements m_elements = null;
+        public StandardUISelectorElements elements
+        {
+            get { return m_elements; }
+            protected set { m_elements = value; }
+        }
 
         private void Start()
         {
@@ -67,10 +73,10 @@ namespace PixelCrushers.DialogueSystem
             {
                 started = true;
                 ConnectDelegates();
-                foreach (var current in StandardUISelectorElements.instances)
-                {
-                    elements = current;
-                    DeactivateControls();
+                for (int i = StandardUISelectorElements.instances.Count - 1; i >= 0; i--)
+                { 
+                    elements = StandardUISelectorElements.instances[i];
+                    if (elements != null) DeactivateControls();
                 }
             }
         }
@@ -85,13 +91,16 @@ namespace PixelCrushers.DialogueSystem
             DisconnectDelegates();
         }
 
-        private void ConnectDelegates()
+        public void ConnectDelegates()
         {
             DisconnectDelegates(); // Make sure we're not connecting twice.
             selector = GetComponent<Selector>();
             if (selector != null)
             {
+                previousUseDefaultGUI = selector.useDefaultGUI;
                 selector.useDefaultGUI = false;
+                selector.Enabled += OnSelectorEnabled;
+                selector.Disabled += OnSelectorDisabled;
                 selector.SelectedUsableObject += OnSelectedUsable;
                 selector.DeselectedUsableObject += OnDeselectedUsable;
                 defaultUseMessage = selector.defaultUseMessage;
@@ -99,27 +108,34 @@ namespace PixelCrushers.DialogueSystem
             proximitySelector = GetComponent<ProximitySelector>();
             if (proximitySelector != null)
             {
+                previousUseDefaultGUI = proximitySelector.useDefaultGUI;
                 proximitySelector.useDefaultGUI = false;
+                proximitySelector.Enabled += OnSelectorEnabled;
+                proximitySelector.Disabled += OnSelectorDisabled;
                 proximitySelector.SelectedUsableObject += OnSelectedUsable;
                 proximitySelector.DeselectedUsableObject += OnDeselectedUsable;
-                if (string.IsNullOrEmpty(defaultUseMessage)) defaultUseMessage = proximitySelector.defaultUseMessage;
+                defaultUseMessage = proximitySelector.defaultUseMessage;
             }
             originalDefaultUseMessage = defaultUseMessage;
         }
 
-        private void DisconnectDelegates()
+        public void DisconnectDelegates()
         {
             selector = GetComponent<Selector>();
             if (selector != null)
             {
-                selector.useDefaultGUI = true;
+                selector.useDefaultGUI = previousUseDefaultGUI;
+                selector.Enabled -= OnSelectorEnabled;
+                selector.Disabled -= OnSelectorDisabled;
                 selector.SelectedUsableObject -= OnSelectedUsable;
                 selector.DeselectedUsableObject -= OnDeselectedUsable;
             }
             proximitySelector = GetComponent<ProximitySelector>();
             if (proximitySelector != null)
             {
-                proximitySelector.useDefaultGUI = true;
+                proximitySelector.useDefaultGUI = previousUseDefaultGUI;
+                proximitySelector.Enabled -= OnSelectorEnabled;
+                proximitySelector.Disabled -= OnSelectorDisabled;
                 proximitySelector.SelectedUsableObject -= OnSelectedUsable;
                 proximitySelector.DeselectedUsableObject -= OnDeselectedUsable;
             }
@@ -135,7 +151,7 @@ namespace PixelCrushers.DialogueSystem
                 if (usable != null && usable.CompareTag(tagInfo.tag))
                 {
                     defaultUseMessage = tagInfo.defaultUseMessage;
-                    elements = tagInfo.UIElements;
+                    elements = tagInfo.UIElements ?? StandardUISelectorElements.instance;
                     return;
                 }
             }
@@ -147,7 +163,7 @@ namespace PixelCrushers.DialogueSystem
                 if (usable != null && ((1 << usable.gameObject.layer) & layerInfo.layerMask.value) != 0)
                 {
                     defaultUseMessage = layerInfo.defaultUseMessage;
-                    elements = layerInfo.UIElements;
+                    elements = layerInfo.UIElements ?? StandardUISelectorElements.instance;
                     return;
                 }
             }
@@ -226,6 +242,7 @@ namespace PixelCrushers.DialogueSystem
             Tools.SetGameObjectActive(elements.reticleOutOfRange, !IsUsableInRange());
             if (CanTriggerAnimations() && !string.IsNullOrEmpty(elements.animationTransitions.showTrigger))
             {
+                elements.animator.ResetTrigger(elements.animationTransitions.hideTrigger);
                 elements.animator.SetTrigger(elements.animationTransitions.showTrigger);
             }
         }
@@ -234,6 +251,7 @@ namespace PixelCrushers.DialogueSystem
         {
             if (CanTriggerAnimations() && elements != null && !string.IsNullOrEmpty(elements.animationTransitions.hideTrigger))
             {
+                elements.animator.ResetTrigger(elements.animationTransitions.showTrigger);
                 elements.animator.SetTrigger(elements.animationTransitions.hideTrigger);
             }
             else
@@ -265,6 +283,16 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
+        protected void OnSelectorEnabled()
+        {
+            ShowControlsOrUsableUI();
+        }
+
+        protected void OnSelectorDisabled()
+        {
+            HideControls();
+        }
+
         public void OnConversationStart(Transform actor)
         {
             HideControls();
@@ -272,6 +300,11 @@ namespace PixelCrushers.DialogueSystem
 
         public void OnConversationEnd(Transform actor)
         {
+            ShowControlsOrUsableUI();
+        }
+
+        protected void ShowControlsOrUsableUI()
+        { 
             if (usableUI != null)
             {
                 usableUI.Show(GetUseMessage());
@@ -302,9 +335,12 @@ namespace PixelCrushers.DialogueSystem
         private void UpdateText(bool inRange)
         {
             if (elements == null) return;
-            var color = inRange ? elements.inRangeColor : elements.outOfRangeColor;
-            if (elements.nameText != null) elements.nameText.color = color;
-            if (elements.useMessageText != null) elements.useMessageText.color = color;
+            if (elements.useRangeColors)
+            {
+                var color = inRange ? elements.inRangeColor : elements.outOfRangeColor;
+                if (elements.nameText != null) elements.nameText.color = color;
+                if (elements.useMessageText != null) elements.useMessageText.color = color;
+            }
         }
 
         private void UpdateReticle(bool inRange)

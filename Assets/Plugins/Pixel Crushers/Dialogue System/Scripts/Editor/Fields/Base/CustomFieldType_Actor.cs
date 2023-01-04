@@ -15,14 +15,16 @@ namespace PixelCrushers.DialogueSystem
                 return FieldType.Actor;
             }
         }
-        public override string Draw(string currentValue, DialogueDatabase dataBase)
+        public override string Draw(string currentValue, DialogueDatabase database)
         {
-            return PixelCrushers.DialogueSystem.DialogueEditor.DialogueEditorWindow.instance.DrawAssetPopup<Actor>(currentValue, (dataBase != null) ? dataBase.actors : null, null);
+            RequireDialogueEditorWindow(database);
+            return PixelCrushers.DialogueSystem.DialogueEditor.DialogueEditorWindow.instance.DrawAssetPopup<Actor>(currentValue, (database != null) ? database.actors : null, null);
         }
 
-        public override string Draw(Rect rect, string currentValue, DialogueDatabase dataBase)
+        public override string Draw(Rect rect, string currentValue, DialogueDatabase database)
         {
-            return PixelCrushers.DialogueSystem.DialogueEditor.DialogueEditorWindow.instance.DrawAssetPopup<Actor>(rect, currentValue, (dataBase != null) ? dataBase.actors : null, null);
+            RequireDialogueEditorWindow(database);
+            return PixelCrushers.DialogueSystem.DialogueEditor.DialogueEditorWindow.instance.DrawAssetPopup<Actor>(rect, currentValue, (database != null) ? database.actors : null, null);
         }
 
     }

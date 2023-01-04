@@ -171,6 +171,7 @@ namespace PixelCrushers.DialogueSystem {
 			cmpConversation.LockedMode = "Unlocked";
 			cmpConversation.Fields = FieldsToCmp(conversation.fields);
 			AddRequiredConversationFields(cmpConversation.Fields);
+			RequireField(cmpConversation.Fields, conversation.fields.Count, "Overrides", "Text", JsonUtility.ToJson(conversation.overrideSettings), "Display Settings overrides.");
 			cmpConversation.DialogEntries = DialogEntriesToCmp(conversation.dialogueEntries, includeCanvasRect);
 			return cmpConversation;
 		}

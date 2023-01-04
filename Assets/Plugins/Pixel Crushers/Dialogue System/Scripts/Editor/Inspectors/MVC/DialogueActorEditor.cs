@@ -74,6 +74,7 @@ namespace PixelCrushers.DialogueSystem
                     if (applyColorToPrependedNameProperty.boolValue)
                     {
                         EditorGUILayout.PropertyField(standardUISettingsProperty.FindPropertyRelative("prependActorNameSeparator"), true);
+                        EditorGUILayout.PropertyField(standardUISettingsProperty.FindPropertyRelative("prependActorNameFormat"), true);
                     }
                     EditorGUILayout.PropertyField(standardUISettingsProperty.FindPropertyRelative("subtitleColor"), true);
                 }

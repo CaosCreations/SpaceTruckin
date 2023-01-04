@@ -1,8 +1,9 @@
 // Copyright (c) Pixel Crushers. All rights reserved.
 
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using System;
 
 namespace PixelCrushers.DialogueSystem
 {
@@ -17,6 +18,8 @@ namespace PixelCrushers.DialogueSystem
 
         public static DialogueDatabaseEditor instance = null;
 
+        private static List<DialogueDatabaseEditor> instances = new List<DialogueDatabaseEditor>();
+
         private static bool showDefaultInspector = false;
 
         public enum RefreshSource
@@ -24,7 +27,8 @@ namespace PixelCrushers.DialogueSystem
             None,
             ChatMapper,
             ArticyDraft,
-            AuroraToolset
+            AuroraToolset,
+            Arcweave
         };
 
         /// <summary>
@@ -32,16 +36,36 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public RefreshSource refreshSource = RefreshSource.None;
 
-        void OnEnable()
+#if UNITY_2019_3_OR_NEWER
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void InitStaticVariables()
+        {
+            instance = null;
+            instances = new List<DialogueDatabaseEditor>();
+        }
+#endif
+
+        public static void RepaintInstances()
+        {
+            if (instance != null) instance.Repaint();
+        }
+
+        private void OnEnable()
         {
             instance = this;
+            if (instances != null) instances.Add(this);
             EditorApplication.projectWindowItemOnGUI -= OnProjectWindowItemOnGUI;
             EditorApplication.projectWindowItemOnGUI += OnProjectWindowItemOnGUI;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             instance = null;
+            if (instances != null)
+            {
+                instances.Remove(this);
+                if (instances.Count > 0) instance = instances[0];
+            }
             EditorApplication.projectWindowItemOnGUI -= OnProjectWindowItemOnGUI;
             if (DialogueEditor.DialogueEditorWindow.instance != null) DialogueEditor.DialogueEditorWindow.instance.ResetLuaWizards();
         }
@@ -95,6 +119,10 @@ namespace PixelCrushers.DialogueSystem
             EditorGUILayout.EndHorizontal();
             EditorWindowTools.DrawHorizontalLine();
             if (GUI.changed) EditorUtility.SetDirty(target);
+            if (GUILayout.Button("Reset Position", EditorStyles.miniButton, GUILayout.Width(100)))
+            {
+                DialogueEditor.DialogueEditorWindow.ResetPosition();
+            }
             showDefaultInspector = EditorGUILayout.ToggleLeft("Show Default Inspector", showDefaultInspector);
             if (clickedReconvert)
             {
@@ -126,6 +154,7 @@ namespace PixelCrushers.DialogueSystem
                 case RefreshSource.ChatMapper: RunChatMapperConverter(); break;
                 case RefreshSource.ArticyDraft: RunArticyConverter(); break;
                 case RefreshSource.AuroraToolset: RunAuroraConverter(); break;
+                case RefreshSource.Arcweave: RunArcweaveConverter(); break;
             }
             if (DialogueEditor.DialogueEditorWindow.instance != null)
             {
@@ -166,6 +195,18 @@ namespace PixelCrushers.DialogueSystem
 #endif
         }
 
+        private void RunArcweaveConverter()
+        {
+#if USE_ARCWEAVE
+            bool alreadyOpen = ArcweaveSupport.ArcweaveImporterWindow.isOpen;
+            var window = ArcweaveSupport.ArcweaveImporterWindow.Init();
+            window.LoadAndConvert();
+            if (!alreadyOpen) window.Close();
+#else
+            Debug.Log("Dialogue System: Enable Arcweave support first by adding USE_ARCWEAVE to Edit > Project Settings > Player: Other Settings > Scripting Define Symbols.");
+#endif
+        }
+
         private void DrawInspectorSelection()
         {
             if (DialogueEditor.DialogueEditorWindow.instance == null) return;
@@ -178,22 +219,28 @@ namespace PixelCrushers.DialogueSystem
                 {
                     DrawInspectorSelectionTitle("Actor");
                     var actor = selection as Actor;
+                    EditorGUI.BeginDisabledGroup(DialogueEditor.DialogueEditorWindow.instance.IsActorSyncedFromOtherDB(actor));
                     DialogueEditor.DialogueEditorWindow.instance.DrawAssetSpecificPropertiesFirstPart(actor);
                     DialogueEditor.DialogueEditorWindow.instance.DrawSelectedActorSecondPart();
+                    EditorGUI.EndDisabledGroup();
                 }
                 else if (selectionType == typeof(Item))
                 {
                     DrawInspectorSelectionTitle((selection as Item).IsItem ? "Item" : "Quest");
                     var item = selection as Item;
+                    EditorGUI.BeginDisabledGroup(DialogueEditor.DialogueEditorWindow.instance.IsItemSyncedFromOtherDB(item));
                     DialogueEditor.DialogueEditorWindow.instance.DrawAssetSpecificPropertiesFirstPart(item);
                     DialogueEditor.DialogueEditorWindow.instance.DrawSelectedItemSecondPart();
+                    EditorGUI.EndDisabledGroup();
                 }
                 else if (selectionType == typeof(Location))
                 {
                     DrawInspectorSelectionTitle("Location");
                     var location = selection as Location;
+                    EditorGUI.BeginDisabledGroup(DialogueEditor.DialogueEditorWindow.instance.IsLocationSyncedFromOtherDB(location));
                     DialogueEditor.DialogueEditorWindow.instance.DrawAssetSpecificPropertiesFirstPart(location);
                     DialogueEditor.DialogueEditorWindow.instance.DrawSelectedLocationSecondPart();
+                    EditorGUI.EndDisabledGroup();
                 }
                 else if (selectionType == typeof(Conversation))
                 {
@@ -224,6 +271,12 @@ namespace PixelCrushers.DialogueSystem
                 {
                     DrawInspectorSelectionTitle("Link");
                     DialogueEditor.DialogueEditorWindow.instance.DrawSelectedLinkContents();
+                }
+                else if (selectionType == typeof(EntryGroup))
+                {
+                    DrawInspectorSelectionTitle("Dialogue Entry Group");
+                    DialogueEditor.DialogueEditorWindow.instance.DrawEntryGroupContents();
+                    DialogueEditor.DialogueEditorWindow.instance.Repaint();
                 }
                 else if (selectionType == typeof(DialogueEditor.DialogueEditorWindow.MultinodeSelection))
                 {

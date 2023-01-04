@@ -17,7 +17,7 @@ namespace PixelCrushers.DialogueSystem
         public Transform conversant;
 
         [Tooltip("The conversation to start.")]
-        [ConversationPopup]
+        [ConversationPopup(true)]
         public string conversation;
 
         [Tooltip("Jump to a specific dialogue entry instead of starting from the conversation's START node.")]
@@ -26,8 +26,8 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("Dialogue entry to jump to.")]
         public int entryID;
 
-        //[HideInInspector]
-        //public bool computed
+        [Tooltip("Stop any active conversations before starting this one.")]
+        public bool exclusive = false;
 
         public string GetEditorDialogueText()
         {

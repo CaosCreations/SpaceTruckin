@@ -14,7 +14,7 @@ namespace PixelCrushers.DialogueSystem
     {
 
         /// <summary>
-        /// Play barks in random order.
+        /// Play barks in random order, avoiding sequential repeats if possible.
         /// </summary>
         Random,
 
@@ -37,19 +37,44 @@ namespace PixelCrushers.DialogueSystem
     {
 
         public BarkOrder order;
-        public int index;
+        public int index = 0;
+        public List<int> entries = null;
 
         public BarkHistory(BarkOrder order)
         {
             this.order = order;
             this.index = 0;
+            this.entries = null;
         }
 
         public int GetNextIndex(int numEntries)
         {
             if (order == BarkOrder.Random)
             {
-                return Random.Range(0, numEntries);
+                if (numEntries == 0) return 0;
+                if (entries == null) entries = new List<int>();
+
+                // If the entries have changed or we've reached the end of the shuffled list, remake the list:
+                if (entries.Count != numEntries || index >= entries.Count)
+                {
+                    // Remember the last entry we used:
+                    var lastEntry = (entries.Count > 0) ? entries[entries.Count - 1] : 0;
+                    // Make a shuffles
+                    entries.Clear();
+                    for (int i = 0; i < numEntries; i++)
+                    {
+                        entries.Add(i);
+                    }
+                    entries.Shuffle();
+                    if (entries[0] == lastEntry)
+                    {
+                        // If the first entry of new list is the same as the last entry used, move it to the end:
+                        entries.RemoveAt(0);
+                        entries.Add(lastEntry);
+                    }
+                }
+                return (0 <= index && index < entries.Count) ? entries[index++] : 0;
+                //---Was: return entries[Random.Range(0, numEntries);
             }
             else
             {
@@ -98,7 +123,7 @@ namespace PixelCrushers.DialogueSystem
         /// <value>The last sequencer.</value>
         public static Sequencer LastSequencer { get; private set; }
 
-#if UNITY_2019_3_OR_NEWER
+#if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void InitStaticVariables()
         {
@@ -156,7 +181,7 @@ namespace PixelCrushers.DialogueSystem
         /// </param>
         public static IEnumerator Bark(string conversationTitle, Transform speaker, Transform listener, BarkHistory barkHistory, DialogueDatabase database = null, bool stopAtFirstValid = false)
         {
-            if (CheckDontBarkDuringConversation()) yield break; 
+            if (CheckDontBarkDuringConversation()) yield break;
             bool barked = false;
             if (string.IsNullOrEmpty(conversationTitle) && DialogueDebug.logWarnings) Debug.Log(string.Format("{0}: Bark (speaker={1}, listener={2}): conversation title is blank", new System.Object[] { DialogueDebug.Prefix, speaker, listener }), speaker);
             if (speaker == null) speaker = DialogueManager.instance.FindActorTransformFromConversation(conversationTitle, "Actor");
@@ -210,6 +235,7 @@ namespace PixelCrushers.DialogueSystem
                         if (((barkUI == null) || !(barkUI as MonoBehaviour).enabled) && DialogueDebug.logWarnings) Debug.LogWarning(string.Format("{0}: Bark (speaker={1}, listener={2}): '{3}' bark UI is null or disabled", new System.Object[] { DialogueDebug.Prefix, speaker, listener, barkState.subtitle.formattedText.text }), speaker);
                         if ((barkUI != null) && (barkUI as MonoBehaviour).enabled)
                         {
+                            CheckCancelPreviousBarkSequence(speaker, barkUI);
                             barkUI.Bark(barkState.subtitle);
                         }
 
@@ -222,7 +248,7 @@ namespace PixelCrushers.DialogueSystem
                         {
                             yield return null;
                         }
-                        if (sequencer != null) GameObject.Destroy(sequencer);                        
+                        if (sequencer != null) GameObject.Destroy(sequencer);
                     }
                 }
                 finally
@@ -236,6 +262,18 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
+        private static void CheckCancelPreviousBarkSequence(Transform speaker, IBarkUI barkUI)
+        {
+            if (barkUI.isPlaying && (barkUI is StandardBarkUI))
+            {
+                var standardBarkUI = barkUI as StandardBarkUI;
+                if (standardBarkUI.waitUntilSequenceEnds && standardBarkUI.cancelWaitUntilSequenceEndsIfReplacingBark)
+                {
+                    standardBarkUI.Hide();
+                }
+            }
+        }
+
         private static Sequencer PlayBarkSequence(Subtitle subtitle, Transform speaker, Transform listener)
         {
             return PlayBarkSequence(subtitle.formattedText.text, subtitle.sequence, subtitle.entrytag, speaker, listener);
@@ -243,6 +281,10 @@ namespace PixelCrushers.DialogueSystem
 
         private static Sequencer PlayBarkSequence(string barkText, string sequence, string entrytag, Transform speaker, Transform listener)
         {
+            if (string.IsNullOrEmpty(sequence))
+            {
+                sequence = DialogueManager.displaySettings.barkSettings.defaultBarkSequence;
+            }
             if (!string.IsNullOrEmpty(sequence))
             {
                 sequence = Sequencer.ReplaceShortcuts(sequence);
@@ -293,6 +335,7 @@ namespace PixelCrushers.DialogueSystem
             InformParticipantsLine(DialogueSystemMessages.OnBarkLine, speaker, subtitle);
             if ((barkUI == null) && DialogueDebug.logWarnings) Debug.LogWarning(string.Format("{0}: Bark (speaker={1}, listener={2}): '{3}' speaker has no bark UI", new System.Object[] { DialogueDebug.Prefix, speaker, listener, subtitle.formattedText.text }), speaker);
             if (((barkUI == null) || !(barkUI as MonoBehaviour).enabled) && DialogueDebug.logWarnings) Debug.LogWarning(string.Format("{0}: Bark (speaker={1}, listener={2}): '{3}' bark UI is null or disabled", new System.Object[] { DialogueDebug.Prefix, speaker, listener, subtitle.formattedText.text }), speaker);
+            CheckCancelPreviousBarkSequence(speaker, barkUI);
 
             // Show the bark subtitle:
             if ((barkUI != null) && (barkUI as MonoBehaviour).enabled)
@@ -343,6 +386,7 @@ namespace PixelCrushers.DialogueSystem
             IBarkUI barkUI = DialogueActor.GetBarkUI(speaker); // speaker.GetComponentInChildren(typeof(IBarkUI)) as IBarkUI;
             if ((barkUI == null) && DialogueDebug.logWarnings) Debug.LogWarning(string.Format("{0}: Bark (speaker={1}, listener={2}): '{3}' speaker has no bark UI", new System.Object[] { DialogueDebug.Prefix, speaker, listener, subtitle.formattedText.text }), speaker);
             if (((barkUI == null) || !(barkUI as MonoBehaviour).enabled) && DialogueDebug.logWarnings) Debug.LogWarning(string.Format("{0}: Bark (speaker={1}, listener={2}): '{3}' bark UI is null or disabled", new System.Object[] { DialogueDebug.Prefix, speaker, listener, subtitle.formattedText.text }), speaker);
+            CheckCancelPreviousBarkSequence(speaker, barkUI);
 
             // Show the bark subtitle:
             if ((barkUI != null) && (barkUI as MonoBehaviour).enabled)
@@ -352,7 +396,7 @@ namespace PixelCrushers.DialogueSystem
 
             // Start the sequence:
             Sequencer sequencer = null;
-            if (!(skipSequence || string.IsNullOrEmpty(subtitle.sequence)))
+            if (!skipSequence)
             {
                 sequencer = PlayBarkSequence(subtitle, speaker, listener);
             }
@@ -370,7 +414,7 @@ namespace PixelCrushers.DialogueSystem
 
         private static bool CheckDontBarkDuringConversation()
         {
-            return DialogueManager.isConversationActive && DialogueManager.displaySettings != null && 
+            return DialogueManager.isConversationActive && DialogueManager.displaySettings != null &&
                 DialogueManager.displaySettings.barkSettings != null && !DialogueManager.displaySettings.barkSettings.allowBarksDuringConversations;
         }
 

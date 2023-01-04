@@ -65,9 +65,12 @@ namespace PixelCrushers.DialogueSystem
                         m_watchList[i].Check();
                     }
                 }
+                // We don't care if collection is modified during enumeration in this case:
                 catch (System.InvalidOperationException)
                 {
-                    // We don't care if collection is modified during enumeration in this case.
+                }
+                catch (System.ArgumentOutOfRangeException)
+                {
                 }
             }
         }

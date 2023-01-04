@@ -17,6 +17,7 @@ namespace PixelCrushers
             public IMessageHandler listener;
             public string message;
             public string parameter;
+            public int frameAdded;
             public bool removed;
 
             public ListenerInfo() { }
@@ -26,6 +27,7 @@ namespace PixelCrushers
                 this.listener = listener;
                 this.message = message;
                 this.parameter = parameter;
+                this.frameAdded = Time.frameCount;
                 this.removed = false;
             }
 
@@ -34,6 +36,7 @@ namespace PixelCrushers
                 this.listener = listener;
                 this.message = message;
                 this.parameter = parameter;
+                this.frameAdded = Time.frameCount;
                 this.removed = false;
             }
 
@@ -55,11 +58,13 @@ namespace PixelCrushers
 
         private static bool s_sendInEditMode = false;
 
+        private static bool s_allowReceiveSameFrameAdded = true;
+
         private static bool s_debug = false;
 
         private static int s_sendMessageDepth = 0;
 
-#if UNITY_2019_3_OR_NEWER
+#if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void InitStaticVariables()
         {
@@ -68,6 +73,7 @@ namespace PixelCrushers
             s_sendersToLog = new HashSet<GameObject>();
             s_listenersToLog = new HashSet<GameObject>();
             s_sendInEditMode = false;
+            s_allowReceiveSameFrameAdded = true;
             s_debug = false;
             s_sendMessageDepth = 0;
         }
@@ -80,6 +86,15 @@ namespace PixelCrushers
         {
             get { return s_sendInEditMode; }
             set { s_sendInEditMode = value; }
+        }
+
+        /// <summary>
+        /// Allow listeners to receive messages on the same frame they registered with the MessageSystem.
+        /// </summary>
+        public static bool allowReceiveSameFrameAdded
+        {
+            get { return s_allowReceiveSameFrameAdded; }
+            set { s_allowReceiveSameFrameAdded = value; }
         }
 
         /// <summary>
@@ -337,6 +352,7 @@ namespace PixelCrushers
                         x.removed = true;
                         continue;
                     }
+                     if (!allowReceiveSameFrameAdded && x.frameAdded == Time.frameCount) continue;
                     if (string.Equals(x.message, message) && (string.Equals(x.parameter, parameter) || string.IsNullOrEmpty(x.parameter)))
                     {
                         try
@@ -423,7 +439,7 @@ namespace PixelCrushers
         /// <param name="values">Any number of additional values to send with message.</param>
         public static void SendMessage(object sender, StringField message, StringField parameter, params object[] values)
         {
-            SendMessageWithTarget(sender, null, message.value, parameter.value, values);
+            SendMessageWithTarget(sender, null, StringField.GetStringValue(message), StringField.GetStringValue(parameter), values);
         }
 
         /// <summary>
@@ -435,7 +451,7 @@ namespace PixelCrushers
         /// <param name="values">Any number of additional values to send with message.</param>
         public static void SendMessage(object sender, StringField message, string parameter, params object[] values)
         {
-            SendMessageWithTarget(sender, null, message.value, parameter, values);
+            SendMessageWithTarget(sender, null, StringField.GetStringValue(message), parameter, values);
         }
 
         /// <summary>
@@ -447,7 +463,7 @@ namespace PixelCrushers
         /// <param name="values">Any number of additional values to send with message.</param>
         public static void SendMessage(object sender, string message, StringField parameter, params object[] values)
         {
-            SendMessageWithTarget(sender, null, message, parameter.value, values);
+            SendMessageWithTarget(sender, null, message, StringField.GetStringValue(parameter), values);
         }
 
         /// <summary>

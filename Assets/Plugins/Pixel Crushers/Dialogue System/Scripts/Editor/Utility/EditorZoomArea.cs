@@ -13,6 +13,10 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         {
             return new Vector2(rect.xMin, rect.yMin);
         }
+        public static Vector2 BottomRight(this Rect rect)
+        {
+            return new Vector2(rect.xMax, rect.yMax);
+        }
         public static Rect ScaleSizeBy(this Rect rect, float scale)
         {
             return rect.ScaleSizeBy(scale, rect.center);

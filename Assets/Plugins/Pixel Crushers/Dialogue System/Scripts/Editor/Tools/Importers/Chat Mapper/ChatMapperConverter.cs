@@ -19,7 +19,7 @@ namespace PixelCrushers.DialogueSystem
     public class ChatMapperConverter : EditorWindow
     {
 
-        [MenuItem("Tools/Pixel Crushers/Dialogue System/Import/Chat Mapper", false, 1)]
+        [MenuItem("Tools/Pixel Crushers/Dialogue System/Import/Chat Mapper...", false, 1)]
         public static void Init()
         {
             ChatMapperConverter window = EditorWindow.GetWindow(typeof(ChatMapperConverter), false, "Chat Mapper") as ChatMapperConverter;
@@ -582,6 +582,7 @@ namespace PixelCrushers.DialogueSystem
                 Conversation conversation = new Conversation(chatMapperConversation, prefs.putEndSequenceOnLastSplit);
                 SetConversationStartCutsceneToNone(conversation);
                 ChatMapperToDialogueDatabase.ConvertAudioFilesToSequences(conversation);
+                ChatMapperToDialogueDatabase.ConvertOverridesFieldsToDisplaySettingsOverrides(conversation);
                 database.conversations.Add(conversation);
             }
             ChatMapperToDialogueDatabase.FixConversationsLinkedToFirstEntry(database);

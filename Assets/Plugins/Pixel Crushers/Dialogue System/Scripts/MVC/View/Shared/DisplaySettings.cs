@@ -178,6 +178,9 @@ namespace PixelCrushers.DialogueSystem
             [Tooltip("How to handle continue buttons.")]
             public ContinueButtonMode continueButton = ContinueButtonMode.Never;
 
+            [Tooltip("If ticked, always require continue button on subtitle that ends conversation. Overrides Continue Button dropdown above.")]
+            public bool requireContinueOnLastLine = false;
+
             /// <summary>
             /// Set <c>true</c> to convert "[em#]" tags to rich text codes in formatted text.
             /// Your implementation of IDialogueUI must support rich text.
@@ -225,6 +228,12 @@ namespace PixelCrushers.DialogueSystem
             public GameObject cameraAngles = null;
 
             /// <summary>
+            /// If conversation's sequences use Main Camera, leave camera in current position at end of conversation instead of restoring pre-conversation position.
+            /// </summary>
+            [Tooltip("If conversation's sequences use Main Camera, leave camera in current position at end of conversation instead of restoring pre-conversation position.")]
+            public bool keepCameraPositionAtConversationEnd = false;
+
+            /// <summary>
             /// The default sequence to use if the dialogue entry doesn't have a sequence defined 
             /// in its Sequence field. See @ref dialogueCreation and @ref sequencer for
             /// more information. The special keyword "{{end}}" gets replaced by the default
@@ -247,6 +256,14 @@ namespace PixelCrushers.DialogueSystem
             /// </summary>
             [Tooltip("Format to use for the 'entrytag' keyword.")]
             public EntrytagFormat entrytagFormat = EntrytagFormat.ActorName_ConversationID_EntryID;
+
+            /// <summary>
+            /// By default, Audio() and AudioWait() sequencer commands don't report 
+            /// missing audio files to reduce Console spam during development. Set this
+            /// true to report missing audio files.
+            /// </summary>
+            [Tooltip("By default, Audio() and AudioWait() sequencer commands don't report missing audio files to reduce Console spam during development.")]
+            public bool reportMissingAudioFiles = false;
 
             /// <summary>
             /// Set <c>true</c> to disable the internal sequencer commands -- for example, if you
@@ -355,6 +372,12 @@ namespace PixelCrushers.DialogueSystem
             /// </summary>
             [Tooltip("Show barks  for at least this many seconds. If zero, use Subtitle Settings > Min Subtitle Seconds.")]
             public float minBarkSeconds = 0;
+
+            /// <summary>
+            /// If non-blank, play this sequence with barks that don't specify their own Sequence.
+            /// </summary>
+            [Tooltip("If non-blank, play this sequence with barks that don't specify their own Sequence.")]
+            public string defaultBarkSequence = string.Empty;
 
         }
 
@@ -496,6 +519,18 @@ namespace PixelCrushers.DialogueSystem
         {
             return ShouldUseInputOverrides() ? conversationOverrideSettings.responseTimeout :
                 ((inputSettings != null) ? inputSettings.responseTimeout : 0);
+        }
+
+        public EmTag GetEmTagForOldResponses()
+        {
+            return ShouldUseInputOverrides() ? conversationOverrideSettings.emTagForOldResponses :
+                ((inputSettings != null) ? inputSettings.emTagForOldResponses : EmTag.None);
+        }
+
+        public EmTag GetEmTagForInvalidResponses()
+        {
+            return ShouldUseInputOverrides() ? conversationOverrideSettings.emTagForInvalidResponses :
+                ((inputSettings != null) ? inputSettings.emTagForInvalidResponses : EmTag.None);
         }
 
         public InputTrigger GetCancelSubtitleInput()

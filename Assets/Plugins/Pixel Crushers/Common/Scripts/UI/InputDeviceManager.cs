@@ -176,6 +176,18 @@ namespace PixelCrushers
             return DefaultGetMousePosition();
         }
 
+#if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void InitStaticVariables()
+        {
+            m_instance = null;
+#if USE_NEW_INPUT
+            inputActionDict = new Dictionary<string, InputAction>();
+            m_specialKeyCodeDict = null;
+#endif
+        }
+#endif
+
         public void Awake()
         {
             if (m_instance != null && singleton)
@@ -190,6 +202,12 @@ namespace PixelCrushers
                 GetInputAxis = DefaultGetAxis;
                 if (singleton)
                 {
+#if UNITY_EDITOR
+                    if (Application.isPlaying)
+                    { // If GameObject is hidden in Scene view, DontDestroyOnLoad will report (harmless) error.
+                        UnityEditor.SceneVisibilityManager.instance.Show(gameObject, true);
+                    }
+#endif
                     transform.SetParent(null);
                     DontDestroyOnLoad(gameObject);
                 }
@@ -235,7 +253,7 @@ namespace PixelCrushers
                 case InputDevice.Mouse:
                     var eventSystem = UnityEngine.EventSystems.EventSystem.current;
                     var currentSelectable = (eventSystem != null && eventSystem.currentSelectedGameObject != null) ? eventSystem.currentSelectedGameObject.GetComponent<UnityEngine.UI.Selectable>() : null;
-                    if (currentSelectable != null) currentSelectable.OnDeselect(null);
+                    if (currentSelectable != null && !autoFocus) currentSelectable.OnDeselect(null);
                     onUseMouse.Invoke();
                     break;
                 case InputDevice.Touch:
@@ -422,14 +440,51 @@ namespace PixelCrushers
         {
             if (inputActionDict.ContainsKey(name)) inputActionDict.Remove(name);
         }
+
+        // Number keys translate differently in Input System, so create a quick lookup dictionary:
+        protected static Dictionary<KeyCode, KeyControl> m_specialKeyCodeDict = null;
+        protected static Dictionary<KeyCode, KeyControl> specialKeyCodeDict
+        {
+            get
+            {
+                if (m_specialKeyCodeDict == null)
+                {
+                    m_specialKeyCodeDict = new Dictionary<KeyCode, KeyControl>();
+                    for (int i = (int)KeyCode.Alpha0; i <= (int)KeyCode.Alpha9; i++)
+                    {
+                        try
+                        {
+                            m_specialKeyCodeDict.Add((KeyCode)i, Keyboard.current[(i - (int)KeyCode.Alpha0).ToString()] as KeyControl);
+                        }
+                        catch (KeyNotFoundException) { }
+                    }
+                    for (int i = (int)KeyCode.Keypad0; i <= (int)KeyCode.Keypad9; i++)
+                    {
+                        try
+                        {
+                            m_specialKeyCodeDict.Add((KeyCode)i, Keyboard.current["numpad" + (i - (int)KeyCode.Keypad0).ToString()] as KeyControl);
+                        }
+                        catch (KeyNotFoundException) { }
+                    }
+                }
+                return m_specialKeyCodeDict;
+            }
+        }
 #endif
 
         public static bool DefaultGetKeyDown(KeyCode keyCode)
         {
 #if USE_NEW_INPUT
             if (Keyboard.current == null || keyCode == KeyCode.None) return false;
+            if (keyCode == KeyCode.Return) return (Keyboard.current["enter"] as KeyControl).wasPressedThisFrame;
             var s = keyCode.ToString().ToLower();
-            if (s.StartsWith("joystick")) return false;
+            if (s.StartsWith("joystick") || s.StartsWith("mouse")) return false;
+            if ((KeyCode.Alpha0 <= keyCode && keyCode <= KeyCode.Alpha9) || 
+                (KeyCode.Keypad0 <= keyCode && keyCode <= KeyCode.Keypad9))
+            {
+                KeyControl numKeyControl;
+                return specialKeyCodeDict.TryGetValue(keyCode, out numKeyControl) ? numKeyControl.wasPressedThisFrame : false;
+            }
             var keyControl = Keyboard.current[s] as KeyControl;
             return (keyControl != null) ? keyControl.wasPressedThisFrame : false;
 #else
