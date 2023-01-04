@@ -57,6 +57,25 @@ namespace PixelCrushers.DialogueSystem
 
         public Sequencer sequencer { get { return m_sequencer; } }
 
+        public IDialogueUI dialogueUI 
+        { 
+            get 
+            { 
+                return ui; 
+            } 
+            set 
+            {
+                if (ui != value)
+                {
+                    ui.SelectedResponseHandler -= OnSelectedResponse;
+                    ui.Close();
+                    ui = value;
+                    ui.Open();
+                    ui.SelectedResponseHandler += OnSelectedResponse;
+                }
+            } 
+        }
+
         /// <summary>
         /// Initialize a UI and sequencer with displaySettings.
         /// </summary>
@@ -136,6 +155,16 @@ namespace PixelCrushers.DialogueSystem
             {
                 if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: {1} says '{2}'", new System.Object[] { DialogueDebug.Prefix, Tools.GetGameObjectName(subtitle.speakerInfo.transform), subtitle.formattedText.text }));
                 NotifyParticipantsOnConversationLine(subtitle);
+
+                m_sequencer.SetParticipants(subtitle.speakerInfo.transform, subtitle.listenerInfo.transform);
+                m_sequencer.entrytag = subtitle.entrytag;
+                m_sequencer.subtitleEndTime = GetDefaultSubtitleDuration(subtitle.formattedText.text);
+                if (!string.IsNullOrEmpty(subtitle.sequence) && subtitle.sequence.Contains("{{default}}"))
+                {
+                    subtitle.sequence = subtitle.sequence.Replace("{{default}}", GetDefaultSequence(subtitle));
+                }
+                subtitle.sequence = string.IsNullOrEmpty(subtitle.sequence) ? GetDefaultSequence(subtitle) : PreprocessSequence(subtitle);
+
                 if (ShouldShowSubtitle(subtitle))
                 {
                     ui.ShowSubtitle(subtitle);
@@ -152,13 +181,6 @@ namespace PixelCrushers.DialogueSystem
                 {
                     waitForContinue = false;
                 }
-                m_sequencer.SetParticipants(subtitle.speakerInfo.transform, subtitle.listenerInfo.transform);
-                m_sequencer.entrytag = subtitle.entrytag;
-                m_sequencer.subtitleEndTime = GetDefaultSubtitleDuration(subtitle.formattedText.text);
-                if (!string.IsNullOrEmpty(subtitle.sequence) && subtitle.sequence.Contains("{{default}}"))
-                {
-                    subtitle.sequence = subtitle.sequence.Replace("{{default}}", GetDefaultSequence(subtitle));
-                }
                 if (subtitle.speakerInfo.isNPC)
                 {
                     lastNPCSubtitle = subtitle;
@@ -169,7 +191,7 @@ namespace PixelCrushers.DialogueSystem
                 }
                 lastSubtitle = subtitle;
                 if (dialogueEntrySpokenHandler != null) dialogueEntrySpokenHandler(subtitle);
-                m_sequencer.PlaySequence(string.IsNullOrEmpty(subtitle.sequence) ? GetDefaultSequence(subtitle) : PreprocessSequence(subtitle), settings.subtitleSettings.informSequenceStartAndEnd, false);
+                m_sequencer.PlaySequence(subtitle.sequence, settings.subtitleSettings.informSequenceStartAndEnd, false);
             }
             else
             {
@@ -262,6 +284,13 @@ namespace PixelCrushers.DialogueSystem
 
         private bool ShouldShowContinueButton(bool isPCLine, bool isPCResponseMenuNext, bool isPCAutoResponseNext)
         {
+            // If we require continue button on last line, we have to grab the current conversation state to check it:
+            if (settings.subtitleSettings.requireContinueOnLastLine && !DialogueManager.instance.currentConversationState.hasAnyResponses)
+            {
+                // Note: side effect - set waitForContinue true
+                waitForContinue = true;
+                return true;
+            }
             // Should we show the continue button? (Even if optional and not waiting for it)
             switch (settings.GetContinueButtonMode())
             {

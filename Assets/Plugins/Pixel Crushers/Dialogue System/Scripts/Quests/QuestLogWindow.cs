@@ -2,6 +2,7 @@
 
 using UnityEngine;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace PixelCrushers.DialogueSystem
@@ -80,6 +81,9 @@ namespace PixelCrushers.DialogueSystem
 
         [Tooltip("Allow only one quest to be tracked at a time.")]
         public bool trackOneQuestAtATime = false;
+
+        [Tooltip("Clicking again on selected quest title deselects quest.")]
+        public bool deselectQuestOnSecondClick = true;
 
         [Serializable]
         public class QuestInfo
@@ -160,7 +164,7 @@ namespace PixelCrushers.DialogueSystem
         /// Indicates whether the window is showing active quests or completed quests.
         /// </summary>
         /// <value><c>true</c> if showing active quests; otherwise, <c>false</c>.</value>
-        public virtual bool isShowingActiveQuests { get { return currentQuestStateMask == QuestState.Active; } }
+        public virtual bool isShowingActiveQuests { get { return currentQuestStateMask == ActiveQuestStateMask; } }
 
         /// @cond FOR_V1_COMPATIBILITY
         public bool IsOpen { get { return isOpen; } protected set { isOpen = value; } }
@@ -171,15 +175,61 @@ namespace PixelCrushers.DialogueSystem
         public bool IsShowingActiveQuests { get { return isShowingActiveQuests; } }
         /// @endcond
 
+        protected const QuestState ActiveQuestStateMask = QuestState.Active | QuestState.ReturnToNPC;
+
         /// <summary>
         /// The current quest state mask.
         /// </summary>
-        protected QuestState currentQuestStateMask = QuestState.Active;
+        protected QuestState currentQuestStateMask = ActiveQuestStateMask;
 
         /// <summary>
         /// The previous time scale prior to opening the window.
         /// </summary>
-        private float previousTimeScale = 1;
+        protected float previousTimeScale = 1;
+
+        protected Coroutine refreshCoroutine = null;
+
+        protected bool started = false;
+
+        public virtual void Awake()
+        {
+            isOpen = false;
+            quests = new QuestInfo[0];
+            groups = new string[0];
+            selectedQuest = string.Empty;
+            noQuestsMessage = string.Empty;
+        }
+
+        protected virtual void Start()
+        {
+            started = true;
+            RegisterForUpdateTrackerEvents();
+        }
+
+        protected virtual void OnEnable()
+        {
+            if (started) RegisterForUpdateTrackerEvents();
+        }
+
+        protected virtual void OnDisable()
+        {
+            refreshCoroutine = null;
+            UnregisterFromUpdateTrackerEvents();
+        }
+
+        protected void RegisterForUpdateTrackerEvents()
+        {
+            if (!started || DialogueManager.instance == null) return;
+            if (GetComponentInParent<DialogueSystemController>() != null) return; // Children of Dialogue Manager automatically receive UpdateTracker; no need to register.
+            DialogueManager.instance.receivedUpdateTracker -= UpdateTracker;
+            DialogueManager.instance.receivedUpdateTracker += UpdateTracker;
+        }
+
+        protected void UnregisterFromUpdateTrackerEvents()
+        {
+            if (!started || DialogueManager.instance == null) return;
+            DialogueManager.instance.receivedUpdateTracker -= UpdateTracker;
+        }
 
         /// <summary>
         /// Opens the window. Your implementation should override this to handle any
@@ -215,15 +265,6 @@ namespace PixelCrushers.DialogueSystem
         /// <param name="title">Title.</param>
         /// <param name="confirmedAbandonQuestHandler">Confirmed abandon quest handler.</param>
         public virtual void ConfirmAbandonQuest(string title, Action confirmedAbandonQuestHandler) { }
-
-        public virtual void Awake()
-        {
-            isOpen = false;
-            quests = new QuestInfo[0];
-            groups = new string[0];
-            selectedQuest = string.Empty;
-            noQuestsMessage = string.Empty;
-        }
 
         /// <summary>
         /// Opens the quest window.
@@ -346,7 +387,7 @@ namespace PixelCrushers.DialogueSystem
         /// <param name="questStateMask">Quest state mask.</param>
         protected virtual string GetNoQuestsMessage(QuestState questStateMask)
         {
-            return (questStateMask == QuestState.Active) ? GetLocalizedText(noActiveQuestsText) : GetLocalizedText(noCompletedQuestsText);
+            return (questStateMask == ActiveQuestStateMask) ? GetLocalizedText(noActiveQuestsText) : GetLocalizedText(noCompletedQuestsText);
         }
 
         /// <summary>
@@ -391,7 +432,7 @@ namespace PixelCrushers.DialogueSystem
         /// <param name="data">Ignored.</param>
         public virtual void ClickShowActiveQuests(object data)
         {
-            ShowQuests(QuestState.Active);
+            ShowQuests(ActiveQuestStateMask);
         }
 
         /// <summary>
@@ -412,7 +453,7 @@ namespace PixelCrushers.DialogueSystem
         {
             if (!IsString(data)) return;
             string clickedQuest = (string)data;
-            selectedQuest = string.Equals(selectedQuest, clickedQuest) ? string.Empty : clickedQuest;
+            selectedQuest = (deselectQuestOnSecondClick && string.Equals(selectedQuest, clickedQuest)) ? string.Empty : clickedQuest;
             OnQuestListUpdated();
         }
 
@@ -483,9 +524,21 @@ namespace PixelCrushers.DialogueSystem
 
         public void UpdateTracker()
         {
-            if (isOpen) ShowQuests(currentQuestStateMask);
+            if (isOpen)
+            {
+                if (refreshCoroutine == null)
+                {
+                    refreshCoroutine = StartCoroutine(UpdateQuestDisplayAtEndOfFrame());
+                }
+            }
         }
 
+        protected IEnumerator UpdateQuestDisplayAtEndOfFrame()
+        {
+            yield return new WaitForEndOfFrame();
+            refreshCoroutine = null;
+            ShowQuests(currentQuestStateMask);
+        }
 
     }
 

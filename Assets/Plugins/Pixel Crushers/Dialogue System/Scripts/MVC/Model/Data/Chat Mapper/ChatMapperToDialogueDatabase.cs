@@ -98,6 +98,7 @@ namespace PixelCrushers.DialogueSystem
                 Conversation conversation = new Conversation(chatMapperConversation);
                 SetConversationStartCutsceneToNone(conversation);
                 ConvertAudioFilesToSequences(conversation);
+                ConvertOverridesFieldsToDisplaySettingsOverrides(conversation);
                 foreach (DialogueEntry entry in conversation.dialogueEntries)
                 {
                     foreach (Link link in entry.outgoingLinks)
@@ -205,6 +206,18 @@ namespace PixelCrushers.DialogueSystem
                     }
                 }
             }
+        }
+
+        public static void ConvertOverridesFieldsToDisplaySettingsOverrides(Conversation conversation)
+        {
+            if (conversation == null) return;
+            var overridesField = conversation.fields.Find(field => field.title == "Overrides");
+            if (overridesField == null) return;
+            if (string.IsNullOrEmpty(overridesField.value)) return;
+            var overrides = JsonUtility.FromJson<ConversationOverrideDisplaySettings>(overridesField.value);
+            if (overrides == null) return;
+            conversation.overrideSettings = overrides;
+            conversation.fields.Remove(overridesField);
         }
 
     }

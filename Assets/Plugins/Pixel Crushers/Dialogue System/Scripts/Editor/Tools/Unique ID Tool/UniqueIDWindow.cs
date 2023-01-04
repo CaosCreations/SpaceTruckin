@@ -4,10 +4,6 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Xml;
-using System.Xml.Serialization;
 using System.Linq;
 
 namespace PixelCrushers.DialogueSystem
@@ -17,17 +13,20 @@ namespace PixelCrushers.DialogueSystem
     {
 
         [MenuItem("Tools/Pixel Crushers/Dialogue System/Tools/Unique ID Tool", false, 3)]
-        public static void Init()
+        public static void OpenUniqueIDWindow()
         {
-            EditorWindow.GetWindow(typeof(UniqueIDWindow), false, "Unique IDs");
+            instance = EditorWindow.GetWindow<UniqueIDWindow>(false, "Unique IDs");
         }
+
+        public static UniqueIDWindow instance = null;
 
         // Private fields for the window:
 
-        private UniqueIDWindowPrefs prefs = null;
+        public UniqueIDWindowPrefs prefs = null;
+        private Template template = null;
 
         private bool verbose = false;
-        private string report;
+        public string report;
 
         private Vector2 scrollPosition = Vector2.zero;
 
@@ -39,6 +38,7 @@ namespace PixelCrushers.DialogueSystem
                 prefs = UniqueIDWindowPrefs.Load();
                 prefs.RelinkDatabases();
             }
+            template = TemplateTools.LoadFromEditorPrefs();
         }
 
         void OnDisable()
@@ -49,7 +49,7 @@ namespace PixelCrushers.DialogueSystem
         void OnGUI()
         {
             // Validate prefs:
-            if (prefs == null) prefs = UniqueIDWindowPrefs.Load(); 
+            if (prefs == null) prefs = UniqueIDWindowPrefs.Load();
             if (prefs.databases == null) prefs.databases = new List<DialogueDatabase>();
 
             // Draw window:
@@ -127,14 +127,14 @@ namespace PixelCrushers.DialogueSystem
             if (EditorGUI.EndChangeCheck()) prefs.Save();
         }
 
-        private void AddAllDatabasesInProject()
+        public void AddAllDatabasesInProject()
         {
             prefs.databases.Clear();
             AddAllDatabasesInFolder("Assets", true);
             prefs.Save();
         }
 
-        private void AddAllDatabasesInFolder(string folderPath, bool recursive)
+        public void AddAllDatabasesInFolder(string folderPath, bool recursive)
         {
             string[] filePaths = Directory.GetFiles(folderPath, "*.asset", recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
             foreach (string filePath in filePaths)
@@ -197,6 +197,11 @@ namespace PixelCrushers.DialogueSystem
             public Dictionary<string, IDConversion> items = new Dictionary<string, IDConversion>();
             public Dictionary<string, IDConversion> locations = new Dictionary<string, IDConversion>();
             public Dictionary<string, IDConversion> variables = new Dictionary<string, IDConversion>();
+            public HashSet<int> usedNewActorIDs = new HashSet<int>();
+            public HashSet<int> usedNewItemIDs = new HashSet<int>();
+            public HashSet<int> usedNewLocationIDs = new HashSet<int>();
+            public HashSet<int> usedNewVariableIDs = new HashSet<int>();
+            public HashSet<int> usedNewConversationIDs = new HashSet<int>();
             public int highestActorID = 0;
             public int highestItemID = 0;
             public int highestLocationID = 0;
@@ -210,6 +215,11 @@ namespace PixelCrushers.DialogueSystem
             {
                 report = "Unique ID Tool Report:";
                 List<DialogueDatabase> distinct = prefs.databases.Distinct().ToList();
+                if (distinct.Count == 0)
+                {
+                    report += " No databases to process.";
+                    return;
+                }
                 MasterIDs masterIDs = new MasterIDs();
                 for (int i = 0; i < distinct.Count; i++)
                 {
@@ -255,7 +265,7 @@ namespace PixelCrushers.DialogueSystem
                 }
                 else
                 {
-                    var s = "Unable to process conversations. In database '" + database + 
+                    var s = "Unable to process conversations. In database '" + database +
                         "' two or more conversations have the same conversation ID " + conversation.id + ":";
                     for (int j = 0; j < database.conversations.Count; j++)
                     {
@@ -299,16 +309,31 @@ namespace PixelCrushers.DialogueSystem
                 else
                 {
                     int newID;
-                    if (actor.id <= masterIDs.highestActorID)
+                    if (!masterIDs.usedNewActorIDs.Contains(actor.id))
                     {
-                        masterIDs.highestActorID++;
-                        newID = masterIDs.highestActorID;
+                        // ID is unique so far, so no need to assign new ID.
+                        newID = actor.id;
                     }
                     else
                     {
-                        masterIDs.highestActorID = actor.id;
-                        newID = actor.id;
+                        // Find a new ID:
+                        newID = template.GetNextActorID(database); // Try new ID from database.baseID.
+                        if (masterIDs.usedNewActorIDs.Contains(newID))
+                        {
+                            // If can't get a unique ID from database.baseID, use highest ID + 1.
+                            if (actor.id <= masterIDs.highestActorID)
+                            {
+                                masterIDs.highestActorID++;
+                                newID = masterIDs.highestActorID;
+                            }
+                            else
+                            {
+                                newID = actor.id;
+                            }
+                        }
                     }
+                    masterIDs.highestActorID = Mathf.Max(masterIDs.highestActorID, newID);
+                    masterIDs.usedNewActorIDs.Add(newID);
                     masterIDs.actors.Add(actor.Name, new IDConversion(actor.id, newID));
                 }
             }
@@ -325,16 +350,31 @@ namespace PixelCrushers.DialogueSystem
                 else
                 {
                     int newID;
-                    if (item.id <= masterIDs.highestItemID)
+                    if (!masterIDs.usedNewItemIDs.Contains(item.id))
                     {
-                        masterIDs.highestItemID++;
-                        newID = masterIDs.highestItemID;
+                        // ID is unique so far, so no need to assign new ID.
+                        newID = item.id;
                     }
                     else
                     {
-                        masterIDs.highestItemID = item.id;
-                        newID = item.id;
+                        // Find a new ID:
+                        newID = template.GetNextItemID(database); // Try new ID from database.baseID.
+                        if (masterIDs.usedNewItemIDs.Contains(newID))
+                        {
+                            // If can't get a unique ID from database.baseID, use highest ID + 1.
+                            if (item.id <= masterIDs.highestItemID)
+                            {
+                                masterIDs.highestItemID++;
+                                newID = masterIDs.highestItemID;
+                            }
+                            else
+                            {
+                                newID = item.id;
+                            }
+                        }
                     }
+                    masterIDs.highestItemID = Mathf.Max(masterIDs.highestItemID, newID);
+                    masterIDs.usedNewItemIDs.Add(newID);
                     masterIDs.items.Add(item.Name, new IDConversion(item.id, newID));
                 }
             }
@@ -351,16 +391,31 @@ namespace PixelCrushers.DialogueSystem
                 else
                 {
                     int newID;
-                    if (location.id <= masterIDs.highestLocationID)
+                    if (!masterIDs.usedNewLocationIDs.Contains(location.id))
                     {
-                        masterIDs.highestLocationID++;
-                        newID = masterIDs.highestLocationID;
+                        // ID is unique so far, so no need to assign new ID.
+                        newID = location.id;
                     }
                     else
                     {
-                        masterIDs.highestLocationID = location.id;
-                        newID = location.id;
+                        // Find a new ID:
+                        newID = template.GetNextLocationID(database); // Try new ID from database.baseID.
+                        if (masterIDs.usedNewLocationIDs.Contains(newID))
+                        {
+                            // If can't get a unique ID from database.baseID, use highest ID + 1.
+                            if (location.id <= masterIDs.highestLocationID)
+                            {
+                                masterIDs.highestLocationID++;
+                                newID = masterIDs.highestLocationID;
+                            }
+                            else
+                            {
+                                newID = location.id;
+                            }
+                        }
                     }
+                    masterIDs.highestLocationID = Mathf.Max(masterIDs.highestLocationID, newID);
+                    masterIDs.usedNewLocationIDs.Add(newID);
                     masterIDs.locations.Add(location.Name, new IDConversion(location.id, newID));
                 }
             }
@@ -377,16 +432,31 @@ namespace PixelCrushers.DialogueSystem
                 else
                 {
                     int newID;
-                    if (variable.id <= masterIDs.highestVariableID)
+                    if (!masterIDs.usedNewVariableIDs.Contains(variable.id))
                     {
-                        masterIDs.highestVariableID++;
-                        newID = masterIDs.highestVariableID;
+                        // ID is unique so far, so no need to assign new ID.
+                        newID = variable.id;
                     }
                     else
                     {
-                        masterIDs.highestVariableID = variable.id;
-                        newID = variable.id;
+                        // Find a new ID:
+                        newID = template.GetNextVariableID(database); // Try new ID from database.baseID.
+                        if (masterIDs.usedNewVariableIDs.Contains(newID))
+                        {
+                            // If can't get a unique ID from database.baseID, use highest ID + 1.
+                            if (variable.id <= masterIDs.highestVariableID)
+                            {
+                                masterIDs.highestVariableID++;
+                                newID = masterIDs.highestVariableID;
+                            }
+                            else
+                            {
+                                newID = variable.id;
+                            }
+                        }
                     }
+                    masterIDs.highestVariableID = Mathf.Max(masterIDs.highestVariableID, newID);
+                    masterIDs.usedNewVariableIDs.Add(newID);
                     masterIDs.variables.Add(variable.Name, new IDConversion(variable.id, newID));
                 }
             }
@@ -424,7 +494,7 @@ namespace PixelCrushers.DialogueSystem
             else
             {
                 var s = "Warning: No ID conversion entry found for " + name;
-                Debug.LogWarning(name);
+                Debug.LogWarning(s);
                 report += "\n" + s;
                 return oldID;
             }
@@ -479,7 +549,7 @@ namespace PixelCrushers.DialogueSystem
                 int newID = FindIDConversion(variable.Name, masterIDs.variables, variable.id);
                 if (newID != variable.id)
                 {
-                    if (verbose) report += string.Format("Variable {0}: ID [{1}]-->[{2}]", variable.Name, variable.id, newID);
+                    if (verbose) report += string.Format("\nVariable {0}: ID [{1}]-->[{2}]", variable.Name, variable.id, newID);
                     variable.id = newID;
                 }
                 ProcessFieldIDs(database, variable.fields, masterIDs);
@@ -515,25 +585,33 @@ namespace PixelCrushers.DialogueSystem
             Dictionary<int, int> newIDs = new Dictionary<int, int>();
             foreach (var conversation in database.conversations)
             {
-                int newID = conversation.id;
-                if (conversation.id <= masterIDs.highestConversationID)
+                if (!masterIDs.usedNewConversationIDs.Contains(conversation.id))
                 {
-                    masterIDs.highestConversationID++;
-                    newID = masterIDs.highestConversationID;
-                    if (!newIDs.ContainsKey(conversation.id))
-                    {
-                        newIDs.Add(conversation.id, newID);
-                    }
-                    else
-                    {
-                        var s = "Unique ID Tool error: In '" + database + "' more than one conversation uses ID " + conversation.id + ".";
-                        Debug.LogError(s, database);
-                        report += "\n" + s;
-                    }
+                    // ID is unique so far, so no need to assign new ID.
+                    masterIDs.usedNewConversationIDs.Add(conversation.id);
+                    masterIDs.highestConversationID = Mathf.Max(masterIDs.highestConversationID, conversation.id);
                 }
                 else
                 {
-                    masterIDs.highestConversationID = conversation.id;
+                    // Find a new ID:
+                    int newID;
+                    newID = template.GetNextConversationID(database); // Try new ID from database.baseID.
+                    if (masterIDs.usedNewConversationIDs.Contains(newID))
+                    {
+                        // If can't get a unique ID from database.baseID, use highest ID + 1.
+                        masterIDs.highestConversationID++;
+                        newID = masterIDs.highestConversationID;
+                        if (newIDs.ContainsKey(conversation.id))
+                        {
+                            var s = "Unique ID Tool error: In '" + database + "' more than one conversation uses ID " + conversation.id + ".";
+                            Debug.LogError(s, database);
+                            report += "\n" + s;
+                            newID = conversation.id;
+                        }
+                    }
+                    masterIDs.highestConversationID = Mathf.Max(masterIDs.highestConversationID, newID);
+                    masterIDs.usedNewConversationIDs.Add(newID);
+                    newIDs.Add(conversation.id, newID);
                 }
             }
             return newIDs;

@@ -14,7 +14,7 @@ namespace PixelCrushers.DialogueSystem.Aurora
     public class AuroraConverterWindow : EditorWindow
     {
 
-        [MenuItem("Tools/Pixel Crushers/Dialogue System/Import/Aurora (Neverwinter Nights)", false, 1)]
+        [MenuItem("Tools/Pixel Crushers/Dialogue System/Import/Aurora (Neverwinter Nights)...", false, 1)]
         public static void Init()
         {
             AuroraConverterWindow window = EditorWindow.GetWindow(typeof(AuroraConverterWindow), false, "Aurora") as AuroraConverterWindow;

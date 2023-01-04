@@ -56,7 +56,7 @@ namespace PixelCrushers
         /// <returns>Wrapper type.</returns>
         public static System.Type GetWrapperType(System.Type type)
         {
-            if (type == null || !type.Namespace.StartsWith("PixelCrushers")) return type;
+            if (type == null || string.IsNullOrEmpty(type.Namespace) || !type.Namespace.StartsWith("PixelCrushers")) return type;
             try
             {
                 var wrapperName = type.Namespace + ".Wrappers." + type.Name;

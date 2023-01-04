@@ -14,6 +14,7 @@ namespace PixelCrushers.DialogueSystem
     public class StandardUIResponseButton : MonoBehaviour, ISelectHandler
     {
 
+        [HelpBox("If Button's OnClick() event is empty, this Standard UI Response Button component will automatically assign its OnClick method at runtime. If Button's OnClick() event has other elements, you *must* manually assign the StandardUIResponseButton.OnClick method to it.", HelpBoxMessageType.Info)]
         public UnityEngine.UI.Button button;
 
         [Tooltip("Text element to display response text.")]
@@ -28,7 +29,7 @@ namespace PixelCrushers.DialogueSystem
         /// <summary>
         /// Gets or sets the response text element.
         /// </summary>
-        public string text
+        public virtual string text
         {
             get
             {
@@ -44,7 +45,7 @@ namespace PixelCrushers.DialogueSystem
         /// <summary>
         /// Indicates whether the button is an allowable response.
         /// </summary>
-        public bool isClickable
+        public virtual bool isClickable
         {
             get { return (button != null) && button.interactable; }
             set { if (button != null) button.interactable = value; }
@@ -53,24 +54,24 @@ namespace PixelCrushers.DialogueSystem
         /// <summary>
         /// Indicates whether the button is shown or not.
         /// </summary>
-        public bool isVisible { get; set; }
+        public virtual bool isVisible { get; set; }
 
         /// <summary>
         /// Gets or sets the response associated with this button. If the player clicks this 
         /// button, this response is sent back to the dialogue system.
         /// </summary>
-        public Response response { get; set; }
+        public virtual Response response { get; set; }
 
         /// <summary>
         /// Gets or sets the target that will receive click notifications.
         /// </summary>
-        public Transform target { get; set; }
+        public virtual Transform target { get; set; }
 
 
         /// <summary>
         /// Clears the button.
         /// </summary>
-        public void Reset()
+        public virtual void Reset()
         {
             isClickable = false;
             isVisible = false;
@@ -125,10 +126,19 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public virtual void OnClick()
         {
-            if (target != null) target.SendMessage("OnClick", response, SendMessageOptions.RequireReceiver);
+            if (target != null)
+            {
+                SetCurrentResponse();
+                target.SendMessage("OnClick", response, SendMessageOptions.RequireReceiver);
+            }
         }
 
-        public void OnSelect(BaseEventData eventData)
+        public virtual void OnSelect(BaseEventData eventData)
+        {
+            SetCurrentResponse();
+        }
+
+        protected virtual void SetCurrentResponse()
         {
             if (DialogueManager.instance.conversationController != null)
             {

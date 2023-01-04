@@ -11,28 +11,50 @@ namespace PixelCrushers
         /// <summary>
         /// Ensures that the scene has an EventSystem.
         /// </summary>
-        public static void RequireEventSystem()
+        /// <param name="message">If needing to add an EventSystem, show this message.</param>
+        public static void RequireEventSystem(string message = null)
         {
-            if (GameObject.FindObjectOfType<UnityEngine.EventSystems.EventSystem>() == null)
+            var eventSystem = GameObject.FindObjectOfType<UnityEngine.EventSystems.EventSystem>();
+            if (eventSystem == null)
             {
-                var eventSystem = new GameObject("EventSystem", typeof(UnityEngine.EventSystems.EventSystem),
-                    typeof(UnityEngine.EventSystems.StandaloneInputModule)
-                    #if UNITY_4_6 || UNITY_4_7 || UNITY_5_0 || UNITY_5_1 || UNITY_5_2
-				    ,typeof(UnityEngine.EventSystems.TouchInputModule)
-                    #endif
-                    );
-                var standaloneInputModule = eventSystem.GetComponent<UnityEngine.EventSystems.StandaloneInputModule>();
-                if (standaloneInputModule != null) standaloneInputModule.forceModuleActive = true;
+                if (message != null) Debug.LogWarning(message);
+                eventSystem = new GameObject("EventSystem").AddComponent<UnityEngine.EventSystems.EventSystem>();
+#if USE_NEW_INPUT
+                var inputModule = eventSystem.gameObject.AddComponent<UnityEngine.InputSystem.UI.InputSystemUIInputModule>();
+#else
+                var inputModule = eventSystem.gameObject.AddComponent<UnityEngine.EventSystems.StandaloneInputModule>();
+#if !UNITY_2020_1_OR_NEWER
+                inputModule.forceModuleActive = true;
+#endif
+#endif
             }
         }
 
         public static int GetAnimatorNameHash(AnimatorStateInfo animatorStateInfo)
         {
-            #if UNITY_4_3 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7
+#if UNITY_4_3 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7
 			return animatorStateInfo.nameHash;
-            #else
+#else
             return animatorStateInfo.fullPathHash;
-            #endif
+#endif
+        }
+
+        /// <summary>
+        /// Selects a Selectable UI element and visually shows it as selected.
+        /// </summary>
+        /// <param name="selectable"></param>
+        /// <param name="allowStealFocus"></param>
+        public static void Select(UnityEngine.UI.Selectable selectable, bool allowStealFocus = true)
+        {
+            var currentEventSystem = UnityEngine.EventSystems.EventSystem.current;
+            if (currentEventSystem == null || selectable == null) return;
+            if (currentEventSystem.alreadySelecting) return;
+            if (currentEventSystem.currentSelectedGameObject == null || allowStealFocus)
+            {
+                currentEventSystem.SetSelectedGameObject(selectable.gameObject);
+                selectable.Select();
+                selectable.OnSelect(null);
+            }
         }
 
     }

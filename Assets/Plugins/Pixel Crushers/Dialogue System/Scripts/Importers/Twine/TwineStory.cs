@@ -41,6 +41,9 @@ namespace PixelCrushers.DialogueSystem.Twine
     {
         public float x;
         public float y;
+
+        public TwinePosition() { }
+        public TwinePosition(float x, float y) { this.x = x; this.y = y; }
     }
 
 }

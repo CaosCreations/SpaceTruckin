@@ -74,11 +74,16 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("Load the saved conversation specified in the Conversation variable.")]
         public bool useConversationVariable = false;
 
-        [Tooltip("")]
+        [Tooltip("When resuming conversation, don't play sequence of last entry.")]
         public bool dontRepeatLastSequence = false;
+
+        [Tooltip("Disable Audio() and AudioWait() sequencer commands when resuming last entry.")]
+        public bool disableAudioOnLastSequence = true;
 
         [Tooltip("When entering these scene(s), don't resume the conversation. Typically used for the start menu (scene 0).")]
         public int[] dontLoadConversationInScenes = new int[] { 0 };
+
+        public static string conversationVariableOverride;
 
         [Serializable]
         public class DialogueEntryRecord
@@ -109,6 +114,7 @@ namespace PixelCrushers.DialogueSystem
         protected bool shouldShowContinueButton = false;
         protected UnityEngine.UI.Button continueButton = null;
 
+        protected Dictionary<Transform, DialogueActor> dialogueActorCache = new Dictionary<Transform, DialogueActor>();
 
         protected virtual void CheckAssignments()
         {
@@ -142,6 +148,7 @@ namespace PixelCrushers.DialogueSystem
             base.Open();
             CheckAssignments();
             DestroyInstantiatedMessages(); // Start with clean slate.
+            dialogueActorCache.Clear();
 
             if (headingText != null)
             {
@@ -166,6 +173,7 @@ namespace PixelCrushers.DialogueSystem
         public override void ShowSubtitle(Subtitle subtitle)
         {
             if (subtitle.dialogueEntry.id == 0) return; // Don't need to show START entry.
+            if (string.IsNullOrEmpty(subtitle.formattedText.text)) return;
             var preDelay = subtitle.speakerInfo.IsNPC ? npcPreDelaySettings.GetDelayDuration(subtitle) : pcPreDelaySettings.GetDelayDuration(subtitle);
             if (Mathf.Approximately(0, preDelay))
             {
@@ -214,9 +222,31 @@ namespace PixelCrushers.DialogueSystem
             ScrollToBottom(); //--- Now does smooth scroll: StartCoroutine(JumpToBottom());
         }
 
+        protected virtual DialogueActor GetDialogueActor(Subtitle subtitle)
+        {
+            if (subtitle.speakerInfo.transform == null) return null;
+            DialogueActor dialogueActor;
+            if (dialogueActorCache.TryGetValue(subtitle.speakerInfo.transform, out dialogueActor))
+            {
+                return dialogueActor;
+            }
+            dialogueActor = DialogueActor.GetDialogueActorComponent(subtitle.speakerInfo.transform);
+            dialogueActorCache[subtitle.speakerInfo.transform] = dialogueActor;
+            return dialogueActor;
+        }
+
+        protected virtual StandardUISubtitlePanel GetTemplate(Subtitle subtitle, DialogueActor dialogueActor)
+        {
+            var panelNumber = (dialogueActor != null) ? dialogueActor.GetSubtitlePanelNumber() : SubtitlePanelNumber.Default;
+            return (panelNumber == SubtitlePanelNumber.Default)
+                ? (subtitle.speakerInfo.IsNPC ? conversationUIElements.defaultNPCSubtitlePanel : conversationUIElements.defaultPCSubtitlePanel)
+                : conversationUIElements.subtitlePanels[PanelNumberUtility.GetSubtitlePanelIndex(panelNumber)];
+        }
+
+        // This method exists in case a user has subclassed SMSDialogueUI and overridden the old GetTemplate() signature.
         protected virtual StandardUISubtitlePanel GetTemplate(Subtitle subtitle)
         {
-            return subtitle.speakerInfo.IsNPC ? conversationUIElements.defaultNPCSubtitlePanel : conversationUIElements.defaultPCSubtitlePanel;
+            return GetTemplate(subtitle, null);
         }
 
         protected virtual IEnumerator AddMessageWithPreDelay(float preDelay, Subtitle subtitle)
@@ -239,13 +269,22 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         protected virtual void AddMessage(Subtitle subtitle)
         {
-            var template = GetTemplate(subtitle);
+            var dialogueActor = GetDialogueActor(subtitle);
+            var template = GetTemplate(subtitle, dialogueActor);
             var go = Instantiate(template.panel.gameObject) as GameObject;
             var text = subtitle.formattedText.text;
             go.name = (text.Length <= 20) ? text : text.Substring(0, Mathf.Min(20, text.Length)) + "...";
             instantiatedMessages.Add(go);
             go.transform.SetParent(messagePanel.transform, false);
             var panel = go.GetComponent<StandardUISubtitlePanel>();
+            if (panel.addSpeakerName)
+            {
+                subtitle.formattedText.text = string.Format(panel.addSpeakerNameFormat, new object[] { subtitle.speakerInfo.Name, subtitle.formattedText.text });
+            }
+            if (dialogueActor != null && dialogueActor.standardDialogueUISettings.setSubtitleColor)
+            {
+                subtitle.formattedText.text = dialogueActor.AdjustSubtitleColor(subtitle);
+            }
             panel.ShowSubtitle(subtitle);
             continueButton = panel.continueButton;
             if (shouldShowContinueButton && !isLoadingGame)
@@ -411,6 +450,11 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public virtual void OnApplyPersistentData()
         {
+            if (!string.IsNullOrEmpty(conversationVariableOverride))
+            {
+                DialogueLua.SetVariable("Conversation", conversationVariableOverride);
+            }
+
             if (DontLoadInThisScene()) Debug.Log("OnApplyPersistentData Dont Load in this scene: " + SceneManager.GetActiveScene().buildIndex);
             if (DontLoadInThisScene()) return;
             records.Clear();
@@ -438,7 +482,6 @@ namespace PixelCrushers.DialogueSystem
                 try
                 {
                     // Resume conversation:
-                    //if (dontRepeatLastSequence) isLoadingGame = true;
                     isLoadingGame = true;
                     var conversation = DialogueManager.MasterDatabase.GetConversation(lastRecord.conversationID);
                     var actorName = DialogueLua.GetVariable(currentConversationActor).AsString;
@@ -471,7 +514,16 @@ namespace PixelCrushers.DialogueSystem
                     }
                     else
                     {
-                        lastEntry.Sequence = "Delay(0.1)";
+                        //--- Replay entire last sequence: lastEntry.Sequence = "Delay(0.1)";
+                        //--- Will send Sent/Received messages later in method in case sequences wait for them.
+                        if (disableAudioOnLastSequence)
+                        {
+                            if (string.IsNullOrEmpty(lastEntry.Sequence))
+                            {
+                                lastEntry.Sequence = DialogueManager.displaySettings.cameraSettings.defaultSequence;
+                            }
+                            lastEntry.Sequence = lastEntry.Sequence.Replace("AudioWait(", "None(").Replace("Audio(", "None(");
+                        }
                     }
                     skipNextRecord = true;
                     isInPreDelay = false;
@@ -498,6 +550,13 @@ namespace PixelCrushers.DialogueSystem
                     {
                         instantiatedMessages.Add(lastInstance);
                         lastInstance.transform.SetAsLastSibling();
+                    }
+
+                    // Advance conversation if playing last sequence and it's configured to wait for Sent/Received messages:
+                    if (!dontRepeatLastSequence)
+                    {
+                        Sequencer.Message("Sent");
+                        Sequencer.Message("Received");
                     }
                 }
                 finally

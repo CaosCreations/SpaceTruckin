@@ -63,6 +63,7 @@ namespace PixelCrushers.DialogueSystem
             switch (questState)
             {
                 case QuestState.Active:
+                case QuestState.ReturnToNPC:
                     SetFirstValidTextElement(text, description);
                     break;
                 case QuestState.Success:

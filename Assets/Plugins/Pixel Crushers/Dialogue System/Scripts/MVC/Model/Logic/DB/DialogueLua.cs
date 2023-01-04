@@ -65,7 +65,7 @@ namespace PixelCrushers.DialogueSystem
         private static string cachedActorIndex;
         private static string cachedConversantIndex;
 
-#if UNITY_2019_3_OR_NEWER
+#if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void InitStaticVariables()
         {
@@ -118,6 +118,8 @@ namespace PixelCrushers.DialogueSystem
         {
             Lua.Run("Actor = {}; Item = {}; Quest = Item; Location = {}; Conversation = {}; Variable = {}; Variable[\"Alert\"] = \"\"", DialogueDebug.LogInfo);
             Lua.Run("unassigned='unassigned'; active='active'; success='success'; failure='failure'; abandoned='abandoned'", DialogueDebug.LogInfo);
+            statusTable.Clear();
+            relationshipTable.Clear();
         }
 
         /// <summary>
@@ -366,7 +368,7 @@ namespace PixelCrushers.DialogueSystem
                 for (int j = 0; j < asset.fields.Count; j++)
                 {
                     var field = asset.fields[j];
-                    var fieldIndex = StringToTableIndex(field.title);
+                    var fieldIndex = StringToFieldName(field.title);
                     fieldTable.AddRaw(fieldIndex, GetFieldLuaValue(field));
                 }
                 if (addRaw)
@@ -427,7 +429,7 @@ namespace PixelCrushers.DialogueSystem
             for (int j = 0; j < conversation.fields.Count; j++)
             {
                 var field = conversation.fields[j];
-                var fieldIndex = StringToTableIndex(field.title);
+                var fieldIndex = StringToFieldName(field.title);
                 fieldTable.AddRaw(fieldIndex, GetFieldLuaValue(field));
             }
 
@@ -506,7 +508,7 @@ namespace PixelCrushers.DialogueSystem
                 var field = fields[i];
                 if (!string.IsNullOrEmpty(field.title))
                 {
-                    sb.AppendFormat("{0} = {1}, ", new System.Object[] { StringToTableIndex(field.title), FieldValueAsString(field) });
+                    sb.AppendFormat("{0} = {1}, ", new System.Object[] { StringToFieldName(field.title), FieldValueAsString(field) });
                 }
             }
             if (!string.IsNullOrEmpty(extraField)) sb.Append(extraField);
@@ -914,6 +916,30 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
+        /// <summary>
+        /// Returns the version of a string usable as the field of an element in a Chat Mapper table.
+        /// </summary>
+        public static string StringToFieldName(string s)
+        {
+            return StringToTableIndex(s).Replace('.', '_');
+        }
+
+        /// <summary>
+        /// Returns a StringToFieldName() value after adding the current language code
+        /// to the end of s.
+        /// </summary>
+        public static string StringToLocalizedFieldName(string s)
+        {
+            if (Localization.IsDefaultLanguage || string.IsNullOrEmpty(s))
+            {
+                return StringToFieldName(s);
+            }
+            else
+            {
+                return StringToFieldName(s + "_" + Localization.Language);
+            }
+        }
+
         //--- Unused now that methods are optimized to use LuaInterpreter directly.
         //private static Lua.Result SafeGetLuaResult(string luaCode) {
         //	try {
@@ -1085,6 +1111,20 @@ namespace PixelCrushers.DialogueSystem
         public static void SetLocationField(string location, string field, object value)
         {
             SetTableField("Location", location, field, value);
+        }
+
+        /// <summary>
+        /// Returns a list of all runtime variable names.
+        /// </summary>
+        public static string[] GetAllVariables()
+        {
+            var list = new List<string>();
+            var variableTable = Lua.Run("return Variable").asTable;
+            if (variableTable != null)
+            {
+                list.AddRange(variableTable.keys);
+            }
+            return list.ToArray();
         }
 
         /// <summary>

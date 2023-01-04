@@ -5,13 +5,13 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 224: {fileID: 22431650}
-  - 222: {fileID: 22275116}
-  - 114: {fileID: 11472486}
-  - 114: {fileID: 11453556}
-  - 114: {fileID: 11485008}
+  - component: {fileID: 22431650}
+  - component: {fileID: 22275116}
+  - component: {fileID: 11472486}
+  - component: {fileID: 11453556}
+  - component: {fileID: 11485008}
   m_Layer: 0
   m_Name: Main Panel
   m_TagString: Untagged
@@ -24,14 +24,14 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 224: {fileID: 22465722}
-  - 223: {fileID: 22328728}
-  - 114: {fileID: 11431372}
-  - 114: {fileID: 11475372}
-  - 114: {fileID: 11485334}
-  - 114: {fileID: 11453294}
+  - component: {fileID: 22465722}
+  - component: {fileID: 22328728}
+  - component: {fileID: 11431372}
+  - component: {fileID: 11475372}
+  - component: {fileID: 11485334}
+  - component: {fileID: 11453294}
   m_Layer: 0
   m_Name: Bubble Template Standard Bark UI
   m_TagString: Untagged
@@ -44,14 +44,14 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 224: {fileID: 22400914}
-  - 222: {fileID: 22268878}
-  - 114: {fileID: 11430388}
-  - 114: {fileID: 11471340}
-  - 225: {fileID: 22506366}
-  - 95: {fileID: 9550094}
+  - component: {fileID: 22400914}
+  - component: {fileID: 22268878}
+  - component: {fileID: 11430388}
+  - component: {fileID: 11471340}
+  - component: {fileID: 22506366}
+  - component: {fileID: 9550094}
   m_Layer: 0
   m_Name: Bubble Panel
   m_TagString: Untagged
@@ -64,11 +64,11 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 224: {fileID: 22451302}
-  - 222: {fileID: 22264950}
-  - 114: {fileID: 11445092}
+  - component: {fileID: 22451302}
+  - component: {fileID: 22264950}
+  - component: {fileID: 11445092}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -113,7 +113,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: b7f09c3867e11ae4cb69aeb93463acd6, type: 3}
-  m_Type: 0
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -191,6 +191,8 @@ MonoBehaviour:
   nameText:
     m_uiText: {fileID: 0}
   includeName: 0
+  portraitImage: {fileID: 0}
+  showPortraitImage: 0
   doneTime: 0
   animationTransitions:
     showTrigger: Show
@@ -233,6 +235,8 @@ MonoBehaviour:
   m_Spacing: 0
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
 --- !u!114 &11472486
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -296,6 +300,8 @@ MonoBehaviour:
   m_Spacing: 0
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
 --- !u!114 &11485334
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -334,7 +340,7 @@ Canvas:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 135794}
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_RenderMode: 2
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
@@ -343,6 +349,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -355,11 +362,11 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 22451302}
   m_Father: {fileID: 22431650}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -374,11 +381,11 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 22400914}
   m_Father: {fileID: 22465722}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 384}
@@ -393,10 +400,10 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 22400914}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -411,11 +418,11 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.005, y: 0.005, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 22431650}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}

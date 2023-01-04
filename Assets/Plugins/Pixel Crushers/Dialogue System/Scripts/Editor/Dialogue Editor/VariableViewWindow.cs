@@ -40,7 +40,8 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             if (database == null && EditorPrefs.HasKey(DatabaseGUIDPrefsKey))
             {
                 var guid = EditorPrefs.GetString(DatabaseGUIDPrefsKey);
-                database = AssetDatabase.LoadAssetAtPath<DialogueDatabase>(guid);
+                var assetPath = AssetDatabase.GUIDToAssetPath(guid);
+                database = AssetDatabase.LoadAssetAtPath<DialogueDatabase>(assetPath);
             }
             template = TemplateTools.LoadFromEditorPrefs();
             if (variableView == null) variableView = new DialogueEditorVariableView();

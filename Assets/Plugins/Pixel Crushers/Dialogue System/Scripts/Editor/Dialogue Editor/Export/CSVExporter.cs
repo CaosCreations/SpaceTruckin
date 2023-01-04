@@ -45,7 +45,7 @@ namespace PixelCrushers.DialogueSystem
                 if (exportVariables) ExportAssets<Variable>("Variables", database.variables, CustomVariableHeader, CustomVariableValues, true, file);
                 if (exportConversations)
                 {
-                    if (!exportConversationsAfterEntries) ExportAssets<Conversation>("Conversations", database.conversations, null, null, false, file);
+                    if (!exportConversationsAfterEntries) ExportAssets<Conversation>("Conversations", database.conversations, CustomConversationHeader, CustomConversationValues, true, file);
                     ExportDialogueEntries(database, entrytagFormat, file);
                     ExportLinks(database, file);
                     if (exportConversationsAfterEntries) ExportAssets<Conversation>("Conversations", database.conversations, null, null, false, file);
@@ -98,6 +98,17 @@ namespace PixelCrushers.DialogueSystem
         private static void CustomVariableValues(StringBuilder sb, Variable variable)
         {
             sb.AppendFormat(",{0}", variable.Type.ToString());
+        }
+
+        private static void CustomConversationHeader(StringBuilder titles, StringBuilder types)
+        {
+            titles.Append(",Overrides");
+            types.Append(",JSON");
+        }
+
+        private static void CustomConversationValues(StringBuilder sb, Conversation conversation)
+        {
+            sb.AppendFormat(",{0}", CleanField(JsonUtility.ToJson(conversation.overrideSettings)));
         }
 
         private static void ExportAssets<T>(string header, List<T> assets, HeaderDelegate headerDelegate, AssetDelegate<T> assetDelegate, bool delegatesAtEnd, StreamWriter file) where T : Asset
@@ -259,7 +270,6 @@ namespace PixelCrushers.DialogueSystem
             if (s2.Contains(",") || s2.Contains("\""))
             {
                 return "\"" + s2.Replace("\"", "\"\"") + "\"";
-                //---Was: return "\"" + s2.Replace("\"", "\\\"") + "\"";
             }
             else
             {

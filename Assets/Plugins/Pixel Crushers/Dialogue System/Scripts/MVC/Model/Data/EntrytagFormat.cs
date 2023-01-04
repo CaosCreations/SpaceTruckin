@@ -50,6 +50,17 @@ namespace PixelCrushers.DialogueSystem
         /// Set entrytag to the value of the dialogue entry's VoiceOverFile field.
         /// </summary>
         VoiceOverFile,
+
+        /// <summary>
+        /// Set entrytag to value of dialogue entry's Title field, defaulting to 
+        /// ActorName_ConversationID_EntryID if Title isn't set.
+        /// </summary>
+        Title,
+
+        /// <summary>
+        /// You must assign a delegate function to DialogueDatabase.getCustomEntrytagFormat(Conversation, DialogueEntry).
+        /// </summary>
+        Custom = 99
     }
 
 }

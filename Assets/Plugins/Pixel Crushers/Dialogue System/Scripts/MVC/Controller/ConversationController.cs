@@ -170,6 +170,7 @@ namespace PixelCrushers.DialogueSystem
                 m_view.FinishedSubtitleHandler -= OnFinishedSubtitle;
                 m_view.SelectedResponseHandler -= OnSelectedResponse;
                 m_view.Close();
+                DialogueManager.instance.lastConversationEnded = m_model.conversationTitle;
                 m_model.InformParticipants(DialogueSystemMessages.OnConversationEnd, true);
                 if (m_endConversationHandler != null) m_endConversationHandler(this);
                 DialogueManager.instance.currentConversationState = null;

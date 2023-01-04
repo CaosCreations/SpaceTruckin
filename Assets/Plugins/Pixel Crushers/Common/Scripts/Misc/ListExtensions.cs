@@ -44,6 +44,21 @@ namespace PixelCrushers
                 @this.Insert(index, item);
             }
         }
+
+        /// <summary>
+        /// Fisher-Yates shuffle.
+        /// </summary>
+        public static void Shuffle<T>(this List<T> @this)
+        {
+            if (@this == null || @this.Count < 2) return;
+            for (int i = 0; i < @this.Count - 2; i++)
+            {
+                int j = UnityEngine.Random.Range(i, @this.Count);
+                T tmp = @this[i];
+                @this[i] = @this[j];
+                @this[j] = tmp;
+            }
+        }
     }
 
 }

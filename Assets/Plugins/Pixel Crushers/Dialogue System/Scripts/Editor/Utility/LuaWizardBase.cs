@@ -358,6 +358,20 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
+        protected CustomFieldType GetCustomFieldType<T>(List<T> assets, int assetIndex, int fieldIndex) where T : Asset
+        {
+            if (0 <= assetIndex && assetIndex < assets.Count)
+            {
+                var asset = assets[assetIndex];
+                if (asset != null && 0 <= fieldIndex && fieldIndex < asset.fields.Count)
+                {
+                    var field = asset.fields[fieldIndex];
+                    return CustomFieldTypeService.GetFieldCustomType(field.typeString);
+                }
+            }
+            return null;
+        }
+
         public void FindAllCustomLuaFuncs(bool findConditionFuncs, out CustomLuaFunctionInfoRecord[] customLuaFuncs, out string[] customLuaFuncNames)
         {
             var recordList = new List<CustomLuaFunctionInfoRecord>();
@@ -404,6 +418,7 @@ namespace PixelCrushers.DialogueSystem
                     case CustomLuaParameterType.Quest:
                     case CustomLuaParameterType.QuestEntry:
                     case CustomLuaParameterType.Variable:
+                    case CustomLuaParameterType.VariableName:
                     case CustomLuaParameterType.Item:
                         customParamValues[i] = (int)0;
                         break;

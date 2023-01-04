@@ -134,7 +134,7 @@ namespace PixelCrushers
         public override void ApplyData(string s)
         {
             if (string.IsNullOrEmpty(s) || animator == null) return;
-            SaveSystem.Deserialize<Data>(s, m_data);
+            m_data = SaveSystem.Deserialize<Data>(s, m_data);
             if (m_data == null)
             {
                 m_data = new Data();

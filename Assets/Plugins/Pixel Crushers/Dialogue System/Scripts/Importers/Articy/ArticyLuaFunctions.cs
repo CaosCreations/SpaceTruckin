@@ -14,6 +14,13 @@ namespace PixelCrushers.DialogueSystem.Articy
     {
         private static bool s_registered = false;
 
+#if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void InitStaticVariables()
+        {
+            s_registered = false;
+        }
+#endif
 
         private void OnEnable()
         {

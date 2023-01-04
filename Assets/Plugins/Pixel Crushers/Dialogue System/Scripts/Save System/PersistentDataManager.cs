@@ -114,7 +114,7 @@ namespace PixelCrushers.DialogueSystem
 
         private static HashSet<GameObject> listeners = new HashSet<GameObject>();
 
-#if UNITY_2019_3_OR_NEWER
+#if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void InitStaticVariables()
         {
@@ -460,10 +460,23 @@ namespace PixelCrushers.DialogueSystem
                     if (DialogueDebug.LogErrors) Debug.LogError(string.Format("{0}: Persistent Data Manager couldn't access Lua Item[] table", new System.Object[] { DialogueDebug.Prefix }));
                     return;
                 }
+
+                // Cache titles of items in database:
+                HashSet<string> itemsInDatabase = new HashSet<string>();
+                if (!includeAllItemData)
+                {
+                    var database = DialogueManager.masterDatabase;
+                    for (int i = 0; i < database.items.Count; i++)
+                    {
+                        itemsInDatabase.Add(DialogueLua.StringToTableIndex(database.items[i].Name));
+                    }
+                }
+
+                // Process all items:
                 foreach (var title in itemTable.Keys)
                 {
                     LuaTableWrapper fields = itemTable[title.ToString()] as LuaTableWrapper;
-                    bool onlySaveQuestData = !includeAllItemData && (DialogueManager.MasterDatabase.items.Find(i => string.Equals(DialogueLua.StringToTableIndex(i.Name), title)) != null);
+                    bool onlySaveQuestData = !includeAllItemData && itemsInDatabase.Contains(title); //---Was: (DialogueManager.MasterDatabase.items.Find(i => string.Equals(DialogueLua.StringToTableIndex(i.Name), title)) != null);
                     if (fields != null)
                     {
                         if (onlySaveQuestData)
@@ -484,7 +497,7 @@ namespace PixelCrushers.DialogueSystem
                         }
                         else
                         {
-                            // If not in the database, record all fields:
+                            // If saving all data or item is not in the database, record all fields:
                             sb.AppendFormat("Item[\"{0}\"]=", new System.Object[] { DialogueLua.StringToTableIndex(title) });
                             AppendFields(sb, fields);
                         }
@@ -507,7 +520,9 @@ namespace PixelCrushers.DialogueSystem
                     foreach (var key in fields.Keys)
                     {
                         var value = fields[key.ToString()];
-                        sb.AppendFormat("{0}={1}, ", new System.Object[] { GetFieldKeyString(key), GetFieldValueString(value) });
+                        var valueString = GetFieldValueString(value);
+                        if (string.Equals(key, "Pictures")) valueString = valueString.Replace("\\", "/"); // Sanitize backslashes in Pictures.
+                        sb.AppendFormat("{0}={1}, ", new System.Object[] { GetFieldKeyString(key), valueString });
                     }
                 }
             }
@@ -549,7 +564,7 @@ namespace PixelCrushers.DialogueSystem
                 System.Type type = o.GetType();
                 if (type == typeof(string))
                 {
-                    return string.Format("\"{0}\"", new System.Object[] { DialogueLua.DoubleQuotesToSingle(o.ToString().Replace("\n", "\\n")) });
+                    return string.Format("\"{0}\"", new System.Object[] { DialogueLua.DoubleQuotesToSingle(o.ToString().Replace("\n", "\\n").Replace("\\ ", "/ ")) });
                 }
                 else if (type == typeof(bool))
                 {
@@ -1275,7 +1290,7 @@ namespace PixelCrushers.DialogueSystem
                         for (int j = 0; j < dbActor.fields.Count; j++)
                         {
                             var field = dbActor.fields[j];
-                            var fieldIndex = DialogueLua.StringToTableIndex(field.title);
+                            var fieldIndex = DialogueLua.StringToFieldName(field.title);
                             newActorLuaCode += fieldIndex + DialogueLua.FieldValueAsString(field) + ", ";
                         }
                         newActorLuaCode += "}";
@@ -1290,7 +1305,7 @@ namespace PixelCrushers.DialogueSystem
                         for (int j = 0; j < dbActor.fields.Count; j++)
                         {
                             var field = dbActor.fields[j];
-                            var fieldTableIndex = DialogueLua.StringToTableIndex(field.title);
+                            var fieldTableIndex = DialogueLua.StringToFieldName(field.title);
                             if (!existingFields.Contains(fieldTableIndex))
                             {
                                 Lua.Run("Actor[\"" + actorNameTableIndex + "\"]." + fieldTableIndex + " = " + DialogueLua.FieldValueAsString(field));
@@ -1334,7 +1349,7 @@ namespace PixelCrushers.DialogueSystem
                         for (int j = 0; j < dbActor.fields.Count; j++)
                         {
                             var field = dbActor.fields[j];
-                            var fieldIndex = DialogueLua.StringToTableIndex(field.title);
+                            var fieldIndex = DialogueLua.StringToFieldName(field.title);
                             fieldTable.AddRaw(fieldIndex, DialogueLua.GetFieldLuaValue(field));
                         }
                         actorTable.luaTable.AddRaw(actorNameTableIndex, fieldTable);
@@ -1350,7 +1365,7 @@ namespace PixelCrushers.DialogueSystem
                         for (int j = 0; j < dbActor.fields.Count; j++)
                         {
                             var field = dbActor.fields[j];
-                            var fieldTableIndex = DialogueLua.StringToTableIndex(field.title);
+                            var fieldTableIndex = DialogueLua.StringToFieldName(field.title);
                             if (!existingFields.Contains(fieldTableIndex))
                             {
                                 var fieldValue = DialogueLua.GetFieldLuaValue(field);
@@ -1395,7 +1410,7 @@ namespace PixelCrushers.DialogueSystem
                         for (int j = 0; j < dbQuest.fields.Count; j++)
                         {
                             var field = dbQuest.fields[j];
-                            questCode += DialogueLua.StringToTableIndex(field.title) + "=" +
+                            questCode += DialogueLua.StringToFieldName(field.title) + "=" +
                                 DialogueLua.ValueAsString(field.type, field.value) + ", ";
                         }
                         questCode += "}}; ";
@@ -1414,7 +1429,7 @@ namespace PixelCrushers.DialogueSystem
                             if (field.title.StartsWith("Entry ") && !field.title.EndsWith(" Count"))
                             {
                                 luaCode += "Item[\"" + questNameTableIndex + "\"]." +
-                                    DialogueLua.StringToTableIndex(field.title) + " = " +
+                                    DialogueLua.StringToFieldName(field.title) + " = " +
                                     DialogueLua.ValueAsString(field.type, field.value) + "; ";
                             }
                         }

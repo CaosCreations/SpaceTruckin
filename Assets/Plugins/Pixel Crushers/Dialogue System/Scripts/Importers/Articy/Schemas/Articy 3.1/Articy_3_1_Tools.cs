@@ -20,7 +20,7 @@ namespace PixelCrushers.DialogueSystem.Articy.Articy_3_1
     public static class Articy_3_1_Tools
     {
 
-        private static bool _convertDropdownAsString = true; // If false, convert as enum index int.
+        private static ConverterPrefs.ConvertDropdownsModes _convertDropdownAs = ConverterPrefs.ConvertDropdownsModes.Int; // Convenience variable.
 
         private static ConverterPrefs.ConvertSlotsModes _convertSlotsAs = ConverterPrefs.ConvertSlotsModes.DisplayName; // Convenience variable.
 
@@ -37,9 +37,9 @@ namespace PixelCrushers.DialogueSystem.Articy.Articy_3_1
             return ArticyTools.DataContainsSchemaId(xmlFilename, "http://www.nevigo.com/schemas/articydraft/3.1/XmlContentExport_FullProject.xsd");
         }
 
-        public static ArticyData LoadArticyDataFromXmlData(string xmlData, Encoding encoding, bool convertDropdownAsString = false, ConverterPrefs prefs = null)
+        public static ArticyData LoadArticyDataFromXmlData(string xmlData, Encoding encoding, ConverterPrefs.ConvertDropdownsModes convertDropdownAs = ConverterPrefs.ConvertDropdownsModes.Int, ConverterPrefs prefs = null)
         {
-            return ConvertExportToArticyData(LoadFromXmlData(xmlData, encoding), convertDropdownAsString, prefs);
+            return ConvertExportToArticyData(LoadFromXmlData(xmlData, encoding), convertDropdownAs, prefs);
         }
 
         public static ExportType LoadFromXmlData(string xmlData, Encoding encoding)
@@ -53,10 +53,10 @@ namespace PixelCrushers.DialogueSystem.Articy.Articy_3_1
             return (export != null) && (export.Content != null) && (export.Content.Items != null);
         }
 
-        public static ArticyData ConvertExportToArticyData(ExportType export, bool convertDropdownAsString = false, ConverterPrefs prefs = null)
+        public static ArticyData ConvertExportToArticyData(ExportType export, ConverterPrefs.ConvertDropdownsModes convertDropdownAs = ConverterPrefs.ConvertDropdownsModes.Int, ConverterPrefs prefs = null)
         {
             if (!IsExportValid(export)) return null;
-            _convertDropdownAsString = convertDropdownAsString;
+            _convertDropdownAs = convertDropdownAs;
             _convertSlotsAs = (prefs != null) ? prefs.ConvertSlotsAs : ConverterPrefs.ConvertSlotsModes.DisplayName;
             _currentExport = export;
             _prefs = prefs;
@@ -374,30 +374,37 @@ namespace PixelCrushers.DialogueSystem.Articy.Articy_3_1
                 EnumPropertyType enumProperty = (EnumPropertyType)item;
                 if (PixelCrushers.DialogueSystem.Articy.ArticyTools.IsQuestStateArticyPropertyName(enumProperty.Name))
                 {
-                    fields.Add(new Field(enumProperty.Name, PixelCrushers.DialogueSystem.Articy.ArticyTools.EnumValueToQuestState(Tools.StringToInt(enumProperty.Value), GetEnumStringValue(enumProperty.Name, Tools.StringToInt(enumProperty.Value))), FieldType.Text));
+                    fields.Add(new Field(enumProperty.Name, PixelCrushers.DialogueSystem.Articy.ArticyTools.EnumValueToQuestState(Tools.StringToInt(enumProperty.Value), GetEnumStringValue(enumProperty.Name, Tools.StringToInt(enumProperty.Value), true)), FieldType.Text));
                 }
                 else
                 {
-                    var asString = _convertDropdownAsString;
+                    var dropdownMode = _convertDropdownAs;
                     if (_prefs != null)
                     {
                         switch (_prefs.ConversionSettings.GetDropdownOverrideSetting(enumProperty.Name).mode)
                         {
                             case ConversionSettings.DropdownOverrideMode.Int:
-                                asString = false;
+                                dropdownMode = ConverterPrefs.ConvertDropdownsModes.Int;
                                 break;
-                            case ConversionSettings.DropdownOverrideMode.String:
-                                asString = true;
+                            case ConversionSettings.DropdownOverrideMode.TechnicalName:
+                                dropdownMode = ConverterPrefs.ConvertDropdownsModes.TechnicalName;
+                                break;
+                            case ConversionSettings.DropdownOverrideMode.DisplayName:
+                                dropdownMode = ConverterPrefs.ConvertDropdownsModes.DisplayName;
                                 break;
                         }
                     }
-                    if (asString)
+                    switch (dropdownMode)
                     {
-                        fields.Add(new Field(enumProperty.Name, GetEnumStringValue(enumProperty.Name, Tools.StringToInt(enumProperty.Value)), FieldType.Text));
-                    }
-                    else
-                    {
-                        fields.Add(new Field(enumProperty.Name, enumProperty.Value, FieldType.Number));
+                        case ConverterPrefs.ConvertDropdownsModes.Int:
+                            fields.Add(new Field(enumProperty.Name, enumProperty.Value, FieldType.Number));
+                            break;
+                        case ConverterPrefs.ConvertDropdownsModes.TechnicalName:
+                            fields.Add(new Field(enumProperty.Name, GetEnumStringValue(enumProperty.Name, Tools.StringToInt(enumProperty.Value), true), FieldType.Text));
+                            break;
+                        case ConverterPrefs.ConvertDropdownsModes.DisplayName:
+                            fields.Add(new Field(enumProperty.Name, GetEnumStringValue(enumProperty.Name, Tools.StringToInt(enumProperty.Value), false), FieldType.Text));
+                            break;
                     }
                 }
             }
@@ -470,7 +477,7 @@ namespace PixelCrushers.DialogueSystem.Articy.Articy_3_1
             return s;
         }
 
-        private static string GetEnumStringValue(string enumName, int enumIndex)
+        private static string GetEnumStringValue(string enumName, int enumIndex, bool getTechnicalName)
         {
             var enumNumber = enumIndex;
             foreach (var o in _currentExport.Content.Items)
@@ -482,7 +489,10 @@ namespace PixelCrushers.DialogueSystem.Articy.Articy_3_1
                     {
                         foreach (var val in enumDef.Values.EnumValue)
                         {
-                            if (val.Value == enumNumber) return val.TechnicalName;
+                            if (val.Value == enumNumber)
+                            {
+                                return getTechnicalName ? val.TechnicalName : GetDefaultLocalizedString(val.DisplayName);
+                            }
                         }
                     }
                 }

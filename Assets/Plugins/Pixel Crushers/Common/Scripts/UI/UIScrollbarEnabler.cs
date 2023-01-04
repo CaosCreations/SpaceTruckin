@@ -22,7 +22,7 @@ namespace PixelCrushers
         [UnityEngine.Serialization.FormerlySerializedAs("content")]
         public RectTransform scrollContent = null;
 
-        [Tooltip("The scrollbar to enable or disable.")]
+        [Tooltip("The scrollbar to enable or disable. If scroll rect doesn't have a scrollbar, just scrolls scroll rect.")]
         public UnityEngine.UI.Scrollbar scrollbar = null;
 
         [Tooltip("Scroll smoothly instead of jumping to reset value.")]
@@ -30,45 +30,48 @@ namespace PixelCrushers
 
         public float smoothScrollSpeed = 5;
 
-        private bool m_started = false;
-        private bool m_checking = false;
-        private RectTransform m_scrollRectTransform = null;
+        protected bool m_started = false;
+        protected bool m_checking = false;
+        protected RectTransform m_scrollRectTransform = null;
 
-        private void Start()
+        protected virtual void Start()
         {
             m_started = true;
             CheckScrollbar();
         }
 
-        public void OnEnable()
+        public virtual void OnEnable()
         {
             if (m_started) CheckScrollbar();
         }
 
-        public void OnDisable()
+        public virtual void OnDisable()
         {
             m_checking = false;
         }
 
-        public void CheckScrollbar()
+        public virtual void CheckScrollbar()
         {
-            if (m_checking || scrollRect == null || scrollContent == null || scrollbar == null || !gameObject.activeInHierarchy || !enabled) return;
+            if (m_checking || scrollRect == null || scrollContent == null || !gameObject.activeInHierarchy || !enabled) return;
             StopAllCoroutines();
             StartCoroutine(CheckScrollbarAfterUIUpdate(false, 0));
         }
 
-        public void CheckScrollbarWithResetValue(float value)
+        public virtual void CheckScrollbarWithResetValue(float value)
         {
-            if (m_checking || scrollRect == null || scrollContent == null || scrollbar == null || !gameObject.activeInHierarchy || !enabled) return;
+            if (m_checking || scrollRect == null || scrollContent == null || !gameObject.activeInHierarchy || !enabled) return;
             StopAllCoroutines();
             StartCoroutine(CheckScrollbarAfterUIUpdate(true, value));
         }
 
-        private IEnumerator CheckScrollbarAfterUIUpdate(bool useResetValue, float resetValue)
+        protected virtual IEnumerator CheckScrollbarAfterUIUpdate(bool useResetValue, float resetValue)
         {
             m_checking = true;
             yield return null;
-            scrollbar.gameObject.SetActive(scrollContent.rect.height > scrollRect.GetComponent<RectTransform>().rect.height);
+            if (scrollbar != null)
+            {
+                scrollbar.gameObject.SetActive(scrollContent.rect.height > scrollRect.GetComponent<RectTransform>().rect.height);
+            }
             m_checking = false;
             yield return null;
             if (useResetValue)
@@ -94,7 +97,7 @@ namespace PixelCrushers
                 }
                 else
                 {
-                    scrollbar.value = resetValue;
+                    if (scrollbar != null) scrollbar.value = resetValue;
                     scrollRect.verticalNormalizedPosition = resetValue;
                 }
             }

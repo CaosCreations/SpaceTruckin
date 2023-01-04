@@ -41,6 +41,7 @@ namespace PixelCrushers.DialogueSystem
 
         private GameObject pcObject = null;
 
+        private bool setEventsFlag = false;
         private bool setEnabledFlag = false;
 
         private Vector2 scrollPosition = Vector2.zero;
@@ -127,7 +128,7 @@ namespace PixelCrushers.DialogueSystem
         {
             EditorGUILayout.LabelField("Select Player Object", EditorStyles.boldLabel);
             EditorWindowTools.StartIndentedSection();
-            EditorGUILayout.HelpBox("This wizard will help you configure a Player object to work with the Dialogue System. First, assign the Player's GameObject below.", MessageType.Info);
+            EditorGUILayout.HelpBox("This wizard will help you configure a Player object to work with the Dialogue System. First, assign the Player's GameObject below. Assign a scene GameObject, not a prefab.\n\nThis wizard is optional. If you prefer, you can set up the player yourself in the Inspector view.", MessageType.Info);
             pcObject = EditorGUILayout.ObjectField("Player Object", pcObject, typeof(GameObject), true) as GameObject;
             EditorWindowTools.EndIndentedSection();
             DrawNavigationButtons(false, (pcObject != null), false);
@@ -164,7 +165,7 @@ namespace PixelCrushers.DialogueSystem
             var defaultCameraAngle = pcObject.GetComponent<DefaultCameraAngle>();
             var hasDefaultCameraAngle = defaultCameraAngle != null;
             EditorGUILayout.BeginHorizontal();
-            var useDefaultCameraAngle = EditorGUILayout.Toggle("Override Default Camera Angle", hasDefaultCameraAngle);
+            var useDefaultCameraAngle = EditorGUILayout.Toggle("Override Default Angle", hasDefaultCameraAngle);
             EditorGUILayout.HelpBox("The default camera angle is 'Closeup'. You can override it here.", MessageType.None);
             EditorGUILayout.EndHorizontal();
             if (useDefaultCameraAngle && !hasDefaultCameraAngle)
@@ -218,11 +219,13 @@ namespace PixelCrushers.DialogueSystem
             switch (controlStyle)
             {
                 case ControlStyle.SimpleThirdPerson:
+                    EditorGUILayout.HelpBox("This control script is only intended for quick prototyping.", MessageType.Info);
                     DestroyImmediate(navigateOnMouseClick);
                     navMouseClickEditor = null;
                     DrawSimpleControllerSection(simpleController ?? pcObject.AddComponent(TypeUtility.GetWrapperType(typeof(PixelCrushers.DialogueSystem.Demo.SimpleController))) as Demo.SimpleController);
                     break;
                 case ControlStyle.FollowMouseClicks:
+                    EditorGUILayout.HelpBox("This control script is only intended for quick prototyping.", MessageType.Info);
                     DestroyImmediate(simpleController);
                     simpleControllerEditor = null;
                     DrawNavigateOnMouseClickSection(navigateOnMouseClick ?? pcObject.AddComponent(TypeUtility.GetWrapperType(typeof(PixelCrushers.DialogueSystem.Demo.NavigateOnMouseClick))) as Demo.NavigateOnMouseClick);
@@ -259,6 +262,7 @@ namespace PixelCrushers.DialogueSystem
         {
             EditorGUILayout.LabelField("Camera", EditorStyles.boldLabel);
             EditorWindowTools.StartIndentedSection();
+            EditorGUILayout.HelpBox("You can add a smooth follow camera for quick prototyping. This script will make the camera follow the player.", MessageType.Info);
             UnityEngine.Camera playerCamera = pcObject.GetComponentInChildren<UnityEngine.Camera>() ?? UnityEngine.Camera.main;
             var smoothCamera = (playerCamera != null) ? playerCamera.GetComponent<PixelCrushers.DialogueSystem.Demo.SmoothCameraWithBumper>() : null;
             EditorGUILayout.BeginHorizontal();
@@ -296,6 +300,7 @@ namespace PixelCrushers.DialogueSystem
         {
             EditorGUILayout.LabelField("Targeting", EditorStyles.boldLabel);
             EditorWindowTools.StartIndentedSection();
+            EditorGUILayout.HelpBox("The Dialogue System includes an optional interaction system that you can use to start conversations and initiate other activity. If you want to use it, you can set it up below.", MessageType.Info);
             SelectorType selectorType = GetSelectorType();
             if (selectorType == SelectorType.None) EditorGUILayout.HelpBox("Specify how the player will target NPCs to trigger conversations and barks.", MessageType.Info);
             selectorType = (SelectorType)EditorGUILayout.EnumPopup("Target NPCs By", selectorType);
@@ -445,14 +450,28 @@ namespace PixelCrushers.DialogueSystem
         {
             EditorGUILayout.LabelField("Gameplay/Conversation Transition", EditorStyles.boldLabel);
             EditorWindowTools.StartIndentedSection();
+            DialogueSystemEvents events = pcObject.GetComponent<DialogueSystemEvents>();
             SetComponentEnabledOnDialogueEvent setEnabled = pcObject.GetComponent<SetComponentEnabledOnDialogueEvent>();
+            setEventsFlag = setEventsFlag || (events != null);
             setEnabledFlag = setEnabledFlag || (setEnabled != null);
-            if (!setEnabledFlag) EditorGUILayout.HelpBox("Gameplay components, such as movement and camera control, will interfere with conversations. If you want to disable gameplay components during conversations, tick the checkbox below. There are many ways to disable gameplay components. You can add a Dialogue System Events component and configure it in the inspector, or add Dialogue System Triggers set to OnConversationStart and OnConversationEnd. Or you can add a Set Component Enabled On Dialogue Event component, which is what the checkbox below does.", MessageType.None);
+            if (!(setEventsFlag || setEnabledFlag)) EditorGUILayout.HelpBox("Gameplay components, such as movement and camera control, may interfere with conversations. If you want to disable gameplay components during conversations, tick the checkbox below. There are many ways to disable gameplay components. You can add a Dialogue System Events component and configure it in the inspector, or add Dialogue System Triggers set to OnConversationStart and OnConversationEnd.", MessageType.None);
+
             EditorGUILayout.BeginHorizontal();
-            setEnabledFlag = EditorGUILayout.Toggle(setEnabledFlag, GUILayout.Width(ToggleWidth));
-            EditorGUILayout.LabelField("Add Set Component Enabled On Dialogue Event component", EditorStyles.boldLabel);
+            setEventsFlag = EditorGUILayout.Toggle(setEventsFlag, GUILayout.Width(ToggleWidth));
+            EditorGUILayout.LabelField("Add Dialogue System Events component", EditorStyles.boldLabel);
             EditorGUILayout.EndHorizontal();
+
+            if (!setEventsFlag && setEnabledFlag)
+            {
+                EditorGUILayout.BeginHorizontal();
+                setEnabledFlag = EditorGUILayout.Toggle(setEnabledFlag, GUILayout.Width(ToggleWidth));
+                EditorGUILayout.LabelField("Add Set Component Enabled On Dialogue Event component", EditorStyles.boldLabel);
+                EditorGUILayout.EndHorizontal();
+            }
+
             DrawDisableControlsSection();
+            DrawDialogueSystemEventsSection();
+
             DrawShowCursorSection();
             if (GUILayout.Button("Select Player", GUILayout.Width(100))) Selection.activeGameObject = pcObject;
             EditorWindowTools.EndIndentedSection();
@@ -478,6 +497,22 @@ namespace PixelCrushers.DialogueSystem
             EditorWindowTools.EndIndentedSection();
         }
 
+        private void DrawDialogueSystemEventsSection()
+        {
+            EditorWindowTools.StartIndentedSection();
+            DialogueSystemEvents events = FindDialogueSystemEvents();
+            if (setEventsFlag)
+            {
+                if (events == null) events = pcObject.AddComponent(TypeUtility.GetWrapperType(typeof(PixelCrushers.DialogueSystem.DialogueSystemEvents))) as DialogueSystemEvents;
+                ShowDialogueSystemEvents(events);
+            }
+            else
+            {
+                    DestroyImmediate(events);
+            }
+            EditorWindowTools.EndIndentedSection();
+        }
+
         private SetComponentEnabledOnDialogueEvent FindConversationEnabler()
         {
             foreach (var component in pcObject.GetComponents<SetComponentEnabledOnDialogueEvent>())
@@ -485,6 +520,11 @@ namespace PixelCrushers.DialogueSystem
                 if (component.trigger == DialogueEvent.OnConversation) return component;
             }
             return null;
+        }
+
+        private DialogueSystemEvents FindDialogueSystemEvents()
+        {
+            return pcObject.GetComponent<DialogueSystemEvents>();
         }
 
         private void ShowDisabledComponents(SetComponentEnabledOnDialogueEvent.SetComponentEnabledAction[] actionList)
@@ -526,6 +566,11 @@ namespace PixelCrushers.DialogueSystem
             return actions.ToArray();
         }
 
+        private void ShowDialogueSystemEvents(DialogueSystemEvents events)
+        {
+            EditorGUILayout.HelpBox("Click 'Select Player' to inspect the player GameObject. Then assign components to the OnConversationStart() and OnConversationEnd() events, disabling them in OnConversationStart() and re-enabling them in OnConversationEnd().\n\nFor example, you may want to assign the player's movement control component(s) and the camera's player control component(s).", MessageType.None);
+        }
+
         private bool IsPlayerControlComponent(MonoBehaviour component)
         {
             return (component is Selector) ||
@@ -546,7 +591,6 @@ namespace PixelCrushers.DialogueSystem
             newAction.target = component;
             actions.Add(newAction);
         }
-
 
         private void DrawShowCursorSection()
         {

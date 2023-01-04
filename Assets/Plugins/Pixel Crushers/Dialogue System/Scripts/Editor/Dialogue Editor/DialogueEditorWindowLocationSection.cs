@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
@@ -25,30 +26,39 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         [SerializeField]
         private int locationListSelectedIndex = -1;
 
+        private HashSet<int> syncedLocationIDs = null;
+
         private void ResetLocationSection()
         {
             locationFoldouts = new AssetFoldouts();
             locationAssetList = null;
             locationReorderableList = null;
             locationListSelectedIndex = -1;
+            syncedLocationIDs = null;
         }
 
         private void DrawLocationSection()
         {
-            if (locationReorderableList == null)
-            {
-                locationReorderableList = new ReorderableList(database.locations, typeof(Location), true, true, true, true);
-                locationReorderableList.drawHeaderCallback = DrawLocationListHeader;
-                locationReorderableList.drawElementCallback = DrawLocationListElement;
-                locationReorderableList.drawElementBackgroundCallback = DrawLocationListElementBackground;
-                locationReorderableList.onAddCallback = OnLocationListAdd;
-                locationReorderableList.onRemoveCallback = OnLocationListRemove;
-                locationReorderableList.onSelectCallback = OnLocationListSelect;
-                locationReorderableList.onReorderCallback = OnLocationListReorder;
-            }
+            if (locationReorderableList == null) InitializeLocationReorderableList();
             DrawFilterMenuBar("Location", DrawLocationMenu, ref locationFilter);
-            if (database.syncInfo.syncLocations) DrawLocationSyncDatabase();
+            if (database.syncInfo.syncLocations)
+            {
+                DrawLocationSyncDatabase();
+                if (syncedLocationIDs == null) RecordSyncedLocationIDs();
+            }
             locationReorderableList.DoLayoutList();
+        }
+
+        private void InitializeLocationReorderableList()
+        {
+            locationReorderableList = new ReorderableList(database.locations, typeof(Location), true, true, true, true);
+            locationReorderableList.drawHeaderCallback = DrawLocationListHeader;
+            locationReorderableList.drawElementCallback = DrawLocationListElement;
+            locationReorderableList.drawElementBackgroundCallback = DrawLocationListElementBackground;
+            locationReorderableList.onAddCallback = OnLocationListAdd;
+            locationReorderableList.onRemoveCallback = OnLocationListRemove;
+            locationReorderableList.onSelectCallback = OnLocationListSelect;
+            locationReorderableList.onReorderCallback = OnLocationListReorder;
         }
 
         private void DrawLocationListHeader(Rect rect)
@@ -64,7 +74,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             var nameControl = "LocationName" + index;
             var descriptionControl = "LocationDescription" + index;
             var location = database.locations[index];
-            EditorGUI.BeginDisabledGroup(!EditorTools.IsAssetInFilter(location, locationFilter));
+            EditorGUI.BeginDisabledGroup(!EditorTools.IsAssetInFilter(location, locationFilter) || IsLocationSyncedFromOtherDB(location));
             var fieldWidth = rect.width / 4;
             var locationName = location.Name;
             EditorGUI.BeginChangeCheck();
@@ -108,6 +118,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             if (!(0 <= list.index && list.index < database.locations.Count)) return;
             var location = database.locations[list.index];
             if (location == null) return;
+            if (IsLocationSyncedFromOtherDB(location)) return;
             var deletedLastOne = list.count == 1;
             if (EditorUtility.DisplayDialog(string.Format("Delete '{0}'?", EditorTools.GetAssetName(location)), "Are you sure you want to delete this location?", "Delete", "Cancel"))
             {
@@ -184,14 +195,32 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             {
                 database.syncInfo.syncLocationsDatabase = newDatabase;
                 database.SyncLocations();
+                InitializeLocationReorderableList();
+                syncedLocationIDs = null;
                 SetDatabaseDirty("Change Location Sync Database");
             }
             if (GUILayout.Button(new GUIContent("Sync Now", "Syncs from the database."), EditorStyles.miniButton, GUILayout.Width(72)))
             {
+                InitializeLocationReorderableList();
+                syncedLocationIDs = null;
                 database.SyncLocations();
                 SetDatabaseDirty("Manual Sync Locations");
             }
             EditorGUILayout.EndHorizontal();
+        }
+
+        private void RecordSyncedLocationIDs()
+        {
+            syncedLocationIDs = new HashSet<int>();
+            if (database.syncInfo.syncLocations && database.syncInfo.syncLocationsDatabase != null)
+            {
+                database.syncInfo.syncLocationsDatabase.locations.ForEach(x => syncedLocationIDs.Add(x.id));
+            }
+        }
+
+        public bool IsLocationSyncedFromOtherDB(Location location)
+        {
+            return location != null && syncedLocationIDs != null && syncedLocationIDs.Contains(location.id);
         }
 
     }

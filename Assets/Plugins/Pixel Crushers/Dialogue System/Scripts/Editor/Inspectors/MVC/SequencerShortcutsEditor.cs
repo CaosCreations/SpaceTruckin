@@ -26,6 +26,8 @@ namespace PixelCrushers.DialogueSystem
             EditorGUILayout.HelpBox("A shortcut is an alias for one or more sequencer commands. If you include the shortcut in a sequence, wrapped in double-braces, it will be replaced by its shortcut value.", MessageType.None);
             serializedObject.Update();
             shortcutsList.DoLayoutList();
+            EditorGUILayout.HelpBox("You can optionally assign GameObjects referenced by name in sequencer commands here. This prevents having to search for them at runtime.", MessageType.None);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("referencedSubjects"), true);
             serializedObject.ApplyModifiedProperties();
         }
 

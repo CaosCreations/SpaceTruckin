@@ -326,7 +326,7 @@ namespace PixelCrushers.DialogueSystem.Articy
                         Lua.Run(code, DialogueDebug.logInfo);
 
                         // Clear original subtable field to save memory:
-                        Lua.Run(tableName + "[\"" + DialogueLua.StringToTableIndex(asset.Name) + "\"]." + DialogueLua.StringToTableIndex(field.title) + " = nil", true);
+                        Lua.Run(tableName + "[\"" + DialogueLua.StringToTableIndex(asset.Name) + "\"]." + DialogueLua.StringToFieldName(field.title) + " = nil", true);
                     }
                 }
             }

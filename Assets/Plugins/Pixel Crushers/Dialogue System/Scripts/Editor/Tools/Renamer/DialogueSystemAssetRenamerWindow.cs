@@ -17,7 +17,8 @@ namespace PixelCrushers.DialogueSystem
         [MenuItem("Tools/Pixel Crushers/Dialogue System/Tools/Asset Renamer", false, 4)]
         public static void Open()
         {
-            GetWindow<DialogueSystemAssetRenamerWindow>(false, "Renamer");
+            var window = GetWindow<DialogueSystemAssetRenamerWindow>(false, "Renamer");
+            window.minSize = new Vector2(400, 500);
         }
 
         #region Variables
@@ -43,6 +44,11 @@ namespace PixelCrushers.DialogueSystem
         protected int questIndex;
         protected string replacementQuestName;
         protected string[] questNames;
+
+        // Quests:
+        protected int conversationIndex;
+        protected string replacementConversationTitle;
+        protected string[] conversationTitles;
 
         protected string report;
         protected GUIStyle reportStyle = null;
@@ -89,6 +95,7 @@ namespace PixelCrushers.DialogueSystem
                 DrawRenameVariableSection();
                 DrawRenameActorsSection();
                 DrawRenameQuestsSection();
+                DrawRenameConversationsSection();
                 DrawReport();
             }
             finally
@@ -118,6 +125,7 @@ namespace PixelCrushers.DialogueSystem
             MakeVariableNamesArray();
             MakeActorNamesArray();
             MakeQuestNamesArray();
+            MakeConversationTitlesArray();
         }
 
         #endregion
@@ -316,6 +324,69 @@ namespace PixelCrushers.DialogueSystem
         protected virtual string FindQuest(bool replace)
         {
             return DialogueSystemAssetRenamerUtility.FindQuest(GetSelectedQuestName(), replace ? replacementQuestName.Trim() : string.Empty);
+        }
+
+        #endregion
+
+        #region Conversations
+
+        protected virtual void DrawRenameConversationsSection()
+        {
+            if (database == null) return;
+            GUILayout.Space(EditorGUIUtility.singleLineHeight);
+            EditorGUILayout.LabelField("Conversations", EditorStyles.boldLabel);
+            conversationIndex = EditorGUILayout.Popup("Conversation", conversationIndex, conversationTitles);
+            replacementConversationTitle = EditorGUILayout.TextField("Rename To", replacementConversationTitle);
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("Find", GUILayout.Width(64)))
+            {
+                if (EditorUtility.DisplayDialog("Find Conversation",
+                    "Find '" + GetSelectedConversationTitle() + "' in all databases, scenes, and prefabs?\nThis may take a long time.", "OK", "Cancel"))
+                {
+                    report = FindConversation(false);
+                }
+            }
+            EditorGUI.BeginDisabledGroup(!IsConversationSelected() || string.IsNullOrEmpty(replacementConversationTitle));
+            if (GUILayout.Button("Rename", GUILayout.Width(64)))
+            {
+                if (EditorUtility.DisplayDialog("Rename Conversation",
+                    "Rename '" + GetSelectedConversationTitle() + "' to '" + replacementConversationTitle + "'?\nThis may take a long time.", "OK", "Cancel"))
+                {
+                    report = FindConversation(true);
+                    MakeConversationTitlesArray();
+                }
+            }
+            EditorGUI.EndDisabledGroup();
+            EditorGUILayout.EndHorizontal();
+        }
+
+        protected virtual void MakeConversationTitlesArray()
+        {
+            var list = new List<string>();
+            if (database != null)
+            {
+                for (int i = 0; i < database.conversations.Count; i++)
+                {
+                    list.Add(database.conversations[i].Title);
+                }
+            }
+            conversationTitles = list.ToArray();
+        }
+
+        protected virtual bool IsConversationSelected()
+        {
+            return database != null && 0 <= conversationIndex && conversationIndex < database.conversations.Count;
+        }
+
+        protected virtual string GetSelectedConversationTitle()
+        {
+            return IsConversationSelected() ? database.conversations[conversationIndex].Title : string.Empty;
+        }
+
+        protected virtual string FindConversation(bool replace)
+        {
+            return DialogueSystemAssetRenamerUtility.FindConversation(GetSelectedConversationTitle(), replace ? replacementConversationTitle.Trim() : string.Empty);
         }
 
         #endregion

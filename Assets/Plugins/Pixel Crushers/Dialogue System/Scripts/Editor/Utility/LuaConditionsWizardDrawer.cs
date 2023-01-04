@@ -11,7 +11,8 @@ namespace PixelCrushers.DialogueSystem
     {
 
         private LuaConditionWizard luaConditionWizard = new LuaConditionWizard(EditorTools.selectedDatabase);
-        private string currentLuaWizardContent = string.Empty;
+        private string lastValue = null;
+        private float luaFieldWidth = 0;
 
         private bool ShowReferenceDatabase()
         {
@@ -24,19 +25,28 @@ namespace PixelCrushers.DialogueSystem
             EditorTools.SetInitialDatabaseIfNull();
             var height = (EditorTools.selectedDatabase == null) ? EditorGUIUtility.singleLineHeight : luaConditionWizard.GetHeight();
             if (ShowReferenceDatabase()) height += EditorGUIUtility.singleLineHeight;
+
+            if (property != null)
+            {
+                height -= EditorGUIUtility.singleLineHeight;
+                if (luaFieldWidth == 0) luaFieldWidth = Screen.width - 34f;
+                var textAreaHeight = EditorTools.textAreaGuiStyle.CalcHeight(new GUIContent(property.stringValue), luaFieldWidth) + 2f;
+                height += textAreaHeight;
+            }
+
             return height;
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            if (string.IsNullOrEmpty(currentLuaWizardContent)) currentLuaWizardContent = property.stringValue;
-
             EditorGUI.BeginProperty(position, label, property);
             try
             {
                 EditorTools.SetInitialDatabaseIfNull();
                 try
                 {
+                    luaFieldWidth = position.width - 16f;
+
                     if (ShowReferenceDatabase())
                     {
                         EditorTools.DrawReferenceDatabase(new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight));
@@ -49,17 +59,16 @@ namespace PixelCrushers.DialogueSystem
                     }
                     else
                     {
+                        if (lastValue != null && lastValue != property.stringValue)
+                        {
+                            luaConditionWizard.ResetWizard();
+                        }
                         if (!luaConditionWizard.IsOpen)
                         {
-                            luaConditionWizard.OpenWizard(currentLuaWizardContent);
+                            luaConditionWizard.OpenWizard(property.stringValue);
                         }
-                        currentLuaWizardContent = luaConditionWizard.Draw(position, new GUIContent("Lua Condition Wizard", "Use to add Lua conditions below"), currentLuaWizardContent);
-                        property.stringValue = currentLuaWizardContent;
-                        if (!luaConditionWizard.IsOpen && !string.IsNullOrEmpty(currentLuaWizardContent))
-                        {
-                            property.stringValue = currentLuaWizardContent;
-                            luaConditionWizard.OpenWizard(currentLuaWizardContent);
-                        }
+                        property.stringValue = luaConditionWizard.Draw(position, new GUIContent("Lua Condition Wizard", "Use to add Lua conditions below"), property.stringValue, true);
+                        lastValue = property.stringValue;
                     }
                 }
                 catch (System.Exception)

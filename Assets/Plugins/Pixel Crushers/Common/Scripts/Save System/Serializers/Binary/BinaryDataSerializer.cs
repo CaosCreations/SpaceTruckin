@@ -11,6 +11,9 @@ namespace PixelCrushers
 
     /// <summary>
     /// Implementation of DataSerializer that uses BinaryFormatter.
+    /// Note: For security reasons, BinaryFormatter is no longer recommended.
+    /// Use JsonDataSerializer, or use this class as a model to implement
+    /// your own binary DataSerializer.
     /// </summary>
     [AddComponentMenu("")] // Use wrapper instead.
     public class BinaryDataSerializer : DataSerializer

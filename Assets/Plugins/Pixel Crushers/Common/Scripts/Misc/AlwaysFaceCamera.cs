@@ -40,8 +40,8 @@ namespace PixelCrushers
 
         private void Update()
         {
-            if (m_mainCamera == null) m_mainCamera = Camera.main;
-            if (m_mainCamera == null) return;
+            if (m_mainCamera == null || !m_mainCamera.enabled || !m_mainCamera.gameObject.activeInHierarchy) m_mainCamera = Camera.main;
+            if (m_mainCamera == null || !m_mainCamera.enabled || !m_mainCamera.gameObject.activeInHierarchy) return;
             if (rotate180)
             {
                 if (yAxisOnly)

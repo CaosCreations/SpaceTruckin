@@ -23,9 +23,9 @@ namespace PixelCrushers.DialogueSystem.Articy.Articy_2_4
             return ArticyEditorTools.FileContainsSchemaId(xmlFilename, "http://www.nevigo.com/schemas/articydraft/2.4/XmlContentExport_FullProject.xsd");
         }
 
-        public static ArticyData LoadArticyDataFromXmlFile(string xmlFilename, Encoding encoding, bool convertDropdownAsString = false, ConverterPrefs prefs = null)
+        public static ArticyData LoadArticyDataFromXmlFile(string xmlFilename, Encoding encoding, ConverterPrefs.ConvertDropdownsModes convertDropdownAs = ConverterPrefs.ConvertDropdownsModes.Int, ConverterPrefs prefs = null)
         {
-            return Articy_2_4_Tools.ConvertExportToArticyData(LoadExportFromXmlFile(xmlFilename, encoding), convertDropdownAsString, prefs);
+            return Articy_2_4_Tools.ConvertExportToArticyData(LoadExportFromXmlFile(xmlFilename, encoding), convertDropdownAs, prefs);
         }
 
         public static ExportType LoadExportFromXmlFile(string xmlFilename, Encoding encoding)

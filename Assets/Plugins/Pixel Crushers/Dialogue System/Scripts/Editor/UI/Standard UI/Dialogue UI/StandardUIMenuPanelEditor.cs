@@ -16,8 +16,9 @@ namespace PixelCrushers.DialogueSystem
 
             EditorGUILayout.LabelField("UI Elements", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("panel"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("pcImage"), new GUIContent("PC Image", "(Optional) Image to show PC portrait during response menu."), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("pcName"), new GUIContent("PC Name", "(Optional) Text element to show PC name during response menu."), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("pcImage"), new GUIContent("PC Image", "(Optional) Image to show PC portrait during response menu."), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("usePortraitNativeSize"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("timerSlider"), true);
 
             EditorGUILayout.LabelField("Design-Time Buttons", EditorStyles.boldLabel);
@@ -50,10 +51,12 @@ namespace PixelCrushers.DialogueSystem
             EditorGUILayout.PropertyField(serializedObject.FindProperty("focusAnimationTrigger"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("unfocusAnimationTrigger"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("m_hasFocus"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("waitForShowAnimationToSetOpen"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("m_deactivateOnHidden"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("waitForClose"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("onOpen"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("onClose"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("onClosed"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("onFocus"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("onUnfocus"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("onBackButtonDown"), true);

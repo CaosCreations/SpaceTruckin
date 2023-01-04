@@ -10,9 +10,90 @@ namespace PixelCrushers.DialogueSystem
 {
 
     /// <summary>
+    /// This is the base prefs (converter window settings) class. The converter
+    /// window uses an instance of this class, or a subclass if you need 
+    /// additional info, to store the user's current settings.
+    /// </summary>
+    [System.Serializable]
+    public class AbstractConverterWindowPrefs
+    {
+        public const string UndefinedPrefsKey = "UndefinedConverterKey";
+
+        /// <summary>
+        /// The source filename. This file gets converted into a dialogue database.
+        /// </summary>
+        public string sourceFilename = string.Empty;
+
+        /// <summary>
+        /// The output folder in which to create the dialogue database.
+        /// </summary>
+        public string outputFolder = "Assets";
+
+        /// <summary>
+        /// The name of the dialogue database.
+        /// </summary>
+        public string databaseFilename = "Dialogue Database";
+
+        /// <summary>
+        /// If <c>true</c>, the converter may overwrite the dialogue database
+        /// if it already exists.
+        /// </summary>
+        public bool overwrite = false;
+
+        /// <summary>
+        /// If <c>true</c> and overwriting, merge assets into the existing database
+        /// instead of replacing it.
+        /// </summary>
+        public bool merge = false;
+
+        /// <summary>
+        /// The encoding type to use when reading the source file.
+        /// </summary>
+        public EncodingType encodingType = EncodingType.Default;
+
+        public static T Load<T>(string key) where T : AbstractConverterWindowPrefs, new()
+        {
+            try
+            {
+                WarnIfKeyUndefined(key);
+                string xml = EditorPrefs.GetString(key);
+                T prefs = null;
+                if (!string.IsNullOrEmpty(xml))
+                {
+                    XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
+                    prefs = xmlSerializer.Deserialize(new StringReader(xml)) as T;
+                }
+                return prefs ?? new T();
+            }
+            catch (System.Exception)
+            {
+                return new T();
+            }
+        }
+
+        public static void Save<T>(string key, T prefs) where T : AbstractConverterWindowPrefs
+        {
+            WarnIfKeyUndefined(key);
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
+            StringWriter writer = new StringWriter();
+            xmlSerializer.Serialize(writer, prefs);
+            EditorPrefs.SetString(key, writer.ToString());
+        }
+
+        protected static void WarnIfKeyUndefined(string key)
+        {
+            if (string.Equals(key, UndefinedPrefsKey))
+            {
+                Debug.LogWarning(string.Format("{0}: The importer preferences key hasn't been specified. " +
+                                                "Check your importer script.", DialogueDebug.Prefix));
+            }
+        }
+    }
+
+    /// <summary>
     /// This is a base class for custom converter windows.
     /// </summary>
-    public class AbstractConverterWindow : EditorWindow
+    public class AbstractConverterWindow<T> : EditorWindow where T : AbstractConverterWindowPrefs, new()
     {
 
         /// <summary>
@@ -25,13 +106,7 @@ namespace PixelCrushers.DialogueSystem
         /// Gets the EditorPrefs key to save the converter window's settings under.
         /// </summary>
         /// <value>The EditorPrefs key.</value>
-        public virtual string prefsKey { get { return UndefinedPrefsKey; } }
-
-        /// <summary>
-        /// An undefined prefs key.
-        /// </summary>
-        private const string UndefinedPrefsKey = "UndefinedConverterKey";
-
+        public virtual string prefsKey { get { return AbstractConverterWindowPrefs.UndefinedPrefsKey; } }
 
         /// @cond FOR_V1_COMPATIBILITY
         public string SourceFileExtension { get { return sourceFileExtension; } }
@@ -39,93 +114,9 @@ namespace PixelCrushers.DialogueSystem
         /// @endcond
 
         /// <summary>
-        /// This is the base prefs (converter window settings) class. The converter
-        /// window uses an instance of this class, or a subclass if you need 
-        /// additional info, to store the user's current settings.
-        /// </summary>
-        [System.Serializable]
-        public class Prefs
-        {
-
-            /// <summary>
-            /// The source filename. This file gets converted into a dialogue database.
-            /// </summary>
-            public string sourceFilename = string.Empty;
-
-            /// <summary>
-            /// The output folder in which to create the dialogue database.
-            /// </summary>
-            public string outputFolder = "Assets";
-
-            /// <summary>
-            /// The name of the dialogue database.
-            /// </summary>
-            public string databaseFilename = "Dialogue Database";
-
-            /// <summary>
-            /// If <c>true</c>, the converter may overwrite the dialogue database
-            /// if it already exists.
-            /// </summary>
-            public bool overwrite = false;
-
-            /// <summary>
-            /// If <c>true</c> and overwriting, merge assets into the existing database
-            /// instead of replacing it.
-            /// </summary>
-            public bool merge = false;
-
-            /// <summary>
-            /// The encoding type to use when reading the source file.
-            /// </summary>
-            public EncodingType encodingType = EncodingType.Default;
-
-            public Prefs() { }
-
-            /// <summary>
-            /// This method reads prefs from EditorPrefs or creates it if it doesn't exist.
-            /// </summary>
-            /// <param name="key">EditorPrefs key.</param>
-            public static Prefs Load(string key)
-            {
-                WarnIfKeyUndefined(key);
-                string xml = EditorPrefs.GetString(key);
-                Prefs prefs = null;
-                if (!string.IsNullOrEmpty(xml))
-                {
-                    XmlSerializer xmlSerializer = new XmlSerializer(typeof(Prefs));
-                    prefs = xmlSerializer.Deserialize(new StringReader(xml)) as Prefs;
-                }
-                return prefs ?? new Prefs();
-            }
-
-            /// <summary>
-            /// This method saves prefs to EditorPrefs.
-            /// </summary>
-            /// <param name="key">Key.</param>
-            /// <param name="prefs">EditorPrefs key.</param>
-            public static void Save(string key, Prefs prefs)
-            {
-                WarnIfKeyUndefined(key);
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(Prefs));
-                StringWriter writer = new StringWriter();
-                xmlSerializer.Serialize(writer, prefs);
-                EditorPrefs.SetString(key, writer.ToString());
-            }
-
-            protected static void WarnIfKeyUndefined(string key)
-            {
-                if (string.Equals(key, UndefinedPrefsKey))
-                {
-                    Debug.LogWarning(string.Format("{0}: The importer preferences key hasn't been specified. " +
-                                                   "Check your importer script.", DialogueDebug.Prefix));
-                }
-            }
-        }
-
-        /// <summary>
         /// The prefs for the converter window.
         /// </summary>
-        protected Prefs prefs = null;
+        protected T prefs = null;
 
         /// <summary>
         /// A reference to the Dialogue System template, used to create new dialogue database
@@ -163,17 +154,17 @@ namespace PixelCrushers.DialogueSystem
 
         protected virtual void ClearPrefs()
         {
-            prefs = new Prefs();
+            prefs = new T();
         }
 
         protected virtual void LoadPrefs()
         {
-            prefs = Prefs.Load(prefsKey);
+            prefs = AbstractConverterWindowPrefs.Load<T>(prefsKey);
         }
 
         protected virtual void SavePrefs()
         {
-            Prefs.Save(prefsKey, prefs);
+            AbstractConverterWindowPrefs.Save<T>(prefsKey, prefs);
         }
 
         public virtual void OnGUI()

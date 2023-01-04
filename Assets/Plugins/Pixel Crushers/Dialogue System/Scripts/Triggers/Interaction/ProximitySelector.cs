@@ -23,7 +23,8 @@ namespace PixelCrushers.DialogueSystem
     /// object will receive an "OnUse" message.
     /// 
     /// You can hook into SelectedUsableObject and DeselectedUsableObject to get notifications
-    /// when the current target has changed.
+    /// when the current target has changed and Enabled and Disabled when the component is 
+    /// enabled or disabled.
     /// </summary>
     [AddComponentMenu("")] // Use wrapper.
     public class ProximitySelector : MonoBehaviour
@@ -138,6 +139,10 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public event DeselectedUsableObjectDelegate DeselectedUsableObject = null;
 
+        public event System.Action Enabled = null;
+
+        public event System.Action Disabled = null;
+
         /// <summary>
         /// Gets the current usable.
         /// </summary>
@@ -179,6 +184,30 @@ namespace PixelCrushers.DialogueSystem
         protected const float MinTimeBetweenUseButton = 0.5f;
         protected float timeToEnableUseButton = 0;
 
+        protected virtual void Reset()
+        {
+#if UNITY_EDITOR
+            var selectorUseStandardUIElements = gameObject.GetComponent<SelectorUseStandardUIElements>();
+            if (selectorUseStandardUIElements == null)
+            {
+                if (UnityEditor.EditorUtility.DisplayDialog("Use Unity UI for Selector?", "Add a 'Selector Use Standard UI Elements' component to allow the Selector to use Unity UI? Otherwise it will use legacy Unity GUI. You can customize the Unity UI prefab assigned to the Dialogue Manager's Instantiate Prefabs component.", "Add", "Don't Add"))
+                {
+                    gameObject.AddComponent<SelectorUseStandardUIElements>();
+                }
+            }
+#endif
+        }
+
+        protected virtual void OnEnable()
+        {
+            Enabled?.Invoke();
+        }
+
+        protected virtual void OnDisable()
+        {
+            Disabled?.Invoke();
+        }
+
         public virtual void Start()
         {
             bool found = false;
@@ -207,8 +236,6 @@ namespace PixelCrushers.DialogueSystem
             // Exit if disabled or paused:
             if (!enabled || (Time.timeScale <= 0)) return;
 
-            //--- Replaced by OnConversationStart: if (DialogueManager.isConversationActive) timeToEnableUseButton = Time.time + MinTimeBetweenUseButton;
-
             // If the currentUsable went missing (was destroyed, deactivated, or we changed scene), tell listeners:
             if (toldListenersHaveUsable && (currentUsable == null || !currentUsable.enabled || !currentUsable.gameObject.activeInHierarchy))
             {
@@ -225,14 +252,20 @@ namespace PixelCrushers.DialogueSystem
         {
             if (SelectedUsableObject != null) SelectedUsableObject(usable);
             onSelectedUsable.Invoke(usable);
-            if (usable != null) usable.OnSelectUsable();
+            if (usable != null)
+            {
+                usable.OnSelectUsable();
+            }
         }
 
         protected void OnDeselectedUsableObject(Usable usable)
         {
             if (DeselectedUsableObject != null) DeselectedUsableObject(usable);
             onDeselectedUsable.Invoke(usable);
-            if (usable != null) usable.OnDeselectUsable();
+            if (usable != null)
+            {
+                usable.OnDeselectUsable();
+            }
         }
 
         /// <summary>
@@ -243,14 +276,17 @@ namespace PixelCrushers.DialogueSystem
             if ((currentUsable != null) && currentUsable.enabled && (currentUsable.gameObject != null) && (Time.time >= timeToEnableUseButton))
             {
                 currentUsable.OnUseUsable();
-                var fromTransform = (actorTransform != null) ? actorTransform : this.transform;
-                if (broadcastToChildren)
+                if (currentUsable != null)
                 {
-                    currentUsable.gameObject.BroadcastMessage("OnUse", fromTransform, SendMessageOptions.DontRequireReceiver);
-                }
-                else
-                {
-                    currentUsable.gameObject.SendMessage("OnUse", fromTransform, SendMessageOptions.DontRequireReceiver);
+                    var fromTransform = (actorTransform != null) ? actorTransform : this.transform;
+                    if (broadcastToChildren)
+                    {
+                        currentUsable.gameObject.BroadcastMessage("OnUse", fromTransform, SendMessageOptions.DontRequireReceiver);
+                    }
+                    else
+                    {
+                        currentUsable.gameObject.SendMessage("OnUse", fromTransform, SendMessageOptions.DontRequireReceiver);
+                    }
                 }
             }
         }
@@ -352,7 +388,7 @@ namespace PixelCrushers.DialogueSystem
         protected virtual void CheckTriggerExit(GameObject other)
         {
             Usable usable = other.GetComponent<Usable>();
-            if (usable != null && usable.enabled)
+            if (usable != null)
             {
                 RemoveUsableFromDetectedList(usable);
             }
@@ -372,25 +408,38 @@ namespace PixelCrushers.DialogueSystem
                 {
                     OnDeselectedUsableObject(usable);
                     toldListenersHaveUsable = false;
-                    Usable newUsable = null;
                     usablesInRange.RemoveAll(x => x == null || !x.gameObject.activeInHierarchy);
                     if (usablesInRange.Count > 0)
                     {
-                        newUsable = usablesInRange[0];
+                        var newUsable = usablesInRange[0];
+                        SetCurrentUsable(newUsable);
                         OnSelectedUsableObject(newUsable);
                         toldListenersHaveUsable = true;
                     }
-                    SetCurrentUsable(newUsable);
+                    else
+                    {
+                        SetCurrentUsable(null);
+                    }
                 }
             }
         }
 
         public virtual void SetCurrentUsable(Usable usable)
         {
-            if (currentUsable != null && currentUsable != usable) OnDeselectedUsableObject(currentUsable);
+            if (usable == currentUsable) return;
+            if (currentUsable != null)
+            {
+                currentUsable.disabled -= OnUsableDisabled;
+                if (currentUsable != usable)
+                {
+                    OnDeselectedUsableObject(currentUsable);
+                }
+            }
             currentUsable = usable;
             if (usable != null)
             {
+                usable.disabled -= OnUsableDisabled;
+                usable.disabled += OnUsableDisabled; 
                 currentHeading = currentUsable.GetName();
                 currentUseMessage = DialogueManager.GetLocalizedText(string.IsNullOrEmpty(currentUsable.overrideUseMessage) ? defaultUseMessage : currentUsable.overrideUseMessage);
             }
@@ -401,12 +450,21 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
+        protected virtual void OnUsableDisabled(Usable usable)
+        {
+            if (usable != null)
+            {
+                RemoveUsableFromDetectedList(usable);
+            }
+        }
+
         /// <summary>
         /// If useDefaultGUI is <c>true</c> and a usable object has been targeted, this method
         /// draws a selection message and targeting reticle.
         /// </summary>
         public virtual void OnGUI()
         {
+            if (!enabled) return;
             if (!useDefaultGUI) return;
             if (guiStyle == null && (Event.current.type == EventType.Repaint || currentUsable != null))
             {

@@ -7,6 +7,8 @@ using System;
 namespace PixelCrushers.DialogueSystem
 {
 
+    public delegate void UsableDelegate(Usable usable);
+
     /// <summary>
     /// This component indicates that the game object is usable. This component works in
     /// conjunction with the Selector component. If you leave overrideName blank but there
@@ -53,14 +55,15 @@ namespace PixelCrushers.DialogueSystem
 
         public UsableEvents events;
 
+        public event UsableDelegate disabled = delegate { };
+
+        protected virtual void OnDisable()
+        {
+            disabled(this);
+        }
+
         public virtual void Start()
         {
-            //--- No longer used. Instead, get name as needed in case Display Name changes during play:
-            //if (string.IsNullOrEmpty(overrideName))
-            //{
-            //    DialogueActor dialogueActor = GetComponentInChildren<DialogueActor>();
-            //    if (dialogueActor != null) overrideName = dialogueActor.GetActorName();
-            //}
         }
 
         /// <summary>
@@ -68,7 +71,7 @@ namespace PixelCrushers.DialogueSystem
         /// or [var] tag.
         /// </summary>
         /// <returns>The override name.</returns>
-        public string GetName()
+        public virtual string GetName()
         {
             if (string.IsNullOrEmpty(overrideName))
             {

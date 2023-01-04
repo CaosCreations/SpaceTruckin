@@ -72,6 +72,9 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("Keep the bark text onscreen until the sequence ends.")]
         public bool waitUntilSequenceEnds = false;
 
+        [Tooltip("If bark is visible and waiting for sequence to end, but new bark wants to show, cancel wait for previous sequence.")]
+        public bool cancelWaitUntilSequenceEndsIfReplacingBark = false;
+
         /// <summary>
         /// Wait for an "OnContinue" message.
         /// </summary>
@@ -93,6 +96,8 @@ namespace PixelCrushers.DialogueSystem
         protected Vector3 originalCanvasLocalPosition { get; set; }
 
         protected int numSequencesActive = 0;
+
+        protected bool hasEverBarked = false;
 
         /// <summary>
         /// Indicates whether a bark is currently playing.
@@ -130,6 +135,7 @@ namespace PixelCrushers.DialogueSystem
 
         protected virtual void Update()
         {
+            if (!hasEverBarked) return;
             if (!waitUntilSequenceEnds && doneTime > 0 && DialogueTime.time >= doneTime)
             {
                 Hide();
@@ -171,6 +177,7 @@ namespace PixelCrushers.DialogueSystem
         {
             if (ShouldShowText(subtitle))
             {
+                hasEverBarked = true;
                 SetUIElementsActive(false);
                 string subtitleText = subtitle.formattedText.text;
                 if (includeName)
@@ -202,14 +209,15 @@ namespace PixelCrushers.DialogueSystem
                 SetUIElementsActive(true);
                 if (CanTriggerAnimations() && !string.IsNullOrEmpty(animationTransitions.showTrigger))
                 {
+                    if (!string.IsNullOrEmpty(animationTransitions.hideTrigger))
+                    {
+                        animator.ResetTrigger(animationTransitions.hideTrigger);
+                    }
                     animator.SetTrigger(animationTransitions.showTrigger);
                 }
                 if (typewriter != null) typewriter.StartTyping(subtitleText);
 
-                //--- We now observe DialogueTime.time instead of using Invoke.
-                //CancelInvoke("Hide");
                 var barkDuration = Mathf.Approximately(0, duration) ? DialogueManager.GetBarkDuration(subtitleText) : duration;
-                //if (!(waitUntilSequenceEnds || waitForContinueButton)) Invoke("Hide", barkDuration);
                 if (waitUntilSequenceEnds) numSequencesActive++;
                 doneTime = waitForContinueButton ? Mathf.Infinity : (DialogueTime.time + barkDuration);
             }
@@ -225,11 +233,22 @@ namespace PixelCrushers.DialogueSystem
 
         public virtual void OnBarkEnd(Transform actor)
         {
-            if (waitUntilSequenceEnds && !waitForContinueButton)
+            if (waitUntilSequenceEnds && !waitForContinueButton && IsActorMe(actor))
             {
                 numSequencesActive--;
                 if (numSequencesActive <= 0) Hide();
             }
+        }
+
+        protected virtual bool IsActorMe(Transform actor)
+        {
+            var t = transform;
+            while (t != null)
+            {
+                if (t == actor) return true;
+                t = t.parent;
+            }
+            return false;
         }
 
         public virtual void OnContinue()
@@ -239,10 +258,15 @@ namespace PixelCrushers.DialogueSystem
 
         public override void Hide()
         {
+            if (!hasEverBarked)
+            {
+                if (canvas != null) canvas.enabled = false;
+                return;
+            }
             numSequencesActive = 0;
             if (CanTriggerAnimations() && !string.IsNullOrEmpty(animationTransitions.hideTrigger))
             {
-                if (!string.IsNullOrEmpty(animationTransitions.hideTrigger))
+                if (!string.IsNullOrEmpty(animationTransitions.showTrigger))
                 {
                     animator.ResetTrigger(animationTransitions.showTrigger);
                 }

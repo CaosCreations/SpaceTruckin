@@ -37,12 +37,25 @@ namespace PixelCrushers
         }
 
         [SerializeField]
+        private int m_version = 0;
+
+        [SerializeField]
         private string m_sceneName;
 
         private Dictionary<string, SaveRecord> m_dict = new Dictionary<string, SaveRecord>();
 
         [SerializeField]
         private List<SaveRecord> m_list = new List<SaveRecord>();
+
+        /// <summary>
+        /// The save file format version. This is an arbitrary value that you
+        /// can assign by setting SaveSystem.version.
+        /// </summary>
+        public int version
+        {
+            get { return m_version; }
+            set { m_version = value; }
+        }
 
         /// <summary>
         /// The scene in which the game was saved.
@@ -52,6 +65,12 @@ namespace PixelCrushers
             get { return m_sceneName; }
             set { m_sceneName = value; }
         }
+
+        /// <summary>
+        /// Provides direct access to the dictionary of save records.
+        /// Use with caution.
+        /// </summary>
+        public Dictionary<string, SaveRecord> Dict { get { return m_dict; } }
 
         public void OnBeforeSerialize()
         {

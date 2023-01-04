@@ -12,6 +12,13 @@ namespace PixelCrushers.DialogueSystem
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             int fieldCount = 3;
+            SerializedProperty useConversationProp = property.FindPropertyRelative("useConversation");
+            SerializedProperty barkSpecificEntryProp = property.FindPropertyRelative("barkSpecificEntry");
+            if (useConversationProp.boolValue)
+            {
+                fieldCount++;
+                if (barkSpecificEntryProp.boolValue) fieldCount++;
+            }
             return fieldCount * EditorGUIUtility.singleLineHeight;
         }
 
@@ -19,6 +26,8 @@ namespace PixelCrushers.DialogueSystem
         {
             SerializedProperty useConversationProp = property.FindPropertyRelative("useConversation");
             SerializedProperty conversationProp = property.FindPropertyRelative("conversation");
+            SerializedProperty barkSpecificEntryProp = property.FindPropertyRelative("barkSpecificEntry");
+            SerializedProperty entryIDProp = property.FindPropertyRelative("entryID");
             SerializedProperty textProp = property.FindPropertyRelative("text");
 
             Rect singleFieldRect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
@@ -27,7 +36,14 @@ namespace PixelCrushers.DialogueSystem
             singleFieldRect.y += EditorGUIUtility.singleLineHeight;
             if (useConversationProp.boolValue)
             {
-                EditorGUI.PropertyField(singleFieldRect, conversationProp);
+                EditorGUI.PropertyField(singleFieldRect, barkSpecificEntryProp);
+                singleFieldRect.y += EditorGUIUtility.singleLineHeight;
+                EditorGUI.PropertyField(new Rect(singleFieldRect.x, singleFieldRect.y, singleFieldRect.width, 2 * EditorGUIUtility.singleLineHeight), conversationProp);
+                if (barkSpecificEntryProp.boolValue)
+                {
+                    singleFieldRect.y += 2 * EditorGUIUtility.singleLineHeight;
+                    EditorGUI.PropertyField(singleFieldRect, entryIDProp);
+                }
             }
             else
             {

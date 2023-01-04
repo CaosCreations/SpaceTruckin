@@ -44,14 +44,20 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("Optional audio source through which to play the clip.")]
         public AudioSource audioSource = null;
 
+        [Tooltip("Use AudioSource.PlayOneShot instead of Play. Slightly heavier performance but produces different effect.")]
+        public bool usePlayOneShot = false;
+
         /// <summary>
         /// If audio clip is still playing from previous character, stop and restart it when typing next character.
         /// </summary>
         [Tooltip("If audio clip is still playing from previous character, stop and restart it when typing next character.")]
         public bool interruptAudioClip = false;
 
-        [Tooltip("Use AudioSource.PlayOneShot instead of Play. Slightly heavier performance but produces different effect.")]
-        public bool usePlayOneShot = false;
+        [Tooltip("Stop audio when typing any of the Silent Characters specified below.")]
+        public bool stopAudioOnSilentCharacters = false;
+
+        [Tooltip("Stop audio when upon reaching a pause code.")]
+        public bool stopAudioOnPauseCodes = false;
 
         /// <summary>
         /// Don't play audio on these characters.
@@ -189,6 +195,11 @@ namespace PixelCrushers.DialogueSystem
             return false;
         }
 
+        public virtual void StopCharacterAudio()
+        {
+            if (audioSource != null) audioSource.Stop();
+        }
+
         protected virtual void PlayCharacterAudio(char c)
         {
             PlayCharacterAudio();
@@ -234,9 +245,10 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        protected IEnumerator PauseForDuration(float duration)
+        protected virtual IEnumerator PauseForDuration(float duration)
         {
             paused = true;
+            if (stopAudioOnPauseCodes && audioSource != null) audioSource.Stop();
             var continueTime = DialogueTime.time + duration;
             int pauseSafeguard = 0;
             while (DialogueTime.time < continueTime && pauseSafeguard < 999)

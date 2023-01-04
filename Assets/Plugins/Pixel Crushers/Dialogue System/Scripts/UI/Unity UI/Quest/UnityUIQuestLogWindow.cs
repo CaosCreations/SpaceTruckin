@@ -126,8 +126,9 @@ namespace PixelCrushers.DialogueSystem
         /// <summary>
         /// Hide the main panel and all of the templates on start.
         /// </summary>
-        public virtual void Start()
+        protected override void Start()
         {
+            base.Start();
             if (addEventSystemIfNeeded) UITools.RequireEventSystem();
             Tools.SetGameObjectActive(mainPanel, false);
             Tools.SetGameObjectActive(abandonPopup, false);

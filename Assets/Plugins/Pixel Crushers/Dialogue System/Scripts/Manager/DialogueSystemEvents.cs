@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -33,6 +34,9 @@ namespace PixelCrushers.DialogueSystem
 
             [Tooltip("Invoked when a conversation ends. Transform is primary actor (typically player).")]
             public TransformEvent onConversationEnd = new TransformEvent();
+
+            [Tooltip("Run OnConversationEnd() events at end of frame to allow other scripts to complete their frame processing first.")]
+            public bool runOnConversationEndEventsAtEndOfFrame = false;
 
             [Tooltip("Invoked when a conversation is cancelled. Transform is primary actor (typically player).")]
             public TransformEvent onConversationCancelled = new TransformEvent();
@@ -116,6 +120,8 @@ namespace PixelCrushers.DialogueSystem
 
         public PauseEvents pauseEvents = new PauseEvents();
 
+        private WaitForEndOfFrame endOfFrame = new WaitForEndOfFrame();
+
         #region Conversation Events
 
         public void OnConversationStart(Transform actor)
@@ -125,6 +131,19 @@ namespace PixelCrushers.DialogueSystem
 
         public void OnConversationEnd(Transform actor)
         {
+            if (conversationEvents.runOnConversationEndEventsAtEndOfFrame)
+            {
+                StartCoroutine(InvokeOnConversationEndAtEndOfFrame(actor));
+            }
+            else
+            {
+                conversationEvents.onConversationEnd.Invoke(actor);
+            }
+        }
+
+        private IEnumerator InvokeOnConversationEndAtEndOfFrame(Transform actor)
+        {
+            yield return endOfFrame;
             conversationEvents.onConversationEnd.Invoke(actor);
         }
 

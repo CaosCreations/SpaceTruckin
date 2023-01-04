@@ -15,15 +15,16 @@ namespace PixelCrushers.DialogueSystem
                 return FieldType.Location;
             }
         }
-        public override string Draw(string currentValue, DialogueDatabase dataBase)
+        public override string Draw(string currentValue, DialogueDatabase database)
         {
-            //return EditorGUILayout.TextField(currentValue);
-            return PixelCrushers.DialogueSystem.DialogueEditor.DialogueEditorWindow.instance.DrawAssetPopup<Location>(currentValue, (dataBase != null) ? dataBase.locations : null, null);
+            RequireDialogueEditorWindow(database);
+            return PixelCrushers.DialogueSystem.DialogueEditor.DialogueEditorWindow.instance.DrawAssetPopup<Location>(currentValue, (database != null) ? database.locations : null, null);
         }
 
-        public override string Draw(Rect rect, string currentValue, DialogueDatabase dataBase)
+        public override string Draw(Rect rect, string currentValue, DialogueDatabase database)
         {
-            return PixelCrushers.DialogueSystem.DialogueEditor.DialogueEditorWindow.instance.DrawAssetPopup<Location>(rect, currentValue, (dataBase != null) ? dataBase.locations : null, null);
+            RequireDialogueEditorWindow(database);
+            return PixelCrushers.DialogueSystem.DialogueEditor.DialogueEditorWindow.instance.DrawAssetPopup<Location>(rect, currentValue, (database != null) ? database.locations : null, null);
         }
 
     }

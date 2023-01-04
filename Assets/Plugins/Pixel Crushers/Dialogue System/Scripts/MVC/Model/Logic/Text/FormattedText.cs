@@ -602,13 +602,29 @@ namespace PixelCrushers.DialogueSystem
                     string closeTag = string.Format("[/em{0}]", new System.Object[] { i + 1 });
                     if (text.Contains(openTag))
                     {
-                        string openRichText = string.Format("{0}{1}<color={2}>",
-                            new System.Object[] { emphasisSettings[i].bold ? "<b>" : string.Empty,
-                            emphasisSettings[i].italic ? "<i>" : string.Empty,
-                            Tools.ToWebColor(emphasisSettings[i].color) });
-                        string closeRichText = string.Format("</color>{0}{1}",
-                            new System.Object[] { emphasisSettings[i].italic ? "</i>" : string.Empty,
-                            emphasisSettings[i].bold ? "</b>" : string.Empty });
+                        string openRichText = string.Format("{0}{1}{2}<color={3}>",
+                            new System.Object[]
+                            {
+                                emphasisSettings[i].bold ? "<b>" : string.Empty,
+                                emphasisSettings[i].italic ? "<i>" : string.Empty,
+#if TMP_PRESENT || USE_STM
+                                emphasisSettings[i].underline ? "<u>" : string.Empty,
+#else
+                                string.Empty,
+#endif
+                                Tools.ToWebColor(emphasisSettings[i].color)
+                            });
+                        string closeRichText = string.Format("</color>{0}{1}{2}",
+                            new System.Object[]
+                            {
+#if TMP_PRESENT || USE_STM
+                                emphasisSettings[i].underline? "</u>" : string.Empty,
+#else
+                                string.Empty,
+#endif
+                                emphasisSettings[i].italic ? "</i>" : string.Empty,
+                                emphasisSettings[i].bold ? "</b>" : string.Empty
+                            });
                         text = text.Replace(openTag, openRichText).Replace(closeTag, closeRichText);
                     }
                 }

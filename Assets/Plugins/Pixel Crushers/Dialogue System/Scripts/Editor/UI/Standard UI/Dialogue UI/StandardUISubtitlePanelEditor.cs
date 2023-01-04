@@ -20,12 +20,21 @@ namespace PixelCrushers.DialogueSystem
             EditorGUILayout.PropertyField(serializedObject.FindProperty("portraitName"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("subtitleText"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("continueButton"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("blockInputDuration"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("onlyShowNPCPortraits"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("useAnimatedPortraits"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("accumulateText"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("usePortraitNativeSize"), true);
+            var accumulateTextProperty = serializedObject.FindProperty("accumulateText");
+            EditorGUILayout.PropertyField(accumulateTextProperty, true);
+            if (accumulateTextProperty.boolValue)
+            {
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("maxLines"), true); 
+            }
             EditorGUILayout.PropertyField(serializedObject.FindProperty("addSpeakerName"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("addSpeakerNameFormat"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("delayTypewriterUntilOpen"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("clearTextOnConversationStart"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("scrollbarEnabler"), true);
 
             EditorGUILayout.LabelField(new GUIContent("Navigation", "Joystick/keyboard navigation settings."), EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("firstSelected"), true);
@@ -42,11 +51,14 @@ namespace PixelCrushers.DialogueSystem
             EditorGUILayout.PropertyField(serializedObject.FindProperty("focusAnimationTrigger"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("unfocusAnimationTrigger"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("m_hasFocus"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("waitForShowAnimationToSetOpen"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("waitForOpen"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("waitForClose"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("m_deactivateOnHidden"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("clearTextOnClose"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("onOpen"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("onClose"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("onClosed"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("onFocus"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("onUnfocus"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("onBackButtonDown"), true);
