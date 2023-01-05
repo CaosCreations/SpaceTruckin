@@ -143,6 +143,7 @@ public class TimelineManager : MonoBehaviour
                 if (animationAsset == null || !animationClipMap.TryGetValue(animationAsset.clip.name, out var mappedClipName))
                     continue;
 
+                // Look up the clip 
                 var mappedClip = playerClipData.Player2AnimationClips.FirstOrDefault(clip => clip != null && clip.name == mappedClipName);
 
                 if (mappedClip == null)
@@ -160,9 +161,11 @@ public class TimelineManager : MonoBehaviour
     {
         { "WalkLeft", "player2_walkLeft" },
         { "StandDownP", "player2_IdleDown" },
+        { "StandRightP", "player2_IdleRight" },
+        { "StandUpP", "player2_IdleUp" },
+        { "StandLefttP", "player2_IdleLeft" },
         { "RunDown", "player2_runDown" },
         { "RunLeft", "player2_runLeft" },
-        { "RunUP", "player2_runUp" },
-        { "StandUpP", "player2_IdleUp" }
+        { "RunUP", "player2_runUp" }
     };
 }
