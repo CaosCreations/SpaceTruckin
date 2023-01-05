@@ -36,8 +36,8 @@ public class StationSetupManager : MonoBehaviour
 
     public static void SetupStation()
     {
-        PlayerManager.Instance.SetupPlayer();
-        TimelineManager.Instance.SetupDirector();
+        PlayerManager.Instance.SetUpPlayer();
+        TimelineManager.Instance.SetUp();
         TimelineManager.PlayCutscene("Opening Cutscene");
     }
 }

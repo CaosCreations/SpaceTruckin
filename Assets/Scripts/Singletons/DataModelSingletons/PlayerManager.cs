@@ -104,17 +104,17 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
     private void RegisterSceneChangeEvents()
     {
-        // Setup player when station scene loads 
+        // Set up player when station scene loads 
         SceneManager.activeSceneChanged += (Scene previous, Scene next) =>
         {
             if (SceneLoadingManager.GetSceneNameByEnum(Scenes.MainStation) == next.name)
             {
-                SetupPlayer();
+                SetUpPlayer();
             }
         };
     }
 
-    public void SetupPlayer()
+    public void SetUpPlayer()
     {
         PlayerObject = GameObject.FindGameObjectWithTag(PlayerConstants.PlayerTag);
 

@@ -95,13 +95,14 @@ public class TimelineManager : MonoBehaviour
         return null;
     }
 
-    public void SetupDirector()
+    public void SetUp()
     {
-        SetDirectorBindings();
-        SetAnimationTracks();
+        SetUpDirectorBindings();
+        SetUpAnimationTracks();
+        SetUpCutsceneCamera();
     }
 
-    private void SetDirectorBindings()
+    private void SetUpDirectorBindings()
     {
         if (!PlayerManager.PlayerObject.TryGetComponent<Animator>(out var playerAnimator))
         {
@@ -118,7 +119,7 @@ public class TimelineManager : MonoBehaviour
         }
     }
 
-    private void SetAnimationTracks()
+    private void SetUpAnimationTracks()
     {
         if (!PlayerManager.PlayerObject.TryGetComponent<Animator>(out var playerAnimator))
             throw new System.Exception("Unable to get player animator to set animation tracks");
@@ -150,6 +151,11 @@ public class TimelineManager : MonoBehaviour
                     : assetMapping.Player2Clip;
             }
         }
+    }
+
+    private void SetUpCutsceneCamera()
+    {
+        cutsceneCamera.Follow = PlayerManager.PlayerObject.transform;
     }
 
     /// <summary>
