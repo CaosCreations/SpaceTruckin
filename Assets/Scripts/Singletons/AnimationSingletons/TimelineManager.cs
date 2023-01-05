@@ -142,6 +142,9 @@ public class TimelineManager : MonoBehaviour
 
                 var assetMapping = assetMappingContainer.Elements.FirstOrDefault(mapping => mapping.AnimationAssetName == animationAsset.name);
 
+                if (assetMapping == null)
+                    continue;
+
                 animationAsset.clip = playerAnimator.runtimeAnimatorController.name == "SprPlayer2newAnim"
                     ? assetMapping.Player2Clip
                     : assetMapping.Player1Clip;
