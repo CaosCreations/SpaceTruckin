@@ -1,9 +1,8 @@
 ﻿using System;
-using UnityEngine;
+using System.Collections.Generic;
 
 [Serializable]
 public class PlayerAnimationClipData
 {
-    public AnimationClip[] Player1AnimationClips;
-    public AnimationClip[] Player2AnimationClips;
+    public List<PlayerAnimationAssetMapping> ClipMappings;
 }

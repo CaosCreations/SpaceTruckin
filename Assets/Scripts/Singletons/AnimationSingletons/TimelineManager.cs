@@ -16,7 +16,7 @@ public class TimelineManager : MonoBehaviour
     private PlayableDirector playableDirector;
 
     [SerializeField]
-    private PlayerAnimationClipData playerClipData;
+    private PlayerAnimationAssetMappingContainer assetMappingContainer;
 
     private void Awake()
     {
@@ -123,9 +123,6 @@ public class TimelineManager : MonoBehaviour
         if (!PlayerManager.PlayerObject.TryGetComponent<Animator>(out var playerAnimator))
             throw new System.Exception("Unable to get player animator to set animation tracks");
 
-        if (playerAnimator.runtimeAnimatorController.name != "SprPlayer2newAnim")
-            return;
-
         var timelineAsset = playableDirector.playableAsset as TimelineAsset;
 
         foreach (var track in timelineAsset.GetOutputTracks())
@@ -140,16 +137,14 @@ public class TimelineManager : MonoBehaviour
             {
                 var animationAsset = clips.asset as AnimationPlayableAsset;
 
-                if (animationAsset == null || !animationClipMap.TryGetValue(animationAsset.clip.name, out var mappedClipName))
+                if (animationAsset == null)
                     continue;
 
-                // Look up the clip 
-                var mappedClip = playerClipData.Player2AnimationClips.FirstOrDefault(clip => clip != null && clip.name == mappedClipName);
+                var assetMapping = assetMappingContainer.Elements.FirstOrDefault(mapping => mapping.AnimationAssetName == animationAsset.name);
 
-                if (mappedClip == null)
-                    continue;
-
-                animationAsset.clip = mappedClip;
+                animationAsset.clip = playerAnimator.runtimeAnimatorController.name == "SprPlayer2newAnim"
+                    ? assetMapping.Player2Clip
+                    : assetMapping.Player1Clip;
             }
         }
     }
@@ -157,7 +152,7 @@ public class TimelineManager : MonoBehaviour
     /// <summary>
     ///     P1 to P2 mappings of animation clip names.
     /// </summary>
-    private static readonly Dictionary<string, string> animationClipMap = new Dictionary<string, string>
+    private static readonly Dictionary<string, string> animationClipNameMappigns = new Dictionary<string, string>
     {
         { "WalkLeft", "player2_walkLeft" },
         { "StandDownP", "player2_IdleDown" },
