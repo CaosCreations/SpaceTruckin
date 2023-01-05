@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Cinemachine;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Playables;
-using UnityEngine.SceneManagement;
 using UnityEngine.Timeline;
 
 public class TimelineManager : MonoBehaviour
@@ -16,7 +17,13 @@ public class TimelineManager : MonoBehaviour
     private PlayableDirector playableDirector;
 
     [SerializeField]
-    private PlayerAnimationAssetMappingContainer assetMappingContainer;
+    private CinemachineVirtualCamera cutsceneCamera;
+
+    [SerializeField]
+    private PlayerAnimationAssetMappingContainer playerAnimationAssetMappingContainer;
+
+    public static UnityAction OnTimelineStart;
+    public static UnityAction OnTimelineEnd;
 
     private void Awake()
     {
@@ -34,27 +41,20 @@ public class TimelineManager : MonoBehaviour
 
     private void Start()
     {
-        //RegisterEvents();
+        playableDirector.played += (_) => OnTimelineStartHandler();
+        playableDirector.stopped += (_) => OnTimelineEndHandler();
     }
 
-    private void RegisterEvents()
+    private void OnTimelineStartHandler()
     {
-        SceneManager.activeSceneChanged += (Scene previous, Scene next) =>
-        {
-            // Opening station entry cutscene
-            if (SceneLoadingManager.GetSceneNameByEnum(Scenes.MainStation) == next.name)
-            {
-                var onStationLoadCutscene = GetCutsceneByOnLoadSceneName(next.name);
+        cutsceneCamera.Priority = TimelineConstants.CutsceneCameraPlayPriority;
+        OnTimelineStart?.Invoke();
+    }
 
-                if (onStationLoadCutscene == null)
-                {
-                    Debug.LogError("OnStationLoad cutscene not found");
-                    return;
-                }
-
-                PlayTimeline(onStationLoadCutscene.PlayableAsset);
-            }
-        };
+    private void OnTimelineEndHandler()
+    {
+        cutsceneCamera.Priority = TimelineConstants.CutsceneCameraBasePriority;
+        OnTimelineEnd?.Invoke();
     }
 
     public static void PlayCutscene(string cutsceneName)
@@ -140,14 +140,14 @@ public class TimelineManager : MonoBehaviour
                 if (animationAsset == null)
                     continue;
 
-                var assetMapping = assetMappingContainer.Elements.FirstOrDefault(mapping => mapping.AnimationAssetName == animationAsset.name);
+                var assetMapping = playerAnimationAssetMappingContainer.Elements.FirstOrDefault(mapping => mapping.AnimationAssetName == animationAsset.name);
 
                 if (assetMapping == null)
                     continue;
 
-                animationAsset.clip = playerAnimator.runtimeAnimatorController.name == "SprPlayer2newAnim"
-                    ? assetMapping.Player2Clip
-                    : assetMapping.Player1Clip;
+                animationAsset.clip = playerAnimator.runtimeAnimatorController.name == AnimationConstants.Player1ControllerName
+                    ? assetMapping.Player1Clip
+                    : assetMapping.Player2Clip;
             }
         }
     }
@@ -155,7 +155,7 @@ public class TimelineManager : MonoBehaviour
     /// <summary>
     ///     P1 to P2 mappings of animation clip names.
     /// </summary>
-    private static readonly Dictionary<string, string> animationClipNameMappigns = new Dictionary<string, string>
+    private static readonly Dictionary<string, string> animationClipNameMappings = new Dictionary<string, string>
     {
         { "WalkLeft", "player2_walkLeft" },
         { "StandDownP", "player2_IdleDown" },

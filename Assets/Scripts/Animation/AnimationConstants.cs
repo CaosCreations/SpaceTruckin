@@ -54,5 +54,7 @@ public static class AnimationConstants
         { Vector3.right, MovementAnimationRightMap },
     };
 
+    public const string Player1ControllerName = "SprPlayernewAnim";
+    public const string Player2ControllerName = "SprPlayer2newAnim";
     #endregion
 }

@@ -47,7 +47,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cutsceneContainer: {fileID: 11400000, guid: 6a5c0766dc4071d469d0b9231eb10a21, type: 2}
   playableDirector: {fileID: 5360344310439616905}
-  assetMappingContainer: {fileID: 11400000, guid: d1034636abb0b0947b21a15785c6ead6,
+  cutsceneCamera: {fileID: 5360344311454294516}
+  playerAnimationAssetMappingContainer: {fileID: 11400000, guid: d1034636abb0b0947b21a15785c6ead6,
     type: 2}
 --- !u!1001 &9204583480912051333
 PrefabInstance:
@@ -155,3 +156,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 9204583480912051333}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5360344311454294516 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3881816079453134193, guid: 288f6e14b539394418ab01982b6a2240,
+    type: 3}
+  m_PrefabInstance: {fileID: 9204583480912051333}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
