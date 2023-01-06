@@ -13,8 +13,5 @@ public class Character : ScriptableObject
     public GameObject Prefab { get; set; }
 
     [field: SerializeField]
-    public Animator Animator { get; set; }
-
-    [field: SerializeField]
     public AnimatorSettings AnimatorSettings { get; set; }
 }

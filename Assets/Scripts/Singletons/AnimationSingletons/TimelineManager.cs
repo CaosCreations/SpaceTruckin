@@ -22,8 +22,8 @@ public class TimelineManager : MonoBehaviour
     [SerializeField]
     private PlayerAnimationAssetMappingContainer playerAnimationAssetMappingContainer;
 
-    public static UnityAction OnTimelineStart;
-    public static UnityAction OnTimelineEnd;
+    public static UnityAction<string> OnTimelineStart;
+    public static UnityAction<string> OnTimelineEnd;
 
     private void Awake()
     {
@@ -48,13 +48,13 @@ public class TimelineManager : MonoBehaviour
     private void OnTimelineStartHandler()
     {
         cutsceneCamera.Priority = TimelineConstants.CutsceneCameraPlayPriority;
-        OnTimelineStart?.Invoke();
+        OnTimelineStart?.Invoke(playableDirector.playableAsset.name);
     }
 
     private void OnTimelineEndHandler()
     {
         cutsceneCamera.Priority = TimelineConstants.CutsceneCameraBasePriority;
-        OnTimelineEnd?.Invoke();
+        OnTimelineEnd?.Invoke(playableDirector.playableAsset.name);
     }
 
     public static void PlayCutscene(string cutsceneName)
@@ -134,16 +134,16 @@ public class TimelineManager : MonoBehaviour
                 continue;
 
             // Match and set the player clips on each of the animation assets in the timeline 
-            foreach (var clips in animationTrack.GetClips())
+            foreach (var clip in animationTrack.GetClips())
             {
-                var animationAsset = clips.asset as AnimationPlayableAsset;
+                var animationAsset = clip.asset as AnimationPlayableAsset;
 
                 if (animationAsset == null)
                     continue;
 
-                var assetMapping = playerAnimationAssetMappingContainer.Elements.FirstOrDefault(mapping => mapping.AnimationAssetName == animationAsset.name);
+                var assetMapping = playerAnimationAssetMappingContainer.GetMappingByClipName(animationAsset.clip.name);
 
-                if (assetMapping == null)
+                    if (assetMapping == null)
                     continue;
 
                 animationAsset.clip = playerAnimator.runtimeAnimatorController.name == AnimationConstants.Player1ControllerName
@@ -157,19 +157,4 @@ public class TimelineManager : MonoBehaviour
     {
         cutsceneCamera.Follow = PlayerManager.PlayerObject.transform;
     }
-
-    /// <summary>
-    ///     P1 to P2 mappings of animation clip names.
-    /// </summary>
-    private static readonly Dictionary<string, string> animationClipNameMappings = new Dictionary<string, string>
-    {
-        { "WalkLeft", "player2_walkLeft" },
-        { "StandDownP", "player2_IdleDown" },
-        { "StandRightP", "player2_IdleRight" },
-        { "StandUpP", "player2_IdleUp" },
-        { "StandLefttP", "player2_IdleLeft" },
-        { "RunDown", "player2_runDown" },
-        { "RunLeft", "player2_runLeft" },
-        { "RunUP", "player2_runUp" }
-    };
 }

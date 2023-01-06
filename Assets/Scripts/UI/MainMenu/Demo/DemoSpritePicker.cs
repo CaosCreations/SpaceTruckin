@@ -9,7 +9,7 @@ public class DemoSpritePicker : MonoBehaviour, ISpritePicker
 
     public string SelectedSpriteName;
 
-    protected void Start()
+    protected virtual void Start()
     {
         charSprite1.SetActive(true);
         charSprite2.SetActive(false);

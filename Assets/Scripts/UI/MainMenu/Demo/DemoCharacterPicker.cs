@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class DemoCharacterPicker : DemoSpritePicker
 {
@@ -8,6 +9,12 @@ public class DemoCharacterPicker : DemoSpritePicker
     private Character char2;
 
     public Character SelectedCharacter;
+
+    protected override void Start()
+    {
+        base.Start();
+        UpdatePlayerData(char1);
+    }
 
     public override void PickSprite()
     {
@@ -35,9 +42,16 @@ public class DemoCharacterPicker : DemoSpritePicker
             return;
         }
 
-        // Set the prefab to use in-game based on input 
-        PlayerManager.Instance.PlayerPrefab = SelectedCharacter.Prefab;
-        PlayerManager.Instance.PlayerAnimator = SelectedCharacter.Animator;
-        PlayerManager.Instance.PlayerAnimatorSettings = SelectedCharacter.AnimatorSettings;
+        UpdatePlayerData(SelectedCharacter);
+    }
+
+    protected void UpdatePlayerData(Character character)
+    {
+        if (character == null)
+            throw new NullReferenceException("Character null. Cannot pick character and update data.");
+
+        // Set the prefab and animator settings to use in-game based on input 
+        PlayerManager.Instance.PlayerPrefab = character.Prefab;
+        PlayerManager.Instance.PlayerAnimatorSettings = character.AnimatorSettings;
     }
 }
