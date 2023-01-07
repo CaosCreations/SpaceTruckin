@@ -51,7 +51,6 @@ public class DemoCharacterPicker : DemoSpritePicker
             throw new NullReferenceException("Character null. Cannot pick character and update data.");
 
         // Set the prefab and animator settings to use in-game based on input 
-        PlayerManager.Instance.PlayerPrefab = character.Prefab;
         PlayerManager.Instance.PlayerAnimatorSettings = character.AnimatorSettings;
     }
 }

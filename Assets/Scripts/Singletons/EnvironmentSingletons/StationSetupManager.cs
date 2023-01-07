@@ -29,12 +29,12 @@ public class StationSetupManager : MonoBehaviour
             if (SceneLoadingManager.GetSceneNameByEnum(Scenes.MainStation) == next.name)
             {
                 Debug.Log("Setting up station...");
-                SetupStation();
+                SetUpStation();
             }
         };
     }
 
-    public static void SetupStation()
+    public static void SetUpStation()
     {
         PlayerManager.Instance.SetUpPlayer();
         TimelineManager.Instance.SetUp();

@@ -1,6 +1,4 @@
 ﻿using Cinemachine;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Playables;
@@ -143,7 +141,7 @@ public class TimelineManager : MonoBehaviour
 
                 var assetMapping = playerAnimationAssetMappingContainer.GetMappingByClipName(animationAsset.clip.name);
 
-                    if (assetMapping == null)
+                if (assetMapping == null)
                     continue;
 
                 animationAsset.clip = playerAnimator.runtimeAnimatorController.name == AnimationConstants.Player1ControllerName

@@ -44,16 +44,10 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
     public static GameObject PlayerObject { get; private set; }
     public static PlayerMovement PlayerMovement { get; private set; }
-    public GameObject PlayerPrefab { get => playerData.PlayerPrefab; set => playerData.PlayerPrefab = value; }
-    public Animator PlayerAnimator { get => playerData.PlayerAnimator; set => playerData.PlayerAnimator = value; }
-    public Vector3 StationSpawnPosition => playerData.StationSpawnPosition;
     public AnimatorSettings PlayerAnimatorSettings
     {
         get => playerData.AnimatorSettings; set => playerData.AnimatorSettings = value;
     }
-
-    [SerializeField]
-    private Transform playerParentTransform;
     #endregion
 
     private void Awake()
