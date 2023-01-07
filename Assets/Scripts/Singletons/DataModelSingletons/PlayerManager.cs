@@ -44,11 +44,10 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
     public static GameObject PlayerObject { get; private set; }
     public static PlayerMovement PlayerMovement { get; private set; }
-    public GameObject PlayerPrefab { get => playerData.PlayerPrefab; set => playerData.PlayerPrefab = value; }
-    public Vector3 StationSpawnPosition => playerData.StationSpawnPosition;
-
-    [SerializeField]
-    private Transform playerParentTransform;
+    public AnimatorSettings PlayerAnimatorSettings
+    {
+        get => playerData.AnimatorSettings; set => playerData.AnimatorSettings = value;
+    }
     #endregion
 
     private void Awake()
@@ -64,9 +63,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
             return;
         }
 
-        // Todo: Temporary until we move singleton manager out of station scene
-        //Init();
-        RegisterEvents();
+        RegisterSceneChangeEvents();
     }
 
     public void Init()
@@ -80,12 +77,11 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
             DataUtils.CreateSaveFolder(PlayerData.FolderName);
         }
 
-        //FindSceneObjects();
         RegisterLuaFunctions();
-        RegisterEvents();
+        RegisterDialogueEvents();
     }
 
-    private void RegisterEvents()
+    private void RegisterDialogueEvents()
     {
         if (DialogueManager.Instance != null)
         {
@@ -98,57 +94,47 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
             DialogueManager.Instance.conversationEnded += (t) => IsPaused = false;
         }
+    }
 
-        // Init prefab when scene loads 
+    private void RegisterSceneChangeEvents()
+    {
+        // Set up player when station scene loads 
         SceneManager.activeSceneChanged += (Scene previous, Scene next) =>
         {
             if (SceneLoadingManager.GetSceneNameByEnum(Scenes.MainStation) == next.name)
             {
-                InstantiatePlayer();
+                SetUpPlayer();
             }
         };
     }
 
-    private void InstantiatePlayer()
-    {
-        if (PlayerPrefab == null)
-        {
-            throw new System.Exception("Player prefab was null. Cannot instantiate player.");
-        }
-
-        PlayerObject = Instantiate(PlayerPrefab, playerParentTransform);
-        PlayerObject.transform.position = StationSpawnPosition;
-        PlayerMovement = PlayerObject.GetComponent<PlayerMovement>();
-    }
-
-    private static void FindSceneObjects()
+    public void SetUpPlayer()
     {
         PlayerObject = GameObject.FindGameObjectWithTag(PlayerConstants.PlayerTag);
 
-        if (PlayerObject != null)
+        if (PlayerObject == null)
         {
-            PlayerMovement = PlayerObject.GetComponent<PlayerMovement>();
-        }
-        else
-        {
-            Debug.LogError("Player object not found");
+            throw new System.Exception("Player object not found");
         }
 
         if (Instance.playerData == null)
         {
             Debug.LogError("No player data found");
         }
+
+        PlayerMovement = PlayerObject.GetComponent<PlayerMovement>();
+
+        // Animator field setup 
+        var playerAnimator = PlayerObject.GetComponent<Animator>();
+        var animatorSettingsMapper = new PlayerAnimatorSettingsMapper();
+        animatorSettingsMapper.MapSettings(playerAnimator, PlayerAnimatorSettings);
     }
 
     private void OnDisable() => UnregisterLuaFunctions();
 
     public bool CanSpendMoney(long amount)
     {
-        if (amount <= Instance.Money)
-        {
-            return true;
-        }
-        return false;
+        return amount <= Instance.Money;
     }
 
     public void SpendMoney(long amount)
@@ -208,12 +194,6 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
     {
         Instance.PlayerName = playerName;
         Debug.Log($"Player name set to: {Instance.PlayerName}");
-    }
-
-    public static void SetSpriteName(string spriteName)
-    {
-        Instance.SpriteName = spriteName;
-        Debug.Log($"Player name set to: {Instance.SpriteName}");
     }
 
     #region Lua Function Registration

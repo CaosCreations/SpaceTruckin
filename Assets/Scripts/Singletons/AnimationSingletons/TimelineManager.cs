@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using Cinemachine;
+using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Playables;
-using UnityEngine.SceneManagement;
+using UnityEngine.Timeline;
 
 public class TimelineManager : MonoBehaviour
 {
@@ -8,6 +10,18 @@ public class TimelineManager : MonoBehaviour
 
     [SerializeField]
     private CutsceneContainer cutsceneContainer;
+
+    [SerializeField]
+    private PlayableDirector playableDirector;
+
+    [SerializeField]
+    private CinemachineVirtualCamera cutsceneCamera;
+
+    [SerializeField]
+    private PlayerAnimationAssetMappingContainer playerAnimationAssetMappingContainer;
+
+    public static UnityAction<string> OnTimelineStart;
+    public static UnityAction<string> OnTimelineEnd;
 
     private void Awake()
     {
@@ -25,31 +39,37 @@ public class TimelineManager : MonoBehaviour
 
     private void Start()
     {
-        RegisterEvents();
+        playableDirector.played += (_) => OnTimelineStartHandler();
+        playableDirector.stopped += (_) => OnTimelineEndHandler();
     }
 
-    private void RegisterEvents()
+    private void OnTimelineStartHandler()
     {
-        SceneManager.activeSceneChanged += (Scene previous, Scene next) =>
-        {
-            if (SceneLoadingManager.GetSceneNameByEnum(Scenes.MainStation) == next.name)
-            {
-                var onStationLoadCutscene = GetCutsceneByOnLoadSceneName(next.name);
-
-                if (onStationLoadCutscene == null)
-                {
-                    Debug.LogError("OnStationLoad cutscene not found");
-                    return;
-                }
-
-                PlayTimeline(onStationLoadCutscene.Director);
-            }
-        };
+        cutsceneCamera.Priority = TimelineConstants.CutsceneCameraPlayPriority;
+        OnTimelineStart?.Invoke(playableDirector.playableAsset.name);
     }
 
-    public static void PlayTimeline(PlayableDirector playableDirector)
+    private void OnTimelineEndHandler()
     {
-        playableDirector.Play();
+        cutsceneCamera.Priority = TimelineConstants.CutsceneCameraBasePriority;
+        OnTimelineEnd?.Invoke(playableDirector.playableAsset.name);
+    }
+
+    public static void PlayCutscene(string cutsceneName)
+    {
+        var cutscene = Instance.GetCutsceneByName(cutsceneName);
+
+        if (cutscene == null)
+            throw new System.Exception("Cannot play cutscene with name: " + cutsceneName);
+
+        PlayTimeline(cutscene.PlayableAsset);
+    }
+
+    private static void PlayTimeline(PlayableAsset playableAsset)
+    {
+        Instance.playableDirector.gameObject.SetActive(true);
+        Instance.playableDirector.playableAsset = playableAsset;
+        Instance.playableDirector.Play();
     }
 
     public Cutscene GetCutsceneByName(string name)
@@ -59,6 +79,7 @@ public class TimelineManager : MonoBehaviour
             if (cutscene.Name == name)
                 return cutscene;
         }
+        Debug.LogError("Cannot find cutscene with name: " + name);
         return null;
     }
 
@@ -70,5 +91,68 @@ public class TimelineManager : MonoBehaviour
                 return cutscene;
         }
         return null;
+    }
+
+    public void SetUp()
+    {
+        SetUpDirectorBindings();
+        SetUpAnimationTracks();
+        SetUpCutsceneCamera();
+    }
+
+    private void SetUpDirectorBindings()
+    {
+        if (!PlayerManager.PlayerObject.TryGetComponent<Animator>(out var playerAnimator))
+        {
+            throw new System.Exception("Unable to get player animator to bind to Timeline director");
+        }
+
+        foreach (var binding in playableDirector.playableAsset.outputs)
+        {
+            if (binding.streamName == "playerAnim" || binding.streamName == "Animation Track")
+            {
+                Debug.Log($"Setting binding with name: '{binding.streamName}' to player animator object");
+                playableDirector.SetGenericBinding(binding.sourceObject, playerAnimator);
+            }
+        }
+    }
+
+    private void SetUpAnimationTracks()
+    {
+        if (!PlayerManager.PlayerObject.TryGetComponent<Animator>(out var playerAnimator))
+            throw new System.Exception("Unable to get player animator to set animation tracks");
+
+        var timelineAsset = playableDirector.playableAsset as TimelineAsset;
+
+        foreach (var track in timelineAsset.GetOutputTracks())
+        {
+            var animationTrack = track as AnimationTrack;
+
+            if (animationTrack == null)
+                continue;
+
+            // Match and set the player clips on each of the animation assets in the timeline 
+            foreach (var clip in animationTrack.GetClips())
+            {
+                var animationAsset = clip.asset as AnimationPlayableAsset;
+
+                if (animationAsset == null)
+                    continue;
+
+                var assetMapping = playerAnimationAssetMappingContainer.GetMappingByClipName(animationAsset.clip.name);
+
+                if (assetMapping == null)
+                    continue;
+
+                animationAsset.clip = playerAnimator.runtimeAnimatorController.name == AnimationConstants.Player1ControllerName
+                    ? assetMapping.Player1Clip
+                    : assetMapping.Player2Clip;
+            }
+        }
+    }
+
+    private void SetUpCutsceneCamera()
+    {
+        cutsceneCamera.Follow = PlayerManager.PlayerObject.transform;
     }
 }
