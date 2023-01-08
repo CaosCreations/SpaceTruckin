@@ -17,17 +17,13 @@ public class DemoCharacterCreationNameInputUI : CharacterCreationUI
     {
         characterNameInput.AddOnValueChanged(() =>
         {
-            StartCoroutine(WaitForValueUpdated());
-            if (PlayerManager.Instance == null)
-            {
-                throw new System.Exception("PlayerManager is null. Cannot set name");
-            }
-            PlayerManager.SetPlayerName(CharacterName);
+            StartCoroutine(WaitAndSetName());
         });
 
-        static IEnumerator WaitForValueUpdated()
+        IEnumerator WaitAndSetName()
         {
             yield return new WaitForSeconds(UIConstants.PlayerNameSettingsDelayInSeconds);
+            ChooseName();
         }
     }
 
