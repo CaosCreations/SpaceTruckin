@@ -3,13 +3,13 @@ using UnityEngine.UI;
 
 public class CharacterCreationUI : MonoBehaviour
 {
-    [SerializeField] private InputField characterNameInput;
-    [SerializeField] private Text invalidInputText;
-    [SerializeField] private Button okButton;
+    [SerializeField] protected InputField characterNameInput;
+    [SerializeField] protected Text invalidInputText;
+    [SerializeField] protected Button okButton;
 
-    private string CharacterName 
+    protected string CharacterName
     {
-        get => characterNameInput.text; set => characterNameInput.text = value; 
+        get => characterNameInput.text; set => characterNameInput.text = value;
     }
 
     private void Start()
@@ -23,15 +23,24 @@ public class CharacterCreationUI : MonoBehaviour
         invalidInputText.SetActive(false);
     }
 
-    private void AddListeners()
+    protected virtual void AddListeners()
     {
         okButton.AddOnClick(ChooseName);
 
+        AddValidationListener();
+        AddFormattingListener();
+    }
+
+    protected void AddValidationListener()
+    {
         characterNameInput.onValidateInput += (string input, int charIndex, char addedChar) =>
         {
             return UIUtils.ValidateCharInput(addedChar, UIConstants.AlphabeticalIncludingAccentsPattern);
         };
+    }
 
+    protected void AddFormattingListener()
+    {
         characterNameInput.AddOnValueChanged(() =>
         {
             CharacterName = CharacterName
@@ -41,14 +50,15 @@ public class CharacterCreationUI : MonoBehaviour
         });
     }
 
-    private void ChooseName()
+    protected void ChooseName()
     {
         if (NameIsValid(CharacterName))
         {
             PlayerManager.SetPlayerName(CharacterName);
             invalidInputText.SetActive(false);
 
-            UIManager.ClearCanvases();
+            if (UIManager.Instance != null)
+                UIManager.ClearCanvases();
         }
         else
         {
@@ -59,12 +69,12 @@ public class CharacterCreationUI : MonoBehaviour
         }
     }
 
-    private bool NameIsValid(string name)
+    protected bool NameIsValid(string name)
     {
         return !string.IsNullOrWhiteSpace(name) && name.IsAlphabetical(includeAccents: true);
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (UIManager.GetNonOverriddenKeyDown(PlayerConstants.ChooseNameKey))
         {
