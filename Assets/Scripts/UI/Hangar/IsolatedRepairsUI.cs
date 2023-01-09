@@ -1,9 +1,13 @@
-﻿public class IsolatedRepairsUI : SubMenu, IRepairsUI
+﻿using UnityEngine;
+
+public class IsolatedRepairsUI : SubMenu, IRepairsUI
 {
+    [SerializeField]
+    private Transform parentTransform;
 
-
-    public void Init(Ship shipToRepair)
+    public void Init(Ship shipToRepair, RepairsMinigameType minigameType)
     {
-        throw new System.NotImplementedException();
+        var instance = RepairsMinigamesManager.Instance.InitMinigame(minigameType, parentTransform);
+        instance.SetLayerRecursively(UIConstants.RepairsMinigameLayer);
     }
 }

@@ -53,7 +53,7 @@ public class RepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesManager
     {
         GameObject repairsMinigameInstance = MinigamePrefabManager.Instance.InitPrefab(minigameType, parent);
         SetButtonVisibility(minigameType);
-        repairsMinigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer); ;
+        repairsMinigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer);
         return repairsMinigameInstance;
     }
 

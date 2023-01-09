@@ -18,7 +18,7 @@ public class RepairsUI : SubMenu, IRepairsUI
         RepairsMinigamesManager.OnMinigameAttemptFinished += UpdateUI;
     }
 
-    public void Init(Ship shipToRepair)
+    public void Init(Ship shipToRepair, RepairsMinigameType minigameType)
     {
         if (shipToRepair != null)
         {

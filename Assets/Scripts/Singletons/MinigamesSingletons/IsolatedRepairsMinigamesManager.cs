@@ -8,9 +8,6 @@ public class IsolatedRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesM
     [SerializeField]
     private RepairsMinigameContainer minigameContainer;
 
-    [SerializeField]
-    private Transform minigameParent;
-
     private void Awake()
     {
         if (Instance != null)
@@ -29,7 +26,7 @@ public class IsolatedRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesM
         if (minigame == null)
             throw new System.Exception("Minigame not found with type: " + minigameType);
 
-        minigameParent.DestroyDirectChildren();
+        parent.DestroyDirectChildren();
         var minigameObj = Instantiate(minigame.Prefab);
 
         return minigameObj;

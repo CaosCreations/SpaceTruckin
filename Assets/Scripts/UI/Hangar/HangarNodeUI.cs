@@ -12,7 +12,7 @@ public class HangarNodeUI : UICanvasBase
     [Header("Set In Editor")]
     [SerializeField] private GameObject mainPanel;
     [SerializeField] private GameObject repairPanel;
-    [SerializeField] private RepairsUI repairsUI;
+    [SerializeField] private IsolatedRepairsUI repairsUI;
     [SerializeField] private GameObject upgradePanel;
     [SerializeField] private GameObject customizationPanel;
 
@@ -154,7 +154,7 @@ public class HangarNodeUI : UICanvasBase
                 break;
             case HangarPanel.Repair:
                 repairPanel.SetActive(true);
-                repairsUI.Init(ShipToInspect);
+                repairsUI.Init(ShipToInspect, RepairsMinigameType.Wheel);
                 break;
             case HangarPanel.Upgrade:
                 upgradePanel.SetActive(true);

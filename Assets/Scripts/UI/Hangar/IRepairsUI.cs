@@ -1,4 +1,4 @@
 ﻿public interface IRepairsUI
 {
-    void Init(Ship shipToRepair);
+    void Init(Ship shipToRepair, RepairsMinigameType minigameType);
 }

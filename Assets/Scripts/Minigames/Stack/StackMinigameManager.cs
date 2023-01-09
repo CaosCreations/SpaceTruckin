@@ -107,6 +107,22 @@ public class StackMinigameManager : MonoBehaviour
                      cubeWidth: cubeOverlapDistance);
     }
 
+    private void WinGame()
+    {
+        gameRunning = false;
+        stackMinigameUI.SetGameUI(GameState.Win);
+        RepairsMinigameInteraction.OnMinigameEnd?.Invoke(RepairsMinigameType.Stack);
+        RepairsMinigameInteraction.OnMinigameWon?.Invoke(RepairsMinigameType.Stack);
+    }
+
+    private void LoseGame()
+    {
+        gameRunning = false;
+        stackMinigameUI.SetGameUI(GameState.Lose);
+        RepairsMinigameInteraction.OnMinigameEnd?.Invoke(RepairsMinigameType.Stack);
+        RepairsMinigameInteraction.OnMinigameLost?.Invoke(RepairsMinigameType.Stack);
+    }
+
     private void CutStickingOutTopCubeSide(CubeCornersPositionTracker topCubeCornerPosition, CubeCornersPositionTracker bottomCubeCornerPosition)
     {
         float XspawnPosition;
@@ -183,5 +199,6 @@ public class StackMinigameManager : MonoBehaviour
         gameRunning = true;
 
         stackMinigameUI.SetGameUI(GameState.NewGame);
+        RepairsMinigameInteraction.OnMinigameStart?.Invoke(RepairsMinigameType.Stack);
     }
 }
