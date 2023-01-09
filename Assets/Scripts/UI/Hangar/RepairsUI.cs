@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RepairsUI : SubMenu
+public class RepairsUI : SubMenu, IRepairsUI
 {
     [SerializeField] private RepairToolsUI repairToolsUI;
     [SerializeField] private Text feedbackText;
@@ -66,9 +66,9 @@ public class RepairsUI : SubMenu
             //    .GetMinigameTypeByDamageType(ShipsManager.ShipUnderRepair.DamageType);
 
             // Todo: Don't hard-code this once we have multiple minigames setup
-            RepairsMinigame minigameType = RepairsMinigame.Wheel;
+            RepairsMinigameType minigameType = RepairsMinigameType.Wheel;
 
-            repairsMinigameInstance = RepairsMinigamesManager.InitMinigame(minigameType, transform);
+            repairsMinigameInstance = RepairsMinigamesManager.Instance.InitMinigame(minigameType, transform);
         }
     }
 

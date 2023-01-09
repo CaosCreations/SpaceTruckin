@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 #region Enums
-public enum RepairsMinigame
+public enum RepairsMinigameType
 {
-    Wheel, Stack
+    Wheel, Stack, Tile, Simon
 }
 
 public enum RepairsMinigameButton
@@ -15,7 +15,7 @@ public enum RepairsMinigameButton
 }
 #endregion
 
-public class RepairsMinigamesManager : MonoBehaviour
+public class RepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesManager
 {
     public static RepairsMinigamesManager Instance { get; private set; }
 
@@ -49,7 +49,7 @@ public class RepairsMinigamesManager : MonoBehaviour
     }
     #endregion
 
-    public static GameObject InitMinigame(RepairsMinigame minigameType, Transform parent)
+    public GameObject InitMinigame(RepairsMinigameType minigameType, Transform parent)
     {
         GameObject repairsMinigameInstance = MinigamePrefabManager.Instance.InitPrefab(minigameType, parent);
         SetButtonVisibility(minigameType);
@@ -63,18 +63,18 @@ public class RepairsMinigamesManager : MonoBehaviour
         OnMinigameAttemptFinished?.Invoke(isSuccessfulAttempt);
     }
 
-    public static void SetButtonVisibility(RepairsMinigame minigameType)
+    public static void SetButtonVisibility(RepairsMinigameType minigameType)
     {
         var buttonA = GetRepairsMinigameButton(RepairsMinigameButton.A);
         var buttonB = GetRepairsMinigameButton(RepairsMinigameButton.B);
 
         switch (minigameType)
         {
-            case RepairsMinigame.Wheel:
+            case RepairsMinigameType.Wheel:
                 buttonA.SetActive(true);
                 buttonB.SetActive(false);
                 break;
-            case RepairsMinigame.Stack:
+            case RepairsMinigameType.Stack:
                 // Stack requires 2 buttons 
                 buttonA.SetActive(true);
                 buttonB.SetActive(true);
@@ -139,12 +139,12 @@ public class RepairsMinigamesManager : MonoBehaviour
         };
     }
 
-    public static RepairsMinigame GetMinigameTypeByDamageType(ShipDamageType damageType)
+    public static RepairsMinigameType GetMinigameTypeByDamageType(ShipDamageType damageType)
     {
         return damageType switch
         {
-            ShipDamageType.Engine => RepairsMinigame.Wheel,
-            ShipDamageType.Hull => RepairsMinigame.Stack,
+            ShipDamageType.Engine => RepairsMinigameType.Wheel,
+            ShipDamageType.Hull => RepairsMinigameType.Stack,
             _ => throw new ArgumentOutOfRangeException(),
         };
 
