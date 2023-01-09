@@ -24,7 +24,8 @@ public class StefanoDialogueUI : SMSDialogueUI
         }
 
         // If text is blank, that's all we do:
-        if (string.IsNullOrWhiteSpace(subtitle.formattedText.text)) return;
+        if (string.IsNullOrWhiteSpace(subtitle.formattedText.text)) 
+            return;
 
         // The rest is just a copy of the original AddMessage() method:
         var go = Instantiate(template.panel.gameObject) as GameObject;
