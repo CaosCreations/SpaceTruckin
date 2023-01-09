@@ -21,7 +21,7 @@ public class PlayerConstants : MonoBehaviour
     public const float RunSpeed = 7f;
     public const float Gravity = -9.81f;
     public const float KillFloorHeight = -25;
-    public static readonly Vector3 PlayerResetPosition = new Vector3(210f, 380f, -247f);
+    public static readonly Vector3 PlayerResetPosition = new Vector3(209.728f, 380.065f, -252.4218f);
     public const int EditorTargetFramerate = 60;
 
     // Prototyping

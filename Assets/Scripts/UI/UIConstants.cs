@@ -90,6 +90,9 @@ public class UIConstants : MonoBehaviour
 
 
     // Settings 
-    public const float DefaultVolumeSliderValue = 1f; 
+    public const float DefaultVolumeSliderValue = 1f;
 
+
+    // Character creation
+    public const float PlayerNameSettingsDelayInSeconds = .5f;
 }

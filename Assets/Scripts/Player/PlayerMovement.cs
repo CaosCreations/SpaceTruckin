@@ -36,6 +36,13 @@ public class PlayerMovement : MonoBehaviour
         {
             CameraTransform = Camera.main.transform;
         }
+
+        // Temp workaround for opening cutscene end position
+        TimelineManager.OnTimelineEnd += (playableAssetName) =>
+        {
+            if (playableAssetName == TimelineConstants.OpeningCutsceneTimelineAssetName)
+                RespawnPlayer();
+        };
     }
 
     // Get input in Update 
@@ -150,7 +157,7 @@ public class PlayerMovement : MonoBehaviour
         return characterController.transform.position.y < PlayerConstants.KillFloorHeight;
     }
 
-    private void ResetPlayerToOrigin()
+    private void ResetPlayerPosition()
     {
         characterController.enabled = false;
         transform.position = PlayerConstants.PlayerResetPosition;
@@ -159,7 +166,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void RespawnPlayer()
     {
-        ResetPlayerToOrigin();
+        ResetPlayerPosition();
         CounteractRespawnSideEffects();
     }
 
