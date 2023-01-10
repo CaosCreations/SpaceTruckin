@@ -89,7 +89,7 @@ public class NewDayReportUI : MonoBehaviour
 
     private void Update()
     {
-        if (reportCardInstance != null && UIManager.GetNonOverriddenKeyDown(PlayerConstants.ExitKey))
+        if (reportCardInstance != null && Input.GetKeyDown(PlayerConstants.ExitKey))
         {
             CloseReport();
         }
