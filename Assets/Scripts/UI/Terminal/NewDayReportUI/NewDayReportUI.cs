@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class NewDayReportUI : MonoBehaviour
 {
     [SerializeField] private GameObject reportCardPrefab;
-    [SerializeField] private GameObject reportCardInstance; 
+    [SerializeField] private GameObject reportCardInstance;
     [SerializeField] private NewDayReportCard reportCard;
     [SerializeField] private Text welcomeMessageText;
 
@@ -18,7 +18,7 @@ public class NewDayReportUI : MonoBehaviour
     public bool HasBeenViewedToday { get; set; }
 
     private List<ArchivedMission> MissionsToAppearInReport { get; set; }
-    public ArchivedMission CurrentMissionToReport 
+    public ArchivedMission CurrentMissionToReport
     {
         get => MissionsToAppearInReport[currentReportIndex];
     }
@@ -34,15 +34,16 @@ public class NewDayReportUI : MonoBehaviour
     private void OnEnable()
     {
         MissionsToAppearInReport = ArchivedMissionsManager.GetMissionsToAppearInReport();
-        
+
         // Don't let them exit the report until all missions have been shown.
         UIManager.AddOverriddenKey(PlayerConstants.ExitKey);
     }
 
-    private void OnDisable() 
-    { 
+    private void OnDisable()
+    {
         HasBeenViewedToday = true;
         MissionsToAppearInReport.Clear();
+        UIManager.RemoveOverriddenKey(PlayerConstants.ExitKey);
     }
 
     public void Init()
@@ -52,7 +53,7 @@ public class NewDayReportUI : MonoBehaviour
         reportCard.nextCardButton.SetText(UIConstants.NextCardText);
         nextCardButton.AddOnClick(ShowNextReport);
         nextCardButton.onClick.Invoke();
-        
+
         // Insert Player Data in the welcome message, e.g. their name 
         welcomeMessageText.ReplaceTemplates();
     }
@@ -89,7 +90,7 @@ public class NewDayReportUI : MonoBehaviour
 
     private void Update()
     {
-        if (reportCardInstance != null && UIManager.GetNonOverriddenKeyDown(PlayerConstants.ExitKey))
+        if (reportCardInstance != null && Input.GetKeyDown(PlayerConstants.ExitKey))
         {
             CloseReport();
         }

@@ -8,23 +8,9 @@ public class StackMinigameUI : MonoBehaviour
 
     [SerializeField] private Text outcomeText;
 
-    private void Awake()
-    {
-        stackButton = RepairsMinigamesManager
-            .GetRepairsMinigameButton(RepairsMinigameButton.A);
-
-        replayButton = RepairsMinigamesManager
-            .GetRepairsMinigameButton(RepairsMinigameButton.B);
-
-        //outcomeText = RepairsMinigamesManager
-        //    .GetRepairsMinigameFeedbackText();
-    }
-
     public void SetGameUI(GameState gameState)
     {
-        // Todo: Get reference to outcome (feedback) text 
-
-        //outcomeText.SetText(GetGameOutcomeText(gameState));
+        outcomeText.SetText(GetGameOutcomeText(gameState));
 
         switch (gameState)
         {
