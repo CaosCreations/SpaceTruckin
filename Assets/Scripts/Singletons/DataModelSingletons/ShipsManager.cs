@@ -90,8 +90,13 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
     {
         ShipUnderRepair.Ship = ship;
 
-        ShipUnderRepair.DamageType = ArchivedMissionsManager
-            .GetMostRecentMissionByPilot(ShipUnderRepair.Pilot).DamageType;
+        if (ArchivedMissionsManager.Instance != null)
+        {
+            var mostRecentMission = ArchivedMissionsManager.GetMostRecentMissionByPilot(ShipUnderRepair.Pilot);
+
+            if (mostRecentMission != null)
+                ShipUnderRepair.DamageType = mostRecentMission.DamageType;
+        }
     }
 
     private static void ResetShipUnderRepair()
