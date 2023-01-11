@@ -83,7 +83,13 @@ public class NoticeBoard : UICanvasBase
         cargoText.SetText(selectedMission.Cargo);
         descriptionText.SetText(selectedMission.Description);
         rewardText.SetText(MissionDetailsUI.BuildRewardString(selectedMission));
-        statsText.SetText(PreMissionStatsUI.BuildTraitEffectsStatsText(selectedMission.PilotTraitEffects.Effects));
+
+        // Set stats text based on pilot traits 
+        if (selectedMission.PilotTraitEffects != null && selectedMission.PilotTraitEffects.Effects != null)
+        {
+            statsText.SetText(PreMissionStatsUI.BuildTraitEffectsStatsText(selectedMission.PilotTraitEffects.Effects));
+        }
+
         acceptJobButton.interactable = true;
     }
 }
