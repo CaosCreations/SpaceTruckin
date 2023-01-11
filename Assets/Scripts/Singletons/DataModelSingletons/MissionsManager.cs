@@ -150,8 +150,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         if (scheduled.Mission.PilotTraitEffects != null)
         {
             // Add on the value from the PilotTrait effects that influences the success chance 
-            successChance += PilotTraitsManager.GetTotalMissionChanceEffect(scheduled.Pilot,
-                scheduled.Mission.PilotTraitEffects);
+            successChance += PilotTraitsManager.GetTotalMissionChanceEffect(scheduled.Pilot, scheduled.Mission.PilotTraitEffects);
         }
 
         return successChance;

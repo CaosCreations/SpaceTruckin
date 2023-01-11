@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 
 public class PilotTraitsManager : MonoBehaviour
@@ -6,7 +7,12 @@ public class PilotTraitsManager : MonoBehaviour
     public static PilotTraitsManager Instance { get; private set; }
 
     [field: SerializeField]
-    public PilotSpeciesTrait[] SpeciesTraits { get; set; } // These are universal 
+    private PilotSpeciesTraitContainer speciesTraitContainer;
+    private PilotSpeciesTrait[] SpeciesTraits => speciesTraitContainer.Elements;
+
+    [field: SerializeField]
+    private PilotTraitContainer pilotTraitContainer;
+    private PilotTrait[] PilotTraits => pilotTraitContainer.Elements;
 
     private void Awake()
     {
@@ -51,6 +57,12 @@ public class PilotTraitsManager : MonoBehaviour
     public static MissionPilotTraitEffect[] GetTraitEffectsForPilot(Pilot pilot,
         MissionPilotTraitEffects traitEffects)
     {
+        if (pilot == null || pilot.Traits == null || traitEffects == null)
+        {
+            Debug.LogError("Null arg(s) when getting pilot trait effects. Unable to get trait effects.");
+            return default;
+        }
+
         var speciesTraits = GetSpeciesTraitsBySpecies(pilot.Species);
 
         return traitEffects.Effects
@@ -61,6 +73,11 @@ public class PilotTraitsManager : MonoBehaviour
 
     private static PilotSpeciesTrait[] GetSpeciesTraitsBySpecies(Species species)
     {
-        return Instance.SpeciesTraits.Where(x => x?.Species == species).ToArray();
+        if (Instance == null || Instance.speciesTraitContainer == null || Instance.SpeciesTraits == null)
+        {
+            Debug.LogError("Pilot species traits were null. Unable to get pilot species traits.");
+            return default;
+        }
+        return Instance.SpeciesTraits.Where(x => x != null && x.Species == species).ToArray();
     }
 }
