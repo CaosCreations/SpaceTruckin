@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEditor;
 using UnityEngine;
 
 public static class DataUtils
@@ -173,5 +175,13 @@ public static class DataUtils
     {
         // Include the file path in the error message 
         Debug.LogError($"Message: {e.Message}\nTrace: {e.StackTrace}\nFile path: {filePath}");
+    }
+
+    public static void NullifyFields<T>(T saveData)
+    {
+        foreach (FieldInfo field in saveData.GetType().GetFields())
+        {
+            field.SetValue(saveData, null);
+        }
     }
 }
