@@ -35,21 +35,9 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     public void Init()
     {
-        if (DataUtils.SaveFolderExists(Mission.FolderName))
-        {
-            LoadDataAsync();
-        }
-        else
-        {
-            DataUtils.CreateSaveFolder(Mission.FolderName);
-        }
-
         LogMissionDataStatus();
-
         ScheduledMissions = new List<ScheduledMission>();
-
         UnlockMissions();
-
         RegisterLuaFunctions();
 
         CalendarManager.OnEndOfDay += UpdateMissionSchedule;
@@ -455,10 +443,17 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     public async void LoadDataAsync()
     {
+        if (!DataUtils.SaveFolderExists(Mission.FolderName))
+        {
+            DataUtils.CreateSaveFolder(Mission.FolderName);
+            return;
+        }
+
         foreach (Mission mission in Instance.Missions)
         {
             await mission.LoadDataAsync();
         }
+
         LoadScheduledMissionData();
     }
 
