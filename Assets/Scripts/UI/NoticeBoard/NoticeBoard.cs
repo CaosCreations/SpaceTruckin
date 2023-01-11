@@ -59,6 +59,7 @@ public class NoticeBoard : UICanvasBase
         cargoText.SetText(string.Empty);
         descriptionText.SetText(string.Empty);
         rewardText.SetText(string.Empty);
+        statsText.SetText(string.Empty);
     }
 
     private void PopulateScrollView()

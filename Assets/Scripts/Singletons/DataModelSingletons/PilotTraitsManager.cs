@@ -22,7 +22,6 @@ public class PilotTraitsManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
             return;
         }
-
         Destroy(gameObject);
     }
 
