@@ -82,8 +82,7 @@ public class StackMinigameManager : MonoBehaviour
         // Cubes aren't stacked. It's game over
         if (cubeOverlapDistance == 0f)
         {
-            gameRunning = false;
-            stackMinigameUI.SetGameUI(GameState.Lose);
+            LoseGame();
             return;
         }
 
@@ -95,8 +94,7 @@ public class StackMinigameManager : MonoBehaviour
         // Only spawn next top cube if the stack hasn't reached to top rank yet
         if (StackedCubes.Count >= maxScore)
         {
-            gameRunning = false;
-            stackMinigameUI.SetGameUI(GameState.Win);
+            WinGame();
             return;
         }
 
@@ -171,7 +169,7 @@ public class StackMinigameManager : MonoBehaviour
 
     private void SpawnTopCube(Vector3 spawnPosition, float cubeWidth)
     {
-        GameObject topcube = Instantiate(cubePrefab, spawnPosition, Quaternion.identity);
+        GameObject topcube = Instantiate(cubePrefab, spawnPosition, Quaternion.identity, transform.parent);
 
         topcube.transform.localScale = new Vector3(cubeWidth, topcube.transform.localScale.y, topcube.transform.localScale.z);
 

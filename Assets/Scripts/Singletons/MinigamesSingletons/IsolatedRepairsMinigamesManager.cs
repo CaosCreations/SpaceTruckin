@@ -27,7 +27,7 @@ public class IsolatedRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesM
             throw new System.Exception("Minigame not found with type: " + minigameType);
 
         parent.DestroyDirectChildren();
-        var minigameObj = Instantiate(minigame.Prefab);
+        var minigameObj = Instantiate(minigame.Prefab, parent);
 
         return minigameObj;
     }
