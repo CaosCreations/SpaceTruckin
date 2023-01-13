@@ -19,7 +19,7 @@ public class RepairToolsUI : MonoBehaviour
         quantityInput.AddOnValueChanged(HandleOnValueChanged);
 
         startRepairsButton = RepairsMinigamesManager
-            .GetRepairsMinigameButton(RepairsMinigameButton.A);
+            .GetRepairsMinigameButton(RepairsMinigameButtonType.A);
     }
 
     private void OnEnable()

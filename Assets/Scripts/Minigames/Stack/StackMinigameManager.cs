@@ -14,10 +14,7 @@ public class StackMinigameManager : MonoBehaviour
 
     private CubeMover cubeMover;
 
-    private StackMinigameUI stackMinigameUI;
-
-    [SerializeField] private Button stackButton;
-    [SerializeField] private Button replayButton;
+    [SerializeField] private StackMinigameUI stackMinigameUI;
 
     private List<GameObject> StackedCubes { get; set; } = new List<GameObject>();
 
@@ -25,13 +22,11 @@ public class StackMinigameManager : MonoBehaviour
 
     private void Awake()
     {
-        stackMinigameUI = GetComponentInChildren<StackMinigameUI>();
-
         cubeMover = GetComponentInChildren<CubeMover>();
-
-        stackButton.AddOnClick(DoPlayButton);
-        replayButton.AddOnClick(ResetGame);
-
+        
+        RepairsMinigameUIManager.Instance.AddOnClick(RepairsMinigameButtonType.A, DoPlayButton);
+        RepairsMinigameUIManager.Instance.AddOnClick(RepairsMinigameButtonType.B, ResetGame);
+        
         SetLocalPosition();
     }
 
@@ -172,7 +167,8 @@ public class StackMinigameManager : MonoBehaviour
         GameObject topcube = Instantiate(cubePrefab, spawnPosition, Quaternion.identity, transform.parent);
 
         topcube.transform.localScale = new Vector3(cubeWidth, topcube.transform.localScale.y, topcube.transform.localScale.z);
-
+        topcube.layer = UIConstants.RepairsMinigameLayer;
+        
         cubeMover.CurrentMovingCube = topcube.transform;
         StackedCubes.Add(topcube);
         cubeCornersPositionPile.Add(topcube.GetComponent<CubeCornersPositionTracker>());

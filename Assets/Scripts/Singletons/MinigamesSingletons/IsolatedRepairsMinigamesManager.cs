@@ -21,6 +21,9 @@ public class IsolatedRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesM
 
     public GameObject InitMinigame(RepairsMinigameType minigameType, Transform parent)
     {
+        RepairsMinigameUIManager.Instance.ResetUI();
+
+        // Get minigame by type 
         var minigame = minigameContainer.Elements.FirstOrDefault(mg => mg != null && mg.RepairsMinigameType == minigameType);
 
         if (minigame == null)
@@ -28,7 +31,6 @@ public class IsolatedRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesM
 
         parent.DestroyDirectChildren();
         var minigameObj = Instantiate(minigame.Prefab, parent);
-
         return minigameObj;
     }
 }

@@ -1,28 +1,28 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class StackMinigameUI : MonoBehaviour
 {
-    [SerializeField] private Button stackButton;
-    [SerializeField] private Button replayButton;
-
-    [SerializeField] private Text outcomeText;
+    private void Start()
+    {
+        RepairsMinigameUIManager.Instance.SetButtonActive(RepairsMinigameButtonType.A, true);
+    }
 
     public void SetGameUI(GameState gameState)
     {
-        outcomeText.SetText(GetGameOutcomeText(gameState));
+        string outcomeText = GetGameOutcomeText(gameState);
+        RepairsMinigameUIManager.Instance.SetOutcomeText(outcomeText);
 
         switch (gameState)
         {
             case GameState.NewGame:
-                stackButton.SetActive(true);
-                replayButton.SetActive(false);
+                RepairsMinigameUIManager.Instance.SetButtonActive(RepairsMinigameButtonType.A, true);
+                RepairsMinigameUIManager.Instance.SetButtonActive(RepairsMinigameButtonType.B, false);
                 break;
 
             case GameState.Win:
             case GameState.Lose:
-                stackButton.SetActive(false);
-                replayButton.SetActive(true);
+                RepairsMinigameUIManager.Instance.SetButtonActive(RepairsMinigameButtonType.A, false);
+                RepairsMinigameUIManager.Instance.SetButtonActive(RepairsMinigameButtonType.B, true);
                 break;
 
             default:

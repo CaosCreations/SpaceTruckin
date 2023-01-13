@@ -3,25 +3,15 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-#region Enums
-public enum RepairsMinigameType
-{
-    Wheel, Stack, Tile, Simon
-}
-
-public enum RepairsMinigameButton
-{
-    A, B
-}
-#endregion
-
+/// <summary>
+/// Old implementation - see IsolatedRepairsMinigamesManager for the current one.
+/// </summary>
 public class RepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesManager
 {
     public static RepairsMinigamesManager Instance { get; private set; }
 
     public static event Action<bool> OnMinigameAttemptFinished;
 
-    // Todo: Store references only here
     public Button ButtonA;
     public Button ButtonB;
 
@@ -65,8 +55,8 @@ public class RepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesManager
 
     public static void SetButtonVisibility(RepairsMinigameType minigameType)
     {
-        var buttonA = GetRepairsMinigameButton(RepairsMinigameButton.A);
-        var buttonB = GetRepairsMinigameButton(RepairsMinigameButton.B);
+        var buttonA = GetRepairsMinigameButton(RepairsMinigameButtonType.A);
+        var buttonB = GetRepairsMinigameButton(RepairsMinigameButtonType.B);
 
         switch (minigameType)
         {
@@ -86,7 +76,7 @@ public class RepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesManager
 
     #region Find References
     // Gets the button currently embedded in the repairs UI
-    public static GameObject GetRepairsMinigameButtonObject(RepairsMinigameButton buttonType)
+    public static GameObject GetRepairsMinigameButtonObject(RepairsMinigameButtonType buttonType)
     {
         string buttonTag = GetTagByButtonType(buttonType);
 
@@ -102,7 +92,7 @@ public class RepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesManager
         return repairsButtonObject;
     }
 
-    public static Button GetRepairsMinigameButton(RepairsMinigameButton buttonType)
+    public static Button GetRepairsMinigameButton(RepairsMinigameButtonType buttonType)
     {
         Button repairsMinigameButton = GetRepairsMinigameButtonObject(buttonType)
             .GetComponent<Button>();
@@ -129,12 +119,12 @@ public class RepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesManager
         return feedbackText;
     }
 
-    private static string GetTagByButtonType(RepairsMinigameButton buttonType)
+    private static string GetTagByButtonType(RepairsMinigameButtonType buttonType)
     {
         return buttonType switch
         {
-            RepairsMinigameButton.A => RepairsConstants.RepairsMinigameButtonATag,
-            RepairsMinigameButton.B => RepairsConstants.RepairsMinigameButtonBTag,
+            RepairsMinigameButtonType.A => RepairsConstants.RepairsMinigameButtonATag,
+            RepairsMinigameButtonType.B => RepairsConstants.RepairsMinigameButtonBTag,
             _ => string.Empty,
         };
     }

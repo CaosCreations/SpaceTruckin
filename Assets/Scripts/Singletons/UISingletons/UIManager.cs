@@ -72,6 +72,7 @@ public class UIManager : MonoBehaviour
 
     public void Init()
     {
+        // Disabled during demo 
         if (DataUtils.IsNewGame())
         {
             //// Show the main menu canvas for character creation
@@ -294,6 +295,9 @@ public class UIManager : MonoBehaviour
 
     public static void AddOverriddenKeys(HashSet<KeyCodeOverride> keyCodeOverrides)
     {
+        keyCodeOverrides ??= new HashSet<KeyCodeOverride>();
+        currentlyOverriddenKeys ??= new HashSet<KeyCode>();
+
         var keyCodes = keyCodeOverrides.ToListOfKeyCodes();
         currentlyOverriddenKeys.UnionWith(keyCodes);
     }

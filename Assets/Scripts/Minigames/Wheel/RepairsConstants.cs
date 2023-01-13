@@ -29,5 +29,5 @@ public static class RepairsConstants
     public const string RepairsMinigameButtonATag = "RepairsMinigameButtonA";
     public const string RepairsMinigameButtonBTag = "RepairsMinigameButtonB";
     public const string RepairsMinigameFeedbackTextTag = "RepairsMinigameFeedbackText";
-
+    public const string RepairsMinigameOutcomeTextTag = "RepairsMinigameOutcomeText";
 }
