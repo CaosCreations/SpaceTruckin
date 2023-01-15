@@ -31,8 +31,8 @@ public class StackMinigameManager : RepairsMinigameBehaviour
         replayButton.AddOnClick(ResetGame);
         //RepairsMinigameUIManager.Instance.AddOnClick(RepairsMinigameButtonType.A, DoPlayButton);
         //RepairsMinigameUIManager.Instance.AddOnClick(RepairsMinigameButtonType.B, ResetGame);
-        
-        SetLocalPosition();
+
+        //SetLocalPosition();
     }
 
     private void Update()
@@ -159,21 +159,19 @@ public class StackMinigameManager : RepairsMinigameBehaviour
         }
 
         // The cubes are stacked, so there is some overlap
-        else
-        {
-            float cubeOverlap = pile.CubeCornersPositionList[1].transform.localScale.x
-                                - Mathf.Abs(bottomCubeLeftCornerXposition - topCubeLeftCornerXposition);
-            return cubeOverlap;
-        }
+        float cubeOverlap = pile.CubeCornersPositionList[1].transform.localScale.x
+                            - Mathf.Abs(bottomCubeLeftCornerXposition - topCubeLeftCornerXposition);
+        return cubeOverlap;
     }
 
     private void SpawnTopCube(Vector3 spawnPosition, float cubeWidth)
     {
-        GameObject topcube = Instantiate(cubePrefab, spawnPosition, Quaternion.identity, transform.parent);
+        //GameObject topcube = Instantiate(cubePrefab, spawnPosition, Quaternion.identity, transform.parent);
+        GameObject topcube = Instantiate(cubePrefab, spawnPosition, Quaternion.identity);
 
         topcube.transform.localScale = new Vector3(cubeWidth, topcube.transform.localScale.y, topcube.transform.localScale.z);
         topcube.layer = UIConstants.RepairsMinigameLayer;
-        
+
         cubeMover.CurrentMovingCube = topcube.transform;
         StackedCubes.Add(topcube);
         cubeCornersPositionPile.Add(topcube.GetComponent<CubeCornersPositionTracker>());
