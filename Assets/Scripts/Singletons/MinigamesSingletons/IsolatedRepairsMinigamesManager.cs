@@ -8,6 +8,8 @@ public class IsolatedRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesM
     [SerializeField]
     private RepairsMinigameContainer minigameContainer;
 
+    private RepairsMinigameBehaviour[] repairsMinigameBehaviours;
+
     private void Awake()
     {
         if (Instance != null)
@@ -17,11 +19,21 @@ public class IsolatedRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesM
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        repairsMinigameBehaviours = FindObjectsOfType<RepairsMinigameBehaviour>();
+
+        if (repairsMinigameBehaviours == null)
+            Debug.LogError("No repairs minigames found");
     }
 
     public GameObject InitMinigame(RepairsMinigameType minigameType, Transform parent)
     {
-        RepairsMinigameUIManager.Instance.ResetUI();
+        SetMinigamesActive(false);
+
+        var minigameToActivate = repairsMinigameBehaviours.FirstOrDefault(mg => mg != null && mg.MinigameType == minigameType);
+        minigameToActivate.SetActive(true);
+        return default;
+        //RepairsMinigameUIManager.Instance.ResetUI();
 
         // Get minigame by type 
         var minigame = minigameContainer.Elements.FirstOrDefault(mg => mg != null && mg.RepairsMinigameType == minigameType);
@@ -32,5 +44,16 @@ public class IsolatedRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesM
         parent.DestroyDirectChildren();
         var minigameObj = Instantiate(minigame.Prefab, parent);
         return minigameObj;
+    }
+
+    private void SetMinigamesActive(bool isActive)
+    {
+        foreach (var behaviour in repairsMinigameBehaviours)
+        {
+            if (behaviour == null)
+                continue;
+
+            behaviour.gameObject.SetActive(isActive);
+        }
     }
 }

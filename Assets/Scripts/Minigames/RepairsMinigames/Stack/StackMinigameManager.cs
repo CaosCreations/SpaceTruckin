@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StackMinigameManager : MonoBehaviour
+public class StackMinigameManager : RepairsMinigameBehaviour
 {
     [SerializeField] private int maxScore = 3;
 
@@ -16,6 +16,9 @@ public class StackMinigameManager : MonoBehaviour
 
     [SerializeField] private StackMinigameUI stackMinigameUI;
 
+    [SerializeField] private Button stackButton;
+    [SerializeField] private Button replayButton;
+
     private List<GameObject> StackedCubes { get; set; } = new List<GameObject>();
 
     private bool gameRunning = false;
@@ -23,9 +26,11 @@ public class StackMinigameManager : MonoBehaviour
     private void Awake()
     {
         cubeMover = GetComponentInChildren<CubeMover>();
-        
-        RepairsMinigameUIManager.Instance.AddOnClick(RepairsMinigameButtonType.A, DoPlayButton);
-        RepairsMinigameUIManager.Instance.AddOnClick(RepairsMinigameButtonType.B, ResetGame);
+
+        stackButton.AddOnClick(DoPlayButton);
+        replayButton.AddOnClick(ResetGame);
+        //RepairsMinigameUIManager.Instance.AddOnClick(RepairsMinigameButtonType.A, DoPlayButton);
+        //RepairsMinigameUIManager.Instance.AddOnClick(RepairsMinigameButtonType.B, ResetGame);
         
         SetLocalPosition();
     }
@@ -100,7 +105,7 @@ public class StackMinigameManager : MonoBehaviour
     private void WinGame()
     {
         gameRunning = false;
-        stackMinigameUI.SetGameUI(GameState.Win);
+        stackMinigameUI.SetGameUI(MinigameState.Win);
         RepairsMinigameInteraction.OnMinigameEnd?.Invoke(RepairsMinigameType.Stack);
         RepairsMinigameInteraction.OnMinigameWon?.Invoke(RepairsMinigameType.Stack);
     }
@@ -108,7 +113,7 @@ public class StackMinigameManager : MonoBehaviour
     private void LoseGame()
     {
         gameRunning = false;
-        stackMinigameUI.SetGameUI(GameState.Lose);
+        stackMinigameUI.SetGameUI(MinigameState.Lose);
         RepairsMinigameInteraction.OnMinigameEnd?.Invoke(RepairsMinigameType.Stack);
         RepairsMinigameInteraction.OnMinigameLost?.Invoke(RepairsMinigameType.Stack);
     }
@@ -189,7 +194,7 @@ public class StackMinigameManager : MonoBehaviour
 
         gameRunning = true;
 
-        stackMinigameUI.SetGameUI(GameState.NewGame);
+        stackMinigameUI.SetGameUI(MinigameState.NewGame);
         RepairsMinigameInteraction.OnMinigameStart?.Invoke(RepairsMinigameType.Stack);
     }
 }

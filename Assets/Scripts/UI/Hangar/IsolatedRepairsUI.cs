@@ -14,8 +14,8 @@ public class IsolatedRepairsUI : SubMenu, IRepairsUI
     public void Init(Ship shipToRepair, RepairsMinigameType minigameType)
     {
         minigameInstance = IsolatedRepairsMinigamesManager.Instance.InitMinigame(minigameType, minigameInstanceParent);
-        minigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer);
-        SetupCamera();
+        //minigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer);
+        //SetupCamera();
     }
 
     private void SetupCamera()

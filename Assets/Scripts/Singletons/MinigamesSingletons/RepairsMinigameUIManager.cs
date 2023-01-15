@@ -21,7 +21,7 @@ public class RepairsMinigameUIManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        FindReferences();
+        //FindReferences();
     }
 
     private void FindReferences()
@@ -68,6 +68,7 @@ public class RepairsMinigameUIManager : MonoBehaviour
 
     public void ResetUI()
     {
+        return;
         buttonA.onClick.RemoveAllListeners();
         buttonA.SetActive(false);
         buttonB.onClick.RemoveAllListeners();
