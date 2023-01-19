@@ -6,17 +6,18 @@ using UnityEngine.UI;
 
 public enum Scenes
 {
-    TitleScreen, MainStation
+    TitleScreen, MainStation, StackMinigame, WheelMinigame, TileMinigame, SimonMinigame
 }
 
 public class SceneLoadingManager : MonoBehaviour
 {
     public static SceneLoadingManager Instance { get; private set; }
 
-    private static readonly Dictionary<Scenes, string> scenesMapping = new Dictionary<Scenes, string>
+    private static readonly Dictionary<Scenes, string> scenesMapping = new()
     {
         { Scenes.TitleScreen, "TitleScreenScene" },
-        { Scenes.MainStation, "ExpandStationScene" }
+        { Scenes.MainStation, "ExpandStationScene" },
+        { Scenes.StackMinigame, "StackMinigameScene" }
     };
 
     private void Awake()
@@ -30,13 +31,13 @@ public class SceneLoadingManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public static void LoadScene(Scenes scene)
+    public static void LoadScene(Scenes scene, LoadSceneMode loadSceneMode = LoadSceneMode.Single)
     {
         var sceneName = GetSceneNameByEnum(scene);
 
         try
         {
-            SceneManager.LoadScene(sceneName);
+            SceneManager.LoadScene(sceneName, loadSceneMode);
         }
         catch (System.Exception ex)
         {
@@ -44,13 +45,13 @@ public class SceneLoadingManager : MonoBehaviour
         }
     }
 
-    public void LoadSceneAsync(Scenes scene, Slider loadingBarSlider = null)
+    public void LoadSceneAsync(Scenes scene, Slider loadingBarSlider = null, LoadSceneMode loadSceneMode = LoadSceneMode.Single)
     {
         var sceneName = GetSceneNameByEnum(scene);
 
         try
         {
-            StartCoroutine(Instance.LoadAsync(sceneName, loadingBarSlider));
+            StartCoroutine(Instance.LoadAsync(sceneName, loadingBarSlider, loadSceneMode));
         }
         catch (System.Exception ex)
         {
@@ -58,14 +59,13 @@ public class SceneLoadingManager : MonoBehaviour
         }
     }
 
-    private IEnumerator LoadAsync(string sceneName, Slider loadingBarSlider = null)
+    private IEnumerator LoadAsync(string sceneName, Slider loadingBarSlider = null, LoadSceneMode loadSceneMode = LoadSceneMode.Single)
     {
         Debug.Log("Starting loading scene asynsc...");
-        var asyncOperation = SceneManager.LoadSceneAsync(sceneName);
+        var asyncOperation = SceneManager.LoadSceneAsync(sceneName, loadSceneMode);
 
         while (!asyncOperation.isDone)
         {
-            //var progress = Mathf.Clamp01(asyncOperation.progress / 0.9f);
             var progress = asyncOperation.progress;
             Debug.Log("Loading progress: " + progress);
 
@@ -73,7 +73,6 @@ public class SceneLoadingManager : MonoBehaviour
                 loadingBarSlider.value = progress;
 
             yield return null;
-            //yield return new WaitForEndOfFrame();
         }
         Debug.Log("Finished loading scene async.");
     }

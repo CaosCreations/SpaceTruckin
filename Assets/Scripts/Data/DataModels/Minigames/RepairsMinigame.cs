@@ -10,5 +10,8 @@ public class RepairsMinigame : ScriptableObject
     public GameObject Prefab { get; set; }
 
     [field: SerializeField]
+    public Scenes Scene { get; set; }
+
+    [field: SerializeField]
     public RepairsMinigameType RepairsMinigameType { get; set; }
 }

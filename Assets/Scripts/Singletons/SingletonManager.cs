@@ -1,11 +1,26 @@
 ﻿using UnityEngine;
+using Events;
 
 public class SingletonManager : MonoBehaviour
 {
+    public static SingletonManager Instance { get; private set; }
+    private EventService eventService;
+    public static EventService EventService => Instance.eventService;
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
     private void Start()
     {
         InitSingletons();
-
         CalendarManager.OnEndOfDay += SaveAllSingletonData;
     }
 

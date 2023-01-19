@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class IsolatedRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesManager
 {
@@ -28,22 +29,16 @@ public class IsolatedRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesM
 
     public GameObject InitMinigame(RepairsMinigameType minigameType, Transform parent)
     {
-        SetMinigamesActive(false);
-
-        var minigameToActivate = repairsMinigameBehaviours.FirstOrDefault(mg => mg != null && mg.MinigameType == minigameType);
-        minigameToActivate.SetActive(true);
-        return default;
-        //RepairsMinigameUIManager.Instance.ResetUI();
-
-        // Get minigame by type 
-        var minigame = minigameContainer.Elements.FirstOrDefault(mg => mg != null && mg.RepairsMinigameType == minigameType);
+        var minigame = minigameContainer.Elements
+            .FirstOrDefault(mg => mg != null && mg.RepairsMinigameType == minigameType);
 
         if (minigame == null)
-            throw new System.Exception("Minigame not found with type: " + minigameType);
+            throw new System.Exception("Minigame not found in container with type: " + minigameType);
 
-        parent.DestroyDirectChildren();
-        var minigameObj = Instantiate(minigame.Prefab, parent);
-        return minigameObj;
+        Debug.Log("Starting minigame with type: " + minigameType);
+
+        SceneLoadingManager.Instance.LoadSceneAsync(minigame.Scene, loadSceneMode: LoadSceneMode.Additive);
+        return default;
     }
 
     private void SetMinigamesActive(bool isActive)
