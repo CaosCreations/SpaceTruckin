@@ -4,7 +4,8 @@ using Events;
 public class SingletonManager : MonoBehaviour
 {
     public static SingletonManager Instance { get; private set; }
-    private EventService eventService;
+    
+    private readonly EventService eventService = new EventService();
     public static EventService EventService => Instance.eventService;
 
     private void Awake()

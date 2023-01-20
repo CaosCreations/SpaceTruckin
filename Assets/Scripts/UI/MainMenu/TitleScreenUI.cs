@@ -87,7 +87,7 @@ public class TitleScreenUI : MonoBehaviour
         loadingScreenCanvas.SetActive(true);
 
         // Load scene after confirmation
-        SceneLoadingManager.Instance.LoadSceneAsync(Scenes.MainStation, loadingBarSlider);
+        SceneLoadingManager.Instance.LoadSceneAsync(SceneType.MainStation, loadingBarSlider);
     }
 
     private void ResetSecondaryCanvases()

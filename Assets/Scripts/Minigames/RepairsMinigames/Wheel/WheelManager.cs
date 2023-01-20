@@ -68,6 +68,11 @@ public class WheelManager : RepairsMinigameBehaviour
         greenZone.ResetSize();
     }
 
+    public override void SetUp()
+    {
+        throw new System.NotImplementedException();
+    }
+
     public bool IsGreenZoneShrinking
     {
         get => consecutiveWins % RepairsConstants.GreenZoneShrinkInterval == 0

@@ -30,4 +30,11 @@ public static class RepairsConstants
     public const string RepairsMinigameButtonBTag = "RepairsMinigameButtonB";
     public const string RepairsMinigameFeedbackTextTag = "RepairsMinigameFeedbackText";
     public const string RepairsMinigameOutcomeTextTag = "RepairsMinigameOutcomeText";
+    public const string RepairsMinigameCameraTag = "MinigameCamera";
+
+    // Scene types
+    public static SceneType[] RepairsMinigameSceneTypes = new[]
+    {
+        SceneType.StackMinigame, SceneType.TileMinigame, SceneType.WheelMinigame, SceneType.SimonMinigame
+    };
 }

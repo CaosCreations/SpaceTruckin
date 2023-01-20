@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Events;
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,11 +12,6 @@ public class IsolatedRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesM
     private RepairsMinigameContainer minigameContainer;
 
     private RepairsMinigameBehaviour[] repairsMinigameBehaviours;
-
-    private readonly Scenes[] repairsMinigameScenes = new[]
-    {
-        Scenes.StackMinigame, Scenes.TileMinigame, Scenes.WheelMinigame, Scenes.SimonMinigame
-    };
 
     private void Awake()
     {
@@ -35,7 +31,13 @@ public class IsolatedRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesM
 
     private void Start()
     {
-        SceneManager.sceneLoaded += SceneLoadedHandler;
+        RegisterEvents();
+    }
+
+    private void RegisterEvents()
+    {
+        SingletonManager.EventService.Add<OnSceneLoadedEvent>(OnSceneLoadedHandler);
+        SingletonManager.EventService.Add<OnSceneUnloadedEvent>(OnSceneUnloadedHandler);
     }
 
     public GameObject InitMinigame(RepairsMinigameType minigameType, Transform parent)
@@ -48,24 +50,43 @@ public class IsolatedRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesM
 
         Debug.Log("Starting minigame with type: " + minigameType);
 
-        SceneLoadingManager.Instance.LoadSceneAsync(minigame.Scene, loadSceneMode: LoadSceneMode.Additive);
         UIManager.ClearCanvases();
+        SceneLoadingManager.Instance.LoadSceneAsync(minigame.Scene, loadSceneMode: LoadSceneMode.Additive);
+
         return default;
     }
 
-    private void SceneLoadedHandler(Scene scene, LoadSceneMode loadSceneMode)
+    private void SetUpMinigameCamera()
     {
-        if (scene.name != "StackMinigameScene")
-            return;
-
-        var camera = GameObject.FindWithTag("MinigameCamera");
+        var camera = GameObject.FindWithTag(RepairsConstants.RepairsMinigameCameraTag);
 
         if (camera == null)
             throw new Exception("Couldn't find MinigameCamera-tagged object");
 
-        if (!camera.TryGetComponent(out Camera cam))
+        if (!camera.TryGetComponent(out Camera cameraComponent))
             throw new Exception("Couldn't get Camera component");
 
-        cam.depth = UIConstants.RepairsMinigameCameraDepth;
+        cameraComponent.depth = UIConstants.RepairsMinigameCameraDepth;
+    }
+
+    private void OnSceneLoadedHandler(OnSceneLoadedEvent loadedEvent)
+    {
+        if (!loadedEvent.IsRepairsMinigameScene)
+            return;
+
+        var minigameBehaviour = FindObjectOfType<RepairsMinigameBehaviour>();
+        minigameBehaviour.SetUp();
+        SetUpMinigameCamera();
+    }
+
+    private void OnSceneUnloadedHandler(OnSceneUnloadedEvent unloadedEvent)
+    {
+        if (!unloadedEvent.IsRepairsMinigameScene)
+            return;
+
+        SceneLoadingManager.Instance.SetActiveScene(SceneType.MainStation);
+
+        // Show hangar canvas when returning back from a repairs minigame 
+        UIManager.ShowCanvas(UICanvasType.Hangar);
     }
 }
