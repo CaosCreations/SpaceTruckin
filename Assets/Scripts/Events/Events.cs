@@ -14,4 +14,14 @@
             Parameter = parameter;
         }
     }
+
+    public class OnRepairsMinigameSceneLoadedEvent : IEvent
+    {
+        public RepairsMinigameType RepairsMinigameType { get; private set; }
+
+        public OnRepairsMinigameSceneLoadedEvent(RepairsMinigameType repairsMinigameType)
+        {
+            RepairsMinigameType = repairsMinigameType;  
+        }
+    }
 }

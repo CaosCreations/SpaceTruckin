@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CubeMover : MonoBehaviour
@@ -12,7 +14,7 @@ public class CubeMover : MonoBehaviour
     {
         ChangeMovingCubeDirectionCollider[] ChangeMovingCubeDirectionColliders = GetComponentsInChildren<ChangeMovingCubeDirectionCollider>();
 
-        foreach (ChangeMovingCubeDirectionCollider item in ChangeMovingCubeDirectionColliders)
+        foreach(ChangeMovingCubeDirectionCollider item in ChangeMovingCubeDirectionColliders)
         {
             item.CollisionWithMovingCubeEvent += ChangeDirection;
         }

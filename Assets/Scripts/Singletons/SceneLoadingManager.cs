@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -20,6 +21,8 @@ public class SceneLoadingManager : MonoBehaviour
         { Scenes.StackMinigame, "StackMinigameScene" }
     };
 
+    public static UnityAction<Scenes> OnSceneLoaded;
+
     private void Awake()
     {
         if (Instance != null)
@@ -38,6 +41,7 @@ public class SceneLoadingManager : MonoBehaviour
         try
         {
             SceneManager.LoadScene(sceneName, loadSceneMode);
+            OnSceneLoaded?.Invoke(scene);
         }
         catch (System.Exception ex)
         {
@@ -52,6 +56,7 @@ public class SceneLoadingManager : MonoBehaviour
         try
         {
             StartCoroutine(Instance.LoadAsync(sceneName, loadingBarSlider, loadSceneMode));
+            OnSceneLoaded?.Invoke(scene);
         }
         catch (System.Exception ex)
         {

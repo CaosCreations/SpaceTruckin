@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,34 +7,24 @@ public class StackMinigameUI : MonoBehaviour
 {
     [SerializeField] private Button stackButton;
     [SerializeField] private Button replayButton;
+
     [SerializeField] private Text outcomeText;
 
-    private void Start()
+    public void SetGameUI(GameState gameState)
     {
-        //RepairsMinigameUIManager.Instance.SetButtonActive(RepairsMinigameButtonType.A, true);
-    }
-
-    public void SetGameUI(MinigameState gameState)
-    {
-        string outcomeTextContent = GetGameOutcomeText(gameState);
-        outcomeText.SetText(outcomeTextContent);
-        //RepairsMinigameUIManager.Instance.SetOutcomeText(outcomeText);
+        outcomeText.text = GetGameOutcomeText(gameState);
 
         switch (gameState)
         {
-            case MinigameState.NewGame:
-                stackButton.SetActive(true);
-                replayButton.SetActive(false);
-                //RepairsMinigameUIManager.Instance.SetButtonActive(RepairsMinigameButtonType.A, true);
-                //RepairsMinigameUIManager.Instance.SetButtonActive(RepairsMinigameButtonType.B, false);
+            case GameState.NewGame:
+                stackButton.gameObject.SetActive(true);
+                replayButton.gameObject.SetActive(false);
                 break;
 
-            case MinigameState.Win:
-            case MinigameState.Lose:
-                stackButton.SetActive(false);
-                replayButton.SetActive(true);
-                //RepairsMinigameUIManager.Instance.SetButtonActive(RepairsMinigameButtonType.A, false);
-                //RepairsMinigameUIManager.Instance.SetButtonActive(RepairsMinigameButtonType.B, true);
+            case GameState.Win:
+            case GameState.Lose:
+                stackButton.gameObject.SetActive(false);
+                replayButton.gameObject.SetActive(true);
                 break;
 
             default:
@@ -40,17 +32,17 @@ public class StackMinigameUI : MonoBehaviour
         }
     }
 
-    private string GetGameOutcomeText(MinigameState gameState)
+    private string GetGameOutcomeText(GameState gameState)
     {
         switch (gameState)
         {
-            case MinigameState.NewGame:
+            case GameState.NewGame:
                 return string.Empty;
 
-            case MinigameState.Win:
+            case GameState.Win:
                 return "You won!";
 
-            case MinigameState.Lose:
+            case GameState.Lose:
                 return "You lose!";
 
             default:
@@ -58,3 +50,4 @@ public class StackMinigameUI : MonoBehaviour
         }
     }
 }
+

@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class CubeCornersPositionPile
 {
@@ -10,6 +12,7 @@ public class CubeCornersPositionPile
         {
             CubeCornersPositionList.Add(cubeCornersPositionTracker);
         }
+
         else
         {
             CubeCornersPositionList[0] = CubeCornersPositionList[1];

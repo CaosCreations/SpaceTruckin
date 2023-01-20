@@ -1,12 +1,13 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StackMinigameManager : RepairsMinigameBehaviour
+public class StackMinigameManager : MonoBehaviour
 {
     [SerializeField] private int maxScore = 3;
 
-    private readonly CubeCornersPositionPile cubeCornersPositionPile = new CubeCornersPositionPile();
+    private CubeCornersPositionPile cubeCornersPositionPile = new CubeCornersPositionPile();
 
     [SerializeField] private GameObject cubePrefab;
 
@@ -14,30 +15,33 @@ public class StackMinigameManager : RepairsMinigameBehaviour
 
     private CubeMover cubeMover;
 
-    [SerializeField] private StackMinigameUI stackMinigameUI;
+    private StackMinigameUI stackMinigameUI;
 
     [SerializeField] private Button stackButton;
+
     [SerializeField] private Button replayButton;
 
-    private List<GameObject> StackedCubes { get; set; } = new List<GameObject>();
+
+    private List<GameObject> stackedCubes { get; set; } = new List<GameObject>(); 
 
     private bool gameRunning = false;
 
     private void Awake()
     {
+        stackMinigameUI = GetComponentInChildren<StackMinigameUI>();
+
         cubeMover = GetComponentInChildren<CubeMover>();
 
-        stackButton.AddOnClick(DoPlayButton);
-        replayButton.AddOnClick(ResetGame);
-        //RepairsMinigameUIManager.Instance.AddOnClick(RepairsMinigameButtonType.A, DoPlayButton);
-        //RepairsMinigameUIManager.Instance.AddOnClick(RepairsMinigameButtonType.B, ResetGame);
+        stackButton.onClick.RemoveAllListeners();
+        stackButton.onClick.AddListener(DoPlayButton);
 
-        //SetLocalPosition();
+        replayButton.onClick.RemoveAllListeners();
+        replayButton.onClick.AddListener(ResetGame);
     }
 
     private void Update()
     {
-        if (!gameRunning)
+        if (gameRunning == false)
             return;
 
         cubeMover.MoveCube();
@@ -48,23 +52,13 @@ public class StackMinigameManager : RepairsMinigameBehaviour
         ResetGame();
     }
 
-    private void SetLocalPosition()
-    {
-        transform.localPosition = Vector3.zero;
-
-        foreach (Transform child in transform)
-        {
-            child.localPosition = Vector3.zero;
-        }
-    }
-
     // When the player presses the play button, he or she attempts to stack the current moving cube on top of the cube below
     // If the cubes are stacked, the game goes on, and we spawn a new cube on top
     // If not it's game over
     public void DoPlayButton()
     {
         CubeCornersPositionTracker topCubeCornerPosition = cubeCornersPositionPile.CubeCornersPositionList[0];
-
+        
 
         // There is only one cube at the beginning. The player can place it wherever. There is no cutting involved yet.
         if (cubeCornersPositionPile.CubeCornersPositionList.Count == 1)
@@ -82,7 +76,8 @@ public class StackMinigameManager : RepairsMinigameBehaviour
         // Cubes aren't stacked. It's game over
         if (cubeOverlapDistance == 0f)
         {
-            LoseGame();
+            gameRunning = false;
+            stackMinigameUI.SetGameUI(GameState.Lose);
             return;
         }
 
@@ -92,30 +87,16 @@ public class StackMinigameManager : RepairsMinigameBehaviour
         CutStickingOutTopCubeSide(topCubeCornerPosition, bottomCubeCornerPosition);
 
         // Only spawn next top cube if the stack hasn't reached to top rank yet
-        if (StackedCubes.Count >= maxScore)
+        if (stackedCubes.Count >= maxScore)
         {
-            WinGame();
+            gameRunning = false;
+            stackMinigameUI.SetGameUI(GameState.Win);
             return;
         }
 
         SpawnTopCube(spawnPosition: bottomCubeCornerPosition.transform.position + new Vector3(0f, cubePrefab.transform.localScale.y, 0f),
                      cubeWidth: cubeOverlapDistance);
-    }
-
-    private void WinGame()
-    {
-        gameRunning = false;
-        stackMinigameUI.SetGameUI(MinigameState.Win);
-        RepairsMinigameInteraction.OnMinigameEnd?.Invoke(RepairsMinigameType.Stack);
-        RepairsMinigameInteraction.OnMinigameWon?.Invoke(RepairsMinigameType.Stack);
-    }
-
-    private void LoseGame()
-    {
-        gameRunning = false;
-        stackMinigameUI.SetGameUI(MinigameState.Lose);
-        RepairsMinigameInteraction.OnMinigameEnd?.Invoke(RepairsMinigameType.Stack);
-        RepairsMinigameInteraction.OnMinigameLost?.Invoke(RepairsMinigameType.Stack);
+      
     }
 
     private void CutStickingOutTopCubeSide(CubeCornersPositionTracker topCubeCornerPosition, CubeCornersPositionTracker bottomCubeCornerPosition)
@@ -145,54 +126,56 @@ public class StackMinigameManager : RepairsMinigameBehaviour
 
     private float CubesOverlapDistance(CubeCornersPositionPile pile)
     {
-        float topCubeLeftCornerXposition = pile.CubeCornersPositionList[0].GetLeftCornerPosition();
-        float topCubeRightCornerXposition = pile.CubeCornersPositionList[0].GetRightCornerPosition();
-        float bottomCubeLeftCornerXposition = pile.CubeCornersPositionList[1].GetLeftCornerPosition();
-        float bottomCubeRightCornerXposition = pile.CubeCornersPositionList[1].GetRightCornerPosition();
+            float topCubeLeftCornerXposition = pile.CubeCornersPositionList[0].GetLeftCornerPosition();
+            float topCubeRightCornerXposition = pile.CubeCornersPositionList[0].GetRightCornerPosition();
+            float bottomCubeLeftCornerXposition = pile.CubeCornersPositionList[1].GetLeftCornerPosition();
+            float bottomCubeRightCornerXposition = pile.CubeCornersPositionList[1].GetRightCornerPosition();
 
-        // If the corners are this far apart, it can only mean that top and bottom cubes are not stacked on top of each other,
-        // so there is no overlap
-        if (topCubeLeftCornerXposition > bottomCubeRightCornerXposition ||
-            topCubeRightCornerXposition < bottomCubeLeftCornerXposition)
-        {
-            return 0;
-        }
+            // If the corners are this far apart, it can only mean that top and bottom cubes are not stacked on top of each other,
+            // so there is no overlap
+            if (topCubeLeftCornerXposition > bottomCubeRightCornerXposition ||
+                topCubeRightCornerXposition < bottomCubeLeftCornerXposition)
+            {
+                return 0;
+            }
 
-        // The cubes are stacked, so there is some overlap
-        float cubeOverlap = pile.CubeCornersPositionList[1].transform.localScale.x
-                            - Mathf.Abs(bottomCubeLeftCornerXposition - topCubeLeftCornerXposition);
-        return cubeOverlap;
+            // The cubes are stacked, so there is some overlap
+            else
+            {
+                float cubeOverlap = pile.CubeCornersPositionList[1].transform.localScale.x
+                                    - Mathf.Abs(bottomCubeLeftCornerXposition - topCubeLeftCornerXposition);
+                return cubeOverlap;
+            }
     }
 
     private void SpawnTopCube(Vector3 spawnPosition, float cubeWidth)
     {
-        //GameObject topcube = Instantiate(cubePrefab, spawnPosition, Quaternion.identity, transform.parent);
         GameObject topcube = Instantiate(cubePrefab, spawnPosition, Quaternion.identity);
 
         topcube.transform.localScale = new Vector3(cubeWidth, topcube.transform.localScale.y, topcube.transform.localScale.z);
-        topcube.layer = UIConstants.RepairsMinigameLayer;
 
         cubeMover.CurrentMovingCube = topcube.transform;
-        StackedCubes.Add(topcube);
+        stackedCubes.Add(topcube);
         cubeCornersPositionPile.Add(topcube.GetComponent<CubeCornersPositionTracker>());
     }
 
     public void ResetGame()
     {
-        foreach (GameObject cube in StackedCubes)
+        foreach(GameObject cube in stackedCubes)
         {
             Destroy(cube);
         }
 
-        StackedCubes.Clear();
+        stackedCubes.Clear();
 
         cubeCornersPositionPile.ResetPile();
 
+
         SpawnTopCube(cubeSpawnStartPosition.position, cubePrefab.transform.localScale.x);
+
 
         gameRunning = true;
 
-        stackMinigameUI.SetGameUI(MinigameState.NewGame);
-        RepairsMinigameInteraction.OnMinigameStart?.Invoke(RepairsMinigameType.Stack);
+        stackMinigameUI.SetGameUI(GameState.NewGame);
     }
 }

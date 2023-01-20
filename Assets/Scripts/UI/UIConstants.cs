@@ -11,6 +11,7 @@ public class UIConstants : MonoBehaviour
     // Camera priorities 
     public const int RepairsMinigameCameraOnPriority = 1000;
     public const int RepairsMinigameCameraOffPriority = 1;
+    public const int RepairsMinigameCameraDepth = 1;
 
 
     // Colour palette
