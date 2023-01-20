@@ -34,7 +34,7 @@ public class SceneLoadingManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public static void LoadScene(Scenes scene, LoadSceneMode loadSceneMode = LoadSceneMode.Single)
+    public void LoadScene(Scenes scene, LoadSceneMode loadSceneMode = LoadSceneMode.Single)
     {
         var sceneName = GetSceneNameByEnum(scene);
 
@@ -80,6 +80,38 @@ public class SceneLoadingManager : MonoBehaviour
             yield return null;
         }
         Debug.Log("Finished loading scene async.");
+    }
+
+    public void UnloadSceneAsync(string sceneName)
+    {
+        try
+        {
+            StartCoroutine(Instance.UnloadAsync(sceneName));
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"Unable to unload scene async with name '{sceneName}'.\n{ex.Message}\n{ex.StackTrace}");
+        }
+    }
+
+    public void UnloadSceneAsync(Scenes scene)
+    {
+        var sceneName = GetSceneNameByEnum(scene);
+        UnloadSceneAsync(sceneName);
+    }
+
+    private IEnumerator UnloadAsync(string sceneName)
+    {
+        Debug.Log("Starting unloading scene asynsc...");
+        var asyncOperation = SceneManager.UnloadSceneAsync(sceneName);
+
+        while (!asyncOperation.isDone)
+        {
+            var progress = asyncOperation.progress;
+            Debug.Log("Unloading progress: " + progress);
+            yield return null;
+        }
+        Debug.Log("Finished unloading scene async.");
     }
 
     public static string GetSceneNameByEnum(Scenes scene)
