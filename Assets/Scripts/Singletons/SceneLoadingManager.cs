@@ -19,7 +19,8 @@ public class SceneLoadingManager : MonoBehaviour
     {
         { SceneType.TitleScreen, "TitleScreenScene" },
         { SceneType.MainStation, "ExpandStationScene" },
-        { SceneType.StackMinigame, "StackMinigameScene" }
+        { SceneType.StackMinigame, "StackMinigameScene" },
+        { SceneType.TileMinigame, "TileMinigameScene" }
     };
 
     private void Awake()

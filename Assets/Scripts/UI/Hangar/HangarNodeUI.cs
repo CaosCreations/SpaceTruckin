@@ -164,7 +164,7 @@ public class HangarNodeUI : UICanvasBase
                 break;
             case HangarPanel.Repair:
                 repairPanel.SetActive(true);
-                repairsUI.Init(ShipToInspect, RepairsMinigameType.Stack);
+                repairsUI.Init(ShipToInspect, RepairsMinigameType.Tile);
                 break;
             case HangarPanel.Upgrade:
                 upgradePanel.SetActive(true);

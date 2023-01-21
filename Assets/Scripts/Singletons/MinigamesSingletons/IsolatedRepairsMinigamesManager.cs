@@ -75,7 +75,10 @@ public class IsolatedRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesM
             return;
 
         var minigameBehaviour = FindObjectOfType<RepairsMinigameBehaviour>();
-        minigameBehaviour.SetUp();
+
+        if (minigameBehaviour != null)
+            minigameBehaviour.SetUp();
+        
         SetUpMinigameCamera();
     }
 
