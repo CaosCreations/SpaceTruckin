@@ -30,7 +30,8 @@ MonoBehaviour:
   moneyNeededToUnlock: 1000
   isRepeatable: 1
   hasRandomOutcomes: 1
-  outcomes: []
+  outcomes:
+  - {fileID: 11400000, guid: 251d15616e2d8864e89a6e62a4640dfa, type: 2}
   missionModifier: {fileID: 11400000, guid: 19df9cfaac1f5de4b8fb064a33cc0f3c, type: 2}
   successChance: 0
   missionPilotTraitEffects: {fileID: 11400000, guid: c03947f7c3ab22547949ea6d974c31f7,
@@ -40,15 +41,15 @@ MonoBehaviour:
   offerExpiryFondnessDeduction: 0
   thankYouMessage: {fileID: 0}
   saveData:
-    hasBeenUnlocked: 0
-    hasBeenAccepted: 0
+    hasBeenUnlocked: 1
+    hasBeenAccepted: 1
     offerExpiryConsequencesApplied: 0
     daysLeftToComplete: 0
     numberOfCompletions: 0
     dateUnlocked:
-      Day: 0
-      Month: 0
-      Year: 0
+      Day: 6
+      Month: 1
+      Year: 1
     dateAccepted:
       Day: 0
       Month: 0
