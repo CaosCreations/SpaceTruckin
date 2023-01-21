@@ -72,6 +72,7 @@ public class UIManager : MonoBehaviour
 
     public void Init()
     {
+        // Disabled during demo 
         if (DataUtils.IsNewGame())
         {
             //// Show the main menu canvas for character creation
@@ -86,7 +87,6 @@ public class UIManager : MonoBehaviour
         {
             HandleUnpausedInput();
         }
-        // Play an Error sound effect if a non-interactable region is clicked
         else
         {
             HandlePausedInput();
@@ -146,16 +146,19 @@ public class UIManager : MonoBehaviour
     public static void ClearCanvases()
     {
         PlayerManager.IsPaused = false;
-        Instance.bedCanvas.SetActive(false);
-        Instance.terminalCanvas.SetActive(false);
-        Instance.hangarNodeCanvas.SetActive(false);
-        Instance.vendingCanvas.SetActive(false);
-        Instance.casetteCanvas.SetActive(false);
-        Instance.noticeBoardCanvas.SetActive(false);
-        Instance.mainMenuCanvas.SetActive(false);
-        Instance.pauseMenuCanvas.SetActive(false);
-
         OnCanvasDeactivated?.Invoke();
+
+        if (Instance != null)
+        {
+            Instance.bedCanvas.SetActive(false);
+            Instance.terminalCanvas.SetActive(false);
+            Instance.hangarNodeCanvas.SetActive(false);
+            Instance.vendingCanvas.SetActive(false);
+            Instance.casetteCanvas.SetActive(false);
+            Instance.noticeBoardCanvas.SetActive(false);
+            Instance.mainMenuCanvas.SetActive(false);
+            Instance.pauseMenuCanvas.SetActive(false);
+        }
     }
 
     /// <param name="canvasType">The type of canvas to display, which is set by collision or a shortcut
@@ -292,6 +295,9 @@ public class UIManager : MonoBehaviour
 
     public static void AddOverriddenKeys(HashSet<KeyCodeOverride> keyCodeOverrides)
     {
+        keyCodeOverrides ??= new HashSet<KeyCodeOverride>();
+        currentlyOverriddenKeys ??= new HashSet<KeyCode>();
+
         var keyCodes = keyCodeOverrides.ToListOfKeyCodes();
         currentlyOverriddenKeys.UnionWith(keyCodes);
     }

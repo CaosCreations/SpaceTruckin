@@ -26,7 +26,7 @@ public class InGameHUDManager : MonoBehaviour
     {
         SceneManager.activeSceneChanged += (Scene previous, Scene next) =>
         {
-            bool isActive = next.name == SceneLoadingManager.GetSceneNameByEnum(Scenes.MainStation);
+            bool isActive = next.name == SceneLoadingManager.GetSceneNameByType(SceneType.MainStation);
             SetActive(isActive);
         };
     }

@@ -34,9 +34,8 @@ public static class GameObjectExtensions
 
     public static void SetSprite(this GameObject self, Sprite sprite)
     {
-        Image image = self.GetComponent<Image>();
-
-        if (image != null)
+        
+        if (self.TryGetComponent<Image>(out var image))
         {
             image.sprite = sprite;
         }
@@ -44,9 +43,8 @@ public static class GameObjectExtensions
 
     public static Color GetImageColour(this GameObject self)
     {
-        Image image = self.GetComponent<Image>();
-
-        if (image != null)
+        
+        if (self.TryGetComponent<Image>(out var image))
             return image.color;
 
         return Color.white;
@@ -54,9 +52,8 @@ public static class GameObjectExtensions
 
     public static Text SetText(this GameObject self, string value)
     {
-        Text text = self.GetComponent<Text>();
-
-        if (text != null)
+        
+        if (self.TryGetComponent<Text>(out var text))
             return text.SetText(value);
 
         return default;
@@ -81,12 +78,18 @@ public static class GameObjectExtensions
     {
         if (self != null)
         {
-            GameObject.Destroy(self);
+            UnityEngine.Object.Destroy(self);
         }
     }
 
     public static void SetLayerRecursively(this GameObject self, int newLayer)
     {
+        if (self == null)
+        {
+            Debug.LogError("Cannot set layer recursively as game object was null");
+            return;
+        }
+
         self.layer = newLayer;
 
         foreach (Transform child in self.transform)

@@ -92,7 +92,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         // Set up player when station scene loads 
         SceneManager.activeSceneChanged += (Scene previous, Scene next) =>
         {
-            if (SceneLoadingManager.GetSceneNameByEnum(Scenes.MainStation) == next.name)
+            if (SceneLoadingManager.GetSceneNameByType(SceneType.MainStation) == next.name)
             {
                 SetUpPlayer();
             }
