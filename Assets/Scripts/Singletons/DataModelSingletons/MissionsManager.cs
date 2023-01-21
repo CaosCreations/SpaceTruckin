@@ -94,8 +94,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
             // Todo: Success/failure of mission affects client relationship change?*
 
             // Improve relationship with the client of the mission.
-            DialogueDatabaseManager.AddToActorFondness(
-                scheduled.Mission.Customer, scheduled.Mission.FondnessGranted);
+            DialogueDatabaseManager.AddToActorFondness(scheduled.Mission.Customer, scheduled.Mission.FondnessGranted);
         }
 
         // Success of the mission depends on factors such as Pilot traits
@@ -108,12 +107,8 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         scheduled.Mission.MissionToArchive = new ArchivedMission(
             scheduled.Mission, scheduled.Pilot, scheduled.Mission.NumberOfCompletions);
 
-        // Todo: Some outcomes are processed regardless of whether the mission succeeded?*
-        if (scheduled.Mission.WasSuccessful)
-        {
-            // The Archived Mission fields are set throughout the outcome processing.
-            ProcessMissionOutcomes(scheduled);
-        }
+        // The Archived Mission fields are set throughout the outcome processing.
+        ProcessMissionOutcomes(scheduled);
 
         // Todo: Don't increment if mission failed?* 
         scheduled.Pilot.MissionsCompleted++;

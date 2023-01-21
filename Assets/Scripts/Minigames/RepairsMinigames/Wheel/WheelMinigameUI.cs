@@ -4,17 +4,16 @@ using UnityEngine.UI;
 
 public class WheelMinigameUI : MonoBehaviour
 {
+    [SerializeField]
     private Button wheelMinigameButton;
 
+    [SerializeField]
     private Text feedbackText;
 
     private void Awake()
     {
         Wheel.OnRotationStarted += SetStopButtonState;
         Wheel.OnRotationStopped += SetStartButtonState;
-
-        wheelMinigameButton = RepairsMinigamesManager.GetRepairsMinigameButton(RepairsMinigameButtonType.A);
-        feedbackText = RepairsMinigamesManager.GetRepairsMinigameFeedbackText();
     }
 
     private void SetStartButtonState()

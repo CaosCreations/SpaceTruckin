@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public interface IRepairsMinigamesManager
+﻿public interface IRepairsMinigamesManager
 {
-    GameObject InitMinigame(RepairsMinigameType minigameType, Transform parent);
+    void StartMinigame();
 }
