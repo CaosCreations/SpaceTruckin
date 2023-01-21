@@ -13,6 +13,10 @@ public class IsolatedRepairsUI : SubMenu, IRepairsUI
 
     public void Init(Ship shipToRepair, RepairsMinigameType minigameType)
     {
+        // Temporary randomisation for testing 
+        //minigameType = PilotUtils.GetRandomEnumElement<RepairsMinigameType>();
+        minigameType = Random.Range(0, 2) == 1 ? RepairsMinigameType.Stack : RepairsMinigameType.Tile;
+
         minigameInstance = IsolatedRepairsMinigamesManager.Instance.InitMinigame(minigameType, minigameInstanceParent);
     }
 
