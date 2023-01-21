@@ -35,21 +35,9 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     public void Init()
     {
-        if (DataUtils.SaveFolderExists(Mission.FolderName))
-        {
-            LoadDataAsync();
-        }
-        else
-        {
-            DataUtils.CreateSaveFolder(Mission.FolderName);
-        }
-
         LogMissionDataStatus();
-
         ScheduledMissions = new List<ScheduledMission>();
-
         UnlockMissions();
-
         RegisterLuaFunctions();
 
         CalendarManager.OnEndOfDay += UpdateMissionSchedule;
@@ -150,8 +138,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         if (scheduled.Mission.PilotTraitEffects != null)
         {
             // Add on the value from the PilotTrait effects that influences the success chance 
-            successChance += PilotTraitsManager.GetTotalMissionChanceEffect(scheduled.Pilot,
-                scheduled.Mission.PilotTraitEffects);
+            successChance += PilotTraitsManager.GetTotalMissionChanceEffect(scheduled.Pilot, scheduled.Mission.PilotTraitEffects);
         }
 
         return successChance;
@@ -456,10 +443,17 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     public async void LoadDataAsync()
     {
+        if (!DataUtils.SaveFolderExists(Mission.FolderName))
+        {
+            DataUtils.CreateSaveFolder(Mission.FolderName);
+            return;
+        }
+
         foreach (Mission mission in Instance.Missions)
         {
             await mission.LoadDataAsync();
         }
+
         LoadScheduledMissionData();
     }
 

@@ -34,7 +34,10 @@ public class HangarManager : MonoBehaviour
 
     public void Init()
     {
-        LoadBatteryDataAsync();
+        if (BatterySpawnPositionManager == null)
+        {
+            Debug.LogError("BatterySpawnManager was null. Will be unable to spawn batteries");
+        }
     }
 
     public static void DockShip(Ship ship, int node)
@@ -212,8 +215,14 @@ public class HangarManager : MonoBehaviour
         DataUtils.SaveFileAsync(BatteryWrapper.FileName, folderPath, json);
     }
 
-    public async static void LoadBatteryDataAsync()
+    public async void LoadBatteryDataAsync()
     {
+        if (!DataUtils.SaveFolderExists(BatteryWrapper.FolderName))
+        {
+            DataUtils.CreateSaveFolder(BatteryWrapper.FolderName);
+            return;
+        }
+
         string json = await DataUtils.ReadFileAsync(BatteryWrapper.FilePath);
         BatterySaveData[] batterySaveData = JsonHelper.ArrayFromJson<BatterySaveData>(json);
 

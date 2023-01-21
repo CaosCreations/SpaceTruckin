@@ -35,7 +35,7 @@ public class CalendarData : ScriptableObject, IDataModel
         ValidateFields();
     }
 
-    private void ValidateFields()
+    public void ValidateFields()
     {
         // Cannot be below 1 
         DaysInMonth = Mathf.Max(DaysInMonth, 1);

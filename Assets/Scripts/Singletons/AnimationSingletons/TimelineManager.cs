@@ -155,4 +155,10 @@ public class TimelineManager : MonoBehaviour
     {
         cutsceneCamera.Follow = PlayerManager.PlayerObject.transform;
     }
+
+    public void FinishCurrentTimeline()
+    {
+        if (playableDirector.playableAsset != null && playableDirector.time > 0)
+            playableDirector.time = 100000; // Some unrealistically high value
+    }
 }

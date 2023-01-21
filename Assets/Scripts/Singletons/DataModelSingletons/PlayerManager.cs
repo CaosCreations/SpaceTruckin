@@ -68,15 +68,6 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
     public void Init()
     {
-        if (DataUtils.SaveFolderExists(PlayerData.FolderName))
-        {
-            LoadDataAsync();
-        }
-        else
-        {
-            DataUtils.CreateSaveFolder(PlayerData.FolderName);
-        }
-
         RegisterLuaFunctions();
         RegisterDialogueEvents();
     }
@@ -229,6 +220,12 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
     public async void LoadDataAsync()
     {
+        if (!DataUtils.SaveFolderExists(PlayerData.FolderName))
+        {
+            DataUtils.CreateSaveFolder(PlayerData.FolderName);
+            return;
+        }
+
         await playerData.LoadDataAsync();
     }
 

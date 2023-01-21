@@ -3,6 +3,9 @@ using Events;
 
 public class SingletonManager : MonoBehaviour
 {
+    [SerializeField]
+    private bool saveDataEnabled;
+
     public static SingletonManager Instance { get; private set; }
     
     private readonly EventService eventService = new EventService();
@@ -21,8 +24,12 @@ public class SingletonManager : MonoBehaviour
 
     private void Start()
     {
+        if (saveDataEnabled)
+        {
+            LoadAllSingletonData();
+            CalendarManager.OnEndOfDay += SaveAllSingletonData;
+        }
         InitSingletons();
-        CalendarManager.OnEndOfDay += SaveAllSingletonData;
     }
 
     private void InitSingletons()
@@ -36,6 +43,18 @@ public class SingletonManager : MonoBehaviour
         MessagesManager.Instance.Init();
         PlayerManager.Instance.Init();
         CalendarManager.Instance.Init();
+    }
+
+    private void LoadAllSingletonData()
+    {
+        MissionsManager.Instance.LoadDataAsync();
+        PilotsManager.Instance.LoadDataAsync();
+        ArchivedMissionsManager.Instance.LoadDataAsync();
+        ShipsManager.Instance.LoadDataAsync();
+        HangarManager.Instance.LoadBatteryDataAsync();
+        MessagesManager.Instance.LoadDataAsync();
+        PlayerManager.Instance.LoadDataAsync();
+        CalendarManager.Instance.LoadDataAsync();
     }
 
     public static void SaveAllSingletonData()

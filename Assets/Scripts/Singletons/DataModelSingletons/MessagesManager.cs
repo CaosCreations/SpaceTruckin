@@ -23,15 +23,6 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        if (DataUtils.SaveFolderExists(Message.FolderName))
-        {
-            LoadDataAsync();
-        }
-        else
-        {
-            DataUtils.CreateSaveFolder(Message.FolderName);
-        }
-
         if (Messages == null)
         {
             Debug.LogError("No message data");
@@ -119,6 +110,12 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
 
     public async void LoadDataAsync()
     {
+        if (!DataUtils.SaveFolderExists(Message.FolderName))
+        {
+            DataUtils.CreateSaveFolder(Message.FolderName);
+            return;
+        }
+
         foreach (Message message in Instance.Messages)
         {
             if (message != null)

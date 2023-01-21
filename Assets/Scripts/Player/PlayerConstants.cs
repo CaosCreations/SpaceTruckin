@@ -28,6 +28,7 @@ public class PlayerConstants : MonoBehaviour
     public const KeyCode PrototypingModifier = KeyCode.LeftControl;
     public const KeyCode TerminalShortcut = KeyCode.T;
     public const KeyCode NoticeboardShortcut = KeyCode.G;
+    public const KeyCode FinishTimelineShortcut = KeyCode.F;
 
     public static readonly List<KeyCode> HangarNodeShortcuts = new List<KeyCode>()
     {
