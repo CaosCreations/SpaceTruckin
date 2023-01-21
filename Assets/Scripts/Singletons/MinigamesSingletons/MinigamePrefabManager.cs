@@ -23,20 +23,20 @@ public class MinigamePrefabManager : MonoBehaviour
     #endregion
 
     #region Mapping
-    private static readonly Dictionary<RepairsMinigame, GameObject> prefabMap =
-        new Dictionary<RepairsMinigame, GameObject>();
+    private static readonly Dictionary<RepairsMinigameType, GameObject> prefabMap =
+        new Dictionary<RepairsMinigameType, GameObject>();
 
-    private static readonly Dictionary<RepairsMinigame, GameObject> instanceMap =
-        new Dictionary<RepairsMinigame, GameObject>();
+    private static readonly Dictionary<RepairsMinigameType, GameObject> instanceMap =
+        new Dictionary<RepairsMinigameType, GameObject>();
 
-    private static readonly Dictionary<RepairsMinigame, GameObject> uiPrefabMap =
-    new Dictionary<RepairsMinigame, GameObject>();
+    private static readonly Dictionary<RepairsMinigameType, GameObject> uiPrefabMap =
+    new Dictionary<RepairsMinigameType, GameObject>();
 
-    private static readonly Dictionary<RepairsMinigame, GameObject> uiInstanceMap =
-        new Dictionary<RepairsMinigame, GameObject>();
+    private static readonly Dictionary<RepairsMinigameType, GameObject> uiInstanceMap =
+        new Dictionary<RepairsMinigameType, GameObject>();
 
-    private void MapPrefab(RepairsMinigame prefabType,
-        Dictionary<RepairsMinigame, GameObject> prefabMap,
+    private void MapPrefab(RepairsMinigameType prefabType,
+        Dictionary<RepairsMinigameType, GameObject> prefabMap,
         GameObject prefab)
     {
         if (prefab && !prefabMap.ContainsKey(prefabType))
@@ -52,16 +52,16 @@ public class MinigamePrefabManager : MonoBehaviour
     private void MapPrefabs()
     {
         // Wheel
-        MapPrefab(RepairsMinigame.Wheel, prefabMap, wheelMinigamePrefab);
-        MapPrefab(RepairsMinigame.Wheel, uiPrefabMap, wheelMinigameUIPrefab);
+        MapPrefab(RepairsMinigameType.Wheel, prefabMap, wheelMinigamePrefab);
+        MapPrefab(RepairsMinigameType.Wheel, uiPrefabMap, wheelMinigameUIPrefab);
 
         // Stack
-        MapPrefab(RepairsMinigame.Stack, prefabMap, stackMinigamePrefab);
-        MapPrefab(RepairsMinigame.Stack, uiPrefabMap, stackMinigameUIPrefab);
+        MapPrefab(RepairsMinigameType.Stack, prefabMap, stackMinigamePrefab);
+        MapPrefab(RepairsMinigameType.Stack, uiPrefabMap, stackMinigameUIPrefab);
     }
 
-    private void MapInstance(RepairsMinigame prefabType,
-        Dictionary<RepairsMinigame, GameObject> instanceMap,
+    private void MapInstance(RepairsMinigameType prefabType,
+        Dictionary<RepairsMinigameType, GameObject> instanceMap,
         GameObject instance)
     {
         if (!instanceMap.ContainsKey(prefabType))
@@ -77,33 +77,33 @@ public class MinigamePrefabManager : MonoBehaviour
     private void MapInstances()
     {
         // Wheel
-        MapInstance(RepairsMinigame.Wheel, instanceMap, wheelMinigameInstance);
-        MapInstance(RepairsMinigame.Wheel, uiInstanceMap, wheelMinigameUIInstance);
+        MapInstance(RepairsMinigameType.Wheel, instanceMap, wheelMinigameInstance);
+        MapInstance(RepairsMinigameType.Wheel, uiInstanceMap, wheelMinigameUIInstance);
 
         // Stack
-        MapInstance(RepairsMinigame.Stack, instanceMap, stackMinigameInstance);
-        MapInstance(RepairsMinigame.Stack, uiInstanceMap, stackMinigameUIInstance);
+        MapInstance(RepairsMinigameType.Stack, instanceMap, stackMinigameInstance);
+        MapInstance(RepairsMinigameType.Stack, uiInstanceMap, stackMinigameUIInstance);
     }
     #endregion
 
     #region Instantiation
-    public GameObject InitPrefab(RepairsMinigame prefabType, Transform parent)
+    public GameObject InitPrefab(RepairsMinigameType prefabType, Transform parent)
     {
         DestroyExistingInstances();
 
         return InitPrefab(prefabType, prefabMap, instanceMap, parent);
     }
 
-    public GameObject InitUIPrefab(RepairsMinigame prefabType, Transform parent)
+    public GameObject InitUIPrefab(RepairsMinigameType prefabType, Transform parent)
     {
         DestroyExistingUIInstances();
 
         return InitPrefab(prefabType, uiPrefabMap, uiInstanceMap, parent);
     }
 
-    private GameObject InitPrefab(RepairsMinigame prefabType,
-        Dictionary<RepairsMinigame, GameObject> prefabMap,
-        Dictionary<RepairsMinigame, GameObject> instanceMap,
+    private GameObject InitPrefab(RepairsMinigameType prefabType,
+        Dictionary<RepairsMinigameType, GameObject> prefabMap,
+        Dictionary<RepairsMinigameType, GameObject> instanceMap,
         Transform parent)
     {
         instanceMap[prefabType] = Instantiate(prefabMap[prefabType], parent);
@@ -131,7 +131,7 @@ public class MinigamePrefabManager : MonoBehaviour
         }
     }
 
-    private bool MinigameHasUI(RepairsMinigame prefabType)
+    private bool MinigameHasUI(RepairsMinigameType prefabType)
     {
         return uiInstanceMap.ContainsKey(prefabType);
     }

@@ -26,7 +26,7 @@ public class StationSetupManager : MonoBehaviour
         SceneManager.activeSceneChanged += (Scene previous, Scene next) =>
         {
             // When changing to main station scene 
-            if (SceneLoadingManager.GetSceneNameByEnum(Scenes.MainStation) == next.name)
+            if (SceneLoadingManager.GetSceneNameByType(SceneType.MainStation) == next.name)
             {
                 Debug.Log("Setting up station...");
                 SetUpStation();

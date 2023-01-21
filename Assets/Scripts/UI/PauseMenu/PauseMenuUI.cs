@@ -16,6 +16,6 @@ public class PauseMenuUI : UICanvasBase
             throw new System.Exception("SceneLoadingManager object not found. Unable to go back to title screen.");
 
         UIManager.ClearCanvases();
-        SceneLoadingManager.LoadScene(Scenes.TitleScreen);
+        SceneLoadingManager.Instance.LoadScene(SceneType.TitleScreen);
     }
 }

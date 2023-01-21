@@ -1,22 +1,26 @@
+using Events;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public enum Scenes
+public enum SceneType
 {
-    TitleScreen, MainStation
+    TitleScreen, MainStation, StackMinigame, WheelMinigame, TileMinigame, SimonMinigame
 }
 
 public class SceneLoadingManager : MonoBehaviour
 {
     public static SceneLoadingManager Instance { get; private set; }
 
-    private static readonly Dictionary<Scenes, string> scenesMapping = new Dictionary<Scenes, string>
+    private static readonly Dictionary<SceneType, string> sceneMappings = new()
     {
-        { Scenes.TitleScreen, "TitleScreenScene" },
-        { Scenes.MainStation, "ExpandStationScene" }
+        { SceneType.TitleScreen, "TitleScreenScene" },
+        { SceneType.MainStation, "ExpandStationScene" },
+        { SceneType.StackMinigame, "StackMinigameScene" },
+        { SceneType.TileMinigame, "TileMinigameScene" }
     };
 
     private void Awake()
@@ -30,13 +34,39 @@ public class SceneLoadingManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public static void LoadScene(Scenes scene)
+    private void Start()
     {
-        var sceneName = GetSceneNameByEnum(scene);
+        RegisterEvents();
+    }
 
+    private void RegisterEvents()
+    {
+        SceneManager.sceneLoaded += SceneLoadedHandler;
+        SceneManager.sceneUnloaded += SceneUnloadedHandler;
+    }
+
+    private void SceneLoadedHandler(Scene scene, LoadSceneMode loadSceneMode)
+    {
+        if (SingletonManager.Instance == null)
+            return;
+
+        SingletonManager.EventService.Dispatch(new OnSceneLoadedEvent(scene));
+    }
+
+    private void SceneUnloadedHandler(Scene scene)
+    {
+        if (SingletonManager.Instance == null)
+            return;
+
+        SingletonManager.EventService.Dispatch(new OnSceneUnloadedEvent(scene));
+    }
+
+    public void LoadScene(SceneType sceneType, LoadSceneMode loadSceneMode = LoadSceneMode.Single)
+    {
+        var sceneName = GetSceneNameByType(sceneType);
         try
         {
-            SceneManager.LoadScene(sceneName);
+            SceneManager.LoadScene(sceneName, loadSceneMode);
         }
         catch (System.Exception ex)
         {
@@ -44,13 +74,16 @@ public class SceneLoadingManager : MonoBehaviour
         }
     }
 
-    public void LoadSceneAsync(Scenes scene, Slider loadingBarSlider = null)
+    public void LoadSceneAsync(
+        SceneType sceneType,
+        Slider loadingBarSlider = null,
+        LoadSceneMode loadSceneMode = LoadSceneMode.Single,
+        bool setActiveScene = false)
     {
-        var sceneName = GetSceneNameByEnum(scene);
-
+        var sceneName = GetSceneNameByType(sceneType);
         try
         {
-            StartCoroutine(Instance.LoadAsync(sceneName, loadingBarSlider));
+            StartCoroutine(Instance.LoadAsync(sceneName, loadingBarSlider, loadSceneMode, setActiveScene));
         }
         catch (System.Exception ex)
         {
@@ -58,14 +91,17 @@ public class SceneLoadingManager : MonoBehaviour
         }
     }
 
-    private IEnumerator LoadAsync(string sceneName, Slider loadingBarSlider = null)
+    private IEnumerator LoadAsync(
+        string sceneName,
+        Slider loadingBarSlider = null,
+        LoadSceneMode loadSceneMode = LoadSceneMode.Single,
+        bool setActiveScene = false)
     {
         Debug.Log("Starting loading scene asynsc...");
-        var asyncOperation = SceneManager.LoadSceneAsync(sceneName);
+        var asyncOperation = SceneManager.LoadSceneAsync(sceneName, loadSceneMode);
 
         while (!asyncOperation.isDone)
         {
-            //var progress = Mathf.Clamp01(asyncOperation.progress / 0.9f);
             var progress = asyncOperation.progress;
             Debug.Log("Loading progress: " + progress);
 
@@ -73,17 +109,69 @@ public class SceneLoadingManager : MonoBehaviour
                 loadingBarSlider.value = progress;
 
             yield return null;
-            //yield return new WaitForEndOfFrame();
         }
         Debug.Log("Finished loading scene async.");
+
+        if (setActiveScene)
+            SetActiveScene(sceneName);
     }
 
-    public static string GetSceneNameByEnum(Scenes scene)
+    public void UnloadSceneAsync(string sceneName)
     {
-        if (!scenesMapping.TryGetValue(scene, out var sceneName))
+        try
+        {
+            StartCoroutine(Instance.UnloadAsync(sceneName));
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"Unable to unload scene async with name '{sceneName}'.\n{ex.Message}\n{ex.StackTrace}");
+        }
+    }
+
+    public void UnloadSceneAsync(SceneType scene)
+    {
+        var sceneName = GetSceneNameByType(scene);
+        UnloadSceneAsync(sceneName);
+    }
+
+    private IEnumerator UnloadAsync(string sceneName)
+    {
+        Debug.Log("Starting unloading scene asynsc...");
+        var asyncOperation = SceneManager.UnloadSceneAsync(sceneName);
+
+        while (!asyncOperation.isDone)
+        {
+            var progress = asyncOperation.progress;
+            Debug.Log("Unloading progress: " + progress);
+            yield return null;
+        }
+        Debug.Log("Finished unloading scene async.");
+    }
+
+    public void SetActiveScene(string sceneName)
+    {
+        var scene = SceneManager.GetSceneByName(sceneName);
+        SceneManager.SetActiveScene(scene);
+    }
+
+    public void SetActiveScene(SceneType sceneType)
+    {
+        var sceneName = GetSceneNameByType(sceneType);
+        SetActiveScene(sceneName);
+    }
+
+    public static string GetSceneNameByType(SceneType scene)
+    {
+        if (!sceneMappings.TryGetValue(scene, out var sceneName))
         {
             throw new System.Exception($"Unable to get scene name from enum value: {scene}. It is unmapped.");
         }
         return sceneName;
+    }
+
+    public static SceneType GetSceneTypeByName(string sceneName)
+    {
+        var mapping = sceneMappings.FirstOrDefault(kvp => kvp.Value == sceneName);
+        return mapping.Key;
     }
 }

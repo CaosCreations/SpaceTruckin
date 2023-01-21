@@ -7,6 +7,13 @@ public class UIConstants : MonoBehaviour
     public const int ShipPreviewLayer = 9;
     public const int RepairsMinigameLayer = 10;
 
+
+    // Camera priorities 
+    public const int RepairsMinigameCameraOnPriority = 1000;
+    public const int RepairsMinigameCameraOffPriority = 1;
+    public const int RepairsMinigameCameraDepth = 1;
+
+
     // Colour palette
     public static readonly Color32 SpringWood = new Color32(0xf2, 0xf0, 0xe5, 0xff);
     public static readonly Color32 Chatelle = new Color32(0xb8, 0xb5, 0xb9, 0xff);

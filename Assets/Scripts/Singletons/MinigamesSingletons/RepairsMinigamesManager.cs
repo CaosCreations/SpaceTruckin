@@ -3,25 +3,15 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-#region Enums
-public enum RepairsMinigame
-{
-    Wheel, Stack
-}
-
-public enum RepairsMinigameButton
-{
-    A, B
-}
-#endregion
-
-public class RepairsMinigamesManager : MonoBehaviour
+/// <summary>
+/// Old implementation - see IsolatedRepairsMinigamesManager for the current one.
+/// </summary>
+public class RepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesManager
 {
     public static RepairsMinigamesManager Instance { get; private set; }
 
     public static event Action<bool> OnMinigameAttemptFinished;
 
-    // Todo: Store references only here
     public Button ButtonA;
     public Button ButtonB;
 
@@ -49,11 +39,11 @@ public class RepairsMinigamesManager : MonoBehaviour
     }
     #endregion
 
-    public static GameObject InitMinigame(RepairsMinigame minigameType, Transform parent)
+    public GameObject InitMinigame(RepairsMinigameType minigameType, Transform parent)
     {
         GameObject repairsMinigameInstance = MinigamePrefabManager.Instance.InitPrefab(minigameType, parent);
         SetButtonVisibility(minigameType);
-        repairsMinigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer); ;
+        repairsMinigameInstance.SetLayerRecursively(UIConstants.RepairsMinigameLayer);
         return repairsMinigameInstance;
     }
 
@@ -63,18 +53,18 @@ public class RepairsMinigamesManager : MonoBehaviour
         OnMinigameAttemptFinished?.Invoke(isSuccessfulAttempt);
     }
 
-    public static void SetButtonVisibility(RepairsMinigame minigameType)
+    public static void SetButtonVisibility(RepairsMinigameType minigameType)
     {
-        var buttonA = GetRepairsMinigameButton(RepairsMinigameButton.A);
-        var buttonB = GetRepairsMinigameButton(RepairsMinigameButton.B);
+        var buttonA = GetRepairsMinigameButton(RepairsMinigameButtonType.A);
+        var buttonB = GetRepairsMinigameButton(RepairsMinigameButtonType.B);
 
         switch (minigameType)
         {
-            case RepairsMinigame.Wheel:
+            case RepairsMinigameType.Wheel:
                 buttonA.SetActive(true);
                 buttonB.SetActive(false);
                 break;
-            case RepairsMinigame.Stack:
+            case RepairsMinigameType.Stack:
                 // Stack requires 2 buttons 
                 buttonA.SetActive(true);
                 buttonB.SetActive(true);
@@ -86,7 +76,7 @@ public class RepairsMinigamesManager : MonoBehaviour
 
     #region Find References
     // Gets the button currently embedded in the repairs UI
-    public static GameObject GetRepairsMinigameButtonObject(RepairsMinigameButton buttonType)
+    public static GameObject GetRepairsMinigameButtonObject(RepairsMinigameButtonType buttonType)
     {
         string buttonTag = GetTagByButtonType(buttonType);
 
@@ -102,7 +92,7 @@ public class RepairsMinigamesManager : MonoBehaviour
         return repairsButtonObject;
     }
 
-    public static Button GetRepairsMinigameButton(RepairsMinigameButton buttonType)
+    public static Button GetRepairsMinigameButton(RepairsMinigameButtonType buttonType)
     {
         Button repairsMinigameButton = GetRepairsMinigameButtonObject(buttonType)
             .GetComponent<Button>();
@@ -129,22 +119,22 @@ public class RepairsMinigamesManager : MonoBehaviour
         return feedbackText;
     }
 
-    private static string GetTagByButtonType(RepairsMinigameButton buttonType)
+    private static string GetTagByButtonType(RepairsMinigameButtonType buttonType)
     {
         return buttonType switch
         {
-            RepairsMinigameButton.A => RepairsConstants.RepairsMinigameButtonATag,
-            RepairsMinigameButton.B => RepairsConstants.RepairsMinigameButtonBTag,
+            RepairsMinigameButtonType.A => RepairsConstants.RepairsMinigameButtonATag,
+            RepairsMinigameButtonType.B => RepairsConstants.RepairsMinigameButtonBTag,
             _ => string.Empty,
         };
     }
 
-    public static RepairsMinigame GetMinigameTypeByDamageType(ShipDamageType damageType)
+    public static RepairsMinigameType GetMinigameTypeByDamageType(ShipDamageType damageType)
     {
         return damageType switch
         {
-            ShipDamageType.Engine => RepairsMinigame.Wheel,
-            ShipDamageType.Hull => RepairsMinigame.Stack,
+            ShipDamageType.Engine => RepairsMinigameType.Wheel,
+            ShipDamageType.Hull => RepairsMinigameType.Stack,
             _ => throw new ArgumentOutOfRangeException(),
         };
 
