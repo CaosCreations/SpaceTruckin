@@ -25,6 +25,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private UICanvasBase noticeBoardCanvas;
     [SerializeField] private UICanvasBase mainMenuCanvas;
     [SerializeField] private UICanvasBase pauseMenuCanvas;
+    [SerializeField] private Canvas universalCanvas;
     #endregion
 
     /// <summary>
@@ -67,18 +68,6 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         ClearCanvases();
-        Init();
-    }
-
-    public void Init()
-    {
-        // Disabled during demo 
-        if (DataUtils.IsNewGame())
-        {
-            //// Show the main menu canvas for character creation
-            //SetCanInteract(UICanvasType.MainMenu);
-            //ShowCanvas();
-        }
     }
 
     private void Update()
@@ -158,6 +147,7 @@ public class UIManager : MonoBehaviour
             Instance.noticeBoardCanvas.SetActive(false);
             Instance.mainMenuCanvas.SetActive(false);
             Instance.pauseMenuCanvas.SetActive(false);
+            Instance.universalCanvas.gameObject.SetActive(false);
         }
     }
 
@@ -176,6 +166,12 @@ public class UIManager : MonoBehaviour
         if (!viaShortcut && canvas.CanvasTutorialPrefab != null && !HasCurrentCanvasBeenViewed())
         {
             canvas.ShowTutorial();
+        }
+
+        // Also show universal canvas if configured 
+        if (canvas.ShowUniversalCanvas)
+        {
+            Instance.universalCanvas.gameObject.SetActive(true);
         }
 
         OnCanvasActivated?.Invoke();
