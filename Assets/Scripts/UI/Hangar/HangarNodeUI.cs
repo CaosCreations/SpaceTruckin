@@ -85,7 +85,6 @@ public class HangarNodeUI : UICanvasBase
     private void OnDisable()
     {
         Destroy(shipPreview);
-        MinigamePrefabManager.DestroyPrefabs();
 
         if (ThisNodeIsEmpty)
         {
@@ -163,8 +162,9 @@ public class HangarNodeUI : UICanvasBase
                 SetButtonInteractability();
                 break;
             case HangarPanel.Repair:
-                repairPanel.SetActive(true);
-                repairsUI.Init(ShipToInspect, RepairsMinigameType.Tile);
+                // Start minigame to repair the ship
+                UIManager.ClearCanvases();
+                SceneRepairsMinigamesManager.Instance.StartMinigame();
                 break;
             case HangarPanel.Upgrade:
                 upgradePanel.SetActive(true);

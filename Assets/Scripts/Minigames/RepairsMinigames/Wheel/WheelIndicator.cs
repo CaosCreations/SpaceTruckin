@@ -24,8 +24,6 @@ public class WheelIndicator : MonoBehaviour
         {
             wheelManager.PlayerLoses();
         }
-
-        RepairsMinigamesManager.FinishMinigameAttempt(isInsideGreenZone);
     }
 
     private void OnTriggerEnter(Collider other)

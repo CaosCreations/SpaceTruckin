@@ -55,7 +55,7 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
     {
         return Instance.ArchivedMissions
             .OrderByDescending(x => x?.CompletionDate)
-            .FirstOrDefault();
+            .FirstOrDefault(x => x?.Pilot == pilot);
     }
 
     public static IEnumerable<ArchivedMission> GetArchivedMissionsByPilot(Pilot pilot)

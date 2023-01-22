@@ -14,4 +14,7 @@ public class RepairsMinigame : ScriptableObject
 
     [field: SerializeField]
     public RepairsMinigameType RepairsMinigameType { get; set; }
+
+    [field: SerializeField]
+    public ShipDamageType ShipDamageType { get; set; }
 }

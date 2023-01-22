@@ -28,8 +28,8 @@ public class NewDayReportCard : MonoBehaviour
     {
         StringBuilder builder = new StringBuilder();
         string missionIdentifierText = $"{mission.Pilot.Name} of the {mission.Pilot.Ship.Name} completed the mission {mission.MissionName}.";
-        string moneyText = $"{mission.Pilot.Ship.Name} earned ${mission.TotalMoneyEarned}.";
-        string damageText = $"{mission.Pilot.Ship.Name} took {mission.TotalDamageTaken} damage.";
+        string moneyText = $"{mission.Pilot.Name} earned ${mission.TotalMoneyEarned}.";
+        string damageText = $"{mission.Pilot.Ship.Name} took {mission.TotalDamageTaken} damage to its {mission.DamageType}.";
         string fuelText = $"{mission.Pilot.Ship.Name} lost {mission.TotalFuelLost} fuel.";
         string xpText = $"{mission.Pilot.Name} gained {mission.TotalPilotXpGained} xp.";
         string missionsCompletedText = $"{mission.Pilot.Name} has now completed {mission.MissionsCompletedByPilotAtTimeOfMission} missions.";

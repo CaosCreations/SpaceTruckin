@@ -11,15 +11,13 @@ public class RepairToolsUI : MonoBehaviour
     private int currentQuantity;
     private int TotalCost => currentQuantity * RepairsConstants.CostPerTool;
 
+    [SerializeField]
     private Button startRepairsButton;
 
     private void Awake()
     {
         buyButton.AddOnClick(BuyTools);
         quantityInput.AddOnValueChanged(HandleOnValueChanged);
-
-        startRepairsButton = RepairsMinigamesManager
-            .GetRepairsMinigameButton(RepairsMinigameButtonType.A);
     }
 
     private void OnEnable()

@@ -4,14 +4,12 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class IsolatedRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesManager
+public class SceneRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesManager
 {
-    public static IsolatedRepairsMinigamesManager Instance { get; private set; }
+    public static SceneRepairsMinigamesManager Instance { get; private set; }
 
     [SerializeField]
     private RepairsMinigameContainer minigameContainer;
-
-    private RepairsMinigameBehaviour[] repairsMinigameBehaviours;
 
     private void Awake()
     {
@@ -22,11 +20,6 @@ public class IsolatedRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesM
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
-        repairsMinigameBehaviours = FindObjectsOfType<RepairsMinigameBehaviour>();
-
-        if (repairsMinigameBehaviours == null)
-            Debug.LogError("No repairs minigames found");
     }
 
     private void Start()
@@ -40,20 +33,20 @@ public class IsolatedRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesM
         SingletonManager.EventService.Add<OnSceneUnloadedEvent>(OnSceneUnloadedHandler);
     }
 
-    public GameObject InitMinigame(RepairsMinigameType minigameType, Transform parent)
+    public void StartMinigame()
     {
+        if (ShipsManager.ShipUnderRepair == null)
+            throw new Exception("Cannot start minigame because the ShipsManager.ShipUnderRepair is null");
+
         var minigame = minigameContainer.Elements
-            .FirstOrDefault(mg => mg != null && mg.RepairsMinigameType == minigameType);
+            .FirstOrDefault(mg => mg != null && mg.ShipDamageType == ShipsManager.ShipUnderRepair.DamageType);
 
         if (minigame == null)
-            throw new Exception("Minigame not found in container with type: " + minigameType);
+            throw new Exception("Minigame not found in container with type: " + minigame.RepairsMinigameType);
 
-        Debug.Log("Starting minigame with type: " + minigameType);
+        Debug.Log("Starting minigame with type: " + minigame.RepairsMinigameType);
 
-        UIManager.ClearCanvases();
         SceneLoadingManager.Instance.LoadSceneAsync(minigame.Scene, loadSceneMode: LoadSceneMode.Additive);
-
-        return default;
     }
 
     private void SetUpMinigameCamera()

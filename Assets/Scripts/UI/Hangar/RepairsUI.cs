@@ -11,14 +11,7 @@ public class RepairsUI : SubMenu, IRepairsUI
     [SerializeField] private ResourceBar hullResourceBar;
     [SerializeField] private ShipDetails shipDetails;
 
-    private GameObject repairsMinigameInstance;
-
-    private void Awake()
-    {
-        RepairsMinigamesManager.OnMinigameAttemptFinished += UpdateUI;
-    }
-
-    public void Init(Ship shipToRepair, RepairsMinigameType minigameType)
+    public void SetUp(Ship shipToRepair, RepairsMinigameType minigameType)
     {
         if (shipToRepair != null)
         {
@@ -28,7 +21,6 @@ public class RepairsUI : SubMenu, IRepairsUI
             SetButtonInteractability();
 
             repairsMinigameButton.SetText(RepairsConstants.StartButtonText);
-            InitMinigame();
         }
     }
 
@@ -55,21 +47,6 @@ public class RepairsUI : SubMenu, IRepairsUI
     public void ResetFeedbackText()
     {
         feedbackText.Clear();
-    }
-
-    public void InitMinigame()
-    {
-        if (repairsMinigameInstance == null)
-        {
-            // Damage type affects which minigame to play (which part of the ship to repair)
-            //RepairsMinigame minigameType = RepairsMinigamesManager
-            //    .GetMinigameTypeByDamageType(ShipsManager.ShipUnderRepair.DamageType);
-
-            // Todo: Don't hard-code this once we have multiple minigames setup
-            RepairsMinigameType minigameType = RepairsMinigameType.Wheel;
-
-            repairsMinigameInstance = RepairsMinigamesManager.Instance.InitMinigame(minigameType, transform);
-        }
     }
 
     private void UpdateHullResourceBar()

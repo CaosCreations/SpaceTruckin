@@ -9,9 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d8cb8fb9f43118459460bd730930d9a, type: 3}
-  m_Name: RepairsMinigameContainer
+  m_Script: {fileID: 11500000, guid: edd46c725defd364bb51231d53b7584a, type: 3}
+  m_Name: ShipHullDamageOutcome_Outcome
   m_EditorClassIdentifier: 
-  <Elements>k__BackingField:
-  - {fileID: 11400000, guid: 224b6174b694f3040a3d49e1863125cb, type: 2}
-  - {fileID: 11400000, guid: f84e19e68d63cba4ea7b1edb87b9aa20, type: 2}
+  Probability: 40
+  <RequiresMissionSuccess>k__BackingField: 0
+  <FlavourText>k__BackingField: 
+  shipDamage: 50
+  damageType: 0
+  hasRandomDamageType: 0
