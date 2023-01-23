@@ -38,7 +38,7 @@ public class BatteryHoldingLocation : MonoBehaviour
         && batteryInteractableInSlot == null;
 
     private bool IsAbleToTakeFromSlot
-        => !BatteryInteractable.PlayerIsHoldingABattery
+        => !BatteryInteractable.IsPlayerHoldingABattery
         && batteryInteractableInSlot != null;
 
     /// <summary>

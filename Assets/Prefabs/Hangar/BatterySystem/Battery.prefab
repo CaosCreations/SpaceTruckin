@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1691787280572270736}
   - component: {fileID: 2466530580323449094}
   - component: {fileID: 4384775771453189675}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Battery
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31,6 +31,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3392611835173258821}
   - {fileID: 1744850172657582187}
@@ -108,19 +109,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BatteryInteractable: {fileID: 8223680205256685485}
   BatteryCharging: {fileID: 2466530580323449094}
---- !u!65 &276256587078668969
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2620860588963241215}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.40567338, y: 0.51696223, z: 0.53454345}
-  m_Center: {x: -0.02075082, y: 0.00000011920929, z: 0.31443673}
 --- !u!1 &6070962309803577623
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,7 +120,7 @@ GameObject:
   - component: {fileID: 1744850172657582187}
   - component: {fileID: 1727094650523169519}
   - component: {fileID: 8317592649254769262}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: BatteryActivator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,6 +137,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7565187367321210414}
   m_RootOrder: 1
@@ -253,6 +242,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Battery16x16testn
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6a3b55f3d5701014ca3a6ff686e3d6c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3451118302482216456, guid: 6a3b55f3d5701014ca3a6ff686e3d6c3, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 6a3b55f3d5701014ca3a6ff686e3d6c3, type: 3}
@@ -262,6 +256,19 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2926850476172681646}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &276256587078668969
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2620860588963241215}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.40567338, y: 0.51696223, z: 0.53454345}
+  m_Center: {x: -0.02075082, y: 0.00000011920929, z: 0.31443673}
 --- !u!4 &3392611835173258821 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6a3b55f3d5701014ca3a6ff686e3d6c3,
