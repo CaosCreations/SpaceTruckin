@@ -187,10 +187,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public bool Raycast(string layerName)
+    public bool Raycast(string layerName, out RaycastHit hit)
     {
         LayerMask layerMask = LayerMask.GetMask(layerName);
-        return Physics.Raycast(transform.position, PlayerFacingDirection, PlayerConstants.RaycastDistance, layerMask);
+        return Physics.Raycast(transform.position, PlayerFacingDirection, out hit, PlayerConstants.RaycastDistance, layerMask);
     }
 
     public static void RotateWithView(Vector3 vector, Transform cameraTransform)

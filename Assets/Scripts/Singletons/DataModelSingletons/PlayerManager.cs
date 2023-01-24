@@ -176,9 +176,9 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         IsPaused = true;
     }
 
-    public static bool Raycast(string layerName)
+    public static bool Raycast(string layerName, out RaycastHit hit)
     {
-        return PlayerMovement.Raycast(layerName);
+        return PlayerMovement.Raycast(layerName, out hit);
     }
 
     public string GetPlayerName()

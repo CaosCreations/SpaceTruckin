@@ -74,11 +74,16 @@ public class BatteryInteractable : InteractableObject
     /// </summary>
     private bool CanTakeBattery()
     {
-        return !IsPlayerHoldingABattery
-          && IsPlayerColliding
-          && !PlayerManager.IsPaused
-          && Input.GetKey(PlayerConstants.ActionKey)
-          && PlayerManager.Raycast("Battery");
+        if (IsPlayerHoldingABattery
+          || !IsPlayerColliding
+          || PlayerManager.IsPaused
+          || !Input.GetKey(PlayerConstants.ActionKey))
+        {
+            return false;
+        }
+
+        PlayerManager.Raycast(HangarConstants.BatteryLayer, out RaycastHit hit);
+        return hit.collider != null && hit.collider.gameObject == gameObject;
     }
 
     public override void OnTriggerEnter(Collider other)
