@@ -193,6 +193,14 @@ public class PlayerMovement : MonoBehaviour
         return Physics.Raycast(transform.position, PlayerFacingDirection, out hit, PlayerConstants.RaycastDistance, layerMask);
     }
 
+    public bool IsFirstRaycastHit(string layerName, GameObject obj)
+    {
+        if (!Raycast(layerName, out RaycastHit hit))
+            return false;
+
+        return hit.collider != null && hit.collider.gameObject == obj;
+    }
+
     public static void RotateWithView(Vector3 vector, Transform cameraTransform)
     {
         Vector3 dir = cameraTransform.TransformDirection(vector);

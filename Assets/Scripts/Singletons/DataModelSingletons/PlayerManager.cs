@@ -181,6 +181,11 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         return PlayerMovement.Raycast(layerName, out hit);
     }
 
+    public static bool IsFirstRaycastHit(string layerName, GameObject obj)
+    {
+        return PlayerMovement.IsFirstRaycastHit(layerName, obj);
+    }
+
     public string GetPlayerName()
     {
         return PlayerName;

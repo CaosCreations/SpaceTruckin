@@ -7,6 +7,8 @@ public class InteractableObject : MonoBehaviour
 
     public Collider Collider;
 
+    //public bool IsPlayerInteractable => IsPlayerColliding && PlayerManager.IsFirstRaycastHit(gameObject.layer, gameObject);
+
     /// <summary>
     /// Can be called whenever we want to check whether the object is colliding with the player
     /// As it doesn't rely on trigger OnTriggerEnter and OnTriggerExit, it can be used in the rare situations where the object's
