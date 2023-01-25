@@ -4,9 +4,7 @@ public class BatteryChargePoint : InteractableObject
 {
     private void OnTriggerStay(Collider other)
     {
-        if (IsPlayerColliding
-            && Input.GetKey(PlayerConstants.ActionKey)
-            && PlayerManager.IsFirstRaycastHit(HangarConstants.BatteryChargerLayer, gameObject))
+        if (Input.GetKey(PlayerConstants.ActionKey) && IsPlayerInteractable)
         {
             BatteryCharging batteryCharging = other.GetComponentInChildren<BatteryCharging>();
 

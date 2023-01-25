@@ -193,8 +193,9 @@ public class PlayerMovement : MonoBehaviour
         return Physics.Raycast(transform.position, PlayerFacingDirection, out hit, PlayerConstants.RaycastDistance, layerMask);
     }
 
-    public bool IsFirstRaycastHit(string layerName, GameObject obj)
+    public bool IsFirstRaycastHit(GameObject obj)
     {
+        var layerName = LayerMask.LayerToName(obj.layer);
         if (!Raycast(layerName, out RaycastHit hit))
             return false;
 

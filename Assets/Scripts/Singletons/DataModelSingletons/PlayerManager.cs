@@ -172,8 +172,8 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
     public static void EnterPausedState(PlayableDirector playableDirector)
     {
-        PlayerMovement.ResetDirection();
-        IsPaused = true;
+        Debug.Log("Entering paused state from playable director: " + playableDirector.name);
+        EnterPausedState();
     }
 
     public static bool Raycast(string layerName, out RaycastHit hit)
@@ -181,9 +181,9 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         return PlayerMovement.Raycast(layerName, out hit);
     }
 
-    public static bool IsFirstRaycastHit(string layerName, GameObject obj)
+    public static bool IsFirstRaycastHit(GameObject obj)
     {
-        return PlayerMovement.IsFirstRaycastHit(layerName, obj);
+        return PlayerMovement.IsFirstRaycastHit(obj);
     }
 
     public string GetPlayerName()
