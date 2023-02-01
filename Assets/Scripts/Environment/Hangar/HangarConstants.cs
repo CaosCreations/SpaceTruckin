@@ -17,6 +17,8 @@ public static class HangarConstants
 
     public const bool BatteryEnableCollision = false;
 
+    public const string BatteryLayer = "Battery";
+    public const string BatteryChargerLayer = "BatteryChargePoint";
 
     // Battery rigidbody constraints 
     public const RigidbodyConstraints BatteryRigidbodyConstraintsTaken = RigidbodyConstraints.FreezePositionY

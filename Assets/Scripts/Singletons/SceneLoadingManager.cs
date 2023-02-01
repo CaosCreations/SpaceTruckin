@@ -174,4 +174,10 @@ public class SceneLoadingManager : MonoBehaviour
         var mapping = sceneMappings.FirstOrDefault(kvp => kvp.Value == sceneName);
         return mapping.Key;
     }
+
+    public static SceneType GetCurrentSceneType()
+    {
+        var scene = SceneManager.GetActiveScene();
+        return GetSceneTypeByName(scene.name);
+    }
 }
