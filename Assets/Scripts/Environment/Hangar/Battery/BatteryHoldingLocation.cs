@@ -29,8 +29,8 @@ public class BatteryHoldingLocation : MonoBehaviour
 
     private bool IsAttemptingToInteract
         => !PlayerManager.IsPaused
-        && interactableObjectWithSlot.IsPlayerColliding
-        && Input.GetKeyDown(PlayerConstants.ActionKey);
+        && Input.GetKeyDown(PlayerConstants.ActionKey)
+        && interactableObjectWithSlot.IsPlayerInteractable;
 
     private bool IsAbleToPutInSlot
         => HangarManager.CurrentBatteryBeingHeld != null
