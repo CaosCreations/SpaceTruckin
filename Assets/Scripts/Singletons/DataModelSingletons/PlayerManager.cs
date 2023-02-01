@@ -70,6 +70,14 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
     {
         RegisterLuaFunctions();
         RegisterDialogueEvents();
+
+#if UNITY_EDITOR
+        // If starting from MainStation scene in the editor, then perform the setup here
+        if (SceneLoadingManager.GetCurrentSceneType() == SceneType.MainStation)
+        {
+            SetUpPlayer();
+        }
+#endif
     }
 
     private void RegisterDialogueEvents()

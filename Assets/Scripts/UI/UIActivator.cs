@@ -1,19 +1,25 @@
 ﻿using UnityEngine;
 
-public class UIActivator : MonoBehaviour
+public class UIActivator : InteractableObject
 {
     public UICanvasType canvasType;
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag(PlayerConstants.PlayerTag))
+        if (other.CompareTag(PlayerConstants.PlayerTag) && IsPlayerInteractable)
         {
             UIManager.SetCanInteract(canvasType);
         }
+        else
+        {
+            UIManager.SetCannotInteract();
+        }
     }
 
-    private void OnTriggerExit(Collider other)
+    public override void OnTriggerExit(Collider other)
     {
+        base.OnTriggerExit(other);
+
         if (other.CompareTag(PlayerConstants.PlayerTag))
         {
             UIManager.SetCannotInteract();

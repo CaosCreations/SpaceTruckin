@@ -93,6 +93,8 @@ public class PlayerMovement : MonoBehaviour
         ApplyGravity();
         DetermineSpeed();
         MovePlayer();
+
+        Debug.DrawRay(transform.position, PlayerFacingDirection, Color.yellow);
     }
 
     private void SetDirection()
@@ -192,7 +194,7 @@ public class PlayerMovement : MonoBehaviour
         LayerMask layerMask = LayerMask.GetMask(layerName);
         return Physics.Raycast(transform.position, PlayerFacingDirection, out hit, PlayerConstants.RaycastDistance, layerMask);
     }
-
+    
     public bool IsFirstRaycastHit(GameObject obj)
     {
         var layerName = LayerMask.LayerToName(obj.layer);

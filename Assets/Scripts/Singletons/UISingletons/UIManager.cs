@@ -232,7 +232,10 @@ public class UIManager : MonoBehaviour
 
     public static void SetCannotInteract()
     {
-        currentCanvasType = UICanvasType.None;
+        if (currentCanvasType != UICanvasType.None)
+        {
+            currentCanvasType = UICanvasType.None;
+        }
     }
 
     private static string GetInteractionString()
