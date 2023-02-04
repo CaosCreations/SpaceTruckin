@@ -85,7 +85,9 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
             var mostRecentMission = ArchivedMissionsManager.GetMostRecentMissionByPilot(ShipUnderRepair.Pilot);
 
             if (mostRecentMission != null)
+            {
                 ShipUnderRepair.DamageType = mostRecentMission.DamageType;
+            }
         }
     }
 

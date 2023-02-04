@@ -70,6 +70,14 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
     {
         RegisterLuaFunctions();
         RegisterDialogueEvents();
+
+#if UNITY_EDITOR
+        // If starting from MainStation scene in the editor, then perform the setup here
+        if (SceneLoadingManager.GetCurrentSceneType() == SceneType.MainStation)
+        {
+            SetUpPlayer();
+        }
+#endif
     }
 
     private void RegisterDialogueEvents()
@@ -92,7 +100,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         // Set up player when station scene loads 
         SceneManager.activeSceneChanged += (Scene previous, Scene next) =>
         {
-            if (SceneLoadingManager.GetSceneNameByEnum(Scenes.MainStation) == next.name)
+            if (SceneLoadingManager.GetSceneNameByType(SceneType.MainStation) == next.name)
             {
                 SetUpPlayer();
             }
@@ -172,8 +180,18 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
     public static void EnterPausedState(PlayableDirector playableDirector)
     {
-        PlayerMovement.ResetDirection();
-        IsPaused = true;
+        Debug.Log("Entering paused state from playable director: " + playableDirector.name);
+        EnterPausedState();
+    }
+
+    public static bool Raycast(string layerName, out RaycastHit hit)
+    {
+        return PlayerMovement.Raycast(layerName, out hit);
+    }
+
+    public static bool IsFirstRaycastHit(GameObject obj)
+    {
+        return PlayerMovement.IsFirstRaycastHit(obj);
     }
 
     public string GetPlayerName()

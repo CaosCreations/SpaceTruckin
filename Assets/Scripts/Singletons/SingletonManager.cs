@@ -1,9 +1,26 @@
-﻿using UnityEngine;
+﻿using Events;
+using UnityEngine;
 
 public class SingletonManager : MonoBehaviour
 {
     [SerializeField]
     private bool saveDataEnabled;
+
+    public static SingletonManager Instance { get; private set; }
+
+    private readonly EventService eventService = new EventService();
+    public static EventService EventService => Instance.eventService;
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
 
     private void Start()
     {
