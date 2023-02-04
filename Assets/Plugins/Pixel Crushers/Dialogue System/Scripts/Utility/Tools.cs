@@ -317,6 +317,10 @@ namespace PixelCrushers.DialogueSystem
         /// </param>
         public static Color WebColor(string colorCode)
         {
+            if (string.IsNullOrWhiteSpace(colorCode))
+            {
+                return Color.white;
+            }
             byte r = (colorCode.Length > 2) ? Tools.HexToByte(colorCode.Substring(1, 2)) : (byte)0;
             byte g = (colorCode.Length > 4) ? Tools.HexToByte(colorCode.Substring(3, 2)) : (byte)0;
             byte b = (colorCode.Length > 6) ? Tools.HexToByte(colorCode.Substring(5, 2)) : (byte)0;
