@@ -30,7 +30,7 @@ public class StackMinigameManager : RepairsMinigameBehaviour
         cubeMover = GetComponentInChildren<CubeMover>();
 
         stackButton.onClick.RemoveAllListeners();
-        stackButton.onClick.AddListener(DoPlayButton);
+        stackButton.onClick.AddListener(DoPlayAction);
 
         replayButton.onClick.RemoveAllListeners();
         replayButton.onClick.AddListener(ResetGame);
@@ -42,6 +42,9 @@ public class StackMinigameManager : RepairsMinigameBehaviour
             return;
 
         cubeMover.MoveCube();
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            DoPlayAction();
     }
 
     private void OnDisable()
@@ -52,7 +55,7 @@ public class StackMinigameManager : RepairsMinigameBehaviour
     // When the player presses the play button, he or she attempts to stack the current moving cube on top of the cube below
     // If the cubes are stacked, the game goes on, and we spawn a new cube on top
     // If not it's game over
-    public void DoPlayButton()
+    public void DoPlayAction()
     {
         CubeCornersPositionTracker topCubeCornerPosition = cubeCornersPositionPile.CubeCornersPositionList[0];
 
