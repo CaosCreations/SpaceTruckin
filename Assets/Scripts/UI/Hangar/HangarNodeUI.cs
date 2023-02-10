@@ -12,7 +12,7 @@ public class HangarNodeUI : UICanvasBase
     [Header("Set In Editor")]
     [SerializeField] private GameObject mainPanel;
     [SerializeField] private GameObject repairPanel;
-    [SerializeField] private RepairsUI repairsUI;
+    [SerializeField] private IRepairsUI repairsUI;
     [SerializeField] private GameObject upgradePanel;
     [SerializeField] private GameObject customizationPanel;
 
@@ -44,11 +44,21 @@ public class HangarNodeUI : UICanvasBase
     public static event Action<Ship> OnHangarNodeTerminalOpened;
     public static event Action OnHangarNodeTerminalClosed;
 
+    private void Awake()
+    {
+        repairsUI = GetComponentInChildren<IRepairsUI>(true);
+
+        if (repairsUI == null)
+            Debug.LogError("Couldn't find Repairs UI component");
+    }
+
     private void OnEnable()
     {
         hangarNode = UIManager.HangarNode;
         hangarSlot = HangarManager.GetSlotByNode(hangarNode);
-        ShipToInspect = hangarSlot.Ship;
+
+        if (hangarSlot != null)
+            ShipToInspect = hangarSlot.Ship;
 
         // There is no ship at this node, don't open UI
         if (ThisNodeIsEmpty)
@@ -75,7 +85,6 @@ public class HangarNodeUI : UICanvasBase
     private void OnDisable()
     {
         Destroy(shipPreview);
-        MinigamePrefabManager.DestroyPrefabs();
 
         if (ThisNodeIsEmpty)
         {
@@ -153,8 +162,9 @@ public class HangarNodeUI : UICanvasBase
                 SetButtonInteractability();
                 break;
             case HangarPanel.Repair:
-                repairPanel.SetActive(true);
-                repairsUI.Init(ShipToInspect);
+                // Start minigame to repair the ship
+                UIManager.ClearCanvases();
+                SceneRepairsMinigamesManager.Instance.StartMinigame();
                 break;
             case HangarPanel.Upgrade:
                 upgradePanel.SetActive(true);

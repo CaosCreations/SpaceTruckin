@@ -460,7 +460,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             if (database == null) return;
             if (watchableQuestNames == null || watchableQuestNames.Length == 0)
             {
-                List<string> questNames = new List<string>(QuestLog.GetAllQuests(QuestState.Abandoned | QuestState.Active | QuestState.Failure | QuestState.Success | QuestState.Unassigned));
+                List<string> questNames = new List<string>(QuestLog.GetAllQuests(QuestState.Abandoned | QuestState.Active | QuestState.Failure | QuestState.Success | QuestState.Grantable | QuestState.Unassigned));
                 questNames.Sort();
                 watchableQuestNames = questNames.ToArray();
             }

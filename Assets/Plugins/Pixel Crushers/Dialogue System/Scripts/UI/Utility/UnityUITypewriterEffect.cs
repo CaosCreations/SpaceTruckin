@@ -317,7 +317,14 @@ namespace PixelCrushers.DialogueSystem
                                     {
                                         current.Append(token.character);
                                     }
-                                    if (!IsSilentCharacter(token.character)) PlayCharacterAudio(token.character);
+                                    if (IsSilentCharacter(token.character))
+                                    {
+                                        if (stopAudioOnSilentCharacters) StopCharacterAudio();
+                                    }
+                                    else
+                                    {
+                                        PlayCharacterAudio(token.character);
+                                    }
                                     onCharacter.Invoke();
                                     charactersTyped++;
                                     if (IsFullPauseCharacter(token.character))

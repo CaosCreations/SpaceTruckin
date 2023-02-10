@@ -73,7 +73,7 @@ namespace PixelCrushers.DialogueSystem
     /// 
     /// Omitted values in any particular asset should be tagged with "{{omit}}".
     /// </summary>
-    public class CSVConverterWindow : AbstractConverterWindow
+    public class CSVConverterWindow : AbstractConverterWindow<AbstractConverterWindowPrefs>
     {
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace PixelCrushers.DialogueSystem
         /// <summary>
         /// Menu item code to create a CSVConverterWindow.
         /// </summary>
-        [MenuItem("Tools/Pixel Crushers/Dialogue System/Import/CSV", false, 1)]
+        [MenuItem("Tools/Pixel Crushers/Dialogue System/Import/CSV...", false, 1)]
         public static void Init()
         {
             EditorWindow.GetWindow(typeof(CSVConverterWindow), false, "CSV Import");
@@ -357,7 +357,7 @@ namespace PixelCrushers.DialogueSystem
                     if (isActorSection) FindActorPortraits(asset as Actor, values[1], values[2], values[3], values[4]);
 
                     // Read the remaining values and assign them to the asset's fields:
-                    ReadAssetFields(fieldNames, fieldTypes, ignore, values, asset.fields);
+                    ReadAssetFields(fieldNames, fieldTypes, ignore, values, asset.fields, asset);
 
                     // If the database already has an old asset with the same ID, delete it first:
                     assets.RemoveAll(a => a.id == asset.id);
@@ -377,7 +377,7 @@ namespace PixelCrushers.DialogueSystem
         /// <param name="values">CSV values.</param>
         /// <param name="fields">Fields list of populate.</param>
         private void ReadAssetFields(string[] fieldNames, string[] fieldTypes, List<string> ignore,
-                                     string[] values, List<Field> fields)
+                                     string[] values, List<Field> fields, Asset asset)
         {
             // Look for a special field named "InitialValueType" used in Variables section:
             var isInitialValueTypeKnown = false;
@@ -400,9 +400,19 @@ namespace PixelCrushers.DialogueSystem
                 if (string.IsNullOrEmpty(fieldNames[i])) continue;
                 string title = fieldNames[i];
                 string value = values[i];
-                // Special handling required for Initial Value of Variables section:
-                FieldType type = (string.Equals(title, "Initial Value") && isInitialValueTypeKnown) ? initialValueType : GuessFieldType(value, fieldTypes[i]);
-                fields.Add(new Field(title, value, type));
+
+                // Special handling for conversation overrides:
+                if (asset is Conversation && title == "Overrides")
+                {
+                    var overrideSettings = JsonUtility.FromJson<ConversationOverrideDisplaySettings>(value);
+                    if (overrideSettings != null) (asset as Conversation).overrideSettings = overrideSettings;
+                }
+                else
+                {
+                    // Special handling required for Initial Value of Variables section:
+                    FieldType type = (string.Equals(title, "Initial Value") && isInitialValueTypeKnown) ? initialValueType : GuessFieldType(value, fieldTypes[i]);
+                    fields.Add(new Field(title, value, type));
+                }
             }
         }
 
@@ -491,7 +501,7 @@ namespace PixelCrushers.DialogueSystem
                     entry.userScript = values[12];
 
                     // Read the remaining values and assign them to the asset's fields:
-                    ReadAssetFields(fieldNames, fieldTypes, DialogueEntrySpecialValues, values, entry.fields);
+                    ReadAssetFields(fieldNames, fieldTypes, DialogueEntrySpecialValues, values, entry.fields, null);
 
                     // Convert canvasRect field to entry position on node editor canvas:
                     entry.UseCanvasRectField();

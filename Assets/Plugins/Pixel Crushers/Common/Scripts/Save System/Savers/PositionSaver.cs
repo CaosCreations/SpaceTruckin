@@ -16,6 +16,10 @@ namespace PixelCrushers
     public class PositionSaver : Saver
     {
 
+        [Tooltip("If set, save position of target. Otherwise save this GameObject's position.")]
+        [SerializeField]
+        private Transform m_target = null;
+
         [Tooltip("When changing scenes, if a player spawnpoint is specified, move this GameObject to the spawnpoint.")]
         [SerializeField]
         private bool m_usePlayerSpawnpoint = false;
@@ -56,6 +60,12 @@ namespace PixelCrushers
         protected MultiscenePositionData m_multisceneData;
         protected NavMeshAgent m_navMeshAgent;
 
+        public Transform target
+        {
+            get { return (m_target == null) ? this.transform : m_target; }
+            set { m_target = value; }
+        }
+
         public bool usePlayerSpawnpoint
         {
             get { return m_usePlayerSpawnpoint; }
@@ -69,7 +79,7 @@ namespace PixelCrushers
             base.Awake();
             if (m_multiscene) m_multisceneData = new MultiscenePositionData();
             else m_data = new PositionData();
-            m_navMeshAgent = GetComponent<NavMeshAgent>();
+            m_navMeshAgent = target.GetComponent<NavMeshAgent>();
         }
 
         public override string RecordData()
@@ -83,22 +93,22 @@ namespace PixelCrushers
                     if (m_multisceneData.positions[i].scene == currentScene)
                     {
                         found = true;
-                        m_multisceneData.positions[i].position = transform.position;
-                        m_multisceneData.positions[i].rotation = transform.rotation;
+                        m_multisceneData.positions[i].position = target.transform.position;
+                        m_multisceneData.positions[i].rotation = target.transform.rotation;
                         break;
                     }
                 }
                 if (!found)
                 {
-                    m_multisceneData.positions.Add(new ScenePositionData(currentScene, transform.position, transform.rotation));
+                    m_multisceneData.positions.Add(new ScenePositionData(currentScene, target.transform.position, target.transform.rotation));
                 }
                 return SaveSystem.Serialize(m_multisceneData);
             }
             else
             {
                 m_data.scene = currentScene;
-                m_data.position = transform.position;
-                m_data.rotation = transform.rotation;
+                m_data.position = target.transform.position;
+                m_data.rotation = target.transform.rotation;
                 return SaveSystem.Serialize(m_data);
             }
         }
@@ -147,9 +157,9 @@ namespace PixelCrushers
             }
             else
             {
-                transform.position = position;
+                target.transform.position = position;
             }
-            transform.rotation = rotation;
+            target.transform.rotation = rotation;
         }
 
     }

@@ -210,13 +210,13 @@ namespace PixelCrushers.DialogueSystem
         /// <returns>A value 1 higher than the highest actor ID in the database.</returns>
         public int GetNextActorID(DialogueDatabase database)
         {
-            return (database != null) ? GetNextAssetID<Actor>(database.actors) : 0;
+            return (database != null) ? GetNextAssetID<Actor>(database.baseID, database.actors) : 0;
         }
 
         /// <returns>A value 1 higher than the highest item/quest ID in the database.</returns>
         public int GetNextItemID(DialogueDatabase database)
         {
-            return (database != null) ? GetNextAssetID<Item>(database.items) : 0;
+            return (database != null) ? GetNextAssetID<Item>(database.baseID, database.items) : 0;
         }
 
         /// <returns>A value 1 higher than the highest item/quest ID in the database.</returns>
@@ -228,24 +228,24 @@ namespace PixelCrushers.DialogueSystem
         /// <returns>A value 1 higher than the highest location ID in the database.</returns>
         public int GetNextLocationID(DialogueDatabase database)
         {
-            return (database != null) ? GetNextAssetID<Location>(database.locations) : 0;
+            return (database != null) ? GetNextAssetID<Location>(database.baseID, database.locations) : 0;
         }
 
         /// <returns>A value 1 higher than the highest variable ID in the database.</returns>
         public int GetNextVariableID(DialogueDatabase database)
         {
-            return (database != null) ? GetNextAssetID<Variable>(database.variables) : 0;
+            return (database != null) ? GetNextAssetID<Variable>(database.baseID, database.variables) : 0;
         }
 
         /// <returns>A value 1 higher than the highest conversation ID in the database.</returns>
         public int GetNextConversationID(DialogueDatabase database)
         {
-            return (database != null) ? GetNextAssetID<Conversation>(database.conversations) : 0;
+            return (database != null) ? GetNextAssetID<Conversation>(database.baseID, database.conversations) : 0;
         }
 
-        private int GetNextAssetID<T>(List<T> assets) where T : Asset
+        private int GetNextAssetID<T>(int baseID, List<T> assets) where T : Asset
         {
-            int highest = -1;
+            int highest = baseID - 1;
             for (int i = 0; i < assets.Count; i++)
             {
                 highest = Mathf.Max(highest, assets[i].id);

@@ -45,6 +45,14 @@ namespace Language.Lua
 
         static Parser parser = new Parser();
 
+#if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
+        [UnityEngine.RuntimeInitializeOnLoadMethod(UnityEngine.RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void InitStaticVariables()
+        {
+            parser = new Parser();
+        }
+#endif
+
         public static Chunk Parse(string luaCode)
         {
             bool success;

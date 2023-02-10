@@ -31,6 +31,11 @@ namespace PixelCrushers.DialogueSystem
         private List<DialogueDatabase> m_loadedDatabases = new List<DialogueDatabase>();
 
         /// <summary>
+        /// The list of databases currently loaded into the masterDatabase.
+        /// </summary>
+        public List<DialogueDatabase> loadedDatabases { get { return m_loadedDatabases; } }
+
+        /// <summary>
         /// Initializes a new DatabaseManager. Loading of the default database is delayed until the
         /// first time the database is accessed. If you want to manually load the database, you can
         /// reset it or add a database to it.

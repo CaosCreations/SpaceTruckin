@@ -20,6 +20,10 @@ public class PlayerPrototyping : MonoBehaviour
         {
             UIManager.ToggleCanvas(UICanvasType.NoticeBoard);
         }
+        else if (Input.GetKeyDown(PlayerConstants.FinishTimelineShortcut))
+        {
+            TimelineManager.Instance.FinishCurrentTimeline();
+        }
     }
 
     private void Update()

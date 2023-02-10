@@ -34,7 +34,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
         {
             // Get the values of the parameters:
             original = string.Equals(GetParameter(0), "original");
-            subject = original ? null : GetSubject(0);
+            subject = original ? null : GetSubject(0, speaker);
             targetSize = GetParameterAsFloat(1, 16);
             duration = GetParameterAsFloat(2, 0);
 
@@ -52,7 +52,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
             }
             if ((subject == null && !original) && DialogueDebug.logWarnings)
             {
-                Debug.LogWarning(string.Format("{0}: Sequencer: Camera subject '{1}' wasn't found.", new System.Object[] { DialogueDebug.Prefix, GetParameter(1) }));
+                Debug.LogWarning(string.Format("{0}: Sequencer: Camera subject '{1}' wasn't found.", new System.Object[] { DialogueDebug.Prefix, GetParameter(0) }));
             }
 
             // Start moving the camera:

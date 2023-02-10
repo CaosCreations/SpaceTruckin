@@ -6,6 +6,15 @@ public class InteractableObject : MonoBehaviour
     public bool IsPlayerColliding { get; protected set; }
 
     public Collider Collider;
+    public GameObject RaycastTarget;
+
+    private void Start()
+    {
+        if (RaycastTarget == null)
+            RaycastTarget = gameObject;
+    }
+
+    public bool IsPlayerInteractable => IsPlayerColliding && PlayerManager.IsFirstRaycastHit(RaycastTarget);
 
     /// <summary>
     /// Can be called whenever we want to check whether the object is colliding with the player
@@ -36,6 +45,8 @@ public class InteractableObject : MonoBehaviour
         {
             IsPlayerColliding = true;
         }
+
+        Debug.Log("IsPlayerColliding = " + IsPlayerColliding);
     }
 
     public virtual void OnTriggerExit(Collider other)

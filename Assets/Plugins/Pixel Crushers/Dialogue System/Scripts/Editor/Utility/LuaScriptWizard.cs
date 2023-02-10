@@ -111,7 +111,7 @@ namespace PixelCrushers.DialogueSystem
                 luaCode = DrawScriptWizard(luaCode);
             }
 
-            luaCode = EditorGUILayout.TextArea(luaCode);
+            luaCode = EditorGUILayout.TextArea(luaCode, EditorTools.textAreaGuiStyle);
 
             return luaCode;
         }
@@ -283,7 +283,9 @@ namespace PixelCrushers.DialogueSystem
                         item.floatValue = EditorGUILayout.FloatField(item.floatValue);
                         break;
                     default:
-                        item.stringValue = EditorGUILayout.TextField(item.stringValue);
+                        CustomFieldType customFieldType = GetCustomFieldType(database.actors, item.actorNamesIndex, item.actorFieldIndex);
+                        if (customFieldType != null) item.stringValue = customFieldType.Draw(item.stringValue, database);
+                        else item.stringValue = EditorGUILayout.TextField(item.stringValue);
                         break;
                 }
 
@@ -306,7 +308,9 @@ namespace PixelCrushers.DialogueSystem
                         item.floatValue = EditorGUILayout.FloatField(item.floatValue);
                         break;
                     default:
-                        item.stringValue = EditorGUILayout.TextField(item.stringValue);
+                        CustomFieldType customFieldType = GetCustomFieldType(database.items, item.itemNamesIndex, item.itemFieldIndex);
+                        if (customFieldType != null) item.stringValue = customFieldType.Draw(item.stringValue, database);
+                        else item.stringValue = EditorGUILayout.TextField(item.stringValue);
                         break;
                 }
 
@@ -329,7 +333,9 @@ namespace PixelCrushers.DialogueSystem
                         item.floatValue = EditorGUILayout.FloatField(item.floatValue);
                         break;
                     default:
-                        item.stringValue = EditorGUILayout.TextField(item.stringValue);
+                        CustomFieldType customFieldType = GetCustomFieldType(database.locations, item.locationNamesIndex, item.locationNamesIndex);
+                        if (customFieldType != null) item.stringValue = customFieldType.Draw(item.stringValue, database);
+                        else item.stringValue = EditorGUILayout.TextField(item.stringValue);
                         break;
                 }
 
@@ -392,6 +398,7 @@ namespace PixelCrushers.DialogueSystem
                                 item.customParamValues[i] = EditorGUILayout.Popup((int)item.customParamValues[i], item.scriptQuestEntryNames);
                                 break;
                             case CustomLuaParameterType.Variable:
+                            case CustomLuaParameterType.VariableName:
                                 item.customParamValues[i] = EditorGUILayout.Popup((int)item.customParamValues[i], variablePopupNames);
                                 break;
                             case CustomLuaParameterType.Item:
@@ -462,7 +469,17 @@ namespace PixelCrushers.DialogueSystem
             try
             {
                 StringBuilder sb = new StringBuilder();
-                if (append && !string.IsNullOrEmpty(savedLuaCode)) sb.AppendFormat("{0};\n", savedLuaCode);
+                if (append && !string.IsNullOrEmpty(savedLuaCode))
+                {
+                    if (savedLuaCode.TrimEnd().EndsWith(";"))
+                    {
+                        sb.AppendFormat("{0}\n", savedLuaCode);
+                    }
+                    else
+                    {
+                        sb.AppendFormat("{0};\n", savedLuaCode);
+                    }
+                }
                 string endText = (scriptItems.Count > 1) ? ";\n" : string.Empty;
                 for (int i = 0; i < scriptItems.Count; i++)
                 {
@@ -672,7 +689,11 @@ namespace PixelCrushers.DialogueSystem
                                         break;
                                     case CustomLuaParameterType.Variable:
                                         var variableIndex = (int)item.customParamValues[p];
-                                        sb.Append((0 <= variableIndex && variableIndex < variableNames.Length) ? ("Variable[\"" + variableNames[variableIndex] + "\"]") : "\"\"");
+                                        sb.Append((0 <= variableIndex && variableIndex < variableNames.Length) ? ("Variable[\"" + DialogueLua.StringToTableIndex(variableNames[variableIndex]) + "\"]") : "\"\"");
+                                        break;
+                                    case CustomLuaParameterType.VariableName:
+                                        var variableNameIndex = (int)item.customParamValues[p];
+                                        sb.Append((0 <= variableNameIndex && variableNameIndex < variableNames.Length) ? ("\"" + variableNames[variableNameIndex] + "\"") : "\"\"");
                                         break;
                                     case CustomLuaParameterType.Item:
                                         var itemIndex = (int)item.customParamValues[p];
@@ -715,7 +736,7 @@ namespace PixelCrushers.DialogueSystem
                     sb.AppendFormat("{0}[\"{1}\"].{2} = {3}",
                                     tableName,
                                     DialogueLua.StringToTableIndex(elementName),
-                                    DialogueLua.StringToTableIndex(fieldName),
+                                    DialogueLua.StringToFieldName(fieldName),
                                     (item.booleanValue == BooleanType.True) ? "true" : "false");
                     break;
                 case FieldType.Number:
@@ -725,21 +746,21 @@ namespace PixelCrushers.DialogueSystem
                             sb.AppendFormat("{0}[\"{1}\"].{2} = {3}",
                                             tableName,
                                             DialogueLua.StringToTableIndex(elementName),
-                                            DialogueLua.StringToTableIndex(fieldName),
+                                            DialogueLua.StringToFieldName(fieldName),
                                             item.floatValue);
                             break;
                         case ValueSetMode.Add:
                             sb.AppendFormat("{0}[\"{1}\"].{2} = {0}[\"{1}\"].{2} + {3}",
                                             tableName,
                                             DialogueLua.StringToTableIndex(elementName),
-                                            DialogueLua.StringToTableIndex(fieldName),
+                                            DialogueLua.StringToFieldName(fieldName),
                                             item.floatValue);
                             break;
                         case ValueSetMode.Subtract:
                             sb.AppendFormat("{0}[\"{1}\"].{2} = {0}[\"{1}\"].{2} - {3}",
                                             tableName,
                                             DialogueLua.StringToTableIndex(elementName),
-                                            DialogueLua.StringToTableIndex(fieldName),
+                                            DialogueLua.StringToFieldName(fieldName),
                                             item.floatValue);
                             break;
                     }
@@ -748,7 +769,7 @@ namespace PixelCrushers.DialogueSystem
                     sb.AppendFormat("{0}[\"{1}\"].{2} = \"{3}\"",
                                     tableName,
                                     DialogueLua.StringToTableIndex(elementName),
-                                    DialogueLua.StringToTableIndex(fieldName),
+                                    DialogueLua.StringToFieldName(fieldName),
                                     item.stringValue);
                     break;
             }
@@ -1107,6 +1128,7 @@ namespace PixelCrushers.DialogueSystem
                                 item.customParamValues[i] = EditorGUILayout.Popup((int)item.customParamValues[i], item.scriptQuestEntryNames);
                                 break;
                             case CustomLuaParameterType.Variable:
+                            case CustomLuaParameterType.VariableName:
                                 item.customParamValues[i] = EditorGUILayout.Popup((int)item.customParamValues[i], variablePopupNames);
                                 break;
                             case CustomLuaParameterType.Item:

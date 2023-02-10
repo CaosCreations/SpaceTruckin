@@ -17,14 +17,16 @@ namespace PixelCrushers.DialogueSystem
                 return FieldType.Item;
             }
         }
-        public override string Draw(string currentValue, DialogueDatabase dataBase)
+        public override string Draw(string currentValue, DialogueDatabase database)
         {
-            return PixelCrushers.DialogueSystem.DialogueEditor.DialogueEditorWindow.instance.DrawAssetPopup<Item>(currentValue, (dataBase != null) ? dataBase.items : null, null);
+            RequireDialogueEditorWindow(database);
+            return PixelCrushers.DialogueSystem.DialogueEditor.DialogueEditorWindow.instance.DrawAssetPopup<Item>(currentValue, (database != null) ? database.items : null, null);
         }
 
-        public override string Draw(Rect rect, string currentValue, DialogueDatabase dataBase)
+        public override string Draw(Rect rect, string currentValue, DialogueDatabase database)
         {
-            return PixelCrushers.DialogueSystem.DialogueEditor.DialogueEditorWindow.instance.DrawAssetPopup<Item>(rect, currentValue, (dataBase != null) ? dataBase.items : null, null);
+            RequireDialogueEditorWindow(database);
+            return PixelCrushers.DialogueSystem.DialogueEditor.DialogueEditorWindow.instance.DrawAssetPopup<Item>(rect, currentValue, (database != null) ? database.items : null, null);
         }
 
     }

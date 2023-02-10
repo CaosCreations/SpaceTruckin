@@ -10,7 +10,7 @@ namespace PixelCrushers.DialogueSystem.Aurora
     public class AuroraConverterWindowDisabled
     {
 
-        [MenuItem("Tools/Pixel Crushers/Dialogue System/Import/Aurora (Neverwinter Nights)", false, 1)]
+        [MenuItem("Tools/Pixel Crushers/Dialogue System/Import/Aurora (Neverwinter Nights)...", false, 1)]
         public static void AskEnableAuroraSupport()
         {
             if (EditorUtility.DisplayDialog("Enable Aurora Support", "Aurora (Neverwinter Nights) import support isn't enabled yet. Would you like to enable it? After clicking Enable, re-open the Aurora import window.", "Enable", "Cancel"))

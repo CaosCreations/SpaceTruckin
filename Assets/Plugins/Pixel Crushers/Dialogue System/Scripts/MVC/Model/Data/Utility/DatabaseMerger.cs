@@ -42,6 +42,14 @@ namespace PixelCrushers.DialogueSystem
             public Dictionary<int, int> conversation = new Dictionary<int, int>();
         }
 
+        public static void Merge(DialogueDatabase destination, DialogueDatabase source, ConflictingIDRule conflictingIDRule,
+                                 bool mergeProperties, bool mergeActors, bool mergeItems, bool mergeLocations,
+                                 bool mergeVariables, bool mergeConversations)
+        {
+            Merge(destination, source, conflictingIDRule, mergeProperties, true, mergeActors, mergeItems, mergeLocations, mergeVariables, mergeConversations);
+        }
+
+
         /// <summary>
         /// Merges a source database into a destination database. Note that if the destination database
         /// has an actor marked IsPlayer, then the source database will use this actor instead of
@@ -52,21 +60,21 @@ namespace PixelCrushers.DialogueSystem
         /// <param name="source">Source.</param>
         /// <param name="conflictingIDRule">Specifies how to handle conflicting IDs.</param>
         public static void Merge(DialogueDatabase destination, DialogueDatabase source, ConflictingIDRule conflictingIDRule,
-                                 bool mergeProperties, bool mergeActors, bool mergeItems, bool mergeLocations,
-                                 bool mergeVariables, bool mergeConversations)
+                             bool mergeProperties, bool mergeEmphases, bool mergeActors, bool mergeItems, bool mergeLocations,
+                             bool mergeVariables, bool mergeConversations)
         {
             if ((destination != null) && (source != null))
             {
                 switch (conflictingIDRule)
                 {
                     case ConflictingIDRule.ReplaceConflictingIDs:
-                        MergeReplaceConflictingIDs(destination, source, mergeProperties, mergeActors, mergeItems, mergeLocations, mergeVariables, mergeConversations);
+                        MergeReplaceConflictingIDs(destination, source, mergeProperties, mergeEmphases, mergeActors, mergeItems, mergeLocations, mergeVariables, mergeConversations);
                         break;
                     case ConflictingIDRule.AllowConflictingIDs:
-                        MergeAllowConflictingIDs(destination, source, mergeProperties, mergeActors, mergeItems, mergeLocations, mergeVariables, mergeConversations);
+                        MergeAllowConflictingIDs(destination, source, mergeProperties, mergeEmphases, mergeActors, mergeItems, mergeLocations, mergeVariables, mergeConversations);
                         break;
                     case ConflictingIDRule.AssignUniqueIDs:
-                        MergeAssignUniqueIDs(destination, source, mergeProperties, mergeActors, mergeItems, mergeLocations, mergeVariables, mergeConversations);
+                        MergeAssignUniqueIDs(destination, source, mergeProperties, mergeEmphases, mergeActors, mergeItems, mergeLocations, mergeVariables, mergeConversations);
                         break;
                     default:
                         Debug.LogError(string.Format("{0}: Internal error. Unsupported merge type: {1}", new System.Object[] { DialogueDebug.Prefix, conflictingIDRule }));
@@ -93,7 +101,7 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         /// <param name="destination">Destination.</param>
         /// <param name="source">Source.</param>
-        private static void MergeDatabaseProperties(DialogueDatabase destination, DialogueDatabase source)
+        private static void MergeDatabaseProperties(DialogueDatabase destination, DialogueDatabase source, bool mergeEmphases)
         {
             if (string.IsNullOrEmpty(destination.author)) destination.author = source.author;
             if (string.IsNullOrEmpty(destination.version)) destination.version = source.version;
@@ -109,6 +117,18 @@ namespace PixelCrushers.DialogueSystem
                     destination.globalUserScript = string.Format("{0}; {1}", new System.Object[] { destination.globalUserScript, source.globalUserScript });
                 }
             }
+            if (mergeEmphases)
+            {
+                if (source.emphasisSettings.Length > destination.emphasisSettings.Length)
+                {
+                    destination.emphasisSettings = new EmphasisSetting[source.emphasisSettings.Length];
+                }
+                for (int i = 0; i < source.emphasisSettings.Length; i++)
+                {
+                    var srcEm = source.emphasisSettings[i];
+                    destination.emphasisSettings[i] = new EmphasisSetting(srcEm.color, srcEm.bold, srcEm.italic, srcEm.underline);
+                }
+            }
         }
 
         #region Replace Conflicting IDs
@@ -117,10 +137,10 @@ namespace PixelCrushers.DialogueSystem
         /// Merge, replacing the destination's assets with the source's assets when they have the same IDs.
         /// </summary>
         private static void MergeReplaceConflictingIDs(DialogueDatabase destination, DialogueDatabase source,
-                                                     bool mergeProperties, bool mergeActors, bool mergeItems, bool mergeLocations,
+                                                     bool mergeProperties, bool mergeEmphases, bool mergeActors, bool mergeItems, bool mergeLocations,
                                                      bool mergeVariables, bool mergeConversations)
         {
-            if (mergeProperties) MergeDatabaseProperties(destination, source);
+            if (mergeProperties) MergeDatabaseProperties(destination, source, mergeEmphases);
             if (mergeActors) MergeActorsReplaceConflictingIDs(destination, source);
             if (mergeItems) MergeItemsReplaceConflictingIDs(destination, source);
             if (mergeLocations) MergeLocationsReplaceConflictingIDs(destination, source);
@@ -178,10 +198,10 @@ namespace PixelCrushers.DialogueSystem
         #region Allow Conflicting IDs
 
         private static void MergeAllowConflictingIDs(DialogueDatabase destination, DialogueDatabase source,
-                                                     bool mergeProperties, bool mergeActors, bool mergeItems, bool mergeLocations,
+                                                     bool mergeProperties, bool mergeEmphases, bool mergeActors, bool mergeItems, bool mergeLocations,
                                                      bool mergeVariables, bool mergeConversations)
         {
-            if (mergeProperties) MergeDatabaseProperties(destination, source);
+            if (mergeProperties) MergeDatabaseProperties(destination, source, mergeEmphases);
             if (mergeActors) MergeActorsAllowConflictingIDs(destination, source);
             if (mergeItems) MergeItemsAllowConflictingIDs(destination, source);
             if (mergeLocations) MergeLocationsAllowConflictingIDs(destination, source);
@@ -250,10 +270,10 @@ namespace PixelCrushers.DialogueSystem
         /// <param name="destination">Destination database.</param>
         /// <param name="source">Source database.</param>
         private static void MergeAssignUniqueIDs(DialogueDatabase destination, DialogueDatabase source,
-                                                 bool mergeProperties, bool mergeActors, bool mergeItems, bool mergeLocations,
+                                                 bool mergeProperties, bool mergeEmphases, bool mergeActors, bool mergeItems, bool mergeLocations,
                                                  bool mergeVariables, bool mergeConversations)
         {
-            if (mergeProperties) MergeDatabaseProperties(destination, source);
+            if (mergeProperties) MergeDatabaseProperties(destination, source, mergeEmphases);
             NewIDs newIDs = new NewIDs();
             GetNewActorIDs(destination, source, newIDs);
             GetNewItemIDs(destination, source, newIDs);
@@ -269,7 +289,7 @@ namespace PixelCrushers.DialogueSystem
 
         private static void GetNewActorIDs(DialogueDatabase destination, DialogueDatabase source, NewIDs newIDs)
         {
-            int highestID = 0;
+            int highestID = destination.baseID - 1;
             foreach (var actor in destination.actors)
             {
                 highestID = Mathf.Max(actor.id, highestID);
@@ -291,7 +311,7 @@ namespace PixelCrushers.DialogueSystem
 
         private static void GetNewItemIDs(DialogueDatabase destination, DialogueDatabase source, NewIDs newIDs)
         {
-            int highestID = 0;
+            int highestID = destination.baseID - 1;
             foreach (var item in destination.items)
             {
                 highestID = Mathf.Max(item.id, highestID);
@@ -309,7 +329,7 @@ namespace PixelCrushers.DialogueSystem
 
         private static void GetNewLocationIDs(DialogueDatabase destination, DialogueDatabase source, NewIDs newIDs)
         {
-            int highestID = 0;
+            int highestID = destination.baseID - 1;
             foreach (var location in destination.locations)
             {
                 highestID = Mathf.Max(location.id, highestID);
@@ -327,7 +347,7 @@ namespace PixelCrushers.DialogueSystem
 
         private static void GetNewVariableIDs(DialogueDatabase destination, DialogueDatabase source, NewIDs newIDs)
         {
-            int highestID = 0;
+            int highestID = destination.baseID - 1;
             foreach (var variable in destination.variables)
             {
                 highestID = Mathf.Max(variable.id, highestID);
@@ -349,7 +369,7 @@ namespace PixelCrushers.DialogueSystem
 
         private static void GetNewConversationIDs(DialogueDatabase destination, DialogueDatabase source, NewIDs newIDs)
         {
-            int highestID = 0;
+            int highestID = destination.baseID - 1;
             foreach (var conversation in destination.conversations)
             {
                 highestID = Mathf.Max(conversation.id, highestID);

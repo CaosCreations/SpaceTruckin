@@ -6,20 +6,24 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
 {
 
     /// <summary>
-    /// Implements sequencer command: Voice(audioClip, animation[, finalAnimation[, gameobject|speaker|listener]])
+    /// Implements sequencer command: Voice(audioClip, animation, [finalAnimation], [gameobject|speaker|listener], [crossfadeDuration], [layer])
     /// Works with Animation or Animator components.
     /// </summary>
     [AddComponentMenu("")] // Hide from menu.
     public class SequencerCommandVoice : SequencerCommand
     {
 
+        private const float DefaultCrossfadeDuration = 0.3f;
+
         private float stopTime = 0;
-        Transform subject = null;
+        private Transform subject = null;
         private string finalClipName = string.Empty;
         private Animation anim = null;
         private Animator animator = null;
         private AudioSource audioSource = null;
         private AudioClip audioClip = null;
+        private int layer = -1;
+        private float crossfadeDuration = DefaultCrossfadeDuration;
 
         public void Start()
         {
@@ -27,6 +31,8 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
             string animationClipName = GetParameter(1);
             finalClipName = GetParameter(2);
             subject = GetSubject(3);
+            crossfadeDuration = GetParameterAsFloat(4, DefaultCrossfadeDuration);
+            layer = GetParameterAsInt(5, -1);
             anim = (subject == null) ? null : subject.GetComponent<Animation>();
             animator = (subject == null) ? null : subject.GetComponent<Animator>();
             if ((anim == null) && (animator == null))
@@ -49,7 +55,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
                         audioClip = asset as AudioClip;
                         if (audioClip == null)
                         {
-                            if (DialogueDebug.logWarnings) Debug.LogWarning(string.Format("{0}: Sequencer: Voice({1}, {2}, {3}, {4}) command: Audio clip is null.", new System.Object[] { DialogueDebug.Prefix, audioClipName, animationClipName, finalClipName, subject.name }));
+                            if (DialogueDebug.logWarnings && Sequencer.reportMissingAudioFiles) Debug.LogWarning(string.Format("{0}: Sequencer: Voice({1}, {2}, {3}, {4}) command: Audio clip is null.", new System.Object[] { DialogueDebug.Prefix, audioClipName, animationClipName, finalClipName, subject.name }));
                             stopTime = 0;
                         }
                         else
@@ -60,6 +66,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
                             }
                             else
                             {
+                                audioSource = SequencerTools.GetAudioSource(subject);
                                 audioSource.clip = audioClip;
                                 audioSource.Play();
                             }
@@ -67,12 +74,19 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
                             {
                                 if (animator != null)
                                 {
-                                    animator.CrossFade(animationClipName, 0.3f);
+                                    if (Mathf.Approximately(0, crossfadeDuration))
+                                    {
+                                        animator.Play(animationClipName, layer, 0);
+                                    }
+                                    else
+                                    {
+                                        animator.CrossFadeInFixedTime(animationClipName, crossfadeDuration, layer);
+                                    }
                                     stopTime = DialogueTime.time + audioClip.length;
                                 }
                                 else
                                 {
-                                    anim.CrossFade(animationClipName);
+                                    anim.CrossFade(animationClipName, crossfadeDuration);
                                     stopTime = DialogueTime.time + Mathf.Max(0.1f, anim[animationClipName].length - 0.3f);
                                     if (audioClip.length > anim[animationClipName].length) stopTime = DialogueTime.time + audioClip.length;
                                 }
@@ -110,18 +124,18 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
             {
                 if (!string.IsNullOrEmpty(finalClipName))
                 {
-                    animator.CrossFade(finalClipName, 0.3f);
+                    animator.CrossFadeInFixedTime(finalClipName, crossfadeDuration, layer);
                 }
             }
             else if (anim != null)
             {
                 if (!string.IsNullOrEmpty(finalClipName))
                 {
-                    anim.CrossFade(finalClipName);
+                    anim.CrossFade(finalClipName, crossfadeDuration);
                 }
                 else if (anim.clip != null)
                 {
-                    anim.CrossFade(anim.clip.name);
+                    anim.CrossFade(anim.clip.name, crossfadeDuration);
                 }
             }
             if ((audioSource != null) && (DialogueTime.time < stopTime))

@@ -120,12 +120,26 @@ namespace PixelCrushers.DialogueSystem
             if (m_forcedOverridePanel != null) return m_forcedOverridePanel;
 
             // Find player's transform & DialogueActor:
-            var playerTransform = (lastSubtitle != null && lastSubtitle.speakerInfo.isPlayer) ? lastSubtitle.speakerInfo.transform
-                : (responses != null && responses.Length > 0) ? GetActorTransformFromID(responses[0].destinationEntry.ActorID)
-                : (lastSubtitle != null && lastSubtitle.listenerInfo.isPlayer) ? lastSubtitle.listenerInfo.transform
-                : DialogueManager.currentActor;
+            // [2021-04-20]: Prioritize responses[0] panel only if useFirstResponseForPortrait is true:
+            var playerTransform = (lastSubtitle != null && lastSubtitle.speakerInfo.isPlayer) ? lastSubtitle.speakerInfo.transform : null;
+            if (playerTransform == null)
+            {
+                if (useFirstResponseForPortrait)
+                {
+                    playerTransform =
+                        (responses != null && responses.Length > 0) ? GetActorTransformFromID(responses[0].destinationEntry.ActorID)
+                        : (lastSubtitle != null && lastSubtitle.listenerInfo.isPlayer) ? lastSubtitle.listenerInfo.transform
+                        : DialogueManager.currentActor;
+                }
+                else
+                {
+                    playerTransform =
+                        (lastSubtitle != null && lastSubtitle.listenerInfo.isPlayer) ? lastSubtitle.listenerInfo.transform
+                        : (responses != null && responses.Length > 0) ? GetActorTransformFromID(responses[0].destinationEntry.ActorID)
+                        : DialogueManager.currentActor;
+                }
+            }
             if (playerTransform == null) playerTransform = DialogueManager.currentActor;
-
             var playerDialogueActor = DialogueActor.GetDialogueActorComponent(playerTransform);
 
             // Check NPC for non-default menu panel:
@@ -312,6 +326,30 @@ namespace PixelCrushers.DialogueSystem
                 }
             }
             //--- No longer close cache when closing menus because SetDialoguePanel may close them: ClearCache();
+        }
+
+        public bool AreAnyPanelsClosing()
+        {
+            for (int i = 0; i < m_builtinPanels.Count; i++)
+            {
+                if (m_builtinPanels[i] != null && m_builtinPanels[i].panelState == UIPanel.PanelState.Closing) return true;
+            }
+            if (m_defaultPanel != null && !m_builtinPanels.Contains(m_defaultPanel) && m_defaultPanel.panelState == UIPanel.PanelState.Closing) return true;
+            foreach (var kvp in m_actorPanelCache)
+            {
+                var panel = kvp.Value;
+                if (panel != null && !m_builtinPanels.Contains(panel) && panel.panelState == UIPanel.PanelState.Closing) return true;
+            }
+            if (m_actorIdPanelCache.Count > 0)
+            {
+                var cachedPanels = new List<StandardUIMenuPanel>(m_actorIdPanelCache.Values);
+                foreach (var kvp in m_actorIdPanelCache)
+                {
+                    var panel = kvp.Value;
+                    if (panel != null && !m_builtinPanels.Contains(panel) && !cachedPanels.Contains(panel) && panel.panelState == UIPanel.PanelState.Closing) return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>

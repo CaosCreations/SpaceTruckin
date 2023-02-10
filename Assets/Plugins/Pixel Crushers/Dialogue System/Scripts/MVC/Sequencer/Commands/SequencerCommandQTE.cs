@@ -71,7 +71,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
                 }
                 else
                 {
-                    DialogueLua.SetVariable(variableName, DialogueLua.ValueAsString(variableType, variableQTEValue));
+                    DialogueLua.SetVariable(variableName, ValueAsString(variableType, variableQTEValue));
                 }
                 DialogueManager.instance.SendMessage(DialogueSystemMessages.OnConversationContinueAll, SendMessageOptions.DontRequireReceiver);
                 Stop();
@@ -79,6 +79,19 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
             else if (DialogueTime.time >= stopTime)
             {
                 Stop();
+            }
+        }
+
+        private string ValueAsString(FieldType fieldType, string fieldValue)
+        {
+            switch (fieldType)
+            {
+                case FieldType.Actor:
+                case FieldType.Item:
+                case FieldType.Location:
+                case FieldType.Number: return string.IsNullOrEmpty(fieldValue) ? "0" : fieldValue;
+                case FieldType.Boolean: return string.IsNullOrEmpty(fieldValue) ? "false" : fieldValue.ToLower();
+                default: return fieldValue; // Don't use DialogueLua.ValueAsString, since that would add quotes around text.
             }
         }
 

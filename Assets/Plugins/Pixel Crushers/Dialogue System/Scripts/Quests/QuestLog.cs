@@ -473,6 +473,27 @@ namespace PixelCrushers.DialogueSystem
         }
 
         /// <summary>
+        /// Reports whether a quest entry's current state is one of the states marked in a state bit mask.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if the quest entry's current state is in the state bit mask.
+        /// </returns>
+        /// <param name='questName'>
+        /// Name of the quest.
+        /// </param>
+        /// <param name="entryNumber">
+        /// Quest entry number.
+        /// </param>
+        /// <param name='stateMask'>
+        /// A QuestState bit mask (e.g., <c>QuestState.Success | QuestState.Failure</c>).
+        /// </param>
+        public static bool IsQuestEntryInStateMask(string questName, int entryNumber, QuestState stateMask)
+        {
+            QuestState state = GetQuestEntryState(questName, entryNumber);
+            return ((stateMask & state) == state);
+        }
+
+        /// <summary>
         /// Starts a quest by setting its state to active.
         /// </summary>
         /// <param name='questName'>

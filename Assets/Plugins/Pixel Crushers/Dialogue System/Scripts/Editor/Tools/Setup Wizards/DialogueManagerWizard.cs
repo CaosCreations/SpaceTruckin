@@ -165,7 +165,7 @@ namespace PixelCrushers.DialogueSystem
             {
                 EditorGUILayout.LabelField("Dialogue Database", EditorStyles.boldLabel);
                 EditorWindowTools.StartIndentedSection();
-                EditorGUILayout.HelpBox("The first step is to assign a dialogue database asset. This asset contains your conversations and related data.", MessageType.Info);
+                EditorGUILayout.HelpBox("This wizard is optional. It can help you set up the Dialogue Manager GameObject, which is the GameObject that coordinates Dialogue System activity. If you prefer, you can configure the Dialogue Manager through the Inspector view instead of using the wizard.\n\nThe first step is to assign a dialogue database asset. This asset contains your conversations and related data.", MessageType.Info);
                 EditorGUILayout.BeginHorizontal();
                 DialogueManager.instance.initialDatabase = EditorGUILayout.ObjectField("Database", DialogueManager.instance.initialDatabase, typeof(DialogueDatabase), false) as DialogueDatabase;
                 bool disabled = (DialogueManager.instance.initialDatabase != null);
@@ -335,7 +335,7 @@ namespace PixelCrushers.DialogueSystem
             }
             EditorGUILayout.BeginHorizontal();
             DialogueManager.instance.displaySettings.subtitleSettings.subtitleCharsPerSecond = EditorGUILayout.FloatField("Chars/Second", DialogueManager.instance.displaySettings.subtitleSettings.subtitleCharsPerSecond);
-            EditorGUILayout.HelpBox("Determines how long the subtitle is displayed before moving to the next stage of the conversation. If the subtitle is 90 characters and Chars/Second is 30, then it will be displayed for 3 seconds.", MessageType.None);
+            EditorGUILayout.HelpBox("Determines how long the subtitle is displayed before moving to the next stage of the conversation. (Technically determines the duration of the {{end}} keyword.) If the subtitle is 90 characters and Chars/Second is 30, then it will be displayed for 3 seconds.", MessageType.None);
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginHorizontal();
             DialogueManager.instance.displaySettings.subtitleSettings.minSubtitleSeconds = EditorGUILayout.FloatField("Min Seconds", DialogueManager.instance.displaySettings.subtitleSettings.minSubtitleSeconds);
@@ -382,7 +382,21 @@ namespace PixelCrushers.DialogueSystem
             EditorGUILayout.BeginHorizontal();
             DialogueManager.instance.displaySettings.cameraSettings.sequencerCamera = EditorGUILayout.ObjectField("Sequencer Camera", DialogueManager.instance.displaySettings.cameraSettings.sequencerCamera, typeof(UnityEngine.Camera), true) as UnityEngine.Camera;
             EditorGUILayout.EndHorizontal();
-            EditorGUILayout.HelpBox((DialogueManager.instance.displaySettings.cameraSettings.sequencerCamera == null) ? "Will use Main Camera." : "Will instantiate a copy of this camera for sequences.", MessageType.None);
+            if (DialogueManager.instance.displaySettings.cameraSettings.sequencerCamera == null)
+            {
+                if (HasMainCamera())
+                {
+                    EditorGUILayout.HelpBox("Will use existing camera that is tagged Main Camera.", MessageType.None);
+                }
+                else
+                {
+                    EditorGUILayout.HelpBox("Will use existing camera that is tagged Main Camera. Remember to add a camera that's tagged Main Camera.", MessageType.Warning);
+                }
+            }
+            else
+            {
+                EditorGUILayout.HelpBox("Will instantiate a copy of this camera for sequences.", MessageType.None);
+            }
             EditorWindowTools.DrawHorizontalLine();
 
             EditorGUILayout.HelpBox("Cutscene sequence commands can reference camera angles defined on a camera angle prefab. You can set up your own custom camera angle prefab. Otherwise the sequencer will use a default camera angle prefab with basic angles such as Closeup, Medium, and Wide.", MessageType.None);
@@ -422,6 +436,15 @@ namespace PixelCrushers.DialogueSystem
             EditorGUILayout.HelpBox("In default sequences, you can use '{{end}}' to refer to the duration of the subtitle as determined by Chars/Second and Min Seconds.", MessageType.None);
             EditorWindowTools.EndIndentedSection();
             DrawNavigationButtons(true, true, false);
+        }
+
+        private bool HasMainCamera()
+        {
+            foreach (var camera in FindObjectsOfType<UnityEngine.Camera>())
+            {
+                if (camera.CompareTag("MainCamera")) return true;
+            }
+            return false;
         }
 
         private string SelectSequence(string label, string sequence)

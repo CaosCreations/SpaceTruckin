@@ -110,6 +110,7 @@ namespace PixelCrushers.DialogueSystem
             AssetDatabase.Refresh();
 
             var isWindows = Application.platform == RuntimePlatform.WindowsEditor;
+            var hasRegex = !string.IsNullOrEmpty(ignoreFilesRegex);
             try
             {
                 // Update all scene, scriptable object, and prefab files:
@@ -121,7 +122,7 @@ namespace PixelCrushers.DialogueSystem
                     var assetPath = filename;
                     if (isWindows) assetPath = assetPath.Replace("\\", "/");
                     assetPath = "Assets" + assetPath.Substring(Application.dataPath.Length);
-                    if (Regex.IsMatch(assetPath, ignoreFilesRegex)) continue; // Ignore this file.
+                    if (hasRegex && Regex.IsMatch(assetPath, ignoreFilesRegex)) continue; // Ignore this file.
                     cancel = EditorUtility.DisplayCancelableProgressBar(title, filename, (float)i / (float)files.Length);
                     ProcessAssetFile(filename, assetPath, originalName, replacementName, processFileHandler, processSceneHandler, processPrefabHandler);
                     if (cancel)
@@ -686,6 +687,172 @@ namespace PixelCrushers.DialogueSystem
                     {
                         questStateListener.questName = replacementName;
                         if (isPrefab) EditorUtility.SetDirty(questStateListener);
+                    }
+                }
+            }
+            return found;
+        }
+
+        #endregion
+
+        #region Find Conversation
+
+        public static string FindConversation(string conversationTitle, string replacementName)
+        {
+            if (string.IsNullOrEmpty(conversationTitle)) return string.Empty;
+            var title = string.IsNullOrEmpty(replacementName) ? "Find Conversation" : "Rename Conversation";
+            report = string.IsNullOrEmpty(replacementName)
+                ? ("Searching for Conversation'" + conversationTitle + "'\nResults:\n")
+                : ("Replacing Conversation '" + conversationTitle + "' with '" + replacementName + "'\nResults:\n");
+            ProcessAssets(title, conversationTitle, replacementName, ProcessConversationInFile, ProcessConversationInScene, ProcessConversationInPrefab);
+            return report;
+        }
+
+        public static void ProcessConversationInFile(string filename, string assetPath, string originalTitle, string replacementTitle,
+            ProcessSceneDelegate processSceneHandler, ProcessPrefabDelegate processPrefabHandler)
+        {
+            if (string.IsNullOrEmpty(filename) || string.IsNullOrEmpty(originalTitle)) return;
+            var text = File.ReadAllText(filename);
+            if (string.IsNullOrEmpty(text)) return;
+            var replace = !string.IsNullOrEmpty(replacementTitle);
+
+            var found = false;
+
+            // No need to find/replace Lua expressions that use the original Conversation name, since Lua uses conversation IDs.
+
+            // If it's a dialogue database, find/replace actual conversation title:
+            if (text.Contains("globalUserScript")) // DBs contain this string; used to minimize attempts to load non-database assets.
+            {
+                AssetDatabase.Refresh();
+                var database = AssetDatabase.LoadAssetAtPath<DialogueDatabase>(assetPath);
+                if (database != null)
+                {
+                    var conversation = database.GetConversation(originalTitle);
+                    if (conversation != null)
+                    {
+                        found = true;
+                        if (replace)
+                        {
+                            conversation.Title = replacementTitle;
+                            EditorUtility.SetDirty(database);
+                            AssetDatabase.SaveAssets();
+                        }
+                    }
+                }
+            }
+
+            // If file is a scene, open it to check for any components such as DialogueSystemTrigger that use ConversationPopup:
+            if (assetPath.EndsWith(".unity"))
+            {
+                // Open scene:
+                var sceneName = Path.GetFileNameWithoutExtension(filename);
+                EditorSceneManager.OpenScene(filename);
+                var scene = EditorSceneManager.GetSceneByName(sceneName);
+                if (!scene.IsValid()) return;
+
+                // Call scene checking delegate:
+                var foundInScene = processSceneHandler(originalTitle, replacementTitle);
+                if (foundInScene)
+                {
+                    // If found and replaced, save scene:
+                    found = true;
+                    if (replace)
+                    {
+                        EditorSceneManager.MarkSceneDirty(scene);
+                        EditorSceneManager.SaveScene(scene);
+                    }
+                }
+            }
+            // If file is a prefab, check it:
+            else if (assetPath.EndsWith(".prefab"))
+            {
+                var foundInPrefab = processPrefabHandler(assetPath, originalTitle, replacementTitle);
+                if (foundInPrefab)
+                {
+                    found = true;
+                    if (replace) AssetDatabase.SaveAssets();
+                }
+            }
+
+            // Update report:
+            if (found)
+            {
+                report += (replace ? "Replaced in: " : "Found in: ") + assetPath + "\n";
+            }
+        }
+
+        public static bool ProcessConversationInScene(string originalTitle, string replacementTitle)
+        {
+            var replace = !string.IsNullOrEmpty(replacementTitle);
+            var found = false;
+            foreach (var dialogueSystemTrigger in GameObject.FindObjectsOfType<DialogueSystemTrigger>())
+            {
+                found = FindConversationInDialogueSystemTrigger(dialogueSystemTrigger, originalTitle, replacementTitle, replace, false) || found;
+            }
+            foreach (var conversationStarter in GameObject.FindObjectsOfType<ConversationStarter>())
+            {
+                found = FindConversationInConversationStarter(conversationStarter, originalTitle, replacementTitle, replace, false) || found;
+            }
+            return found;
+        }
+
+        public static bool ProcessConversationInPrefab(string assetPath, string originalTitle, string replacementTitle)
+        {
+            var replace = !string.IsNullOrEmpty(replacementTitle);
+            var found = false;
+            var objects = AssetDatabase.LoadAllAssetsAtPath(assetPath);
+            foreach (var thisObject in objects)
+            {
+                if (thisObject is DialogueSystemTrigger)
+                {
+                    found = FindConversationInDialogueSystemTrigger(thisObject as DialogueSystemTrigger, originalTitle, replacementTitle, replace, true) || found;
+                }
+                else if (thisObject is ConversationStarter)
+                {
+                    found = FindConversationInConversationStarter(thisObject as ConversationStarter, originalTitle, replacementTitle, replace, true) || found;
+                }
+            }
+            return found;
+        }
+
+        public static bool FindConversationInDialogueSystemTrigger(DialogueSystemTrigger dialogueSystemTrigger, string originalTitle, string replacementTitle, bool replace, bool isPrefab)
+        {
+            var found = false;
+            if (dialogueSystemTrigger != null)
+            {
+                if (dialogueSystemTrigger.conversation == originalTitle)
+                {
+                    found = true;
+                    if (replace)
+                    {
+                        dialogueSystemTrigger.conversation = replacementTitle;
+                    }
+                }
+                if (dialogueSystemTrigger.barkConversation == originalTitle)
+                {
+                    found = true;
+                    if (replace)
+                    {
+                        dialogueSystemTrigger.barkConversation = replacementTitle;
+                    }
+                }
+            }
+            if (found && replace && isPrefab) EditorUtility.SetDirty(dialogueSystemTrigger);
+            return found;
+        }
+
+        public static bool FindConversationInConversationStarter(ConversationStarter conversationStarter, string originalTitle, string replacementTitle, bool replace, bool isPrefab)
+        {
+            var found = false;
+            if (conversationStarter != null)
+            {
+                if (conversationStarter.conversation == originalTitle)
+                {
+                    found = true;
+                    if (replace)
+                    {
+                        conversationStarter.conversation = replacementTitle;
+                        if (isPrefab) EditorUtility.SetDirty(conversationStarter);
                     }
                 }
             }

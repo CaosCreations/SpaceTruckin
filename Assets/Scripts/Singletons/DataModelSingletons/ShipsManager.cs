@@ -28,15 +28,6 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        if (DataUtils.SaveFolderExists(Ship.FolderName))
-        {
-            LoadDataAsync();
-        }
-        else
-        {
-            DataUtils.CreateSaveFolder(Ship.FolderName);
-        }
-
         if (Ships == null)
         {
             Debug.LogError("No ship data");
@@ -50,8 +41,7 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
     {
         if (ship != null)
         {
-            ship.CurrentHullIntegrity = Mathf.Max(
-                0, ship.CurrentHullIntegrity - damage);
+            ship.CurrentHullIntegrity = Mathf.Max(0, ship.CurrentHullIntegrity - damage);
         }
     }
 
@@ -90,8 +80,15 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
     {
         ShipUnderRepair.Ship = ship;
 
-        ShipUnderRepair.DamageType = ArchivedMissionsManager
-            .GetMostRecentMissionByPilot(ShipUnderRepair.Pilot).DamageType;
+        if (ArchivedMissionsManager.Instance != null)
+        {
+            var mostRecentMission = ArchivedMissionsManager.GetMostRecentMissionByPilot(ShipUnderRepair.Pilot);
+
+            if (mostRecentMission != null)
+            {
+                ShipUnderRepair.DamageType = mostRecentMission.DamageType;
+            }
+        }
     }
 
     private static void ResetShipUnderRepair()
@@ -110,6 +107,12 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
 
     public async void LoadDataAsync()
     {
+        if (!DataUtils.SaveFolderExists(Ship.FolderName))
+        {
+            DataUtils.CreateSaveFolder(Ship.FolderName);
+            return;
+        }
+
         foreach (Ship ship in Instance.Ships)
         {
             await ship.LoadDataAsync();

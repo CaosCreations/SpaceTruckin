@@ -8,11 +8,11 @@ public class BatteryInteractable : InteractableObject
     [SerializeField] private Collider batteryModelCollider;
 
     // Shows that the player is holding any battery
-    public static bool PlayerIsHoldingABattery;
+    public static bool IsPlayerHoldingABattery;
 
     public void TakeBattery()
     {
-        PlayerIsHoldingABattery = true;
+        IsPlayerHoldingABattery = true;
 
         gameObject.ParentToPlayer();
 
@@ -46,7 +46,7 @@ public class BatteryInteractable : InteractableObject
 
     public void DropBattery()
     {
-        PlayerIsHoldingABattery = false;
+        IsPlayerHoldingABattery = false;
 
         ConfigureRigidbody(isConnectingToPlayer: false);
 
@@ -65,18 +65,19 @@ public class BatteryInteractable : InteractableObject
 
     private void OnTriggerStay(Collider other)
     {
-        if (PlayerIsHoldingABattery)
-        {
-            // Don't let the player pick up a battery if they already have one
-            return;
-        }
-
-        if (!PlayerManager.IsPaused
-          && IsPlayerColliding
-          && Input.GetKey(PlayerConstants.ActionKey))
-        {
+        if (CanTakeBattery())
             TakeBattery();
-        }
+    }
+
+    /// <summary>
+    /// Conditions for picking up a battery.
+    /// </summary>
+    private bool CanTakeBattery()
+    {
+        return !IsPlayerHoldingABattery
+          && !PlayerManager.IsPaused
+          && Input.GetKey(PlayerConstants.ActionKey)
+          && IsPlayerInteractable;
     }
 
     public override void OnTriggerEnter(Collider other)
@@ -94,7 +95,7 @@ public class BatteryInteractable : InteractableObject
     {
         transform.position = slot.transform.position;
 
-        PlayerIsHoldingABattery = false;
+        IsPlayerHoldingABattery = false;
 
         gameObject.SetParent(HangarManager.BatteriesContainer);
 

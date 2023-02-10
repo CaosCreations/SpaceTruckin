@@ -20,5 +20,10 @@ public enum UIVisibility
     /// <summary>
     /// Appears when dialogue UI opens. Also sets portrait names and images.
     /// </summary>
-    AlwaysFromStart
+    AlwaysFromStart,
+
+    /// <summary>
+    /// Like UntilSuperceded, but will also hide and re-show if actor changes but wants to use same panel.
+    /// </summary>
+    UntilSupercededOrActorChange
 }

@@ -36,7 +36,7 @@ namespace PixelCrushers
         private static float s_manualDeltaTime = 0;
         private static bool s_manualPaused = false;
 
-#if UNITY_2019_3_OR_NEWER
+#if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void InitStaticVariables()
         {

@@ -33,6 +33,11 @@ namespace PixelCrushers.DialogueSystem.Demo
             if (!string.IsNullOrEmpty(startMessage)) DialogueManager.ShowAlert(startMessage);
         }
 
+        private void OnDestroy()
+        {
+            if (isMenuOpen) Time.timeScale = 1;
+        }
+
         void Update()
         {
             if (InputDeviceManager.IsKeyDown(menuKey) && !DialogueManager.isConversationActive && !IsQuestLogOpen())

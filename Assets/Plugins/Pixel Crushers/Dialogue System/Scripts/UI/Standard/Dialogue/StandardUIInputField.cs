@@ -23,14 +23,23 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("Input field.")]
         public UIInputField inputField;
 
-        [Tooltip("(Optional) Key code that accepts input.")]
+        [Tooltip("(Optional) Key code that accepts user's text input.")]
         public KeyCode acceptKey = KeyCode.Return;
 
-        [Tooltip("(Optional) key code that cancels input.")]
+        [Tooltip("(Optional) Input button that accepts user's text input.")]
+        public string acceptButton = string.Empty;
+
+        [Tooltip("(Optional) Key code that cancels user's text input.")]
         public KeyCode cancelKey = KeyCode.Escape;
+
+        [Tooltip("(Optional) Input button that cancels user's text input.")]
+        public string cancelButton = string.Empty;
 
         [Tooltip("Automatically open touchscreen keyboard.")]
         public bool showTouchScreenKeyboard = false;
+
+        [Tooltip("Allow blank text input.")]
+        public bool allowBlankInput = true;
 
         public UnityEvent onAccept = new UnityEvent();
 
@@ -39,11 +48,11 @@ namespace PixelCrushers.DialogueSystem
         /// <summary>
         /// Call this delegate when the player accepts the input in the text field.
         /// </summary>
-        private AcceptedTextDelegate m_acceptedText = null;
+        protected AcceptedTextDelegate m_acceptedText = null;
 
-        private bool m_isAwaitingInput = false;
+        protected bool m_isAwaitingInput = false;
 
-        private TouchScreenKeyboard m_touchScreenKeyboard = null;
+        protected TouchScreenKeyboard m_touchScreenKeyboard = null;
 
         protected override void Start()
         {
@@ -58,11 +67,17 @@ namespace PixelCrushers.DialogueSystem
         /// <param name="text">The current value to use for the input field.</param>
         /// <param name="maxLength">Max length, or <c>0</c> for unlimited.</param>
         /// <param name="acceptedText">The delegate to call when accepting text.</param>
-        public void StartTextInput(string labelText, string text, int maxLength, AcceptedTextDelegate acceptedText)
+        public virtual void StartTextInput(string labelText, string text, int maxLength, AcceptedTextDelegate acceptedText)
         {
-            label.text = labelText;
-            inputField.text = text;
-            inputField.characterLimit = maxLength;
+            if (label != null)
+            {
+                label.text = labelText;
+            }
+            if (inputField != null)
+            {
+                inputField.text = text;
+                inputField.characterLimit = maxLength;
+            }
             m_acceptedText = acceptedText;
             m_isAwaitingInput = true;
             Show();
@@ -72,11 +87,11 @@ namespace PixelCrushers.DialogueSystem
         {
             if (m_isAwaitingInput && !DialogueManager.IsDialogueSystemInputDisabled())
             {
-                if (InputDeviceManager.IsKeyDown(acceptKey))
+                if (InputDeviceManager.IsKeyDown(acceptKey) || InputDeviceManager.IsButtonDown(acceptButton))
                 {
                     AcceptTextInput();
                 }
-                else if (InputDeviceManager.IsKeyDown(cancelKey))
+                else if (InputDeviceManager.IsKeyDown(cancelKey) || InputDeviceManager.IsButtonDown(cancelButton))
                 {
                     CancelTextInput();
                 }
@@ -86,7 +101,7 @@ namespace PixelCrushers.DialogueSystem
         /// <summary>
         /// Cancels the text input field.
         /// </summary>
-        public void CancelTextInput()
+        public virtual void CancelTextInput()
         {
             m_isAwaitingInput = false;
             Hide();
@@ -96,8 +111,9 @@ namespace PixelCrushers.DialogueSystem
         /// <summary>
         /// Accepts the text input and calls the accept handler delegate.
         /// </summary>
-        public void AcceptTextInput()
+        public virtual void AcceptTextInput()
         {
+            if (!allowBlankInput && string.IsNullOrEmpty(inputField.text)) return;
             m_isAwaitingInput = false;
             if (m_acceptedText != null)
             {
@@ -108,16 +124,27 @@ namespace PixelCrushers.DialogueSystem
             onAccept.Invoke();
         }
 
-        private void Show()
+        protected virtual void Show()
         {
             SetActive(true);
             Open();
-            if (showTouchScreenKeyboard) m_touchScreenKeyboard = TouchScreenKeyboard.Open(inputField.text);
-            inputField.ActivateInputField();
-            EventSystem.current.SetSelectedGameObject(inputField.gameObject);
+            if (showTouchScreenKeyboard) ShowTouchScreenKeyboard();
+            if (inputField != null)
+            {
+                inputField.ActivateInputField();
+                if (EventSystem.current != null)
+                {
+                    EventSystem.current.SetSelectedGameObject(inputField.gameObject);
+                }
+            }
         }
 
-        private void Hide()
+        protected virtual void ShowTouchScreenKeyboard()
+        { 
+            m_touchScreenKeyboard = TouchScreenKeyboard.Open(inputField.text); 
+        }
+
+        protected virtual void Hide()
         {
             Close();
             SetActive(false);
@@ -128,13 +155,13 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        private void SetActive(bool value)
+        protected virtual void SetActive(bool value)
         {
             if (panel != null) panel.gameObject.SetActive(value);
             if (panel == null || value == true)
             {
-                label.SetActive(value);
-                inputField.SetActive(value);
+                if (label != null) label.SetActive(value);
+                if (inputField != null) inputField.SetActive(value);
             }
         }
 

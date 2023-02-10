@@ -19,7 +19,7 @@ namespace PixelCrushers
         /// Saves the current game in the specified slot.
         /// </summary>
         /// <param name="slotNumber">slot to save.</param>
-        public void SaveSlot(int slotNumber)
+        public virtual void SaveSlot(int slotNumber)
         {
             SaveSystem.SaveToSlot(slotNumber);
         }
@@ -28,7 +28,7 @@ namespace PixelCrushers
         /// Loads the game previously-saved in the specified slot.
         /// </summary>
         /// <param name="slotNumber">Slot to load.</param>
-        public void LoadFromSlot(int slotNumber)
+        public virtual void LoadFromSlot(int slotNumber)
         {
             SaveSystem.LoadFromSlot(slotNumber);
         }
@@ -38,16 +38,24 @@ namespace PixelCrushers
         /// adding '@' and the spawnpoint GameObject name.
         /// </summary>
         /// <param name="sceneNameAndSpawnpoint">Scene name followed by an optional at-sign and spawnpoint name.</param>
-        public void LoadScene(string sceneNameAndSpawnpoint)
+        public virtual void LoadScene(string sceneNameAndSpawnpoint)
         {
             SaveSystem.LoadScene(sceneNameAndSpawnpoint);
+        }
+
+        /// <summary>
+        /// Resets all saved game data.
+        /// </summary>
+        public virtual void ResetGameState()
+        {
+            SaveSystem.ResetGameState();
         }
 
         /// <summary>
         /// Resets all saved game data and restarts the game at the specified scene.
         /// </summary>
         /// <param name="startingSceneName">Scene to restart at.</param>
-        public void RestartGame(string startingSceneName)
+        public virtual void RestartGame(string startingSceneName)
         {
             SaveSystem.RestartGame(startingSceneName);
         }
@@ -57,7 +65,7 @@ namespace PixelCrushers
         /// starting scene if no save exists yet.
         /// </summary>
         /// <param name="slotNumber">Slot number to load.</param>
-        public void LoadOrRestart(int slotNumber)
+        public virtual void LoadOrRestart(int slotNumber)
         {
             if (SaveSystem.HasSavedGameInSlot(slotNumber))
             {
@@ -72,7 +80,7 @@ namespace PixelCrushers
         /// <summary>
         /// Deletes the saved game in the specified slot.
         /// </summary>
-        public void DeleteSavedGameInSlot(int slotNumber)
+        public virtual void DeleteSavedGameInSlot(int slotNumber)
         {
             SaveSystem.DeleteSavedGameInSlot(slotNumber);
         }
@@ -80,7 +88,7 @@ namespace PixelCrushers
         /// <summary>
         /// Records the current game state into the Save System.
         /// </summary>
-        public void RecordSavedGameData()
+        public virtual void RecordSavedGameData()
         {
             SaveSystem.RecordSavedGameData();
         }
@@ -88,7 +96,7 @@ namespace PixelCrushers
         /// <summary>
         /// Applies the most recently recorded game state.
         /// </summary>
-        public void ApplySavedGameData()
+        public virtual void ApplySavedGameData()
         {
             SaveSystem.ApplySavedGameData();
         }
@@ -97,7 +105,7 @@ namespace PixelCrushers
         /// Additively loads another scene.
         /// </summary>
         /// <param name="sceneName">Scene to additively load.</param>
-        public void LoadAdditiveScene(string sceneName)
+        public virtual void LoadAdditiveScene(string sceneName)
         {
             SaveSystem.LoadAdditiveScene(sceneName);
         }
@@ -106,7 +114,7 @@ namespace PixelCrushers
         /// Unloads a previously additively-loaded scene.
         /// </summary>
         /// <param name="sceneName">Scene to unload</param>
-        public void UnloadAdditiveScene(string sceneName)
+        public virtual void UnloadAdditiveScene(string sceneName)
         {
             SaveSystem.UnloadAdditiveScene(sceneName);
         }

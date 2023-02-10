@@ -2,6 +2,7 @@
 
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace PixelCrushers
 {
@@ -17,20 +18,66 @@ namespace PixelCrushers
 
         [Tooltip("Event to watch for to record that object was despawned.")]
         [SerializeField]
-        private Mode m_mode = Mode.OnDestroy;
+        [FormerlySerializedAs("m_mode")]
+        private Mode m_despawnMode = Mode.OnDestroy;
 
-        private bool m_ignoreOnDestroy = false;
+        [Tooltip("Save unique data on this spawned object's Saver components.")]
+        [SerializeField]
+        private bool m_saveUniqueSaverData = true;
 
-        public Mode mode
+        private bool m_ignoreOnDestroy = false; // Scene is being unloaded; don't record as despawn.
+        private string m_guid = string.Empty;
+
+        public Mode despawnMode
         {
-            get { return m_mode; }
-            set { m_mode = value; }
+            get { return m_despawnMode; }
+            set { m_despawnMode = value; }
+        }
+
+        public Mode mode // For backward compatibility.
+        {
+            get { return despawnMode; }
+            set { despawnMode = value; }
+        }
+
+        public bool saveUniqueSaverData
+        {
+            get { return m_saveUniqueSaverData; }
+            set { m_saveUniqueSaverData = value; }
+        }
+
+        public string guid
+        {
+            get { return m_guid; }
+            set { m_guid = value; }
+        }
+
+        public override void Awake()
+        {
+            base.Awake();
+            m_guid = Guid.NewGuid().ToString();
         }
 
         public override void Start()
         {
             base.Start();
+            AddGuidToSaverKeys();
             SpawnedObjectManager.AddSpawnedObjectData(this);
+        }
+
+        protected virtual void AddGuidToSaverKeys()
+        {
+            if (!string.IsNullOrEmpty(guid))
+            {
+                foreach (Saver saver in GetComponentsInChildren<Saver>())
+                {
+                    var key = saver.key;
+                    if (!key.EndsWith(guid))
+                    {
+                        saver.key += guid;
+                    }
+                }
+            }
         }
 
         public override void OnBeforeSceneChange()
@@ -42,14 +89,14 @@ namespace PixelCrushers
         public override void OnDisable()
         {
             base.OnDisable();
-            if (m_mode != Mode.OnDisable) return;
+            if (m_despawnMode != Mode.OnDisable) return;
             RecordDestruction();
         }
 
         public override void OnDestroy()
         {
             base.OnDestroy();
-            if (m_mode != Mode.OnDestroy) return;
+            if (m_despawnMode != Mode.OnDestroy) return;
             RecordDestruction();
         }
 

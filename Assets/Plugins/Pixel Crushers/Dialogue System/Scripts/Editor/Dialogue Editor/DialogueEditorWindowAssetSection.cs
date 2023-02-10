@@ -126,9 +126,15 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 EditorGUILayout.IntField(new GUIContent("ID", "Internal ID. Change at your own risk."), asset.id);
                 EditorGUI.EndDisabledGroup();
             }
+            EditorGUI.BeginChangeCheck();
             asset.Name = EditorGUILayout.TextField(new GUIContent("Name", "Name of this asset."), asset.Name);
+            if (EditorGUI.EndChangeCheck()) SetDatabaseDirty("Name");
             if (asset is Actor) DrawActorPortrait(asset as Actor);
             if (asset is Item) DrawItemPropertiesFirstPart(asset as Item);
+            if (customDrawAssetInspector != null)
+            {
+                customDrawAssetInspector(database, asset);
+            }
         }
 
         public void DrawAssetSpecificPropertiesSecondPart(Asset asset, int index, AssetFoldouts foldouts)
@@ -227,7 +233,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private T AddNewAsset<T>(List<T> assets) where T : Asset, new()
         {
             T asset = new T();
-            int highestID = -1;
+            int highestID = database.baseID - 1;
             assets.ForEach(a => highestID = Mathf.Max(highestID, a.id));
             asset.id = Mathf.Max(1, highestID + 1);
             asset.fields = template.CreateFields(GetTemplateFields(asset));
@@ -253,7 +259,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private T AddNewAssetFromTemplate<T>(List<T> assets, List<Field> templateFields, string typeLabel) where T : Asset, new()
         {
             T asset = new T();
-            int highestID = -1;
+            int highestID = database.baseID - 1;
             assets.ForEach(a => highestID = Mathf.Max(highestID, a.id));
             asset.id = Mathf.Max(1, highestID + 1);
             if (templateFields == null) templateFields = GetTemplateFields(asset);

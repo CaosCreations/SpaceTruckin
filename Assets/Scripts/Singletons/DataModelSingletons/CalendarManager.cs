@@ -55,20 +55,12 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        if (DataUtils.SaveFolderExists(CalendarData.FolderName))
-        {
-            LoadDataAsync();
-        }
-        else
-        {
-            DataUtils.CreateSaveFolder(CalendarData.FolderName);
-        }
-
         if (calendarData == null)
         {
             Debug.LogError("No calendar data found");
+            return;
         }
-
+        calendarData.ValidateFields();
         RegisterLuaFunctions();
     }
 
@@ -158,6 +150,12 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
 
     public async void LoadDataAsync()
     {
+        if (!DataUtils.SaveFolderExists(CalendarData.FolderName))
+        {
+            DataUtils.CreateSaveFolder(CalendarData.FolderName);
+            return;
+        }
+
         await calendarData.LoadDataAsync();
     }
 

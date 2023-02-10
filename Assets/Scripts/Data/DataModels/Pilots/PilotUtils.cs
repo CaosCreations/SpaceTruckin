@@ -12,7 +12,7 @@ public class PilotUtils
         return GetRandomEnumElement<PilotAttributeType>();
     }
 
-    private static T GetRandomEnumElement<T>() where T : Enum
+    public static T GetRandomEnumElement<T>() where T : Enum
     {
         T[] possibleValues = (T[])Enum.GetValues(typeof(T));
 

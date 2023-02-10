@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEditor;
 using UnityEditorInternal;
 using System;
@@ -25,6 +26,9 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private class LocalizationLanguages
         {
             public List<string> languages = new List<string>();
+            public List<string> extraEntryFields = new List<string>();
+            public List<string> extraQuestFields = new List<string>();
+            public List<string> extraItemFields = new List<string>();
             public int importMainTextIndex = -1;
             public string outputFolder;
         }
@@ -33,6 +37,10 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private LocalizationLanguages localizationLanguages = new LocalizationLanguages();
 
         private ReorderableList exportLanguageList = null;
+        private ReorderableList exportLanguageExtraEntryFieldsList = null;
+        private ReorderableList exportLanguageExtraQuestFieldsList = null;
+        private ReorderableList exportLanguageExtraItemFieldsList = null;
+        private bool doesDatabaseHaveItems = false;
 
         [SerializeField]
         private bool exportLocalizationConversationTitle = false;
@@ -41,14 +49,43 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private bool exportLocalizationKeyField = false;
 
         [SerializeField]
+        private bool exportAssignFieldValues = false;
+
+        [SerializeField]
+        private bool exportLocalizationCreateNewFields = false;
+
+        [SerializeField]
         private string localizationKeyField = "Articy Id";
 
         private GUIContent exportLocalizationConversationTitleLabel = new GUIContent("Export Conversation Title Instead Of ID", "Export conversation title instead of ID. Titles should be unique.");
-        private GUIContent exportLocalizationKeyFieldLabel = new GUIContent("Use Key Field (articy)", "Tie each dialogue entry row to a key field instead of conversation & entry IDs.");
+        private GUIContent exportLocalizationKeyFieldLabel = new GUIContent("Use Key Field", "Tie each dialogue entry row to a key field (e.g., 'Articy Id' or 'Celtx ID') instead of conversation & entry IDs.");
+        private GUIContent exportAssignFieldValuesLabel = new GUIContent("Assign Values", "If key field is blank for dialogue entry, assign a unique value to it.");
+        private GUIContent exportLocalizationCreateNewFieldsLabel = new GUIContent("Create New Fields", "If Extra Dialogue Entry field doesn't exist in an entry or if Extra Quest Field doesn't exist for a quest, create field when importing.");
+        private GUIContent exportExtraEntryFieldsLabel = new GUIContent("Extra Dialogue Entry Fields", "(Optional) Extra dialogue entry fields to localize.");
+        private GUIContent exportExtraQuestFieldsLabel = new GUIContent("Extra Quest Fields", "(Optional) Extra quest fields to localize.");
+        private GUIContent exportExtraItemFieldsLabel = new GUIContent("Extra Item Fields", "(Optional) Extra item fields to localize.");
+
+        private Rect localizationButtonPosition = new Rect();
 
         #endregion
 
         #region Draw Localization Foldout Section
+
+        private void ResetLocalizationFoldout()
+        {
+            doesDatabaseHaveItems = false;
+            if (database != null)
+            {
+                foreach (var item in database.items)
+                {
+                    if (item.IsItem)
+                    {
+                        doesDatabaseHaveItems = true;
+                        break;
+                    }
+                }
+            }
+        }
 
         private void DrawLocalizationSection()
         {
@@ -63,14 +100,46 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             }
             exportLanguageList.DoLayoutList();
 
+            if (exportLanguageExtraEntryFieldsList == null)
+            {
+                exportLanguageExtraEntryFieldsList = new ReorderableList(localizationLanguages.extraEntryFields, typeof(string), true, true, true, true);
+                exportLanguageExtraEntryFieldsList.drawHeaderCallback += OnDrawExportLanguageExtraEntryFieldsListHeader;
+                exportLanguageExtraEntryFieldsList.drawElementCallback = OnDrawExportLanguageExtraEntryFieldsListElement;
+                exportLanguageExtraEntryFieldsList.onAddCallback += OnAddExportLanguageExtraEntryFieldsListElement;
+            }
+            exportLanguageExtraEntryFieldsList.DoLayoutList();
+
+            if (exportLanguageExtraQuestFieldsList == null)
+            {
+                exportLanguageExtraQuestFieldsList = new ReorderableList(localizationLanguages.extraQuestFields, typeof(string), true, true, true, true);
+                exportLanguageExtraQuestFieldsList.drawHeaderCallback += OnDrawExportLanguageExtraQuestFieldsListHeader;
+                exportLanguageExtraQuestFieldsList.drawElementCallback = OnDrawExportLanguageExtraQuestFieldsListElement;
+                exportLanguageExtraQuestFieldsList.onAddCallback += OnAddExportLanguageExtraQuestFieldsListElement;
+            }
+            exportLanguageExtraQuestFieldsList.DoLayoutList();
+
+            if (doesDatabaseHaveItems)
+            {
+                if (exportLanguageExtraItemFieldsList == null)
+                {
+                    exportLanguageExtraItemFieldsList = new ReorderableList(localizationLanguages.extraItemFields, typeof(string), true, true, true, true);
+                    exportLanguageExtraItemFieldsList.drawHeaderCallback += OnDrawExportLanguageExtraItemFieldsListHeader;
+                    exportLanguageExtraItemFieldsList.drawElementCallback = OnDrawExportLanguageExtraItemFieldsListElement;
+                    exportLanguageExtraItemFieldsList.onAddCallback += OnAddExportLanguageExtraItemFieldsListElement;
+                }
+                exportLanguageExtraItemFieldsList.DoLayoutList();
+            }
+
             exportLocalizationConversationTitle = EditorGUILayout.ToggleLeft(exportLocalizationConversationTitleLabel, exportLocalizationConversationTitle);
             EditorGUILayout.BeginHorizontal();
-            exportLocalizationKeyField = EditorGUILayout.ToggleLeft(exportLocalizationKeyFieldLabel, exportLocalizationKeyField, GUILayout.Width(200));
+            exportLocalizationKeyField = EditorGUILayout.ToggleLeft(exportLocalizationKeyFieldLabel, exportLocalizationKeyField, GUILayout.Width(160));
             if (exportLocalizationKeyField)
             {
-                localizationKeyField = EditorGUILayout.TextField(GUIContent.none, localizationKeyField, GUILayout.Width(200));
+                localizationKeyField = EditorGUILayout.TextField(GUIContent.none, localizationKeyField, GUILayout.Width(160));
+                exportAssignFieldValues = EditorGUILayout.ToggleLeft(exportAssignFieldValuesLabel, exportAssignFieldValues, GUILayout.Width(160));
             }
             EditorGUILayout.EndHorizontal();
+            exportLocalizationCreateNewFields = EditorGUILayout.ToggleLeft(exportLocalizationCreateNewFieldsLabel, exportLocalizationCreateNewFields, GUILayout.Width(160));
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
@@ -81,22 +150,24 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             EditorGUI.BeginDisabledGroup(exportLocalizationKeyField && string.IsNullOrEmpty(localizationKeyField));
             if (GUILayout.Button("Export...", GUILayout.Width(100)))
             {
-                var newOutputFolder = EditorUtility.OpenFolderPanel("Export Localization Files", localizationLanguages.outputFolder, string.Empty);
-                if (!string.IsNullOrEmpty(newOutputFolder))
-                {
-                    localizationLanguages.outputFolder = newOutputFolder;
-                    ExportLocalizationFiles();
-                }
+                ExportLocalizationFiles();
             }
             if (GUILayout.Button("Import...", GUILayout.Width(100)))
             {
-                var newOutputFolder = EditorUtility.OpenFolderPanel("Import Localization Files", localizationLanguages.outputFolder, string.Empty);
-                if (!string.IsNullOrEmpty(newOutputFolder))
-                {
-                    localizationLanguages.outputFolder = newOutputFolder;
-                    ImportLocalizationFiles();
-                }
+                ImportLocalizationFiles();
             }
+
+            if (EditorGUILayout.DropdownButton(new GUIContent("Send Localization Request", "Request a quote for localization services from one of our partners."), FocusType.Keyboard, GUILayout.Width(180)))
+            {
+                GenericMenu dropdownMenu = new GenericMenu();
+                dropdownMenu.AddItem(new GUIContent("Get Localized by Alocai..."), false, () =>
+                {
+                    LocalizationByAlocai();
+                });
+                dropdownMenu.DropDown(localizationButtonPosition);
+            }
+            if (Event.current.type == EventType.Repaint) localizationButtonPosition = GUILayoutUtility.GetLastRect(); // cache the position so it can be used when the user clicks the dropdown
+
             EditorGUI.EndDisabledGroup();
             EditorGUILayout.EndHorizontal();
             EditorWindowTools.EndIndentedSection();
@@ -125,6 +196,56 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private void OnAddExportLanguageListElement(ReorderableList list)
         {
             localizationLanguages.languages.Add(string.Empty);
+        }
+        private void OnDrawExportLanguageExtraEntryFieldsListHeader(Rect rect)
+        {
+            EditorGUI.LabelField(rect, exportExtraEntryFieldsLabel);
+        }
+
+        private void OnDrawExportLanguageExtraEntryFieldsListElement(Rect rect, int index, bool isActive, bool isFocused)
+        {
+            if (!(0 <= index && index < localizationLanguages.extraEntryFields.Count)) return;
+            var langRect = new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight);
+            localizationLanguages.extraEntryFields[index] = EditorGUI.TextField(langRect, localizationLanguages.extraEntryFields[index]);
+        }
+
+        private void OnAddExportLanguageExtraEntryFieldsListElement(ReorderableList list)
+        {
+            localizationLanguages.extraEntryFields.Add(string.Empty);
+        }
+
+        private void OnDrawExportLanguageExtraQuestFieldsListHeader(Rect rect)
+        {
+            EditorGUI.LabelField(rect, exportExtraQuestFieldsLabel);
+        }
+
+        private void OnDrawExportLanguageExtraQuestFieldsListElement(Rect rect, int index, bool isActive, bool isFocused)
+        {
+            if (!(0 <= index && index < localizationLanguages.extraQuestFields.Count)) return;
+            var langRect = new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight);
+            localizationLanguages.extraQuestFields[index] = EditorGUI.TextField(langRect, localizationLanguages.extraQuestFields[index]);
+        }
+
+        private void OnAddExportLanguageExtraQuestFieldsListElement(ReorderableList list)
+        {
+            localizationLanguages.extraQuestFields.Add(string.Empty);
+        }
+
+        private void OnDrawExportLanguageExtraItemFieldsListHeader(Rect rect)
+        {
+            EditorGUI.LabelField(rect, exportExtraItemFieldsLabel);
+        }
+
+        private void OnDrawExportLanguageExtraItemFieldsListElement(Rect rect, int index, bool isActive, bool isFocused)
+        {
+            if (!(0 <= index && index < localizationLanguages.extraItemFields.Count)) return;
+            var langRect = new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight);
+            localizationLanguages.extraItemFields[index] = EditorGUI.TextField(langRect, localizationLanguages.extraItemFields[index]);
+        }
+
+        private void OnAddExportLanguageExtraItemFieldsListElement(ReorderableList list)
+        {
+            localizationLanguages.extraItemFields.Add(string.Empty);
         }
 
         private void FindLanguagesForLocalizationExportImport()
@@ -187,8 +308,21 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private void ExportLocalizationFiles()
         {
+            var newOutputFolder = EditorUtility.OpenFolderPanel("Export Localization Files", localizationLanguages.outputFolder, string.Empty);
+            if (!string.IsNullOrEmpty(newOutputFolder))
+            {
+                if (ExportLocalizationFilesToFolder(newOutputFolder))
+                {
+                    EditorUtility.DisplayDialog("Exported Localization CSV", "Localization files are in " + localizationLanguages.outputFolder + ". Open these files in a spreadsheet application and add translations. Then import them by using the Import... button.", "OK");
+                }
+            }
+        }
+
+        private bool ExportLocalizationFilesToFolder(string folderName)
+        {
             try
             {
+                localizationLanguages.outputFolder = folderName;
                 InitializeActorNameLookupCache();
                 var numLanguages = localizationLanguages.languages.Count;
                 for (int i = 0; i < numLanguages; i++)
@@ -197,7 +331,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     var language = localizationLanguages.languages[i];
                     if (EditorUtility.DisplayCancelableProgressBar("Exporting Localization CSV", "Exporting CSV files for " + language, progress))
                     {
-                        return;
+                        return false;
                     }
 
                     // Write Dialogue_LN.csv file:
@@ -216,6 +350,11 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                             "Original Menu",
                             "Translated Menu [" + language + "]",
                             "Description");
+                        foreach (string field in localizationLanguages.extraEntryFields)
+                        {
+                            if (string.IsNullOrEmpty(field)) continue;
+                            line += "," + field + "," + field + " [" + language + "]";
+                        }
                         if (exportLocalizationKeyField)
                         {
                             line = localizationKeyField + "," + line;
@@ -232,14 +371,30 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                                     var f = de.fields.Find(x => x.title == s);
                                     fields.Add((f != null) ? f.value : string.Empty);
                                 }
+                                foreach (var field in localizationLanguages.extraEntryFields)
+                                {
+                                    if (string.IsNullOrEmpty(field)) continue;
+                                    fields.Add(Field.LookupValue(de.fields, field));
+                                    fields.Add(Field.LookupValue(de.fields, field + " " + language));
+                                }
                                 var sb = new StringBuilder();
                                 if (exportLocalizationKeyField)
                                 {
-                                    sb.AppendFormat("{0},", WrapCSVValue(Field.LookupValue(de.fields, localizationKeyField)));
+                                    var field = Field.Lookup(de.fields, localizationKeyField);
+                                    if (field == null)
+                                    {
+                                        field = new Field(localizationKeyField, GetNewKeyFieldValue(), FieldType.Text);
+                                        de.fields.Add(field);
+                                    }
+                                    else if (string.IsNullOrEmpty(field.value))
+                                    {
+                                        field.value = GetNewKeyFieldValue();
+                                    }
+                                    sb.AppendFormat("{0},", WrapCSVValue(field.value));
                                 }
-                                sb.AppendFormat("{0},{1},{2}", 
-                                    (exportLocalizationConversationTitle ? WrapCSVValue(conversationTitle) : c.id.ToString()), 
-                                    de.id, 
+                                sb.AppendFormat("{0},{1},{2}",
+                                    (exportLocalizationConversationTitle ? WrapCSVValue(conversationTitle) : c.id.ToString()),
+                                    de.id,
                                     WrapCSVValue(LookupActorName(de.ActorID)));
                                 foreach (string value in fields)
                                     sb.AppendFormat(",{0}", WrapCSVValue(value));
@@ -250,12 +405,17 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     }
 
                     // Write Quests_LN.csv file:
+                    int numItems = 0;
                     int numQuests = 0;
                     int maxEntryCount = 0;
                     foreach (var item in database.items)
                     {
-                        if (!item.IsItem)
+                        if (item.IsItem)
                         {
+                            numItems++;
+                        }
+                        else
+                        { 
                             numQuests++;
                             maxEntryCount = Mathf.Max(maxEntryCount, item.LookupInt("Entry Count"));
                         }
@@ -279,6 +439,11 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                                 "Translated Success Description [" + language + "]",
                                 "Failure Description",
                                 "Translated Failure Description [" + language + "]");
+                            foreach (string field in localizationLanguages.extraQuestFields)
+                            {
+                                if (string.IsNullOrEmpty(field)) continue;
+                                sb.AppendFormat(",{0},{1} [{2}]", field, field, language);
+                            }
                             for (int j = 0; j < maxEntryCount; j++)
                             {
                                 sb.AppendFormat(",{0},{1}",
@@ -291,6 +456,8 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                                 if (item.IsItem) continue;
                                 var quest = item;
                                 sb = new StringBuilder();
+
+                                // Main quest fields:
                                 sb.AppendFormat("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}",
                                     WrapCSVValue(quest.Name),
                                     WrapCSVValue(quest.LookupValue("Display Name")),
@@ -303,6 +470,15 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                                     WrapCSVValue(quest.LookupValue("Success Description " + language)),
                                     WrapCSVValue(quest.LookupValue("Failure Description")),
                                     WrapCSVValue(quest.LookupValue("Failure Description " + language)));
+
+                                // Extra quest fields:
+                                foreach (string field in localizationLanguages.extraQuestFields)
+                                {
+                                    if (string.IsNullOrEmpty(field)) continue;
+                                    sb.AppendFormat(",{0},{1}", quest.LookupValue(field), quest.LookupValue(field + " " + language));
+                                }
+
+                                // Quest entry fields:
                                 var entryCount = quest.LookupInt("Entry Count");
                                 for (int j = 0; j < maxEntryCount; j++)
                                 {
@@ -322,16 +498,69 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                             file.Close();
                         }
                     }
+
+                    // Write Items_LN.csv file:
+                    if (numItems > 0)
+                    {
+                        filename = localizationLanguages.outputFolder + "/Items_" + language + ".csv";
+                        using (var file = new StreamWriter(filename, false, new UTF8Encoding(true)))
+                        {
+                            file.WriteLine(language);
+                            var sb = new StringBuilder();
+                            sb.AppendFormat("{0},{1},{2},{3},{4}",
+                                "Name",
+                                "Display Name",
+                                "Translated Display Name [" + language + "]",
+                                "Description",
+                                "Translated Description [" + language + "]");
+                            foreach (string field in localizationLanguages.extraItemFields)
+                            {
+                                if (string.IsNullOrEmpty(field)) continue;
+                                sb.AppendFormat(",{0},{1} [{2}]", field, field, language);
+                            }
+                            file.WriteLine(sb.ToString());
+                            foreach (var item in database.items)
+                            {
+                                if (!item.IsItem) continue;
+                                sb = new StringBuilder();
+
+                                // Main item fields:
+                                sb.AppendFormat("{0},{1},{2},{3},{4}",
+                                    WrapCSVValue(item.Name),
+                                    WrapCSVValue(item.LookupValue("Display Name")),
+                                    WrapCSVValue(item.LookupValue("Display Name " + language)),
+                                    WrapCSVValue(item.LookupValue("Description")),
+                                    WrapCSVValue(item.LookupValue("Description " + language)));
+
+                                // Extra item fields:
+                                foreach (string field in localizationLanguages.extraItemFields)
+                                {
+                                    if (string.IsNullOrEmpty(field)) continue;
+                                    sb.AppendFormat(",{0},{1}", item.LookupValue(field), item.LookupValue(field + " " + language));
+                                }
+                                file.WriteLine(sb.ToString());
+                            }
+                            file.Close();
+                        }
+                    }
                 }
+
+                return true;
             }
             finally
             {
                 EditorUtility.ClearProgressBar();
             }
-            EditorUtility.DisplayDialog("Exported Localization CSV", "Localization files are in " + localizationLanguages.outputFolder + ". Open these files in a spreadsheet application and add translations. Then import them by using the Import... button.", "OK");
         }
 
-        string WrapCSVValue(string s)
+        private string GetNewKeyFieldValue()
+        {
+            var s = Guid.NewGuid().ToString();
+            var pos = s.IndexOf('-');
+            return (pos == -1) ? s : s.Substring(0, pos);
+        }
+
+        private string WrapCSVValue(string s)
         {
             if (string.IsNullOrEmpty(s)) return string.Empty;
             string s2 = s.Contains("\n") ? s.Replace("\n", "\\n") : s;
@@ -372,8 +601,19 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private void ImportLocalizationFiles()
         {
+            var newOutputFolder = EditorUtility.OpenFolderPanel("Import Localization Files", localizationLanguages.outputFolder, string.Empty);
+            if (!string.IsNullOrEmpty(newOutputFolder))
+            {
+                ImportLocalizationFilesFromFolder(newOutputFolder);
+            }
+
+        }
+
+        public void ImportLocalizationFilesFromFolder(string folderName)
+        {
             try
             {
+                localizationLanguages.outputFolder = folderName;
                 conversationIDCache.Clear();
                 lastCachedConversation = null;
                 var numLanguages = localizationLanguages.languages.Count;
@@ -464,6 +704,28 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                                     entry.DialogueText = columns[3];
                                     entry.MenuText = columns[5];
                                 }
+
+                                // Extra entry fields:
+                                for (int k = 0; k < localizationLanguages.extraEntryFields.Count; k++)
+                                {
+                                    var field = localizationLanguages.extraEntryFields[k];
+                                    int columnIndex = 8 + (k * 2) + 1;
+                                    if (string.IsNullOrEmpty(field)) continue;
+
+                                    if (!exportLocalizationCreateNewFields &&
+                                        !Field.FieldExists(entry.fields, field) &&
+                                        string.IsNullOrEmpty(columns[columnIndex - 1]))
+                                    {
+                                        continue;
+                                    }
+
+                                    Field.SetValue(entry.fields, field + " " + language, columns[columnIndex]);
+
+                                    if (alsoImportMainText)
+                                    {
+                                        Field.SetValue(entry.fields, field, columns[columnIndex - 1]);
+                                    }
+                                }
                             }
                         }
                     }
@@ -506,11 +768,41 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                                     Field.SetValue(quest.fields, "Description " + language, columns[6], FieldType.Localization);
                                     Field.SetValue(quest.fields, "Success Description " + language, columns[8], FieldType.Localization);
                                     Field.SetValue(quest.fields, "Failure Description " + language, columns[10], FieldType.Localization);
+
+                                    // Extra quest fields:
+                                    int numExtraQuestFields = 0;
+                                    for (int k = 0; k < localizationLanguages.extraQuestFields.Count; k++)
+                                    {
+                                        var field = localizationLanguages.extraQuestFields[k];
+                                        if (string.IsNullOrEmpty(field)) continue;
+
+                                        int columnIndex = 11 + (k * 2) + 1;
+                                        numExtraQuestFields++;
+
+                                        if (!exportLocalizationCreateNewFields &&
+                                            !Field.FieldExists(quest.fields, field) &&
+                                            string.IsNullOrEmpty(columns[columnIndex - 1]))
+                                        {
+                                            continue;
+                                        }
+
+                                        Field.SetValue(quest.fields, field + " " + language, columns[columnIndex]);
+
+                                        if (alsoImportMainText)
+                                        {
+                                            Field.SetValue(quest.fields, field, columns[columnIndex - 1]);
+                                        }
+                                    }
+
+                                    // Quest entry fields:
                                     var entryCount = quest.LookupInt("Entry Count");
                                     for (int k = 0; k < entryCount; k++)
                                     {
-                                        Field.SetValue(quest.fields, "Entry " + (k + 1) + " " + language, columns[12 + 2 * k], FieldType.Localization);
+                                        var index = 12 + (2 * numExtraQuestFields) + (k * 2);
+                                        Field.SetValue(quest.fields, "Entry " + (k + 1) + " " + language, columns[index], FieldType.Localization);
                                     }
+
+                                    // Check if we need to also import main text:
                                     if (alsoImportMainText)
                                     {
                                         if (quest.FieldExists("Display Name")) Field.SetValue(quest.fields, "Display Name", displayName);
@@ -521,6 +813,66 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                                         for (int k = 0; k < entryCount; k++)
                                         {
                                             Field.SetValue(quest.fields, "Entry " + (k + 1), columns[11 + 2 * k], FieldType.Text);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // Read items CSV file:
+                    filename = localizationLanguages.outputFolder + "/Items_" + language + ".csv";
+                    if (File.Exists(filename))
+                    {
+                        lines = ReadCSV(filename);
+                        CombineMultilineCSVSourceLines(lines);
+                        for (int j = 2; j < lines.Count; j++)
+                        {
+                            var columns = GetCSVColumnsFromLine(lines[j]);
+                            if (columns.Count < 5)
+                            {
+                                Debug.LogError(filename + ":" + (j + 1) + " Invalid line: " + lines[j]);
+                            }
+                            else
+                            {
+                                var item = database.GetItem(columns[0]);
+                                if (item == null)
+                                {
+                                    // Skip if item is not present.
+                                }
+                                else
+                                {
+                                    var displayName = columns[1];
+                                    var translatedDisplayName = columns[2];
+                                    if (!string.IsNullOrEmpty(translatedDisplayName))
+                                    {
+                                        if (!item.FieldExists("Display Name")) Field.SetValue(item.fields, "Display Name", displayName);
+                                        Field.SetValue(item.fields, "Display Name " + language, translatedDisplayName, FieldType.Localization);
+                                    }
+                                    Field.SetValue(item.fields, "Description " + language, columns[4], FieldType.Localization);
+
+                                    // Extra item fields:
+                                    int numExtraItemFields = 0;
+                                    for (int k = 0; k < localizationLanguages.extraItemFields.Count; k++)
+                                    {
+                                        var field = localizationLanguages.extraItemFields[k];
+                                        if (string.IsNullOrEmpty(field)) continue;
+
+                                        int columnIndex = 4 + (k * 2) + 1;
+                                        numExtraItemFields++;
+
+                                        if (!exportLocalizationCreateNewFields &&
+                                            !Field.FieldExists(item.fields, field) &&
+                                            string.IsNullOrEmpty(columns[columnIndex - 1]))
+                                        {
+                                            continue;
+                                        }
+
+                                        Field.SetValue(item.fields, field + " " + language, columns[columnIndex]);
+
+                                        if (alsoImportMainText)
+                                        {
+                                            Field.SetValue(item.fields, field, columns[columnIndex - 1]);
                                         }
                                     }
                                 }
@@ -610,6 +962,128 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 s2 = s2.Substring(1, s2.Length - 2).Replace("\"\"", "\"");
             }
             return s2;
+        }
+
+        #endregion
+
+        #region Alocai
+
+        private void LocalizationByAlocai()
+        {
+            // Show an explanation and confirmation dialog:
+            if (!EditorUtility.DisplayDialog("Request Quote From Alocai",
+                "Pixel Crushers is partnering with localization services to provide additional localization options for your Dialogue System projects.\n\n" +
+                "Click Continue to request a quote from game localization platform Alocai to translate your dialogue database content. " +
+                "The Dialogue Editor will ask you to select a folder to export your database content, which will then be sent to Alocai so they can prepare a quote.",
+                "Continue", "Cancel"))
+            {
+                return;
+            }
+
+            // make sure the options are selected correctly
+            if (!exportLocalizationKeyField)
+            {
+                exportLocalizationKeyField = true;
+                localizationKeyField = "Guid";
+                exportAssignFieldValues = true;
+            }
+
+            // export the localization data to files in a local folder
+            var newOutputFolder = EditorUtility.OpenFolderPanel("Export Localization Files", localizationLanguages.outputFolder, string.Empty);
+            if (!string.IsNullOrEmpty(newOutputFolder))
+            {
+                if (ExportLocalizationFilesToFolder(newOutputFolder))
+                {
+                    // send the files to Alocai
+                    SendRequestToAlocai();
+                }
+            }
+        }
+
+        private void SendRequestToAlocai()
+        {
+            string server = "https://quote-requester-api.alocai.com";
+            string apiKey = "539568b8-3589-4ccc-ace5-4439e315bd4f";
+
+            try
+            {
+                List<IMultipartFormSection> data = new List<IMultipartFormSection>();
+
+                int numLanguages = localizationLanguages.languages.Count;
+                for (int i = 0; i < numLanguages; i++)
+                {
+                    string language = localizationLanguages.languages[i];
+
+                    // Dialogue_LN.csv file:
+                    string dialogueFilename = "Dialogue_" + language + ".csv";
+                    string dialogueFilePath = localizationLanguages.outputFolder + "/" + dialogueFilename;
+                    byte[] dialogueFileContents = File.ReadAllBytes(dialogueFilePath);
+                    data.Add(new MultipartFormFileSection("files", dialogueFileContents, dialogueFilename, "text/csv"));
+
+                    // Quests_LN.csv file:
+                    string questsFilename = "Quests_" + language + ".csv";
+                    string questsFilePath = localizationLanguages.outputFolder + "/" + questsFilename;
+                    byte[] questsFileContents = File.ReadAllBytes(questsFilePath);
+                    data.Add(new MultipartFormFileSection("files", questsFileContents, questsFilename, "text/csv"));
+                }
+
+                Debug.Log("Sending request to " + server);
+
+                UnityWebRequest www = UnityWebRequest.Post(server + "/api/v1/files", data);
+                www.SetRequestHeader("X-Api-Key", apiKey);
+                www.SendWebRequest();
+
+                while (!www.isDone)
+                {
+                    if (EditorUtility.DisplayCancelableProgressBar("Uploading Localization files", "Uploading localization files to Alocai", www.uploadProgress))
+                    {
+                        www.Abort();
+                        return;
+                    }
+                }
+
+#if UNITY_2020_1_OR_NEWER
+                Debug.LogFormat(this, "{0} {1}", www.responseCode, www.result);
+                if (www.result == UnityWebRequest.Result.Success)
+#else
+                long responseCodeSuccess = 201;
+                Debug.LogFormat(this, "Web response code: {0}", www.responseCode);
+                if (www.responseCode == responseCodeSuccess)
+#endif
+                {
+                    // success
+                    string text = www.downloadHandler.text;
+                    Debug.Log(text);
+
+                    var response = JsonUtility.FromJson<AlocaiResponse>(text);
+                    string responseUrl = response.quote_requester_client_url;
+                    Application.OpenURL(responseUrl);
+
+                    // Show reminder to add the languages to the list on the web form
+                    //EditorUtility.DisplayDialog("Localization by Alocai", "Be sure to select all the desired languages on the web form.", "OK");
+
+                    Debug.Log("Request sent to Alocai quote request server.");
+                }
+                else
+                {
+                    // error
+                    Debug.LogError("Error connecting to Alocai's request server: " + www.error);
+                    Debug.Log("Error details text: " + www.downloadHandler.text);
+
+                    EditorUtility.DisplayDialog("Localization by Alocai",
+                        "There was an error connecting to Alocai's request server:\n\n" + www.error +
+                        "\n\nPlease contact Pixel Crushers for support, and provide the error message.", "OK");
+                }
+            }
+            finally
+            {
+                EditorUtility.ClearProgressBar();
+            }
+        }
+
+        public class AlocaiResponse
+        {
+            public string quote_requester_client_url;
         }
 
         #endregion

@@ -54,5 +54,22 @@ public static class AnimationConstants
         { Vector3.right, MovementAnimationRightMap },
     };
 
+    public const string Player1ControllerName = "SprPlayernewAnim";
+    public const string Player2ControllerName = "SprPlayer2newAnim";
+
+    /// <summary>
+    ///     P1 to P2 mappings of animation clip names.
+    /// </summary>
+    public static readonly Dictionary<string, string> TimelineAnimationClipNameMappings = new Dictionary<string, string>
+    {
+        { "WalkLeft", "player2_walkLeft" },
+        { "StandDownP", "player2_IdleDown" },
+        { "StandRightP", "player2_IdleRight" },
+        { "StandUpP", "player2_IdleUp" },
+        { "StandLefttP", "player2_IdleLeft" },
+        { "RunDown", "player2_runDown" },
+        { "RunLeft", "player2_runLeft" },
+        { "RunUP", "player2_runUp" }
+    };
     #endregion
 }

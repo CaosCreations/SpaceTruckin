@@ -108,9 +108,8 @@ namespace PixelCrushers.DialogueSystem
         /// <param name="startingEntryID">Entry started, or -1 for beginning of conversation.</param>
         /// <param name="numContinues">Number of nodes to continue past.</param>
         /// <returns></returns>
-        public static string GetSequence(string conversationTitle, int startingEntryID, int numContinues = 0)
+        public static string GetSequence(string conversationTitle, int startingEntryID, out DialogueEntry entry, int numContinues = 0)
         {
-            DialogueEntry entry;
             bool isPlayer;
             string sequence = string.Empty;                 
             GetDialogueEntry(conversationTitle, startingEntryID, numContinues, out entry, out isPlayer);
@@ -154,11 +153,10 @@ namespace PixelCrushers.DialogueSystem
             return dialogueManager.displaySettings.cameraSettings.defaultSequence;
         }
 
-        private const float DefaultSequenceDuration = 1f;
-
         public static float GetSequenceDuration(string conversationTitle, int startingEntryID, int numContinues = 0)
         {
-            var sequence = GetSequence(conversationTitle, startingEntryID, numContinues);
+            DialogueEntry entry;
+            var sequence = GetSequence(conversationTitle, startingEntryID, out entry, numContinues);
             if (sequence == null) return DefaultSequenceDuration;
             if (sequence.Contains("AudioWait("))
             {
@@ -168,16 +166,52 @@ namespace PixelCrushers.DialogueSystem
             {
                 return GetAudioLength("SALSA(", sequence, false);
             }
-//#if USE_LIPSYNC
+            //#if USE_LIPSYNC
             else if (sequence.Contains("LipSync("))
             {
                 return GetAudioLength("LipSync(", sequence, false); //[TODO] Set true, but then need to access LipSync outside Plugins.
             }
-//#endif
+            //#endif
             else
             {
-                return DefaultSequenceDuration;
+                return GetTypewriterLength(entry.DialogueText);
             }
+        }
+
+        private const float DefaultSequenceDuration = 1;
+        private const float MinSubtitleSeconds = 1;
+        private static bool hasLookedForTypewriter = false;
+        private static float typewriterCharsPerSecond = 50;
+
+        private static float GetTypewriterLength(string text)
+        {
+            if (!hasLookedForTypewriter)
+            {
+                hasLookedForTypewriter = true;
+                AbstractTypewriterEffect typewriterEffect = null;
+                var dialogueManager = FindObjectOfType<DialogueSystemController>();
+                if (dialogueManager != null)
+                {
+                    var ui = DialogueManager.dialogueUI as StandardDialogueUI;
+                    if (ui != null && ui.conversationUIElements.defaultNPCSubtitlePanel != null &&
+                        ui.conversationUIElements.defaultNPCSubtitlePanel.subtitleText != null)
+                    {
+                        typewriterEffect = ui.conversationUIElements.defaultNPCSubtitlePanel.subtitleText.gameObject.GetComponent<AbstractTypewriterEffect>();
+                    }
+                }
+                if (typewriterEffect == null) typewriterEffect = FindObjectOfType<AbstractTypewriterEffect>();
+                if (typewriterEffect != null) typewriterCharsPerSecond = typewriterEffect.charactersPerSecond;
+            }
+
+            int numCharacters = string.IsNullOrEmpty(text) ? 0 : Tools.StripRichTextCodes(text).Length;
+            float numRPGMakerPauses = 0;
+            if (text.Contains("\\"))
+            {
+                var numFullPauses = (text.Length - text.Replace("\\.", string.Empty).Length) / 2;
+                var numQuarterPauses = (text.Length - text.Replace("\\,", string.Empty).Length) / 2;
+                numRPGMakerPauses = (1.0f * numFullPauses) + (0.25f * numQuarterPauses);
+            }
+            return Mathf.Max(MinSubtitleSeconds, numRPGMakerPauses + (numCharacters / Mathf.Max(1, typewriterCharsPerSecond)));
         }
 
         private static float GetAudioLength(string command, string sequence, bool lipSync)
@@ -231,6 +265,7 @@ namespace PixelCrushers.DialogueSystem
 
         private static AudioClip LoadAudioClip(string audioFileName)
         {
+#if UNITY_EDITOR || USE_ADDRESSABLES
             AudioClip audioClip;
 #if UNITY_EDITOR
             audioClip = Resources.Load<AudioClip>(audioFileName);
@@ -243,7 +278,7 @@ namespace PixelCrushers.DialogueSystem
             if (foundEntry != null) audioClip = AssetDatabase.LoadAssetAtPath<AudioClip>(foundEntry.AssetPath);
             if (audioClip != null) return audioClip;
 #endif
-
+#endif
 #endif
             return null;
         }

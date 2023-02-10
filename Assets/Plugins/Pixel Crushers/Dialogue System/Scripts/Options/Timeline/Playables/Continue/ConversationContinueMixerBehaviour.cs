@@ -78,58 +78,52 @@ namespace PixelCrushers.DialogueSystem
         private string GetEditorContinueText(Playable playable)
         {
 #if UNITY_EDITOR
-            var go = UnityEditor.Selection.activeGameObject;
-            if (go != null)
+            PlayableDirector director = playable.GetGraph().GetResolver() as PlayableDirector;
+            if (director != null && director.playableAsset != null)
             {
-                var director = go.GetComponent<PlayableDirector>();
-                if (director == null) director = GameObject.FindObjectOfType<PlayableDirector>();
-                if (director == null) Debug.Log("Select PlayableDirector GameObject to be able to preview bark clip text.");
-                if (director != null && director.playableAsset != null)
+                var currentTime = director.time;
+                var timelineAsset = director.playableAsset as TimelineAsset;
+
+                // Find the latest StartConversationClip up to the current time:
+                double startConversationTime = 0;
+                string conversationTitle = string.Empty;
+                int startingEntryID = -1;
+                foreach (var track in timelineAsset.GetOutputTracks())
                 {
-                    var currentTime = director.time;
-                    var timelineAsset = director.playableAsset as TimelineAsset;
-
-                    // Find the latest StartConversationClip up to the current time:
-                    double startConversationTime = 0;
-                    string conversationTitle = string.Empty;
-                    int startingEntryID = -1;
-                    foreach (var track in timelineAsset.GetOutputTracks())
+                    foreach (var clip in track.GetClips())
                     {
-                        foreach (var clip in track.GetClips())
+                        if (clip.start > currentTime) break;
+                        if (clip.asset.GetType() == typeof(StartConversationClip))
                         {
-                            if (clip.start > currentTime) break;
-                            if (clip.asset.GetType() == typeof(StartConversationClip))
-                            {
-                                var startConversationClip = clip.asset as StartConversationClip;
-                                startConversationTime = clip.start;
-                                conversationTitle = startConversationClip.template.conversation;
-                                startingEntryID = startConversationClip.template.jumpToSpecificEntry ? startConversationClip.template.entryID : -1;
-                            }
+                            var startConversationClip = clip.asset as StartConversationClip;
+                            startConversationTime = clip.start;
+                            conversationTitle = startConversationClip.template.conversation;
+                            startingEntryID = startConversationClip.template.jumpToSpecificEntry ? startConversationClip.template.entryID : -1;
                         }
                     }
+                }
 
-                    // Count how many continues have passed since last StartConversationClip:
-                    int numContinues = 0;
-                    foreach (var track in timelineAsset.GetOutputTracks())
+                // Count how many continues have passed since last StartConversationClip:
+                int numContinues = 0;
+                foreach (var track in timelineAsset.GetOutputTracks())
+                {
+                    foreach (var clip in track.GetClips())
                     {
-                        foreach (var clip in track.GetClips())
+                        if (clip.start > currentTime) break;
+                        if (clip.start > startConversationTime &&
+                            clip.asset.GetType() == typeof(ContinueConversationClip))
                         {
-                            if (clip.start > currentTime) break;
-                            if (clip.start > startConversationTime &&
-                                clip.asset.GetType() == typeof(ContinueConversationClip))
-                            {
-                                numContinues++;
-                            }
+                            numContinues++;
                         }
                     }
+                }
 
-                    var dialogueText = PreviewUI.GetDialogueText(conversationTitle, startingEntryID, numContinues);
-                    //Debug.Log(numContinues + " continues since " + conversationTitle + " entry " + startingEntryID +
-                    //    " started at " + startConversationTime + ": " + dialogueText);
-                    if (!string.IsNullOrEmpty(dialogueText))
-                    {
-                        return dialogueText + " (may vary)";
-                    }
+                var dialogueText = PreviewUI.GetDialogueText(conversationTitle, startingEntryID, numContinues);
+                //Debug.Log(numContinues + " continues since " + conversationTitle + " entry " + startingEntryID +
+                //    " started at " + startConversationTime + ": " + dialogueText);
+                if (!string.IsNullOrEmpty(dialogueText))
+                {
+                    return dialogueText + " (may vary)";
                 }
             }
 #endif
@@ -137,7 +131,7 @@ namespace PixelCrushers.DialogueSystem
         }
 
         public override void OnGraphStart(Playable playable)
-        {            
+        {
             base.OnGraphStart(playable);
             played.Clear();
         }

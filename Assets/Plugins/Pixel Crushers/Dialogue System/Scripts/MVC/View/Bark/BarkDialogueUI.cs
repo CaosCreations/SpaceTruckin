@@ -16,6 +16,9 @@ namespace PixelCrushers.DialogueSystem
     public class BarkDialogueUI : MonoBehaviour, IDialogueUI
     {
 
+        [Tooltip("Play sequence associated with bark. ConversationView already plays it, but tick this if bark UI needs to wait for sequence to end.")]
+        public bool playSequence = false;
+
         public event EventHandler<SelectedResponseEventArgs> SelectedResponseHandler;
 
         public void Open()
@@ -30,7 +33,7 @@ namespace PixelCrushers.DialogueSystem
         {
             // Use the bark UI to show the subtitle, don't tell it to skip
             // the sequence since the ConversationView will already play it:
-            StartCoroutine(BarkController.Bark(subtitle, true));
+            StartCoroutine(BarkController.Bark(subtitle, !playSequence));
         }
 
         public void HideSubtitle(Subtitle subtitle)

@@ -20,6 +20,11 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("Typewriter effect to fast forward if it's not done playing.")]
         public AbstractTypewriterEffect typewriterEffect;
 
+#if USE_STM
+        [Tooltip("If using SuperTextMesh, assign this instead of typewriter effect.")]
+        public SuperTextMesh superTextMesh;
+#endif
+
         [Tooltip("Hide the continue button when continuing.")]
         public bool hideContinueButtonOnContinue = false;
 
@@ -29,10 +34,10 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("If alert is displaying, continue past it.")]
         public bool continueAlertPanel = true;
 
-        private UnityEngine.UI.Button continueButton;
+        protected UnityEngine.UI.Button continueButton;
 
-        private AbstractDialogueUI m_runtimeDialogueUI;
-        private AbstractDialogueUI runtimeDialogueUI
+        protected AbstractDialogueUI m_runtimeDialogueUI;
+        protected virtual AbstractDialogueUI runtimeDialogueUI
         {
             get
             {
@@ -67,6 +72,12 @@ namespace PixelCrushers.DialogueSystem
             {
                 typewriterEffect.Stop();
             }
+#if USE_STM
+            else if (superTextMesh != null && superTextMesh.reading)
+            {
+                superTextMesh.SkipToEnd();
+            }
+#endif
             else
             {
                 if (hideContinueButtonOnContinue && continueButton != null) continueButton.gameObject.SetActive(false);

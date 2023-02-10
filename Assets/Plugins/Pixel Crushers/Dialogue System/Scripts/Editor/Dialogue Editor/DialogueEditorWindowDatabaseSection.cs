@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace PixelCrushers.DialogueSystem.DialogueEditor
 {
@@ -37,6 +38,8 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private bool globalSearchSpecificConversation = false;
         [SerializeField]
         private int globalSearchConversationIndex = -1;
+        [SerializeField]
+        private bool globalSearchUseRegex = false;
 
         [SerializeField]
         private DatabaseFoldouts databaseFoldouts = new DatabaseFoldouts();
@@ -46,6 +49,8 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private DatabaseMerger.ConflictingIDRule conflictingIDRule = DatabaseMerger.ConflictingIDRule.ReplaceConflictingIDs;
         [SerializeField]
         private bool mergeProperties = true;
+        [SerializeField]
+        private bool mergeEmphases = true;
         [SerializeField]
         private bool mergeActors = true;
         [SerializeField]
@@ -57,39 +62,51 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         [SerializeField]
         private bool mergeConversations = true;
 
-        private enum ExportFormat { ChatMapperXML, CSV, VoiceoverScript, LanguageText, Screenplay };
+        public enum ExportFormat { ChatMapperXML, JSON, CSV, VoiceoverScript, LanguageText, Screenplay };
         [SerializeField]
-        private ExportFormat exportFormat = ExportFormat.ChatMapperXML;
+        public ExportFormat exportFormat = ExportFormat.ChatMapperXML;
         [SerializeField]
-        private string chatMapperExportPath = string.Empty;
+        public string chatMapperExportPath = string.Empty;
         [SerializeField]
-        private string csvExportPath = string.Empty;
+        public string csvExportPath = string.Empty;
         [SerializeField]
-        private string voiceoverExportPath = string.Empty;
+        public string jsonExportPath = string.Empty;
         [SerializeField]
-        private string languageTextExportPath = string.Empty;
+        public string voiceoverExportPath = string.Empty;
         [SerializeField]
-        private string screenplayExportPath = string.Empty;
+        public string languageTextExportPath = string.Empty;
         [SerializeField]
-        private static bool exportActors = true;
+        public string screenplayExportPath = string.Empty;
         [SerializeField]
-        private static bool exportItems = true;
+        public static bool exportActors = true;
         [SerializeField]
-        private static bool exportLocations = true;
+        public static bool exportItems = true;
         [SerializeField]
-        private static bool exportVariables = true;
+        public static bool exportLocations = true;
         [SerializeField]
-        private static bool exportConversations = true;
+        public static bool exportVariables = true;
         [SerializeField]
-        private static bool exportCanvasRect = true;
+        public static bool exportConversations = true;
         [SerializeField]
-        private static bool exportConversationsAfterEntries = false;
+        public static bool exportCanvasRect = true;
         [SerializeField]
-        private static bool omitNoneSequenceEntriesInScreenplay = false;
+        public static bool exportConversationsAfterEntries = false;
+        [SerializeField]
+        public static bool omitNoneSequenceEntriesInScreenplay = false;
         [SerializeField]
         private EntrytagFormat entrytagFormat = EntrytagFormat.ActorName_ConversationID_EntryID;
         [SerializeField]
         private EncodingType encodingType = EncodingType.UTF8;
+
+        private static GUIContent GlobalSearchLabel = new GUIContent("Search For:");
+        private static GUIContent RegexSearchLabel = new GUIContent("Regex", "Use regular expressions in searches.");
+
+        private Regex globalSearchRegex;
+
+        private void ResetDatabaseTab()
+        {
+            ResetLocalizationFoldout();
+        }
 
         #endregion
 
@@ -124,6 +141,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             database.globalUserScript = EditorGUILayout.TextArea(database.globalUserScript);
             databaseFoldouts.emphasisSettings = EditorGUILayout.Foldout(databaseFoldouts.emphasisSettings, new GUIContent("Emphasis Settings", "Settings to use for [em#] tags in dialogue text."));
             if (databaseFoldouts.emphasisSettings) DrawEmphasisSettings();
+            database.baseID = EditorGUILayout.IntField(new GUIContent("Base ID", "Assign internal IDs to actors, variables, conversations, etc., starting from this base value. Useful when working with multiple databases."), database.baseID);
             EditorGUILayout.EndVertical();
             EditorWindowTools.EndIndentedSection();
         }
@@ -193,6 +211,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             }
             EditorGUILayout.EndHorizontal();
             showDatabaseName = EditorGUILayout.ToggleLeft(new GUIContent("Show Database Name", "Show the database name in the lower left of the editor window."), showDatabaseName);
+            syncOnOpen = EditorGUILayout.ToggleLeft(new GUIContent("Sync On Open", "If any database sections are configured to sync content from another database, automatically sync when opening database."), syncOnOpen);
             registerCompleteObjectUndo = EditorGUILayout.ToggleLeft(new GUIContent("Fast Undo for Large Databases", "Use Undo.RegisterCompleteObjectUndo instead of Undo.RegisterUndo. Tick if operations such as deleting a conversation become slow in very large databases."), registerCompleteObjectUndo);
             debug = EditorGUILayout.ToggleLeft(new GUIContent("Debug", "For internal debugging of the dialogue editor."), debug);
 
@@ -217,7 +236,10 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private void DrawGlobalReplaceSection()
         {
             EditorGUI.indentLevel++;
-            EditorGUILayout.LabelField("Search For:");
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(GlobalSearchLabel, GUILayout.Width(130));
+            globalSearchUseRegex = EditorGUILayout.ToggleLeft(RegexSearchLabel, globalSearchUseRegex);
+            EditorGUILayout.EndHorizontal();
             globalSearchText = EditorGUILayout.TextArea(globalSearchText);
             EditorGUILayout.LabelField("Replace With:");
             globalReplaceText = EditorGUILayout.TextArea(globalReplaceText);
@@ -250,16 +272,18 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         {
             try
             {
+                globalSearchRegex = new Regex(globalSearchText);
+
                 var specificConversation = globalSearchSpecificConversation ? conversationTitles[globalSearchConversationIndex] : string.Empty;
                 var result = globalSearchSpecificConversation ? "Conversation '" + specificConversation + "' matches for '" + globalSearchText + "': (click this log entry to see full report)"
                     : "Database matches for '" + globalSearchText + "': (click this log entry to see full report)";
 
-                if (!globalSearchSpecificConversation && !string.IsNullOrEmpty(database.globalUserScript) && database.globalUserScript.Contains(globalSearchText))
+                if (!globalSearchSpecificConversation && !string.IsNullOrEmpty(database.globalUserScript) && GlobalSearchMatch(database.globalUserScript))
                 {
                     result += "\nGlobal User Script: " + database.globalUserScript;
                 }
 
-                if (!globalSearchSpecificConversation && !string.IsNullOrEmpty(database.description) && database.description.Contains(globalSearchText))
+                if (!globalSearchSpecificConversation && !string.IsNullOrEmpty(database.description) && GlobalSearchMatch(database.description))
                 {
                     result += "\nDescription: " + database.description;
                 }
@@ -276,7 +300,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     result += LogSearchResultsInAssetList<Location>(database.locations, "Location");
                     if (EditorUtility.DisplayCancelableProgressBar("Searching Database", "Searching variables for '" + globalSearchText + "'. Please wait...", (database.actors.Count + database.items.Count + database.locations.Count) / size)) return;
                     result += LogSearchResultsInAssetList<Variable>(database.variables, "Variable");
-                }
+                }                
 
                 int numConversationsDone = 0;
                 foreach (var conversation in database.conversations)
@@ -287,7 +311,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     foreach (var field in conversation.fields)
                     {
                         if (string.IsNullOrEmpty(field.title) || string.IsNullOrEmpty(field.value)) continue;
-                        if (field.title.Contains(globalSearchText) || field.value.Contains(globalSearchText))
+                        if (GlobalSearchMatch(field))
                         {
                             result += "\nConversation: '" + conversation.Title + "': Field '" + field.title + "': " + field.value;
                         }
@@ -297,16 +321,16 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                         foreach (var field in entry.fields)
                         {
                             if (string.IsNullOrEmpty(field.title) || string.IsNullOrEmpty(field.value)) continue;
-                            if (field.title.Contains(globalSearchText) || field.value.Contains(globalSearchText))
+                            if (GlobalSearchMatch(field))
                             {
                                 result += "\nConversation '" + conversation.Title + "' entry " + entry.id + ": Field '" + field.title + "': " + field.value;
                             }
                         }
-                        if (!string.IsNullOrEmpty(entry.conditionsString) && entry.conditionsString.Contains(globalSearchText))
+                        if (!string.IsNullOrEmpty(entry.conditionsString) && GlobalSearchMatch(entry.conditionsString))
                         {
                             result += "\nConversation '" + conversation.Title + "' entry " + entry.id + ": Script: " + entry.conditionsString;
                         }
-                        if (!string.IsNullOrEmpty(entry.userScript) && entry.userScript.Contains(globalSearchText))
+                        if (!string.IsNullOrEmpty(entry.userScript) && GlobalSearchMatch(entry.userScript))
                         {
                             result += "\nConversation '" + conversation.Title + "' entry " + entry.id + ": Script: " + entry.userScript;
                         }
@@ -321,6 +345,17 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             }
         }
 
+        private bool GlobalSearchMatch(Field field)
+        {
+            if (field == null) return false;
+            return GlobalSearchMatch(field.title) || GlobalSearchMatch(field.value);
+        }
+
+        private bool GlobalSearchMatch(string s)
+        {
+            return globalSearchUseRegex ? globalSearchRegex.IsMatch(s) : s.Contains(globalSearchText);
+        }
+
         private string LogSearchResultsInAssetList<T>(List<T> assets, string assetTypeName) where T : Asset
         {
             var result = string.Empty;
@@ -328,7 +363,8 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             {
                 foreach (var field in asset.fields)
                 {
-                    if (field.title.Contains(globalSearchText) || field.value.Contains(globalSearchText))
+                    if (string.IsNullOrEmpty(field.title) || string.IsNullOrEmpty(field.value)) continue;
+                    if (GlobalSearchMatch(field))
                     {
                         if (asset is Item)
                         {
@@ -349,10 +385,12 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             int matches = 0;
             try
             {
+                globalSearchRegex = new Regex(globalSearchText);
+
                 var specificConversation = globalSearchSpecificConversation ? conversationTitles[globalSearchConversationIndex] : string.Empty;
 
                 bool cancel = false;
-                if (!globalSearchSpecificConversation && !string.IsNullOrEmpty(database.globalUserScript) && database.globalUserScript.Contains(globalSearchText))
+                if (!globalSearchSpecificConversation && !string.IsNullOrEmpty(database.globalUserScript) && GlobalSearchMatch(database.globalUserScript))
                 {
                     matches++;
                     var confirmed = !interactive || ConfirmReplacement("Global User Script:\n" + database.globalUserScript, out cancel);
@@ -363,7 +401,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     }
                 }
 
-                if (!globalSearchSpecificConversation && !string.IsNullOrEmpty(database.description) && database.description.Contains(globalSearchText))
+                if (!globalSearchSpecificConversation && !string.IsNullOrEmpty(database.description) && GlobalSearchMatch(database.description))
                 {
                     matches++;
                     var confirmed = !interactive || ConfirmReplacement("Description:\n" + database.description, out cancel);
@@ -404,7 +442,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     {
                         matches += RunGlobalSearchAndReplaceFieldList(entry.fields, null, interactive, out cancel);
                         if (cancel) return;
-                        if (!string.IsNullOrEmpty(entry.conditionsString) && entry.conditionsString.Contains(globalSearchText))
+                        if (!string.IsNullOrEmpty(entry.conditionsString) && GlobalSearchMatch(entry.conditionsString))
                         {
                             matches++;
                             var confirmed = !interactive || ConfirmReplacement("Dialogue Entry Conditions:\n" + entry.conditionsString, out cancel);
@@ -414,7 +452,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                                 entry.conditionsString = entry.conditionsString.Replace(globalSearchText, globalReplaceText);
                             }
                         }
-                        if (!string.IsNullOrEmpty(entry.userScript) && entry.userScript.Contains(globalSearchText))
+                        if (!string.IsNullOrEmpty(entry.userScript) && GlobalSearchMatch(entry.userScript))
                         {
                             matches++;
                             var confirmed = !interactive || ConfirmReplacement("Dialogue Entry Script:\n" + entry.userScript, out cancel);
@@ -473,7 +511,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             cancel = false;
             foreach (var field in fields)
             {
-                if (field.title.Contains(globalSearchText) || field.value.Contains(globalSearchText))
+                if (GlobalSearchMatch(field))
                 {
                     matches++;
                     var confirmed = true;
@@ -508,6 +546,10 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             databaseToMerge = EditorGUILayout.ObjectField(databaseToMerge, typeof(DialogueDatabase), false) as DialogueDatabase;
             EditorGUILayout.EndHorizontal();
             mergeProperties = EditorGUILayout.Toggle("Merge DB Properties", mergeProperties);
+            if (mergeProperties)
+            {
+                mergeEmphases = EditorGUILayout.Toggle("  Merge [em#] Settings", mergeEmphases);
+            }
             mergeActors = EditorGUILayout.Toggle("Merge Actors", mergeActors);
             mergeItems = EditorGUILayout.Toggle("Merge Items", mergeItems);
             mergeLocations = EditorGUILayout.Toggle("Merge Locations", mergeLocations);
@@ -551,7 +593,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         {
             if (databaseToMerge != null)
             {
-                DatabaseMerger.Merge(database, databaseToMerge, conflictingIDRule, mergeProperties, mergeActors, mergeItems, mergeLocations, mergeVariables, mergeConversations);
+                DatabaseMerger.Merge(database, databaseToMerge, conflictingIDRule, mergeProperties, mergeEmphases, mergeActors, mergeItems, mergeLocations, mergeVariables, mergeConversations);
                 Debug.Log(string.Format("{0}: Merged contents of {1} into {2}.", DialogueDebug.Prefix, databaseToMerge.name, database.name));
                 databaseToMerge = null;
                 SetDatabaseDirty("Merge Database");
@@ -574,6 +616,9 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 case ExportFormat.CSV:
                     EditorGUILayout.HelpBox("Use this feature to export your database to external text-based formats.\nYou can import CSV format into spreadsheet programs such as Excel and Google Sheets. To reimport into the Dialogue System, use Tools > Pixel Crushers > Dialogue System > Import > CSV.", MessageType.None);
                     break;
+                case ExportFormat.JSON:
+                    EditorGUILayout.HelpBox("Use this feature to export your database to external JSON text-based format.\nTo reimport back into the Dialogue System, use Tools > Pixel Crushers > Dialogue System > Import > JSON.", MessageType.None);
+                    break;
                 case ExportFormat.ChatMapperXML:
                     EditorGUILayout.HelpBox("Use this feature to export your database to external text-based formats.\nIf exporting to Chat Mapper format for import into Chat Mapper, you must also prepare a Chat Mapper template project that contains all the fields defined in this database. You can use the Dialogue System Chat Mapper template project as a base. To reimport into the Dialogue System, use Tools > Pixel Crushers > Dialogue System > Import > Chat Mapper.", MessageType.None);
                     break;
@@ -587,7 +632,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     EditorGUILayout.HelpBox("Use this feature to export your database to external text-based formats.\nThe screenplay script option will export a separate text file for each language.", MessageType.None);
                     break;
             }
-            if (exportFormat != ExportFormat.LanguageText && exportFormat != ExportFormat.Screenplay)
+            if (exportFormat != ExportFormat.LanguageText && exportFormat != ExportFormat.Screenplay && exportFormat != ExportFormat.JSON)
             {
                 exportActors = EditorGUILayout.Toggle("Export Actors", exportActors);
                 exportItems = EditorGUILayout.Toggle("Export Items/Quests", exportItems);
@@ -615,6 +660,9 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                         break;
                     case ExportFormat.CSV:
                         TryExportToCSV();
+                        break;
+                    case ExportFormat.JSON:
+                        TryExportToJSON();
                         break;
                     case ExportFormat.VoiceoverScript:
                         TryExportToVoiceoverScript();
@@ -700,7 +748,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             }
         }
 
-        private void TryExportToCSV()
+        public void TryExportToCSV()
         {
             string newCSVExportPath = EditorUtility.SaveFilePanel("Save CSV", EditorWindowTools.GetDirectoryName(csvExportPath), csvExportPath, "csv");
             if (!string.IsNullOrEmpty(newCSVExportPath))
@@ -715,7 +763,22 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             }
         }
 
-        private void TryExportToVoiceoverScript()
+        public void TryExportToJSON()
+        {
+            string newJSONExportPath = EditorUtility.SaveFilePanel("Save JSON", EditorWindowTools.GetDirectoryName(jsonExportPath), jsonExportPath, "json");
+            if (!string.IsNullOrEmpty(newJSONExportPath))
+            {
+                jsonExportPath = newJSONExportPath;
+                if (Application.platform == RuntimePlatform.WindowsEditor)
+                {
+                    jsonExportPath = csvExportPath.Replace("/", "\\");
+                }
+                System.IO.File.WriteAllText(newJSONExportPath, JsonUtility.ToJson(database), System.Text.Encoding.UTF8);
+                EditorUtility.DisplayDialog("Export Complete", "The dialogue database was exported to JSON format. ", "OK");
+            }
+        }
+
+        public void TryExportToVoiceoverScript()
         {
             string newVoiceoverPath = EditorUtility.SaveFilePanel("Save Voiceover Scripts", EditorWindowTools.GetDirectoryName(voiceoverExportPath), voiceoverExportPath, "csv");
             if (!string.IsNullOrEmpty(newVoiceoverPath))
@@ -730,7 +793,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             }
         }
 
-        private void TryExportToScreenplay()
+        public void TryExportToScreenplay()
         {
             string newScreenplayPath = EditorUtility.SaveFilePanel("Save Screenplays", EditorWindowTools.GetDirectoryName(screenplayExportPath), voiceoverExportPath, "txt");
             if (!string.IsNullOrEmpty(newScreenplayPath))
@@ -745,7 +808,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             }
         }
 
-        private void TryExportToLanguageText()
+        public void TryExportToLanguageText()
         {
             string newLanguageTextPath = EditorUtility.SaveFilePanel("Save Language Text", EditorWindowTools.GetDirectoryName(languageTextExportPath), languageTextExportPath, "txt");
             if (!string.IsNullOrEmpty(newLanguageTextPath))
@@ -767,10 +830,10 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private void DrawNoDatabaseSection()
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Select a dialogue database.");
-            GUILayout.FlexibleSpace();
+            var database = EditorGUILayout.ObjectField("Select dialogue database", null, typeof(DialogueDatabase), false);
             if (GUILayout.Button("Create New", GUILayout.Width(120))) CreateNewDatabase();
             EditorGUILayout.EndHorizontal();
+            if (database != null) SelectObject(database);
         }
 
         private void CreateNewDatabase()

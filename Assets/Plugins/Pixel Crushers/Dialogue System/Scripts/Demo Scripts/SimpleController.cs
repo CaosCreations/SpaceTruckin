@@ -99,7 +99,7 @@ namespace PixelCrushers.DialogueSystem.Demo
             var mouseX = UnityEngine.InputSystem.Mouse.current.delta.x.ReadValue() * Time.deltaTime;
             var mouseY = UnityEngine.InputSystem.Mouse.current.delta.y.ReadValue() * Time.deltaTime;
 #else
-            var mouseX = InputDeviceManager.GetAxis(mouseXAxis);
+            var mouseX = InputDeviceManager.GetAxis(mouseXAxis); // Input Manager already multiplies mouse axes by Time.deltaTime.
             var mouseY = InputDeviceManager.GetAxis(mouseYAxis);
 #endif
 

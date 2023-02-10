@@ -23,21 +23,7 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
 
     public void Init()
     {
-        if (DataUtils.SaveFolderExists(ArchivedMission.FolderName))
-        {
-            LoadDataAsync();
-        }
-        else
-        {
-            DataUtils.CreateSaveFolder(ArchivedMission.FolderName);
-        }
-
         ArchivedMissions = new List<ArchivedMission>();
-
-        if (ArchivedMissions == null)
-        {
-            Debug.LogError("No archived mission data");
-        }
     }
 
     public static void AddToArchive(ArchivedMission archivedMission)
@@ -55,8 +41,7 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
 
     public static bool ThereAreMissionsToReport()
     {
-        return Instance.ArchivedMissions
-            .Any(x => x != null && !x.HasBeenViewedInReport);
+        return Instance.ArchivedMissions.Any(x => x != null && !x.HasBeenViewedInReport);
     }
 
     public static List<ArchivedMission> GetMissionsToAppearInReport()
@@ -69,8 +54,8 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
     public static ArchivedMission GetMostRecentMissionByPilot(Pilot pilot)
     {
         return Instance.ArchivedMissions
-            .OrderByDescending(x => x.CompletionDate)
-            .FirstOrDefault();
+            .OrderByDescending(x => x?.CompletionDate)
+            .FirstOrDefault(x => x?.Pilot == pilot);
     }
 
     public static IEnumerable<ArchivedMission> GetArchivedMissionsByPilot(Pilot pilot)
@@ -81,6 +66,12 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
     #region Persistence
     public async void LoadDataAsync()
     {
+        if (!DataUtils.SaveFolderExists(ArchivedMission.FolderName))
+        {
+            DataUtils.CreateSaveFolder(ArchivedMission.FolderName);
+            return;
+        }
+
         string json = await DataUtils.ReadFileAsync(ArchivedMission.FilePath);
         ArchivedMissions = JsonHelper.ListFromJson<ArchivedMission>(json);
     }
@@ -92,7 +83,6 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
         DataUtils.SaveFileAsync(ArchivedMission.FileName, folderPath, json);
     }
 
-    public void DeleteData()
-        => DataUtils.RecursivelyDeleteSaveData(ArchivedMission.FolderName);
+    public void DeleteData() => DataUtils.RecursivelyDeleteSaveData(ArchivedMission.FolderName);
     #endregion
 }

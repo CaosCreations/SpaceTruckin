@@ -11,6 +11,7 @@ namespace PixelCrushers.DialogueSystem
     /// </summary>
     public class ActiveConversationRecord
     {
+        public string conversationTitle { get; set; }
 
         public Transform actor { get; set; }
 

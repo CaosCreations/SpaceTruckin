@@ -9,6 +9,11 @@ public static class MonoBehaviourExtensions
 
     public static void SetActive(this MonoBehaviour self, bool value)
     {
+        if (self == null)
+        {
+            Debug.LogError("MonoBehaviour was null when trying to set active to: " + value);
+            return;
+        }
         self.gameObject.SetActive(value);
     }
 

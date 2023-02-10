@@ -25,7 +25,7 @@ namespace PixelCrushers.DialogueSystem
         private static Stack<DialogueEntry> s_stack = new Stack<DialogueEntry>();
         public static bool s_pushCurrentEntry = false;
 
-#if UNITY_2019_3_OR_NEWER
+#if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void InitStaticVariables()
         {

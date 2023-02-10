@@ -5,7 +5,11 @@ public class MissionOutcome : ScriptableObject, IMissionOutcome
     [Range(0, 100)]
     public int Probability;
 
-    [SerializeField] private string flavourText;
+    [field: SerializeField]
+    public bool RequiresMissionSuccess { get; set; }
+
+    [field: SerializeField] 
+    public string FlavourText { get; set; }
 
     public virtual void Process(ScheduledMission mission) { }
 }

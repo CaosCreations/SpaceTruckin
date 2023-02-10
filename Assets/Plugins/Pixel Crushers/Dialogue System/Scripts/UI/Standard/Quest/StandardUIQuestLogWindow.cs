@@ -146,6 +146,10 @@ namespace PixelCrushers.DialogueSystem
             mainPanel.Open();
             openedWindowHandler();
             onOpen.Invoke();
+            if (selectFirstQuestOnOpen && quests.Length > 0)
+            {
+                RepaintSelectedQuest(quests[0]);
+            }
         }
 
         /// <summary>
@@ -216,16 +220,9 @@ namespace PixelCrushers.DialogueSystem
         {
             if (!m_isAwake) return;
             UnityEngine.UI.Selectable elementToSelect = null;
-            UnityEngine.UI.Selectable firstQuestElement = null;
             showingActiveQuestsHeading.SetActive(isShowingActiveQuests);
             showingCompletedQuestHeading.SetActive(!isShowingActiveQuests);
             selectionPanelContentManager.Clear();
-            var questTitleTemplate = isShowingActiveQuests ? 
-                activeQuestHeadingTemplate 
-                : completedQuestHeadingTemplate;
-            var selectedQuestTitleTemplate = isShowingActiveQuests ?
-                (selectedActiveQuestHeadingTemplate ?? activeQuestHeadingTemplate)
-                : (selectedCompletedQuestHeadingTemplate ?? completedQuestHeadingTemplate);
 
             // Get group names, and draw selected quest in its panel while we're at it:
             var groupNames = new List<string>();
@@ -269,14 +266,15 @@ namespace PixelCrushers.DialogueSystem
                 {
                     if (string.Equals(quest.Group, groupName))
                     {
-                        var template = IsSelectedQuest(quest) ? selectedQuestTitleTemplate : questTitleTemplate;
+                        var template = IsSelectedQuest(quest)
+                            ? GetSelectedQuestTitleTemplate(quest)
+                            : GetQuestTitleTemplate(quest);
                         var questTitle = selectionPanelContentManager.Instantiate<StandardUIQuestTitleButtonTemplate>(template);
                         questTitle.Assign(quest.Title, quest.Heading.text, OnToggleTracking);
                         selectionPanelContentManager.Add(questTitle, groupFoldout.interiorPanel);
                         var target = quest.Title;
                         questTitle.button.onClick.AddListener(() => { OnClickQuest(target); });
                         if (showDetailsOnSelect) AddShowDetailsOnSelect(questTitle.button, target);
-                        if (firstQuestElement == null) firstQuestElement = questTitle.button;
                         if (string.Equals(quest.Title, questTitleToSelect))
                         {
                             elementToSelect = questTitle.button;
@@ -290,14 +288,15 @@ namespace PixelCrushers.DialogueSystem
             foreach (var quest in quests)
             {
                 if (!string.IsNullOrEmpty(quest.Group)) continue;
-                var template = IsSelectedQuest(quest) ? selectedQuestTitleTemplate : questTitleTemplate;
+                var template = IsSelectedQuest(quest)
+                    ? GetSelectedQuestTitleTemplate(quest)
+                    : GetQuestTitleTemplate(quest);
                 var questTitle = selectionPanelContentManager.Instantiate<StandardUIQuestTitleButtonTemplate>(template);
                 questTitle.Assign(quest.Title, quest.Heading.text, OnToggleTracking);
                 selectionPanelContentManager.Add(questTitle, questSelectionContentContainer);
                 var target = quest.Title;
                 questTitle.button.onClick.AddListener(() => { OnClickQuest(target); });
                 if (showDetailsOnSelect) AddShowDetailsOnSelect(questTitle.button, target);
-                if (firstQuestElement == null) firstQuestElement = questTitle.button;
                 if (string.Equals(quest.Title, questTitleToSelect))
                 {
                     elementToSelect = questTitle.button;
@@ -317,10 +316,6 @@ namespace PixelCrushers.DialogueSystem
             SetStateToggleButtons();
             mainPanel.RefreshSelectablesList();
             if (mainPanel != null) UnityEngine.UI.LayoutRebuilder.MarkLayoutForRebuild(mainPanel.GetComponent<RectTransform>());
-            if (elementToSelect == null && selectFirstQuestOnOpen)
-            {
-                elementToSelect = firstQuestElement;
-            }
             if (elementToSelect != null)
             {
                 StartCoroutine(SelectElement(elementToSelect));
@@ -329,6 +324,20 @@ namespace PixelCrushers.DialogueSystem
             {
                 UITools.Select(mainPanel.firstSelected.GetComponent<UnityEngine.UI.Selectable>());
             }
+        }
+
+        protected virtual StandardUIQuestTitleButtonTemplate GetQuestTitleTemplate(QuestInfo quest)
+        {
+            return isShowingActiveQuests
+                ? activeQuestHeadingTemplate
+                : completedQuestHeadingTemplate;
+        }
+
+        protected virtual StandardUIQuestTitleButtonTemplate GetSelectedQuestTitleTemplate(QuestInfo quest)
+        {
+            return isShowingActiveQuests
+                ? (selectedActiveQuestHeadingTemplate ?? activeQuestHeadingTemplate)
+                : (selectedCompletedQuestHeadingTemplate ?? completedQuestHeadingTemplate);
         }
 
         protected IEnumerator SelectElement(UnityEngine.UI.Selectable elementToSelect)

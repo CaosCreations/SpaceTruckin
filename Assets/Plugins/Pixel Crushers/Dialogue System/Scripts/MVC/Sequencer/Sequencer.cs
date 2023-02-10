@@ -30,6 +30,10 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public event Action FinishedSequenceHandler = null;
 
+        public delegate void MessageStringDelegate(string message);
+
+        public event MessageStringDelegate receivedMessage = null;
+
         /// <summary>
         /// A constant defining the name of the default camera angles prefab in case the cameraAngles property isn't set.
         /// </summary>
@@ -72,19 +76,47 @@ namespace PixelCrushers.DialogueSystem
             get { return m_listener; }
         }
 
+        /// <summary>
+        /// Original camera position at start of conversation. At the end of
+        /// the conversation, the camera is restored back to this position.
+        /// You can change this if you want to reset the 'original' position
+        /// to be elsewhere.
+        /// </summary>
         public Vector3 originalCameraPosition
         {
             get { return m_originalCameraPosition; }
+            set { m_originalCameraPosition = value; }
         }
 
+        /// <summary>
+        /// Original camera position at start of conversation.
+        /// You can change this if you want to reset the 'original' rotation
+        /// to be different.
+        /// </summary>
         public Quaternion originalCameraRotation
         {
             get { return m_originalCameraRotation; }
+            set { m_originalCameraRotation = value; }
         }
 
+        /// <summary>
+        /// Original 2D camera orthographic size at start of conversation.
+        /// You can change this if you want to reset the the 'original' size
+        /// to be different.
+        /// </summary>
         public float originalOrthographicSize
         {
             get { return m_originalOrthographicSize; }
+            set { m_originalOrthographicSize = value; }
+        }
+
+        /// <summary>
+        /// If true, don't restore camera position to pre-sequence position when sequencer closes.
+        /// </summary>
+        public bool keepCameraPositionOnClose
+        {
+            get { return m_keepCameraPositionOnClose; }
+            set { m_keepCameraPositionOnClose = value; }
         }
 
         /// <summary>
@@ -97,10 +129,18 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
 		public string entrytag { get; set; }
 
+        /// <summary>
+        /// Currently language-localized entrytag.
+        /// </summary>
         public string entrytaglocal
         {
             get { return Localization.isDefaultLanguage ? entrytag : entrytag + "_" + Localization.language; }
         }
+
+        /// <summary>
+        /// Active conversation record associated with this sequencer instance.
+        /// </summary>
+        public ActiveConversationRecord activeConversationRecord { get; set; }
 
         /// @cond FOR_V1_COMPATIBILITY
         public bool IsPlaying { get { return isPlaying; } }
@@ -146,6 +186,8 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         private float m_originalOrthographicSize = 16;
 
+        private bool m_keepCameraPositionOnClose = false;
+
         private Transform m_speaker = null;
 
         private Transform m_listener = null;
@@ -155,6 +197,10 @@ namespace PixelCrushers.DialogueSystem
         private List<SequencerCommand> m_activeCommands = new List<SequencerCommand>();
 
         private List<SequencerCommand> m_commandsToDelete = new List<SequencerCommand>();
+
+        public int numQueuedCommands { get { return m_queuedCommands.Count; } }
+
+        public int numActiveCommands { get { return m_activeCommands.Count; } }
 
         private float m_delayTimeLeft = 0; // Used to track Delay(#) instead of requiring sep. sequencer command.
 
@@ -174,13 +220,31 @@ namespace PixelCrushers.DialogueSystem
 
         private bool m_isPlaying = false;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public static bool reportMissingAudioFiles = false;
+
         private static Dictionary<string, System.Type> m_cachedComponentTypes = new Dictionary<string, Type>();
 
         private static Dictionary<string, string> m_shortcuts = new Dictionary<string, string>();
-
         private static Dictionary<string, Stack<string>> m_shortcutStack = new Dictionary<string, Stack<string>>();
 
-#if UNITY_2019_3_OR_NEWER
+        /// <summary>
+        /// Registered shortcuts:
+        /// </summary>
+        public static Dictionary<string, string> shortcuts { get { return m_shortcuts; } }
+
+        /// <summary>
+        /// Stack of values for each shortcut. If adding a shortcut that already exists, the new
+        /// value of the shortcut is added to the top of the stack. When removed, it's popped off
+        /// the stack, revealing the previous value.
+        /// </summary>
+        public static Dictionary<string, Stack<string>> shortcutStack { get { return m_shortcutStack; } }
+
+        private Dictionary<string, Coroutine> m_timedMessageCoroutines = new Dictionary<string, Coroutine>();
+
+#if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void InitStaticVariables()
         {
@@ -195,7 +259,7 @@ namespace PixelCrushers.DialogueSystem
 
         /// <summary>
         /// Sends OnSequencerMessage(message) to the Dialogue Manager. Since sequencers are usually on 
-        /// the Dialogue Manager object, this is a convenient way to send a message to a sequencer.
+        /// the Dialogue Manager object, this is a convenient way to send a message to all active sequencers.
         /// You can use this method if your sequence is waiting for a message.
         /// </summary>
         /// <param name="message">Message to send.</param>
@@ -280,6 +344,7 @@ namespace PixelCrushers.DialogueSystem
             if (ShortcutRegex == null) ShortcutRegex = new Regex(@"{{.+}}");
             foreach (Match match in ShortcutRegex.Matches(sequence))
             {
+                if (string.Equals("{{default}}", match.Value)) continue;
                 Debug.LogWarning("Dialogue System: Unrecognized shortcut " + match.Value);
             }
         }
@@ -439,7 +504,7 @@ namespace PixelCrushers.DialogueSystem
         {
             if (!m_hasCameraControl) return;
             m_hasCameraControl = false;
-            if (m_alternateSequencerCameraObject != null)
+            if (m_alternateSequencerCameraObject != null && !keepCameraPositionOnClose)
             {
                 m_alternateSequencerCameraObject.transform.position = m_originalCameraPosition;
                 m_alternateSequencerCameraObject.transform.rotation = m_originalCameraRotation;
@@ -448,9 +513,12 @@ namespace PixelCrushers.DialogueSystem
             {
                 if (m_sequencerCamera != null) // May have disappeared if changed scene during conversation.
                 {
-                    m_sequencerCamera.transform.position = m_originalCameraPosition;
-                    m_sequencerCamera.transform.rotation = m_originalCameraRotation;
-                    m_sequencerCamera.orthographicSize = m_originalOrthographicSize;
+                    if (!keepCameraPositionOnClose)
+                    {
+                        m_sequencerCamera.transform.position = m_originalCameraPosition;
+                        m_sequencerCamera.transform.rotation = m_originalCameraRotation;
+                        m_sequencerCamera.orthographicSize = m_originalOrthographicSize;
+                    }
                     m_sequencerCamera.gameObject.SetActive(false);
                 }
                 if (m_originalCamera != null)
@@ -505,8 +573,22 @@ namespace PixelCrushers.DialogueSystem
                         case DialogueTime.TimeMode.Gameplay:
                             m_delayTimeLeft -= Time.deltaTime;
                             break;
-                    }                    
+                    }
                 }
+            }
+#if LATEUPDATE_MESSAGES
+        }
+
+        public void LateUpdate()
+        {
+#endif
+            if (m_isPlaying)
+            {
+                foreach (string message in queuedMessages)
+                {
+                    OnSequencerMessage(message);
+                }
+                queuedMessages.Clear();
                 if ((m_queuedCommands.Count == 0) && (m_activeCommands.Count == 0) && m_delayTimeLeft <= 0)
                 {
                     FinishSequence();
@@ -524,6 +606,7 @@ namespace PixelCrushers.DialogueSystem
                 FinishedSequenceHandler = null;
                 Close();
             }
+            s_awakeSequencer = null;
         }
 
         public void SetParticipants(Transform speaker, Transform listener)
@@ -732,7 +815,12 @@ namespace PixelCrushers.DialogueSystem
             }
             else if (HandleCommandInternally(commandName, args, out duration))
             {
-                if (!string.IsNullOrEmpty(endMessage)) StartCoroutine(SendTimedSequencerMessage(endMessage, duration));
+                if (!string.IsNullOrEmpty(endMessage))
+                {
+                    var guid = Guid.NewGuid().ToString();
+                    var coroutine = StartCoroutine(SendTimedSequencerMessage(endMessage, duration, guid));
+                    m_timedMessageCoroutines.Add(guid, coroutine);
+                }
             }
             else
             {
@@ -771,6 +859,7 @@ namespace PixelCrushers.DialogueSystem
 
         public static void Preload()
         {
+            // Cache sequencer commands:
             var assemblies = System.AppDomain.CurrentDomain.GetAssemblies();
             for (int i = 0; i < assemblies.Length; i++)
             {
@@ -792,6 +881,13 @@ namespace PixelCrushers.DialogueSystem
                     // Ignore exceptions.
                 }
             }
+
+            // Call parser to get JIT compilation out of the way for editor and .NET builds:
+            var parser = new SequenceParser();
+            parser.Parse("None();");
+
+            // Preload default camera angles prefab:
+            Resources.Load<GameObject>(DefaultCameraAnglesResourceName);
         }
 
         public System.Type GetTypeFromName(string typeName)
@@ -835,10 +931,11 @@ namespace PixelCrushers.DialogueSystem
         //    return Type.GetType(fullPath, false);
         //}
 
-        private IEnumerator SendTimedSequencerMessage(string endMessage, float delay)
+        private IEnumerator SendTimedSequencerMessage(string endMessage, float delay, string guid)
         {
             yield return StartCoroutine(DialogueTime.WaitForSeconds(delay));
-            Sequencer.Message(endMessage);
+            if (m_timedMessageCoroutines.ContainsKey(guid)) m_timedMessageCoroutines.Remove(guid);
+            OnSequencerMessage(endMessage);
         }
 
         private void ActivateCommand(QueuedSequencerCommand queuedCommand)
@@ -863,13 +960,11 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        //private List<QueuedSequencerCommand> m_queuedCommandsToDelete = new List<QueuedSequencerCommand>();
-
         public void OnSequencerMessage(string message)
         {
             try
             {
-                if ((m_queuedCommands.Count > 0) && !IsTimePaused() && !string.IsNullOrEmpty(message))
+                if ((m_queuedCommands.Count > 0) && !string.IsNullOrEmpty(message))
                 {
                     // Activate any queued commands that are waiting for the message:
                     var m_queuedCommandsWaitingForMessage = m_queuedCommands.FindAll(x => string.Equals(message, x.messageToWaitFor));
@@ -883,7 +978,6 @@ namespace PixelCrushers.DialogueSystem
                     {
                         m_queuedCommands.Remove(m_queuedCommandsWaitingForMessage[i]);
                     }
-                    // m_queuedCommands.RemoveAll(queuedCommand => (string.Equals(message, queuedCommand.messageToWaitFor)));
                 }
             }
             catch (Exception e)
@@ -892,7 +986,14 @@ namespace PixelCrushers.DialogueSystem
                 bool ignore = (e is InvalidOperationException || e is ArgumentOutOfRangeException);
                 if (!ignore) throw;
             }
+            finally
+            {
+                if (receivedMessage != null) receivedMessage(message);
+            }
         }
+
+        // Processed in LateUpdate():
+        private List<string> queuedMessages = new List<string>();
 
         private void CheckActiveCommands()
         {
@@ -905,16 +1006,19 @@ namespace PixelCrushers.DialogueSystem
                     var command = m_activeCommands[i];
                     if (command != null && !command.isPlaying)
                     {
-                        if (!string.IsNullOrEmpty(command.endMessage)) Sequencer.Message(command.endMessage);
+                        if (!string.IsNullOrEmpty(command.endMessage))
+                        {
+                            // Queue for LateUpdate:
+                            queuedMessages.Add(command.endMessage);
+                        }
                         m_commandsToDelete.Add(command);
-                        //--- if (0 <= i && i < m_activeCommands.Count) m_activeCommands.RemoveAt(i);
-                        Destroy(command);
                     }
                 }
             }
             for (int i = 0; i < m_commandsToDelete.Count; i++)
             {
                 m_activeCommands.Remove(m_commandsToDelete[i]);
+                Destroy(m_commandsToDelete[i]);
             }
             m_commandsToDelete.Clear();
         }
@@ -924,8 +1028,18 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public void Stop()
         {
+            StopTimedSequencerMessageCoroutines();
             StopQueued();
             StopActive();
+        }
+
+        private void StopTimedSequencerMessageCoroutines()
+        {
+            foreach (var coroutine in m_timedMessageCoroutines.Values)
+            {
+                StopCoroutine(coroutine);
+            }
+            m_timedMessageCoroutines.Clear();
         }
 
         public void StopQueued()
@@ -948,8 +1062,8 @@ namespace PixelCrushers.DialogueSystem
             {
                 if (command != null)
                 {
-                    if (!string.IsNullOrEmpty(command.endMessage)) Sequencer.Message(command.endMessage);
-                    StartCoroutine(DestroyAfterOneFrame(command)); //---Was: Destroy(command); //---Was: Destroy(command, 0.1f);
+                    if (!string.IsNullOrEmpty(command.endMessage)) OnSequencerMessage(command.endMessage);
+                    StartCoroutine(DestroyAfterOneFrame(command));
                 }
             }
             m_activeCommands.Clear();
@@ -1114,6 +1228,14 @@ namespace PixelCrushers.DialogueSystem
             else if (string.Equals(commandName, "RandomizeNextEntry"))
             {
                 return HandleRandomizeNextEntryInternally();
+            }
+            else if (string.Equals(commandName, "StopConversation"))
+            {
+                return HandleStopConversationInternally();
+            }
+            else if (string.Equals(commandName, "SequencerMessage"))
+            {
+                return HandleSequencerMessageInternally(commandName, args);
             }
             return false;
         }
@@ -1481,6 +1603,15 @@ namespace PixelCrushers.DialogueSystem
             Transform subject = SequencerTools.GetSubject(SequencerTools.GetParameter(args, 1), m_speaker, m_listener);
             float crossfadeDuration = SequencerTools.GetParameterAsFloat(args, 2);
             int layer = SequencerTools.GetParameterAsInt(args, 3, -1);
+            bool noactivate = false;
+            for (int i = 1; i < args.Length; i++)
+            {
+                if (string.Equals("noactivate", args[i], StringComparison.OrdinalIgnoreCase))
+                {
+                    noactivate = true;
+                    break;
+                }
+            }
             if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: Sequencer: AnimatorPlay({1}, {2}, fade={3}, layer={4})", new System.Object[] { DialogueDebug.Prefix, stateName, Tools.GetObjectName(subject), crossfadeDuration, layer }));
             if (subject == null)
             {
@@ -1499,14 +1630,17 @@ namespace PixelCrushers.DialogueSystem
                 }
                 else
                 {
-                    if (!animator.gameObject.activeSelf) animator.gameObject.SetActive(true);
-                    if (Tools.ApproximatelyZero(crossfadeDuration))
+                    if (!animator.gameObject.activeSelf && !noactivate) animator.gameObject.SetActive(true);
+                    if (animator.gameObject.activeInHierarchy)
                     {
-                        animator.Play(stateName, layer);
-                    }
-                    else
-                    {
-                        animator.CrossFadeInFixedTime(stateName, crossfadeDuration, layer);
+                        if (Tools.ApproximatelyZero(crossfadeDuration))
+                        {
+                            animator.Play(stateName, layer);
+                        }
+                        else
+                        {
+                            animator.CrossFadeInFixedTime(stateName, crossfadeDuration, layer);
+                        }
                     }
                 }
             }
@@ -1545,7 +1679,7 @@ namespace PixelCrushers.DialogueSystem
                 (asset) =>
                 {
                     var clip = asset as AudioClip;
-                    if ((clip == null) && DialogueDebug.logWarnings) Debug.LogWarning(string.Format("{0}: Sequencer: Audio() command: clip '{1}' could not be found or loaded.", new System.Object[] { DialogueDebug.Prefix, clipName }));
+                    if ((clip == null) && DialogueDebug.logWarnings && reportMissingAudioFiles) Debug.LogWarning(string.Format("{0}: Sequencer: Audio() command: clip '{1}' could not be found or loaded.", new System.Object[] { DialogueDebug.Prefix, clipName }));
 
                     // Play clip:
                     if (clip != null)
@@ -1952,6 +2086,7 @@ namespace PixelCrushers.DialogueSystem
         }
 
         private List<int> m_setDialoguePanelPreviouslyOpenSubtitlePanels = null;
+        private List<int> m_setDialoguePanelPreviouslyFocusedSubtitlePanels = null;
         private List<int> m_setDialoguePanelPreviouslyOpenMenuPanels = null;
         private List<bool> m_setDialoguePanelPreviousClearText = null;
         private List<bool> m_setDialoguePanelPreviousContinueButtonStates = null;
@@ -1978,6 +2113,11 @@ namespace PixelCrushers.DialogueSystem
                                 standardDialogueUI.conversationUIElements.subtitlePanels[subtitlePanelNumber].panelState = UIPanel.PanelState.Closed;
                                 standardDialogueUI.conversationUIElements.subtitlePanels[subtitlePanelNumber].Open();
                                 standardDialogueUI.conversationUIElements.subtitlePanels[subtitlePanelNumber].ActivateUIElements();
+                                if (m_setDialoguePanelPreviouslyFocusedSubtitlePanels != null &&
+                                    m_setDialoguePanelPreviouslyFocusedSubtitlePanels.Contains(subtitlePanelNumber))
+                                {
+                                    standardDialogueUI.conversationUIElements.subtitlePanels[subtitlePanelNumber].Focus();
+                                }
                                 standardDialogueUI.conversationUIElements.subtitlePanels[subtitlePanelNumber].clearTextOnClose = m_setDialoguePanelPreviousClearText[subtitlePanelNumber];
                                 if (m_setDialoguePanelPreviousContinueButtonStates[subtitlePanelNumber] == true) standardDialogueUI.conversationUIElements.subtitlePanels[subtitlePanelNumber].ShowContinueButton();
                             }
@@ -2000,10 +2140,12 @@ namespace PixelCrushers.DialogueSystem
                     {
                         if (m_setDialoguePanelPreviouslyOpenMenuPanels == null) m_setDialoguePanelPreviouslyOpenMenuPanels = new List<int>();
                         if (m_setDialoguePanelPreviouslyOpenSubtitlePanels == null) m_setDialoguePanelPreviouslyOpenSubtitlePanels = new List<int>();
+                        if (m_setDialoguePanelPreviouslyFocusedSubtitlePanels == null) m_setDialoguePanelPreviouslyFocusedSubtitlePanels = new List<int>();
                         if (m_setDialoguePanelPreviousClearText == null) m_setDialoguePanelPreviousClearText = new List<bool>();
                         if (m_setDialoguePanelPreviousContinueButtonStates == null) m_setDialoguePanelPreviousContinueButtonStates = new List<bool>();
                         m_setDialoguePanelPreviouslyOpenMenuPanels.Clear();
                         m_setDialoguePanelPreviouslyOpenSubtitlePanels.Clear();
+                        m_setDialoguePanelPreviouslyFocusedSubtitlePanels.Clear();
                         m_setDialoguePanelPreviousClearText.Clear();
                         m_setDialoguePanelPreviousContinueButtonStates.Clear();
                         for (int i = 0; i < standardDialogueUI.conversationUIElements.subtitlePanels.Length; i++)
@@ -2015,6 +2157,10 @@ namespace PixelCrushers.DialogueSystem
                             if (standardDialogueUI.conversationUIElements.subtitlePanels[i].isOpen &&
                                 standardDialogueUI.conversationUIElements.subtitlePanels[i].panelState != UIPanel.PanelState.Closing)
                             {
+                                if (standardDialogueUI.conversationUIElements.subtitlePanels[i].hasFocus)
+                                {
+                                    m_setDialoguePanelPreviouslyFocusedSubtitlePanels.Add(i);
+                                }
                                 if (immediate) standardDialogueUI.conversationUIElements.subtitlePanels[i].HideImmediate();
                                 else standardDialogueUI.conversationUIElements.subtitlePanels[i].Close();
                                 m_setDialoguePanelPreviouslyOpenSubtitlePanels.Add(i);
@@ -2243,26 +2389,22 @@ namespace PixelCrushers.DialogueSystem
             {
                 if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: Sequencer: SetPanel({1}, {2})", new System.Object[] { DialogueDebug.Prefix, actorTransform, subtitlePanelNumber }), actorTransform);
                 dialogueActor.SetSubtitlePanelNumber(subtitlePanelNumber);
-                return true;
+            }
+            var actor = DialogueManager.masterDatabase.GetActor((dialogueActor != null && !string.IsNullOrEmpty(dialogueActor.actor)) ? dialogueActor.actor : actorName);
+            if (actor == null)
+            {
+                if (dialogueActor == null && DialogueDebug.logWarnings) Debug.LogWarning(string.Format("{0}: Sequencer: SetPanel({1}, {2}): No actor named {1}", new System.Object[] { DialogueDebug.Prefix, actorName, subtitlePanelNumber }));
             }
             else
             {
-                var actor = DialogueManager.masterDatabase.GetActor(actorName);
-                if (actor == null)
+                if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: Sequencer: SetPanel({1}, {2})", new System.Object[] { DialogueDebug.Prefix, actorName, subtitlePanelNumber }));
+                var standardDialogueUI = DialogueManager.dialogueUI as IStandardDialogueUI;
+                if (standardDialogueUI != null)
                 {
-                    if (DialogueDebug.logWarnings) Debug.LogWarning(string.Format("{0}: Sequencer: SetPanel({1}, {2}): No actor named {1}", new System.Object[] { DialogueDebug.Prefix, actorName, subtitlePanelNumber }));
+                    standardDialogueUI.OverrideActorPanel(actor, subtitlePanelNumber);
                 }
-                else
-                {
-                    if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: Sequencer: SetPanel({1}, {2})", new System.Object[] { DialogueDebug.Prefix, actorName, subtitlePanelNumber }));
-                    var standardDialogueUI = DialogueManager.dialogueUI as IStandardDialogueUI;
-                    if (standardDialogueUI != null)
-                    {
-                        standardDialogueUI.OverrideActorPanel(actor, subtitlePanelNumber);
-                    }
-                }
-                return true;
             }
+            return true;
         }
 
         /// <summary>
@@ -2276,11 +2418,11 @@ namespace PixelCrushers.DialogueSystem
         {
             string actorName = SequencerTools.GetParameter(args, 0);
             Transform actorTransform = null;
-            if (string.IsNullOrEmpty(actorName) || string.Equals("speaker", actorName, StringComparison.OrdinalIgnoreCase))
+            if (string.IsNullOrEmpty(actorName) || string.Equals(SequencerKeywords.Speaker, actorName, StringComparison.OrdinalIgnoreCase))
             {
                 actorTransform = speaker;
             }
-            else if (string.Equals("listener", actorName, StringComparison.OrdinalIgnoreCase))
+            else if (string.Equals(SequencerKeywords.Listener, actorName, StringComparison.OrdinalIgnoreCase))
             {
                 actorTransform = listener;
             }
@@ -2320,7 +2462,7 @@ namespace PixelCrushers.DialogueSystem
             {
                 // If no transform, override menu panel by actor ID:
                 if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: Sequencer: SetMenuPanel({1}, {2})", new System.Object[] { DialogueDebug.Prefix, actorName, menuPanelNumber }));
-                if (string.Equals(actorName, "speaker", StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(actorName, SequencerKeywords.Speaker, StringComparison.OrdinalIgnoreCase))
                 {
                     var conversation = DialogueManager.masterDatabase.GetConversation(DialogueManager.lastConversationID);
                     if (conversation != null) actorName = DialogueManager.masterDatabase.GetActor(conversation.ActorID).Name;
@@ -2328,7 +2470,7 @@ namespace PixelCrushers.DialogueSystem
                 var actor = DialogueManager.masterDatabase.GetActor(actorName);
                 var standardDialogueUI = DialogueManager.dialogueUI as StandardDialogueUI;
                 if (actor != null && standardDialogueUI != null)
-                { 
+                {
                     standardDialogueUI.OverrideActorMenuPanel(actor, menuPanelNumber, null);
                     return true;
                 }
@@ -2383,29 +2525,42 @@ namespace PixelCrushers.DialogueSystem
             }
             else
             {
-                DialogueManager.LoadAsset(textureName, typeof(Texture2D),
+                if (actor == null)
+                {
+                    if (DialogueDebug.logWarnings) Debug.LogWarning(string.Format("{0}: Sequencer: SetPortrait() command: actor '{1}' not found.", new System.Object[] { DialogueDebug.Prefix, actorName }));
+                }
+                else if (isDefault)
+                {
+                    DialogueLua.SetActorField(actorName, DialogueSystemFields.CurrentPortrait, string.Empty);
+                }
+                else
+                {
+                    DialogueManager.LoadAsset(textureName, typeof(Sprite),
                     (asset) =>
                     {
-                        var spriteAsset = UITools.CreateSprite(asset as Texture2D);
-                        if (DialogueDebug.logWarnings)
+                        var spriteAsset = asset as Sprite;
+                        if (spriteAsset != null)
                         {
-                            if (actor == null) Debug.LogWarning(string.Format("{0}: Sequencer: SetPortrait() command: actor '{1}' not found.", new System.Object[] { DialogueDebug.Prefix, actorName }));
-                            if ((spriteAsset == null) && !isDefault) Debug.LogWarning(string.Format("{0}: Sequencer: SetPortrait() command: texture '{1}' not found.", new System.Object[] { DialogueDebug.Prefix, textureName }));
-                        }
-                        if (actor != null)
-                        {
-                            if (isDefault)
-                            {
-                                DialogueLua.SetActorField(actorName, DialogueSystemFields.CurrentPortrait, string.Empty);
-                            }
-                            else
-                            {
-                                if (spriteAsset != null) DialogueLua.SetActorField(actorName, DialogueSystemFields.CurrentPortrait, textureName);
-                            }
+                            DialogueLua.SetActorField(actorName, DialogueSystemFields.CurrentPortrait, textureName);
                             DialogueManager.instance.SetActorPortraitSprite(actorName, spriteAsset);
                         }
+                        else
+                        {
+                            DialogueManager.LoadAsset(textureName, typeof(Texture2D),
+                            (textureAsset) =>
+                            {
+                                spriteAsset = UITools.CreateSprite(textureAsset as Texture2D);
+                                if (spriteAsset == null)
+                                {
+                                    if (DialogueDebug.logWarnings) Debug.LogWarning(string.Format("{0}: Sequencer: SetPortrait() command: sprite/texture '{1}' not found.", new System.Object[] { DialogueDebug.Prefix, textureName }));
+                                }
+                                DialogueLua.SetActorField(actorName, DialogueSystemFields.CurrentPortrait, textureName);
+                                DialogueManager.instance.SetActorPortraitSprite(actorName, spriteAsset);
+                            });
+                        }
                     });
-                return true;
+                    return true;
+                }
             }
 
             if (DialogueDebug.logWarnings)
@@ -2463,26 +2618,28 @@ namespace PixelCrushers.DialogueSystem
                 var arg = SequencerTools.GetParameter(args, 0);
                 if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: Sequencer: SetContinueMode({1})", new System.Object[] { DialogueDebug.Prefix, arg }));
                 if (DialogueManager.instance == null || DialogueManager.displaySettings == null || DialogueManager.displaySettings.subtitleSettings == null) return true;
-                if (string.Equals(arg, "true", StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(arg, "original", StringComparison.OrdinalIgnoreCase))
                 {
-                    savedContinueButtonMode = DialogueManager.displaySettings.subtitleSettings.continueButton;
-                    DialogueManager.displaySettings.subtitleSettings.continueButton = DisplaySettings.SubtitleSettings.ContinueButtonMode.Always;
-                }
-                else if (string.Equals(arg, "false", StringComparison.OrdinalIgnoreCase))
-                {
-                    savedContinueButtonMode = DialogueManager.displaySettings.subtitleSettings.continueButton;
-                    DialogueManager.displaySettings.subtitleSettings.continueButton = DisplaySettings.SubtitleSettings.ContinueButtonMode.Never;
-                }
-                else if (string.Equals(arg, "original", StringComparison.OrdinalIgnoreCase))
-                {
+                    // Restore original mode:
                     if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: Sequencer: SetContinueMode({1}): Restoring original mode {2}", new System.Object[] { DialogueDebug.Prefix, arg, savedContinueButtonMode }));
                     DialogueManager.displaySettings.subtitleSettings.continueButton = savedContinueButtonMode;
                 }
                 else
                 {
-                    if (DialogueDebug.logWarnings) Debug.LogWarning(string.Format("{0}: Sequencer: SetContinueMode(true|false|original) requires a true/false/original parameter", new System.Object[] { DialogueDebug.Prefix }));
-                    return true;
+                    // Set requested mode:
+                    DisplaySettings.SubtitleSettings.ContinueButtonMode mode;
+                    if (TryGetContinueMode(arg, out mode))
+                    {
+                        savedContinueButtonMode = DialogueManager.displaySettings.subtitleSettings.continueButton;
+                        DialogueManager.displaySettings.subtitleSettings.continueButton = mode;
+                    }
+                    else
+                    {
+                        if (DialogueDebug.logWarnings) Debug.LogWarning(string.Format("{0}: Sequencer: SetContinueMode(true|false|original|...) requires a valid mode. See online manual for options.", new System.Object[] { DialogueDebug.Prefix }));
+                        return true;
+                    }
                 }
+                // If a conversation is open, update its continue button mode immediately:
                 if (DialogueManager.conversationView != null)
                 {
                     if (DialogueManager.conversationView.displaySettings.conversationOverrideSettings != null)
@@ -2493,6 +2650,43 @@ namespace PixelCrushers.DialogueSystem
                 }
                 return true;
             }
+        }
+
+        private bool TryGetContinueMode(string arg, out DisplaySettings.SubtitleSettings.ContinueButtonMode mode)
+        {
+            if (string.Equals(arg, "true", StringComparison.OrdinalIgnoreCase) || string.Equals(arg, "always", StringComparison.OrdinalIgnoreCase))
+            {
+                mode = DisplaySettings.SubtitleSettings.ContinueButtonMode.Always;
+            }
+            else if (string.Equals(arg, "false", StringComparison.OrdinalIgnoreCase) || string.Equals(arg, "never", StringComparison.OrdinalIgnoreCase))
+            {
+                mode = DisplaySettings.SubtitleSettings.ContinueButtonMode.Never;
+            }
+            else if (string.Equals(arg, "optional", StringComparison.OrdinalIgnoreCase))
+            {
+                mode = DisplaySettings.SubtitleSettings.ContinueButtonMode.Optional;
+            }
+            else
+            {
+                mode = DisplaySettings.SubtitleSettings.ContinueButtonMode.Never;
+                var found = false;
+                var enumValues = System.Enum.GetValues(typeof(DisplaySettings.SubtitleSettings.ContinueButtonMode));
+                for (int i = 0; i < enumValues.Length; i++)
+                {
+                    var enumMode = (DisplaySettings.SubtitleSettings.ContinueButtonMode)i;
+                    if (string.Equals(arg, enumMode.ToString(), StringComparison.OrdinalIgnoreCase))
+                    {
+                        mode = enumMode;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         /// <summary>
@@ -2598,6 +2792,26 @@ namespace PixelCrushers.DialogueSystem
             if (DialogueManager.conversationController != null) DialogueManager.conversationController.randomizeNextEntry = true;
             return true;
         }
+
+        private bool HandleStopConversationInternally()
+        {
+            if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: Sequencer: StopConversation()", new System.Object[] { DialogueDebug.Prefix }));
+            DialogueManager.StopConversation();
+            return true;
+        }
+
+        // Note: Sends globally.
+        private bool HandleSequencerMessageInternally(string commandName, string[] args)
+        {
+            var message = SequencerTools.GetParameter(args, 0);
+            if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: Sequencer: SequencerMessage({1})", new System.Object[] { DialogueDebug.Prefix, message }));
+            if (!string.IsNullOrEmpty(message))
+            {
+                Sequencer.Message(message);
+            }
+            return true;
+        }
+
     }
 
 }

@@ -19,5 +19,10 @@ namespace PixelCrushers
             yield break;
         }
 
+        /// <summary>
+        /// Called while loading a scene. You can override this method to update a progress indicator.
+        /// </summary>
+        public virtual void OnLoading(float progress) { }
+
     }
 }

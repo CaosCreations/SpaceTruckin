@@ -66,8 +66,9 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private void NormalizeItems()
         {
-            AddMissingFieldsToTemplate(template.questFields, template.itemFields);
-            NormalizeAssets<Item>(database.items, template.itemFields);
+            //--- No. Keep quests and items separate:  AddMissingFieldsToTemplate(template.questFields, template.itemFields);
+            NormalizeAssets<Item>(database.items, template.itemFields, true, true);
+            NormalizeAssets<Item>(database.items, template.questFields, true, false);
         }
 
         private void NormalizeLocations()
@@ -103,21 +104,30 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             }
         }
 
-        private void NormalizeAssets<T>(List<T> assets, List<Field> templateFields) where T : Asset
+        private void NormalizeAssets<T>(List<T> assets, List<Field> templateFields, bool checkIsItem = false, bool requireIsItem = false) where T : Asset
         {
             foreach (var asset in assets)
             {
-                AddMissingFieldsToTemplate(asset.fields, templateFields);
+                AddMissingFieldsToTemplate(asset.fields, templateFields, checkIsItem, requireIsItem);
             }
             foreach (var asset in assets)
             {
-                EnforceTemplateOnFields(asset.fields, templateFields);
+                EnforceTemplateOnFields(asset.fields, templateFields, checkIsItem, requireIsItem);
             }
             SetDatabaseDirty("Normalize Assets to Template");
         }
 
-        private void AddMissingFieldsToTemplate(List<Field> assetFields, List<Field> templateFields)
+        private void AddMissingFieldsToTemplate(List<Field> assetFields, List<Field> templateFields, bool checkIsItem = false, bool requireIsItem = false)
         {
+            if (checkIsItem)
+            {
+                var isItemField = Field.Lookup(assetFields, DialogueSystemFields.IsItem);
+                var isItem = isItemField != null && Tools.StringToBool(isItemField.value);
+                if ((requireIsItem == true && !isItem) || (requireIsItem == false && isItem))
+                {
+                    return;
+                }
+            }
             foreach (var field in assetFields)
             {
                 if (!Field.FieldExists(templateFields, field.title))
@@ -127,8 +137,17 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             }
         }
 
-        private void EnforceTemplateOnFields(List<Field> fields, List<Field> templateFields)
+        private void EnforceTemplateOnFields(List<Field> fields, List<Field> templateFields, bool checkIsItem = false, bool requireIsItem = false)
         {
+            if (checkIsItem)
+            {
+                var isItemField = Field.Lookup(fields, DialogueSystemFields.IsItem);
+                var isItem = isItemField != null && Tools.StringToBool(isItemField.value);
+                if ((requireIsItem == true && !isItem) || (requireIsItem == false && isItem))
+                {
+                    return;
+                }
+            }
             List<Field> newFields = new List<Field>();
             for (int i = 0; i < templateFields.Count; i++)
             {
@@ -148,9 +167,9 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private void UpdateTemplateFromAssets()
         {
             UpdateTemplateFromAssets<Actor>(database.actors, template.actorFields);
-            AddMissingFieldsToTemplate(template.questFields, template.itemFields);
-            UpdateTemplateFromAssets<Item>(database.items, template.itemFields);
-            UpdateTemplateFromAssets<Item>(database.items, template.questFields);
+            //--- No. Keep quests and items separate: AddMissingFieldsToTemplate(template.questFields, template.itemFields);
+            UpdateTemplateFromAssets<Item>(database.items, template.itemFields, true, true);
+            UpdateTemplateFromAssets<Item>(database.items, template.questFields, true, false);
             UpdateTemplateFromAssets<Location>(database.locations, template.locationFields);
             UpdateTemplateFromAssets<Variable>(database.variables, template.variableFields);
             UpdateTemplateFromAssets<Conversation>(database.conversations, template.conversationFields);
@@ -164,11 +183,11 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             SaveTemplate();
         }
 
-        private void UpdateTemplateFromAssets<T>(List<T> assets, List<Field> templateFields) where T : Asset
+        private void UpdateTemplateFromAssets<T>(List<T> assets, List<Field> templateFields, bool checkIsItem = false, bool requireIsItem = false) where T : Asset
         {
             foreach (var asset in assets)
             {
-                AddMissingFieldsToTemplate(asset.fields, templateFields);
+                AddMissingFieldsToTemplate(asset.fields, templateFields, checkIsItem, requireIsItem);
             }
         }
 

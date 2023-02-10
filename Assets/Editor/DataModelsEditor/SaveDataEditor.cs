@@ -87,7 +87,6 @@ public class SaveDataEditor : MonoBehaviour
             }
 
             Debug.Log("Successfully deleted save data for: " + selected);
-
         }
         catch (Exception ex)
         {

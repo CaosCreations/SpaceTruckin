@@ -85,7 +85,7 @@ namespace PixelCrushers.DialogueSystem
                 usable = proximitySelector.CurrentUsable;
             }
             if (usable == null) return;
-            var mainGraphic = StandardUISelectorElements.instance.mainGraphic;
+            var mainGraphic = selectorUseStandardUIElements.elements.mainGraphic;
             var selection = usable.gameObject;
             var screenPos = UnityEngine.Camera.main.WorldToScreenPoint(selection.transform.position + (Vector3.up * selectionHeight));
             screenPos += offset;
@@ -103,11 +103,11 @@ namespace PixelCrushers.DialogueSystem
             if (selectorUseStandardUIElements != null && selectorUseStandardUIElements.enabled) return;
 
             // Otherwise draw it at usable's position:
-            if (selector != null)
+            if (selector != null && selector.useDefaultGUI)
             {
                 DrawOnSelection(selector.CurrentUsable, selector.CurrentDistance, selector.reticle, selector.GuiStyle, selector.defaultUseMessage, selector.inRangeColor, selector.outOfRangeColor, selector.textStyle, selector.textStyleColor);
             }
-            else if (proximitySelector != null)
+            else if (proximitySelector != null && proximitySelector.useDefaultGUI)
             {
                 DrawOnSelection(proximitySelector.CurrentUsable, 0, null, proximitySelector.GuiStyle, proximitySelector.defaultUseMessage, proximitySelector.color, proximitySelector.color, proximitySelector.textStyle, proximitySelector.textStyleColor);
             }

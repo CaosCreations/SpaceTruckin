@@ -35,15 +35,6 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         {
             Debug.LogError("No pilot data");
         }
-
-        if (DataUtils.SaveFolderExists(Pilot.FolderName))
-        {
-            LoadDataAsync();
-        }
-        else
-        {
-            DataUtils.CreateSaveFolder(Pilot.FolderName);
-        }
     }
 
     public static double AwardXp(Pilot pilot, double xpGained)
@@ -186,6 +177,12 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
 
     public async void LoadDataAsync()
     {
+        if (!DataUtils.SaveFolderExists(Pilot.FolderName))
+        {
+            DataUtils.CreateSaveFolder(Pilot.FolderName);
+            return;
+        }
+
         foreach (Pilot pilot in Instance.Pilots)
         {
             await pilot.LoadDataAsync();

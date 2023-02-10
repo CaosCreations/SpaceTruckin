@@ -31,6 +31,8 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public List<DialogueEntry> dialogueEntries = new List<DialogueEntry>();
 
+        public List<EntryGroup> entryGroups = new List<EntryGroup>();
+
         /// <summary>
         /// Conversation's scroll position in Dialogue Editor window canvas.
         /// </summary>
@@ -91,6 +93,7 @@ namespace PixelCrushers.DialogueSystem
             this.nodeColor = sourceConversation.nodeColor;
             this.overrideSettings = sourceConversation.overrideSettings;
             this.dialogueEntries = CopyDialogueEntries(sourceConversation.dialogueEntries);
+            this.entryGroups = CopyEntryGroups(sourceConversation.entryGroups);
         }
 
         /// <summary>
@@ -175,7 +178,7 @@ namespace PixelCrushers.DialogueSystem
         /// </param>
         public DialogueEntry GetDialogueEntry(int dialogueEntryID)
         {
-            return dialogueEntries.Find(e => string.Equals(e.id, dialogueEntryID));
+            return dialogueEntries.Find(e => e.id == dialogueEntryID);
         }
 
         /// <summary>
@@ -393,6 +396,16 @@ namespace PixelCrushers.DialogueSystem
                 entries.Add(new DialogueEntry(sourceEntry));
             }
             return entries;
+        }
+
+        private List<EntryGroup> CopyEntryGroups(List<EntryGroup> sourceGroups)
+        {
+            var groups = new List<EntryGroup>();
+            foreach (var group in sourceGroups)
+            {
+                groups.Add(new EntryGroup(group));
+            }
+            return groups;
         }
 
     }

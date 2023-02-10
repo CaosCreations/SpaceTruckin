@@ -58,7 +58,20 @@ namespace PixelCrushers
 
         public override void OnInspectorGUI()
         {
-            base.OnInspectorGUI();
+            //base.OnInspectorGUI();
+
+            serializedObject.Update();
+            var locationProperty = serializedObject.FindProperty("storeSaveFilesIn");
+            EditorGUILayout.PropertyField(locationProperty);
+            if (locationProperty.enumValueIndex == (int)DiskSavedGameDataStorer.BasePath.Custom)
+            {
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("customPath"));
+            }
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("encrypt"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("encryptionPassword"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("m_debug"));
+            serializedObject.ApplyModifiedProperties();
+
             DrawSavedGameList();
         }
 

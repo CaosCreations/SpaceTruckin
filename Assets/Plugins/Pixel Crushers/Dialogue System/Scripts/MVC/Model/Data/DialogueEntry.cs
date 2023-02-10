@@ -522,7 +522,7 @@ namespace PixelCrushers.DialogueSystem
                 //--- Removed in Chat Mapper 1.7: conversationID = chatMapperDialogEntry.ConversationID;
                 isRoot = chatMapperDialogEntry.IsRoot;
                 isGroup = chatMapperDialogEntry.IsGroup;
-                if (isGroup) currentSequence = "Continue()";
+                if (isGroup) Sequence = ""; //"Continue()";
                 nodeColor = chatMapperDialogEntry.NodeColor;
                 delaySimStatus = chatMapperDialogEntry.DelaySimStatus;
                 falseConditionAction = chatMapperDialogEntry.FalseCondtionAction;

@@ -120,16 +120,37 @@ namespace PixelCrushers.DialogueSystem
         /// <summary>
         /// The allowable quest states for the condition to be true.
         /// </summary>
+        [Tooltip("The allowable quest states for the condition to be true.")]
         [BitMask(typeof(QuestState))]
         [QuestState]
         public QuestState questState;
+
+        [Tooltip("Check quest entry state.")]
+        public bool checkQuestEntry = false;
+
+        [QuestEntryPopup]
+        public int entryNumber;
+
+        /// <summary>
+        /// The allowable quest entry states for the condition to be true.
+        /// </summary>
+        [Tooltip("If quest entry is specified, the allowable quest entry states for the condition to be true.")]
+        [BitMask(typeof(QuestState))]
+        [QuestState]
+        public QuestState questEntryState;
 
         /// <summary>
         /// Indicates whether this QuestCondition is true.
         /// </summary>
         public bool IsTrue
         {
-            get { return string.IsNullOrEmpty(questName) || QuestLog.IsQuestInStateMask(questName, questState); }
+            get 
+            {
+                return
+                    string.IsNullOrEmpty(questName) ||
+                    (QuestLog.IsQuestInStateMask(questName, questState) &&
+                    (!checkQuestEntry || QuestLog.IsQuestEntryInStateMask(questName, entryNumber, questEntryState)));
+            }
         }
 
     }

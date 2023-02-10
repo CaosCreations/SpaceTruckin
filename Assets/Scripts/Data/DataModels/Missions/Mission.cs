@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -125,9 +127,18 @@ public partial class Mission : ScriptableObject, IDataModel
         return saveData.daysLeftToComplete > 0;
     }
 
+    private IEnumerable<MissionOutcome> GetApplicableOutcomes(Mission mission)
+    {
+        return mission.Outcomes.Where(
+            outcome => outcome != null && (mission.WasSuccessful || !outcome.RequiresMissionSuccess));
+    }
+
     public void ProcessOutcomes()
     {
-        foreach (MissionOutcome outcome in outcomes)
+        // Some outcomes won't get processed based on mission success criteria.
+        var applicableOutcomes = GetApplicableOutcomes(this);
+
+        foreach (MissionOutcome outcome in applicableOutcomes)
         {
             if (outcome != null)
             {

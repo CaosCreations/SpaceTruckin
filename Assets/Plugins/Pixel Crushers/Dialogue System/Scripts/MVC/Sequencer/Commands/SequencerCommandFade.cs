@@ -18,7 +18,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
     {
 
         private const float SmoothMoveCutoff = 0.05f;
-        private const int FaderCanvasSortOrder = 32766;
+        private const int FaderCanvasSortOrder = 32760;
 
         private string direction;
         private float duration;
@@ -74,7 +74,11 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
                 startTime = DialogueTime.time;
                 endTime = startTime + duration;
 
-                faderImage.color = new Color(color.r, color.g, color.b, fadeIn ? 1 : 0);
+                // If fade in or out, start from 1 or 0. Otherwise start from current alpha.
+                var startingAlpha = fadeIn ? 1
+                    : (stay || unstay) ? faderImage.color.a
+                    : 0;
+                faderImage.color = new Color(color.r, color.g, color.b, startingAlpha);
 
             }
             else

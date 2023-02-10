@@ -53,6 +53,11 @@ namespace PixelCrushers
             if (InputDeviceManager.IsButtonDown(menuInputButton)) ToggleMenu();
         }
 
+        private void OnDestroy()
+        {
+            Time.timeScale = 1;
+        }
+
         public void ToggleMenu()
         {
             m_isVisible = !m_isVisible;
