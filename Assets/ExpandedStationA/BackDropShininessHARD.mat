@@ -7,12 +7,13 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MyorjiinMaterial
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Name: BackDropShininessHARD
+  m_Shader: {fileID: 4800000, guid: 2d142fba1fed7bb4ca4db0c4016ee5ce, type: 3}
   m_ValidKeywords:
   - _ALPHATEST_ON
   - _EMISSION
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -40,11 +41,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 2800000, guid: 13be2686e935fb1499e35e981ed78aff, type: 3}
+        m_Texture: {fileID: 2800000, guid: dfcdf64f16cc1c74a8ede687a51a8abb, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: f6f5fe69b8e00cb4d964dc4c74bb14e7, type: 3}
+        m_Texture: {fileID: 2800000, guid: dfcdf64f16cc1c74a8ede687a51a8abb, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -79,5 +80,5 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0.34580123, g: 0.27151644, b: 0.59341735, a: 1}
+    - _EmissionColor: {r: 5.6467347, g: 27.65452, b: 14.18923, a: 1}
   m_BuildTextureStacks: []
