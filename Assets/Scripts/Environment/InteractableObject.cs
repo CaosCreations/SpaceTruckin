@@ -8,13 +8,25 @@ public class InteractableObject : MonoBehaviour
     public Collider Collider;
     public GameObject RaycastTarget;
 
+    [SerializeField]
+    private SpriteRenderer interactableIcon;
+
     private void Start()
     {
+        // Default raycast target to self 
         if (RaycastTarget == null)
             RaycastTarget = gameObject;
+
+        if (interactableIcon != null)
+            interactableIcon.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Is the player in range and facing the direction of the interactable object.
+    /// </summary>
     public bool IsPlayerInteractable => IsPlayerColliding && PlayerManager.IsFirstRaycastHit(RaycastTarget);
+
+    protected virtual bool IsIconVisible => IsPlayerInteractable;
 
     /// <summary>
     /// Can be called whenever we want to check whether the object is colliding with the player
@@ -59,5 +71,13 @@ public class InteractableObject : MonoBehaviour
         }
 
         Debug.Log("IsPlayerColliding = " + IsPlayerColliding);
+    }
+
+    protected virtual void Update()
+    {
+        if (interactableIcon == null)
+            return;
+
+        interactableIcon.gameObject.SetActive(IsIconVisible);
     }
 }

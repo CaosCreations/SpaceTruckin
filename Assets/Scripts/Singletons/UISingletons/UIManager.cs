@@ -63,6 +63,7 @@ public class UIManager : MonoBehaviour
 
         currentlyOverriddenKeys = new HashSet<KeyCode>();
         interactionTextMesh = GetComponentInChildren<TextMeshPro>();
+        interactionTextMesh.text = string.Empty;
     }
 
     private void Start()
@@ -81,7 +82,7 @@ public class UIManager : MonoBehaviour
             HandlePausedInput();
         }
 
-        SetInteractionTextMesh();
+        //SetInteractionTextMesh();
     }
 
     private void HandleUnpausedInput()
