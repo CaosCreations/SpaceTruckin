@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Events;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -70,6 +71,7 @@ public class HangarManager : MonoBehaviour
         if (ship != null && slot != null)
         {
             slot.LaunchShip();
+            SingletonManager.EventService.Dispatch<OnShipLaunchedEvent>();
             Debug.Log($"{ship} successfully launched from node {node}");
         }
         else

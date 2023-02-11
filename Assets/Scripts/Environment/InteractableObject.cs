@@ -9,9 +9,9 @@ public class InteractableObject : MonoBehaviour
     public GameObject RaycastTarget;
 
     [SerializeField]
-    private SpriteRenderer interactableIcon;
+    protected SpriteRenderer interactableIcon;
 
-    private void Start()
+    protected virtual void Start()
     {
         // Default raycast target to self 
         if (RaycastTarget == null)

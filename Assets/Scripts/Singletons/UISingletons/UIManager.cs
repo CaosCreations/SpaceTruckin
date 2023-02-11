@@ -237,6 +237,7 @@ public class UIManager : MonoBehaviour
         {
             currentCanvasType = UICanvasType.None;
         }
+        HangarNode = -1;
     }
 
     private static string GetInteractionString()

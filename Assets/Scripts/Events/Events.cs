@@ -31,6 +31,11 @@ namespace Events
         }
     }
 
+    public class OnShipLaunchedEvent : IEvent
+    {
+
+    }
+
     public class OnEventWithParameters : IEvent
     {
         public string Parameter { get; set; }
@@ -38,16 +43,6 @@ namespace Events
         public OnEventWithParameters(string parameter)
         {
             Parameter = parameter;
-        }
-    }
-
-    public class OnRepairsMinigameSceneLoadedEvent : IEvent
-    {
-        public RepairsMinigameType RepairsMinigameType { get; private set; }
-
-        public OnRepairsMinigameSceneLoadedEvent(RepairsMinigameType repairsMinigameType)
-        {
-            RepairsMinigameType = repairsMinigameType;
         }
     }
 }
