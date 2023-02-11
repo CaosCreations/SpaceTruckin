@@ -5,6 +5,10 @@ public class BatterySlot : InteractableObject
 {
     [SerializeField] private HangarSlot hangarSlot;
 
+    protected override bool IsIconVisible => HangarManager.CurrentBatteryBeingHeld != null 
+        && IsPlayerInteractable 
+        && CanTransferEnergy(HangarManager.CurrentBatteryBeingHeld.BatteryCharging);
+
     public void TransferEnergyToShip(BatteryCharging batteryCharging)
     {
         bool canTransferEnergy = CanTransferEnergy(batteryCharging);
