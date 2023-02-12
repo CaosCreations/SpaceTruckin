@@ -36,5 +36,6 @@ public class NPCActor : MonoBehaviour
             usable.overrideName = " ";
             usable.overrideUseMessage = " ";
         }
+        usable.enabled = visible;
     }
 }
