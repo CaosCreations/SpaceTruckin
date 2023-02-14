@@ -14,4 +14,9 @@ public class BatteryChargePoint : InteractableObject
             }
         }
     }
+
+    protected override bool IsIconVisible => 
+        IsPlayerInteractable 
+        && HangarManager.CurrentBatteryBeingHeld != null 
+        && !HangarManager.CurrentBatteryBeingHeld.BatteryCharging.IsCharged;
 }

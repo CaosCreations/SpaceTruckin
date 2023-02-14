@@ -104,8 +104,12 @@ public class BatteryInteractable : InteractableObject
         PlayerAnimationManager.Instance.PlayAnimation(PlayerAnimationParameterType.BatteryGrab, isOn: false);
     }
 
-    private void Update()
+    protected override bool IsIconVisible => IsPlayerInteractable && !IsPlayerHoldingABattery;
+
+    protected override void Update()
     {
+        base.Update();
+
         if (!PlayerManager.IsPaused
             && Input.GetKey(PlayerConstants.DropObjectKey)
             && transform.parent.gameObject == PlayerManager.PlayerObject)
