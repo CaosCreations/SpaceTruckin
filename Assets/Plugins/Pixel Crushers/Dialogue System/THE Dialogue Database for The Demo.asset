@@ -38068,6 +38068,12 @@ MonoBehaviour:
         destinationDialogueID: 81
         isConnector: 0
         priority: 2
+      - originConversationID: 16
+        originDialogueID: 79
+        destinationConversationID: 16
+        destinationDialogueID: 82
+        isConnector: 0
+        priority: 2
       conditionsString: 
       userScript: 
       onExecute:
@@ -38075,8 +38081,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 2589.2932
-        y: 1235.3956
+        x: 2630.0774
+        y: 1243.5525
         width: 160
         height: 30
     - id: 80
@@ -38116,7 +38122,13 @@ MonoBehaviour:
       delaySimStatus: 0
       falseConditionAction: Block
       conditionPriority: 2
-      outgoingLinks: []
+      outgoingLinks:
+      - originConversationID: 16
+        originDialogueID: 80
+        destinationConversationID: 16
+        destinationDialogueID: 83
+        isConnector: 0
+        priority: 2
       conditionsString: 
       userScript: 
       onExecute:
@@ -38151,7 +38163,299 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
+        value: '"Can''t say that''s happened to me, but I see where you''re coming
+          from, yeah."'
+        type: 0
+        typeString: 
+      - title: Sequence
         value: 
+        type: 0
+        typeString: 
+      conversationID: 16
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 16
+        originDialogueID: 81
+        destinationConversationID: 16
+        destinationDialogueID: 83
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 2621.9202
+        y: 1167.1218
+        width: 160
+        height: 30
+    - id: 82
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 8
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: '"100% yes, I can totally relate."'
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: 
+      conversationID: 16
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 16
+        originDialogueID: 82
+        destinationConversationID: 16
+        destinationDialogueID: 83
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 2842.1538
+        y: 1167.1218
+        width: 160
+        height: 30
+    - id: 83
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 8
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: Yeah, sorry, that was clearly about me.
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: 
+      conversationID: 16
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 16
+        originDialogueID: 83
+        destinationConversationID: 16
+        destinationDialogueID: 84
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 2621.921
+        y: 1037.6725
+        width: 160
+        height: 30
+    - id: 84
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 8
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: "I\u2019ve had a lot on my mind these days. I just want to make sure
+          everyone will be fine, but I don't wanna be here my whole life\u2026"
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: 
+      conversationID: 16
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 16
+        originDialogueID: 84
+        destinationConversationID: 16
+        destinationDialogueID: 85
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 2621.9207
+        y: 949.0072
+        width: 160
+        height: 30
+    - id: 85
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 8
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: Ah fudge, sorry, there I go ranting again. I didn't mean to bore you,
+          it just gets to me sometimes.
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: 
+      conversationID: 16
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 16
+        originDialogueID: 85
+        destinationConversationID: 16
+        destinationDialogueID: 86
+        isConnector: 0
+        priority: 2
+      - originConversationID: 16
+        originDialogueID: 85
+        destinationConversationID: 16
+        destinationDialogueID: 87
+        isConnector: 0
+        priority: 2
+      - originConversationID: 16
+        originDialogueID: 85
+        destinationConversationID: 16
+        destinationDialogueID: 88
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 2625.9993
+        y: 856.26337
+        width: 160
+        height: 30
+    - id: 86
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 8
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: "\u201CNo, I get it. If you ever need someone to talk to.\""
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: "\u201CNo, I get it. I'm so sorry this has all been placed on you.
+          I just helped you fix your vents, so you know\u2026 any time you need to
+          vent. I'm so sorry, I can\u2019t help my terrible puns.\""
         type: 0
         typeString: 
       - title: Sequence
@@ -38173,13 +38477,113 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 2617.8416
-        y: 1154.8866
+        x: 2450.6274
+        y: 690.1082
+        width: 160
+        height: 30
+    - id: 87
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 8
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: '"That sounds like a lot, I have no idea what I''d do in your shoes."'
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: "\"That sounds like a lot, I have no idea what I'd do in your shoes\u2026
+          I mean, I know you don't wear shoes but like, you know what I mean.\""
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: 
+      conversationID: 16
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks: []
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 2613.7642
+        y: 584.0697
+        width: 160
+        height: 30
+    - id: 88
+      fields:
+      - title: Title
+        value: 
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 8
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: '"You can rant around me, it''s not boring."'
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: '"You can rant around me, it''s not boring. I''m sure next time it''ll
+          be me ranting."'
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: 
+        type: 0
+        typeString: 
+      conversationID: 16
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks: []
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 2825.8406
+        y: 608.5404
         width: 160
         height: 30
     entryGroups: []
     canvasScrollPosition: {x: 0, y: 0}
-    canvasZoom: 0.24519429
+    canvasZoom: 0.25519335
   syncInfo:
     syncActors: 0
     syncItems: 0
