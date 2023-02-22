@@ -157,4 +157,17 @@ public static class UIUtils
     {
         return UnityEngine.Object.FindObjectsOfType<UICanvasBase>().Any();
     }
+
+    public static Color HexStringToColor(string hexString)
+    {
+        if (string.IsNullOrWhiteSpace(hexString) || hexString.Length < 6)
+            return Color.white;
+
+        var r = byte.Parse(hexString.Substring(1, 2), System.Globalization.NumberStyles.HexNumber);
+        var g = byte.Parse(hexString.Substring(3, 2), System.Globalization.NumberStyles.HexNumber);
+        var b = byte.Parse(hexString.Substring(5, 2), System.Globalization.NumberStyles.HexNumber);
+
+        var color = new Color(r, g, b, 255);
+        return color;
+    }
 }
