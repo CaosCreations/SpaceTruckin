@@ -11,7 +11,7 @@ namespace Events
         public OnSceneChangeEvent(Scene scene)
         {
             Scene = scene;
-            
+
             var sceneType = scene.GetSceneType();
             IsRepairsMinigameScene = RepairsConstants.RepairsMinigameSceneTypes.Contains(sceneType);
         }
@@ -28,6 +28,20 @@ namespace Events
     {
         public OnSceneUnloadedEvent(Scene scene) : base(scene)
         {
+        }
+    }
+
+    public class OnHangarNodeTerminalClosedEvent : IEvent
+    {
+    }
+
+    public class OnHangarNodeTerminalOpenedEvent : IEvent
+    {
+        public Ship Ship { get; set; }
+
+        public OnHangarNodeTerminalOpenedEvent(Ship ship)
+        {
+            Ship = ship;
         }
     }
 

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Events;
+using UnityEngine;
 
 public class ShipsManager : MonoBehaviour, IDataModelManager
 {
@@ -33,8 +34,8 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
             Debug.LogError("No ship data");
         }
 
-        HangarNodeUI.OnHangarNodeTerminalOpened += SetupShipUnderRepair;
-        HangarNodeUI.OnHangarNodeTerminalClosed += ResetShipUnderRepair;
+        SingletonManager.EventService.Add<OnHangarNodeTerminalOpenedEvent>(SetupShipUnderRepair);
+        SingletonManager.EventService.Add<OnHangarNodeTerminalClosedEvent>(ResetShipUnderRepair);
     }
 
     public static void DamageShip(Ship ship, int damage)
@@ -76,9 +77,9 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         ship.CanWarp = true;
     }
 
-    private static void SetupShipUnderRepair(Ship ship)
+    private static void SetupShipUnderRepair(OnHangarNodeTerminalOpenedEvent openedEvent)
     {
-        ShipUnderRepair.Ship = ship;
+        ShipUnderRepair.Ship = openedEvent.Ship;
 
         if (ArchivedMissionsManager.Instance != null)
         {

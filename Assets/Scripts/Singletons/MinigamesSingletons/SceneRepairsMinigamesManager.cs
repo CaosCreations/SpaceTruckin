@@ -33,13 +33,18 @@ public class SceneRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesMana
         SingletonManager.EventService.Add<OnSceneUnloadedEvent>(OnSceneUnloadedHandler);
     }
 
+    private RepairsMinigame GetCurrentMinigame()
+    {
+        return minigameContainer.Elements
+            .FirstOrDefault(mg => mg != null && mg.ShipDamageType == ShipsManager.ShipUnderRepair.DamageType);
+    }
+
     public void StartMinigame()
     {
         if (ShipsManager.ShipUnderRepair == null)
             throw new Exception("Cannot start minigame because the ShipsManager.ShipUnderRepair is null");
 
-        var minigame = minigameContainer.Elements
-            .FirstOrDefault(mg => mg != null && mg.ShipDamageType == ShipsManager.ShipUnderRepair.DamageType);
+        var minigame = GetCurrentMinigame();
 
         if (minigame == null)
             throw new Exception("Minigame not found in container with type: " + minigame.RepairsMinigameType);
@@ -60,6 +65,14 @@ public class SceneRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesMana
             throw new Exception("Couldn't get Camera component");
 
         cameraComponent.depth = UIConstants.RepairsMinigameCameraDepth;
+    }
+
+    public void StopMinigame()
+    {
+        var minigame = GetCurrentMinigame();
+
+        if (minigame != null)
+            SceneLoadingManager.Instance.UnloadSceneAsync(minigame.Scene);
     }
 
     private void OnSceneLoadedHandler(OnSceneLoadedEvent loadedEvent)

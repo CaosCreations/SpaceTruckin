@@ -5,13 +5,13 @@ using UnityEngine;
 public class ShipsEditor : MonoBehaviour
 {
     [MenuItem("Space Truckin/Ships/Max Out Resources")]
-    private static void MaxOutResources() => MaxOutOrDepleteResources(isMaxedOut: true);
+    public static void MaxOutResources() => MaxOutOrDepleteResources(isMaxedOut: true);
 
     [MenuItem("Space Truckin/Ships/Deplete All Resources")]
-    private static void DepleteResources() => MaxOutOrDepleteResources(isMaxedOut: false);
+    public static void DepleteResources() => MaxOutOrDepleteResources(isMaxedOut: false);
 
     [MenuItem("Space Truckin/Ships/Reset Repair Tools")]
-    private static void ResetTools() => SetRepairTools(0);
+    public static void ResetTools() => SetRepairTools(0);
     
     private static void SetRepairTools(int numberOfTools)
     {
