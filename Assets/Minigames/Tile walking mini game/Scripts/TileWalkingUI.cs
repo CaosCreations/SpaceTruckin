@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using Events;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,20 +21,23 @@ public class TileWalkingUI : MonoBehaviour
         gameOverButton.onClick.AddListener(playerControls.ResetPlayerMovement);
         gameOverButton.onClick.AddListener(DisableAllUIElements);
 
-        gridManager.WinEvent += ToggleWinUI;
-        gridManager.LoseEvent += ToggleGameOverUI;
+        SingletonManager.EventService.Add<OnRepairsMinigameLostEvent>(ToggleGameOverUI);
+        SingletonManager.EventService.Add<OnRepairsMinigameWonEvent>(ToggleWinUI);
+        SingletonManager.EventService.Add<OnRepairsToolBoughtEvent>(SetButtonInteractability);
     }
 
-    public void ToggleGameOverUI()
+    public void ToggleGameOverUI(OnRepairsMinigameLostEvent lostEvent)
     {
         gameOverText.gameObject.SetActive(!gameOverText.gameObject.activeSelf);
         gameOverButton.gameObject.SetActive(!gameOverButton.gameObject.activeSelf);
+        SetButtonInteractability();
     }
 
-    public void ToggleWinUI()
+    public void ToggleWinUI(OnRepairsMinigameWonEvent wonEvent)
     {
         winText.gameObject.SetActive(!winText.gameObject.activeSelf);
         gameOverButton.gameObject.SetActive(!gameOverButton.gameObject.activeSelf);
+        SetButtonInteractability();
     }
 
     private void DisableAllUIElements()
@@ -43,5 +45,15 @@ public class TileWalkingUI : MonoBehaviour
         gameOverText.gameObject.SetActive(false);
         winText.gameObject.SetActive(false);
         gameOverButton.gameObject.SetActive(false);
+    }
+
+    //private void SetButtonInteractability(OnRepairsToolBoughtEvent boughtEvent)
+    //{
+    //    SetButtonInteractability();
+    //}
+
+    private void SetButtonInteractability()
+    {
+        gameOverButton.interactable = ShipsManager.CanRepair;
     }
 }
