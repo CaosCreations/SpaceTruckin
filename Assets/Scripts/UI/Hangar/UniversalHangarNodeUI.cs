@@ -35,6 +35,7 @@ public class UniversalHangarNodeUI : UICanvasBase
     {
         repairsButton.AddOnClick(RepairsButtonHandler);
         overviewButton.AddOnClick(OverviewButtonHandler);
+        SingletonManager.EventService.Add<OnShipHealthChangedEvent>(OnShipHealthChangedHandler);
     }
     
     private void RepairsButtonHandler()
@@ -217,6 +218,11 @@ public class UniversalHangarNodeUI : UICanvasBase
         fuelButton.Button.interactable = FuelButtonIsInteractable();
         startMissionButton.interactable = StartMissionButtonIsInteractable();
         repairsButton.interactable = !ShipToInspect.IsFullyRepaired;
+    }
+
+    private void OnShipHealthChangedHandler(OnShipHealthChangedEvent healthChangedEvent)
+    {
+        SetSliderValues();
     }
 
     public override void ShowTutorial()

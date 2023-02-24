@@ -31,12 +31,18 @@ public class SceneRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesMana
     {
         SingletonManager.EventService.Add<OnSceneLoadedEvent>(OnSceneLoadedHandler);
         SingletonManager.EventService.Add<OnSceneUnloadedEvent>(OnSceneUnloadedHandler);
+        SingletonManager.EventService.Add<OnRepairsMinigameWonEvent>(OnRepairsMinigameWonHandler);
     }
 
     private RepairsMinigame GetCurrentMinigame()
     {
         return minigameContainer.Elements
             .FirstOrDefault(mg => mg != null && mg.ShipDamageType == ShipsManager.ShipUnderRepair.DamageType);
+    }
+
+    private RepairsMinigame GetMinigameByType(RepairsMinigameType minigameType)
+    {
+        return minigameContainer.Elements.FirstOrDefault(mg => mg != null && mg.RepairsMinigameType == minigameType);
     }
 
     public void StartMinigame()
@@ -97,5 +103,11 @@ public class SceneRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesMana
 
         // Show hangar canvas when returning back from a repairs minigame 
         UIManager.ShowCanvas(UICanvasType.Hangar);
+    }
+
+    private void OnRepairsMinigameWonHandler(OnRepairsMinigameWonEvent wonEvent)
+    {
+        var minigame = GetMinigameByType(wonEvent.MinigameType);
+        ShipsManager.RepairShip(minigame.AmountRepairedPerWin);
     }
 }

@@ -1,3 +1,4 @@
+using Events;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -76,8 +77,7 @@ public class StackMinigameManager : RepairsMinigameBehaviour
         // Cubes aren't stacked. It's game over
         if (cubeOverlapDistance == 0f)
         {
-            gameRunning = false;
-            stackMinigameUI.SetGameUI(GameState.Lose);
+            LoseGame();
             return;
         }
 
@@ -89,14 +89,27 @@ public class StackMinigameManager : RepairsMinigameBehaviour
         // Only spawn next top cube if the stack hasn't reached to top rank yet
         if (stackedCubes.Count >= maxScore)
         {
-            gameRunning = false;
-            stackMinigameUI.SetGameUI(GameState.Win);
+            WinGame();
             return;
         }
 
         SpawnTopCube(spawnPosition: bottomCubeCornerPosition.transform.position + new Vector3(0f, cubePrefab.transform.localScale.y, 0f),
                      cubeWidth: cubeOverlapDistance);
 
+    }
+
+    private void WinGame()
+    {
+        gameRunning = false;
+        stackMinigameUI.SetGameUI(GameState.Win);
+        SingletonManager.EventService.Dispatch(new OnRepairsMinigameWonEvent(RepairsMinigameType.Stack));
+    }
+
+    private void LoseGame()
+    {
+        gameRunning = false;
+        stackMinigameUI.SetGameUI(GameState.Lose);
+        SingletonManager.EventService.Dispatch(new OnRepairsMinigameLostEvent(RepairsMinigameType.Stack));
     }
 
     private void CutStickingOutTopCubeSide(CubeCornersPositionTracker topCubeCornerPosition, CubeCornersPositionTracker bottomCubeCornerPosition)

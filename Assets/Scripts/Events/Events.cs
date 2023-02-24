@@ -50,6 +50,40 @@ namespace Events
 
     }
 
+    public abstract class OnRepairsMinigameOutcomeEvent : IEvent
+    {
+        public RepairsMinigameType MinigameType { get; }
+
+        public OnRepairsMinigameOutcomeEvent(RepairsMinigameType minigameType)
+        {
+            MinigameType = minigameType;
+        }
+    }
+
+    public class OnRepairsMinigameWonEvent : OnRepairsMinigameOutcomeEvent
+    {
+        public OnRepairsMinigameWonEvent(RepairsMinigameType minigameType) : base(minigameType)
+        {
+        }
+    }
+
+    public class OnRepairsMinigameLostEvent : OnRepairsMinigameOutcomeEvent
+    {
+        public OnRepairsMinigameLostEvent(RepairsMinigameType minigameType) : base(minigameType)
+        {
+        }
+    }
+
+    public class OnShipHealthChangedEvent : IEvent
+    {
+        public Ship Ship { get; }
+        
+        public OnShipHealthChangedEvent(Ship ship)
+        {
+            Ship = ship;
+        }
+    }
+
     public class OnEventWithParameters : IEvent
     {
         public string Parameter { get; set; }
