@@ -21,6 +21,7 @@ public class UniversalHangarNodeUI : UICanvasBase
 
     [Header("Set at Runtime")]
     [SerializeField] private GameObject shipPreview;
+    [SerializeField] private HangarNodePilotDetails hangarNodePilotDetails;
     [SerializeField] private int hangarNode;
     public Ship ShipToInspect;
     private HangarSlot hangarSlot;
@@ -105,10 +106,17 @@ public class UniversalHangarNodeUI : UICanvasBase
     private void PopulateUI()
     {
         SetupShipPreview();
+        SetupPilotDetails();
         SetSliderValues();
 
         startMissionButton.AddOnClick(() => Launch(isStartingMission: true));
         returnToQueueButton.AddOnClick(() => Launch(isStartingMission: false));
+    }
+
+    private void SetupPilotDetails()
+    {
+        Pilot pilot = PilotsManager.GetPilotByShip(ShipToInspect);
+        hangarNodePilotDetails.Init(pilot);
     }
 
     private void SetupShipPreview()

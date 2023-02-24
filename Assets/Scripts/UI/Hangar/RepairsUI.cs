@@ -1,7 +1,9 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
+[Obsolete("This has been replaced by 'UniversalHangarNodeUI' and 'SceneRepairsMinigamesManager'")]
 public class RepairsUI : SubMenu, IRepairsUI
 {
     [SerializeField] private RepairToolsUI repairToolsUI;
