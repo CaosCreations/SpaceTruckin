@@ -166,6 +166,11 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
 
     public static Pilot GetRandomHiredPilot() => HiredPilots.GetRandomElement();
 
+    public static Pilot GetPilotByShip(Ship ship)
+    {
+        return Instance.Pilots.FirstOrDefault(pilot => pilot.Ship == ship);
+    }
+
     #region Persistence
     public void SaveData()
     {

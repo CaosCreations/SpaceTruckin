@@ -5,10 +5,10 @@ using UnityEngine;
 public class PilotsEditor : MonoBehaviour
 {
     [MenuItem("Space Truckin/Pilots/Hire All")]
-    private static void HireAll() => HireOrFireAll(true);
+    public static void HireAll() => HireOrFireAll(true);
 
     [MenuItem("Space Truckin/Pilots/Fire All")]
-    private static void FireAll() => HireOrFireAll(false);
+    public static void FireAll() => HireOrFireAll(false);
 
     private static void HireOrFireAll(bool isHired)
     {

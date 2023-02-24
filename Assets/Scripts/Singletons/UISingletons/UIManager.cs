@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Events;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -68,6 +69,8 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        SingletonManager.EventService.Add<OnSceneLoadedEvent>(OnSceneLoadedHandler);
+        SingletonManager.EventService.Add<OnSceneUnloadedEvent>(OnSceneUnloadedHandler);
         ClearCanvases();
     }
 
@@ -332,4 +335,17 @@ public class UIManager : MonoBehaviour
         currentlyOverriddenKeys.Clear();
     }
     #endregion
+
+    private void OnSceneLoadedHandler(OnSceneLoadedEvent loadedEvent)
+    {
+        // Override Escape closing the UI canvas if we are in a repairs minigame scene 
+        if (loadedEvent.IsRepairsMinigameScene)
+            AddOverriddenKey(KeyCode.Escape);
+    }
+
+    private void OnSceneUnloadedHandler(OnSceneUnloadedEvent unloadedEvent)
+    {
+        if (unloadedEvent.IsRepairsMinigameScene)
+            RemoveOverriddenKey(KeyCode.Escape);
+    }
 }

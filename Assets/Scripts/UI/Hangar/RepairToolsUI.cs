@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
+[Obsolete("This has been replaced by 'RepairToolsButton'")]
 public class RepairToolsUI : MonoBehaviour
 {
     [SerializeField] private Text toolsText;
