@@ -162,6 +162,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         {
             Instance.SpendMoney(amount * RepairsConstants.CostPerTool);
             Instance.RepairTools += amount;
+            SingletonManager.EventService.Dispatch<OnRepairsToolBoughtEvent>();
         }
     }
 

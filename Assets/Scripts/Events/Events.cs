@@ -77,6 +77,10 @@ namespace Events
         }
     }
 
+    public class OnRepairsToolBoughtEvent : IEvent
+    {
+    }
+
     public class OnRepairsToolSpentEvent : IEvent
     {
     }
