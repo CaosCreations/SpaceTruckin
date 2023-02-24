@@ -31,9 +31,6 @@ public class UniversalHangarNodeUI : UICanvasBase
     private readonly float fuelTimerInterval = 0.025f;
     private bool ThisNodeIsEmpty => ShipToInspect == null || ShipToInspect.IsLaunched;
 
-    public static event Action<Ship> OnHangarNodeTerminalOpened;
-    public static event Action OnHangarNodeTerminalClosed;
-
     private void Awake()
     {
         repairsButton.AddOnClick(RepairsButtonHandler);
@@ -76,6 +73,7 @@ public class UniversalHangarNodeUI : UICanvasBase
 
     private void SetupUIElements()
     {
+        fuelButton.Init();
         PopulateUI();
         SetButtonInteractability();
         SetBatteryChargeImage();
@@ -116,7 +114,7 @@ public class UniversalHangarNodeUI : UICanvasBase
     {
         shipPreview = Instantiate(ShipToInspect.ShipPrefab, transform);
         shipPreview.transform.localScale *= UIConstants.ShipPreviewScaleFactor;
-        //shipPreview.transform.position += UIConstants.ShipPreviewOffset;
+        shipPreview.transform.position += UIConstants.ShipPreviewOffset;
         shipPreview.SetLayerRecursively(UIConstants.ShipPreviewLayer);
     }
 
