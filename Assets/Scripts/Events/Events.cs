@@ -47,7 +47,10 @@ namespace Events
 
     public class OnShipLaunchedEvent : IEvent
     {
+    }
 
+    public class OnRepairsMinigameStartedEvent : IEvent
+    {
     }
 
     public abstract class OnRepairsMinigameOutcomeEvent : IEvent
@@ -72,6 +75,10 @@ namespace Events
         public OnRepairsMinigameLostEvent(RepairsMinigameType minigameType) : base(minigameType)
         {
         }
+    }
+
+    public class OnRepairsToolSpentEvent : IEvent
+    {
     }
 
     public class OnShipHealthChangedEvent : IEvent

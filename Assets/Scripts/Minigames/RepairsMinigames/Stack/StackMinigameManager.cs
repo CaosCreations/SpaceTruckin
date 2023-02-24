@@ -60,7 +60,6 @@ public class StackMinigameManager : RepairsMinigameBehaviour
     {
         CubeCornersPositionTracker topCubeCornerPosition = cubeCornersPositionPile.CubeCornersPositionList[0];
 
-
         // There is only one cube at the beginning. The player can place it wherever. There is no cutting involved yet.
         if (cubeCornersPositionPile.CubeCornersPositionList.Count == 1)
         {
