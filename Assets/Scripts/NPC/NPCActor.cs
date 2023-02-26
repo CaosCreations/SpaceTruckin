@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Usable))]
-public class NPCActor : MonoBehaviour
+public class NPCActor : InteractableObject
 {
     private Usable usable;
     
@@ -11,31 +11,23 @@ public class NPCActor : MonoBehaviour
         usable = GetComponent<Usable>();
     }
 
+    // Toggle usable on/off after being used 
     public void OnUse(Transform player)
     {
         Debug.Log($"{gameObject.name} is being used by {player}.");
-        SetUsableContentVisible(false);
+        usable.enabled = false;
     }
 
     public void OnConversationEnd(Transform actor)
     {
         Debug.Log($"{gameObject.name}'s conversation with {actor} is ending.");
-        SetUsableContentVisible(true);
+        usable.enabled = true;
     }
 
-    private void SetUsableContentVisible(bool visible)
+    // Toggle usable on/off based on whether player is in range/facing the right direction
+    protected override void Update()
     {
-        if (visible)
-        {
-            // Remove overrides if visible 
-            usable.overrideName = string.Empty;
-            usable.overrideUseMessage = string.Empty;
-        }
-        else
-        {
-            usable.overrideName = " ";
-            usable.overrideUseMessage = " ";
-        }
-        usable.enabled = visible;
+        base.Update();
+        usable.enabled = IsPlayerInteractable;
     }
 }
