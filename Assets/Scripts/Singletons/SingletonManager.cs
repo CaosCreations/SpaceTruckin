@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using Events;
+﻿using Events;
+using UnityEngine;
 
 public class SingletonManager : MonoBehaviour
 {
@@ -7,7 +7,7 @@ public class SingletonManager : MonoBehaviour
     private bool saveDataEnabled;
 
     public static SingletonManager Instance { get; private set; }
-    
+
     private readonly EventService eventService = new EventService();
     public static EventService EventService => Instance.eventService;
 

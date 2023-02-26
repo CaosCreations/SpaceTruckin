@@ -11,7 +11,7 @@ namespace Events
         public OnSceneChangeEvent(Scene scene)
         {
             Scene = scene;
-            
+
             var sceneType = scene.GetSceneType();
             IsRepairsMinigameScene = RepairsConstants.RepairsMinigameSceneTypes.Contains(sceneType);
         }
@@ -31,6 +31,70 @@ namespace Events
         }
     }
 
+    public class OnHangarNodeTerminalClosedEvent : IEvent
+    {
+    }
+
+    public class OnHangarNodeTerminalOpenedEvent : IEvent
+    {
+        public Ship Ship { get; set; }
+
+        public OnHangarNodeTerminalOpenedEvent(Ship ship)
+        {
+            Ship = ship;
+        }
+    }
+
+    public class OnShipLaunchedEvent : IEvent
+    {
+    }
+
+    public class OnRepairsMinigameStartedEvent : IEvent
+    {
+    }
+
+    public abstract class OnRepairsMinigameOutcomeEvent : IEvent
+    {
+        public RepairsMinigameType MinigameType { get; }
+
+        public OnRepairsMinigameOutcomeEvent(RepairsMinigameType minigameType)
+        {
+            MinigameType = minigameType;
+        }
+    }
+
+    public class OnRepairsMinigameWonEvent : OnRepairsMinigameOutcomeEvent
+    {
+        public OnRepairsMinigameWonEvent(RepairsMinigameType minigameType) : base(minigameType)
+        {
+        }
+    }
+
+    public class OnRepairsMinigameLostEvent : OnRepairsMinigameOutcomeEvent
+    {
+        public OnRepairsMinigameLostEvent(RepairsMinigameType minigameType) : base(minigameType)
+        {
+        }
+    }
+
+    public class OnRepairsToolBoughtEvent : IEvent
+    {
+    }
+
+    public class OnRepairsToolSpentEvent : IEvent
+    {
+    }
+
+    public class OnShipHealthChangedEvent : IEvent
+    {
+        public Ship Ship { get; }
+        
+        public OnShipHealthChangedEvent(Ship ship)
+        {
+            Ship = ship;
+        }
+    }
+
     public class OnEventWithParameters : IEvent
     {
         public string Parameter { get; set; }
@@ -38,16 +102,6 @@ namespace Events
         public OnEventWithParameters(string parameter)
         {
             Parameter = parameter;
-        }
-    }
-
-    public class OnRepairsMinigameSceneLoadedEvent : IEvent
-    {
-        public RepairsMinigameType RepairsMinigameType { get; private set; }
-
-        public OnRepairsMinigameSceneLoadedEvent(RepairsMinigameType repairsMinigameType)
-        {
-            RepairsMinigameType = repairsMinigameType;
         }
     }
 }

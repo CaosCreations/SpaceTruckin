@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+[Obsolete("This has been replaced by 'UniversalHangarNodeUI'")]
 public class HangarNodeUI : UICanvasBase
 {
     public enum HangarPanel

@@ -1,3 +1,4 @@
+using Events;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,10 +31,13 @@ public class StackMinigameManager : RepairsMinigameBehaviour
         cubeMover = GetComponentInChildren<CubeMover>();
 
         stackButton.onClick.RemoveAllListeners();
-        stackButton.onClick.AddListener(DoPlayButton);
+        stackButton.onClick.AddListener(DoPlayAction);
 
         replayButton.onClick.RemoveAllListeners();
         replayButton.onClick.AddListener(ResetGame);
+        
+        SetButtonInteractability();
+        SingletonManager.EventService.Add<OnRepairsToolBoughtEvent>(SetButtonInteractability);
     }
 
     private void Update()
@@ -42,6 +46,9 @@ public class StackMinigameManager : RepairsMinigameBehaviour
             return;
 
         cubeMover.MoveCube();
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            DoPlayAction();
     }
 
     private void OnDisable()
@@ -52,10 +59,9 @@ public class StackMinigameManager : RepairsMinigameBehaviour
     // When the player presses the play button, he or she attempts to stack the current moving cube on top of the cube below
     // If the cubes are stacked, the game goes on, and we spawn a new cube on top
     // If not it's game over
-    public void DoPlayButton()
+    public void DoPlayAction()
     {
         CubeCornersPositionTracker topCubeCornerPosition = cubeCornersPositionPile.CubeCornersPositionList[0];
-
 
         // There is only one cube at the beginning. The player can place it wherever. There is no cutting involved yet.
         if (cubeCornersPositionPile.CubeCornersPositionList.Count == 1)
@@ -73,8 +79,7 @@ public class StackMinigameManager : RepairsMinigameBehaviour
         // Cubes aren't stacked. It's game over
         if (cubeOverlapDistance == 0f)
         {
-            gameRunning = false;
-            stackMinigameUI.SetGameUI(GameState.Lose);
+            EndGame(GameState.Lose);
             return;
         }
 
@@ -86,14 +91,28 @@ public class StackMinigameManager : RepairsMinigameBehaviour
         // Only spawn next top cube if the stack hasn't reached to top rank yet
         if (stackedCubes.Count >= maxScore)
         {
-            gameRunning = false;
-            stackMinigameUI.SetGameUI(GameState.Win);
+            EndGame(GameState.Win);
             return;
         }
 
         SpawnTopCube(spawnPosition: bottomCubeCornerPosition.transform.position + new Vector3(0f, cubePrefab.transform.localScale.y, 0f),
                      cubeWidth: cubeOverlapDistance);
+    }
 
+    private void EndGame(GameState gameState)
+    {
+        gameRunning = false;
+        stackMinigameUI.SetGameUI(gameState);
+        SetButtonInteractability();
+
+        if (gameState == GameState.Win)
+        {
+            SingletonManager.EventService.Dispatch(new OnRepairsMinigameWonEvent(RepairsMinigameType.Stack));
+        }
+        else
+        {
+            SingletonManager.EventService.Dispatch(new OnRepairsMinigameLostEvent(RepairsMinigameType.Stack));
+        }
     }
 
     private void CutStickingOutTopCubeSide(CubeCornersPositionTracker topCubeCornerPosition, CubeCornersPositionTracker bottomCubeCornerPosition)
@@ -181,5 +200,10 @@ public class StackMinigameManager : RepairsMinigameBehaviour
     public override void SetUp()
     {
         ResetGame();
+    }
+
+    private void SetButtonInteractability()
+    {
+        replayButton.interactable = ShipsManager.CanRepair;
     }
 }

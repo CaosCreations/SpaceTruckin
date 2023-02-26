@@ -1,4 +1,5 @@
-﻿using PixelCrushers.DialogueSystem;
+﻿using Events;
+using PixelCrushers.DialogueSystem;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
@@ -70,6 +71,14 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
     {
         RegisterLuaFunctions();
         RegisterDialogueEvents();
+
+#if UNITY_EDITOR
+        // If starting from MainStation scene in the editor, then perform the setup here
+        if (SceneLoadingManager.GetCurrentSceneType() == SceneType.MainStation)
+        {
+            SetUpPlayer();
+        }
+#endif
     }
 
     private void RegisterDialogueEvents()
@@ -147,6 +156,22 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         OnFinancialTransaction?.Invoke();
     }
 
+    public void BuyRepairTools(int amount)
+    {
+        if (Instance.CanSpendMoney(amount * RepairsConstants.CostPerTool))
+        {
+            Instance.SpendMoney(amount * RepairsConstants.CostPerTool);
+            Instance.RepairTools += amount;
+            SingletonManager.EventService.Dispatch<OnRepairsToolBoughtEvent>();
+        }
+    }
+
+    public void SpendRepairTool()
+    {
+        Instance.RepairTools = Mathf.Max(0, Instance.RepairTools - 1);
+        SingletonManager.EventService.Dispatch<OnRepairsToolSpentEvent>();
+    }
+
     public void AcquireLicence(Licence licence)
     {
         if (playerData.PlayerLicencePoints >= licence.PointsCost)
@@ -172,8 +197,18 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
     public static void EnterPausedState(PlayableDirector playableDirector)
     {
-        PlayerMovement.ResetDirection();
-        IsPaused = true;
+        Debug.Log("Entering paused state from playable director: " + playableDirector.name);
+        EnterPausedState();
+    }
+
+    public static bool Raycast(string layerName, out RaycastHit hit)
+    {
+        return PlayerMovement.Raycast(layerName, out hit);
+    }
+
+    public static bool IsFirstRaycastHit(GameObject obj)
+    {
+        return PlayerMovement.IsFirstRaycastHit(obj);
     }
 
     public string GetPlayerName()

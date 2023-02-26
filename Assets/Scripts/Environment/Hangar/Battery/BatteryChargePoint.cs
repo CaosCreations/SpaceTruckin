@@ -4,8 +4,7 @@ public class BatteryChargePoint : InteractableObject
 {
     private void OnTriggerStay(Collider other)
     {
-        if (IsPlayerColliding
-            && Input.GetKey(PlayerConstants.ActionKey))
+        if (Input.GetKey(PlayerConstants.ActionKey) && IsPlayerInteractable)
         {
             BatteryCharging batteryCharging = other.GetComponentInChildren<BatteryCharging>();
 
@@ -15,4 +14,9 @@ public class BatteryChargePoint : InteractableObject
             }
         }
     }
+
+    protected override bool IsIconVisible => 
+        IsPlayerInteractable 
+        && HangarManager.CurrentBatteryBeingHeld != null 
+        && !HangarManager.CurrentBatteryBeingHeld.BatteryCharging.IsCharged;
 }

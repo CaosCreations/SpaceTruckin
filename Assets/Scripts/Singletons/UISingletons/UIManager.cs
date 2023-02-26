@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Events;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -63,10 +64,13 @@ public class UIManager : MonoBehaviour
 
         currentlyOverriddenKeys = new HashSet<KeyCode>();
         interactionTextMesh = GetComponentInChildren<TextMeshPro>();
+        interactionTextMesh.text = string.Empty;
     }
 
     private void Start()
     {
+        SingletonManager.EventService.Add<OnSceneLoadedEvent>(OnSceneLoadedHandler);
+        SingletonManager.EventService.Add<OnSceneUnloadedEvent>(OnSceneUnloadedHandler);
         ClearCanvases();
     }
 
@@ -81,7 +85,7 @@ public class UIManager : MonoBehaviour
             HandlePausedInput();
         }
 
-        SetInteractionTextMesh();
+        //SetInteractionTextMesh();
     }
 
     private void HandleUnpausedInput()
@@ -232,7 +236,11 @@ public class UIManager : MonoBehaviour
 
     public static void SetCannotInteract()
     {
-        currentCanvasType = UICanvasType.None;
+        if (currentCanvasType != UICanvasType.None)
+        {
+            currentCanvasType = UICanvasType.None;
+        }
+        HangarNode = -1;
     }
 
     private static string GetInteractionString()
@@ -327,4 +335,17 @@ public class UIManager : MonoBehaviour
         currentlyOverriddenKeys.Clear();
     }
     #endregion
+
+    private void OnSceneLoadedHandler(OnSceneLoadedEvent loadedEvent)
+    {
+        // Override Escape closing the UI canvas if we are in a repairs minigame scene 
+        if (loadedEvent.IsRepairsMinigameScene)
+            AddOverriddenKey(KeyCode.Escape);
+    }
+
+    private void OnSceneUnloadedHandler(OnSceneUnloadedEvent unloadedEvent)
+    {
+        if (unloadedEvent.IsRepairsMinigameScene)
+            RemoveOverriddenKey(KeyCode.Escape);
+    }
 }

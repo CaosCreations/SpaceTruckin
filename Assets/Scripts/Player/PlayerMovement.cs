@@ -93,6 +93,8 @@ public class PlayerMovement : MonoBehaviour
         ApplyGravity();
         DetermineSpeed();
         MovePlayer();
+
+        Debug.DrawRay(transform.position, PlayerFacingDirection, Color.yellow);
     }
 
     private void SetDirection()
@@ -185,6 +187,21 @@ public class PlayerMovement : MonoBehaviour
         {
             collidingDoor.CloseDoor();
         }
+    }
+
+    public bool Raycast(string layerName, out RaycastHit hit)
+    {
+        LayerMask layerMask = LayerMask.GetMask(layerName);
+        return Physics.Raycast(transform.position, PlayerFacingDirection, out hit, PlayerConstants.RaycastDistance, layerMask);
+    }
+    
+    public bool IsFirstRaycastHit(GameObject obj)
+    {
+        var layerName = LayerMask.LayerToName(obj.layer);
+        if (!Raycast(layerName, out RaycastHit hit))
+            return false;
+
+        return hit.collider != null && hit.collider.gameObject == obj;
     }
 
     public static void RotateWithView(Vector3 vector, Transform cameraTransform)
