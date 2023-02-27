@@ -44,4 +44,9 @@ public static class NumberExtensions
     {
         return (float)Mathf.Pow(10, self / 20);
     }
+
+    public static double RoundTo2(this double self)
+    {
+        return Math.Round(self, 2);
+    }
 }

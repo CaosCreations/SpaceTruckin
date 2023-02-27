@@ -22,7 +22,6 @@ public class UniversalHangarNodeUI : UICanvasBase
     [Header("Set at Runtime")]
     [SerializeField] private GameObject shipPreview;
     [SerializeField] private HangarNodePilotDetails hangarNodePilotDetails;
-    [SerializeField] private int hangarNode;
     public Ship ShipToInspect;
     private HangarSlot hangarSlot;
 
@@ -150,7 +149,7 @@ public class UniversalHangarNodeUI : UICanvasBase
         if (ShipToInspect != null)
         {
             // Launch ship regardless of mission status 
-            HangarManager.LaunchShip(hangarNode);
+            HangarManager.LaunchShip(UIManager.HangarNode);
 
             ScheduledMission scheduled = MissionsManager.GetScheduledMission(ShipToInspect);
             if (scheduled != null)
@@ -217,6 +216,9 @@ public class UniversalHangarNodeUI : UICanvasBase
 
     private void SetSliderValues()
     {
+        if (ShipToInspect == null)
+            return;
+
         fuelSlider.value = ShipToInspect.GetFuelPercentage();
         hullSlider.value = ShipToInspect.GetHullPercentage();
     }
@@ -239,9 +241,7 @@ public class UniversalHangarNodeUI : UICanvasBase
         {
             GameObject tutorial = Instantiate(CanvasTutorialPrefab, transform);
 
-            CardCycle cardCycle = tutorial.GetComponent<CardCycle>();
-
-            if (cardCycle != null)
+            if (tutorial.TryGetComponent<CardCycle>(out var cardCycle))
             {
                 // Show the name of the currently docked ship in the tutorial cards
                 cardCycle.CyclableContent.ReplaceTemplates(ShipToInspect);
