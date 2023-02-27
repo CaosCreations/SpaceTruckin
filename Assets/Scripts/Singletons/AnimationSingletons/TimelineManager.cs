@@ -1,10 +1,11 @@
 ﻿using Cinemachine;
+using PixelCrushers.DialogueSystem;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-public class TimelineManager : MonoBehaviour
+public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 {
     public static TimelineManager Instance { get; private set; }
 
@@ -160,5 +161,21 @@ public class TimelineManager : MonoBehaviour
     {
         if (playableDirector.playableAsset != null && playableDirector.time > 0)
             playableDirector.time = 100000; // Some unrealistically high value
+    }
+
+    public void RegisterLuaFunctions()
+    {
+        if (DialogueManager.Instance == null)
+            return;
+
+        Lua.RegisterFunction(
+            DialogueConstants.PlayCutsceneFunctionName,
+            this,
+            SymbolExtensions.GetMethodInfo(() => PlayCutscene(string.Empty)));
+    }
+
+    public void UnregisterLuaFunctions()
+    {
+        Lua.UnregisterFunction(DialogueConstants.PlayCutsceneFunctionName);
     }
 }
