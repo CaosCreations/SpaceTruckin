@@ -1,6 +1,6 @@
-﻿using UnityEngine.UI;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class FuelButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
@@ -9,7 +9,12 @@ public class FuelButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private void Awake()
     {
-        Button = GetComponent<Button>();   
+        Init();
+    }
+
+    public void Init()
+    {
+        Button = GetComponent<Button>();
     }
 
     public void OnPointerDown(PointerEventData eventData)

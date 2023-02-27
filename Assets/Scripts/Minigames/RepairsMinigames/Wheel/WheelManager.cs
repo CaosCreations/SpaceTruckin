@@ -44,7 +44,7 @@ public class WheelManager : RepairsMinigameBehaviour
 
     public void PlayerWins()
     {
-        ShipsManager.RepairShip();
+        //ShipsManager.RepairShip();
 
         wheel.IncreaseRotationSpeed();
         Debug.Log("New speed: " + wheel.CurrentRotationSpeed);

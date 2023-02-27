@@ -24,7 +24,9 @@ MonoBehaviour:
   isRepeatable: 1
   hasRandomOutcomes: 1
   outcomes:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: cd808da8f4f8bf544a83cb5dad3bb0e9, type: 2}
+  - {fileID: 11400000, guid: 4786970603a2361419f643b4f0f7b901, type: 2}
+  - {fileID: 11400000, guid: 5096a8f285b35a24d916c02ff8d5e371, type: 2}
   missionModifier: {fileID: 0}
   successChance: 0
   missionPilotTraitEffects: {fileID: 0}
@@ -33,11 +35,11 @@ MonoBehaviour:
   offerExpiryFondnessDeduction: 0
   thankYouMessage: {fileID: 0}
   saveData:
-    hasBeenUnlocked: 0
-    hasBeenAccepted: 0
+    hasBeenUnlocked: 1
+    hasBeenAccepted: 1
     offerExpiryConsequencesApplied: 0
     daysLeftToComplete: 0
-    numberOfCompletions: 0
+    numberOfCompletions: 5
     dateUnlocked:
       Day: 0
       Month: 0
@@ -46,4 +48,4 @@ MonoBehaviour:
       Day: 0
       Month: 0
       Year: 0
-    missionBonus: {fileID: 0}
+    missionBonus: {fileID: 11400000, guid: 29fba317fd00eb8408475bad54716a24, type: 2}

@@ -1,3 +1,4 @@
+using Events;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,9 +16,6 @@ public class GridManager : MonoBehaviour
 
     [SerializeField] private GameObject TilePrefab;
 
-    public Action WinEvent;
-
-    public Action LoseEvent;
     public int UntouchedTileCount { get; private set; }
 
     public int GridWidth { get; private set; } = 5;
@@ -132,13 +130,13 @@ public class GridManager : MonoBehaviour
         else if (tile.TileStatus == TileStatus.Touched)
         {
             tile.TileStatus = TileStatus.TouchedTwice;
-            LoseEvent();
+            SingletonManager.EventService.Dispatch(new OnRepairsMinigameLostEvent(RepairsMinigameType.Tile));
         }
 
         tileColorManager.ChangeTileColorBasedOnStatus(tile);
 
         if (UntouchedTileCount == 0)
-            WinEvent();
+            SingletonManager.EventService.Dispatch(new OnRepairsMinigameWonEvent(RepairsMinigameType.Tile));
     }
 
     public Tile GetTileAt(int Xposition, int Yposition)
