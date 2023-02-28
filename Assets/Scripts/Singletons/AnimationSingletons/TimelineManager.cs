@@ -1,7 +1,7 @@
 ﻿using Cinemachine;
+using Events;
 using PixelCrushers.DialogueSystem;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
@@ -21,9 +21,6 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
     [SerializeField]
     private PlayerAnimationAssetMappingContainer playerAnimationAssetMappingContainer;
 
-    public static UnityAction<string> OnTimelineStart;
-    public static UnityAction<string> OnTimelineEnd;
-
     private void Awake()
     {
         if (Instance == null)
@@ -40,20 +37,20 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
     private void Start()
     {
-        playableDirector.played += (_) => OnTimelineStartHandler();
-        playableDirector.stopped += (_) => OnTimelineEndHandler();
+        playableDirector.played += (_) => OnTimelineStartedHandler();
+        playableDirector.stopped += (_) => OnTimelineFinishedHandler();
     }
 
-    private void OnTimelineStartHandler()
+    private void OnTimelineStartedHandler()
     {
         cutsceneCamera.Priority = TimelineConstants.CutsceneCameraPlayPriority;
-        OnTimelineStart?.Invoke(playableDirector.playableAsset.name);
+        SingletonManager.EventService.Dispatch(new OnTimelineStartedEvent(playableDirector.playableAsset));
     }
 
-    private void OnTimelineEndHandler()
+    private void OnTimelineFinishedHandler()
     {
         cutsceneCamera.Priority = TimelineConstants.CutsceneCameraBasePriority;
-        OnTimelineEnd?.Invoke(playableDirector.playableAsset.name);
+        SingletonManager.EventService.Dispatch(new OnTimelineFinishedEvent(playableDirector.playableAsset));
     }
 
     public static void PlayCutscene(string cutsceneName)
@@ -81,6 +78,17 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
                 return cutscene;
         }
         Debug.LogError("Cannot find cutscene with name: " + name);
+        return null;
+    }
+
+    public Cutscene GetCutsceneByPlayableAsset(PlayableAsset playableAsset)
+    {
+        foreach (var cutscene in cutsceneContainer.Elements)
+        {
+            if (cutscene.PlayableAsset == playableAsset)
+                return cutscene;
+        }
+        Debug.LogError("Cannot find cutscene with playable asset: " + playableAsset);
         return null;
     }
 

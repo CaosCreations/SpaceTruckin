@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
 namespace Events
@@ -27,6 +28,54 @@ namespace Events
     public class OnSceneUnloadedEvent : OnSceneChangeEvent
     {
         public OnSceneUnloadedEvent(Scene scene) : base(scene)
+        {
+        }
+    }
+
+    public abstract class OnCutsceneEvent : IEvent
+    {
+        public Cutscene Cutscene { get; }
+
+        public OnCutsceneEvent(Cutscene cutscene)
+        {
+            Cutscene = cutscene;
+        }
+    }
+
+    public class OnCutsceneStartedEvent : OnCutsceneEvent
+    {
+        public OnCutsceneStartedEvent(Cutscene cutscene) : base(cutscene)
+        {
+        }
+    }
+
+    public class OnCutsceneFinishedEvent : OnCutsceneEvent
+    {
+        public OnCutsceneFinishedEvent(Cutscene cutscene) : base(cutscene)
+        {
+        }
+    }
+
+    public abstract class OnTimelineEvent : IEvent
+    {
+        public PlayableAsset PlayableAsset { get; }
+
+        public OnTimelineEvent(PlayableAsset playableAsset)
+        {
+            PlayableAsset = playableAsset;
+        }
+    }
+
+    public class OnTimelineStartedEvent : OnTimelineEvent
+    {
+        public OnTimelineStartedEvent(PlayableAsset playableAsset) : base(playableAsset)
+        {
+        }
+    }
+
+    public class OnTimelineFinishedEvent : OnTimelineEvent
+    {
+        public OnTimelineFinishedEvent(PlayableAsset playableAsset) : base(playableAsset)
         {
         }
     }
