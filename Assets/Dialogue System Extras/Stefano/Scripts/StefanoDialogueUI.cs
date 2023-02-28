@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class StefanoDialogueUI : SMSDialogueUI
 {
-
     // Copied from SMSDialogueUI but added:
     // 1. Use actor's node color for subtitle background.
     // 2. Don't add bubbles for blank text.
@@ -16,10 +15,13 @@ public class StefanoDialogueUI : SMSDialogueUI
         // Set portrait name/image:
         template.SetContent(subtitle);
         var actor = DialogueManager.masterDatabase.GetActor(subtitle.speakerInfo.id);
-        template.GetComponentInChildren<Image>().color = Tools.WebColor(actor.LookupValue("NodeColor"));
+        var nodeColor = Tools.WebColor(actor.LookupValue("NodeColor"));
+
         if (template.portraitName.gameObject != null)
         {
             template.portraitName.text = subtitle.speakerInfo.Name;
+            var portraitNameImage = template.portraitName.gameObject.transform.parent.GetComponent<Image>();
+            portraitNameImage.color = nodeColor;
             template.portraitName.gameObject.SetActive(true);
         }
 
@@ -33,6 +35,14 @@ public class StefanoDialogueUI : SMSDialogueUI
         instantiatedMessages.Add(go);
         go.transform.SetParent(messagePanel.transform, false);
         var panel = go.GetComponent<StandardUISubtitlePanel>();
+
+        // Set panel children image colours
+        foreach (Transform item in panel.gameObject.transform)
+        {
+            if (item.TryGetComponent<Image>(out var image))
+                image.color = nodeColor;
+        }
+
         if (panel.addSpeakerName)
         {
             subtitle.formattedText.text = string.Format(panel.addSpeakerNameFormat, new object[] { subtitle.speakerInfo.Name, subtitle.formattedText.text });
