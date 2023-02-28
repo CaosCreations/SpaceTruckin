@@ -59912,7 +59912,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: '*PLAY CUTSCENE* [lua(PlayCutscene("Opening Cutscene"))]'
+        value: '*PLAY CUTSCENE*'
         type: 0
         typeString: 
       - title: Sequence
@@ -59934,7 +59934,9 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: 
-      userScript: 
+      userScript: 'PlayCutscene("Opening Cutscene");
+
+'
       onExecute:
         m_PersistentCalls:
           m_Calls: []
