@@ -44,13 +44,31 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
     private void OnTimelineStartedHandler()
     {
         cutsceneCamera.Priority = TimelineConstants.CutsceneCameraPlayPriority;
-        SingletonManager.EventService.Dispatch(new OnTimelineStartedEvent(playableDirector.playableAsset));
+
+        var cutscene = GetCutsceneByPlayableAsset(playableDirector.playableAsset);
+        if (cutscene != null)
+        {
+            SingletonManager.EventService.Dispatch(new OnCutsceneStartedEvent(cutscene));
+        }
+        else
+        {
+            SingletonManager.EventService.Dispatch(new OnTimelineStartedEvent(playableDirector.playableAsset));
+        }
     }
 
     private void OnTimelineFinishedHandler()
     {
         cutsceneCamera.Priority = TimelineConstants.CutsceneCameraBasePriority;
-        SingletonManager.EventService.Dispatch(new OnTimelineFinishedEvent(playableDirector.playableAsset));
+
+        var cutscene = GetCutsceneByPlayableAsset(playableDirector.playableAsset);
+        if (cutscene != null)
+        {
+            SingletonManager.EventService.Dispatch(new OnCutsceneFinishedEvent(cutscene));
+        }
+        else
+        {
+            SingletonManager.EventService.Dispatch(new OnTimelineFinishedEvent(playableDirector.playableAsset));
+        }
     }
 
     public static void PlayCutscene(string cutsceneName)
@@ -60,11 +78,13 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
         if (cutscene == null)
             throw new System.Exception("Cannot play cutscene with name: " + cutsceneName);
 
+        Debug.Log("Playing cutscene with name: " + cutsceneName);
         PlayTimeline(cutscene.PlayableAsset);
     }
 
     private static void PlayTimeline(PlayableAsset playableAsset)
     {
+        Debug.Log("Playing timeline with playable asset name: " + playableAsset.name);
         Instance.playableDirector.gameObject.SetActive(true);
         Instance.playableDirector.playableAsset = playableAsset;
         Instance.playableDirector.Play();
