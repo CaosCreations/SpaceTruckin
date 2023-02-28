@@ -37,6 +37,12 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
     private void Start()
     {
+        RegisterLuaFunctions();
+        RegisterEvents();
+    }
+
+    private void RegisterEvents()
+    {
         playableDirector.played += (_) => OnTimelineStartedHandler();
         playableDirector.stopped += (_) => OnTimelineFinishedHandler();
     }

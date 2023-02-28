@@ -59658,12 +59658,6 @@ MonoBehaviour:
         destinationDialogueID: 2
         isConnector: 0
         priority: 2
-      - originConversationID: 23
-        originDialogueID: 0
-        destinationConversationID: 23
-        destinationDialogueID: 4
-        isConnector: 0
-        priority: 2
       conditionsString: 
       userScript: 
       onExecute:
@@ -59671,7 +59665,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 210
+        x: 120
         y: 20
         width: 160
         height: 30
@@ -59720,115 +59714,11 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 210
+        x: 120
         y: 320
         width: 160
         height: 30
     - id: 2
-      fields:
-      - title: Title
-        value: 
-        type: 0
-        typeString: 
-      - title: Description
-        value: 
-        type: 0
-        typeString: 
-      - title: Actor
-        value: 2
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Conversant
-        value: 1
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Menu Text
-        value: 
-        type: 0
-        typeString: 
-      - title: Dialogue Text
-        value: Test2
-        type: 0
-        typeString: 
-      - title: Sequence
-        value: 
-        type: 0
-        typeString: 
-      conversationID: 23
-      isRoot: 0
-      isGroup: 0
-      nodeColor: 
-      delaySimStatus: 0
-      falseConditionAction: Block
-      conditionPriority: 2
-      outgoingLinks:
-      - originConversationID: 23
-        originDialogueID: 2
-        destinationConversationID: 23
-        destinationDialogueID: 3
-        isConnector: 0
-        priority: 2
-      conditionsString: 
-      userScript: 
-      onExecute:
-        m_PersistentCalls:
-          m_Calls: []
-      canvasRect:
-        serializedVersion: 2
-        x: 75
-        y: 70
-        width: 160
-        height: 30
-    - id: 3
-      fields:
-      - title: Title
-        value: 
-        type: 0
-        typeString: 
-      - title: Description
-        value: 
-        type: 0
-        typeString: 
-      - title: Actor
-        value: 1
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Conversant
-        value: 2
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Menu Text
-        value: 
-        type: 0
-        typeString: 
-      - title: Dialogue Text
-        value: 
-        type: 0
-        typeString: 
-      - title: Sequence
-        value: 
-        type: 0
-        typeString: 
-      conversationID: 23
-      isRoot: 0
-      isGroup: 0
-      nodeColor: 
-      delaySimStatus: 0
-      falseConditionAction: Block
-      conditionPriority: 2
-      outgoingLinks: []
-      conditionsString: 
-      userScript: 
-      onExecute:
-        m_PersistentCalls:
-          m_Calls: []
-      canvasRect:
-        serializedVersion: 2
-        x: 30
-        y: 120
-        width: 160
-        height: 30
-    - id: 4
       fields:
       - title: Title
         value: 
@@ -59867,15 +59757,15 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks:
       - originConversationID: 23
-        originDialogueID: 4
+        originDialogueID: 2
         destinationConversationID: 23
-        destinationDialogueID: 5
+        destinationDialogueID: 3
         isConnector: 0
         priority: 2
       - originConversationID: 23
-        originDialogueID: 4
+        originDialogueID: 2
         destinationConversationID: 23
-        destinationDialogueID: 6
+        destinationDialogueID: 5
         isConnector: 0
         priority: 2
       conditionsString: 
@@ -59885,11 +59775,11 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 345
+        x: 120
         y: 70
         width: 160
         height: 30
-    - id: 5
+    - id: 3
       fields:
       - title: Title
         value: 
@@ -59928,7 +59818,7 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks:
       - originConversationID: 23
-        originDialogueID: 5
+        originDialogueID: 3
         destinationConversationID: 23
         destinationDialogueID: 7
         isConnector: 0
@@ -59940,11 +59830,11 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 210
+        x: 30
         y: 120
         width: 160
         height: 30
-    - id: 6
+    - id: 5
       fields:
       - title: Title
         value: 
@@ -59983,9 +59873,9 @@ MonoBehaviour:
       conditionPriority: 2
       outgoingLinks:
       - originConversationID: 23
-        originDialogueID: 6
+        originDialogueID: 5
         destinationConversationID: 23
-        destinationDialogueID: 1
+        destinationDialogueID: 7
         isConnector: 0
         priority: 2
       conditionsString: 
@@ -59995,7 +59885,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 390
+        x: 210
         y: 120
         width: 160
         height: 30
@@ -60022,7 +59912,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: '*PLAY CUTSCENE* [lua(PlayCutscene("Opening Cutscene")]'
+        value: '*PLAY CUTSCENE* [lua(PlayCutscene("Opening Cutscene"))]'
         type: 0
         typeString: 
       - title: Sequence
@@ -60050,7 +59940,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 75
+        x: 120
         y: 170
         width: 160
         height: 30
@@ -60105,7 +59995,7 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 210
+        x: 120
         y: 220
         width: 160
         height: 30
@@ -60160,13 +60050,13 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 210
+        x: 120
         y: 270
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 0, y: 0}
-    canvasZoom: 0.8800001
+    canvasScrollPosition: {x: 0, y: 6.1622353}
+    canvasZoom: 1.06
   syncInfo:
     syncActors: 0
     syncItems: 0
