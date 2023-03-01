@@ -30,9 +30,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Canvas universalCanvas;
     #endregion
 
-    [SerializeField] private DialogueSystemController dialogueSystemController;
-    [SerializeField] private DialogueUIContainer dialogueUIContainer;
-
     /// <summary>
     /// Keys that cannot be used for regular UI input until the override is lifted.
     /// e.g. Escape key when in a submenu. 
@@ -86,9 +83,6 @@ public class UIManager : MonoBehaviour
 
         SingletonManager.EventService.Add<OnCutsceneStartedEvent>(OnCutsceneStartedHandler);
         SingletonManager.EventService.Add<OnCutsceneFinishedEvent>(OnCutsceneFinishedHandler);
-
-        // Dialogue system events 
-        DialogueManager.Instance.conversationStarted += OnConversationStartedHandler;
     }
 
     private void Update()
@@ -379,34 +373,6 @@ public class UIManager : MonoBehaviour
         {
             Debug.Log("Dialogue cutscene finished event call back fired. Opening dialogue UI...");
             DialogueManager.DialogueUI.Open();
-        }
-    }
-
-    private void OnConversationStartedHandler(Transform transform)
-    {
-        var conversation = DialogueManager.MasterDatabase.GetConversation(DialogueManager.Instance.LastConversationID);
-        var conversant = DialogueManager.MasterDatabase.GetActor(conversation.ConversantID);
-        var isRando = conversant.LookupBool("IsRando");
-        SetDialogueUI(isRando);
-    }
-
-    /// <summary>
-    /// Sets the current dialogue UI depending on if the conversant is a rando.
-    /// </summary>
-    /// <param name="isRando"></param>
-    private void SetDialogueUI(bool isRando)
-    {
-        if (isRando)
-        {
-            Debug.Log("Current convo is with a rando. Using rando UI...");
-            dialogueSystemController.displaySettings.dialogueUI = Instance.dialogueUIContainer.RandoDialogueUIPrefab;
-            dialogueSystemController.DialogueUI = Instance.dialogueUIContainer.RandoDialogueUIPrefab.GetComponent<StandardDialogueUI>();
-        }
-        else
-        {
-            Debug.Log("Current convo is not with a rando. Using main UI...");
-            dialogueSystemController.displaySettings.dialogueUI = Instance.dialogueUIContainer.MainDialogueUIPrefab;
-            dialogueSystemController.DialogueUI = Instance.dialogueUIContainer.RandoDialogueUIPrefab.GetComponent<StefanoDialogueUI>();
         }
     }
 }
