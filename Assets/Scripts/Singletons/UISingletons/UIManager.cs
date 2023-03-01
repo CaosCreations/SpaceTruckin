@@ -76,8 +76,6 @@ public class UIManager : MonoBehaviour
 
     private void RegisterEvents()
     {
-
-        // Custom events 
         SingletonManager.EventService.Add<OnSceneLoadedEvent>(OnSceneLoadedHandler);
         SingletonManager.EventService.Add<OnSceneUnloadedEvent>(OnSceneUnloadedHandler);
 
