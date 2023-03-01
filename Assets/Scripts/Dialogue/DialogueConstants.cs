@@ -7,6 +7,7 @@
     public const string SpendMoneyFunctionName = "SpendMoney";
     public const string GetPlayerNameFunctionName = "GetPlayerName";
     public const string GiveMissionBonusFunctionName = "GiveMissionBonus";
+    public const string PlayCutsceneFunctionName = "PlayCutscene";
 
     // Actor field names
     public const string FondnessFieldName = "Fondness";

@@ -7,4 +7,5 @@ public class Cutscene : ScriptableObject
     public string Name;
     public string OnSceneLoadName;
     public PlayableAsset PlayableAsset;
+    public bool IsDialogueCutscene;
 }

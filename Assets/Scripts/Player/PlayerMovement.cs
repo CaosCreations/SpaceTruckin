@@ -1,3 +1,4 @@
+using Events;
 using System;
 using UnityEngine;
 
@@ -38,11 +39,11 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Temp workaround for opening cutscene end position
-        TimelineManager.OnTimelineEnd += (playableAssetName) =>
+        SingletonManager.EventService.Add<OnTimelineFinishedEvent>((evt) =>
         {
-            if (playableAssetName == TimelineConstants.OpeningCutsceneTimelineAssetName)
+            if (evt.PlayableAsset.name == TimelineConstants.OpeningCutsceneTimelineAssetName)
                 RespawnPlayer();
-        };
+        });
     }
 
     // Get input in Update 
