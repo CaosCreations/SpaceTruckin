@@ -1387,6 +1387,9 @@ MonoBehaviour:
   mainMenuCanvas: {fileID: 2137315464748590196}
   pauseMenuCanvas: {fileID: 5763554009720977247}
   universalCanvas: {fileID: 95966721}
+  dialogueSystemController: {fileID: 0}
+  dialogueUIContainer: {fileID: 11400000, guid: cee4a43c81b590b4ea8030a04b92bc17,
+    type: 2}
 --- !u!114 &377607164264223043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5258,15 +5261,55 @@ PrefabInstance:
       propertyPath: m_Name
       value: HUDCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 5534687306915295648, guid: 3dc8a49308fa33b4bb83208707e81b9e,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 130.96
+      objectReference: {fileID: 0}
+    - target: {fileID: 5534687306915295648, guid: 3dc8a49308fa33b4bb83208707e81b9e,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 46.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 5534687306915295648, guid: 3dc8a49308fa33b4bb83208707e81b9e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.9502
+      objectReference: {fileID: 0}
+    - target: {fileID: 7366757369773944161, guid: 3dc8a49308fa33b4bb83208707e81b9e,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7366757369773944161, guid: 3dc8a49308fa33b4bb83208707e81b9e,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7366757369773944161, guid: 3dc8a49308fa33b4bb83208707e81b9e,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7366757369773944161, guid: 3dc8a49308fa33b4bb83208707e81b9e,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7366757369773944161, guid: 3dc8a49308fa33b4bb83208707e81b9e,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 176.87805
+      objectReference: {fileID: 0}
     - target: {fileID: 7366757369773944161, guid: 3dc8a49308fa33b4bb83208707e81b9e,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 805
+      value: -90.3501
       objectReference: {fileID: 0}
     - target: {fileID: 7366757369773944161, guid: 3dc8a49308fa33b4bb83208707e81b9e,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 358.87
+      value: -38.900024
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3dc8a49308fa33b4bb83208707e81b9e, type: 3}
