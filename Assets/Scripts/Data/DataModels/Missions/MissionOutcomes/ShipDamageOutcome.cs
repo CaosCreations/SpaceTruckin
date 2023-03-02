@@ -7,7 +7,7 @@ public enum ShipDamageType
 }
 
 [CreateAssetMenu(fileName = "ShipDamageOutcome", menuName = "ScriptableObjects/Missions/Outcomes/ShipDamageOutcome", order = 1)]
-public class ShipDamageOutcome : MissionOutcome
+public class ShipDamageOutcome : MissionOutcome, IOutcomeBreakdown
 {
     [SerializeField] private int shipDamage;
     public int BaseDamage => shipDamage;
@@ -19,22 +19,47 @@ public class ShipDamageOutcome : MissionOutcome
 
     [SerializeField] private bool hasRandomDamageType;
 
+    private int damageTaken;
+    private int damageReduced;
+
     public override void Process(ScheduledMission scheduled)
     {
-        int shipDamageTaken = (int)(BaseDamage * (1 - LicencesManager.ShipDamageEffect));
-        int damageReduced = BaseDamage - shipDamageTaken;
+        damageTaken = (int)(BaseDamage * (1 - LicencesManager.ShipDamageEffect));
+        damageReduced = BaseDamage - damageTaken;
 
-        ShipsManager.DamageShip(scheduled.Pilot.Ship, Math.Max(0, shipDamageTaken));
+        ShipsManager.DamageShip(scheduled.Pilot.Ship, Math.Max(0, damageTaken));
 
-        if (scheduled.Mission.MissionToArchive != null)
+        if (scheduled.MissionToArchive != null)
         {
-            scheduled.Mission.MissionToArchive.TotalDamageTaken += shipDamageTaken;
-            scheduled.Mission.MissionToArchive.TotalDamageReduced += damageReduced;
-            scheduled.Mission.MissionToArchive.DamageType = DamageType;
+            // Archive the earnings stats 
+            ArchiveOutcomeElements(scheduled);
         }
 
+        LogOutcomeElements();
+        ResetOutcomeElements();
+    }
+
+    public void ArchiveOutcomeElements(ScheduledMission scheduled)
+    {
+        scheduled.MissionToArchive.ShipChanges.DamageTaken += damageTaken;
+        scheduled.MissionToArchive.ShipChanges.DamageReduced += damageReduced;
+        scheduled.MissionToArchive.ShipChanges.DamageType = DamageType;
+
+        // Todo: Replace with nested object
+        scheduled.Mission.MissionToArchive.TotalDamageTaken += damageTaken;
+        scheduled.Mission.MissionToArchive.TotalDamageReduced += damageReduced;
+        scheduled.Mission.MissionToArchive.DamageType = DamageType;
+    }
+
+    public void LogOutcomeElements()
+    {
         Debug.Log("Base ship damage: " + BaseDamage);
-        Debug.Log("Ship damage reduction from licences: " + damageReduced.ToString());
-        Debug.Log("Total ship damage taken: " + shipDamageTaken);
+        Debug.Log("Ship damage reduction from licences: " + damageReduced);
+        Debug.Log("Total ship damage taken: " + damageTaken);
+    }
+
+    public void ResetOutcomeElements()
+    {
+        damageTaken = damageReduced = default;
     }
 }

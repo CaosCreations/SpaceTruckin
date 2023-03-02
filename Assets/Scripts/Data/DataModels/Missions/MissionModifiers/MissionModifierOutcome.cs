@@ -21,7 +21,6 @@ public class MissionModifierOutcome : ScriptableObject, IMissionOutcome
 
     public void Process(ScheduledMission scheduled)
     {
-        // Todo: Abstract away archiving code
         // Archive the modifier outcome for displaying in the new day report
         scheduled.Mission.MissionToArchive.ModifierOutcome = this;
 

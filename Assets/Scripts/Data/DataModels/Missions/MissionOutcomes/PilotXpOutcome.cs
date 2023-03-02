@@ -78,13 +78,14 @@ public class PilotXpOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
 
     public void ArchiveOutcomeElements(ScheduledMission scheduled)
     {
-        scheduled.MissionToArchive.TotalXpIncreaseFromLicences += xpIncreaseFromLicences;
-        scheduled.MissionToArchive.TotalXpIncreaseFromBonuses += xpIncreaseFromBonuses;
+        scheduled.MissionToArchive.XpGains.BaseXpGain += baseXpGained;
+        scheduled.MissionToArchive.XpGains.LicencesXpGain += xpIncreaseFromLicences;
+        scheduled.MissionToArchive.XpGains.BonusesXpGain += xpIncreaseFromBonuses;
+        scheduled.MissionToArchive.XpGains.TotalXpAfterMission += PilotsManager.AwardXp(scheduled.Pilot, totalXpGained);
+
+        // Todo: Replace with nested object  
         scheduled.MissionToArchive.TotalAdditionalXpGained += totalAdditionalXp;
         scheduled.MissionToArchive.TotalPilotXpGained += totalXpGained;
-
-        scheduled.MissionToArchive.TotalXpAfterMission += PilotsManager.AwardXp(
-            scheduled.Pilot, totalXpGained);
     }
 
     public void LogOutcomeElements()

@@ -20,6 +20,10 @@ public class ArchivedMission
         TotalAdditionalXpGained,
         TotalXpAfterMission;
 
+    public MissionEarnings Earnings = new();
+    public MissionXpGains XpGains = new();
+    public MissionShipChanges ShipChanges = new();
+
     // Pilot
     public Pilot Pilot;
     public int PilotLevelAtTimeOfMission;
@@ -36,7 +40,7 @@ public class ArchivedMission
         MissionName = mission.Name;
         CompletionNumber = completionNumber;
         Pilot = pilot;
-        TotalFuelLost = mission.FuelCost;
+        ShipChanges.FuelLost = mission.FuelCost;
         CompletionDate = CalendarManager.Instance.CurrentDate;
     }
 
