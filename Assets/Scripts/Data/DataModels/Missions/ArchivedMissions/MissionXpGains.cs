@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 
 [Serializable]
 public class MissionXpGains
@@ -9,6 +8,5 @@ public class MissionXpGains
     public double BonusesXpGain { get; set; }
     public double TotalXpAfterMission { get; set; }
 
-    [JsonIgnore]
     public double TotalXpGain => BaseXpGain + LicencesXpGain + BonusesXpGain;
 }

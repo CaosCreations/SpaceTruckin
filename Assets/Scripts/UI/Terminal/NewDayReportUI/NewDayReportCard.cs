@@ -27,7 +27,7 @@ public class NewDayReportCard : MonoBehaviour
     public string BuildReportDetails(ArchivedMission mission)
     {
         StringBuilder builder = new();
-        string missionIdentifierText = $"{mission.Pilot.Name} of the {mission.Pilot.Ship.Name} completed the mission \"{mission.MissionName}\"!";
+        string missionIdentifierText = $"{mission.Pilot.Name} of the {mission.Pilot.Ship.Name} completed the mission \"{mission.Mission.Name}\"!";
         string moneyText = $"{mission.Pilot.Name} earned ${mission.Earnings.TotalEarnings.RoundTo2()} in total.";
         string moneyBonusesText = $"{mission.Pilot.Name} earned ${mission.Earnings.BonusesEarnings.RoundTo2()} from bonuses.";
         string moneyLicencesText = $"{mission.Pilot.Name} earned ${mission.Earnings.LicencesEarnings.RoundTo2()} from licences.";

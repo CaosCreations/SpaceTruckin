@@ -22,7 +22,7 @@ public class ShipDamageOutcome : MissionOutcome, IOutcomeBreakdown
     private int damageTaken;
     private int damageReduced;
 
-    public override void Process(ScheduledMission scheduled)
+    public override void Process(ScheduledMission scheduled, bool isMissionModifierOutcome = false)
     {
         damageTaken = (int)(BaseDamage * (1 - LicencesManager.ShipDamageEffect));
         damageReduced = BaseDamage - damageTaken;
@@ -32,33 +32,40 @@ public class ShipDamageOutcome : MissionOutcome, IOutcomeBreakdown
         if (scheduled.MissionToArchive != null)
         {
             // Archive the earnings stats 
-            ArchiveOutcomeElements(scheduled);
+            ArchiveOutcome(scheduled, isMissionModifierOutcome);
         }
 
-        LogOutcomeElements();
-        ResetOutcomeElements();
+        LogOutcome();
+        ResetOutcome();
     }
 
-    public void ArchiveOutcomeElements(ScheduledMission scheduled)
+    public void ArchiveOutcome(ScheduledMission scheduled, bool isMissionModifierOutcome)
     {
+        var archivedOutcome = new ArchivedShipDamageOutcome(this, damageTaken, damageReduced, DamageType);
+
+        if (isMissionModifierOutcome)
+        {
+            scheduled.MissionToArchive.ArchivedMissionModifierOutcome.ArchivedMissionOutcomeContainer.ArchivedShipDamageOutcomes.Add(archivedOutcome);
+        }
+        else
+        {
+            scheduled.Mission.MissionToArchive.ArchivedMissionOutcomeContainer.ArchivedShipDamageOutcomes.Add(archivedOutcome);
+        }
+
+        // Temp
         scheduled.MissionToArchive.ShipChanges.DamageTaken += damageTaken;
         scheduled.MissionToArchive.ShipChanges.DamageReduced += damageReduced;
         scheduled.MissionToArchive.ShipChanges.DamageType = DamageType;
-
-        // Todo: Replace with nested object
-        scheduled.Mission.MissionToArchive.TotalDamageTaken += damageTaken;
-        scheduled.Mission.MissionToArchive.TotalDamageReduced += damageReduced;
-        scheduled.Mission.MissionToArchive.DamageType = DamageType;
     }
 
-    public void LogOutcomeElements()
+    public void LogOutcome()
     {
         Debug.Log("Base ship damage: " + BaseDamage);
         Debug.Log("Ship damage reduction from licences: " + damageReduced);
         Debug.Log("Total ship damage taken: " + damageTaken);
     }
 
-    public void ResetOutcomeElements()
+    public void ResetOutcome()
     {
         damageTaken = damageReduced = default;
     }

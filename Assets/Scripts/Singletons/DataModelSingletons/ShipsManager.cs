@@ -85,7 +85,7 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
 
             if (mostRecentMission != null)
             {
-                ShipUnderRepair.DamageType = mostRecentMission.DamageType;
+                ShipUnderRepair.DamageType = mostRecentMission.ShipChanges.DamageType;
             }
         }
     }

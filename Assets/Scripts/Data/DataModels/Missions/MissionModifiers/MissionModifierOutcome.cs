@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "MissionModifierOutcome", menuName = "ScriptableObjects/Missions/MissionModifiers/MissionModifierOutcome", order = 1)]
-public class MissionModifierOutcome : ScriptableObject, IMissionOutcome
+public class MissionModifierOutcome : ScriptableObject
 {
     // MissionModifierOutcomes can have one or more of any kind of MissionOutcome 
     // e.g. can take damage, find a new pilot, earn money, and earn faction rep 
@@ -26,7 +26,7 @@ public class MissionModifierOutcome : ScriptableObject, IMissionOutcome
 
         foreach (MissionOutcome outcome in Outcomes)
         {
-            outcome.Process(scheduled);
+            outcome.Process(scheduled, true);
         }
     }
 }

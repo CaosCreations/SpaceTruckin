@@ -16,7 +16,7 @@ public class MoneyOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
     // The same type as the Player's balance 
     private long totalEarnings64, totalAdditionalMoneyEarned;
 
-    public override void Process(ScheduledMission scheduled)
+    public override void Process(ScheduledMission scheduled, bool isMissionModifierOutcome = false)
     {
         baseMoneyEarned = UnityEngine.Random.Range(moneyMin, moneyMax);
 
@@ -43,11 +43,11 @@ public class MoneyOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
         if (scheduled.MissionToArchive != null)
         {
             // Archive the earnings stats 
-            ArchiveOutcomeElements(scheduled);
+            ArchiveOutcome(scheduled, isMissionModifierOutcome);
         }
 
-        LogOutcomeElements();
-        ResetOutcomeElements();
+        LogOutcome();
+        ResetOutcome();
     }
 
     public void ApplyBonuses(ScheduledMission scheduled)
@@ -59,14 +59,26 @@ public class MoneyOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
         totalEarnings = earningsAfterBonuses;
     }
 
-    public void ArchiveOutcomeElements(ScheduledMission scheduled)
+    public void ArchiveOutcome(ScheduledMission scheduled, bool isMissionModifierOutcome)
     {
+        var archivedOutcome = new ArchivedMoneyOutcome(this, baseMoneyEarned, moneyIncreaseFromBonuses, moneyIncreaseFromLicences);
+
+        if (isMissionModifierOutcome)
+        {
+            scheduled.MissionToArchive.ArchivedMissionModifierOutcome.ArchivedMissionOutcomeContainer.ArchivedMoneyOutcomes.Add(archivedOutcome);
+        }
+        else
+        {
+            scheduled.Mission.MissionToArchive.ArchivedMissionOutcomeContainer.ArchivedMoneyOutcomes.Add(archivedOutcome);
+        }
+
+        // Temp 
         scheduled.MissionToArchive.Earnings.BaseEarnings += baseMoneyEarned;
         scheduled.MissionToArchive.Earnings.LicencesEarnings += moneyIncreaseFromLicences;
         scheduled.MissionToArchive.Earnings.BonusesEarnings += moneyIncreaseFromBonuses;
     }
 
-    public void LogOutcomeElements()
+    public void LogOutcome()
     {
         Debug.Log($"Base money earned: {baseMoneyEarned}");
         Debug.Log($"Money increase due to licences: {moneyIncreaseFromLicences}");
@@ -75,7 +87,7 @@ public class MoneyOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
         Debug.Log($"Total money earned: {totalEarnings64}");
     }
 
-    public void ResetOutcomeElements()
+    public void ResetOutcome()
     {
         // Default all to 0 
         baseMoneyEarned = earningsAfterLicences = moneyIncreaseFromLicences = earningsAfterBonuses

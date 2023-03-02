@@ -7,15 +7,22 @@
 [Serializable]
 public class ArchivedMission
 {
-    public string MissionName;
-    public int CompletionNumber, TotalDamageTaken, TotalDamageReduced, TotalFuelLost;
-    public ShipDamageType DamageType;
+    public Mission Mission;
+    public int CompletionNumber;
+
+    // Outcome data
+    public ArchivedMissionOutcomeContainer ArchivedMissionOutcomeContainer = new();
+    public ArchivedMissionModifierOutcome ArchivedMissionModifierOutcome = new();
 
     public MissionEarnings Earnings = new();
     public MissionXpGains XpGains = new();
     public MissionShipChanges ShipChanges = new();
+    public MissionModifierChanges MissionMoidifierChanges = new();
 
     // Pilot
+    public ArchivedMissionPilotInfo ArchivedPilotInfo = new();
+
+    // Temp 
     public Pilot Pilot;
     public int PilotLevelAtTimeOfMission;
     public int MissionsCompletedByPilotAtTimeOfMission;
@@ -28,8 +35,9 @@ public class ArchivedMission
 
     public ArchivedMission(Mission mission, Pilot pilot, int completionNumber)
     {
-        MissionName = mission.Name;
+        Mission = mission;
         CompletionNumber = completionNumber;
+        ArchivedPilotInfo.Pilot = pilot;
         Pilot = pilot;
         ShipChanges.FuelLost = mission.FuelCost;
         CompletionDate = CalendarManager.Instance.CurrentDate;
