@@ -11,15 +11,6 @@ public class ArchivedMission
     public int CompletionNumber, TotalDamageTaken, TotalDamageReduced, TotalFuelLost;
     public ShipDamageType DamageType;
 
-    // Money
-    public long TotalMoneyEarned, TotalAdditionalMoneyEarned;
-    public double TotalMoneyIncreaseFromLicences, TotalMoneyIncreaseFromBonuses;
-
-    // XP 
-    public double TotalPilotXpGained, TotalXpIncreaseFromLicences, TotalXpIncreaseFromBonuses,
-        TotalAdditionalXpGained,
-        TotalXpAfterMission;
-
     public MissionEarnings Earnings = new();
     public MissionXpGains XpGains = new();
     public MissionShipChanges ShipChanges = new();

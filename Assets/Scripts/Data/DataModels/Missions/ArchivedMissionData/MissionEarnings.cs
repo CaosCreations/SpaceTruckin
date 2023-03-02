@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 [Serializable]
 public class MissionEarnings
@@ -7,5 +8,6 @@ public class MissionEarnings
     public double BonusesEarnings { get; set; }
     public double LicencesEarnings { get; set; }
 
-    //public long TotalEarnings { get; set; }
+    [JsonIgnore]
+    public double TotalEarnings => BaseEarnings + BonusesEarnings + LicencesEarnings;
 }

@@ -82,10 +82,6 @@ public class PilotXpOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
         scheduled.MissionToArchive.XpGains.LicencesXpGain += xpIncreaseFromLicences;
         scheduled.MissionToArchive.XpGains.BonusesXpGain += xpIncreaseFromBonuses;
         scheduled.MissionToArchive.XpGains.TotalXpAfterMission += PilotsManager.AwardXp(scheduled.Pilot, totalXpGained);
-
-        // Todo: Replace with nested object  
-        scheduled.MissionToArchive.TotalAdditionalXpGained += totalAdditionalXp;
-        scheduled.MissionToArchive.TotalPilotXpGained += totalXpGained;
     }
 
     public void LogOutcomeElements()

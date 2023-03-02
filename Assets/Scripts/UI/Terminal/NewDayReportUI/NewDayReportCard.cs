@@ -26,25 +26,26 @@ public class NewDayReportCard : MonoBehaviour
 
     public string BuildReportDetails(ArchivedMission mission)
     {
-        StringBuilder builder = new StringBuilder();
-        string missionIdentifierText = $"{mission.Pilot.Name} of the {mission.Pilot.Ship.Name} completed the mission {mission.MissionName}!";
-        string moneyText = $"{mission.Pilot.Name} earned ${mission.TotalMoneyEarned} in total.";
-        string moneyBonusesText = $"{mission.Pilot.Name} earned ${mission.TotalMoneyIncreaseFromBonuses.RoundTo2()} from bonuses.";
-        string moneyLicencesText = $"{mission.Pilot.Name} earned ${mission.TotalMoneyIncreaseFromLicences.RoundTo2()} from licences.";
-        string damageText = $"{mission.Pilot.Ship.Name} took {mission.TotalDamageTaken} damage to its {mission.DamageType}.";
-        string fuelText = $"{mission.Pilot.Ship.Name} lost {mission.TotalFuelLost} fuel.";
-        string xpText = $"{mission.Pilot.Name} gained {mission.TotalPilotXpGained.RoundTo2()} xp in total.";
-        string xpBonusesText = $"{mission.Pilot.Name} gained {mission.TotalXpIncreaseFromBonuses.RoundTo2()} xp from bonuses.";
+        StringBuilder builder = new();
+        string missionIdentifierText = $"{mission.Pilot.Name} of the {mission.Pilot.Ship.Name} completed the mission \"{mission.MissionName}\"!";
+        string moneyText = $"{mission.Pilot.Name} earned ${mission.Earnings.TotalEarnings.RoundTo2()} in total.";
+        string moneyBonusesText = $"{mission.Pilot.Name} earned ${mission.Earnings.BonusesEarnings.RoundTo2()} from bonuses.";
+        string moneyLicencesText = $"{mission.Pilot.Name} earned ${mission.Earnings.LicencesEarnings.RoundTo2()} from licences.";
+        string damageText = $"{mission.Pilot.Ship.Name} took {mission.ShipChanges.DamageTaken} damage to its {mission.ShipChanges.DamageType}.";
+        string fuelText = $"{mission.Pilot.Ship.Name} lost {mission.ShipChanges.FuelLost} fuel.";
+        string xpText = $"{mission.Pilot.Name} gained {mission.XpGains.TotalXpGain.RoundTo2()} xp in total.";
+        string xpBonusesText = $"{mission.Pilot.Name} gained {mission.XpGains.BonusesXpGain.RoundTo2()} xp from bonuses.";
+        string xpLicencesText = $"{mission.Pilot.Name} gained {mission.XpGains.LicencesXpGain.RoundTo2()} xp from licences.";
         string missionsCompletedText = $"{mission.Pilot.Name} has now completed {mission.MissionsCompletedByPilotAtTimeOfMission} missions.";
 
         builder.AppendLineWithBreaks(missionIdentifierText);
         builder.AppendLineWithBreaks(moneyText);
 
         // Show additional money sources if they exist 
-        if (mission.TotalMoneyIncreaseFromBonuses > 0)
+        if (mission.Earnings.BonusesEarnings > 0)
             builder.AppendLineWithBreaks(moneyBonusesText);
 
-        if (mission.TotalMoneyIncreaseFromLicences > 0)
+        if (mission.Earnings.LicencesEarnings > 0)
             builder.AppendLineWithBreaks(moneyLicencesText);
 
         builder.AppendLineWithBreaks(damageText);
@@ -52,8 +53,11 @@ public class NewDayReportCard : MonoBehaviour
         builder.AppendLineWithBreaks(xpText);
 
         // Show additional XP sources if they exist 
-        if (mission.TotalXpIncreaseFromBonuses > 0)
+        if (mission.XpGains.BonusesXpGain > 0)
             builder.AppendLineWithBreaks(xpBonusesText);
+
+        if (mission.XpGains.LicencesXpGain > 0)
+            builder.AppendLineWithBreaks(xpLicencesText);
 
         builder.AppendLineWithBreaks(missionsCompletedText);
 

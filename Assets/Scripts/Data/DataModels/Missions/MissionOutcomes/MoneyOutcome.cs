@@ -64,13 +64,6 @@ public class MoneyOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
         scheduled.MissionToArchive.Earnings.BaseEarnings += baseMoneyEarned;
         scheduled.MissionToArchive.Earnings.LicencesEarnings += moneyIncreaseFromLicences;
         scheduled.MissionToArchive.Earnings.BonusesEarnings += moneyIncreaseFromBonuses;
-
-        // Todo: Replace with nested object
-        scheduled.MissionToArchive.TotalMoneyIncreaseFromLicences += moneyIncreaseFromLicences;
-        scheduled.MissionToArchive.TotalMoneyIncreaseFromBonuses += moneyIncreaseFromBonuses;
-
-        scheduled.MissionToArchive.TotalAdditionalMoneyEarned += totalAdditionalMoneyEarned;
-        scheduled.MissionToArchive.TotalMoneyEarned += totalEarnings64;
     }
 
     public void LogOutcomeElements()
