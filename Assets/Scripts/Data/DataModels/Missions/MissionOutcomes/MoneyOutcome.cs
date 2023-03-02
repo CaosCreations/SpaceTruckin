@@ -65,11 +65,11 @@ public class MoneyOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
 
         if (isMissionModifierOutcome)
         {
-            scheduled.MissionToArchive.ArchivedModifierOutcome.ArchivedMissionOutcomeContainer.MoneyOutcomes.Add(archivedOutcome);
+            scheduled.MissionToArchive.ArchivedModifierOutcome.ArchivedMissionOutcomeContainer.ArchivedMoneyOutcomes.Add(archivedOutcome);
         }
         else
         {
-            scheduled.Mission.MissionToArchive.ArchivedOutcomeContainer.MoneyOutcomes.Add(archivedOutcome);
+            scheduled.Mission.MissionToArchive.ArchivedOutcomeContainer.ArchivedMoneyOutcomes.Add(archivedOutcome);
         }
     }
 
