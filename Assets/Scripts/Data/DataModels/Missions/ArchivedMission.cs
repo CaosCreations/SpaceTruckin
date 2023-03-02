@@ -8,27 +8,17 @@
 public class ArchivedMission
 {
     public Mission Mission;
+    public Pilot Pilot;
     public int CompletionNumber;
 
     // Outcome data
-    public ArchivedMissionOutcomeContainer ArchivedMissionOutcomeContainer = new();
-    public ArchivedMissionModifierOutcome ArchivedMissionModifierOutcome = new();
+    public ArchivedMissionOutcomeContainer ArchivedOutcomeContainer = new();
+    public ArchivedMissionModifierOutcome ArchivedModifierOutcome = new();
 
-    public MissionEarnings Earnings = new();
-    public MissionXpGains XpGains = new();
-    public MissionShipChanges ShipChanges = new();
-    public MissionModifierChanges MissionMoidifierChanges = new();
-
-    // Pilot
+    // Pilot data at the time the mission was completed, not the current time
     public ArchivedMissionPilotInfo ArchivedPilotInfo = new();
 
-    // Temp 
-    public Pilot Pilot;
-    public int PilotLevelAtTimeOfMission;
-    public int MissionsCompletedByPilotAtTimeOfMission;
-
     public Date CompletionDate;
-    public MissionModifierOutcome ModifierOutcome;
 
     /// <summary>Keeps track of whether the mission has been shown in the new day report.</summary>
     public bool HasBeenViewedInReport;
@@ -36,10 +26,8 @@ public class ArchivedMission
     public ArchivedMission(Mission mission, Pilot pilot, int completionNumber)
     {
         Mission = mission;
-        CompletionNumber = completionNumber;
-        ArchivedPilotInfo.Pilot = pilot;
         Pilot = pilot;
-        ShipChanges.FuelLost = mission.FuelCost;
+        CompletionNumber = completionNumber;
         CompletionDate = CalendarManager.Instance.CurrentDate;
     }
 

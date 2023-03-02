@@ -63,6 +63,53 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
         return Instance.ArchivedMissions.Where(x => x != null && x.Pilot == pilot);
     }
 
+    public static ArchivedMissionViewModel GetArchivedMissionViewModel(ArchivedMission archivedMission)
+    {
+        // Money 
+        long totalBaseMoneyEarned = default;
+        long totalEarnedFromLicences = default;
+        long totalEarnedFromBonuses = default;
+
+        foreach (var moneyOutcome in archivedMission.ArchivedOutcomeContainer.MoneyOutcomes)
+        {
+            totalBaseMoneyEarned += (long)moneyOutcome.TotalEarnings;
+            totalEarnedFromLicences += (long)moneyOutcome.LicencesEarnings;
+            totalEarnedFromBonuses += (long)moneyOutcome.BonusesEarnings;
+        }
+
+        var missionEarnings = new MissionEarnings(totalBaseMoneyEarned, totalEarnedFromLicences, totalEarnedFromBonuses);
+
+        // XP 
+        double totalBaseXpGained = default;
+        double totalLicencesXpGained = default;
+        double totalBonusesXpGained = default;
+
+        foreach (var xpOutcome in archivedMission.ArchivedOutcomeContainer.ArchivedPilotXpOutcomes)
+        {
+            totalBaseXpGained += xpOutcome.BaseXpGain;
+            totalLicencesXpGained += xpOutcome.LicencesXpGain;
+            totalBonusesXpGained += xpOutcome.BonusesXpGain;
+        }
+
+        var missionXpGains = new MissionXpGains(totalBaseXpGained, totalLicencesXpGained, totalBonusesXpGained);
+
+        // Damage 
+        int totalDamageTaken = default;
+        int totalDamageReduced = default;
+
+        foreach (var damageOutcome in archivedMission.ArchivedOutcomeContainer.ArchivedShipDamageOutcomes)
+        {
+            totalDamageTaken += damageOutcome.DamageTaken;
+            totalDamageReduced+= damageOutcome.DamageReduced;
+        }
+
+        var damageType = (ShipDamageType)archivedMission.ArchivedOutcomeContainer.ArchivedShipDamageOutcomes.FirstOrDefault()?.DamageType;
+        var shipChanges = new MissionShipChanges(totalDamageTaken, totalDamageReduced, archivedMission.Mission.FuelCost, damageType);
+
+        return new ArchivedMissionViewModel(
+            archivedMission.Mission, archivedMission.Pilot, archivedMission.ArchivedPilotInfo, missionEarnings, missionXpGains, shipChanges);
+    }
+
     #region Persistence
     public async void LoadDataAsync()
     {

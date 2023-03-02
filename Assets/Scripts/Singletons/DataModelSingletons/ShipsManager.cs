@@ -1,4 +1,5 @@
 ﻿using Events;
+using System.Linq;
 using UnityEngine;
 
 public class ShipsManager : MonoBehaviour, IDataModelManager
@@ -85,7 +86,8 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
 
             if (mostRecentMission != null)
             {
-                ShipUnderRepair.DamageType = mostRecentMission.ShipChanges.DamageType;
+                ShipUnderRepair.DamageType = (ShipDamageType)mostRecentMission.ArchivedOutcomeContainer.ArchivedShipDamageOutcomes
+                    .FirstOrDefault()?.DamageType;
             }
         }
     }

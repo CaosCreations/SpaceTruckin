@@ -65,17 +65,12 @@ public class MoneyOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
 
         if (isMissionModifierOutcome)
         {
-            scheduled.MissionToArchive.ArchivedMissionModifierOutcome.ArchivedMissionOutcomeContainer.ArchivedMoneyOutcomes.Add(archivedOutcome);
+            scheduled.MissionToArchive.ArchivedModifierOutcome.ArchivedMissionOutcomeContainer.MoneyOutcomes.Add(archivedOutcome);
         }
         else
         {
-            scheduled.Mission.MissionToArchive.ArchivedMissionOutcomeContainer.ArchivedMoneyOutcomes.Add(archivedOutcome);
+            scheduled.Mission.MissionToArchive.ArchivedOutcomeContainer.MoneyOutcomes.Add(archivedOutcome);
         }
-
-        // Temp 
-        scheduled.MissionToArchive.Earnings.BaseEarnings += baseMoneyEarned;
-        scheduled.MissionToArchive.Earnings.LicencesEarnings += moneyIncreaseFromLicences;
-        scheduled.MissionToArchive.Earnings.BonusesEarnings += moneyIncreaseFromBonuses;
     }
 
     public void LogOutcome()

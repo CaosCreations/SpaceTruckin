@@ -20,32 +20,33 @@ public class NewDayReportCard : MonoBehaviour
         {
             shipAvatar.sprite = mission.Pilot.Ship.Avatar;
 
-            detailsText.SetText(BuildReportDetails(mission));
+            ArchivedMissionViewModel viewModel = ArchivedMissionsManager.GetArchivedMissionViewModel(mission);
+            detailsText.SetText(BuildReportDetails(viewModel));
         }
     }
 
-    public string BuildReportDetails(ArchivedMission mission)
+    public string BuildReportDetails(ArchivedMissionViewModel viewModel)
     {
         StringBuilder builder = new();
-        string missionIdentifierText = $"{mission.Pilot.Name} of the {mission.Pilot.Ship.Name} completed the mission \"{mission.Mission.Name}\"!";
-        string moneyText = $"{mission.Pilot.Name} earned ${mission.Earnings.TotalEarnings.RoundTo2()} in total.";
-        string moneyBonusesText = $"{mission.Pilot.Name} earned ${mission.Earnings.BonusesEarnings.RoundTo2()} from bonuses.";
-        string moneyLicencesText = $"{mission.Pilot.Name} earned ${mission.Earnings.LicencesEarnings.RoundTo2()} from licences.";
-        string damageText = $"{mission.Pilot.Ship.Name} took {mission.ShipChanges.DamageTaken} damage to its {mission.ShipChanges.DamageType}.";
-        string fuelText = $"{mission.Pilot.Ship.Name} lost {mission.ShipChanges.FuelLost} fuel.";
-        string xpText = $"{mission.Pilot.Name} gained {mission.XpGains.TotalXpGain.RoundTo2()} xp in total.";
-        string xpBonusesText = $"{mission.Pilot.Name} gained {mission.XpGains.BonusesXpGain.RoundTo2()} xp from bonuses.";
-        string xpLicencesText = $"{mission.Pilot.Name} gained {mission.XpGains.LicencesXpGain.RoundTo2()} xp from licences.";
-        string missionsCompletedText = $"{mission.Pilot.Name} has now completed {mission.MissionsCompletedByPilotAtTimeOfMission} missions.";
+        string missionIdentifierText = $"{viewModel.Pilot.Name} of the {viewModel.Pilot.Ship.Name} completed the mission \"{viewModel.Mission.Name}\"!";
+        string moneyText = $"{viewModel.Pilot.Name} earned ${viewModel.Earnings.TotalEarnings.RoundTo2()} in total.";
+        string moneyBonusesText = $"{viewModel.Pilot.Name} earned ${viewModel.Earnings.BonusesEarnings.RoundTo2()} from bonuses.";
+        string moneyLicencesText = $"{viewModel.Pilot.Name} earned ${viewModel.Earnings.LicencesEarnings.RoundTo2()} from licences.";
+        string damageText = $"{viewModel.Pilot.Ship.Name} took {viewModel.ShipChanges.DamageTaken} damage to its {viewModel.ShipChanges.DamageType}.";
+        string fuelText = $"{viewModel.Pilot.Ship.Name} lost {viewModel.ShipChanges.FuelLost} fuel.";
+        string xpText = $"{viewModel.Pilot.Name} gained {viewModel.XpGains.TotalXpGain.RoundTo2()} xp in total.";
+        string xpBonusesText = $"{viewModel.Pilot.Name} gained {viewModel.XpGains.BonusesXpGain.RoundTo2()} xp from bonuses.";
+        string xpLicencesText = $"{viewModel.Pilot.Name} gained {viewModel.XpGains.LicencesXpGain.RoundTo2()} xp from licences.";
+        string missionsCompletedText = $"{viewModel.Pilot.Name} has now completed {viewModel.ArchivedPilotInfo.MissionsCompletedAtTimeOfMission} missions.";
 
         builder.AppendLineWithBreaks(missionIdentifierText);
         builder.AppendLineWithBreaks(moneyText);
 
         // Show additional money sources if they exist 
-        if (mission.Earnings.BonusesEarnings > 0)
+        if (viewModel.Earnings.BonusesEarnings > 0)
             builder.AppendLineWithBreaks(moneyBonusesText);
 
-        if (mission.Earnings.LicencesEarnings > 0)
+        if (viewModel.Earnings.LicencesEarnings > 0)
             builder.AppendLineWithBreaks(moneyLicencesText);
 
         builder.AppendLineWithBreaks(damageText);
@@ -53,18 +54,18 @@ public class NewDayReportCard : MonoBehaviour
         builder.AppendLineWithBreaks(xpText);
 
         // Show additional XP sources if they exist 
-        if (mission.XpGains.BonusesXpGain > 0)
+        if (viewModel.XpGains.BonusesXpGain > 0)
             builder.AppendLineWithBreaks(xpBonusesText);
 
-        if (mission.XpGains.LicencesXpGain > 0)
+        if (viewModel.XpGains.LicencesXpGain > 0)
             builder.AppendLineWithBreaks(xpLicencesText);
 
         builder.AppendLineWithBreaks(missionsCompletedText);
 
-        // Check if the pilot levelled up
-        if (mission.PilotLevelAtTimeOfMission < mission.Pilot.Level)
+        // Check if the pilot leveled up
+        if (viewModel.ArchivedPilotInfo.LevelAtTimeOfMission < viewModel.Pilot.Level)
         {
-            builder.AppendLineWithBreaks($"{mission.Pilot.Name} has levelled up! (now level {mission.Pilot.Level}).");
+            builder.AppendLineWithBreaks($"{viewModel.Pilot.Name} has leveled up! (now level {viewModel.Pilot.Level}).");
         }
 
         return builder.ToString();

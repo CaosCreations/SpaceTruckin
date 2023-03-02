@@ -45,17 +45,12 @@ public class ShipDamageOutcome : MissionOutcome, IOutcomeBreakdown
 
         if (isMissionModifierOutcome)
         {
-            scheduled.MissionToArchive.ArchivedMissionModifierOutcome.ArchivedMissionOutcomeContainer.ArchivedShipDamageOutcomes.Add(archivedOutcome);
+            scheduled.MissionToArchive.ArchivedModifierOutcome.ArchivedMissionOutcomeContainer.ArchivedShipDamageOutcomes.Add(archivedOutcome);
         }
         else
         {
-            scheduled.Mission.MissionToArchive.ArchivedMissionOutcomeContainer.ArchivedShipDamageOutcomes.Add(archivedOutcome);
+            scheduled.Mission.MissionToArchive.ArchivedOutcomeContainer.ArchivedShipDamageOutcomes.Add(archivedOutcome);
         }
-
-        // Temp
-        scheduled.MissionToArchive.ShipChanges.DamageTaken += damageTaken;
-        scheduled.MissionToArchive.ShipChanges.DamageReduced += damageReduced;
-        scheduled.MissionToArchive.ShipChanges.DamageType = DamageType;
     }
 
     public void LogOutcome()

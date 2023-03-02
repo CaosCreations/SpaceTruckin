@@ -22,7 +22,7 @@ public class MissionModifierOutcome : ScriptableObject
     public void Process(ScheduledMission scheduled)
     {
         // Archive the modifier outcome for displaying in the new day report
-        scheduled.Mission.MissionToArchive.ModifierOutcome = this;
+        scheduled.Mission.MissionToArchive.ArchivedModifierOutcome.ModifierOutcome = this;
 
         foreach (MissionOutcome outcome in Outcomes)
         {

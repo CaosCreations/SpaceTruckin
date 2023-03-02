@@ -18,8 +18,8 @@ public class PilotXpOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
     public override void Process(ScheduledMission scheduled, bool isMissionModifierOutcome = false)
     {
         // Store the pilot's level before the xp is awarded.
-        // Then we can check if they levelled up as a result of the Mission.
-        scheduled.MissionToArchive.PilotLevelAtTimeOfMission = scheduled.Pilot.Level;
+        // Then we can check if they leveled up as a result of the Mission.
+        scheduled.MissionToArchive.ArchivedPilotInfo.LevelAtTimeOfMission = scheduled.Pilot.Level;
 
         baseXpGained = Random.Range(xpMin, xpMax);
 
@@ -85,18 +85,14 @@ public class PilotXpOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
 
         if (isMissionModifierOutcome)
         {
-            scheduled.MissionToArchive.ArchivedMissionModifierOutcome.ArchivedMissionOutcomeContainer.ArchivedPilotXpOutcomes.Add(archivedOutcome);
+            scheduled.MissionToArchive.ArchivedModifierOutcome.ArchivedMissionOutcomeContainer.ArchivedPilotXpOutcomes.Add(archivedOutcome);
         }
         else
         {
-            scheduled.Mission.MissionToArchive.ArchivedMissionOutcomeContainer.ArchivedPilotXpOutcomes.Add(archivedOutcome);
+            scheduled.Mission.MissionToArchive.ArchivedOutcomeContainer.ArchivedPilotXpOutcomes.Add(archivedOutcome);
         }
 
-        // Temp
-        scheduled.MissionToArchive.XpGains.BaseXpGain += baseXpGained;
-        scheduled.MissionToArchive.XpGains.LicencesXpGain += xpIncreaseFromLicences;
-        scheduled.MissionToArchive.XpGains.BonusesXpGain += xpIncreaseFromBonuses;
-        scheduled.MissionToArchive.XpGains.TotalXpAfterMission += PilotsManager.AwardXp(scheduled.Pilot, totalXpGained);
+        scheduled.MissionToArchive.ArchivedPilotInfo.TotalXpAfterMission += PilotsManager.AwardXp(scheduled.Pilot, totalXpGained);
     }
 
     public void LogOutcome()
