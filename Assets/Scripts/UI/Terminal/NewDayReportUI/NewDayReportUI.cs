@@ -5,12 +5,11 @@ using UnityEngine.UI;
 
 public class NewDayReportUI : MonoBehaviour
 {
-    [SerializeField] private GameObject reportCardPrefab;
     [SerializeField] private GameObject reportCardInstance;
     [SerializeField] private NewDayReportCard reportCard;
+    [SerializeField] private MissionModifierReportCard missionModifierReportCard;
     [SerializeField] private Text welcomeMessageText;
 
-    private Button nextCardButton;
     private int currentReportIndex;
 
     private TerminalUIManager terminalManager;
@@ -29,12 +28,11 @@ public class NewDayReportUI : MonoBehaviour
         CalendarManager.OnEndOfDay += () => HasBeenViewedToday = false;
 
         terminalManager = GetComponentInParent<TerminalUIManager>();
-        nextCardButton = GetComponentInChildren<Button>(includeInactive: true);
     }
 
     private void Start()
     {
-        SingletonManager.EventService.Add<OnModifierReportCardOpenedEvent>(UpdateNextButtonListener);
+        SingletonManager.EventService.Add<OnModifierReportCardOpenedEvent>(OnModifierReportCardOpenedHandler);
     }
 
     private void OnEnable()
@@ -56,9 +54,9 @@ public class NewDayReportUI : MonoBehaviour
     {
         reportCardInstance.SetActive(true);
         currentReportIndex = 0;
-        reportCard.nextCardButton.SetText(UIConstants.NextCardText);
-        nextCardButton.AddOnClick(ShowNextReport);
-        nextCardButton.onClick.Invoke();
+        reportCard.NextCardButton.SetText(UIConstants.NextCardText);
+        reportCard.NextCardButton.AddOnClick(ShowNextReport);
+        reportCard.NextCardButton.onClick.Invoke();
 
         // Insert Player Data in the welcome message, e.g. their name 
         welcomeMessageText.ReplaceTemplates();
@@ -79,7 +77,7 @@ public class NewDayReportUI : MonoBehaviour
     {
         if (!CurrentMissionToReport.HasBeenViewedInReport)
         {
-            reportCard.nextCardButton.AddOnClick(ShowNextReport);
+            reportCard.NextCardButton.AddOnClick(ShowNextReport);
             return;
         }
 
@@ -89,7 +87,7 @@ public class NewDayReportUI : MonoBehaviour
         }
         else
         {
-            reportCard.nextCardButton.AddOnClick(CloseReport).SetText(UIConstants.CloseCardCycleText);
+            reportCard.NextCardButton.AddOnClick(CloseReport).SetText(UIConstants.CloseCardCycleText);
         }
     }
 

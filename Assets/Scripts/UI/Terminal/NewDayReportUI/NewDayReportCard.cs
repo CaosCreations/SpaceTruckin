@@ -7,9 +7,9 @@ using UnityEngine.UI;
 /// </summary>
 public class NewDayReportCard : MonoBehaviour
 {
-    public Image shipAvatar;
-    public Text detailsText;
-    public Button nextCardButton;
+    public Image ShipAvatar;
+    public Text DetailsText;
+    public Button NextCardButton;
 
     [SerializeField]
     private MissionModifierReportCard modifierReportCard;
@@ -25,15 +25,15 @@ public class NewDayReportCard : MonoBehaviour
             return;
         }
 
-        shipAvatar.sprite = archivedMission.Pilot.Ship.Avatar;
+        ShipAvatar.sprite = archivedMission.Pilot.Ship.Avatar;
 
         ArchivedMissionViewModel viewModel = ArchivedMissionsManager.GetArchivedMissionViewModel(archivedMission);
-        detailsText.SetText(BuildReportDetails(viewModel));
+        DetailsText.SetText(BuildReportDetails(viewModel));
 
         if (archivedMission.Mission.HasModifier)
         {
             Debug.Log($"{archivedMission.Mission} has modifier. Will show modifier report details next..");
-            nextCardButton.AddOnClick(() => modifierReportCard.ShowReport(archivedMission));
+            NextCardButton.AddOnClick(() => ShowMissionModifierReport(archivedMission));
         }
     }
 
@@ -93,5 +93,11 @@ public class NewDayReportCard : MonoBehaviour
             builder.AppendLineWithBreaks(xpLicencesText);
 
         return builder.ToString();
+    }
+
+    private void ShowMissionModifierReport(ArchivedMission archivedMission)
+    {
+        modifierReportCard.gameObject.SetActive(true);
+        modifierReportCard.ShowReport(archivedMission);
     }
 }
