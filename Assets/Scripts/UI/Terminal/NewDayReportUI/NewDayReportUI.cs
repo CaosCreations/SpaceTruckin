@@ -32,7 +32,7 @@ public class NewDayReportUI : MonoBehaviour
 
     private void Start()
     {
-        SingletonManager.EventService.Add<OnModifierReportCardOpenedEvent>(OnModifierReportCardOpenedHandler);
+        //SingletonManager.EventService.Add<OnModifierReportCardOpenedEvent>(OnModifierReportCardOpenedHandler);
     }
 
     private void OnEnable()
@@ -55,8 +55,8 @@ public class NewDayReportUI : MonoBehaviour
         reportCardInstance.SetActive(true);
         currentReportIndex = 0;
         reportCard.NextCardButton.SetText(UIConstants.NextCardText);
-        reportCard.NextCardButton.AddOnClick(ShowNextReport);
-        reportCard.NextCardButton.onClick.Invoke();
+        UpdateNextCardButtonListener();
+        ShowNextReport();
 
         // Insert Player Data in the welcome message, e.g. their name 
         welcomeMessageText.ReplaceTemplates();
@@ -66,21 +66,27 @@ public class NewDayReportUI : MonoBehaviour
     {
         if (CurrentMissionToReport != null)
         {
+            reportCard.gameObject.SetActive(true);
             reportCard.ShowReport(CurrentMissionToReport);
-
             CurrentMissionToReport.HasBeenViewedInReport = true;
-            UpdateNextButtonListener();
+            
+            if (!CurrentMissionToReport.Mission.HasModifier || CurrentMissionToReport.ArchivedModifierOutcome.HasBeenViewedInReport)
+            {
+                UpdateNextCardButtonListener();
+            }            
         }
     }
 
-    private void UpdateNextButtonListener()
+    private void UpdateNextCardButtonListener()
     {
-        if (!CurrentMissionToReport.HasBeenViewedInReport)
+        if (!CurrentMissionToReport.HasBeenViewedInReport 
+            || (CurrentMissionToReport.Mission.HasModifier && !CurrentMissionToReport.ArchivedModifierOutcome.HasBeenViewedInReport))
         {
             reportCard.NextCardButton.AddOnClick(ShowNextReport);
             return;
         }
 
+        // Cycle through to the next report card or add a CloseReport listener if we've reached the end
         if (currentReportIndex < MissionsToAppearInReport.Count - 1)
         {
             currentReportIndex++;
@@ -91,9 +97,9 @@ public class NewDayReportUI : MonoBehaviour
         }
     }
 
-    private void OnModifierReportCardOpenedHandler(OnModifierReportCardOpenedEvent evt)
+    private void OnModifierReportCardOpenedHandler(/*OnModifierReportCardOpenedEvent evt*/)
     {
-        UpdateNextButtonListener();
+        UpdateNextCardButtonListener();
     }
 
     private void CloseReport()

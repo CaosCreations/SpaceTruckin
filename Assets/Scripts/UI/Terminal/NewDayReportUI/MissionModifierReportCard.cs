@@ -1,13 +1,15 @@
 ﻿using Events;
 using System.Text;
+using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
 public class MissionModifierReportCard : NewDayReportCard
 {
+    private ArchivedMission currentArchivedMission;
+
     private void Start()
     {
         NextCardButton.AddOnClick(CloseReport);
-        CloseReport();
     }
 
     public override void ShowReport(ArchivedMission archivedMission)
@@ -20,11 +22,13 @@ public class MissionModifierReportCard : NewDayReportCard
             return;
         }
 
+        currentArchivedMission = archivedMission;
+
         // Get modifier outcome data 
-        var viewModel = new ArchivedMissionModifierViewModel(archivedMission.ArchivedModifierOutcome);
+        var viewModel = new ArchivedMissionModifierViewModel(currentArchivedMission.ArchivedModifierOutcome);
 
         // Set text based on the mission modifier outcome that occurred and its sub-outcomes 
-        DetailsText.SetText(BuildModifierDetails(viewModel, archivedMission.Pilot));
+        DetailsText.SetText(BuildModifierDetails(viewModel, currentArchivedMission.Pilot));
 
         SingletonManager.EventService.Dispatch<OnModifierReportCardOpenedEvent>();
     }
@@ -42,6 +46,7 @@ public class MissionModifierReportCard : NewDayReportCard
 
     private void CloseReport()
     {
+        currentArchivedMission.HasBeenViewedInReport = true;
         gameObject.SetActive(false);
     }
 }

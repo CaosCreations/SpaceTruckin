@@ -99,5 +99,6 @@ public class NewDayReportCard : MonoBehaviour
     {
         modifierReportCard.gameObject.SetActive(true);
         modifierReportCard.ShowReport(archivedMission);
+        gameObject.SetActive(false);
     }
 }
