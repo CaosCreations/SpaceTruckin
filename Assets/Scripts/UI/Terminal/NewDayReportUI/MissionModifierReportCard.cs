@@ -1,23 +1,26 @@
-﻿using System.Text;
+﻿using Events;
+using System.Text;
 using UnityEngine;
 
-public class MissionModifierCard : NewDayReportCard
+public class MissionModifierReportCard : NewDayReportCard
 {
-    public override void ShowReport(ArchivedMission mission)
+    public override void ShowReport(ArchivedMission archivedMission)
     {
-        if (mission == null
-            || mission.Pilot == null
-            || mission.Pilot.Ship == null)
+        if (archivedMission == null
+            || archivedMission.Pilot == null
+            || archivedMission.Pilot.Ship == null)
         {
             Debug.LogError("Invalid arguments passed to ShowReport method");
             return;
         }
 
         // Get modifier outcome data 
-        var viewModel = new ArchivedMissionModifierViewModel(mission.ArchivedModifierOutcome);
+        var viewModel = new ArchivedMissionModifierViewModel(archivedMission.ArchivedModifierOutcome);
 
         // Set text based on the mission modifier outcome that occurred and its sub-outcomes 
-        detailsText.SetText(BuildModifierDetails(viewModel, mission.Pilot));
+        detailsText.SetText(BuildModifierDetails(viewModel, archivedMission.Pilot));
+
+        SingletonManager.EventService.Dispatch<OnModifierReportCardOpenedEvent>();
     }
 
     private string BuildModifierDetails(ArchivedMissionModifierViewModel viewModel, Pilot pilot)

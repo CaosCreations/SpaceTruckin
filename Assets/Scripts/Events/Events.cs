@@ -144,6 +144,10 @@ namespace Events
         }
     }
 
+    public class OnModifierReportCardOpenedEvent : IEvent
+    {
+    }
+
     public class OnEventWithParameters : IEvent
     {
         public string Parameter { get; set; }

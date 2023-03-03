@@ -146,4 +146,9 @@ public partial class Mission : ScriptableObject, IDataModel
             }
         }
     }
+
+    public override string ToString()
+    {
+        return $"Mission with name '{Name}'";
+    }
 }

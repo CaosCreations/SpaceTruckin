@@ -11,21 +11,30 @@ public class NewDayReportCard : MonoBehaviour
     public Text detailsText;
     public Button nextCardButton;
 
-    public virtual void ShowReport(ArchivedMission mission)
+    [SerializeField]
+    private MissionModifierReportCard modifierReportCard;
+
+    public virtual void ShowReport(ArchivedMission archivedMission)
     {
-        if (mission == null
-            || mission.Pilot == null
-            || mission.Pilot.Ship == null
-            || mission.Pilot.Avatar == null)
+        if (archivedMission == null
+            || archivedMission.Pilot == null
+            || archivedMission.Pilot.Ship == null
+            || archivedMission.Pilot.Avatar == null)
         {
             Debug.LogError("Invalid arguments passed to ShowReport method");
             return;
         }
 
-        shipAvatar.sprite = mission.Pilot.Ship.Avatar;
+        shipAvatar.sprite = archivedMission.Pilot.Ship.Avatar;
 
-        ArchivedMissionViewModel viewModel = ArchivedMissionsManager.GetArchivedMissionViewModel(mission);
+        ArchivedMissionViewModel viewModel = ArchivedMissionsManager.GetArchivedMissionViewModel(archivedMission);
         detailsText.SetText(BuildReportDetails(viewModel));
+
+        if (archivedMission.Mission.HasModifier)
+        {
+            Debug.Log($"{archivedMission.Mission} has modifier. Will show modifier report details next..");
+            nextCardButton.AddOnClick(() => modifierReportCard.ShowReport(archivedMission));
+        }
     }
 
     private string BuildReportDetails(ArchivedMissionViewModel viewModel)

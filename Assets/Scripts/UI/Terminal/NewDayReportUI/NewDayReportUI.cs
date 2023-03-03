@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Events;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,6 +30,11 @@ public class NewDayReportUI : MonoBehaviour
 
         terminalManager = GetComponentInParent<TerminalUIManager>();
         nextCardButton = GetComponentInChildren<Button>(includeInactive: true);
+    }
+
+    private void Start()
+    {
+        SingletonManager.EventService.Add<OnModifierReportCardOpenedEvent>(UpdateNextButtonListener);
     }
 
     private void OnEnable()
@@ -65,16 +71,31 @@ public class NewDayReportUI : MonoBehaviour
             reportCard.ShowReport(CurrentMissionToReport);
 
             CurrentMissionToReport.HasBeenViewedInReport = true;
-
-            if (currentReportIndex < MissionsToAppearInReport.Count - 1)
-            {
-                currentReportIndex++;
-            }
-            else
-            {
-                reportCard.nextCardButton.AddOnClick(CloseReport).SetText(UIConstants.CloseCardCycleText);
-            }
+            UpdateNextButtonListener();
         }
+    }
+
+    private void UpdateNextButtonListener()
+    {
+        if (!CurrentMissionToReport.HasBeenViewedInReport)
+        {
+            reportCard.nextCardButton.AddOnClick(ShowNextReport);
+            return;
+        }
+
+        if (currentReportIndex < MissionsToAppearInReport.Count - 1)
+        {
+            currentReportIndex++;
+        }
+        else
+        {
+            reportCard.nextCardButton.AddOnClick(CloseReport).SetText(UIConstants.CloseCardCycleText);
+        }
+    }
+
+    private void OnModifierReportCardOpenedHandler(OnModifierReportCardOpenedEvent evt)
+    {
+        UpdateNextButtonListener();
     }
 
     private void CloseReport()
