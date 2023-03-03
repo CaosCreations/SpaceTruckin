@@ -11,42 +11,65 @@ public class NewDayReportCard : MonoBehaviour
     public Text detailsText;
     public Button nextCardButton;
 
-    public void ShowReport(ArchivedMission mission)
+    public virtual void ShowReport(ArchivedMission mission)
     {
-        if (mission != null
-            && mission.Pilot != null
-            && mission.Pilot.Ship != null
-            && mission.Pilot.Avatar != null)
+        if (mission == null
+            || mission.Pilot == null
+            || mission.Pilot.Ship == null
+            || mission.Pilot.Avatar == null)
         {
-            shipAvatar.sprite = mission.Pilot.Ship.Avatar;
-
-            ArchivedMissionViewModel viewModel = ArchivedMissionsManager.GetArchivedMissionViewModel(mission);
-            detailsText.SetText(BuildReportDetails(viewModel));
+            Debug.LogError("Invalid arguments passed to ShowReport method");
+            return;
         }
+
+        shipAvatar.sprite = mission.Pilot.Ship.Avatar;
+
+        ArchivedMissionViewModel viewModel = ArchivedMissionsManager.GetArchivedMissionViewModel(mission);
+        detailsText.SetText(BuildReportDetails(viewModel));
     }
 
-    public string BuildReportDetails(ArchivedMissionViewModel viewModel)
+    private string BuildReportDetails(ArchivedMissionViewModel viewModel)
     {
         StringBuilder builder = new();
-        string missionIdentifierText = $"{viewModel.Pilot.Name} of the {viewModel.Pilot.Ship.Name} completed the mission \"{viewModel.Mission.Name}\"!";
-        string moneyText = $"{viewModel.Pilot.Name} earned ${viewModel.Earnings.TotalEarnings.RoundTo2()} in total.";
-        string moneyBonusesText = $"{viewModel.Pilot.Name} earned ${viewModel.Earnings.BonusesEarnings.RoundTo2()} from bonuses.";
-        string moneyLicencesText = $"{viewModel.Pilot.Name} earned ${viewModel.Earnings.LicencesEarnings.RoundTo2()} from licences.";
-        string damageText = $"{viewModel.Pilot.Ship.Name} took {viewModel.ShipChanges.DamageTaken} damage to its {viewModel.ShipChanges.DamageType}.";
-        string fuelText = $"{viewModel.Pilot.Ship.Name} lost {viewModel.ShipChanges.FuelLost} fuel.";
-        string xpText = $"{viewModel.Pilot.Name} gained {viewModel.XpGains.TotalXpGain.RoundTo2()} xp in total.";
-        string xpBonusesText = $"{viewModel.Pilot.Name} gained {viewModel.XpGains.BonusesXpGain.RoundTo2()} xp from bonuses.";
-        string xpLicencesText = $"{viewModel.Pilot.Name} gained {viewModel.XpGains.LicencesXpGain.RoundTo2()} xp from licences.";
-        string missionsCompletedText = $"{viewModel.Pilot.Name} has now completed {viewModel.ArchivedPilotInfo.MissionsCompletedAtTimeOfMission} missions.";
+        builder.AppendLineWithBreaks($"{viewModel.Pilot.Name} of the {viewModel.Pilot.Ship.Name} completed the mission \"{viewModel.Mission.Name}\"!");
 
-        builder.AppendLineWithBreaks(missionIdentifierText);
+        string outcomeDetails = BuildOutcomeDetails(viewModel.Pilot, viewModel.Earnings, viewModel.XpGains, viewModel.ShipChanges);
+        builder.AppendLineWithBreaks(outcomeDetails);
+
+        builder.AppendLineWithBreaks($"{viewModel.Pilot.Name} has now completed {viewModel.ArchivedPilotInfo.MissionsCompletedAtTimeOfMission} missions.");
+
+        // Check if the pilot leveled up
+        if (viewModel.ArchivedPilotInfo.LevelAtTimeOfMission < viewModel.Pilot.Level)
+        {
+            builder.AppendLineWithBreaks($"{viewModel.Pilot.Name} has leveled up! (now level {viewModel.Pilot.Level}).");
+        }
+
+        return builder.ToString();
+    }
+
+    protected string BuildOutcomeDetails(
+        Pilot pilot,
+        MissionEarnings earnings,
+        MissionXpGains xpGains,
+        MissionShipChanges shipChanges)
+    {
+        StringBuilder builder = new();
+        string moneyText = $"{pilot.Name} earned ${earnings.TotalEarnings.RoundTo2()} in total.";
+        string moneyBonusesText = $"{pilot.Name} earned ${earnings.BonusesEarnings.RoundTo2()} from bonuses.";
+        string moneyLicencesText = $"{pilot.Name} earned ${earnings.LicencesEarnings.RoundTo2()} from licences.";
+        string damageText = $"{pilot.Ship.Name} took {shipChanges.DamageTaken} damage to its {shipChanges.DamageType}.";
+        string fuelText = $"{pilot.Ship.Name} lost {shipChanges.FuelLost} fuel.";
+        string xpText = $"{pilot.Name} gained {xpGains.TotalXpGain.RoundTo2()} xp in total.";
+        string xpBonusesText = $"{pilot.Name} gained {xpGains.BonusesXpGain.RoundTo2()} xp from bonuses.";
+        string xpLicencesText = $"{pilot.Name} gained {xpGains.LicencesXpGain.RoundTo2()} xp from licences.";
+
         builder.AppendLineWithBreaks(moneyText);
 
         // Show additional money sources if they exist 
-        if (viewModel.Earnings.BonusesEarnings > 0)
+        if (earnings.BonusesEarnings > 0)
             builder.AppendLineWithBreaks(moneyBonusesText);
 
-        if (viewModel.Earnings.LicencesEarnings > 0)
+        if (earnings.LicencesEarnings > 0)
             builder.AppendLineWithBreaks(moneyLicencesText);
 
         builder.AppendLineWithBreaks(damageText);
@@ -54,19 +77,11 @@ public class NewDayReportCard : MonoBehaviour
         builder.AppendLineWithBreaks(xpText);
 
         // Show additional XP sources if they exist 
-        if (viewModel.XpGains.BonusesXpGain > 0)
+        if (xpGains.BonusesXpGain > 0)
             builder.AppendLineWithBreaks(xpBonusesText);
 
-        if (viewModel.XpGains.LicencesXpGain > 0)
+        if (xpGains.LicencesXpGain > 0)
             builder.AppendLineWithBreaks(xpLicencesText);
-
-        builder.AppendLineWithBreaks(missionsCompletedText);
-
-        // Check if the pilot leveled up
-        if (viewModel.ArchivedPilotInfo.LevelAtTimeOfMission < viewModel.Pilot.Level)
-        {
-            builder.AppendLineWithBreaks($"{viewModel.Pilot.Name} has leveled up! (now level {viewModel.Pilot.Level}).");
-        }
 
         return builder.ToString();
     }

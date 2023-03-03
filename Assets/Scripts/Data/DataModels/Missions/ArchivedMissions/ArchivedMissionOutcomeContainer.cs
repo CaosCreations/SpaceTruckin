@@ -43,6 +43,7 @@ public class ArchivedMissionOutcomeContainer
         return missionXpGains;
     }
 
+    // Todo: Make fuel cost into its own Outcome
     public MissionShipChanges GetAggregateShipChanges(int fuelLost)
     {
         int totalDamageTaken = default;

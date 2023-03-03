@@ -26,6 +26,7 @@ public class ArchivedMission
     public ArchivedMission(Mission mission, Pilot pilot, int completionNumber)
     {
         Mission = mission;
+        ArchivedModifierOutcome.Modifier = mission.Modifier;
         Pilot = pilot;
         CompletionNumber = completionNumber;
         CompletionDate = CalendarManager.Instance.CurrentDate;
