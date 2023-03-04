@@ -63,6 +63,16 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
         return Instance.ArchivedMissions.Where(x => x != null && x.Pilot == pilot);
     }
 
+    public static ArchivedMissionViewModel GetArchivedMissionViewModel(ArchivedMission archivedMission)
+    {
+        var earnings = archivedMission.ArchivedOutcomeContainer.GetAggregateEarnings();
+        var xpGains = archivedMission.ArchivedOutcomeContainer.GetAggregateXpGains();
+        var shipChanges = archivedMission.ArchivedOutcomeContainer.GetAggregateShipChanges(archivedMission.Mission.FuelCost);
+
+        return new ArchivedMissionViewModel(
+            archivedMission.Mission, archivedMission.Pilot, archivedMission.ArchivedPilotInfo, earnings, xpGains, shipChanges);
+    }
+
     #region Persistence
     public async void LoadDataAsync()
     {

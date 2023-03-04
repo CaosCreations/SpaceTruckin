@@ -1387,9 +1387,6 @@ MonoBehaviour:
   mainMenuCanvas: {fileID: 2137315464748590196}
   pauseMenuCanvas: {fileID: 5763554009720977247}
   universalCanvas: {fileID: 95966721}
-  dialogueSystemController: {fileID: 0}
-  dialogueUIContainer: {fileID: 11400000, guid: cee4a43c81b590b4ea8030a04b92bc17,
-    type: 2}
 --- !u!114 &377607164264223043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2106,6 +2103,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UniversalCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 1249728674789491612, guid: a5f4f8397a9fa4544b3dc8cc045edad1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1249728675014389580, guid: a5f4f8397a9fa4544b3dc8cc045edad1,
         type: 3}

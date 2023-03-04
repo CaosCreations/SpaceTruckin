@@ -1,42 +1,38 @@
 ﻿using System;
+
 /// <summary>
 /// This class holds data about past missions.
-/// The fields of this class will be set 
-/// during the processing of the mission outcomes.
+/// The fields of this class can be set during the processing of the mission outcomes.
 /// </summary>
 [Serializable]
 public class ArchivedMission
 {
-    public string MissionName;
-    public int CompletionNumber, TotalDamageTaken, TotalDamageReduced, TotalFuelLost;
-    public ShipDamageType DamageType;
+    public Mission Mission { get; }
+    public Pilot Pilot { get; }
+    public int CompletionNumber { get; }
 
-    // Money
-    public long TotalMoneyEarned, TotalAdditionalMoneyEarned;
-    public double TotalMoneyIncreaseFromLicences, TotalMoneyIncreaseFromBonuses;
+    // Outcome data
+    public ArchivedMissionOutcomeContainer ArchivedOutcomeContainer { get; set; } = new();
+    public ArchivedMissionModifierOutcome ArchivedModifierOutcome { get; set; } = new();
 
-    // XP 
-    public double TotalPilotXpGained, TotalXpIncreaseFromLicences, TotalXpIncreaseFromBonuses,
-        TotalAdditionalXpGained,
-        TotalXpAfterMission;
+    /// <summary>
+    /// Pilot data at the time the mission was completed, not the current time.
+    /// </summary>
+    public ArchivedMissionPilotInfo ArchivedPilotInfo { get; set; } = new();
 
-    // Pilot
-    public Pilot Pilot;
-    public int PilotLevelAtTimeOfMission;
-    public int MissionsCompletedByPilotAtTimeOfMission;
+    public Date CompletionDate { get; }
 
-    public Date CompletionDate;
-    public MissionModifierOutcome ModifierOutcome;
-
-    /// <summary>Keeps track of whether the mission has been shown in the new day report.</summary>
-    public bool HasBeenViewedInReport;
+    /// <summary>
+    /// Keeps track of whether the mission has been shown in the new day report.
+    /// </summary>
+    public bool HasBeenViewedInReport { get; set; }
 
     public ArchivedMission(Mission mission, Pilot pilot, int completionNumber)
     {
-        MissionName = mission.Name;
-        CompletionNumber = completionNumber;
+        Mission = mission;
+        ArchivedModifierOutcome.Modifier = mission.Modifier;
         Pilot = pilot;
-        TotalFuelLost = mission.FuelCost;
+        CompletionNumber = completionNumber;
         CompletionDate = CalendarManager.Instance.CurrentDate;
     }
 

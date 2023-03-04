@@ -39,6 +39,9 @@ public class HangarEditor : MonoBehaviour
 
             Ship ship = DockShipAtAvailableNode(out int hangarNode);
 
+            // Prepare ship for launch
+            ShipsEditor.MaxOutResources();
+
             Mission mission = MissionsManager.Instance.Missions
                 .FirstOrDefault(x => MissionsManager.GetScheduledMission(x) == null);
 

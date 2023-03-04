@@ -36,7 +36,7 @@ public class StefanoDialogueUI : SMSDialogueUI
         go.transform.SetParent(messagePanel.transform, false);
         var panel = go.GetComponent<StandardUISubtitlePanel>();
 
-        // Set panel children image colours
+        // Set panel child image colours
         foreach (Transform item in panel.gameObject.transform)
         {
             if (item.TryGetComponent<Image>(out var image))

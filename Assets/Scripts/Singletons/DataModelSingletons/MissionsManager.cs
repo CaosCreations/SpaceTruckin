@@ -112,7 +112,8 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
         // Todo: Don't increment if mission failed?* 
         scheduled.Pilot.MissionsCompleted++;
-        scheduled.MissionToArchive.MissionsCompletedByPilotAtTimeOfMission = scheduled.Pilot.MissionsCompleted;
+
+        scheduled.MissionToArchive.ArchivedPilotInfo.MissionsCompletedAtTimeOfMission = scheduled.Pilot.MissionsCompleted;
 
         // Add the object to the archive once all outcomes have been processed. 
         ArchivedMissionsManager.AddToArchive(scheduled.Mission.MissionToArchive);
