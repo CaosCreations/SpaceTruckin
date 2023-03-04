@@ -1,5 +1,6 @@
 ﻿using Events;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,7 +33,7 @@ public class NewDayReportUI : MonoBehaviour
 
     private void Start()
     {
-        //SingletonManager.EventService.Add<OnModifierReportCardOpenedEvent>(OnModifierReportCardOpenedHandler);
+        SingletonManager.EventService.Add<OnModifierReportCardClosedEvent>(OnModifierReportCardClosedHandler);
     }
 
     private void OnEnable()
@@ -69,17 +70,17 @@ public class NewDayReportUI : MonoBehaviour
             reportCard.gameObject.SetActive(true);
             reportCard.ShowReport(CurrentMissionToReport);
             CurrentMissionToReport.HasBeenViewedInReport = true;
-            
+
             if (!CurrentMissionToReport.Mission.HasModifier || CurrentMissionToReport.ArchivedModifierOutcome.HasBeenViewedInReport)
             {
                 UpdateNextCardButtonListener();
-            }            
+            }
         }
     }
 
     private void UpdateNextCardButtonListener()
     {
-        if (!CurrentMissionToReport.HasBeenViewedInReport 
+        if (!CurrentMissionToReport.HasBeenViewedInReport
             || (CurrentMissionToReport.Mission.HasModifier && !CurrentMissionToReport.ArchivedModifierOutcome.HasBeenViewedInReport))
         {
             reportCard.NextCardButton.AddOnClick(ShowNextReport);
@@ -97,17 +98,23 @@ public class NewDayReportUI : MonoBehaviour
         }
     }
 
-    private void OnModifierReportCardOpenedHandler(/*OnModifierReportCardOpenedEvent evt*/)
+    private void OnModifierReportCardClosedHandler()
     {
-        UpdateNextCardButtonListener();
+        if (MissionsToAppearInReport.All(m => m.HasBeenViewedInReport))
+        {
+            terminalManager.SwitchPanel(TerminalUIManager.Tab.Missions);
+        }
+        else
+        {
+            ShowNextReport();
+        }
     }
 
     private void CloseReport()
     {
         reportCardInstance.SetActive(false);
         gameObject.SetActive(false);
-        terminalManager.MissionsPanel.SetActive(true);
-        terminalManager.MissionsButton.SetColour(terminalManager.MissionsPanel.GetImageColour());
+        terminalManager.SwitchPanel(TerminalUIManager.Tab.Missions);
 
         // Allow the exit key to be used as normal now that the report has finished.
         UIManager.RemoveOverriddenKey(PlayerConstants.ExitKey);

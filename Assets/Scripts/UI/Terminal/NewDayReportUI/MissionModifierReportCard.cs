@@ -1,6 +1,5 @@
 ﻿using Events;
 using System.Text;
-using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
 public class MissionModifierReportCard : NewDayReportCard
@@ -46,7 +45,8 @@ public class MissionModifierReportCard : NewDayReportCard
 
     private void CloseReport()
     {
-        currentArchivedMission.HasBeenViewedInReport = true;
+        currentArchivedMission.ArchivedModifierOutcome.HasBeenViewedInReport = true;
+        SingletonManager.EventService.Dispatch<OnModifierReportCardClosedEvent>();
         gameObject.SetActive(false);
     }
 }
