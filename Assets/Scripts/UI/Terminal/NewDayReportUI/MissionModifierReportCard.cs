@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MissionModifierReportCard : NewDayReportCard
 {
-    private ArchivedMission currentArchivedMission;
+    private ArchivedMission archivedMission;
 
     private void Start()
     {
@@ -21,13 +21,13 @@ public class MissionModifierReportCard : NewDayReportCard
             return;
         }
 
-        currentArchivedMission = archivedMission;
+        this.archivedMission = archivedMission;
 
         // Get modifier outcome data 
-        var viewModel = new ArchivedMissionModifierViewModel(currentArchivedMission.ArchivedModifierOutcome);
+        var viewModel = new ArchivedMissionModifierViewModel(this.archivedMission.ArchivedModifierOutcome);
 
         // Set text based on the mission modifier outcome that occurred and its sub-outcomes 
-        DetailsText.SetText(BuildModifierDetails(viewModel, currentArchivedMission.Pilot));
+        DetailsText.SetText(BuildModifierDetails(viewModel, this.archivedMission.Pilot));
 
         SingletonManager.EventService.Dispatch<OnModifierReportCardOpenedEvent>();
     }
@@ -37,6 +37,7 @@ public class MissionModifierReportCard : NewDayReportCard
         StringBuilder builder = new();
         builder.AppendLineWithBreaks(viewModel.Modifier.FlavourText);
         builder.AppendLineWithBreaks(viewModel.ModifierOutcome.FlavourText, 1);
+        builder.AppendLineWithBreaks($"{pilot.Name}'s {viewModel.Modifier.DependentAttribute} attribute is {pilot.GetAttributeLevelByType(viewModel.Modifier.DependentAttribute)}, which caused this outcome.");
 
         var outcomeDetails = BuildOutcomeDetails(pilot, viewModel.Earnings, viewModel.XpGains, viewModel.ShipChanges);
         builder.AppendLineWithBreaks(outcomeDetails);
@@ -45,7 +46,7 @@ public class MissionModifierReportCard : NewDayReportCard
 
     private void CloseReport()
     {
-        currentArchivedMission.ArchivedModifierOutcome.HasBeenViewedInReport = true;
+        archivedMission.ArchivedModifierOutcome.HasBeenViewedInReport = true;
         SingletonManager.EventService.Dispatch<OnModifierReportCardClosedEvent>();
         gameObject.SetActive(false);
     }

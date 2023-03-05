@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class NewDayReportUI : MonoBehaviour
 {
-    [SerializeField] private GameObject reportCardInstance;
     [SerializeField] private NewDayReportCard reportCard;
     [SerializeField] private MissionModifierReportCard missionModifierReportCard;
     [SerializeField] private Text welcomeMessageText;
@@ -53,7 +52,7 @@ public class NewDayReportUI : MonoBehaviour
 
     public void Init()
     {
-        reportCardInstance.SetActive(true);
+        reportCard.gameObject.SetActive(true);
         currentReportIndex = 0;
         reportCard.NextCardButton.SetText(UIConstants.NextCardText);
         UpdateNextCardButtonListener();
@@ -112,7 +111,7 @@ public class NewDayReportUI : MonoBehaviour
 
     private void CloseReport()
     {
-        reportCardInstance.SetActive(false);
+        reportCard.gameObject.SetActive(false);
         gameObject.SetActive(false);
         terminalManager.SwitchPanel(TerminalUIManager.Tab.Missions);
 
@@ -122,9 +121,9 @@ public class NewDayReportUI : MonoBehaviour
 
     private void Update()
     {
-        if (reportCardInstance != null && Input.GetKeyDown(PlayerConstants.ExitKey))
+        if (reportCard != null && reportCard.gameObject != null && Input.GetKeyDown(PlayerConstants.ExitKey))
         {
             CloseReport();
         }
     }
-}
+} 
