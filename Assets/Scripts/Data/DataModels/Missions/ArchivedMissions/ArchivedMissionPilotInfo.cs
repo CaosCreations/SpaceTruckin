@@ -7,6 +7,7 @@
 public class ArchivedMissionPilotInfo
 {
     public int LevelAtTimeOfMission { get; set; }
+    public PilotAttributes AttributesAtTimeOfMission { get; set; }
     public double TotalXpAfterMission { get; set; }
     public int MissionsCompletedAtTimeOfMission { get; set; }
 }

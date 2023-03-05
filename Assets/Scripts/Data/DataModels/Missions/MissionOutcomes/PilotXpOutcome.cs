@@ -20,6 +20,7 @@ public class PilotXpOutcome : MissionOutcome, IBonusable, IOutcomeBreakdown
         // Store the pilot's level before the xp is awarded.
         // Then we can check if they leveled up as a result of the Mission.
         scheduled.MissionToArchive.ArchivedPilotInfo.LevelAtTimeOfMission = scheduled.Pilot.Level;
+        scheduled.MissionToArchive.ArchivedPilotInfo.AttributesAtTimeOfMission = scheduled.Pilot.Attributes;
 
         baseXpGained = Random.Range(xpMin, xpMax);
 
