@@ -6,7 +6,6 @@
     public MissionXpGains XpGains { get; }
     public MissionShipChanges ShipChanges { get; }
 
-    // Todo: Move logic into service? Or make consistent with the other VM 
     public ArchivedMissionModifierViewModel(ArchivedMissionModifierOutcome archivedModifierOutcome)
 	{
         Modifier = archivedModifierOutcome.Modifier;

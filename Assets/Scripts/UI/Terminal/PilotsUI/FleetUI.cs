@@ -96,12 +96,12 @@ public class FleetUI : MonoBehaviour
 			}
 			else
             {
-				Debug.LogError($"{pilot}'s ship avatar is null");
+				Debug.LogError($"{pilot.Name}'s ship avatar is null");
             }
 		}
 		else
         {
-			Debug.LogError($"{pilot}'s ship is null");
+			Debug.LogError($"{pilot.Name}'s ship is null");
         }
 
 		// Show pilot avatar
@@ -191,6 +191,8 @@ public class FleetUI : MonoBehaviour
 		builder.AppendLineWithBreaks("Ship: " + pilot.Ship.Name);
 		builder.AppendLineWithBreaks("Level: " + pilot.Level);
 		builder.AppendLineWithBreaks("Experience: " + pilot.CurrentXp);
+		builder.AppendLineWithBreaks("Navvy skill level: " + pilot.Navigation);
+		builder.AppendLineWithBreaks("Savvy skill level: " + pilot.Savviness);
 		builder.AppendLineWithBreaks("Missions completed: " + pilot.MissionsCompleted, 1);
 		builder.AppendLineWithBreaks("Likes: " + pilot.Like);
 		builder.AppendLineWithBreaks("Dislikes: " + pilot.Dislike, 1);

@@ -7,19 +7,13 @@
     public MissionXpGains XpGains { get; }
     public MissionShipChanges ShipChanges { get; }
 
-    public ArchivedMissionViewModel(
-        Mission mission, 
-        Pilot pilot, 
-        ArchivedMissionPilotInfo archivedPilotInfo, 
-        MissionEarnings earnings, 
-        MissionXpGains xpGains, 
-        MissionShipChanges shipChanges)
+    public ArchivedMissionViewModel(ArchivedMission archivedMission)
     {
-        Mission = mission;
-        Pilot = pilot;
-        ArchivedPilotInfo = archivedPilotInfo;
-        Earnings = earnings;
-        XpGains = xpGains;
-        ShipChanges = shipChanges;
+        Mission = archivedMission.Mission;
+        Pilot = archivedMission.Pilot;
+        ArchivedPilotInfo = archivedMission.ArchivedPilotInfo;
+        Earnings = archivedMission.ArchivedOutcomeContainer.GetAggregateEarnings();
+        XpGains = archivedMission.ArchivedOutcomeContainer.GetAggregateXpGains();
+        ShipChanges = archivedMission.ArchivedOutcomeContainer.GetAggregateShipChanges(archivedMission.Mission.FuelCost);
     }
 }

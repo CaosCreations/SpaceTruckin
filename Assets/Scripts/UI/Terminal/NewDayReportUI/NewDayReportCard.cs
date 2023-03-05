@@ -27,7 +27,7 @@ public class NewDayReportCard : MonoBehaviour
 
         ShipAvatar.sprite = archivedMission.Pilot.Ship.Avatar;
 
-        ArchivedMissionViewModel viewModel = ArchivedMissionsManager.GetArchivedMissionViewModel(archivedMission);
+        ArchivedMissionViewModel viewModel = new(archivedMission);
         DetailsText.SetText(BuildReportDetails(viewModel));
 
         if (archivedMission.Mission.HasModifier)
