@@ -57,20 +57,14 @@ public class InteractableObject : MonoBehaviour
         {
             IsPlayerColliding = true;
         }
-
-        Debug.Log("IsPlayerColliding = " + IsPlayerColliding);
     }
 
     public virtual void OnTriggerExit(Collider other)
     {
-        Debug.Log("On trigger exit Interactable. " + other.name);
-
         if (other.CompareTag(PlayerConstants.PlayerTag))
         {
             IsPlayerColliding = false;
         }
-
-        Debug.Log("IsPlayerColliding = " + IsPlayerColliding);
     }
 
     protected virtual void Update()

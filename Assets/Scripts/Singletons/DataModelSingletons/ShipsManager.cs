@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Events;
+using System.Linq;
+using UnityEngine;
 
 public class ShipsManager : MonoBehaviour, IDataModelManager
 {
@@ -33,8 +35,8 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
             Debug.LogError("No ship data");
         }
 
-        HangarNodeUI.OnHangarNodeTerminalOpened += SetupShipUnderRepair;
-        HangarNodeUI.OnHangarNodeTerminalClosed += ResetShipUnderRepair;
+        SingletonManager.EventService.Add<OnHangarNodeTerminalOpenedEvent>(SetupShipUnderRepair);
+        SingletonManager.EventService.Add<OnHangarNodeTerminalClosedEvent>(ResetShipUnderRepair);
     }
 
     public static void DamageShip(Ship ship, int damage)
@@ -43,25 +45,23 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         {
             ship.CurrentHullIntegrity = Mathf.Max(0, ship.CurrentHullIntegrity - damage);
         }
+
+        SingletonManager.EventService.Dispatch(new OnShipHealthChangedEvent(ShipUnderRepair.Ship));
     }
 
-    public static void RepairShip()
+    public static void RepairShip(float amount)
     {
         if (ShipUnderRepair.Ship != null)
         {
-            RepairShip(ShipUnderRepair.Ship);
+            ShipUnderRepair.Ship.CurrentHullIntegrity = Mathf.Min(
+                ShipUnderRepair.Ship.CurrentHullIntegrity + amount, ShipUnderRepair.Ship.MaxHullIntegrity);
+
+            SingletonManager.EventService.Dispatch(new OnShipHealthChangedEvent(ShipUnderRepair.Ship));
         }
         else
         {
             Debug.LogError($"Cannot repair ship at node {UIManager.HangarNode} as the ship is null.");
         }
-    }
-
-    public static void RepairShip(Ship ship)
-    {
-        ship.CurrentHullIntegrity = Mathf.Min(
-            ship.CurrentHullIntegrity + RepairsConstants.HullRepairedPerWin,
-            ship.MaxHullIntegrity);
     }
 
     public static bool ShipIsLaunched(Ship ship)
@@ -76,9 +76,9 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
         ship.CanWarp = true;
     }
 
-    private static void SetupShipUnderRepair(Ship ship)
+    private static void SetupShipUnderRepair(OnHangarNodeTerminalOpenedEvent openedEvent)
     {
-        ShipUnderRepair.Ship = ship;
+        ShipUnderRepair.Ship = openedEvent.Ship;
 
         if (ArchivedMissionsManager.Instance != null)
         {
@@ -86,7 +86,8 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
 
             if (mostRecentMission != null)
             {
-                ShipUnderRepair.DamageType = mostRecentMission.DamageType;
+                ShipUnderRepair.DamageType = (ShipDamageType)mostRecentMission.ArchivedOutcomeContainer.ArchivedShipDamageOutcomes
+                    .FirstOrDefault()?.DamageType;
             }
         }
     }

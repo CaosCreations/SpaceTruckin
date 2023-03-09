@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Events;
+using PixelCrushers.DialogueSystem;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -68,7 +70,17 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        RegisterEvents();
         ClearCanvases();
+    }
+
+    private void RegisterEvents()
+    {
+        SingletonManager.EventService.Add<OnSceneLoadedEvent>(OnSceneLoadedHandler);
+        SingletonManager.EventService.Add<OnSceneUnloadedEvent>(OnSceneUnloadedHandler);
+
+        SingletonManager.EventService.Add<OnCutsceneStartedEvent>(OnCutsceneStartedHandler);
+        SingletonManager.EventService.Add<OnCutsceneFinishedEvent>(OnCutsceneFinishedHandler);
     }
 
     private void Update()
@@ -81,8 +93,6 @@ public class UIManager : MonoBehaviour
         {
             HandlePausedInput();
         }
-
-        //SetInteractionTextMesh();
     }
 
     private void HandleUnpausedInput()
@@ -332,4 +342,35 @@ public class UIManager : MonoBehaviour
         currentlyOverriddenKeys.Clear();
     }
     #endregion
+
+    private void OnSceneLoadedHandler(OnSceneLoadedEvent loadedEvent)
+    {
+        // Override Escape closing the UI canvas if we are in a repairs minigame scene 
+        if (loadedEvent.IsRepairsMinigameScene)
+            AddOverriddenKey(KeyCode.Escape);
+    }
+
+    private void OnSceneUnloadedHandler(OnSceneUnloadedEvent unloadedEvent)
+    {
+        if (unloadedEvent.IsRepairsMinigameScene)
+            RemoveOverriddenKey(KeyCode.Escape);
+    }
+
+    private void OnCutsceneStartedHandler(OnCutsceneStartedEvent startedEvent)
+    {
+        if (startedEvent.Cutscene.IsDialogueCutscene)
+        {
+            Debug.Log("Dialogue cutscene started event call back fired. Closing dialogue UI...");
+            DialogueManager.DialogueUI.Close();
+        }
+    }
+
+    private void OnCutsceneFinishedHandler(OnCutsceneFinishedEvent finishedEvent)
+    {
+        if (finishedEvent.Cutscene.IsDialogueCutscene)
+        {
+            Debug.Log("Dialogue cutscene finished event call back fired. Opening dialogue UI...");
+            DialogueManager.DialogueUI.Open();
+        }
+    }
 }

@@ -31,6 +31,19 @@ public class SceneRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesMana
     {
         SingletonManager.EventService.Add<OnSceneLoadedEvent>(OnSceneLoadedHandler);
         SingletonManager.EventService.Add<OnSceneUnloadedEvent>(OnSceneUnloadedHandler);
+        SingletonManager.EventService.Add<OnRepairsMinigameWonEvent>(OnRepairsMinigameWonHandler);
+        SingletonManager.EventService.Add<OnRepairsMinigameLostEvent>(OnRepairsMinigameLostHandler);
+    }
+
+    private RepairsMinigame GetCurrentMinigame()
+    {
+        return minigameContainer.Elements
+            .FirstOrDefault(mg => mg != null && mg.ShipDamageType == ShipsManager.ShipUnderRepair.DamageType);
+    }
+
+    private RepairsMinigame GetMinigameByType(RepairsMinigameType minigameType)
+    {
+        return minigameContainer.Elements.FirstOrDefault(mg => mg != null && mg.RepairsMinigameType == minigameType);
     }
 
     public void StartMinigame()
@@ -38,8 +51,7 @@ public class SceneRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesMana
         if (ShipsManager.ShipUnderRepair == null)
             throw new Exception("Cannot start minigame because the ShipsManager.ShipUnderRepair is null");
 
-        var minigame = minigameContainer.Elements
-            .FirstOrDefault(mg => mg != null && mg.ShipDamageType == ShipsManager.ShipUnderRepair.DamageType);
+        var minigame = GetCurrentMinigame();
 
         if (minigame == null)
             throw new Exception("Minigame not found in container with type: " + minigame.RepairsMinigameType);
@@ -60,6 +72,14 @@ public class SceneRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesMana
             throw new Exception("Couldn't get Camera component");
 
         cameraComponent.depth = UIConstants.RepairsMinigameCameraDepth;
+    }
+
+    public void StopMinigame()
+    {
+        var minigame = GetCurrentMinigame();
+
+        if (minigame != null)
+            SceneLoadingManager.Instance.UnloadSceneAsync(minigame.Scene);
     }
 
     private void OnSceneLoadedHandler(OnSceneLoadedEvent loadedEvent)
@@ -84,5 +104,17 @@ public class SceneRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesMana
 
         // Show hangar canvas when returning back from a repairs minigame 
         UIManager.ShowCanvas(UICanvasType.Hangar);
+    }
+
+    private void OnRepairsMinigameWonHandler(OnRepairsMinigameWonEvent wonEvent)
+    {
+        var minigame = GetMinigameByType(wonEvent.MinigameType);
+        ShipsManager.RepairShip(minigame.AmountRepairedPerWin);
+        PlayerManager.Instance.SpendRepairTool();
+    }
+
+    private void OnRepairsMinigameLostHandler(OnRepairsMinigameLostEvent wonEvent)
+    {
+        PlayerManager.Instance.SpendRepairTool();
     }
 }

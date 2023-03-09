@@ -1,4 +1,5 @@
-﻿using PixelCrushers.DialogueSystem;
+﻿using Events;
+using PixelCrushers.DialogueSystem;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
@@ -153,6 +154,22 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         Instance.Money += amount;
         Instance.TotalMoneyAcquired += amount;
         OnFinancialTransaction?.Invoke();
+    }
+
+    public void BuyRepairTools(int amount)
+    {
+        if (Instance.CanSpendMoney(amount * RepairsConstants.CostPerTool))
+        {
+            Instance.SpendMoney(amount * RepairsConstants.CostPerTool);
+            Instance.RepairTools += amount;
+            SingletonManager.EventService.Dispatch<OnRepairsToolBoughtEvent>();
+        }
+    }
+
+    public void SpendRepairTool()
+    {
+        Instance.RepairTools = Mathf.Max(0, Instance.RepairTools - 1);
+        SingletonManager.EventService.Dispatch<OnRepairsToolSpentEvent>();
     }
 
     public void AcquireLicence(Licence licence)

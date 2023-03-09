@@ -68,6 +68,7 @@ public partial class Pilot
     {
         get => saveData.Attributes.Savviness; set => saveData.Attributes.Savviness = value;
     }
+    public PilotAttributes Attributes => saveData.Attributes;
     public int LevelsNeededForAttributePointGain => levelsNeededForAttributePointGain;
     public bool CanGainAttributePoint => Level % LevelsNeededForAttributePointGain == 0;
     public PilotTrait[] Traits => traits;

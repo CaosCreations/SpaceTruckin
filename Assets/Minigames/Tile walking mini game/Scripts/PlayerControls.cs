@@ -1,3 +1,4 @@
+using Events;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,8 +29,8 @@ public class PlayerControls : MonoBehaviour
     private void Awake()
     {
         playerStartPosition = playerRectTransform.localPosition;
-        gridManager.WinEvent += DisablePlayerMovement;
-        gridManager.LoseEvent += DisablePlayerMovement;
+        SingletonManager.EventService.Add<OnRepairsMinigameWonEvent>(OnMinigameWonHandler);
+        SingletonManager.EventService.Add<OnRepairsMinigameLostEvent>(OnMinigameLostHandler);
     }
 
     private void Update()
@@ -100,5 +101,15 @@ public class PlayerControls : MonoBehaviour
         playerXGridPosition = 0;
         playerYGridPosition = 0;
         canMove = true;
+    }
+
+    private void OnMinigameWonHandler(OnRepairsMinigameWonEvent wonEvent)
+    {
+        DisablePlayerMovement();
+    }
+
+    private void OnMinigameLostHandler(OnRepairsMinigameLostEvent lostEvent)
+    {
+        DisablePlayerMovement();
     }
 }

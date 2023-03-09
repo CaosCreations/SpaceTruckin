@@ -5,10 +5,10 @@ using UnityEngine;
 public class MissionsEditor : MonoBehaviour
 {
     [MenuItem("Space Truckin/Missions/Accept All", false, 1)]
-    private static void AcceptAll() => SetHasBeenAccepted(true);
+    public static void AcceptAll() => SetHasBeenAccepted(true);
 
     [MenuItem("Space Truckin/Missions/Unaccept All", false, 2)]
-    private static void UnacceptAll() => SetHasBeenAccepted(false);
+    public static void UnacceptAll() => SetHasBeenAccepted(false);
 
     private static void SetHasBeenAccepted(bool hasBeenAccepted)
     {
