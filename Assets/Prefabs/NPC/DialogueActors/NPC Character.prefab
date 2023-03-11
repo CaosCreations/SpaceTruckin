@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 975445818079797909}
   - component: {fileID: 1380008505}
   - component: {fileID: 1380008506}
-  m_Layer: 8
+  m_Layer: 24
   m_Name: NPC Character
   m_TagString: NPC
   m_Icon: {fileID: 0}
@@ -38,6 +38,7 @@ Transform:
   - {fileID: 668139220247612126}
   - {fileID: 1532846936125972005}
   - {fileID: 2731618278330262752}
+  - {fileID: 8351255349118079941}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -219,8 +220,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.9142857, y: 1.8285714, z: 0.2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.17, y: 2.0223389, z: 1.2432861}
+  m_Center: {x: 0, y: 0.05102539, z: -0.28567505}
 --- !u!114 &1380008505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,7 +268,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Collider: {fileID: 8429872000494498957}
-  RaycastTarget: {fileID: 0}
+  RaycastTarget: {fileID: 5713597759388266006}
   interactableIcon: {fileID: 0}
 --- !u!1 &1532846936125972004
 GameObject:
@@ -280,7 +281,7 @@ GameObject:
   - component: {fileID: 1532846936125972005}
   - component: {fileID: 1532846936125972007}
   - component: {fileID: 1532846936125972006}
-  m_Layer: 20
+  m_Layer: 24
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -352,6 +353,51 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &5713597759388266006
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8351255349118079941}
+  - component: {fileID: 6157434100104674017}
+  m_Layer: 24
+  m_Name: RaycastTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8351255349118079941
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5713597759388266006}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1019127046796887116}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &6157434100104674017
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5713597759388266006}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 2.36, z: 0.45700073}
+  m_Center: {x: 0, y: 0.14642334, z: 0.084243774}
 --- !u!1 &6112592358657988220
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,7 +408,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2731618278330262752}
   - component: {fileID: 8429872000494498957}
-  m_Layer: 8
+  m_Layer: 24
   m_Name: InteractableCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -408,7 +454,7 @@ GameObject:
   - component: {fileID: 668139220247612126}
   - component: {fileID: 5016712764064332793}
   - component: {fileID: 645093831575296278}
-  m_Layer: 0
+  m_Layer: 24
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
