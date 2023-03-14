@@ -88,15 +88,29 @@ public class ClockManager : MonoBehaviour
             UpdateDateTimeText();
         }
 
+        // Go to next day after day end time 
         if (CurrentTime >= CalendarManager.DayEndTime)
         {
             EndDay();
         }
 
-        if (CurrentTime >= LightingManager.LightsOutTime && LightingManager.CurrentState != LightingState.Night)
+        // Night lighting time 
+        if (LightingManager.CurrentState != LightingState.Night && CurrentTime >= LightingManager.LightsOutTime)
         {
-            LightingManager.ChangeInternalLighting(LightingState.Night);
+            SingletonManager.EventService.Dispatch<OnLightsOutTimeEvent>();
         }
+
+        // Evening time 
+        if (!isEvening && CurrentTime >= CalendarManager.EveningStartTime)
+        {
+            StartEvening();
+        }
+    }
+
+    private void StartEvening()
+    {
+        isEvening = true;
+        SingletonManager.EventService.Dispatch<OnEveningStartEvent>();
     }
 
     private static void UpdateDateTimeText()

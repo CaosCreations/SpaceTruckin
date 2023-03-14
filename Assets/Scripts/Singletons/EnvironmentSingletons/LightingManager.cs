@@ -48,6 +48,7 @@ public class LightingManager : MonoBehaviour
     private void Start()
     {
         SingletonManager.EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
+        SingletonManager.EventService.Add<OnLightsOutTimeEvent>(OnLightsOutTimeHandler);
     }
 
     private static void SetLightIntensity(Light light, float targetIntensity, float secondsToWait = 0, float numberOfTicks = 1)
@@ -120,5 +121,10 @@ public class LightingManager : MonoBehaviour
     private void OnEndOfDayHandler(OnEndOfDayEvent evt)
     {
         ChangeInternalLighting(LightingState.Day);
+    }
+
+    private void OnLightsOutTimeHandler()
+    {
+        ChangeInternalLighting(LightingState.Night);
     }
 }

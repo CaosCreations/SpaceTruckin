@@ -160,6 +160,10 @@ namespace Events
     {
     }
 
+    public class OnLightsOutTimeEvent : IEvent
+    {
+    }
+
     public class OnClockStoppedEvent :IEvent
     {
     }

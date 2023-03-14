@@ -20,19 +20,24 @@ public class NPCManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        Instance.npcs = FindObjectsOfType<NPC>();
+        npcs = FindObjectsOfType<NPC>();
     }
 
     private void Start()
     {
         SingletonManager.EventService.Add<OnEveningStartEvent>(OnEveningStartHandler);
         SingletonManager.EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
+
+        SetMorningPositions();
     }
 
     private void SetMorningPositions()
     {
         foreach (var npc in npcs)
         {
+            if (npc.Data.Location == null || npc.Data.Location.MorningStationPosition == Vector3.zero)
+                continue;
+
             npc.transform.position = npc.Data.Location.MorningStationPosition;
         }
     }
@@ -41,6 +46,9 @@ public class NPCManager : MonoBehaviour
     {
         foreach (var npc in npcs)
         {
+            if (npc.Data.Location == null || npc.Data.Location.EveningStationPosition == Vector3.zero)
+                continue;
+
             npc.transform.position = npc.Data.Location.EveningStationPosition;
         }
     }
