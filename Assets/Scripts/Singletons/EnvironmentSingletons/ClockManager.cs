@@ -51,13 +51,11 @@ public class ClockManager : MonoBehaviour
     public void StartClock()
     {
         clockStopped = false;
-        SingletonManager.EventService.Dispatch(new OnClockStartedEvent());
     }
 
     private void StopClock()
     {
         clockStopped = true;
-        SingletonManager.EventService.Dispatch(new OnClockStoppedEvent());
     }
 
     /// <summary>

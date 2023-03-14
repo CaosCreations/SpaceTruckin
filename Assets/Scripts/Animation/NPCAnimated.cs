@@ -40,6 +40,6 @@ public class NPCAnimated : MonoBehaviour
         ParameterMap.Add(NPCAnimationParameterType.Idle, default);
 
         RefreshIdleAnimation();
-        SingletonManager.EventService.Add<OnEndOfDayEvent>(RefreshIdleAnimation);
+        SingletonManager.EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
     }
 }
