@@ -18,8 +18,9 @@ public class ClockManager : MonoBehaviour
     private void Start()
     {
         CalculateTickSpeedMultiplier();
-        SetupClockForNextDay();
         RegisterEvents();
+        ResetClock();
+        StartClock();
 
 #if UNITY_EDITOR
         Application.targetFrameRate = PlayerConstants.EditorTargetFrameRate;
@@ -38,12 +39,6 @@ public class ClockManager : MonoBehaviour
     {
         TickSpeedMultiplier = Convert.ToInt32(
             CalendarManager.AwakeTimeDuration.TotalSeconds) / CalendarManager.RealTimeDayDurationInSeconds;
-    }
-
-    public void SetupClockForNextDay()
-    {
-        ResetClock();
-        StartClock();
     }
 
     public void ResetClock()
@@ -74,7 +69,7 @@ public class ClockManager : MonoBehaviour
         SingletonManager.EventService.Dispatch(new OnEndOfDayEvent());
 
         isEvening = false;
-        SetupClockForNextDay();
+        ResetClock();
     }
 
     private void OnPlayerSleepHandler(OnPlayerSleepEvent evt)
