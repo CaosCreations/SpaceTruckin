@@ -175,4 +175,12 @@ namespace Events
     public class OnPlayerSleepEvent : IEvent
     {
     }
+
+    public class OnPlayerPausedEvent : IEvent
+    {
+    }
+
+    public class OnPlayerUnpausedEvent : IEvent
+    {
+    }
 }

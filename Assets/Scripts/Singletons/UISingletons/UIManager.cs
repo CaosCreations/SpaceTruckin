@@ -145,7 +145,7 @@ public class UIManager : MonoBehaviour
 
     public static void ClearCanvases()
     {
-        PlayerManager.IsPaused = false;
+        PlayerManager.ExitPausedState();
         OnCanvasDeactivated?.Invoke();
 
         if (Instance != null)

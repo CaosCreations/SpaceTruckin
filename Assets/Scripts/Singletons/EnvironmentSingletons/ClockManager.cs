@@ -17,17 +17,20 @@ public class ClockManager : MonoBehaviour
 
     private void Start()
     {
-        UIManager.OnCanvasActivated += StopClock;
-        UIManager.OnCanvasDeactivated += StartClock;
-
         CalculateTickSpeedMultiplier();
         SetupClockForNextDay();
-
-        SingletonManager.EventService.Add<OnPlayerSleepEvent>(OnPlayerSleepHandler);
+        RegisterEvents();
 
 #if UNITY_EDITOR
         Application.targetFrameRate = PlayerConstants.EditorTargetFrameRate;
 #endif
+    }
+
+    private void RegisterEvents()
+    {
+        SingletonManager.EventService.Add<OnPlayerSleepEvent>(OnPlayerSleepHandler);
+        SingletonManager.EventService.Add<OnPlayerPausedEvent>(OnPlayerPausedHandler);
+        SingletonManager.EventService.Add<OnPlayerUnpausedEvent>(OnPlayerUnpausedHandler);
     }
 
     // Calculate how quick the clock should tick relative to real time 
@@ -123,6 +126,16 @@ public class ClockManager : MonoBehaviour
     {
         var dateTimeText = $"{CurrentTime:hh':'mm}\n{CalendarManager.CurrentDate}";
         return dateTimeText;
+    }
+
+    private void OnPlayerPausedHandler()
+    {
+        StopClock();
+    }
+
+    private void OnPlayerUnpausedHandler()
+    {
+        StartClock();
     }
 
     private void OnGUI()

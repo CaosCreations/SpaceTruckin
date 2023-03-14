@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Purchasing;
 using UnityEngine.UI;
 
 public class ImageOpacityTransition : MonoBehaviour
