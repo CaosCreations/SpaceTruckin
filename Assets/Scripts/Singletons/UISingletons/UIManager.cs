@@ -127,6 +127,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    [Obsolete("Replaced by interactable button image")]
     private void SetInteractionTextMesh()
     {
         if (currentCanvasType != UICanvasType.None)
