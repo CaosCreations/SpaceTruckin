@@ -58,7 +58,7 @@ public class NPCManager : MonoBehaviour
         SetMorningPositions();
     }
 
-    private void OnEveningStartHandler(OnEveningStartEvent evt)
+    private void OnEveningStartHandler()
     {
         // Change positions of NPC's when evening starts each day
         SetEveningPositions();

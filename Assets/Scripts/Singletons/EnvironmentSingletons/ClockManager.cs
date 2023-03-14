@@ -70,6 +70,7 @@ public class ClockManager : MonoBehaviour
         // Notify other objects that the day has ended
         SingletonManager.EventService.Dispatch(new OnEndOfDayEvent());
 
+        isEvening = false;
         SetupClockForNextDay();
     }
 
