@@ -1,3 +1,4 @@
+using Events;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,6 +23,11 @@ public class NPCAnimated : MonoBehaviour
         NPCAnimationManager.Instance.PlayAnimation(this, NPCAnimationParameterType.Idle, true);
     }
 
+    private void OnEndOfDayHandler(OnEndOfDayEvent evt)
+    {
+        RefreshIdleAnimation();
+    }
+
     private void Start()
     {
         idleParameterNames = AnimationUtils.GetIdleParameterNames(Animator);
@@ -34,6 +40,6 @@ public class NPCAnimated : MonoBehaviour
         ParameterMap.Add(NPCAnimationParameterType.Idle, default);
 
         RefreshIdleAnimation();
-        CalendarManager.OnEndOfDay += RefreshIdleAnimation;
+        SingletonManager.EventService.Add<OnEndOfDayEvent>(RefreshIdleAnimation);
     }
 }

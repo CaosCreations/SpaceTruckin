@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Events;
+using System;
 using UnityEngine;
 
 public class ClockManager : MonoBehaviour
@@ -11,6 +12,7 @@ public class ClockManager : MonoBehaviour
     private static string dateTimeText;
 
     private static bool clockStopped;
+    private static bool isEvening;
     private static bool showOnGui = false;
 
     private void Start()
@@ -21,8 +23,10 @@ public class ClockManager : MonoBehaviour
         CalculateTickSpeedMultiplier();
         SetupClockForNextDay();
 
+        SingletonManager.EventService.Add<OnPlayerSleepEvent>(OnPlayerSleepHandler);
+
 #if UNITY_EDITOR
-        Application.targetFrameRate = PlayerConstants.EditorTargetFramerate;
+        Application.targetFrameRate = PlayerConstants.EditorTargetFrameRate;
 #endif
     }
 
@@ -30,8 +34,7 @@ public class ClockManager : MonoBehaviour
     private void CalculateTickSpeedMultiplier()
     {
         TickSpeedMultiplier = Convert.ToInt32(
-            CalendarManager.Instance.AwakeTimeDuration.TotalSeconds)
-                / CalendarManager.Instance.RealTimeDayDurationInSeconds;
+            CalendarManager.AwakeTimeDuration.TotalSeconds) / CalendarManager.RealTimeDayDurationInSeconds;
     }
 
     public void SetupClockForNextDay()
@@ -43,38 +46,56 @@ public class ClockManager : MonoBehaviour
     public void ResetClock()
     {
         clockStopped = true;
-        CurrentTime = CalendarManager.Instance.DayStartTime;
+        CurrentTime = CalendarManager.DayStartTime;
         currentTimeInSeconds = (int)CurrentTime.TotalSeconds;
     }
 
     public void StartClock()
     {
         clockStopped = false;
+        SingletonManager.EventService.Dispatch(new OnClockStartedEvent());
     }
 
     private void StopClock()
     {
         clockStopped = true;
+        SingletonManager.EventService.Dispatch(new OnClockStoppedEvent());
+    }
+
+    /// <summary>
+    /// The day either ends when the player chooses to sleep or the time elapses.
+    /// </summary>
+    private void EndDay()
+    {
+        // Notify other objects that the day has ended
+        SingletonManager.EventService.Dispatch(new OnEndOfDayEvent());
+
+        SetupClockForNextDay();
+    }
+
+    private void OnPlayerSleepHandler(OnPlayerSleepEvent evt)
+    {
+        EndDay();
     }
 
     private void Update()
     {
-        if (CurrentTime >= CalendarManager.Instance.DayEndTime)
-        {
-            CalendarManager.EndDay();
-        }
-
-        if (CurrentTime == LightingManager.LightsOutTime)
-        {
-            LightingManager.ChangeInternalLighting(LightingState.Night);
-        }
-
         if (!clockStopped)
         {
             currentTimeInSeconds += Convert.ToInt32(Time.deltaTime * TickSpeedMultiplier);
             CurrentTime = TimeSpan.FromSeconds(currentTimeInSeconds);
 
             UpdateDateTimeText();
+        }
+
+        if (CurrentTime >= CalendarManager.DayEndTime)
+        {
+            EndDay();
+        }
+
+        if (CurrentTime >= LightingManager.LightsOutTime && LightingManager.CurrentState != LightingState.Night)
+        {
+            LightingManager.ChangeInternalLighting(LightingState.Night);
         }
     }
 
@@ -85,7 +106,7 @@ public class ClockManager : MonoBehaviour
 
     public static string GetDateTimeText()
     {
-        var dateTimeText = $"{CurrentTime:hh':'mm}\n{CalendarManager.Instance.CurrentDate}";
+        var dateTimeText = $"{CurrentTime:hh':'mm}\n{CalendarManager.CurrentDate}";
         return dateTimeText;
     }
 
@@ -114,6 +135,6 @@ public class ClockManager : MonoBehaviour
     {
         Debug.Log("Current time: " + CurrentTime);
         Debug.Log("Current time in seconds: " + currentTimeInSeconds);
-        Debug.Log("Time remaining: " + CalendarManager.Instance.DayEndTime.Subtract(CurrentTime));
+        Debug.Log("Time remaining: " + CalendarManager.DayEndTime.Subtract(CurrentTime));
     }
 }

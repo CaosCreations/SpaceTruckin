@@ -108,13 +108,13 @@ public partial class Mission : ScriptableObject, IDataModel
         }
 
         HasBeenUnlocked = true;
-        DateUnlocked = CalendarManager.Instance.CurrentDate;
+        DateUnlocked = CalendarManager.CurrentDate;
     }
 
     public void AcceptMission()
     {
         HasBeenAccepted = true;
-        DateAccepted = CalendarManager.Instance.CurrentDate;
+        DateAccepted = CalendarManager.CurrentDate;
     }
 
     public void StartMission()

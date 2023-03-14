@@ -6,12 +6,15 @@ using UnityEngine;
 public class CalendarData : ScriptableObject, IDataModel
 {
     [Header("Set in Editor")]
-    public TimeSpan DayStartTime = new TimeSpan(6, 0, 0); // 6am
-    public TimeSpan DayEndTime = new TimeSpan(26, 0, 0); // 2am the next day
+    public TimeSpan DayStartTime = new(6, 0, 0); // 6am
+    public TimeSpan DayEndTime = new(26, 0, 0); // 2am the next day
     public int RealTimeDayDurationInSeconds = 900; // 15 mins 
 
     public int DaysInMonth = 28;
     public int MonthsInYear = 4;
+
+    public TimeSpan EveningStartTime = new(18, 0, 0); // 6pm
+    public TimeSpan MorningStartTime = new(6, 0, 0);
 
     public const string FolderName = "CalendarSaveData";
     public const string FileName = "CalendarData";

@@ -9,12 +9,20 @@ namespace Events
 
         public void Dispatch<T>()
         {
-            var type = typeof(T);
-
-            if (eventLookup.TryGetValue(type, out var eventObject))
+            try
             {
-                var container = (EventContainer)eventObject;
-                container.methods?.Invoke();
+                var type = typeof(T);
+
+                if (eventLookup.TryGetValue(type, out var eventObject))
+                {
+                    var container = (EventContainer)eventObject;
+                    container.methods?.Invoke();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                throw;
             }
         }
 

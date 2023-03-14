@@ -1,41 +1,39 @@
-﻿using PixelCrushers.DialogueSystem;
+﻿using Events;
+using PixelCrushers.DialogueSystem;
 using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class CalendarManager : MonoBehaviour, IDataModelManager
 {
     public static CalendarManager Instance { get; private set; }
 
-    public ClockManager ClockManager;
-
     [SerializeField] private CalendarData calendarData;
 
-    public static UnityAction OnEndOfDay;
-
     #region Property Accessors
-    public TimeSpan DayStartTime => calendarData.DayStartTime;
-    public TimeSpan DayEndTime => calendarData.DayEndTime;
-    public TimeSpan AwakeTimeDuration => DayEndTime.Subtract(DayStartTime);
-    public int RealTimeDayDurationInSeconds => calendarData.RealTimeDayDurationInSeconds;
-    public int DaysInMonth => calendarData.DaysInMonth;
-    public int DaysInYear => DaysInMonth * MonthsInYear;
-    public int MonthsInYear => calendarData.MonthsInYear;
-    public Date CurrentDate => calendarData.CurrentDate;
-    public int CurrentDay
+    public static TimeSpan DayStartTime => Instance.calendarData.DayStartTime;
+    public static TimeSpan DayEndTime => Instance.calendarData.DayEndTime;
+    public static TimeSpan AwakeTimeDuration => DayEndTime.Subtract(DayStartTime);
+    public static TimeSpan EveningStartTime => Instance.calendarData.EveningStartTime;
+    public static TimeSpan MorningStartTime => Instance.calendarData.MorningStartTime;
+    public static int RealTimeDayDurationInSeconds => Instance.calendarData.RealTimeDayDurationInSeconds;
+    public static int DaysInMonth => Instance.calendarData.DaysInMonth;
+    public static int DaysInYear => DaysInMonth * MonthsInYear;
+    public static int MonthsInYear => Instance.calendarData.MonthsInYear;
+    public static Date CurrentDate => Instance.calendarData.CurrentDate;
+    public static int CurrentDay
     {
-        get => calendarData.CurrentDate.Day;
-        set => calendarData.CurrentDate.Day = value;
+        get => Instance.calendarData.CurrentDate.Day;
+        set => Instance.calendarData.CurrentDate.Day = value;
     }
-    public int CurrentMonth
+    public static int CurrentMonth
     {
-        get => calendarData.CurrentDate.Month;
-        set => calendarData.CurrentDate.Month = value;
+        get => Instance.calendarData.CurrentDate.Month;
+        set => Instance.calendarData.CurrentDate.Month = value;
     }
-    public int CurrentYear
+    public static int CurrentYear
     {
-        get => calendarData.CurrentDate.Year;
-        set => calendarData.CurrentDate.Year = value;
+        get => Instance.calendarData.CurrentDate.Year;
+        set => Instance.calendarData.CurrentDate.Year = value;
     }
     #endregion
 
@@ -51,6 +49,11 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
             Destroy(gameObject);
             return;
         }
+    }
+
+    private void Start()
+    {
+        SingletonManager.EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
     }
 
     public void Init()
@@ -72,50 +75,42 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
     /// <summary>
     /// The day either ends when the player chooses to sleep or the time elapses.
     /// </summary>
-    public static void EndDay()
+    public static void OnEndOfDayHandler(OnEndOfDayEvent evt)
     {
-        if (Instance.calendarData != null)
-        {
-            UpdateCalendarData();
-            LogCalendarData();
-        }
-
-        Instance.ClockManager.SetupClockForNextDay();
-
-        // Notify other objects that the day has ended
-        OnEndOfDay?.Invoke();
+        UpdateCalendarData();
+        LogCalendarData();
     }
 
     private static void UpdateCalendarData()
     {
         // Wrap around when we reach the end of the month, and ensure we start at 1 instead of 0. 
-        Instance.CurrentDay = Instance.CurrentDay
-            .AddAndWrapAround(addend: 1, upperBound: Instance.DaysInMonth + 1, numberToWrapAroundTo: 1);
+        CurrentDay = CurrentDay
+            .AddAndWrapAround(addend: 1, upperBound: DaysInMonth + 1, numberToWrapAroundTo: 1);
 
-        if (Instance.CurrentDay <= 1)
+        if (CurrentDay <= 1)
         {
             // Wrap around when we reach the end of the year, starting at 1. 
-            Instance.CurrentMonth = Instance.CurrentMonth
-                .AddAndWrapAround(addend: 1, upperBound: Instance.MonthsInYear + 1, numberToWrapAroundTo: 1);
+            CurrentMonth = CurrentMonth
+                .AddAndWrapAround(addend: 1, upperBound: MonthsInYear + 1, numberToWrapAroundTo: 1);
 
-            if (Instance.CurrentMonth <= 1)
+            if (CurrentMonth <= 1)
             {
                 // Increment the year whenever we enter wrap around the month.
-                Instance.CurrentYear++;
+                CurrentYear++;
             }
         }
     }
 
     public static bool DateIsToday(Date date)
     {
-        return date.Equals(Instance.CurrentDate);
+        return date.Equals(CurrentDate);
     }
 
     private static void LogCalendarData()
     {
-        Debug.Log("Current day: " + Instance.CurrentDay);
-        Debug.Log("Current month: " + Instance.CurrentMonth);
-        Debug.Log("Current year: " + Instance.CurrentYear);
+        Debug.Log("Current day: " + CurrentDay);
+        Debug.Log("Current month: " + CurrentMonth);
+        Debug.Log("Current year: " + CurrentYear);
     }
 
     #region Dialogue Integration

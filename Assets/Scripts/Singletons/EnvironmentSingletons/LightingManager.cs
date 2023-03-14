@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Events;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -17,8 +18,11 @@ public class LightingManager : MonoBehaviour
     /// <summary> Natural light outside of the station. There is only one. </summary>
     [SerializeField] private Light[] externalLights;
 
+    private LightingState currentState = LightingState.Day;
+
     #region Property Accessors 
     public static TimeSpan LightsOutTime => Instance.lightingData.LightsOutTime;
+    public static LightingState CurrentState => Instance.currentState;
     private static float LightChangeDurationInSeconds => Instance.lightingData.ExternalLightChangeDurationInSeconds;
     private static float InternalDayLightsIntensity => Instance.lightingData.InternalDayLightsIntensity;
     private static float InternalNightLightsIntensity => Instance.lightingData.InternalNightLightsIntensity;
@@ -39,8 +43,11 @@ public class LightingManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+    }
 
-        CalendarManager.OnEndOfDay += () => ChangeInternalLighting(LightingState.Day);
+    private void Start()
+    {
+        SingletonManager.EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
     }
 
     private static void SetLightIntensity(Light light, float targetIntensity, float secondsToWait = 0, float numberOfTicks = 1)
@@ -77,6 +84,12 @@ public class LightingManager : MonoBehaviour
 
     public static void ChangeInternalLighting(LightingState lightingState)
     {
+        if (lightingState == CurrentState)
+        {
+            Debug.Log("Lighting state arg has same value as current lighting state. Won't change lighting.");
+            return;
+        }
+
         switch (lightingState)
         {
             case LightingState.Day:
@@ -88,6 +101,8 @@ public class LightingManager : MonoBehaviour
                 Instance.internalNightLights.SetIntensities(InternalNightLightsIntensity);
                 break;
         }
+
+        Instance.currentState = lightingState;
     }
 
     public static void TransitionExternalLightsOn()
@@ -100,5 +115,10 @@ public class LightingManager : MonoBehaviour
     {
         Array.ForEach(Instance.externalLights,
             (x) => SetLightIntensity(x, InternalNightLightsIntensity, LightChangeDurationInSeconds));
+    }
+
+    private void OnEndOfDayHandler(OnEndOfDayEvent evt)
+    {
+        ChangeInternalLighting(LightingState.Day);
     }
 }

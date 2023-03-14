@@ -34,8 +34,7 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
     public static List<ArchivedMission> GetMissionsCompletedYesterday()
     {
         return Instance.ArchivedMissions
-            .Where(x => x != null
-            && x.CompletionDate.ToDays() == CalendarManager.Instance.CurrentDate.ToDays() - 1)
+            .Where(x => x != null && x.CompletionDate.ToDays() == CalendarManager.CurrentDate.ToDays() - 1)
             .ToList();
     }
 
