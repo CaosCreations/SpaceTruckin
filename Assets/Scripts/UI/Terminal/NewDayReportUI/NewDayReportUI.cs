@@ -25,7 +25,7 @@ public class NewDayReportUI : MonoBehaviour
 
     private void Awake()
     {
-        CalendarManager.OnEndOfDay += () => HasBeenViewedToday = false;
+        SingletonManager.EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
 
         terminalManager = GetComponentInParent<TerminalUIManager>();
     }
@@ -48,6 +48,11 @@ public class NewDayReportUI : MonoBehaviour
         HasBeenViewedToday = true;
         MissionsToAppearInReport.Clear();
         UIManager.RemoveOverriddenKey(PlayerConstants.ExitKey);
+    }
+
+    private void OnEndOfDayHandler(OnEndOfDayEvent evt)
+    {
+        HasBeenViewedToday = false;
     }
 
     public void Init()

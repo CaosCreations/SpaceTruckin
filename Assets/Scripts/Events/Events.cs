@@ -152,13 +152,35 @@ namespace Events
     {
     }
 
-    public class OnEventWithParameters : IEvent
+    public class OnEndOfDayEvent : IEvent
     {
-        public string Parameter { get; set; }
+    }
 
-        public OnEventWithParameters(string parameter)
-        {
-            Parameter = parameter;
-        }
+    public class OnEveningStartEvent : IEvent
+    {
+    }
+
+    public class OnLightsOutTimeEvent : IEvent
+    {
+    }
+
+    public class OnClockStoppedEvent :IEvent
+    {
+    }
+
+    public class OnClockStartedEvent : IEvent
+    {
+    }
+
+    public class OnPlayerSleepEvent : IEvent
+    {
+    }
+
+    public class OnPlayerPausedEvent : IEvent
+    {
+    }
+
+    public class OnPlayerUnpausedEvent : IEvent
+    {
     }
 }

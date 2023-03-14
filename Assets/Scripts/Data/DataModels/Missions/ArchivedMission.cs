@@ -33,7 +33,7 @@ public class ArchivedMission
         ArchivedModifierOutcome.Modifier = mission.Modifier;
         Pilot = pilot;
         CompletionNumber = completionNumber;
-        CompletionDate = CalendarManager.Instance.CurrentDate;
+        CompletionDate = CalendarManager.CurrentDate;
     }
 
     #region Persistence

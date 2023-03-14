@@ -23,7 +23,7 @@ public class PlayerConstants : MonoBehaviour
     public const float KillFloorHeight = -25;
     public const float RaycastDistance = 10f;
     public static readonly Vector3 PlayerResetPosition = new Vector3(209.728f, 380.065f, -252.4218f);
-    public const int EditorTargetFramerate = 60;
+    public const int EditorTargetFrameRate = 60;
 
     // Prototyping
     public const KeyCode PrototypingModifier = KeyCode.LeftControl;

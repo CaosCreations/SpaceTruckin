@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Events;
+using UnityEngine;
 
 public class MessagesManager : MonoBehaviour, IDataModelManager
 {
@@ -29,7 +30,7 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
         }
 
         UnlockMessages();
-        CalendarManager.OnEndOfDay += UnlockMessages;
+        SingletonManager.EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
     }
 
     public static void UnlockMessages()
@@ -41,6 +42,11 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
                 message.IsUnlocked = true;
             }
         }
+    }
+
+    private void OnEndOfDayHandler(OnEndOfDayEvent evt)
+    {
+        UnlockMessages();
     }
 
     /// <summary>
@@ -70,7 +76,7 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
             if (message != null
                 && !message.IsUnlocked
                 && message.IsUnlockedByDate
-                && CalendarManager.Instance.CurrentDate >= message.DateToUnlockOn)
+                && CalendarManager.CurrentDate >= message.DateToUnlockOn)
             {
                 message.IsUnlocked = true;
             }
@@ -89,7 +95,7 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
                     && PlayerManager.Instance.CanSpendMoney(message.MoneyNeededToUnlock);
 
             case MessageUnlockCondition.Date:
-                return CalendarManager.Instance.CurrentDate >= message.DateToUnlockOn;
+                return CalendarManager.CurrentDate >= message.DateToUnlockOn;
 
             default:
                 return false;

@@ -88,11 +88,11 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
             // Pause when a conversation starts and unpause when it ends
             DialogueManager.Instance.conversationStarted += (t) =>
             {
-                IsPaused = true;
+                EnterPausedState();
                 PlayerAnimationManager.ResetBoolParameters();
             };
 
-            DialogueManager.Instance.conversationEnded += (t) => IsPaused = false;
+            DialogueManager.Instance.conversationEnded += (t) => ExitPausedState();
         }
     }
 
@@ -193,12 +193,19 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
             PlayerMovement.ResetDirection();
 
         IsPaused = true;
+        SingletonManager.EventService.Dispatch<OnPlayerPausedEvent>();
     }
 
     public static void EnterPausedState(PlayableDirector playableDirector)
     {
         Debug.Log("Entering paused state from playable director: " + playableDirector.name);
         EnterPausedState();
+    }
+
+    public static void ExitPausedState()
+    {
+        IsPaused = false;
+        SingletonManager.EventService.Dispatch<OnPlayerUnpausedEvent>();
     }
 
     public static bool Raycast(string layerName, out RaycastHit hit)

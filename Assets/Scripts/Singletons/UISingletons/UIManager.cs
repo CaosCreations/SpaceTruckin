@@ -127,6 +127,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    [Obsolete("Replaced by interactable button image")]
     private void SetInteractionTextMesh()
     {
         if (currentCanvasType != UICanvasType.None)
@@ -143,9 +144,13 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public static void ClearCanvases()
+    public static void ClearCanvases(bool unpausePlayer = true)
     {
-        PlayerManager.IsPaused = false;
+        if (unpausePlayer)
+        {
+            PlayerManager.ExitPausedState();
+        }
+
         OnCanvasDeactivated?.Invoke();
 
         if (Instance != null)
