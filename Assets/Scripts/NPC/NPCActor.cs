@@ -5,6 +5,7 @@ using UnityEngine;
 public class NPCActor : InteractableObject
 {
     private Usable usable;
+    private bool usableLocked;
     
     private void Awake()
     {
@@ -16,18 +17,31 @@ public class NPCActor : InteractableObject
     {
         Debug.Log($"{gameObject.name} is being used by {player}.");
         usable.enabled = false;
+        usableLocked = true;
+    }
+
+    public void OnConversationStart(Transform actor)
+    {
+        Debug.Log($"{gameObject.name}'s conversation with {actor} is starting.");
+        usable.enabled = false;
+        usableLocked = true;
     }
 
     public void OnConversationEnd(Transform actor)
     {
         Debug.Log($"{gameObject.name}'s conversation with {actor} is ending.");
         usable.enabled = true;
+        usableLocked = false;
     }
 
     // Toggle usable on/off based on whether player is in range/facing the right direction
     protected override void Update()
     {
         base.Update();
+
+        if (usableLocked)
+            return;
+
         usable.enabled = IsPlayerInteractable;
     }
 }
