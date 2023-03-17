@@ -193,4 +193,8 @@ namespace Events
             Identifier = identifier;
         }
     }
+
+    public class OnLiveCameraZoomInEndedEvent : IEvent
+    {
+    }
 }

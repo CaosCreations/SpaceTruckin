@@ -6,6 +6,7 @@ public class StationCameraManager : MonoBehaviour
     public static StationCameraManager Instance { get; private set; }
 
     private StationCamera[] stationCameras;
+    private CinemachineLiveCameraZoom liveCameraZoom;
 
     private void Awake()
     {
@@ -18,6 +19,7 @@ public class StationCameraManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         stationCameras = FindObjectsOfType<StationCamera>(true);
+        liveCameraZoom = GetComponent<CinemachineLiveCameraZoom>();
     }
 
     public void ShakeCamera(StationCamera.Identifier cameraIdentifier)
@@ -30,6 +32,11 @@ public class StationCameraManager : MonoBehaviour
         }
 
         camera.ShakeCamera();
+    }
+
+    public void ZoomInLiveCamera(float targetDistance, float speed)
+    {
+        liveCameraZoom.ZoomInCamera(targetDistance, speed);
     }
 
     private StationCamera GetCameraByIdentifier(StationCamera.Identifier cameraIdentifier)
