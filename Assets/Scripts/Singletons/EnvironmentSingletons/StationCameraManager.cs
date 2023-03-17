@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 
 public class StationCameraManager : MonoBehaviour
@@ -37,6 +38,26 @@ public class StationCameraManager : MonoBehaviour
     public void ZoomInLiveCamera(float targetDistance, float speed)
     {
         liveCameraZoom.ZoomInCamera(targetDistance, speed);
+    }
+
+    public void ZoomInLiveCamera(float targetDistance, float speed, Action action)
+    {
+        liveCameraZoom.ZoomInCamera(targetDistance, speed, action);
+    }
+
+    public void ZoomInLiveCamera(CameraZoomSettings settings)
+    {
+        liveCameraZoom.ZoomInCamera(settings.TargetDistance, settings.Speed);
+    }
+
+    public void ZoomInLiveCamera(CameraZoomSettings settings, Action action)
+    {
+        liveCameraZoom.ZoomInCamera(settings.TargetDistance, settings.Speed, action);
+    }
+
+    public void ResetLiveCameraZoom()
+    {
+        liveCameraZoom.ResetZoom();
     }
 
     private StationCamera GetCameraByIdentifier(StationCamera.Identifier cameraIdentifier)

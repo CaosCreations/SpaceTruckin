@@ -1,5 +1,6 @@
 ﻿using Cinemachine;
-using Events;
+using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -8,18 +9,24 @@ public class CinemachineLiveCameraZoom : MonoBehaviour
     private CinemachineBrain cinemachineBrain;
     private CinemachineVirtualCamera virtualCamera;
     private CinemachineFramingTransposer framingTransposer;
-    private float speed;
     private float startingDistance;
+
+    [SerializeField]
     private float targetDistance;
 
     [SerializeField]
-    private float staticTargetDistance;
-
-    [SerializeField]
-    private float staticSpeed;
+    private float speed;
 
     [SerializeField]
     private bool start = false;
+
+    [SerializeField]
+    private bool reset = false;
+
+    private float CurrentDistance
+    {
+        get => framingTransposer.m_CameraDistance; set => framingTransposer.m_CameraDistance = value;
+    }
 
     private void Awake()
     {
@@ -36,19 +43,18 @@ public class CinemachineLiveCameraZoom : MonoBehaviour
 
         virtualCamera = GetLiveVirtualCamera();
         framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
-        startingDistance = framingTransposer.m_CameraDistance;
+        startingDistance = CurrentDistance;
     }
 
-    public void ZoomInCamera(float targetDistance, float speed)
+    public void ZoomInCamera(float targetDistance, float speed, Action action = null)
     {
         UpdateActiveCamera();
-        this.targetDistance = targetDistance;
-        this.speed = speed;
+        StartCoroutine(ZoomInCameraRoutine(targetDistance, speed, action));
     }
 
     public void ResetZoom()
     {
-        framingTransposer.m_CameraDistance = startingDistance;
+        CurrentDistance = startingDistance;
     }
 
     public CinemachineVirtualCamera GetLiveVirtualCamera()
@@ -61,31 +67,43 @@ public class CinemachineLiveCameraZoom : MonoBehaviour
         // Select child camera if the active camera is a state driven camera 
         if (cinemachineBrain.ActiveVirtualCamera.VirtualCameraGameObject.TryGetComponent<CinemachineStateDrivenCamera>(out var stateDrivenCamera))
         {
-            return stateDrivenCamera.ChildCameras.FirstOrDefault(cam => cam.Follow == PlayerManager.PlayerObject.transform) as CinemachineVirtualCamera;
+            return stateDrivenCamera.ChildCameras.FirstOrDefault(vcam => CinemachineCore.Instance.IsLive(vcam)) as CinemachineVirtualCamera;
         }
 
         return cinemachineBrain.ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
+    }
+
+    private IEnumerator ZoomInCameraRoutine(float targetDistance, float speed, Action action = null)
+    {
+        UpdateActiveCamera();
+
+        while (CurrentDistance >= targetDistance)
+        {
+            CurrentDistance -= Time.deltaTime * speed;
+            yield return null;
+        }
+
+        CurrentDistance = targetDistance;
+        action?.Invoke();
     }
 
     private void Update()
     {
         if (start)
         {
-            ZoomInCamera(3f, 1.2f);
+            ZoomInCamera(2f, 1.2f);
             start = false;
         }
 
-        if (framingTransposer == null || framingTransposer.m_CameraDistance <= targetDistance)
+        if (reset)
         {
-            return;
+            ResetZoom();
+            reset = false;
         }
+    }
 
-        framingTransposer.m_CameraDistance -= Time.deltaTime * speed;
-
-        if (framingTransposer.m_CameraDistance <= targetDistance)
-        {
-            framingTransposer.m_CameraDistance = targetDistance;
-            SingletonManager.EventService.Dispatch<OnLiveCameraZoomInEndedEvent>();
-        }
+    private void OnValidate()
+    {
+        speed = Mathf.Max(1f, speed);
     }
 }

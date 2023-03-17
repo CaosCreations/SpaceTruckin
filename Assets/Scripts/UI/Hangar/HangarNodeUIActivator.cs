@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class HangarNodeUIActivator : InteractableObject
 {
-    public int hangarNode;
+    [SerializeField]
+    private int hangarNode;
 
     protected override void Start()
     {
@@ -17,11 +18,6 @@ public class HangarNodeUIActivator : InteractableObject
     {
         // Hide icon when ship is launched 
         interactableIcon.gameObject.SetActive(false);
-    }
-
-    private void OnZoomInEnded()
-    {
-
     }
 
     private void OnTriggerStay(Collider other)
