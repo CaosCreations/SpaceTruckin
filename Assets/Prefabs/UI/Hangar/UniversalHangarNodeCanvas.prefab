@@ -34,7 +34,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: -0.00024414062, y: 0.00012207031}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1453,7 +1453,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: -0.00024414062, y: 0.00012207031}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1999,7 +1999,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6087511590190868672
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2034,7 +2034,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <CanvasTutorialPrefab>k__BackingField: {fileID: 0}
-  <ShowUniversalCanvas>k__BackingField: 1
+  <ShowUniversalCanvas>k__BackingField: 0
+  <CameraZoomSettings>k__BackingField:
+    <TargetDistance>k__BackingField: 3
+    <Speed>k__BackingField: 1.2
+    <ResetAfter>k__BackingField: 1
+  <ZoomInBeforeOpening>k__BackingField: 1
   fuelSlider: {fileID: 4082890542990713184}
   fuelButton: {fileID: 3431801704249973398}
   hullSlider: {fileID: 5226112917824682217}
@@ -2047,7 +2052,6 @@ MonoBehaviour:
   batteryChargeImage: {fileID: 4018928704077698785}
   shipPreview: {fileID: 0}
   hangarNodePilotDetails: {fileID: 1703605605708440997}
-  hangarNode: 0
   ShipToInspect: {fileID: 0}
 --- !u!223 &6087511590190868679
 Canvas:
@@ -3054,6 +3058,66 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: HangarNodePilotDetails
+      objectReference: {fileID: 0}
+    - target: {fileID: 3673954112593087989, guid: ef9c0fd433109a54cbe28eb03bd33722,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3673954112593087989, guid: ef9c0fd433109a54cbe28eb03bd33722,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3673954112593087989, guid: ef9c0fd433109a54cbe28eb03bd33722,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 257.0969
+      objectReference: {fileID: 0}
+    - target: {fileID: 3673954112593087989, guid: ef9c0fd433109a54cbe28eb03bd33722,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 144.0174
+      objectReference: {fileID: 0}
+    - target: {fileID: 3673954112593087989, guid: ef9c0fd433109a54cbe28eb03bd33722,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 312.64532
+      objectReference: {fileID: 0}
+    - target: {fileID: 3673954112593087989, guid: ef9c0fd433109a54cbe28eb03bd33722,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -72.0087
+      objectReference: {fileID: 0}
+    - target: {fileID: 7482028058763285570, guid: ef9c0fd433109a54cbe28eb03bd33722,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7482028058763285570, guid: ef9c0fd433109a54cbe28eb03bd33722,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7482028058763285570, guid: ef9c0fd433109a54cbe28eb03bd33722,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 168.0969
+      objectReference: {fileID: 0}
+    - target: {fileID: 7482028058763285570, guid: ef9c0fd433109a54cbe28eb03bd33722,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 144.0174
+      objectReference: {fileID: 0}
+    - target: {fileID: 7482028058763285570, guid: ef9c0fd433109a54cbe28eb03bd33722,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 84.04845
+      objectReference: {fileID: 0}
+    - target: {fileID: 7482028058763285570, guid: ef9c0fd433109a54cbe28eb03bd33722,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -72.0087
       objectReference: {fileID: 0}
     - target: {fileID: 7894769900088920581, guid: ef9c0fd433109a54cbe28eb03bd33722,
         type: 3}

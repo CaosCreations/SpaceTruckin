@@ -11,6 +11,9 @@ public class UICanvasBase : MonoBehaviour
     [field: SerializeField]
     public CameraZoomSettings CameraZoomSettings { get; private set; }
 
+    [field: SerializeField]
+    public bool ZoomInBeforeOpening { get; private set; }
+
     public virtual void ShowTutorial()
     {
         if (CanvasTutorialPrefab != null)

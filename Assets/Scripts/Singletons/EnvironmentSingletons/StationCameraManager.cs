@@ -52,7 +52,7 @@ public class StationCameraManager : MonoBehaviour
 
     public void ZoomInLiveCamera(CameraZoomSettings settings, Action action)
     {
-        liveCameraZoom.ZoomInCamera(settings.TargetDistance, settings.Speed, action);
+        liveCameraZoom.ZoomInCamera(settings.TargetDistance, settings.Speed, action, settings.ResetAfter);
     }
 
     public void ResetLiveCameraZoom()

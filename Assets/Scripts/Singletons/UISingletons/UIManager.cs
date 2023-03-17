@@ -101,7 +101,7 @@ public class UIManager : MonoBehaviour
         {
             UICanvasBase canvas = GetCanvasByType(currentCanvasType);
             
-            if (canvas.CameraZoomSettings != null)
+            if (canvas.ZoomInBeforeOpening && canvas.CameraZoomSettings != null)
             {
                 StationCameraManager.Instance.ZoomInLiveCamera(canvas.CameraZoomSettings, () => ShowCanvas(canvas));
             }
