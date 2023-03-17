@@ -6,4 +6,9 @@ public class NPC : MonoBehaviour
     private NPCData npcData;
 
     public NPCData Data => npcData;
+
+    private void Awake()
+    {
+        Data.LocationByDateContainer.InitLookup();
+    }
 }
