@@ -8,12 +8,23 @@ public class CinemachineCameraShake : MonoBehaviour
     private float timer;
 
     [SerializeField]
-    private bool start;
+    private bool start = false;
+
+    [SerializeField]
+    private float amplitude = 1f;
+
+    [SerializeField]
+    private float duration = .5f;
 
     private void Awake()
     {
         virtualCamera = GetComponent<CinemachineVirtualCamera>();
         perlinNoise = virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+    }
+
+    public void Shake()
+    {
+        Shake(amplitude, duration);
     }
 
     public void Shake(float amplitude, float duration)
@@ -27,7 +38,7 @@ public class CinemachineCameraShake : MonoBehaviour
     {
         if (start)
         {
-            Shake(5f, 5f);
+            Shake();
             start = false;
         }
 
