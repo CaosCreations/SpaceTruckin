@@ -12,6 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb95593e32aeb6641868897429217b35, type: 3}
   m_Name: NPCData1
   m_EditorClassIdentifier: 
-  Location:
-    <MorningStationPosition>k__BackingField: {x: 188.37253, y: 380.2, z: -260.56345}
-    <EveningStationPosition>k__BackingField: {x: 187.87253, y: 380.2, z: -257.56345}
+  <DefaultLocation>k__BackingField:
+    <MorningStationPosition>k__BackingField: {x: 188.12253, y: 380.2, z: -260.81345}
+    <EveningStationPosition>k__BackingField: {x: 188.12253, y: 380.2, z: -257.31345}
+  <LocationByDateContainer>k__BackingField:
+    <LocationsByDate>k__BackingField:
+    - <Date>k__BackingField:
+        Day: 2
+        Month: 1
+        Year: 1
+      <Location>k__BackingField:
+        <MorningStationPosition>k__BackingField: {x: 197.37253, y: 380.2, z: -255.56345}
+        <EveningStationPosition>k__BackingField: {x: 207.37253, y: 380.2, z: -253.56345}
+    - <Date>k__BackingField:
+        Day: 3
+        Month: 1
+        Year: 1
+      <Location>k__BackingField:
+        <MorningStationPosition>k__BackingField: {x: 211.87253, y: 380.2, z: -261.31345}
+        <EveningStationPosition>k__BackingField: {x: 211.87253, y: 380.2, z: -261.31345}
