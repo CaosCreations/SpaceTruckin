@@ -35,10 +35,20 @@ public class NPCManager : MonoBehaviour
     {
         foreach (var npc in npcs)
         {
-            if (npc.Data.Location == null || npc.Data.Location.MorningStationPosition == Vector3.zero)
+            Vector3 position;
+            if (npc.Data.LocationsByDate.TryGetValue(CalendarManager.CurrentDate, out var locationByDate)) 
+            {
+                position = locationByDate.MorningStationPosition;
+            }
+            else
+            {
+                position = npc.Data.Location.MorningStationPosition;
+            }
+
+            if (position == Vector3.zero)
                 continue;
 
-            npc.transform.position = npc.Data.Location.MorningStationPosition;
+            npc.transform.position = position;
         }
     }
 
@@ -46,10 +56,20 @@ public class NPCManager : MonoBehaviour
     {
         foreach (var npc in npcs)
         {
-            if (npc.Data.Location == null || npc.Data.Location.EveningStationPosition == Vector3.zero)
+            Vector3 position;
+            if (npc.Data.LocationsByDate.TryGetValue(CalendarManager.CurrentDate, out var locationByDate))
+            {
+                position = locationByDate.EveningStationPosition;
+            }
+            else
+            {
+                position = npc.Data.Location.EveningStationPosition;
+            }
+
+            if (position == Vector3.zero)
                 continue;
 
-            npc.transform.position = npc.Data.Location.EveningStationPosition;
+            npc.transform.position = position;
         }
     }
 
