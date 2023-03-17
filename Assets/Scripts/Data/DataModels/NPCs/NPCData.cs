@@ -7,7 +7,7 @@ public class NPCData : ScriptableObject
     [field: SerializeField]
     public NPCLocation DefaultLocation { get; private set; } = new();
 
-    [Tooltip("Where the NPC appears by default in the morning and evening on specific dates")]
+    [Tooltip("Where the NPC appears in the morning and evening on specific dates")]
     [field: SerializeField]
     public NPCLocationByDateContainer LocationByDateContainer { get; private set; } = new();
 
