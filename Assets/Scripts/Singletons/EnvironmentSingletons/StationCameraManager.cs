@@ -17,7 +17,7 @@ public class StationCameraManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        stationCameras = FindObjectsOfType<StationCamera>();
+        stationCameras = FindObjectsOfType<StationCamera>(true);
     }
 
     public void ShakeCamera(StationCamera.Identifier cameraIdentifier)

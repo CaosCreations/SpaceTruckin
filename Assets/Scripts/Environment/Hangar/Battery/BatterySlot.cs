@@ -15,6 +15,9 @@ public class BatterySlot : InteractableObject
 
         if (canTransferEnergy)
         {
+            // Shake hangar camera
+            StationCameraManager.Instance.ShakeCamera(StationCamera.Identifier.Hangar);
+
             ShipsManager.EnableWarp(hangarSlot.Ship);
             batteryCharging.Discharge();
         }
@@ -33,7 +36,7 @@ public class BatterySlot : InteractableObject
     private void OnTriggerStay(Collider other)
     {
         if (IsPlayerColliding
-            && Input.GetKey(PlayerConstants.ActionKey))
+            && Input.GetKeyDown(PlayerConstants.ActionKey))
         {
             BatteryCharging batteryCharging = other.GetComponentInChildren<BatteryCharging>();
             if (batteryCharging != null)
