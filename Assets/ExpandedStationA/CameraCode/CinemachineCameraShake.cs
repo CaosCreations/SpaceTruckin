@@ -7,12 +7,15 @@ public class CinemachineCameraShake : MonoBehaviour
     private CinemachineBasicMultiChannelPerlin perlinNoise;
     private float timer;
 
+    [Tooltip("Trigger the shake manually for testing")]
     [SerializeField]
     private bool start = false;
 
+    [Tooltip("The strength of the shake")]
     [SerializeField]
     private float amplitude = 1f;
 
+    [Tooltip("How long the shake lasts for")]
     [SerializeField]
     private float duration = .5f;
 
