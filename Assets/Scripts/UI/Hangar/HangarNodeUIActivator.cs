@@ -19,6 +19,11 @@ public class HangarNodeUIActivator : InteractableObject
         interactableIcon.gameObject.SetActive(false);
     }
 
+    private void OnZoomInEnded()
+    {
+
+    }
+
     private void OnTriggerStay(Collider other)
     {
         Ship shipForNode = HangarManager.GetShipByNode(hangarNode);
