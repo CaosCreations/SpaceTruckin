@@ -31,24 +31,24 @@ public class NPCManager : MonoBehaviour
         SetMorningPositions();
     }
 
+    private void SetNpcPosition(NPC npc, TimeOfDay.Phase phase)
+    {
+        var location = npc.Data.GetLocationByDate(CalendarManager.CurrentDate);
+        var position = location.GetPositionByPhase(phase);
+
+        // Don't set position if it's not configured
+        if (position == Vector3.zero)
+            return;
+
+        Debug.Log($"Setting NPC '{npc.name}' {phase} position to '{position}'");
+        npc.transform.position = position;
+    }
+
     private void SetMorningPositions()
     {
         foreach (var npc in npcs)
         {
-            Vector3 position;
-            if (npc.Data.LocationsByDate.TryGetValue(CalendarManager.CurrentDate, out var locationByDate)) 
-            {
-                position = locationByDate.MorningStationPosition;
-            }
-            else
-            {
-                position = npc.Data.Location.MorningStationPosition;
-            }
-
-            if (position == Vector3.zero)
-                continue;
-
-            npc.transform.position = position;
+            SetNpcPosition(npc, TimeOfDay.Phase.Morning);
         }
     }
 
@@ -56,20 +56,7 @@ public class NPCManager : MonoBehaviour
     {
         foreach (var npc in npcs)
         {
-            Vector3 position;
-            if (npc.Data.LocationsByDate.TryGetValue(CalendarManager.CurrentDate, out var locationByDate))
-            {
-                position = locationByDate.EveningStationPosition;
-            }
-            else
-            {
-                position = npc.Data.Location.EveningStationPosition;
-            }
-
-            if (position == Vector3.zero)
-                continue;
-
-            npc.transform.position = position;
+            SetNpcPosition(npc, TimeOfDay.Phase.Evening);
         }
     }
 
