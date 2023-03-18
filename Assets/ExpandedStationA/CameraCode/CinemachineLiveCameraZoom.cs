@@ -46,10 +46,10 @@ public class CinemachineLiveCameraZoom : MonoBehaviour
         startingDistance = CurrentDistance;
     }
 
-    public void ZoomInCamera(float targetDistance, float speed, Action action = null, bool resetAfter = false, bool hidePlayer = false)
+    public void ZoomInCamera(float targetDistance, float speed, Action action = null, bool resetAfter = false, bool hidePlayer = false, bool lockPlayer = false)
     {
         UpdateActiveCamera();
-        StartCoroutine(ZoomInCameraRoutine(targetDistance, speed, action, resetAfter, hidePlayer));
+        StartCoroutine(ZoomInCameraRoutine(targetDistance, speed, action, resetAfter, hidePlayer, lockPlayer));
     }
 
     public void ResetZoom()
@@ -73,7 +73,7 @@ public class CinemachineLiveCameraZoom : MonoBehaviour
         return cinemachineBrain.ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
     }
 
-    private IEnumerator ZoomInCameraRoutine(float targetDistance, float speed, Action action = null, bool resetAfter = false, bool hidePlayer = false)
+    private IEnumerator ZoomInCameraRoutine(float targetDistance, float speed, Action action = null, bool resetAfter = false, bool hidePlayer = false, bool lockPlayer = false)
     {
         UpdateActiveCamera();
 
@@ -82,13 +82,23 @@ public class CinemachineLiveCameraZoom : MonoBehaviour
             PlayerManager.SetSpriteRendererEnabled(false);
         }
 
+        if (lockPlayer)
+        {
+            PlayerManager.EnterPausedState();
+        }
+
         while (CurrentDistance >= targetDistance)
         {
             CurrentDistance -= Time.deltaTime * speed;
             yield return null;
         }
-
         CurrentDistance = targetDistance;
+
+        if (lockPlayer)
+        {
+            PlayerManager.ExitPausedState();
+        }
+
         action?.Invoke();
 
         if (hidePlayer)
@@ -106,7 +116,7 @@ public class CinemachineLiveCameraZoom : MonoBehaviour
     {
         if (start)
         {
-            ZoomInCamera(2f, 1.2f);
+            ZoomInCamera(targetDistance, speed);
             start = false;
         }
 
