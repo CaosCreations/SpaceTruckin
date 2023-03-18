@@ -46,10 +46,10 @@ public class CinemachineLiveCameraZoom : MonoBehaviour
         startingDistance = CurrentDistance;
     }
 
-    public void ZoomInCamera(float targetDistance, float speed, Action action = null, bool resetAfter = false)
+    public void ZoomInCamera(float targetDistance, float speed, Action action = null, bool resetAfter = false, bool hidePlayer = false)
     {
         UpdateActiveCamera();
-        StartCoroutine(ZoomInCameraRoutine(targetDistance, speed, action, resetAfter));
+        StartCoroutine(ZoomInCameraRoutine(targetDistance, speed, action, resetAfter, hidePlayer));
     }
 
     public void ResetZoom()
@@ -73,9 +73,14 @@ public class CinemachineLiveCameraZoom : MonoBehaviour
         return cinemachineBrain.ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
     }
 
-    private IEnumerator ZoomInCameraRoutine(float targetDistance, float speed, Action action = null, bool resetAfter = false)
+    private IEnumerator ZoomInCameraRoutine(float targetDistance, float speed, Action action = null, bool resetAfter = false, bool hidePlayer = false)
     {
         UpdateActiveCamera();
+
+        if (hidePlayer)
+        {
+            PlayerManager.SetSpriteRendererEnabled(false);
+        }
 
         while (CurrentDistance >= targetDistance)
         {
@@ -85,6 +90,11 @@ public class CinemachineLiveCameraZoom : MonoBehaviour
 
         CurrentDistance = targetDistance;
         action?.Invoke();
+
+        if (hidePlayer)
+        {
+            PlayerManager.SetSpriteRendererEnabled(true);
+        }
 
         if (resetAfter)
         {

@@ -12,4 +12,7 @@ public class CameraZoomSettings
 
     [field: SerializeField]
     public bool ResetAfter { get; private set; }
+
+    [field: SerializeField]
+    public bool HidePlayer { get; private set; }
 }
