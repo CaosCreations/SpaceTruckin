@@ -97,17 +97,24 @@ public class UIManager : MonoBehaviour
 
     private void HandleUnpausedInput()
     {
-        // If we are not in a menu/in range of a UI activator
-        if (currentCanvasType != UICanvasType.None)
+        if (currentCanvasType != UICanvasType.None && Input.GetKeyDown(PlayerConstants.ActionKey))
         {
-            if (Input.GetKeyDown(PlayerConstants.ActionKey))
+            UICanvasBase canvas = GetCanvasByType(currentCanvasType);
+            
+            if (canvas.ZoomInBeforeOpening && canvas.CameraZoomSettings != null)
             {
-                ShowCanvas(currentCanvasType);
+                StationCameraManager.Instance.ZoomInLiveCamera(canvas.CameraZoomSettings, () => ShowCanvas(canvas));
+            }
+            else
+            {
+                ShowCanvas(canvas);
             }
         }
-        else if (Input.GetKeyDown(PlayerConstants.PauseKey))
+        
+        if (Input.GetKeyDown(PlayerConstants.PauseKey))
         {
-            ShowCanvas(UICanvasType.PauseMenu);
+            UICanvasBase canvas = GetCanvasByType(UICanvasType.PauseMenu);
+            ShowCanvas(canvas);
         }
     }
 
@@ -171,11 +178,10 @@ public class UIManager : MonoBehaviour
     /// </param>
     /// <param name="viaShortcut">For shortcut access. Will not alter player prefs. 
     /// </param>
-    public static void ShowCanvas(UICanvasType canvasType, bool viaShortcut = false)
+    public static void ShowCanvas(UICanvasBase canvas, bool viaShortcut = false)
     {
         ClearCanvases();
         PlayerManager.EnterPausedState();
-        UICanvasBase canvas = GetCanvasByType(canvasType);
         canvas.SetActive(true);
 
         // Show tutorial overlay if first time using the UI 
@@ -191,6 +197,12 @@ public class UIManager : MonoBehaviour
         }
 
         OnCanvasActivated?.Invoke();
+    }
+
+    public static void ShowCanvas(UICanvasType canvasType, bool viaShortcut = false)
+    {
+        UICanvasBase canvas = GetCanvasByType(canvasType);
+        ShowCanvas(canvas, viaShortcut);
     }
 
     private static UICanvasBase GetCanvasByType(UICanvasType canvasType)
@@ -226,7 +238,7 @@ public class UIManager : MonoBehaviour
 
         if (!canvas.IsActive())
         {
-            ShowCanvas(canvasType, true);
+            ShowCanvas(canvas, true);
         }
         else
         {

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 
 public class StationCameraManager : MonoBehaviour
@@ -6,6 +7,7 @@ public class StationCameraManager : MonoBehaviour
     public static StationCameraManager Instance { get; private set; }
 
     private StationCamera[] stationCameras;
+    private CinemachineLiveCameraZoom liveCameraZoom;
 
     private void Awake()
     {
@@ -18,6 +20,7 @@ public class StationCameraManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         stationCameras = FindObjectsOfType<StationCamera>(true);
+        liveCameraZoom = GetComponent<CinemachineLiveCameraZoom>();
     }
 
     public void ShakeCamera(StationCamera.Identifier cameraIdentifier)
@@ -30,6 +33,31 @@ public class StationCameraManager : MonoBehaviour
         }
 
         camera.ShakeCamera();
+    }
+
+    public void ZoomInLiveCamera(float targetDistance, float speed)
+    {
+        liveCameraZoom.ZoomInCamera(targetDistance, speed);
+    }
+
+    public void ZoomInLiveCamera(float targetDistance, float speed, Action action)
+    {
+        liveCameraZoom.ZoomInCamera(targetDistance, speed, action);
+    }
+
+    public void ZoomInLiveCamera(CameraZoomSettings settings)
+    {
+        liveCameraZoom.ZoomInCamera(settings.TargetDistance, settings.Speed);
+    }
+
+    public void ZoomInLiveCamera(CameraZoomSettings settings, Action action)
+    {
+        liveCameraZoom.ZoomInCamera(settings.TargetDistance, settings.Speed, action, settings.ResetAfter, settings.HidePlayer, settings.LockPlayer);
+    }
+
+    public void ResetLiveCameraZoom()
+    {
+        liveCameraZoom.ResetZoom();
     }
 
     private StationCamera GetCameraByIdentifier(StationCamera.Identifier cameraIdentifier)

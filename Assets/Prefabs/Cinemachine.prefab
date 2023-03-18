@@ -1202,8 +1202,9 @@ GameObject:
   - component: {fileID: 7387135033502001855}
   - component: {fileID: 7387135033502001848}
   - component: {fileID: 7387135033502001849}
-  - component: {fileID: 8399386878772111122}
   - component: {fileID: 8399386878772111121}
+  - component: {fileID: 8399386878772111122}
+  - component: {fileID: 8622225525409945724}
   m_Layer: 15
   m_Name: HangarCAM
   m_TagString: Untagged
@@ -1299,6 +1300,19 @@ MonoBehaviour:
   m_BoundingShape2D: {fileID: 0}
   m_ConfineScreenEdges: 1
   m_Damping: 0
+--- !u!114 &8399386878772111121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7387135033502001851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbd90fb0d55d1ef4185ba9a9455799f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CameraIdentifier: 0
 --- !u!114 &8399386878772111122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1314,7 +1328,7 @@ MonoBehaviour:
   start: 0
   amplitude: 1
   duration: 0.5
---- !u!114 &8399386878772111121
+--- !u!114 &8622225525409945724
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1323,10 +1337,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7387135033502001851}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbd90fb0d55d1ef4185ba9a9455799f6, type: 3}
+  m_Script: {fileID: 11500000, guid: e225a9c1d325b2c4780d6e60ad31d030, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CameraIdentifier: 0
+  start: 0
 --- !u!1 &7387135033523895947
 GameObject:
   m_ObjectHideFlags: 0
@@ -2297,26 +2311,7 @@ MonoBehaviour:
   m_AnimatedTarget: {fileID: 7387135033695423616}
   m_LayerIndex: 0
   m_ShowDebugText: 0
-  m_ChildCameras:
-  - {fileID: 7387135033151345351}
-  - {fileID: 7387135034103715236}
-  - {fileID: 7387135033502001855}
-  - {fileID: 7387135035170873844}
-  - {fileID: 7387135033980894304}
-  - {fileID: 7387135033900499055}
-  - {fileID: 7387135034755909130}
-  - {fileID: 7387135033609671435}
-  - {fileID: 7387135033852894777}
-  - {fileID: 7387135034187342230}
-  - {fileID: 7387135033532597718}
-  - {fileID: 7387135034367813898}
-  - {fileID: 7387135033639940677}
-  - {fileID: 7387135033724093423}
-  - {fileID: 7387135033187956127}
-  - {fileID: 7387135033820805818}
-  - {fileID: 7387135033571856099}
-  - {fileID: 7387135033987459489}
-  - {fileID: 7387135033684442258}
+  m_ChildCameras: []
   m_Instructions:
   - m_FullHash: -1099413694
     m_VirtualCamera: {fileID: 7387135033151345351}

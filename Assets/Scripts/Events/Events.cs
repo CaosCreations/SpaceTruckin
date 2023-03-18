@@ -183,4 +183,18 @@ namespace Events
     public class OnPlayerUnpausedEvent : IEvent
     {
     }
+
+    public class OnCameraZoomInEndedEvent : IEvent
+    {
+        public StationCamera.Identifier Identifier { get; }
+
+        public OnCameraZoomInEndedEvent(StationCamera.Identifier identifier)
+        {
+            Identifier = identifier;
+        }
+    }
+
+    public class OnLiveCameraZoomInEndedEvent : IEvent
+    {
+    }
 }

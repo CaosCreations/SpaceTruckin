@@ -208,6 +208,12 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         SingletonManager.EventService.Dispatch<OnPlayerUnpausedEvent>();
     }
 
+    public static void SetSpriteRendererEnabled(bool enabled)
+    {
+        SpriteRenderer spriteRenderer = PlayerObject.GetComponent<SpriteRenderer>();
+        spriteRenderer.enabled = enabled;
+    }
+
     public static bool Raycast(string layerName, out RaycastHit hit)
     {
         return PlayerMovement.Raycast(layerName, out hit);
