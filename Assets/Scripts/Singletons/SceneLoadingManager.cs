@@ -81,10 +81,9 @@ public class SceneLoadingManager : MonoBehaviour
         bool setActiveScene = false)
     {
         var sceneName = GetSceneNameByType(sceneType);
-        var loadedScenes = GetLoadedScenes();
 
         // Don't load scene if already loaded 
-        if (loadedScenes.Any(s => s.name == sceneName))
+        if (IsSceneLoaded(sceneName))
         {
             Debug.Log("Scene is already loaded: " + sceneName);
             return;
@@ -140,6 +139,13 @@ public class SceneLoadingManager : MonoBehaviour
     public void UnloadSceneAsync(SceneType scene)
     {
         var sceneName = GetSceneNameByType(scene);
+
+        if (!IsSceneLoaded(sceneName))
+        {
+            Debug.Log($"Scene '{sceneName}' is not loaded. Unable to unload.");
+            return;
+        }
+
         UnloadSceneAsync(sceneName);
     }
 
@@ -200,5 +206,11 @@ public class SceneLoadingManager : MonoBehaviour
             loadedScenes[i] = SceneManager.GetSceneAt(i);
         }
         return loadedScenes;
+    }
+
+    public static bool IsSceneLoaded(string sceneName)
+    {
+        var loadedScenes = GetLoadedScenes();
+        return loadedScenes.Any(scene => scene.name == sceneName);
     }
 }

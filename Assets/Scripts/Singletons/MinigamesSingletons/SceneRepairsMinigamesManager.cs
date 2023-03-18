@@ -33,6 +33,7 @@ public class SceneRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesMana
         SingletonManager.EventService.Add<OnSceneUnloadedEvent>(OnSceneUnloadedHandler);
         SingletonManager.EventService.Add<OnRepairsMinigameWonEvent>(OnRepairsMinigameWonHandler);
         SingletonManager.EventService.Add<OnRepairsMinigameLostEvent>(OnRepairsMinigameLostHandler);
+        SingletonManager.EventService.Add<OnShipLaunchedEvent>(OnShipLaunchedHandler);
     }
 
     private RepairsMinigame GetCurrentMinigame()
@@ -116,5 +117,10 @@ public class SceneRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesMana
     private void OnRepairsMinigameLostHandler(OnRepairsMinigameLostEvent wonEvent)
     {
         PlayerManager.Instance.SpendRepairTool();
+    }
+
+    private void OnShipLaunchedHandler()
+    {
+        StopMinigame();
     }
 }
