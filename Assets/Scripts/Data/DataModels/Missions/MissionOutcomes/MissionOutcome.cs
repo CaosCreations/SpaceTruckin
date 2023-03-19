@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor.Build;
+using UnityEngine;
 
 public class MissionOutcome : ScriptableObject, IMissionOutcome
 {
@@ -11,5 +12,5 @@ public class MissionOutcome : ScriptableObject, IMissionOutcome
     [field: SerializeField] 
     public string FlavourText { get; set; }
 
-    public virtual void Process(ScheduledMission mission) { }
+    public virtual void Process(ScheduledMission mission, bool isMissionModifierOutcome = false) { }
 }

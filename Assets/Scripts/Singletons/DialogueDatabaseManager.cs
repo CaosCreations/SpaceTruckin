@@ -1,4 +1,5 @@
-﻿using Language.Lua;
+﻿using Events;
+using Language.Lua;
 using PixelCrushers.DialogueSystem;
 using UnityEngine;
 
@@ -22,7 +23,7 @@ public class DialogueDatabaseManager : MonoBehaviour
 
     private void Start()
     {
-        CalendarManager.OnEndOfDay += ResetHasCompletedConversationsToday;
+        SingletonManager.EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
     }
 
     /// <summary>
@@ -41,7 +42,7 @@ public class DialogueDatabaseManager : MonoBehaviour
             if (actorFondnessField.luaValue == null)
             {
                 Debug.LogError(
-                    $"Actor '{actorName}' field '{DialogueConstants.FondnessFieldName} does not exist");
+                    $"Actor '{actorName}' field '{DialogueConstants.FondnessFieldName}' does not exist");
 
                 return;
             }
@@ -90,6 +91,11 @@ public class DialogueDatabaseManager : MonoBehaviour
             DialogueLua.SetActorField(
                 actorKey.ToString(), DialogueConstants.HasCompletedConversationTodayFieldName, false);
         }
+    }
+
+    private void OnEndOfDayHandler(OnEndOfDayEvent evt)
+    {
+        ResetHasCompletedConversationsToday();
     }
 
     // Todo: Make these methods generic or make more with different return types 

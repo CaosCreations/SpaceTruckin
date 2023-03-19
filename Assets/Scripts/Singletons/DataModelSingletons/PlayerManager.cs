@@ -1,4 +1,5 @@
-﻿using PixelCrushers.DialogueSystem;
+﻿using Events;
+using PixelCrushers.DialogueSystem;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
@@ -87,11 +88,11 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
             // Pause when a conversation starts and unpause when it ends
             DialogueManager.Instance.conversationStarted += (t) =>
             {
-                IsPaused = true;
+                EnterPausedState();
                 PlayerAnimationManager.ResetBoolParameters();
             };
 
-            DialogueManager.Instance.conversationEnded += (t) => IsPaused = false;
+            DialogueManager.Instance.conversationEnded += (t) => ExitPausedState();
         }
     }
 
@@ -155,6 +156,22 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         OnFinancialTransaction?.Invoke();
     }
 
+    public void BuyRepairTools(int amount)
+    {
+        if (Instance.CanSpendMoney(amount * RepairsConstants.CostPerTool))
+        {
+            Instance.SpendMoney(amount * RepairsConstants.CostPerTool);
+            Instance.RepairTools += amount;
+            SingletonManager.EventService.Dispatch<OnRepairsToolBoughtEvent>();
+        }
+    }
+
+    public void SpendRepairTool()
+    {
+        Instance.RepairTools = Mathf.Max(0, Instance.RepairTools - 1);
+        SingletonManager.EventService.Dispatch<OnRepairsToolSpentEvent>();
+    }
+
     public void AcquireLicence(Licence licence)
     {
         if (playerData.PlayerLicencePoints >= licence.PointsCost)
@@ -176,12 +193,25 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
             PlayerMovement.ResetDirection();
 
         IsPaused = true;
+        SingletonManager.EventService.Dispatch<OnPlayerPausedEvent>();
     }
 
     public static void EnterPausedState(PlayableDirector playableDirector)
     {
         Debug.Log("Entering paused state from playable director: " + playableDirector.name);
         EnterPausedState();
+    }
+
+    public static void ExitPausedState()
+    {
+        IsPaused = false;
+        SingletonManager.EventService.Dispatch<OnPlayerUnpausedEvent>();
+    }
+
+    public static void SetSpriteRendererEnabled(bool enabled)
+    {
+        SpriteRenderer spriteRenderer = PlayerObject.GetComponent<SpriteRenderer>();
+        spriteRenderer.enabled = enabled;
     }
 
     public static bool Raycast(string layerName, out RaycastHit hit)

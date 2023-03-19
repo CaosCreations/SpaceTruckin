@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Events;
+using PixelCrushers.DialogueSystem;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -68,7 +70,17 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        RegisterEvents();
         ClearCanvases();
+    }
+
+    private void RegisterEvents()
+    {
+        SingletonManager.EventService.Add<OnSceneLoadedEvent>(OnSceneLoadedHandler);
+        SingletonManager.EventService.Add<OnSceneUnloadedEvent>(OnSceneUnloadedHandler);
+
+        SingletonManager.EventService.Add<OnCutsceneStartedEvent>(OnCutsceneStartedHandler);
+        SingletonManager.EventService.Add<OnCutsceneFinishedEvent>(OnCutsceneFinishedHandler);
     }
 
     private void Update()
@@ -81,23 +93,28 @@ public class UIManager : MonoBehaviour
         {
             HandlePausedInput();
         }
-
-        //SetInteractionTextMesh();
     }
 
     private void HandleUnpausedInput()
     {
-        // If we are not in a menu/in range of a UI activator
-        if (currentCanvasType != UICanvasType.None)
+        if (currentCanvasType != UICanvasType.None && Input.GetKeyDown(PlayerConstants.ActionKey))
         {
-            if (Input.GetKeyDown(PlayerConstants.ActionKey))
+            UICanvasBase canvas = GetCanvasByType(currentCanvasType);
+            
+            if (canvas.ZoomInBeforeOpening && canvas.CameraZoomSettings != null)
             {
-                ShowCanvas(currentCanvasType);
+                StationCameraManager.Instance.ZoomInLiveCamera(canvas.CameraZoomSettings, () => ShowCanvas(canvas));
+            }
+            else
+            {
+                ShowCanvas(canvas);
             }
         }
-        else if (Input.GetKeyDown(PlayerConstants.PauseKey))
+        
+        if (Input.GetKeyDown(PlayerConstants.PauseKey))
         {
-            ShowCanvas(UICanvasType.PauseMenu);
+            UICanvasBase canvas = GetCanvasByType(UICanvasType.PauseMenu);
+            ShowCanvas(canvas);
         }
     }
 
@@ -117,6 +134,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    [Obsolete("Replaced by interactable button image")]
     private void SetInteractionTextMesh()
     {
         if (currentCanvasType != UICanvasType.None)
@@ -133,9 +151,13 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public static void ClearCanvases()
+    public static void ClearCanvases(bool unpausePlayer = true)
     {
-        PlayerManager.IsPaused = false;
+        if (unpausePlayer)
+        {
+            PlayerManager.ExitPausedState();
+        }
+
         OnCanvasDeactivated?.Invoke();
 
         if (Instance != null)
@@ -156,11 +178,10 @@ public class UIManager : MonoBehaviour
     /// </param>
     /// <param name="viaShortcut">For shortcut access. Will not alter player prefs. 
     /// </param>
-    public static void ShowCanvas(UICanvasType canvasType, bool viaShortcut = false)
+    public static void ShowCanvas(UICanvasBase canvas, bool viaShortcut = false)
     {
         ClearCanvases();
         PlayerManager.EnterPausedState();
-        UICanvasBase canvas = GetCanvasByType(canvasType);
         canvas.SetActive(true);
 
         // Show tutorial overlay if first time using the UI 
@@ -176,6 +197,12 @@ public class UIManager : MonoBehaviour
         }
 
         OnCanvasActivated?.Invoke();
+    }
+
+    public static void ShowCanvas(UICanvasType canvasType, bool viaShortcut = false)
+    {
+        UICanvasBase canvas = GetCanvasByType(canvasType);
+        ShowCanvas(canvas, viaShortcut);
     }
 
     private static UICanvasBase GetCanvasByType(UICanvasType canvasType)
@@ -211,7 +238,7 @@ public class UIManager : MonoBehaviour
 
         if (!canvas.IsActive())
         {
-            ShowCanvas(canvasType, true);
+            ShowCanvas(canvas, true);
         }
         else
         {
@@ -332,4 +359,35 @@ public class UIManager : MonoBehaviour
         currentlyOverriddenKeys.Clear();
     }
     #endregion
+
+    private void OnSceneLoadedHandler(OnSceneLoadedEvent loadedEvent)
+    {
+        // Override Escape closing the UI canvas if we are in a repairs minigame scene 
+        if (loadedEvent.IsRepairsMinigameScene)
+            AddOverriddenKey(KeyCode.Escape);
+    }
+
+    private void OnSceneUnloadedHandler(OnSceneUnloadedEvent unloadedEvent)
+    {
+        if (unloadedEvent.IsRepairsMinigameScene)
+            RemoveOverriddenKey(KeyCode.Escape);
+    }
+
+    private void OnCutsceneStartedHandler(OnCutsceneStartedEvent startedEvent)
+    {
+        if (startedEvent.Cutscene.IsDialogueCutscene)
+        {
+            Debug.Log("Dialogue cutscene started event call back fired. Closing dialogue UI...");
+            DialogueManager.DialogueUI.Close();
+        }
+    }
+
+    private void OnCutsceneFinishedHandler(OnCutsceneFinishedEvent finishedEvent)
+    {
+        if (finishedEvent.Cutscene.IsDialogueCutscene)
+        {
+            Debug.Log("Dialogue cutscene finished event call back fired. Opening dialogue UI...");
+            DialogueManager.DialogueUI.Open();
+        }
+    }
 }

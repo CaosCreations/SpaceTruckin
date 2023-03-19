@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public static class ButtonExtensions
 {
     public static Button AddOnClick(this Button self, UnityAction callback,
-        UISoundEffect soundEffect = UISoundEffect.Confirm)
+        UISoundEffect soundEffect = UISoundEffect.Confirm, bool removeListeners = true)
     {
         if (self == null)
         {
@@ -13,7 +13,11 @@ public static class ButtonExtensions
             return self;
         }
 
-        self.onClick.RemoveAllListeners();
+        if (removeListeners)
+        {
+            self.onClick.RemoveAllListeners();
+        }
+
         self.onClick.AddListener(callback);
 
         if (UISoundEffectsManager.Instance != null)

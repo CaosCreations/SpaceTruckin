@@ -1,6 +1,6 @@
 ﻿using System;
 
 [Serializable]
-public class CalendarDateTimeMap : SerialisableDictionary<Date, TimeOfDay>
+public class CalendarDateTimeMap : SerializableDictionary<Date, TimeOfDay>
 {
 }

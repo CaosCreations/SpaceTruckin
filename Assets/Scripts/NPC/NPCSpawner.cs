@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Events;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class NPCSpawner : MonoBehaviour
 
     private void Start()
     {
-        CalendarManager.OnEndOfDay += CueSpawnsForToday;
+        SingletonManager.EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
 
         // If we have passed any spawn dates set in the inspector when the game starts,
         // then remove them from the List.
@@ -41,6 +42,11 @@ public class NPCSpawner : MonoBehaviour
         despawnsForToday.ForEach(x => SpawnAtTime(x.DespawnTime, isActive: false));
     }
 
+    private void OnEndOfDayHandler(OnEndOfDayEvent evt)
+    {
+        CueSpawnsForToday();
+    }
+
     /// <summary>
     /// Spawn/despawn an NPC at a specified time of day
     /// </summary>
@@ -49,7 +55,7 @@ public class NPCSpawner : MonoBehaviour
     private void SpawnAtTime(TimeOfDay timeOfDay, bool isActive)
     {
         // The difference in game-time seconds between the start of the day and the scheduled spawn time.
-        double secondsFromDayStart = (timeOfDay.ToTimeSpan() - CalendarManager.Instance.DayStartTime).TotalSeconds;
+        double secondsFromDayStart = (timeOfDay.ToTimeSpan() - CalendarManager.DayStartTime).TotalSeconds;
 
         // Convert time period to real-time seconds that can be passed to a Coroutine. 
         float realTimeSecondsToWait = secondsFromDayStart.ToRealTimeSeconds();
@@ -67,8 +73,7 @@ public class NPCSpawner : MonoBehaviour
     {
         spawnDateTimes.ForEach(x =>
         {
-            if (x.SpawnDate < CalendarManager.Instance.CurrentDate
-                && x.DespawnDate < CalendarManager.Instance.CurrentDate)
+            if (x.SpawnDate < CalendarManager.CurrentDate && x.DespawnDate < CalendarManager.CurrentDate)
             {
                 spawnDateTimes.Remove(x);
             }

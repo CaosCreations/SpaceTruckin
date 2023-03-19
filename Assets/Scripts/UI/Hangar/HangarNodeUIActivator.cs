@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class HangarNodeUIActivator : InteractableObject
 {
-    public int hangarNode;
+    [SerializeField]
+    private int hangarNode;
 
     protected override void Start()
     {

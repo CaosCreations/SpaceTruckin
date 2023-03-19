@@ -1,6 +1,6 @@
 ﻿public interface IOutcomeBreakdown
 {
-    void ArchiveOutcomeElements(ScheduledMission scheduled);
-    void LogOutcomeElements();
-    void ResetOutcomeElements();
+    void ArchiveOutcome(ScheduledMission scheduled, bool isMissionModifierOutcome);
+    void LogOutcome();
+    void ResetOutcome();
 }

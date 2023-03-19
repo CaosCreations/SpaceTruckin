@@ -1,4 +1,5 @@
-﻿using PixelCrushers.DialogueSystem;
+﻿using Events;
+using PixelCrushers.DialogueSystem;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -40,8 +41,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         UnlockMissions();
         RegisterLuaFunctions();
 
-        CalendarManager.OnEndOfDay += UpdateMissionSchedule;
-        CalendarManager.OnEndOfDay += ApplyOfferExpiryConsequences;
+        SingletonManager.EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
     }
 
     /// <summary>
@@ -112,7 +112,8 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
         // Todo: Don't increment if mission failed?* 
         scheduled.Pilot.MissionsCompleted++;
-        scheduled.MissionToArchive.MissionsCompletedByPilotAtTimeOfMission = scheduled.Pilot.MissionsCompleted;
+
+        scheduled.MissionToArchive.ArchivedPilotInfo.MissionsCompletedAtTimeOfMission = scheduled.Pilot.MissionsCompleted;
 
         // Add the object to the archive once all outcomes have been processed. 
         ArchivedMissionsManager.AddToArchive(scheduled.Mission.MissionToArchive);
@@ -187,6 +188,12 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
                 PlayerManager.OnFinancialTransaction += mission.UnlockIfConditionMet;
             }
         }
+    }
+
+    private void OnEndOfDayHandler(OnEndOfDayEvent evt)
+    {
+        UpdateMissionSchedule();
+        ApplyOfferExpiryConsequences();
     }
 
     #region Scheduled Missions

@@ -33,7 +33,14 @@ public class HangarEditor : MonoBehaviour
     {
         try
         {
+            // Ensure we have ships and missions available 
+            PilotsEditor.HireAll();
+            MissionsEditor.AcceptAll();
+
             Ship ship = DockShipAtAvailableNode(out int hangarNode);
+
+            // Prepare ship for launch
+            ShipsEditor.MaxOutResources();
 
             Mission mission = MissionsManager.Instance.Missions
                 .FirstOrDefault(x => MissionsManager.GetScheduledMission(x) == null);

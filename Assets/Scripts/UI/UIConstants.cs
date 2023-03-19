@@ -53,10 +53,12 @@ public class UIConstants : MonoBehaviour
     // UI element text
     public const string NextCardText = "Next";
     public const string CloseCardCycleText = "Close";
+    public const string EveningStartText = "Evening begins...";
+    public const string MorningStartText = "Morning begins...";
 
 
     // UI element dimensions 
-    public static readonly Vector3 ShipPreviewOffset = new Vector3(-3f, 0f, 0f);
+    public static readonly Vector3 ShipPreviewOffset = new Vector3(-1.5f, 0f, 0f);
     public static readonly Vector3 ShipPreviewRotationSpeed = new Vector3(0f, 0.15f, 0f);
     public const float ShipPreviewScaleFactor = 0.85f;
 

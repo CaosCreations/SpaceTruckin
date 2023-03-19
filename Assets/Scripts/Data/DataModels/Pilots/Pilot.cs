@@ -62,6 +62,11 @@ public partial class Pilot : ScriptableObject
         saveData = await DataUtils.LoadFileAsync<PilotSaveData>(name, FolderName);
     }
 
+    public int GetAttributeLevelByType(PilotAttributeType attributeType)
+    {
+        return attributeType == PilotAttributeType.Navigation ? Navigation : Savviness;
+    }
+
     private void OnValidate()
     {
         // Cannot be below 1

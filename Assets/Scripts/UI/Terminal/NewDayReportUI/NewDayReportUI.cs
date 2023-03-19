@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using Events;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class NewDayReportUI : MonoBehaviour
 {
-    [SerializeField] private GameObject reportCardPrefab;
-    [SerializeField] private GameObject reportCardInstance;
     [SerializeField] private NewDayReportCard reportCard;
+    [SerializeField] private MissionModifierReportCard missionModifierReportCard;
     [SerializeField] private Text welcomeMessageText;
 
-    private Button nextCardButton;
     private int currentReportIndex;
 
     private TerminalUIManager terminalManager;
@@ -25,10 +25,14 @@ public class NewDayReportUI : MonoBehaviour
 
     private void Awake()
     {
-        CalendarManager.OnEndOfDay += () => HasBeenViewedToday = false;
+        SingletonManager.EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
 
         terminalManager = GetComponentInParent<TerminalUIManager>();
-        nextCardButton = GetComponentInChildren<Button>(includeInactive: true);
+    }
+
+    private void Start()
+    {
+        SingletonManager.EventService.Add<OnModifierReportCardClosedEvent>(OnModifierReportCardClosedHandler);
     }
 
     private void OnEnable()
@@ -46,13 +50,18 @@ public class NewDayReportUI : MonoBehaviour
         UIManager.RemoveOverriddenKey(PlayerConstants.ExitKey);
     }
 
+    private void OnEndOfDayHandler(OnEndOfDayEvent evt)
+    {
+        HasBeenViewedToday = false;
+    }
+
     public void Init()
     {
-        reportCardInstance.SetActive(true);
+        reportCard.gameObject.SetActive(true);
         currentReportIndex = 0;
-        reportCard.nextCardButton.SetText(UIConstants.NextCardText);
-        nextCardButton.AddOnClick(ShowNextReport);
-        nextCardButton.onClick.Invoke();
+        reportCard.NextCardButton.SetText(UIConstants.NextCardText);
+        UpdateNextCardButtonListener();
+        ShowNextReport();
 
         // Insert Player Data in the welcome message, e.g. their name 
         welcomeMessageText.ReplaceTemplates();
@@ -62,27 +71,54 @@ public class NewDayReportUI : MonoBehaviour
     {
         if (CurrentMissionToReport != null)
         {
+            reportCard.gameObject.SetActive(true);
             reportCard.ShowReport(CurrentMissionToReport);
-
             CurrentMissionToReport.HasBeenViewedInReport = true;
 
-            if (currentReportIndex < MissionsToAppearInReport.Count - 1)
+            if (!CurrentMissionToReport.Mission.HasModifier || CurrentMissionToReport.ArchivedModifierOutcome.HasBeenViewedInReport)
             {
-                currentReportIndex++;
+                UpdateNextCardButtonListener();
             }
-            else
-            {
-                reportCard.nextCardButton.AddOnClick(CloseReport).SetText(UIConstants.CloseCardCycleText);
-            }
+        }
+    }
+
+    private void UpdateNextCardButtonListener()
+    {
+        if (!CurrentMissionToReport.HasBeenViewedInReport
+            || (CurrentMissionToReport.Mission.HasModifier && !CurrentMissionToReport.ArchivedModifierOutcome.HasBeenViewedInReport))
+        {
+            reportCard.NextCardButton.AddOnClick(ShowNextReport);
+            return;
+        }
+
+        // Cycle through to the next report card or add a CloseReport listener if we've reached the end
+        if (currentReportIndex < MissionsToAppearInReport.Count - 1)
+        {
+            currentReportIndex++;
+        }
+        else
+        {
+            reportCard.NextCardButton.AddOnClick(CloseReport).SetText(UIConstants.CloseCardCycleText);
+        }
+    }
+
+    private void OnModifierReportCardClosedHandler()
+    {
+        if (MissionsToAppearInReport.All(m => m.HasBeenViewedInReport))
+        {
+            terminalManager.SwitchPanel(TerminalUIManager.Tab.Missions);
+        }
+        else
+        {
+            ShowNextReport();
         }
     }
 
     private void CloseReport()
     {
-        reportCardInstance.SetActive(false);
+        reportCard.gameObject.SetActive(false);
         gameObject.SetActive(false);
-        terminalManager.MissionsPanel.SetActive(true);
-        terminalManager.MissionsButton.SetColour(terminalManager.MissionsPanel.GetImageColour());
+        terminalManager.SwitchPanel(TerminalUIManager.Tab.Missions);
 
         // Allow the exit key to be used as normal now that the report has finished.
         UIManager.RemoveOverriddenKey(PlayerConstants.ExitKey);
@@ -90,9 +126,9 @@ public class NewDayReportUI : MonoBehaviour
 
     private void Update()
     {
-        if (reportCardInstance != null && Input.GetKeyDown(PlayerConstants.ExitKey))
+        if (reportCard != null && reportCard.gameObject != null && Input.GetKeyDown(PlayerConstants.ExitKey))
         {
             CloseReport();
         }
     }
-}
+} 

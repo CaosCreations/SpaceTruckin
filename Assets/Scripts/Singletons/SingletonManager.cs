@@ -27,7 +27,7 @@ public class SingletonManager : MonoBehaviour
         if (saveDataEnabled)
         {
             LoadAllSingletonData();
-            CalendarManager.OnEndOfDay += SaveAllSingletonData;
+            EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
         }
         InitSingletons();
     }
@@ -68,5 +68,10 @@ public class SingletonManager : MonoBehaviour
         MessagesManager.Instance.SaveData();
         LicencesManager.Instance.SaveData();
         CalendarManager.Instance.SaveData();
+    }
+
+    private void OnEndOfDayHandler(OnEndOfDayEvent evt)
+    {
+        SaveAllSingletonData();
     }
 }
