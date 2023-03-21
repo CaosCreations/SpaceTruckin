@@ -1,10 +1,20 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BatteryChargePoint : InteractableObject
 {
     [SerializeField]
     private float chargeTimeInSeconds = 2f;
+
+    [SerializeField]
+    private AnimationTimeHandler animationTimeHandler;
+
+    private BatteryCharging currentBatteryCharging;
+
+    protected override void Start()
+    {
+        base.Start();
+        animationTimeHandler.OnAnimationEnded += OnAnimationEndedHandler;
+    }
 
     private void OnTriggerStay(Collider other)
     {
@@ -14,23 +24,23 @@ public class BatteryChargePoint : InteractableObject
 
             if (batteryCharging != null && !batteryCharging.IsCharged)
             {
-                StartCoroutine(ChargeBattery(batteryCharging));
+                currentBatteryCharging = batteryCharging;
+                animationTimeHandler.HandleAnimation();
             }
         }
     }
 
-    private IEnumerator ChargeBattery(BatteryCharging batteryCharging)
+    private void OnAnimationEndedHandler()
     {
-        Debug.Log("Charge battery routine starting...");
-        yield return new WaitForSeconds(chargeTimeInSeconds);
+        if (currentBatteryCharging == null)
+            return;
 
-        Debug.Log("Charge battery routine finished.");
-        batteryCharging.Charge();
+        currentBatteryCharging.Charge();
     }
 
-    protected override bool IsIconVisible => 
-        IsPlayerInteractable 
-        && HangarManager.CurrentBatteryBeingHeld != null 
+    protected override bool IsIconVisible =>
+        IsPlayerInteractable
+        && HangarManager.CurrentBatteryBeingHeld != null
         && !HangarManager.CurrentBatteryBeingHeld.BatteryCharging.IsCharged;
 
     private void OnValidate()

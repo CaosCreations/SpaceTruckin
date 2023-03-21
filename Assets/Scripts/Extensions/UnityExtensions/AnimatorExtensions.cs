@@ -18,4 +18,14 @@ public static class AnimatorExtensions
     {
         return self.parameters.FirstOrDefault(x => x.name == parameterName) != null;
     }
+
+    public static bool IsPlaying(this Animator self)
+    {
+        return self.GetCurrentAnimatorStateInfo(0).length > self.GetCurrentAnimatorStateInfo(0).normalizedTime;
+    }
+
+    public static bool IsPlaying(this Animator self, string stateName)
+    {
+        return self.IsPlaying() && self.GetCurrentAnimatorStateInfo(0).IsName(stateName);
+    }
 }
