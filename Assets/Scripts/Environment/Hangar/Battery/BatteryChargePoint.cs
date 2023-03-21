@@ -14,6 +14,7 @@ public class BatteryChargePoint : InteractableObject
     {
         base.Start();
         animationTimeHandler.OnAnimationEnded += OnAnimationEndedHandler;
+        animationTimeHandler.SetActive(false);
     }
 
     private void OnTriggerStay(Collider other)
@@ -25,6 +26,7 @@ public class BatteryChargePoint : InteractableObject
             if (batteryCharging != null && !batteryCharging.IsCharged)
             {
                 currentBatteryCharging = batteryCharging;
+                animationTimeHandler.SetActive(true);
                 animationTimeHandler.HandleAnimation();
             }
         }
@@ -36,6 +38,8 @@ public class BatteryChargePoint : InteractableObject
             return;
 
         currentBatteryCharging.Charge();
+        animationTimeHandler.SetActive(false);
+        currentBatteryCharging = null;
     }
 
     protected override bool IsIconVisible =>
