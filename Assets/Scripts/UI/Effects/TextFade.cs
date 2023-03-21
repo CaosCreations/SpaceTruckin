@@ -59,7 +59,7 @@ public class TextFade : MonoBehaviour
     public void SetTextWithFade(string textContent)
     {
         // If text is already there, fade it out first 
-        if (text.text.Length > 0 && text.color.a >= 1)
+        if (!string.IsNullOrWhiteSpace(text.text) && text.color.a >= 1)
         {
             StartCoroutine(FadeOut(() =>
             {
@@ -74,8 +74,19 @@ public class TextFade : MonoBehaviour
 
     private void SetTextAndFadeIn(string textContent)
     {
+        text.color = new Color(text.color.r, text.color.g, text.color.b, 0f);
         text.SetText(textContent);
         FadeInText();
+    }
+
+    public void Clear()
+    {
+        text.Clear();
+    }
+
+    public void SetText(string textContent)
+    {
+        text.SetText(textContent);
     }
 
     private void OnValidate()

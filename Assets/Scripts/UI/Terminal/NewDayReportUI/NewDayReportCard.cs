@@ -8,11 +8,16 @@ using UnityEngine.UI;
 public class NewDayReportCard : MonoBehaviour
 {
     public Image ShipAvatar;
-    public Text DetailsText;
+    public TextFade DetailsText;
     public Button NextCardButton;
 
     [SerializeField]
     private MissionModifierReportCard modifierReportCard;
+
+    public void Init()
+    {
+        DetailsText.Clear();
+    }
 
     public virtual void ShowReport(ArchivedMission archivedMission)
     {
@@ -28,7 +33,7 @@ public class NewDayReportCard : MonoBehaviour
         ShipAvatar.sprite = archivedMission.Pilot.Ship.Avatar;
 
         ArchivedMissionViewModel viewModel = new(archivedMission);
-        DetailsText.SetText(BuildReportDetails(viewModel));
+        DetailsText.SetTextWithFade(BuildReportDetails(viewModel));
 
         if (archivedMission.Mission.HasModifier)
         {
