@@ -46,6 +46,11 @@ public class UniversalHangarNodeUI : UICanvasBase
 
     private void OverviewButtonHandler()
     {
+        StopMinigame();
+    }
+
+    private void StopMinigame()
+    {
         shipPreview.SetActive(true);
         SceneRepairsMinigamesManager.Instance.StopMinigame();
     }
@@ -97,6 +102,11 @@ public class UniversalHangarNodeUI : UICanvasBase
         if (shipPreview != null)
         {
             shipPreview.transform.Rotate(UIConstants.ShipPreviewRotationSpeed);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape) && SceneRepairsMinigamesManager.Instance.IsRepairsMinigameRunning())
+        {
+            StopMinigame();
         }
 
         CheckFueling();
