@@ -3,9 +3,6 @@
 public class BatteryChargePoint : InteractableObject
 {
     [SerializeField]
-    private float chargeTimeInSeconds = 2f;
-
-    [SerializeField]
     private AnimationTimeHandler animationTimeHandler;
 
     private BatteryCharging currentBatteryCharging;
@@ -46,9 +43,4 @@ public class BatteryChargePoint : InteractableObject
         IsPlayerInteractable
         && HangarManager.CurrentBatteryBeingHeld != null
         && !HangarManager.CurrentBatteryBeingHeld.BatteryCharging.IsCharged;
-
-    private void OnValidate()
-    {
-        chargeTimeInSeconds = Mathf.Max(0f, chargeTimeInSeconds);
-    }
 }

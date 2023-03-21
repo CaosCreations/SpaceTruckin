@@ -20,12 +20,12 @@ public class AnimationTimeHandler : MonoBehaviour
         Debug.Log($"Animation from {gameObject.name} has finished. State playing: {stateName}.");
     }
 
-    void Start()
+    private void Start()
     {
         Animator = GetComponent<Animator>();
     }
 
-    void Update()
+    private void Update()
     {
         if (!isRecording)
             return;
