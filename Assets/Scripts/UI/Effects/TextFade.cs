@@ -17,6 +17,9 @@ public class TextFade : MonoBehaviour
     [SerializeField]
     private bool startFadeOut;
 
+    [SerializeField]
+    private bool startFadeInAndOut;
+
     public void FadeOutText()
     {
         StartCoroutine(FadeOut());
@@ -55,8 +58,24 @@ public class TextFade : MonoBehaviour
 
     public void SetTextWithFade(string textContent)
     {
-        text.SetText(textContent);
+        // If text is already there, fade it out first 
+        if (text.text.Length > 0 && text.color.a >= 1)
+        {
+            StartCoroutine(FadeOut(() =>
+            {
+                SetTextAndFadeIn(textContent);
+            }));
+        }
+        else
+        {
+            SetTextAndFadeIn(textContent);
+        }
+    }
 
+    private void SetTextAndFadeIn(string textContent)
+    {
+        text.SetText(textContent);
+        FadeInText();
     }
 
     private void OnValidate()
@@ -76,6 +95,12 @@ public class TextFade : MonoBehaviour
         {
             FadeOutText();
             startFadeOut = false;
+        }
+
+        if (startFadeInAndOut)
+        {
+            SetTextWithFade("New text here");
+            startFadeInAndOut = false;
         }
     }
 }
