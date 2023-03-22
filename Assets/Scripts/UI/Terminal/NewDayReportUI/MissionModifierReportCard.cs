@@ -27,7 +27,7 @@ public class MissionModifierReportCard : NewDayReportCard
         var viewModel = new ArchivedMissionModifierViewModel(this.archivedMission.ArchivedModifierOutcome);
 
         // Set text based on the mission modifier outcome that occurred and its sub-outcomes 
-        DetailsText.SetText(BuildModifierDetails(viewModel, this.archivedMission.Pilot));
+        DetailsText.SetTextWithFade(BuildModifierDetails(viewModel, this.archivedMission.Pilot));
 
         SingletonManager.EventService.Dispatch<OnModifierReportCardOpenedEvent>();
     }
