@@ -10,9 +10,15 @@ public class NewDayReportCard : MonoBehaviour
     public Image ShipAvatar;
     public TextFade DetailsText;
     public Button NextCardButton;
+    public ElementWrapAround ElementWrapAround;
 
     [SerializeField]
     private MissionModifierReportCard modifierReportCard;
+
+    private void Start()
+    {
+        ElementWrapAround = GetComponent<ElementWrapAround>();
+    }
 
     public void Init()
     {

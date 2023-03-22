@@ -372,7 +372,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 2161954804819691878}
-  fadeSpeed: 1
+  timeCoeff: 1
+  duration: 1.5
   startFadeIn: 0
   startFadeOut: 0
   startFadeInAndOut: 0
@@ -388,6 +389,7 @@ GameObject:
   - component: {fileID: 382598800573166178}
   - component: {fileID: 3797956035454303975}
   - component: {fileID: 3569161975002078259}
+  - component: {fileID: 290558673121337733}
   m_Layer: 5
   m_Name: NewDayReportCard
   m_TagString: Untagged
@@ -433,6 +435,7 @@ MonoBehaviour:
   ShipAvatar: {fileID: 3162707901681970244}
   DetailsText: {fileID: 5579808588418497019}
   NextCardButton: {fileID: 7962913063520823360}
+  ElementWrapAround: {fileID: 0}
   modifierReportCard: {fileID: 0}
 --- !u!222 &3797956035454303975
 CanvasRenderer:
@@ -472,3 +475,17 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &290558673121337733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9116196081526937484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5736e8b647e3114cb0852a64fcc4490, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 100
+  start: 0
