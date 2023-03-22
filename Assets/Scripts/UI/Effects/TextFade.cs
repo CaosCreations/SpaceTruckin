@@ -9,7 +9,10 @@ public class TextFade : MonoBehaviour
     private Text text;
 
     [SerializeField]
-    private float fadeSpeed;
+    private float timeCoeff = 1f;
+
+    [SerializeField]
+    private float duration = 1.5f;
 
     [SerializeField]
     private bool startFadeIn;
@@ -22,34 +25,27 @@ public class TextFade : MonoBehaviour
 
     public void FadeOutText()
     {
-        StartCoroutine(FadeOut());
-    }
-
-    private IEnumerator FadeOut(Action action = null)
-    {
-        while (text.color.a > 0)
-        {
-            var color = text.color;
-            color.a -= Time.deltaTime * fadeSpeed;
-            text.color = color;
-            yield return null;
-        }
-
-        action?.Invoke();
+        StartCoroutine(Fade(0f));
     }
 
     private void FadeInText()
     {
-        StartCoroutine(FadeIn());
+        StartCoroutine(Fade(1f));
     }
 
-    private IEnumerator FadeIn(Action action = null)
+    private IEnumerator Fade(float targetAlpha, Action action = null)
     {
-        while (text.color.a < 1)
+        targetAlpha = Mathf.Clamp(targetAlpha, 0f, 1f);
+        var elapsedTime = 0f;
+        var startingColor = text.color;
+
+        // The colour we want to end up with
+        var targetColor = new Color(startingColor.r, startingColor.g, startingColor.b, targetAlpha);
+
+        while (elapsedTime < duration)
         {
-            var color = text.color;
-            color.a += Time.deltaTime * fadeSpeed;
-            text.color = color;
+            elapsedTime += Time.deltaTime * timeCoeff;
+            text.color = Color.Lerp(startingColor, targetColor, elapsedTime);
             yield return null;
         }
 
@@ -61,7 +57,7 @@ public class TextFade : MonoBehaviour
         // If text is already there, fade it out first 
         if (!string.IsNullOrWhiteSpace(text.text) && text.color.a >= 1)
         {
-            StartCoroutine(FadeOut(() =>
+            StartCoroutine(Fade(0f, () =>
             {
                 SetTextAndFadeIn(textContent);
             }));
@@ -91,7 +87,12 @@ public class TextFade : MonoBehaviour
 
     private void OnValidate()
     {
-        fadeSpeed = Mathf.Max(0f, fadeSpeed);
+        timeCoeff = Mathf.Max(1f, timeCoeff);
+    }
+
+    private void Start()
+    {
+        timeCoeff = Mathf.Max(1f, timeCoeff);
     }
 
     private void Update()
