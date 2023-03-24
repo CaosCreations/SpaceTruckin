@@ -15,6 +15,8 @@ public static class AnimationConstants
 
     public const string NpcWalkParameter = "Walk";
     public const string NpcIdleParameterPrefix = "Idle";
+    public const string NpcMorningParameter = "Morning";
+    public const string NpcEveningParameter = "Evening";
 
     // Input vectors 
     public static readonly Vector3 Vector3UpLeft = new Vector3(-1f, 1f);
