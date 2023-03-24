@@ -1,4 +1,4 @@
-using UnityEngine;
+using Events;
 
 public class NPCAnimationManager : AnimationManager<NPCAnimationParameterType>
 {
@@ -6,33 +6,58 @@ public class NPCAnimationManager : AnimationManager<NPCAnimationParameterType>
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
+        if (Instance != null)
         {
             Destroy(gameObject);
             return;
         }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
-    public void PlayAnimation(NPCAnimated npcAnimated, NPCAnimationParameterType npcAnimationParameterType, bool isOn)
+    private void Start()
     {
-        if (!npcAnimated.ParameterMap.ContainsKey(npcAnimationParameterType))
+        SingletonManager.EventService.Add<OnEveningStartEvent>(OnEveningStartHandler);
+        SingletonManager.EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
+
+        SetMorningParameters();
+    }
+
+    public void PlayAnimation(NPCAnimated npcAnimated, string parameterName, bool isOn)
+    {
+        npcAnimated.SetBoolAfterReset(parameterName, isOn);
+    }
+
+    private void SetAnimationParameterByDateAndPhase(NPC npc, TimeOfDay.Phase phase)
+    {
+        var animationContext = npc.Data.GetAnimationContextByDate(CalendarManager.CurrentDate);
+        var parameterName = animationContext.GetParameterNameByPhase(phase);
+        PlayAnimation(npc.Animated, parameterName, true);
+    }
+
+    private void SetMorningParameters()
+    {
+        foreach (var npc in NPCManager.Npcs)
         {
-            // There is no mapping at all
-            LogMissingParameterMapping(npcAnimationParameterType);
+            SetAnimationParameterByDateAndPhase(npc, TimeOfDay.Phase.Morning);
         }
-        else if (!npcAnimated.Animator.ContainsParameterWithName(npcAnimated.ParameterMap[npcAnimationParameterType]))
+    }
+
+    private void SetEveningParameters()
+    {
+        foreach (var npc in NPCManager.Npcs)
         {
-            // There is a key but not a value that matches a parameter on the Animator 
-            Debug.LogError($"Animation parameter with name '{npcAnimated.ParameterMap[npcAnimationParameterType]} does not exist on {nameof(NPCAnimated)}.");
+            SetAnimationParameterByDateAndPhase(npc, TimeOfDay.Phase.Evening);
         }
-        else
-        {
-            npcAnimated.Animator.SetBool(npcAnimated.ParameterMap[npcAnimationParameterType], isOn);
-        }
+    }
+
+    private void OnEndOfDayHandler(OnEndOfDayEvent evt)
+    {
+        SetMorningParameters();
+    }
+
+    private void OnEveningStartHandler()
+    {
+        SetEveningParameters();
     }
 }

@@ -3,13 +3,12 @@ using UnityEngine;
 
 public static class AnimatorExtensions
 {
-    public static void ResetAndSetBoolTrue(this Animator self, string parameterName)
+    public static void ResetBools(this Animator self)
     {
-        self.SetAllBoolParameters(false);
-        self.SetBool(parameterName, true);
+        self.SetAllBools(false);
     }
 
-    public static void SetAllBoolParameters(this Animator self, bool value)
+    public static void SetAllBools(this Animator self, bool value)
     {
         foreach (var parameter in self.parameters)
         {
