@@ -3113,6 +3113,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2487104512228079958}
   - component: {fileID: 2487104512228079956}
+  - component: {fileID: 2838258624750512547}
   - component: {fileID: 2487104512228079963}
   m_Layer: 5
   m_Name: Stefano Dialogue UI
@@ -3151,6 +3152,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2487104512228079959}
   m_CullTransparentMesh: 0
+--- !u!114 &2838258624750512547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2487104512228079959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ad656a56b22cf4b8fba5fcdc18d97f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keyCodes: 2000000065000000
 --- !u!114 &2487104512228079963
 MonoBehaviour:
   m_ObjectHideFlags: 0
