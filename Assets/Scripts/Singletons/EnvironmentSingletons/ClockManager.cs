@@ -15,11 +15,6 @@ public class ClockManager : MonoBehaviour
     private static bool isEvening;
     private static bool showOnGui = false;
 
-    public static TimeOfDay.Phase CurrentTimeOfDayPhase => 
-        CurrentTime.Hours < CalendarManager.EveningStartTime.Hours && CurrentTime.Hours >= CalendarManager.MorningStartTime.Hours
-        ? TimeOfDay.Phase.Morning 
-        : TimeOfDay.Phase.Evening;
-
     private void Start()
     {
         CalculateTickSpeedMultiplier();
