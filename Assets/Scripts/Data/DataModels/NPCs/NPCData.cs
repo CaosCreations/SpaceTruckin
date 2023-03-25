@@ -3,6 +3,7 @@
 [CreateAssetMenu(fileName = "NPCData", menuName = "ScriptableObjects/NPCData", order = 1)]
 public class NPCData : ScriptableObject
 {
+    [field: Header("Location")]
     [field: Tooltip("Where the NPC appears by default in the morning and evening respectively")]
     [field: SerializeField]
     public NPCLocation DefaultLocation { get; private set; } = new();
@@ -11,6 +12,7 @@ public class NPCData : ScriptableObject
     [field: SerializeField]
     public NPCLocationByDateContainer LocationByDateContainer { get; private set; } = new();
 
+    [field: Header("Animation")]
     [field: Tooltip("What animation parameters are active by default in the morning and evening respectively")]
     [field: SerializeField]
     public NPCAnimationContext DefaultAnimationContext { get; private set; } = new();
