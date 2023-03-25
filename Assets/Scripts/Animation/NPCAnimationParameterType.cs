@@ -1,4 +1,4 @@
 public enum NPCAnimationParameterType
 {
-    Idle, Walk
+    Idle, Walk, Morning, Evening
 }
