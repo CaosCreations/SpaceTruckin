@@ -57,6 +57,7 @@ public class NewDayReportUI : MonoBehaviour
 
     public void Init()
     {
+        reportCard.Init();
         reportCard.gameObject.SetActive(true);
         currentReportIndex = 0;
         reportCard.NextCardButton.SetText(UIConstants.NextCardText);

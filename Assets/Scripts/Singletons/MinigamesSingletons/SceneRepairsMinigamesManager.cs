@@ -83,6 +83,17 @@ public class SceneRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesMana
             SceneLoadingManager.Instance.UnloadSceneAsync(minigame.Scene);
     }
 
+    public bool IsRepairsMinigameRunning()
+    {
+        var minigame = Instance.GetCurrentMinigame();
+        
+        if (minigame == null)
+            return false;
+
+        var minigameSceneName = SceneLoadingManager.GetSceneNameByType(minigame.Scene);
+        return SceneLoadingManager.IsLoadedSceneName(minigameSceneName);
+    }
+
     private void OnSceneLoadedHandler(OnSceneLoadedEvent loadedEvent)
     {
         if (!loadedEvent.IsRepairsMinigameScene)

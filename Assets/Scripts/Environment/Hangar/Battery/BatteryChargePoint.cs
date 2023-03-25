@@ -2,21 +2,45 @@
 
 public class BatteryChargePoint : InteractableObject
 {
+    [SerializeField]
+    private AnimationTimeHandler animationTimeHandler;
+
+    private BatteryCharging currentBatteryCharging;
+
+    protected override void Start()
+    {
+        base.Start();
+        animationTimeHandler.OnAnimationEnded += OnAnimationEndedHandler;
+        animationTimeHandler.SetActive(false);
+    }
+
     private void OnTriggerStay(Collider other)
     {
-        if (Input.GetKey(PlayerConstants.ActionKey) && IsPlayerInteractable)
+        if (Input.GetKeyDown(PlayerConstants.ActionKey) && IsPlayerInteractable)
         {
             BatteryCharging batteryCharging = other.GetComponentInChildren<BatteryCharging>();
 
             if (batteryCharging != null && !batteryCharging.IsCharged)
             {
-                batteryCharging.Charge();
+                currentBatteryCharging = batteryCharging;
+                animationTimeHandler.SetActive(true);
+                animationTimeHandler.HandleAnimation();
             }
         }
     }
 
-    protected override bool IsIconVisible => 
-        IsPlayerInteractable 
-        && HangarManager.CurrentBatteryBeingHeld != null 
+    private void OnAnimationEndedHandler()
+    {
+        if (currentBatteryCharging == null)
+            return;
+
+        currentBatteryCharging.Charge();
+        animationTimeHandler.SetActive(false);
+        currentBatteryCharging = null;
+    }
+
+    protected override bool IsIconVisible =>
+        IsPlayerInteractable
+        && HangarManager.CurrentBatteryBeingHeld != null
         && !HangarManager.CurrentBatteryBeingHeld.BatteryCharging.IsCharged;
 }

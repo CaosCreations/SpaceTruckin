@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShipAvatar: {fileID: 0}
-  DetailsText: {fileID: 7258979168263460216}
+  DetailsText: {fileID: 6844270538463357995}
   NextCardButton: {fileID: 1458091322866807902}
   modifierReportCard: {fileID: 0}
 --- !u!1 &790747300076318377
@@ -107,6 +107,7 @@ GameObject:
   - component: {fileID: 1508311414935807671}
   - component: {fileID: 3758613609218010173}
   - component: {fileID: 7258979168263460216}
+  - component: {fileID: 6844270538463357995}
   m_Layer: 5
   m_Name: ReportDetailsText
   m_TagString: Untagged
@@ -175,7 +176,24 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Report Details Text
+  m_Text: 
+--- !u!114 &6844270538463357995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 790747300076318377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14f74b6be1a1a5c42a2c43de49dd1b66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 7258979168263460216}
+  fadeSpeed: 1
+  startFadeIn: 0
+  startFadeOut: 0
+  startFadeInAndOut: 0
 --- !u!1 &3616845420360585197
 GameObject:
   m_ObjectHideFlags: 0

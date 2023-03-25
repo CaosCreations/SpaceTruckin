@@ -29,4 +29,14 @@ public static class AnimatorExtensions
         var param = self.parameters.FirstOrDefault(p => p.type == AnimatorControllerParameterType.Bool && self.GetBool(p.name));
         return param != null ? param.name : default;
     }
+
+    public static bool IsPlaying(this Animator self)
+    {
+        return self.GetCurrentAnimatorStateInfo(0).length > self.GetCurrentAnimatorStateInfo(0).normalizedTime;
+    }
+
+    public static bool IsPlaying(this Animator self, string stateName)
+    {
+        return self.IsPlaying() && self.GetCurrentAnimatorStateInfo(0).IsName(stateName);
+    }
 }

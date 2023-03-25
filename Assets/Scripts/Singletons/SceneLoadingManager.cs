@@ -23,6 +23,8 @@ public class SceneLoadingManager : MonoBehaviour
         { SceneType.TileMinigame, "TileMinigameScene" }
     };
 
+    private readonly HashSet<string> loadedSceneNames = new();
+
     private void Awake()
     {
         if (Instance != null)
@@ -50,6 +52,7 @@ public class SceneLoadingManager : MonoBehaviour
         if (SingletonManager.Instance == null)
             return;
 
+        loadedSceneNames.Add(scene.name);
         SingletonManager.EventService.Dispatch(new OnSceneLoadedEvent(scene));
     }
 
@@ -58,6 +61,7 @@ public class SceneLoadingManager : MonoBehaviour
         if (SingletonManager.Instance == null)
             return;
 
+        loadedSceneNames.Remove(scene.name);
         SingletonManager.EventService.Dispatch(new OnSceneUnloadedEvent(scene));
     }
 
@@ -212,5 +216,16 @@ public class SceneLoadingManager : MonoBehaviour
     {
         var loadedScenes = GetLoadedScenes();
         return loadedScenes.Any(scene => scene.name == sceneName);
+    }
+
+    public static bool IsLoadedSceneName(string sceneName)
+    {
+        return Instance.loadedSceneNames.Contains(sceneName);
+    }
+
+    public static bool IsLoadedSceneName(SceneType sceneType)
+    {
+        var sceneName = GetSceneNameByType(sceneType);
+        return Instance.loadedSceneNames.Contains(sceneName);
     }
 }
