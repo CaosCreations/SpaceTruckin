@@ -16,4 +16,9 @@ public class NPC : MonoBehaviour
     {
         Data.LocationByDateContainer.InitLookup();
     }
+
+    public override string ToString()
+    {
+        return $"NPC with name '{gameObject.name}'";
+    }
 }

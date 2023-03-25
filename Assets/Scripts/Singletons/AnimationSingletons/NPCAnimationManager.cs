@@ -1,4 +1,5 @@
 using Events;
+using UnityEngine;
 
 public class NPCAnimationManager : AnimationManager<NPCAnimationParameterType>
 {
@@ -30,8 +31,18 @@ public class NPCAnimationManager : AnimationManager<NPCAnimationParameterType>
 
     private void SetAnimationParameterByDateAndPhase(NPC npc, TimeOfDay.Phase phase)
     {
+        if (npc.Animated == null)
+            return;
+
         var animationContext = npc.Data.GetAnimationContextByDate(CalendarManager.CurrentDate);
         var parameterName = animationContext.GetParameterNameByPhase(phase);
+
+        if (string.IsNullOrWhiteSpace(parameterName))
+        {
+            Debug.LogWarning(npc + " has no animation context parameter (default nor date/phase-specific)");
+            return;
+        }
+
         PlayAnimation(npc.Animated, parameterName, true);
     }
 
