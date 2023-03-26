@@ -5,10 +5,7 @@ public class NPCManager : MonoBehaviour
 {
     public static NPCManager Instance { get; private set; }
 
-    [SerializeField]
-    private NPCDataContainer npcDataContainer;
-
-    private NPC[] npcs;
+    public static NPC[] Npcs { get; private set; }
 
     private void Awake()
     {
@@ -20,7 +17,7 @@ public class NPCManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        npcs = FindObjectsOfType<NPC>();
+        Npcs = FindObjectsOfType<NPC>();
     }
 
     private void Start()
@@ -46,7 +43,7 @@ public class NPCManager : MonoBehaviour
 
     private void SetMorningPositions()
     {
-        foreach (var npc in npcs)
+        foreach (var npc in Npcs)
         {
             SetNpcPosition(npc, TimeOfDay.Phase.Morning);
         }
@@ -54,7 +51,7 @@ public class NPCManager : MonoBehaviour
 
     private void SetEveningPositions()
     {
-        foreach (var npc in npcs)
+        foreach (var npc in Npcs)
         {
             SetNpcPosition(npc, TimeOfDay.Phase.Evening);
         }

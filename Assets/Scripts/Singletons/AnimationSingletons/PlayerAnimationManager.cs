@@ -40,6 +40,6 @@ public class PlayerAnimationManager : AnimationManager<PlayerAnimationParameterT
 
     public static void ResetBoolParameters()
     {
-        Instance.playerAnimator.SetAllBoolParameters(false);
+        Instance.playerAnimator.SetAllBools(false);
     }
 }
