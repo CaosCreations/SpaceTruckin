@@ -16,7 +16,6 @@ public class PauseMenuUI : UICanvasBase
     [SerializeField] private Image playerImage;
     [SerializeField] private Text playerNameText;
     [SerializeField] private Button mainMenuButton;
-    [SerializeField] private Button quitGameButton;
 
     private PauseMenuPanel currentPanel = PauseMenuPanel.None;
 
