@@ -14,13 +14,17 @@ public class MoneyText : MonoBehaviour
     [SerializeField] private string prefix;
     [SerializeField] private string totalEarningsPrefix;
 
+    private readonly string defaultPrefix = "$ ";
+
     private void Start()
     {
+        if (string.IsNullOrWhiteSpace(prefix))
+            prefix = defaultPrefix;
+
+        if (string.IsNullOrWhiteSpace(totalEarningsPrefix))
+            totalEarningsPrefix = defaultPrefix;
+
         UpdateMoneyText();
-
-        prefix ??= "$ ";
-        totalEarningsPrefix ??= "$ ";
-
         PlayerManager.OnFinancialTransaction += UpdateMoneyText;
     }
 
@@ -34,7 +38,5 @@ public class MoneyText : MonoBehaviour
         {
             totalEarningsAsText.SetText(totalEarningsPrefix + PlayerManager.Instance.TotalMoneyAcquired, FontType.Title);
         }
-
-
     }
 }
