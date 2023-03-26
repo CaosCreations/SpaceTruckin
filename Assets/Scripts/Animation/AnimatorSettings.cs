@@ -9,5 +9,8 @@ public class AnimatorSettings
     public AnimatorController AnimatorController { get; set; }
 
     [field: SerializeField]
+    public Sprite Sprite { get; set; }
+
+    [field: SerializeField]
     public Avatar Avatar { get; set; }
 }
