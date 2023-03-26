@@ -31,6 +31,11 @@ public class PauseMenuUI : UICanvasBase
         mainMenuButton.AddOnClick(GoToTitleScreen);
     }
 
+    private void OnEnable()
+    {
+        SwitchPanel(PauseMenuPanel.Main);
+    }
+
     private void SwitchPanel(PauseMenuPanel panel)
     {
         if (panel == currentPanel)
