@@ -366,6 +366,32 @@ MonoBehaviour:
       type: 3}
     alternatePortraits: []
     spritePortraits: []
+  - id: 14
+    fields:
+    - title: Name
+      value: MAX TEST
+      type: 0
+      typeString: 
+    - title: Pictures
+      value: '[]'
+      type: 3
+      typeString: CustomFieldType_Files
+    - title: Description
+      value: LEAVE THIS FOR TESTING
+      type: 0
+      typeString: 
+    - title: IsPlayer
+      value: False
+      type: 2
+      typeString: CustomFieldType_Boolean
+    - title: NodeColor
+      value: '#d82525ff'
+      type: 0
+      typeString: 
+    portrait: {fileID: 0}
+    spritePortrait: {fileID: 0}
+    alternatePortraits: []
+    spritePortraits: []
   items: []
   locations: []
   variables:
@@ -605,7 +631,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: 
+        value: <START>  [auto]
         type: 0
         typeString: 
       - title: Sequence
@@ -2137,8 +2163,8 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 0, y: 0}
-    canvasZoom: 0.64149636
+    canvasScrollPosition: {x: 278.21304, y: 3.5075684}
+    canvasZoom: 1.061496
   - id: 2
     fields:
     - title: Title
@@ -16698,7 +16724,7 @@ MonoBehaviour:
         type: 0
         typeString: CustomFieldType_Text
       - title: Dialogue Text
-        value: 
+        value: <START>  [auto]
         type: 0
         typeString: CustomFieldType_Text
       - title: Sequence
@@ -19149,8 +19175,8 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 0, y: 67.82668}
-    canvasZoom: 0.66449803
+    canvasScrollPosition: {x: 32.055096, y: 5.7773676}
+    canvasZoom: 0.634498
   - id: 13
     fields:
     - title: Title
@@ -59602,7 +59628,7 @@ MonoBehaviour:
   - id: 23
     fields:
     - title: Title
-      value: MAX TEST CONVO
+      value: MAX TEST CONVO (CUTSCENE)
       type: 0
       typeString: CustomFieldType_Text
     - title: Description
@@ -60088,7 +60114,7 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 0, y: 6.1622353}
+    canvasScrollPosition: {x: 0, y: 0}
     canvasZoom: 1.06
   - id: 24
     fields:
@@ -60353,6 +60379,235 @@ MonoBehaviour:
     entryGroups: []
     canvasScrollPosition: {x: 8.330081, y: 4.893194}
     canvasZoom: 1.03
+  - id: 25
+    fields:
+    - title: Title
+      value: MAX TEST CONVO (HUB)
+      type: 0
+      typeString: 
+    - title: Description
+      value: 
+      type: 0
+      typeString: 
+    - title: Actor
+      value: 1
+      type: 5
+      typeString: CustomFieldType_Actor
+    - title: Conversant
+      value: 2
+      type: 5
+      typeString: CustomFieldType_Actor
+    overrideSettings:
+      useOverrides: 0
+      overrideSubtitleSettings: 0
+      showNPCSubtitlesDuringLine: 1
+      showNPCSubtitlesWithResponses: 1
+      showPCSubtitlesDuringLine: 0
+      skipPCSubtitleAfterResponseMenu: 0
+      subtitleCharsPerSecond: 30
+      minSubtitleSeconds: 2
+      continueButton: 0
+      overrideSequenceSettings: 0
+      defaultSequence: 
+      defaultPlayerSequence: 
+      defaultResponseMenuSequence: 
+      overrideInputSettings: 0
+      alwaysForceResponseMenu: 1
+      includeInvalidEntries: 0
+      responseTimeout: 0
+      emTagForOldResponses: 0
+      emTagForInvalidResponses: 0
+      cancelSubtitle:
+        key: 27
+        buttonName: 
+      cancelConversation:
+        key: 27
+        buttonName: 
+    nodeColor: 
+    dialogueEntries:
+    - id: 0
+      fields:
+      - title: Title
+        value: START
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Description
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 14
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: -1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value: None()
+        type: 0
+        typeString: CustomFieldType_Text
+      conversationID: 25
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 25
+        originDialogueID: 0
+        destinationConversationID: 25
+        destinationDialogueID: 1
+        isConnector: 0
+        priority: 2
+      - originConversationID: 25
+        originDialogueID: 0
+        destinationConversationID: 25
+        destinationDialogueID: 3
+        isConnector: 0
+        priority: 2
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 120
+        y: 18.936165
+        width: 160
+        height: 30
+    - id: 1
+      fields:
+      - title: Title
+        value: TO FIRST CONVO (MEET KMI)
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Description
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 14
+        type: 0
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: -1
+        type: 0
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: <TO FIRST CONVO (MEET KMI)>
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value: <TO FIRST CONVO (MEET KMI)>
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value: None()
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Response Menu Sequence
+        value: None()
+        type: 0
+        typeString: 
+      conversationID: 25
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 25
+        originDialogueID: 1
+        destinationConversationID: 1
+        destinationDialogueID: 0
+        isConnector: 0
+        priority: 2
+      conditionsString: Dialog[thisID].SimStatus ~= "WasDisplayed"
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 14.0425415
+        y: 223.19148
+        width: 160
+        height: 30
+    - id: 3
+      fields:
+      - title: Title
+        value: TO AFTER JOB
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Description
+        value: 
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Actor
+        value: 14
+        type: 0
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: -1
+        type: 0
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: <TO AFTER JOB>
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Dialogue Text
+        value: <TO AFTER JOB>
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Sequence
+        value: None()
+        type: 0
+        typeString: CustomFieldType_Text
+      - title: Response Menu Sequence
+        value: None()
+        type: 0
+        typeString: 
+      conversationID: 25
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: Block
+      conditionPriority: 2
+      outgoingLinks:
+      - originConversationID: 25
+        originDialogueID: 3
+        destinationConversationID: 12
+        destinationDialogueID: 0
+        isConnector: 0
+        priority: 2
+      conditionsString: HasMissionBeenCompletedForCustomer("Oshunian Ale MAX TEST",
+        "MAX TEST")  and Dialog[thisID].SimStatus ~= "WasDisplayed"
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 230.21274
+        y: 231.7022
+        width: 160
+        height: 30
+    entryGroups: []
+    canvasScrollPosition: {x: 2.1276855, y: 0}
+    canvasZoom: 0.93999994
   syncInfo:
     syncActors: 0
     syncItems: 0
