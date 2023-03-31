@@ -81,6 +81,9 @@ public class UIManager : MonoBehaviour
 
         SingletonManager.EventService.Add<OnCutsceneStartedEvent>(OnCutsceneStartedHandler);
         SingletonManager.EventService.Add<OnCutsceneFinishedEvent>(OnCutsceneFinishedHandler);
+
+        DialogueManager.Instance.conversationStarted += OnConversationStartedHandler;
+        DialogueManager.Instance.conversationEnded += OnConversationEndedHandler;
     }
 
     private void Update()
@@ -100,7 +103,7 @@ public class UIManager : MonoBehaviour
         if (currentCanvasType != UICanvasType.None && Input.GetKeyDown(PlayerConstants.ActionKey))
         {
             UICanvasBase canvas = GetCanvasByType(currentCanvasType);
-            
+
             if (canvas.ZoomInBeforeOpening && canvas.CameraZoomSettings != null)
             {
                 StationCameraManager.Instance.ZoomInLiveCamera(canvas.CameraZoomSettings, () => ShowCanvas(canvas));
@@ -110,7 +113,7 @@ public class UIManager : MonoBehaviour
                 ShowCanvas(canvas);
             }
         }
-        
+
         if (Input.GetKeyDown(PlayerConstants.PauseKey))
         {
             UICanvasBase canvas = GetCanvasByType(UICanvasType.PauseMenu);
@@ -389,5 +392,15 @@ public class UIManager : MonoBehaviour
             Debug.Log("Dialogue cutscene finished event call back fired. Opening dialogue UI...");
             DialogueManager.DialogueUI.Open();
         }
+    }
+
+    private void OnConversationStartedHandler(Transform t)
+    {
+        AddOverriddenKey(KeyCode.Escape);
+    }
+
+    private void OnConversationEndedHandler(Transform t)
+    {
+        RemoveOverriddenKey(KeyCode.Escape);
     }
 }
