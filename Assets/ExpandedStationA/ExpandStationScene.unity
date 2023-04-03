@@ -15,10 +15,10 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 0
+  m_Fog: 1
   m_FogColor: {r: 0.19215687, g: 0.15850836, b: 0.22015452, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.03
+  m_FogDensity: 0.04
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.1, g: 0.1, b: 0.1, a: 1}
@@ -9493,7 +9493,7 @@ PrefabInstance:
     - target: {fileID: 2117929600968889977, guid: d84bb0f39e8541f4f9524a9df8df9b87,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2754911867689035980, guid: d84bb0f39e8541f4f9524a9df8df9b87,
         type: 3}
@@ -11097,6 +11097,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2006159929}
     m_Modifications:
+    - target: {fileID: 6983875194489572817, guid: b6aefd509dc4ce545b29effe9eb44d91,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983875194489572817, guid: b6aefd509dc4ce545b29effe9eb44d91,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 82592c38f0fd72c48be778c9df6f0037, type: 2}
+    - target: {fileID: 7795995791101101838, guid: b6aefd509dc4ce545b29effe9eb44d91,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8172085209193947479, guid: b6aefd509dc4ce545b29effe9eb44d91,
         type: 3}
       propertyPath: m_RootOrder
@@ -18734,7 +18749,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1247144393}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.3958282, y: 9.980316, z: -45.382156}
+  m_LocalPosition: {x: -2.3958282, y: 9.980316, z: -46.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
