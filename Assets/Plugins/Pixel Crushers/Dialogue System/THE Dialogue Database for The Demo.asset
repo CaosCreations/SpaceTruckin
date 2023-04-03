@@ -61038,7 +61038,7 @@ MonoBehaviour:
         destinationConversationID: 1
         destinationDialogueID: 1
         isConnector: 0
-        priority: 2
+        priority: 4
       conditionsString: Dialog[thisID].SimStatus ~= "WasDisplayed"
       userScript: 
       onExecute:
@@ -61047,7 +61047,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 44.883743
-        y: 154.05838
+        y: 155
         width: 160
         height: 30
     - id: 2
@@ -61065,7 +61065,7 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
-        value: 2
+        value: -1
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
@@ -61093,7 +61093,7 @@ MonoBehaviour:
         destinationConversationID: 12
         destinationDialogueID: 1
         isConnector: 0
-        priority: 2
+        priority: 3
       conditionsString: (Dialog[thisID].SimStatus ~= "WasDisplayed") and (HasMissionBeenCompletedForCustomer("Oshunian
         Ale", "Kmi Pakuru") )
       userScript: 
@@ -61103,13 +61103,13 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 272.29056
-        y: 205.62871
+        y: 204.68709
         width: 160
         height: 30
     - id: 3
       fields:
       - title: Title
-        value: 
+        value: <ShootinTheShit>
         type: 0
         typeString: 
       - title: Description
@@ -61121,7 +61121,7 @@ MonoBehaviour:
         type: 5
         typeString: CustomFieldType_Actor
       - title: Conversant
-        value: 2
+        value: -1
         type: 5
         typeString: CustomFieldType_Actor
       - title: Menu Text
@@ -61133,6 +61133,10 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Sequence
+        value: None()
+        type: 0
+        typeString: 
+      - title: Response Menu Sequence
         value: 
         type: 0
         typeString: 
@@ -61143,7 +61147,13 @@ MonoBehaviour:
       delaySimStatus: 0
       falseConditionAction: Block
       conditionPriority: 2
-      outgoingLinks: []
+      outgoingLinks:
+      - originConversationID: 26
+        originDialogueID: 3
+        destinationConversationID: 27
+        destinationDialogueID: 1
+        isConnector: 0
+        priority: 0
       conditionsString: 
       userScript: 
       onExecute:
@@ -61152,7 +61162,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 336.90906
-        y: 95.423676
+        y: 97.3069
         width: 160
         height: 30
     entryGroups: []
@@ -61296,13 +61306,7 @@ MonoBehaviour:
       delaySimStatus: 0
       falseConditionAction: Block
       conditionPriority: 2
-      outgoingLinks:
-      - originConversationID: 27
-        originDialogueID: 1
-        destinationConversationID: 27
-        destinationDialogueID: 2
-        isConnector: 0
-        priority: 2
+      outgoingLinks: []
       conditionsString: 
       userScript: 
       onExecute:
@@ -61312,55 +61316,6 @@ MonoBehaviour:
         serializedVersion: 2
         x: 29
         y: 86
-        width: 160
-        height: 30
-    - id: 2
-      fields:
-      - title: Title
-        value: 
-        type: 0
-        typeString: 
-      - title: Description
-        value: 
-        type: 0
-        typeString: 
-      - title: Actor
-        value: 1
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Conversant
-        value: 2
-        type: 5
-        typeString: CustomFieldType_Actor
-      - title: Menu Text
-        value: 
-        type: 0
-        typeString: 
-      - title: Dialogue Text
-        value: 
-        type: 0
-        typeString: 
-      - title: Sequence
-        value: 
-        type: 0
-        typeString: 
-      conversationID: 27
-      isRoot: 0
-      isGroup: 0
-      nodeColor: 
-      delaySimStatus: 0
-      falseConditionAction: Block
-      conditionPriority: 2
-      outgoingLinks: []
-      conditionsString: 
-      userScript: 
-      onExecute:
-        m_PersistentCalls:
-          m_Calls: []
-      canvasRect:
-        serializedVersion: 2
-        x: 28
-        y: 161
         width: 160
         height: 30
     entryGroups: []
