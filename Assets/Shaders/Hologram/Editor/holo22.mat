@@ -10,7 +10,6 @@ Material:
   m_Name: holo22
   m_Shader: {fileID: 4800000, guid: 29fed12d8547e354e90be987488147c1, type: 3}
   m_ValidKeywords:
-  - _GLITCH_ON
   - _GLOW_ON
   - _SCAN_ON
   m_InvalidKeywords: []
@@ -44,7 +43,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FlickerTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 687ffce594c7c38499dd62dcb5198493, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -69,30 +68,30 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Alpha: 1
-    - _Brightness: 6
+    - _Alpha: 0.34
+    - _Brightness: 1.04
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _FlickerSpeed: 65
+    - _FlickerSpeed: 100
     - _Fold: 3
     - _Frequency: 1
     - _GlitchIntensity: 1
-    - _GlitchSpeed: 2
+    - _GlitchSpeed: 50
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _GlowSpeed: -4.3
-    - _GlowTiling: 0.2
+    - _GlowSpeed: 0.7
+    - _GlowTiling: 1
     - _Heat: 1
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _Radius: 1
-    - _RimPower: 10
-    - _ScanSpeed: 2
+    - _RimPower: 1.6
+    - _ScanSpeed: -0.27
     - _ScanTiling: 10
     - _ScrollSpeed: 1
     - _SmoothnessTextureChannel: 0
@@ -102,7 +101,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Direction: {r: 3.66, g: 1.5, b: 0, a: 0}
+    - _Direction: {r: 3.66, g: 166.21, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _MainColor: {r: 0.26059094, g: 0.6751894, b: 0.9056604, a: 1}
     - _RimColor: {r: 1, g: 0.19115904, b: 0, a: 1}
