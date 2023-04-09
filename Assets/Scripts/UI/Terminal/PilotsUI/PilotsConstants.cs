@@ -15,7 +15,7 @@ public class PilotsConstants : MonoBehaviour
     #region UI Dimensions 
     public const float BorderSize = 0.05f;
     public const float TopPadding = 32f;
-    public const float ButtonHeight = 0.1f; 
+    public const float ButtonHeight = 0.1f;
 
     public static ValueTuple<Vector2, Vector2> PilotAvatarAnchors = (new Vector2((1 - BorderSize * 2) / 1.5f, (1 - BorderSize * 2) / 1.5f), new Vector2(1 - BorderSize, 1 - BorderSize));
     public static ValueTuple<Vector2, Vector2> PilotDetailsAnchors = (new Vector2((1 - BorderSize * 2) / 1.5f, BorderSize), new Vector2(1 - BorderSize, (1 - BorderSize * 2) / 1.5f));
@@ -35,7 +35,7 @@ public class PilotsConstants : MonoBehaviour
     public const string HumanFemaleNamesKey = "FemaleNames";
     public const string HelicidNamesKey = "HelicidNames";
     public const string OshunianFirstNamesKey = "OshunianFirstNames";
-    public const string OshunianTitlesKey= "OshunianTitles";
+    public const string OshunianTitlesKey = "OshunianTitles";
     public const string VestaPrefixesKey = "VestaPrefixes";
     public const string VestaNamesKey = "VestaNames";
     public const string PilotLikesKey = "PilotLikes";
