@@ -21,6 +21,8 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
     [SerializeField]
     private PlayerAnimationAssetMappingContainer playerAnimationAssetMappingContainer;
 
+    private CutsceneTimelinePlayer[] cutscenePlayers;
+
     private void Awake()
     {
         if (Instance == null)
@@ -33,6 +35,8 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
             Destroy(gameObject);
             return;
         }
+
+        cutscenePlayers = GetComponentsInChildren<CutsceneTimelinePlayer>(true);
     }
 
     private void Start()
