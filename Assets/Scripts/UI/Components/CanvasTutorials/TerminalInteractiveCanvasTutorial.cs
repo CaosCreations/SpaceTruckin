@@ -13,24 +13,33 @@ public class TerminalInteractiveCanvasTutorial : InteractiveCanvasTutorial
     {
         SingletonManager.EventService.Add<OnMissionSlottedEvent>(OnMissionSlottedHandler);
         SingletonManager.EventService.Add<OnPilotSlottedEvent>(OnPilotSlottedHandler);
-        cardAfterPilotSelected.AddCloseButtonListener(EndTutorial);
-    }
-
-    private void OnPilotSlottedHandler()
-    {
-        if (cardAfterPilotSelectedShown)
-            return;
-
-        cardAfterPilotSelected.SetActive(true);
-        cardAfterPilotSelectedShown = true;
+        cardAfterPilotSelected.OnClosed += EndTutorial;
     }
 
     private void OnMissionSlottedHandler()
     {
-        if (cardAfterMissionSelectedShown)
+        OnSlottedHandler(cardAfterMissionSelected, ref cardAfterMissionSelectedShown);
+    }
+
+    private void OnPilotSlottedHandler()
+    {
+        OnSlottedHandler(cardAfterPilotSelected, ref cardAfterPilotSelectedShown);
+    }
+
+    private void OnSlottedHandler(InteractiveCanvasTutorialCard card, ref bool shownFlag)
+    {
+        if (shownFlag)
             return;
 
-        cardAfterMissionSelected.SetActive(true);
-        cardAfterMissionSelectedShown = true;
+        CloseAllCards();
+        card.SetActive(true);
+        shownFlag = true;
+    }
+
+    private void CloseAllCards()
+    {
+        openingCard.SetActive(false);
+        cardAfterMissionSelected.SetActive(false);
+        cardAfterPilotSelected.SetActive(false);
     }
 }

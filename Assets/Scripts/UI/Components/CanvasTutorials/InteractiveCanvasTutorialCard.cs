@@ -1,5 +1,5 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class InteractiveCanvasTutorialCard : MonoBehaviour
@@ -7,19 +7,21 @@ public class InteractiveCanvasTutorialCard : MonoBehaviour
     [SerializeField]
     private Button closeButton;
 
+    [SerializeField]
+    private Text tutorialText;
+
+    public event UnityAction OnClosed;
+
     private void Awake()
     {
         closeButton.onClick.RemoveAllListeners();
         closeButton.onClick.AddListener(CloseButtonHandler);
-    }
-
-    public void AddCloseButtonListener(Action action)
-    {
-        closeButton.onClick.AddListener(() => action());
+        tutorialText.SetText(tutorialText.text);
     }
 
     private void CloseButtonHandler()
     {
+        OnClosed?.Invoke();
         gameObject.SetActive(false);
     }
 }
