@@ -1,5 +1,4 @@
-﻿using Cinemachine;
-using Events;
+﻿using Events;
 using PixelCrushers.DialogueSystem;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -11,9 +10,6 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
     [SerializeField]
     private CutsceneContainer cutsceneContainer;
-
-    [SerializeField]
-    private CinemachineVirtualCamera cutsceneCamera;
 
     [SerializeField]
     private PlayerAnimationAssetMappingContainer playerAnimationAssetMappingContainer;
@@ -55,7 +51,8 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
     private void OnTimelineStartedHandler()
     {
-        cutsceneCamera.Priority = TimelineConstants.CutsceneCameraPlayPriority;
+        currentCutscenePlayer.VirtualCamera.Priority = TimelineConstants.CutsceneCameraPlayPriority;
+        currentCutscenePlayer.VirtualCamera.Follow = PlayerManager.PlayerObject.transform;
 
         var cutscene = GetCutsceneByPlayableAsset(currentCutscenePlayer.PlayableDirector.playableAsset);
         if (cutscene != null)
@@ -70,7 +67,8 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
     private void OnTimelineFinishedHandler()
     {
-        cutsceneCamera.Priority = TimelineConstants.CutsceneCameraBasePriority;
+        currentCutscenePlayer.VirtualCamera.Priority = TimelineConstants.CutsceneCameraBasePriority;
+        currentCutscenePlayer.VirtualCamera.Follow = null;
 
         var cutscene = GetCutsceneByPlayableAsset(currentCutscenePlayer.PlayableDirector.playableAsset);
         if (cutscene != null)
@@ -81,6 +79,8 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
         {
             SingletonManager.EventService.Dispatch(new OnTimelineFinishedEvent(currentCutscenePlayer.PlayableDirector.playableAsset));
         }
+
+        currentCutscenePlayer = null;
     }
 
     public static void PlayCutscene(string cutsceneName)
@@ -150,8 +150,6 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
         return null;
     }
 
-
-
     public void SetUp()
     {
         foreach (var cutscenePlayer in cutscenePlayers)
@@ -159,8 +157,6 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
             SetUpDirectorBindings(cutscenePlayer.PlayableDirector);
             SetUpAnimationTracks(cutscenePlayer.PlayableDirector);
         }
-
-        SetUpCutsceneCamera();
     }
 
     private void SetUpDirectorBindings(PlayableDirector playableDirector)
@@ -216,7 +212,7 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
     private void SetUpCutsceneCamera()
     {
-        cutsceneCamera.Follow = PlayerManager.PlayerObject.transform;
+        currentCutscenePlayer.VirtualCamera.Follow = PlayerManager.PlayerObject.transform;
     }
 
     public void FinishCurrentTimeline()
