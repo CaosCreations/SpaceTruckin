@@ -3,7 +3,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-[ExecuteInEditMode]
 public class TextFade : MonoBehaviour
 {
     [SerializeField]
