@@ -7,14 +7,29 @@ public class CinemachineLiveCameraShake : CinemachineLiveCameraBehaviour
     private CinemachineBasicMultiChannelPerlin perlinNoise;
     private Coroutine shakeCoroutine;
 
+    private void SetPerlinNoise()
+    {
+        if (virtualCamera != null)
+        {
+            perlinNoise = virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        }
+    }
+
     protected override void Awake()
     {
         base.Awake();
-        perlinNoise = virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        SetPerlinNoise();
+    }
+
+    protected override void UpdateActiveCamera()
+    {
+        base.UpdateActiveCamera();
+        SetPerlinNoise();
     }
 
     public void Shake(CameraShakeSettings settings)
     {
+        UpdateActiveCamera();
         Shake(settings.Amplitude, settings.Duration);
     }
 

@@ -118,8 +118,8 @@ public class HangarNodeUI : UICanvasBase
         hullButton.AddOnClick(() => SwitchPanel(HangarPanel.Repair));
         upgradeButton.AddOnClick(() => SwitchPanel(HangarPanel.Upgrade));
         customizationButton.AddOnClick(() => SwitchPanel(HangarPanel.Customization));
-        startMissionButton.AddOnClick(() => Launch(isStartingMission: true));
-        returnToQueueButton.AddOnClick(() => Launch(isStartingMission: false));
+        startMissionButton.AddOnClick(() => Launch(isStartingMission: true), removeListeners: false);
+        returnToQueueButton.AddOnClick(() => Launch(isStartingMission: false), removeListeners: false);
     }
 
     private void SetupShipPreview()

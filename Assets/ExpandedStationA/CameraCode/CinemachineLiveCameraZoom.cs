@@ -28,8 +28,12 @@ public class CinemachineLiveCameraZoom : CinemachineLiveCameraBehaviour
     protected override void UpdateActiveCamera()
     {
         base.UpdateActiveCamera();
-        framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
-        startingDistance = CurrentDistance;
+
+        if (virtualCamera != null)
+        {
+            framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+            startingDistance = CurrentDistance;
+        }
     }
 
     public void ZoomInCamera(float targetDistance, float speed, Action action = null, bool resetAfter = false, bool hidePlayer = false, bool lockPlayer = false)
