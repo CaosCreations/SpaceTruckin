@@ -33,6 +33,9 @@ public class CinemachineLiveCameraShake : CinemachineLiveCameraBehaviour
         Shake(settings.Amplitude, settings.Duration);
     }
 
+    /// <summary>
+    /// Shake over a duration.
+    /// </summary>
     public void Shake(float amplitude, float duration)
     {
         if (shakeCoroutine != null)
@@ -40,6 +43,17 @@ public class CinemachineLiveCameraShake : CinemachineLiveCameraBehaviour
             StopCoroutine(shakeCoroutine);
         }
         shakeCoroutine = StartCoroutine(ShakeRoutine(amplitude, duration));
+    }
+
+    public void Shake(float amplitude)
+    {
+        UpdateActiveCamera();
+        perlinNoise.m_AmplitudeGain = amplitude;
+    }
+
+    public void StopShake()
+    {
+        perlinNoise.m_AmplitudeGain = 0f;
     }
 
     private IEnumerator ShakeRoutine(float amplitude, float duration)

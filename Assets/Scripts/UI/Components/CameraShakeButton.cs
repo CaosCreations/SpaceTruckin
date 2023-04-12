@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CameraShakeButton : MonoBehaviour, IPointerDownHandler
+public class CameraShakeButton : MonoBehaviour
 {
     [SerializeField]
     private Button button;
@@ -15,7 +14,7 @@ public class CameraShakeButton : MonoBehaviour, IPointerDownHandler
         if (shakeSettings == null)
             throw new System.Exception($"Mandatory {nameof(CameraShakeSettings)} property is not set.");
 
-        //button.AddOnClick(ShakeCameraHandler, removeListeners: false);
+        button.AddOnClick(ShakeCameraHandler, removeListeners: false);
     }
 
     private void ShakeCameraHandler()
@@ -23,8 +22,8 @@ public class CameraShakeButton : MonoBehaviour, IPointerDownHandler
         StationCameraManager.Instance.ShakeLiveCamera(shakeSettings);
     }
 
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        ShakeCameraHandler();
-    }
+    //public void OnPointerDown(PointerEventData eventData)
+    //{
+    //    ShakeCameraHandler();
+    //}
 }

@@ -67,6 +67,11 @@ public class StationCameraManager : MonoBehaviour
         liveCameraShake.Shake(settings);
     }
 
+    public void ShakeLiveCamera(float amplitude)
+    {
+        liveCameraShake.Shake(amplitude);
+    }
+
     private StationCamera GetCameraByIdentifier(StationCamera.Identifier cameraIdentifier)
     {
         return stationCameras.FirstOrDefault(cam => cam.CameraIdentifier == cameraIdentifier);

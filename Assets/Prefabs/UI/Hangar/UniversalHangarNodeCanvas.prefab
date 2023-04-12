@@ -1142,6 +1142,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6563248059855648382}
   - component: {fileID: 4449566673209887641}
+  - component: {fileID: 313117434}
   m_Layer: 0
   m_Name: ShipPreviewObjectCamera
   m_TagString: Untagged
@@ -1212,6 +1213,18 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &313117434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3038716081838624641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bafdc75d23719134b86ef1eec9e44ba2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3232397629914625097
 GameObject:
   m_ObjectHideFlags: 0
@@ -2057,11 +2070,11 @@ MonoBehaviour:
   <CanvasTutorialPrefab>k__BackingField: {fileID: 0}
   <ShowUniversalCanvas>k__BackingField: 0
   <CameraZoomSettings>k__BackingField:
-    <TargetDistance>k__BackingField: 2
-    <Speed>k__BackingField: 3
+    <TargetDistance>k__BackingField: 2.25
+    <Speed>k__BackingField: 5
     <ResetAfter>k__BackingField: 1
     <HidePlayer>k__BackingField: 1
-    <LockPlayer>k__BackingField: 0
+    <LockPlayer>k__BackingField: 1
   <ZoomInBeforeOpening>k__BackingField: 1
   fuelSlider: {fileID: 4082890542990713184}
   fuelButton: {fileID: 3431801704249973398}
@@ -2272,6 +2285,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3af282dcf1c040499db52366902b95d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shakeSettings:
+    <Amplitude>k__BackingField: 0.1
+    <Duration>k__BackingField: 0
+  screenShake: {fileID: 313117434}
 --- !u!1 &7056580697265165944
 GameObject:
   m_ObjectHideFlags: 0
