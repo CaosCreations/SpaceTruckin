@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Events;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -63,6 +64,8 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
             MissionScheduleSlot scheduleSlot = missionsUI.GetSlotByPosition(eventData.position);
             if (scheduleSlot != null)
             {
+                SingletonManager.EventService.Dispatch<OnMissionSlottedEvent>();
+
                 CheckReplaceMission(scheduleSlot);
                 myRectTransform.SetParent(scheduleSlot.layoutContainer);
                 myRectTransform.SetSiblingIndex(0);

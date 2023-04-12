@@ -137,7 +137,7 @@ namespace Events
     public class OnShipHealthChangedEvent : IEvent
     {
         public Ship Ship { get; }
-        
+
         public OnShipHealthChangedEvent(Ship ship)
         {
             Ship = ship;
@@ -164,7 +164,7 @@ namespace Events
     {
     }
 
-    public class OnClockStoppedEvent :IEvent
+    public class OnClockStoppedEvent : IEvent
     {
     }
 
@@ -195,6 +195,14 @@ namespace Events
     }
 
     public class OnLiveCameraZoomInEndedEvent : IEvent
+    {
+    }
+
+    public class OnMissionSlottedEvent : IEvent
+    {
+    }
+
+    public class OnPilotSlottedEvent : IEvent
     {
     }
 }
