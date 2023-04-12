@@ -1,13 +1,10 @@
 ﻿using Cinemachine;
 using System;
 using System.Collections;
-using System.Linq;
 using UnityEngine;
 
-public class CinemachineLiveCameraZoom : MonoBehaviour
+public class CinemachineLiveCameraZoom : CinemachineLiveCameraBehaviour
 {
-    private CinemachineBrain cinemachineBrain;
-    private CinemachineVirtualCamera virtualCamera;
     private CinemachineFramingTransposer framingTransposer;
     private float startingDistance;
 
@@ -28,20 +25,9 @@ public class CinemachineLiveCameraZoom : MonoBehaviour
         get => framingTransposer.m_CameraDistance; set => framingTransposer.m_CameraDistance = value;
     }
 
-    private void Awake()
+    protected override void UpdateActiveCamera()
     {
-        cinemachineBrain = FindObjectOfType<CinemachineBrain>();
-        UpdateActiveCamera();
-    }
-
-    private void UpdateActiveCamera()
-    {
-        if (cinemachineBrain.ActiveVirtualCamera == null)
-        {
-            return;
-        }
-
-        virtualCamera = GetLiveVirtualCamera();
+        base.UpdateActiveCamera();
         framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
         startingDistance = CurrentDistance;
     }
@@ -55,22 +41,6 @@ public class CinemachineLiveCameraZoom : MonoBehaviour
     public void ResetZoom()
     {
         CurrentDistance = startingDistance;
-    }
-
-    public CinemachineVirtualCamera GetLiveVirtualCamera()
-    {
-        if (cinemachineBrain.ActiveVirtualCamera == null)
-        {
-            return default;
-        }
-
-        // Select child camera if the active camera is a state driven camera 
-        if (cinemachineBrain.ActiveVirtualCamera.VirtualCameraGameObject.TryGetComponent<CinemachineStateDrivenCamera>(out var stateDrivenCamera))
-        {
-            return stateDrivenCamera.ChildCameras.FirstOrDefault(vcam => CinemachineCore.Instance.IsLive(vcam)) as CinemachineVirtualCamera;
-        }
-
-        return cinemachineBrain.ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
     }
 
     private IEnumerator ZoomInCameraRoutine(float targetDistance, float speed, Action action = null, bool resetAfter = false, bool hidePlayer = false, bool lockPlayer = false)
