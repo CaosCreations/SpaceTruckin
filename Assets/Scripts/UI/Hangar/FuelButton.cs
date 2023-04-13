@@ -16,13 +16,12 @@ public class FuelButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private Ship shipToFuel;
     private long fuelCostPerUnit;
 
-    private void Awake()
-    {
-        Button = GetComponent<Button>();
-    }
-
     public void Init(Ship ship, long costPerUnit)
     {
+        if (Button == null)
+        {
+            Button = GetComponent<Button>();
+        }
         shipToFuel = ship;
         fuelCostPerUnit = costPerUnit;
     }
