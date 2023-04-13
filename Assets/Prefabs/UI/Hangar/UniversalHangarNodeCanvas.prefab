@@ -1635,6 +1635,7 @@ GameObject:
   - component: {fileID: 2175641877971398726}
   - component: {fileID: 2042800503469881668}
   - component: {fileID: 8644457330107243179}
+  - component: {fileID: 5411701426695037094}
   m_Layer: 0
   m_Name: ReturnToQueueButton
   m_TagString: Untagged
@@ -1745,6 +1746,22 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5411701426695037094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2345799232457074498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 356fe96fb1fe7fe42accfc03160b1e71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 8644457330107243179}
+  shakeSettings:
+    <Amplitude>k__BackingField: 1
+    <Duration>k__BackingField: 1
 --- !u!1 &2475026083380230212
 GameObject:
   m_ObjectHideFlags: 0
@@ -1926,6 +1943,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6563248059855648382}
   - component: {fileID: 4449566673209887641}
+  - component: {fileID: 313117434}
   m_Layer: 0
   m_Name: ShipPreviewObjectCamera
   m_TagString: Untagged
@@ -1996,6 +2014,18 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &313117434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3038716081838624641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bafdc75d23719134b86ef1eec9e44ba2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3232397629914625097
 GameObject:
   m_ObjectHideFlags: 0
@@ -3056,6 +3086,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3af282dcf1c040499db52366902b95d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shakeSettings:
+    <Amplitude>k__BackingField: 0.1
+    <Duration>k__BackingField: 0
+  screenShake: {fileID: 313117434}
 --- !u!1 &7056580697265165944
 GameObject:
   m_ObjectHideFlags: 0
@@ -3665,6 +3699,7 @@ GameObject:
   - component: {fileID: 3029269791780156906}
   - component: {fileID: 2609820751009330491}
   - component: {fileID: 5388490907201358926}
+  - component: {fileID: 4895002504671803851}
   m_Layer: 0
   m_Name: StartMissionButton
   m_TagString: Untagged
@@ -3775,6 +3810,22 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4895002504671803851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8656589223399012957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 356fe96fb1fe7fe42accfc03160b1e71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 5388490907201358926}
+  shakeSettings:
+    <Amplitude>k__BackingField: 1
+    <Duration>k__BackingField: 1
 --- !u!1 &8683241415334669747
 GameObject:
   m_ObjectHideFlags: 0

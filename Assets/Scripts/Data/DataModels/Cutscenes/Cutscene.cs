@@ -4,8 +4,15 @@ using UnityEngine.Playables;
 [CreateAssetMenu(fileName = "Cutscene", menuName = "ScriptableObjects/Cutscenes/Cutscene", order = 1)]
 public class Cutscene : ScriptableObject
 {
-    public string Name;
-    public string OnSceneLoadName;
-    public PlayableAsset PlayableAsset;
-    public bool IsDialogueCutscene;
+    [field: SerializeField]
+    public string Name { get; private set; }
+
+    [field: SerializeField]
+    public string OnSceneLoadName { get; private set; }
+
+    [field: SerializeField]
+    public PlayableAsset PlayableAsset { get; private set; }
+
+    [field: SerializeField]
+    public bool IsDialogueCutscene { get; private set; }
 }

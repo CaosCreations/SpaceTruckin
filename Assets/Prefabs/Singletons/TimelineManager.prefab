@@ -46,8 +46,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cutsceneContainer: {fileID: 11400000, guid: 6a5c0766dc4071d469d0b9231eb10a21, type: 2}
-  playableDirector: {fileID: 5360344310439616905}
-  cutsceneCamera: {fileID: 5360344311454294516}
   playerAnimationAssetMappingContainer: {fileID: 11400000, guid: d1034636abb0b0947b21a15785c6ead6,
     type: 2}
 --- !u!1001 &9204583480912051333
@@ -90,7 +88,7 @@ PrefabInstance:
     - target: {fileID: 3881816079881395570, guid: 288f6e14b539394418ab01982b6a2240,
         type: 3}
       propertyPath: m_Name
-      value: CutsceneTimeline
+      value: OpeningCutsceneTimelinePlayer
       objectReference: {fileID: 0}
     - target: {fileID: 3881816079881395571, guid: 288f6e14b539394418ab01982b6a2240,
         type: 3}
@@ -161,6 +159,28 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 9204583480912051333}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5360344310439617015 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3881816079881395570, guid: 288f6e14b539394418ab01982b6a2240,
+    type: 3}
+  m_PrefabInstance: {fileID: 9204583480912051333}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5360344311394162379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5360344310439617015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e532250f982aeea4e9b2ec1813b35d56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <PlayableDirector>k__BackingField: {fileID: 5360344310439616905}
+  <Cutscene>k__BackingField: {fileID: 11400000, guid: b185a9aa9b523614da7e86360f5b0e79,
+    type: 2}
+  <VirtualCamera>k__BackingField: {fileID: 5360344311454294516}
 --- !u!114 &5360344311454294516 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3881816079453134193, guid: 288f6e14b539394418ab01982b6a2240,

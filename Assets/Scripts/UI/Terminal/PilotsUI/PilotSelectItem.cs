@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Events;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,6 +41,8 @@ public class PilotSelectItem : MonoBehaviour
             // Dock the pilot's ship regardless of whether there's a mission in the slot
             HangarManager.DockShip(pilot.Ship, scheduleSlot.hangarNode);
             scheduleSlot.PutPilotInSlot(pilot);
+            
+            SingletonManager.EventService.Dispatch<OnPilotSlottedEvent>();
         }
 
         if (mission != null)

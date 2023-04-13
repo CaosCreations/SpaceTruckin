@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public static class MonoBehaviourExtensions
 {
@@ -28,5 +29,10 @@ public static class MonoBehaviourExtensions
     public static bool HasChildOfType<T>(this MonoBehaviour self) where T : MonoBehaviour
     {
         return self.GetComponentInChildren<T>() != null;
+    }
+
+    public static void StartCoroutine(this MonoBehaviour self, IEnumerator routine)
+    {
+        self.StartCoroutine(routine);
     }
 }

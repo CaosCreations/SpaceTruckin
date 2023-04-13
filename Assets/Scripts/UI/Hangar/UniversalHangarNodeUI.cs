@@ -37,7 +37,7 @@ public class UniversalHangarNodeUI : UICanvasBase
         overviewButton.AddOnClick(OverviewButtonHandler);
         SingletonManager.EventService.Add<OnShipHealthChangedEvent>(OnShipHealthChangedHandler);
     }
-    
+
     private void RepairsButtonHandler()
     {
         shipPreview.SetActive(false);
@@ -118,8 +118,8 @@ public class UniversalHangarNodeUI : UICanvasBase
         SetupPilotDetails();
         SetSliderValues();
 
-        startMissionButton.AddOnClick(() => Launch(isStartingMission: true));
-        returnToQueueButton.AddOnClick(() => Launch(isStartingMission: false));
+        startMissionButton.AddOnClick(() => Launch(isStartingMission: true), removeListeners: false);
+        returnToQueueButton.AddOnClick(() => Launch(isStartingMission: false), removeListeners: false);
     }
 
     private void SetupPilotDetails()
