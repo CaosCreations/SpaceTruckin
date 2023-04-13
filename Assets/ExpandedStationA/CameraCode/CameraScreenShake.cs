@@ -13,6 +13,11 @@ public class CameraScreenShake : MonoBehaviour
 
     public void StopShake()
     {
+        if (shakeCoroutine == null)
+        {
+            return;
+        }
+
         StopCoroutine(shakeCoroutine);
         shakeCoroutine = null;
         transform.localPosition = originalPosition;

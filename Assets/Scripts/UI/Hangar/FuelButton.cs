@@ -13,18 +13,28 @@ public class FuelButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField]
     private CameraScreenShake screenShake;
 
-    private void Awake()
-    {
-        Init();
-    }
+    private Ship shipToFuel;
+    private long fuelCostPerUnit;
 
-    public void Init()
+    private void Awake()
     {
         Button = GetComponent<Button>();
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void Init(Ship ship, long costPerUnit)
     {
+        shipToFuel = ship;
+        fuelCostPerUnit = costPerUnit;
+    }
+
+    private void StartFuelling()
+    {
+        if (shipToFuel == null || !UIUtils.IsFuelButtonInteractable(shipToFuel, fuelCostPerUnit))
+        {
+            IsFueling = false;
+            return;
+        }
+
         IsFueling = true;
 
         if (screenShake != null && shakeSettings != null)
@@ -33,7 +43,7 @@ public class FuelButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         }
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+    public void StopFuelling()
     {
         IsFueling = false;
 
@@ -41,5 +51,15 @@ public class FuelButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             screenShake.StopShake();
         }
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        StartFuelling();
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        StopFuelling();
     }
 }
