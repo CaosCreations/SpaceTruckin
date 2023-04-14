@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Events;
+using UnityEngine;
 
 public class BatteryChargePoint : InteractableObject
 {
@@ -6,6 +7,8 @@ public class BatteryChargePoint : InteractableObject
     private AnimationTimeHandler animationTimeHandler;
 
     private BatteryCharging currentBatteryCharging;
+
+    public StringBoolKeyValueEventArgs StringBoolKeyValueEventArgs;
 
     protected override void Start()
     {
@@ -37,6 +40,7 @@ public class BatteryChargePoint : InteractableObject
         currentBatteryCharging.Charge();
         animationTimeHandler.SetActive(false);
         currentBatteryCharging = null;
+        SingletonManager.EventService.Dispatch(new OnBatteryChargedEvent(StringBoolKeyValueEventArgs));
     }
 
     protected override bool IsIconVisible =>

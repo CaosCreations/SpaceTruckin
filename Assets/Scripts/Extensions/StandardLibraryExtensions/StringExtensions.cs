@@ -103,7 +103,7 @@ public static class StringExtensions
             }
 
             // The 3rd match group contains the Lua variable name 
-            string replacement = DialogueDatabaseManager.GetLuaVariable(match.Groups[2].Value);
+            string replacement = DialogueDatabaseManager.GetLuaVariableAsString(match.Groups[2].Value);
 
             self = self.Remove(match.Index, match.Length).Insert(match.Index, replacement);
         }
@@ -131,7 +131,7 @@ public static class StringExtensions
             // The 2nd group contains the actor name
             // The 3rd group contains the field name 
             string replacement = DialogueDatabaseManager
-                .GetActorField(actorName: match.Groups[2].Value, fieldName: match.Groups[3].Value);
+                .GetActorFieldAsString(actorName: match.Groups[2].Value, fieldName: match.Groups[3].Value);
 
             self = self.Remove(match.Index, match.Length).Insert(match.Index, replacement);
         }
