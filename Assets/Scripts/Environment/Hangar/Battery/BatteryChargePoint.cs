@@ -8,7 +8,8 @@ public class BatteryChargePoint : InteractableObject
 
     private BatteryCharging currentBatteryCharging;
 
-    public StringBoolKeyValueEventArgs StringBoolKeyValueEventArgs;
+    [SerializeField]
+    private StringBoolKeyValueEventArgs stringBoolKeyValueEventArgs;
 
     protected override void Start()
     {
@@ -40,7 +41,7 @@ public class BatteryChargePoint : InteractableObject
         currentBatteryCharging.Charge();
         animationTimeHandler.SetActive(false);
         currentBatteryCharging = null;
-        SingletonManager.EventService.Dispatch(new OnBatteryChargedEvent(StringBoolKeyValueEventArgs));
+        SingletonManager.EventService.Dispatch(new OnBatteryChargedEvent(stringBoolKeyValueEventArgs));
     }
 
     protected override bool IsIconVisible =>
