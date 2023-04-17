@@ -205,4 +205,14 @@ namespace Events
     public class OnPilotSlottedEvent : IEvent
     {
     }
+
+    public class OnBatteryChargedEvent : IEvent
+    {
+        public StringBoolKeyValueEventArgs Args { get; }
+
+        public OnBatteryChargedEvent(StringBoolKeyValueEventArgs eventArgs)
+        {
+            Args = eventArgs;
+        }
+    }
 }

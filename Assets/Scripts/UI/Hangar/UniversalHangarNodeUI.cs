@@ -79,7 +79,7 @@ public class UniversalHangarNodeUI : UICanvasBase
 
     private void SetupUIElements()
     {
-        fuelButton.Init();
+        fuelButton.Init(ShipToInspect, fuelCostPerUnit);
         PopulateUI();
         SetButtonInteractability();
         SetBatteryChargeImage();
@@ -142,15 +142,19 @@ public class UniversalHangarNodeUI : UICanvasBase
 
         if (fuelButton.IsFueling
             && fuelTimer > fuelTimerInterval
-            && ShipToInspect.CurrentFuel < ShipToInspect.MaxFuel
-            && PlayerManager.Instance.CanSpendMoney(fuelCostPerUnit)
-            )
+            && !ShipToInspect.IsFullyFuelled
+            && PlayerManager.Instance.CanSpendMoney(fuelCostPerUnit))
         {
             PlayerManager.Instance.SpendMoney(fuelCostAfterLicences);
             ShipToInspect.CurrentFuel++;
             fuelSlider.value = ShipToInspect.GetFuelPercentage();
             fuelTimer = 0;
             SetButtonInteractability();
+
+            if (ShipToInspect.IsFullyFuelled)
+            {
+                fuelButton.StopFuelling();
+            }
         }
     }
 
@@ -195,13 +199,7 @@ public class UniversalHangarNodeUI : UICanvasBase
         }
     }
 
-    private bool FuelButtonIsInteractable()
-    {
-        return ShipToInspect.CurrentFuel < ShipToInspect.MaxFuel
-            && PlayerManager.Instance.CanSpendMoney(fuelCostPerUnit);
-    }
-
-    private bool StartMissionButtonIsInteractable()
+    private bool IsStartMissionButtonInteractable()
     {
         if (ShipToInspect.CurrentMission != null)
         {
@@ -235,8 +233,8 @@ public class UniversalHangarNodeUI : UICanvasBase
 
     private void SetButtonInteractability()
     {
-        fuelButton.Button.interactable = FuelButtonIsInteractable();
-        startMissionButton.interactable = StartMissionButtonIsInteractable();
+        fuelButton.Button.interactable = UIUtils.IsFuelButtonInteractable(ShipToInspect, fuelCostPerUnit);
+        startMissionButton.interactable = IsStartMissionButtonInteractable();
         repairsButton.interactable = !ShipToInspect.IsFullyRepaired;
     }
 

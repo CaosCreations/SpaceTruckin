@@ -170,4 +170,10 @@ public static class UIUtils
         var color = new Color(r, g, b, 255);
         return color;
     }
+
+    public static bool IsFuelButtonInteractable(Ship ship, long fuelCostPerUnit)
+    {
+        return ship.CurrentFuel < ship.MaxFuel
+            && PlayerManager.Instance.CanSpendMoney(fuelCostPerUnit);
+    }
 }

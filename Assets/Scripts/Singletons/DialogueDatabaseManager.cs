@@ -1,6 +1,7 @@
 ﻿using Events;
 using Language.Lua;
 using PixelCrushers.DialogueSystem;
+using System;
 using UnityEngine;
 
 public class DialogueDatabaseManager : MonoBehaviour
@@ -23,7 +24,13 @@ public class DialogueDatabaseManager : MonoBehaviour
 
     private void Start()
     {
+        RegisterEvents();
+    }
+
+    private void RegisterEvents()
+    {
         SingletonManager.EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
+        SingletonManager.EventService.Add<OnBatteryChargedEvent>(OnBatteryChargedHandler);
     }
 
     /// <summary>
@@ -98,8 +105,7 @@ public class DialogueDatabaseManager : MonoBehaviour
         ResetHasCompletedConversationsToday();
     }
 
-    // Todo: Make these methods generic or make more with different return types 
-    public static string GetLuaVariable(string variableName)
+    public static string GetLuaVariableAsString(string variableName)
     {
         if (DialogueUtils.VariableExists(variableName))
         {
@@ -110,7 +116,7 @@ public class DialogueDatabaseManager : MonoBehaviour
         return string.Empty;
     }
 
-    public static string GetActorField(string actorName, string fieldName)
+    public static string GetActorFieldAsString(string actorName, string fieldName)
     {
         if (DialogueUtils.ActorFieldExists(actorName, fieldName))
         {
@@ -119,5 +125,26 @@ public class DialogueDatabaseManager : MonoBehaviour
 
         Debug.LogError($"Lua actor '{actorName}' field '{fieldName}' does not exist");
         return string.Empty;
+    }
+
+    public void OnBatteryChargedHandler(OnBatteryChargedEvent evt)
+    {
+        UpdateDatabaseVariable(evt.Args.Key, evt.Args.Value);
+    }
+
+    public void UpdateDatabaseVariable(string variableName, bool value)
+    {
+        Debug.Log($"Setting Lua variable '{variableName}' to value '{value}'...");
+        try
+        {
+            DialogueLua.SetVariable(variableName, value);
+            var variable = DialogueLua.GetVariable(variableName);
+            Debug.Log($"Lua variable '{variableName}' is now set to '{variable.asBool}'.");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogException(ex);
+            Debug.LogError($"Failed to set Lua variable '{variableName}'.");
+        }
     }
 }
