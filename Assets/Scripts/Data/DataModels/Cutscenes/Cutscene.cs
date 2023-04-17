@@ -14,5 +14,5 @@ public class Cutscene : ScriptableObject
     public PlayableAsset PlayableAsset { get; private set; }
 
     [field: SerializeField]
-    public bool IsDialogueCutscene { get; private set; }
+    public CutsceneConversationSettings ConversationSettings { get; private set; }
 }
