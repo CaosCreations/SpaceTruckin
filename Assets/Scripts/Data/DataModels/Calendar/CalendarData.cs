@@ -16,6 +16,8 @@ public class CalendarData : ScriptableObject, IDataModel
     public TimeSpan EveningStartTime = new(18, 0, 0); // 6pm
     public TimeSpan MorningStartTime = new(6, 0, 0);
 
+    public Date GameEndDate;
+
     public const string FolderName = "CalendarSaveData";
     public const string FileName = "CalendarData";
 
@@ -29,7 +31,6 @@ public class CalendarData : ScriptableObject, IDataModel
 
     private void OnEnable()
     {
-        // OnValidate is only called in editor.
         ValidateFields();
     }
 
@@ -47,6 +48,10 @@ public class CalendarData : ScriptableObject, IDataModel
         CurrentDate.Day = Mathf.Max(CurrentDate.Day, 1);
         CurrentDate.Month = Mathf.Max(CurrentDate.Month, 1);
         CurrentDate.Year = Mathf.Max(CurrentDate.Year, 1);
+
+        GameEndDate.Day = Mathf.Max(GameEndDate.Day, 1);
+        GameEndDate.Month = Mathf.Max(GameEndDate.Month, 1);
+        GameEndDate.Year = Mathf.Max(GameEndDate.Year, 1);
 
         // Cannot be above upper bounds 
         CurrentDate.Day = Mathf.Min(CurrentDate.Day, DaysInMonth);
