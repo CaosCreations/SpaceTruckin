@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,6 +28,7 @@ public class MissionsUI : MonoBehaviour
     private void Start()
     {
         pilotSelectCloseButton.AddOnClick(PopulateMissionSelect);
+        scheduleSlots.OrderBy(slot => slot.hangarNode);
     }
 
     private void SetActiveSlots()
@@ -70,7 +72,7 @@ public class MissionsUI : MonoBehaviour
     public void PopulatePilotSelect(MissionScheduleSlot scheduleSlot, Mission mission = null)
     {
         scrollViewContent.transform.DestroyDirectChildren();
-        
+
         if (!PilotsManager.PilotsInQueue.IsNullOrEmpty())
         {
             pilotsUnavailableText.DestroyIfExists();
@@ -156,5 +158,17 @@ public class MissionsUI : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public MissionScheduleSlot GetFirstAvailableScheduleSlot()
+    {
+        foreach (MissionScheduleSlot scheduleSlot in scheduleSlots)
+        {
+            if (scheduleSlot.IsActive && !scheduleSlot.ContainsMissionUIItem(out MissionUIItem _))
+            {
+                return scheduleSlot;
+            }
+        }
+        return null;
     }
 }

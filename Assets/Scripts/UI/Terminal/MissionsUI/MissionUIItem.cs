@@ -64,28 +64,33 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
             MissionScheduleSlot scheduleSlot = missionsUI.GetSlotByPosition(eventData.position);
             if (scheduleSlot != null)
             {
-                SingletonManager.EventService.Dispatch<OnMissionSlottedEvent>();
-
-                CheckReplaceMission(scheduleSlot);
-                myRectTransform.SetParent(scheduleSlot.layoutContainer);
-                myRectTransform.SetSiblingIndex(0);
-
-                if (scheduleSlot.GetComponentInChildren<PilotInMissionScheduleSlot>() != null)
-                {
-                    // Schedule a mission if there is already a pilot in the slot 
-                    Schedule(scheduleSlot);
-                }
-                else
-                {
-                    // Open the pilot select menu after dropping a mission into a slot that has no pilot in it
-                    missionsUI.PopulatePilotSelect(scheduleSlot, Mission);
-                }
+                PutMissionInSlot(scheduleSlot);
             }
             else
             {
                 // Unschedule the mission if it is dropped outside a slot
                 Unschedule(scheduleSlot);
             }
+        }
+    }
+
+    private void PutMissionInSlot(MissionScheduleSlot scheduleSlot)
+    {
+        SingletonManager.EventService.Dispatch<OnMissionSlottedEvent>();
+
+        CheckReplaceMission(scheduleSlot);
+        myRectTransform.SetParent(scheduleSlot.layoutContainer);
+        myRectTransform.SetSiblingIndex(0);
+
+        if (scheduleSlot.GetComponentInChildren<PilotInMissionScheduleSlot>() != null)
+        {
+            // Schedule a mission if there is already a pilot in the slot 
+            Schedule(scheduleSlot);
+        }
+        else
+        {
+            // Open the pilot select menu after dropping a mission into a slot that has no pilot in it
+            missionsUI.PopulatePilotSelect(scheduleSlot, Mission);
         }
     }
 
@@ -122,8 +127,17 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            MissionScheduleSlot scheduleSlot = missionsUI.GetSlotByPosition(eventData.position);
-            if (scheduleSlot != null && scheduleSlot.IsActive)
+            MissionScheduleSlot scheduleSlotAtPosition = missionsUI.GetSlotByPosition(eventData.position);
+            if (scheduleSlotAtPosition == null)
+            {
+                // If we're not clicking on an already scheduled mission, then try to put this in the first available slot
+                MissionScheduleSlot fistAvailableScheduleSlot = missionsUI.GetFirstAvailableScheduleSlot();
+                if (fistAvailableScheduleSlot != null)
+                {
+                    PutMissionInSlot(fistAvailableScheduleSlot);
+                }
+            }
+            else if (scheduleSlotAtPosition.IsActive)
             {
                 // Reset the schedule slot if the player clicks and there is already one scheduled
                 Unschedule();

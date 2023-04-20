@@ -60,12 +60,18 @@ public class MissionScheduleSlot : MonoBehaviour, IPointerClickHandler
         }
     }
 
+    public bool ContainsMissionUIItem(out MissionUIItem item)
+    {
+        item = gameObject.GetComponentInChildren<MissionUIItem>();
+        return item != null;
+    }
+
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            if (missionsUI != null 
-                && IsActive 
+            if (missionsUI != null
+                && IsActive
                 && layoutContainer.childCount <= 0)
             {
                 // Allow the player to dock a ship at a node without scheduling a mission
