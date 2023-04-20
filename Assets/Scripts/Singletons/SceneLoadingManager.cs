@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public enum SceneType
 {
-    TitleScreen, MainStation, StackMinigame, WheelMinigame, TileMinigame, SimonMinigame
+    TitleScreen, MainStation, Credits, StackMinigame, WheelMinigame, TileMinigame, SimonMinigame
 }
 
 public class SceneLoadingManager : MonoBehaviour
@@ -19,6 +19,7 @@ public class SceneLoadingManager : MonoBehaviour
     {
         { SceneType.TitleScreen, "TitleScreenScene" },
         { SceneType.MainStation, "ExpandStationScene" },
+        { SceneType.Credits, "CreditsScene" },
         { SceneType.StackMinigame, "StackMinigameScene" },
         { SceneType.TileMinigame, "TileMinigameScene" }
     };

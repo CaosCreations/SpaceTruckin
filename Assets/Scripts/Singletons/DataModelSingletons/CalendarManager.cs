@@ -35,6 +35,11 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
         get => Instance.calendarData.CurrentDate.Year;
         set => Instance.calendarData.CurrentDate.Year = value;
     }
+    public static Date GameEndDate
+    {
+        get => Instance.calendarData.GameEndDate;
+        set => Instance.calendarData.GameEndDate = value;
+    }
     #endregion
 
     private void Awake()
@@ -79,6 +84,7 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
     {
         UpdateCalendarData();
         LogCalendarData();
+        HandleSignificantDates();
     }
 
     private static void UpdateCalendarData()
@@ -104,6 +110,16 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
     public static bool DateIsToday(Date date)
     {
         return date.Equals(CurrentDate);
+    }
+
+    private static void HandleSignificantDates()
+    {
+        if (CurrentDate >= GameEndDate)
+        {
+            // Go to credits when final day passed 
+            Debug.Log("Current date has reached the game end date in the CalendarData. Going to credits scene...");
+            SceneLoadingManager.Instance.LoadSceneAsync(SceneType.Credits);
+        }
     }
 
     private static void LogCalendarData()
