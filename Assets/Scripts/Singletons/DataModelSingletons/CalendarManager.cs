@@ -3,7 +3,7 @@ using PixelCrushers.DialogueSystem;
 using System;
 using UnityEngine;
 
-public class CalendarManager : MonoBehaviour, IDataModelManager
+public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegistrar
 {
     public static CalendarManager Instance { get; private set; }
 
@@ -44,16 +44,13 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
+        if (Instance != null)
         {
             Destroy(gameObject);
             return;
         }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
@@ -116,10 +113,15 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
     {
         if (CurrentDate >= GameEndDate)
         {
-            // Go to credits when final day passed 
-            Debug.Log("Current date has reached the game end date in the CalendarData. Going to credits scene...");
-            SceneLoadingManager.Instance.LoadSceneAsync(SceneType.Credits);
+            EndCalendar();
         }
+    }
+
+    public static void EndCalendar()
+    {
+        // Go to credits when final day of calendar passed 
+        Debug.Log("Current date has reached the game end date in the CalendarData. Going to credits scene...");
+        SceneLoadingManager.Instance.LoadSceneAsync(SceneType.Credits);
     }
 
     private static void LogCalendarData()
@@ -145,11 +147,17 @@ public class CalendarManager : MonoBehaviour, IDataModelManager
             DialogueConstants.DateReachedFunctionName,
             this,
             SymbolExtensions.GetMethodInfo(() => HasDateBeenReached(0, 0, 0)));
+
+        Lua.RegisterFunction(
+            DialogueConstants.EndCalendarFunctionName,
+            this,
+            SymbolExtensions.GetMethodInfo(() => EndCalendar()));
     }
 
     public void UnregisterLuaFunctions()
     {
         Lua.UnregisterFunction(DialogueConstants.DateReachedFunctionName);
+        Lua.UnregisterFunction(DialogueConstants.EndCalendarFunctionName);
     }
     #endregion
 
