@@ -113,14 +113,15 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     {
         if (CurrentDate >= GameEndDate)
         {
+            // Go to credits when final day of calendar passed 
+            Debug.Log("Current date has reached the game end date in the CalendarData. Transitioning to end of game...");
             EndCalendar();
         }
     }
 
     public static void EndCalendar()
     {
-        // Go to credits when final day of calendar passed 
-        Debug.Log("Current date has reached the game end date in the CalendarData. Going to credits scene...");
+        Debug.Log("Calendar ending...");
         SceneLoadingManager.Instance.LoadSceneAsync(SceneType.Credits);
     }
 
