@@ -121,8 +121,8 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     public static void EndCalendar()
     {
-        Debug.Log("Calendar ending...");
-        SceneLoadingManager.Instance.LoadSceneAsync(SceneType.Credits);
+        Debug.Log("Calendar ending... Current date: " + CurrentDate);
+        UIManager.BeginTransition(TransitionUI.TransitionType.EndOfCalendar, UIConstants.EndOfCalendarText);
     }
 
     private static void LogCalendarData()

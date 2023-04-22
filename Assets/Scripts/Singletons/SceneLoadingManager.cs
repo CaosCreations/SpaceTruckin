@@ -46,6 +46,7 @@ public class SceneLoadingManager : MonoBehaviour
     {
         SceneManager.sceneLoaded += SceneLoadedHandler;
         SceneManager.sceneUnloaded += SceneUnloadedHandler;
+        SingletonManager.EventService.Add<OnUITransitionEndedEvent>(OnEndOfCalendarTransitionHandler);
     }
 
     private void SceneLoadedHandler(Scene scene, LoadSceneMode loadSceneMode)
@@ -228,5 +229,13 @@ public class SceneLoadingManager : MonoBehaviour
     {
         var sceneName = GetSceneNameByType(sceneType);
         return Instance.loadedSceneNames.Contains(sceneName);
+    }
+
+    private void OnEndOfCalendarTransitionHandler(OnUITransitionEndedEvent evt)
+    {
+        if (evt.TransitionType != TransitionUI.TransitionType.EndOfCalendar)
+            return;
+
+        LoadSceneAsync(SceneType.Credits);
     }
 }
