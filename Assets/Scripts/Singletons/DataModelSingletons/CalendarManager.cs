@@ -40,6 +40,7 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         get => Instance.calendarData.GameEndDate;
         set => Instance.calendarData.GameEndDate = value;
     }
+    public static bool IsEndOfCalendar => CurrentDate >= GameEndDate;
     #endregion
 
     private void Awake()
@@ -55,7 +56,7 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     private void Start()
     {
-        SingletonManager.EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
+        SingletonManager.EventService.Add<OnEndOfDayClockEvent>(OnEndOfDayClockHandler);
     }
 
     public void Init()
@@ -77,11 +78,12 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     /// <summary>
     /// The day either ends when the player chooses to sleep or the time elapses.
     /// </summary>
-    public static void OnEndOfDayHandler(OnEndOfDayEvent evt)
+    public static void OnEndOfDayClockHandler(OnEndOfDayClockEvent evt)
     {
         UpdateCalendarData();
         LogCalendarData();
         HandleSignificantDates();
+        SingletonManager.EventService.Dispatch(new OnEndOfDayEvent());
     }
 
     private static void UpdateCalendarData()
@@ -111,7 +113,7 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     private static void HandleSignificantDates()
     {
-        if (CurrentDate >= GameEndDate)
+        if (IsEndOfCalendar)
         {
             // Go to credits when final day of calendar passed 
             Debug.Log("Current date has reached the game end date in the CalendarData. Transitioning to end of game...");
@@ -122,7 +124,8 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     public static void EndCalendar()
     {
         Debug.Log("Calendar ending... Current date: " + CurrentDate);
-        UIManager.BeginTransition(TransitionUI.TransitionType.EndOfCalendar, UIConstants.EndOfCalendarText);
+        var textContent = IsEndOfCalendar ? UIConstants.EndOfCalendarText : UIConstants.GameOverText;
+        UIManager.BeginTransition(TransitionUI.TransitionType.EndOfCalendar, textContent);
     }
 
     private static void LogCalendarData()

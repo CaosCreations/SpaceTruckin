@@ -64,7 +64,7 @@ public class ClockManager : MonoBehaviour
     private void EndDay()
     {
         // Notify other objects that the day has ended
-        SingletonManager.EventService.Dispatch(new OnEndOfDayEvent());
+        SingletonManager.EventService.Dispatch(new OnEndOfDayClockEvent());
 
         isEvening = false;
         ResetClock();

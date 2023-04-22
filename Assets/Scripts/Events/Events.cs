@@ -152,6 +152,10 @@ namespace Events
     {
     }
 
+    public class OnEndOfDayClockEvent : IEvent
+    {
+    }
+
     public class OnEndOfDayEvent : IEvent
     {
     }

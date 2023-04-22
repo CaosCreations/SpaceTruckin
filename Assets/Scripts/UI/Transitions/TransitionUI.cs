@@ -32,7 +32,7 @@ public class TransitionUI : MonoBehaviour
 
     private void OnEndOfDayHandler(OnEndOfDayEvent evt)
     {
-        if (CalendarManager.CurrentDate >= CalendarManager.GameEndDate)
+        if (CalendarManager.IsEndOfCalendar)
             return;
 
         BeginTransition(TransitionType.TimeOfDay, UIConstants.MorningStartText);

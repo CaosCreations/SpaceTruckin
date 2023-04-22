@@ -56,6 +56,7 @@ public class UIConstants : MonoBehaviour
     public const string EveningStartText = "Evening begins...";
     public const string MorningStartText = "Morning begins...";
     public const string EndOfCalendarText = "End of calendar...";
+    public const string GameOverText = "Game over...";
 
 
     // UI element dimensions 
