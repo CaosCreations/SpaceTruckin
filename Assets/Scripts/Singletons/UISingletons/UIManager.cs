@@ -39,6 +39,9 @@ public class UIManager : MonoBehaviour
     private TextMeshPro interactionTextMesh;
     private static UICanvasType currentCanvasType;
 
+    [SerializeField]
+    private TransitionUI transitionUI;
+
     private static bool IsPointerOverButton => UIUtils.IsPointerOverObjectType(typeof(Button));
     private static bool IsErrorInput => Input.GetMouseButtonDown(0)
         && !IsPointerOverButton
@@ -247,6 +250,11 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public static void BeginTransition(TransitionUI.TransitionType transitionType, string textContent)
+    {
+        Instance.transitionUI.BeginTransition(transitionType, textContent);
+    }
+
     #region Interaction
     public static void SetCanInteract(UICanvasType canvasType, int node = -1)
     {
@@ -361,6 +369,7 @@ public class UIManager : MonoBehaviour
     }
     #endregion
 
+    #region Event Handlers
     private void OnSceneLoadedHandler(OnSceneLoadedEvent loadedEvent)
     {
         // Override Escape closing the UI canvas if we are in a repairs minigame scene 
@@ -393,4 +402,5 @@ public class UIManager : MonoBehaviour
     {
         RemoveOverriddenKey(KeyCode.Escape);
     }
+    #endregion
 }

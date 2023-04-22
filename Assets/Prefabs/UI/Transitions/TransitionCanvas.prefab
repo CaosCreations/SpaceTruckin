@@ -9,13 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2967449309754138982}
-  - component: {fileID: 3256800298870010721}
+  - component: {fileID: 5250856854304362867}
   - component: {fileID: 2967449309754139005}
   - component: {fileID: 2967449309754139002}
   - component: {fileID: 2967449309754139003}
   - component: {fileID: 2967449309754139000}
   m_Layer: 5
-  m_Name: TimeOfDayTransitionCanvas
+  m_Name: TransitionCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,7 +43,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &3256800298870010721
+--- !u!114 &5250856854304362867
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -52,11 +52,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2967449309754138983}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcfa64a0b06cf234388d658eee05ec9a, type: 3}
+  m_Script: {fileID: 11500000, guid: b672b1c1cf644b8448ecbf1fca2ff1d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 2967449309754139005}
   imageOpacityTransition: {fileID: 7222554352269356597}
-  textCanvas: {fileID: 4531770155757049880}
+  text: {fileID: 4887465106317297446}
+  <TransitionType>k__BackingField: 0
 --- !u!223 &2967449309754139005
 Canvas:
   m_ObjectHideFlags: 0

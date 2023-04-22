@@ -215,4 +215,28 @@ namespace Events
             Args = eventArgs;
         }
     }
+
+    public class OnUITransitionEvent : IEvent
+    {
+        public TransitionUI.TransitionType TransitionType { get; }
+
+        public OnUITransitionEvent(TransitionUI.TransitionType transitionType)
+        {
+            TransitionType = transitionType;
+        }
+    }
+
+    public class OnUITransitionStartedEvent : OnUITransitionEvent
+    {
+        public OnUITransitionStartedEvent(TransitionUI.TransitionType transitionType) : base(transitionType)
+        {
+        }
+    }
+
+    public class OnUITransitionEndedEvent : OnUITransitionEvent
+    {
+        public OnUITransitionEndedEvent(TransitionUI.TransitionType transitionType) : base(transitionType)
+        {
+        }
+    }
 }
