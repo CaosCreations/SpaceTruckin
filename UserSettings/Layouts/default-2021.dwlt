@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 129
+  controlID: 67
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 130
+  controlID: 68
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -165,11 +165,11 @@ MonoBehaviour:
     x: 0
     y: 0
     width: 1109
-    height: 660
+    height: 654
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 131
+  controlID: 69
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -188,7 +188,7 @@ MonoBehaviour:
     x: 0
     y: 0
     width: 244
-    height: 660
+    height: 654
   m_MinSize: {x: 201, y: 221}
   m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 15}
@@ -214,7 +214,7 @@ MonoBehaviour:
     x: 244
     y: 0
     width: 865
-    height: 660
+    height: 654
   m_MinSize: {x: 202, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 14}
@@ -242,9 +242,9 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
     x: 0
-    y: 660
+    y: 654
     width: 1109
-    height: 105
+    height: 111
   m_MinSize: {x: 231, y: 271}
   m_MaxSize: {x: 10001, y: 10021}
   m_ActualView: {fileID: 18}
@@ -436,7 +436,7 @@ MonoBehaviour:
     x: 265
     y: -859
     width: 863
-    height: 639
+    height: 633
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -797,7 +797,7 @@ MonoBehaviour:
     x: 21
     y: -859
     width: 243
-    height: 639
+    height: 633
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -944,10 +944,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 216
-    y: -1050
-    width: 1152
-    height: 868
+    x: 265
+    y: -859
+    width: 863
+    height: 633
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -962,7 +962,7 @@ MonoBehaviour:
   actorTexturesFoldout: 1
   actorSpritesFoldout: 1
   showNodeEditor: 1
-  currentConversationID: 62
+  currentConversationID: 72
   globalSearchText: 
   globalReplaceText: 
   globalSearchSpecificConversation: 0
@@ -998,7 +998,7 @@ MonoBehaviour:
   isSearchBarOpen: 0
   searchString: 
   searchCaseSensitive: 0
-  currentEntryID: 86
+  currentEntryID: -1
   itemFoldouts:
     propertiesKeys: 
     propertiesValues: 
@@ -1091,10 +1091,10 @@ MonoBehaviour:
   addNewNodesToRight: 0
   autoArrangeOnCreate: 0
   zoomLocked: 0
-  _zoom: 0.5499987
+  _zoom: 0.46299857
   canvasRectWidthMultiplier: 1
   canvasScrollView: {x: 100000, y: 100000}
-  canvasScrollPosition: {x: 13.60701, y: 152.4916}
+  canvasScrollPosition: {x: 0, y: 0}
   conversationTitles:
   - Meet Kmi
   - Meet Nammi (Part 1)
@@ -1148,7 +1148,7 @@ MonoBehaviour:
   - MAX TEST CONVO (END CALENDAR)
   - Post-Republic Convo 1
   - Post-Republic Convo 2 (yes + Pirates)
-  - Post-Republic convo 2 (yes + ULSS)
+  - OLD BUGGY Post-Republic convo 2 (yes + ULSS)
   - Post-Republic convo 2 (yes + Vukra)
   - Post-Republic convo 2 (Pirates + ULSS)
   - Post=Republic convo 2 (ULSS + Vukra)
@@ -1160,7 +1160,15 @@ MonoBehaviour:
   - Pirates convo 2 (Vukra + PostRep)
   - Pirates convo 2 (ULSS + Vukra)
   - Pirates convo 2 (ULSS + PostRep)
-  conversationIndex: 61
+  - ULSS Convo 1
+  - ULSS convo 2 (yes + Vukra)
+  - ULSS convo 2 (yes + PostRep)
+  - ULSS convo 2 (yes + Pirates)
+  - ULSS convo 2 (Vukra + PostRep)
+  - ULSS convo 2 (Vukra + Pirates)
+  - ULSS convo 2 (PostRep + Pirates)
+  - Post-Republic Convo 2 (yes + ULSS)
+  conversationIndex: 71
   snapToGridAmount: 0
   confirmDelete: 1
   trimWhitespaceAroundPipes: 1
@@ -1435,6 +1443,83 @@ MonoBehaviour:
   - Pirates convo 2 (Vukra + PostRep)
   - Pirates convo 2 (ULSS + PostRep)
   - Pirates convo 2 (ULSS + Vukra)
+  - ULSS Convo 1
+  - Pirates convo 2 (ULSS + Vukra)
+  - Pirates convo 2 (ULSS + PostRep)
+  - Pirates convo 2 (Vukra + PostRep)
+  - Pirates convo 2 (yes + ULSS)
+  - Pirates convo 2 (yes + PostRep)
+  - Pirates convo 2 (yes + Vukra)
+  - Pirates Convo 1
+  - ULSS Convo 1
+  - Day 1 Lori Convo
+  - Lrurl and Klap convo 2
+  - Lrurl and Klapaucius (Klap)
+  - Nammi Convo 2
+  - Gilli convo 2
+  - Yally Convo 2
+  - McKenna Convo 2
+  - Shun Convo 2
+  - Barry Convo 2
+  - Kmi Convo 2
+  - Lrurl and Klapaucius (Lrurl)
+  - Meet Barry
+  - Meet Shunsuke
+  - Meet Yally
+  - Meet Gilli
+  - Meet McKenna
+  - Meet Nammi (Part 2)
+  - Meet Nammi (Part 1)
+  - Meet Kmi
+  - ULSS convo 2 (Vukra + PostRep)
+  - Pirates convo 2 (Vukra + PostRep)
+  - ULSS convo 2 (Vukra + Pirates)
+  - ULSS convo 2 (yes + Pirates)
+  - ULSS convo 2 (PostRep + Pirates)
+  - ULSS convo 2 (Vukra + PostRep)
+  - ULSS convo 2 (PostRep + Pirates)
+  - ULSS convo 2 (Vukra + PostRep)
+  - ULSS convo 2 (PostRep + Pirates)
+  - ULSS convo 2 (Vukra + PostRep)
+  - ULSS convo 2 (Vukra + Pirates)
+  - ULSS convo 2 (Vukra + PostRep)
+  - ULSS convo 2 (PostRep + Pirates)
+  - ULSS convo 2 (Vukra + Pirates)
+  - ULSS convo 2 (Vukra + PostRep)
+  - ULSS convo 2 (Vukra + Pirates)
+  - ULSS convo 2 (PostRep + Pirates)
+  - ULSS convo 2 (Vukra + PostRep)
+  - ULSS convo 2 (yes + PostRep)
+  - Meet McKenna
+  - ULSS convo 2 (yes + Pirates)
+  - ULSS convo 2 (yes + PostRep)
+  - ULSS convo 2 (yes + Vukra)
+  - ULSS Convo 1
+  - Pirates convo 2 (ULSS + PostRep)
+  - Pirates convo 2 (ULSS + Vukra)
+  - Post-Republic Convo 2 (yes + Pirates)
+  - Pirates convo 2 (Vukra + PostRep)
+  - Pirates convo 2 (yes + ULSS)
+  - Pirates convo 2 (Vukra + PostRep)
+  - Pirates convo 2 (yes + PostRep)
+  - Pirates convo 2 (yes + Vukra)
+  - Pirates Convo 1
+  - Post-Republic convo 2 (Pirates + Vukra)
+  - Post=Republic convo 2 (ULSS + Vukra)
+  - Post-Republic convo 2 (Pirates + ULSS)
+  - Post-Republic convo 2 (yes + Vukra)
+  - Post-Republic convo 2 (yes + ULSS)
+  - Post-Republic Convo 2 (yes + Pirates)
+  - Post-Republic Convo 1
+  - Post-Republic convo 2 (yes + ULSS)
+  - Post-Republic Convo 2 (yes + Pirates)
+  - Post-Republic convo 2 (yes + ULSS)
+  - Post-Republic Convo 2 (yes + Pirates)
+  - Post-Republic Convo 2 (yes + ULSS)
+  - Post-Republic Convo 2 (yes + Pirates)
+  - Post-Republic Convo 2 (yes + ULSS)
+  - OLD BUGGY Post-Republic convo 2 (yes + ULSS)
+  - Post-Republic convo 2 (yes + Vukra)
   nextConversationStack: []
 --- !u!114 &18
 MonoBehaviour:
@@ -1458,9 +1543,9 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 21
-    y: -199
+    y: -205
     width: 1108
-    height: 84
+    height: 90
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -1491,9 +1576,9 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 240}
-    m_SelectedIDs: b2c40000
-    m_LastClickedID: 50354
-    m_ExpandedIDs: 000000005cc4000074c40000b4c4000000ca9a3bffffff7f
+    m_SelectedIDs: b0c40000
+    m_LastClickedID: 50352
+    m_ExpandedIDs: 000000005cc4000072c40000b2c4000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
