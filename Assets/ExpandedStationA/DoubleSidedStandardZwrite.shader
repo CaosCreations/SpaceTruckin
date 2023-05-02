@@ -256,7 +256,7 @@
 			Tags { "LightMode" = "ForwardAdd" }
 			Blend [_SrcBlend] One
 			Fog { Color (0,0,0,0) } // in additive pass fog should be black
-			ZWrite Off
+			ZWrite On
 			ZTest LEqual
 			
 			// turn off backface culling to make this shader double-sided
