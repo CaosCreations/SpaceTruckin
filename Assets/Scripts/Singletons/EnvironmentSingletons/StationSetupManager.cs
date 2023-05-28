@@ -36,6 +36,7 @@ public class StationSetupManager : MonoBehaviour
 
     public static void SetUpStation()
     {
+        SingletonManager.Init();
         PlayerManager.Instance.SetUpPlayer();
         TimelineManager.Instance.SetUp();
         TimelineManager.PlayCutscene("Opening Cutscene");

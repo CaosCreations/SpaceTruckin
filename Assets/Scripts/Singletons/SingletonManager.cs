@@ -22,14 +22,14 @@ public class SingletonManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    private void Start()
+    public static void Init()
     {
-        if (saveDataEnabled)
+        if (Instance.saveDataEnabled)
         {
-            LoadAllSingletonData();
-            EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
+            Instance.LoadAllSingletonData();
+            EventService.Add<OnEndOfDayEvent>(Instance.OnEndOfDayHandler);
         }
-        InitSingletons();
+        Instance.InitSingletons();
     }
 
     private void InitSingletons()
