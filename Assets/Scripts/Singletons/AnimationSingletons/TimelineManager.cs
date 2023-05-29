@@ -83,22 +83,26 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
         currentCutscenePlayer = null;
     }
 
-    public static void PlayCutscene(string cutsceneName)
+    public static void PlayCutscene(Cutscene cutscene)
     {
-        var cutscene = Instance.GetCutsceneByName(cutsceneName);
-
         if (cutscene == null)
-            throw new System.Exception("Cutscene scriptable object doesn't exist. Cannot play cutscene with name: " + cutsceneName);
+            throw new System.Exception("Cutscene scriptable object doesn't exist. Cannot play cutscene with name: " + cutscene.Name);
 
         var cutscenePlayer = Instance.GetCutscenePlayerByCutscene(cutscene);
 
         if (cutscenePlayer == null)
-            throw new System.Exception("Cutscene player component doesn't exist. Cannot play cutscene with name: " + cutsceneName);
+            throw new System.Exception("Cutscene player component doesn't exist. Cannot play cutscene with name: " + cutscene.Name);
 
         Instance.currentCutscenePlayer = cutscenePlayer;
 
-        Debug.Log("Playing cutscene with name: " + cutsceneName);
+        Debug.Log("Playing cutscene with name: " + cutscene.Name);
         PlayTimeline();
+    }
+
+    public static void PlayCutscene(string cutsceneName)
+    {
+        var cutscene = Instance.GetCutsceneByName(cutsceneName);
+        PlayCutscene(cutscene);
     }
 
     private static void PlayTimeline()
