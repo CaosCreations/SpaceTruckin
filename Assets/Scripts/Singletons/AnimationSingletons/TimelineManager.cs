@@ -51,6 +51,7 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
     private void OnTimelineStartedHandler()
     {
+        PlayerManager.EnterPausedState(false);
         currentCutscenePlayer.VirtualCamera.Priority = TimelineConstants.CutsceneCameraPlayPriority;
         currentCutscenePlayer.VirtualCamera.Follow = PlayerManager.PlayerObject.transform;
 
@@ -81,6 +82,7 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
         }
 
         currentCutscenePlayer = null;
+        PlayerManager.ExitPausedState();
     }
 
     public static void PlayCutscene(Cutscene cutscene)
