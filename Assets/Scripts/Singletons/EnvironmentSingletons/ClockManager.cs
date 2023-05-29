@@ -121,9 +121,10 @@ public class ClockManager : MonoBehaviour
         return dateTimeText;
     }
 
-    private void OnPlayerPausedHandler()
+    private void OnPlayerPausedHandler(OnPlayerPausedEvent evt)
     {
-        StopClock();
+        if (evt.StopClock)
+            StopClock();
     }
 
     private void OnPlayerUnpausedHandler()

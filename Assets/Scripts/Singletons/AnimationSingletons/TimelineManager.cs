@@ -51,6 +51,7 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
     private void OnTimelineStartedHandler()
     {
+        PlayerManager.EnterPausedState(false);
         currentCutscenePlayer.VirtualCamera.Priority = TimelineConstants.CutsceneCameraPlayPriority;
         currentCutscenePlayer.VirtualCamera.Follow = PlayerManager.PlayerObject.transform;
 
@@ -81,24 +82,29 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
         }
 
         currentCutscenePlayer = null;
+        PlayerManager.ExitPausedState();
+    }
+
+    public static void PlayCutscene(Cutscene cutscene)
+    {
+        if (cutscene == null)
+            throw new System.Exception("Cutscene scriptable object doesn't exist. Cannot play cutscene with name: " + cutscene.Name);
+
+        var cutscenePlayer = Instance.GetCutscenePlayerByCutscene(cutscene);
+
+        if (cutscenePlayer == null)
+            throw new System.Exception("Cutscene player component doesn't exist. Cannot play cutscene with name: " + cutscene.Name);
+
+        Instance.currentCutscenePlayer = cutscenePlayer;
+
+        Debug.Log("Playing cutscene with name: " + cutscene.Name);
+        PlayTimeline();
     }
 
     public static void PlayCutscene(string cutsceneName)
     {
         var cutscene = Instance.GetCutsceneByName(cutsceneName);
-
-        if (cutscene == null)
-            throw new System.Exception("Cutscene scriptable object doesn't exist. Cannot play cutscene with name: " + cutsceneName);
-
-        var cutscenePlayer = Instance.GetCutscenePlayerByCutscene(cutscene);
-
-        if (cutscenePlayer == null)
-            throw new System.Exception("Cutscene player component doesn't exist. Cannot play cutscene with name: " + cutsceneName);
-
-        Instance.currentCutscenePlayer = cutscenePlayer;
-
-        Debug.Log("Playing cutscene with name: " + cutsceneName);
-        PlayTimeline();
+        PlayCutscene(cutscene);
     }
 
     private static void PlayTimeline()

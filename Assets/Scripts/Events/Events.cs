@@ -182,6 +182,12 @@ namespace Events
 
     public class OnPlayerPausedEvent : IEvent
     {
+        public bool StopClock { get; }
+
+        public OnPlayerPausedEvent(bool stopClock)
+        {
+            StopClock = stopClock;
+        }
     }
 
     public class OnPlayerUnpausedEvent : IEvent
