@@ -1,5 +1,7 @@
 ﻿using Events;
 using PixelCrushers.DialogueSystem;
+using System;
+using System.Linq;
 using UnityEngine;
 
 public class DialogueEventManager : MonoBehaviour
@@ -32,8 +34,13 @@ public class DialogueEventManager : MonoBehaviour
         if (finishedEvent.Cutscene.ConversationSettings != null
             && finishedEvent.Cutscene.ConversationSettings.CloseDialogueUIOnStart)
         {
-            Debug.Log($"Dialogue cutscene finished event call back fired and conversation configured. Starting conversation with name '{finishedEvent.Cutscene.ConversationSettings.ConversationName}'");
-            DialogueManager.StartConversation(finishedEvent.Cutscene.ConversationSettings.ConversationName);
+            Debug.Log($"Dialogue cutscene finished event call back fired and conversation configured. Starting conversation with ID '{finishedEvent.Cutscene.ConversationSettings.ConversationId}'...");
+
+            var conversation = DialogueManager.DatabaseManager.loadedDatabases.First().GetConversation(finishedEvent.Cutscene.ConversationSettings.ConversationId)
+                ?? throw new System.Exception($"Conversation not found with ID '{finishedEvent.Cutscene.ConversationSettings.ConversationId}'. Check the Cutscene ScriptableObject settings.");
+
+            Debug.Log($"Starting conversation with Title '{conversation.Title}'...");
+            DialogueManager.StartConversation(conversation.Title);
         }
     }
 }

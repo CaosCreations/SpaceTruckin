@@ -5,7 +5,7 @@ using UnityEngine;
 public class CutsceneConversationSettings
 {
     [field: SerializeField]
-    public string ConversationName { get; private set; }
+    public int ConversationId { get; private set; }
 
     [field: SerializeField]
     public bool CloseDialogueUIOnStart { get; private set; }

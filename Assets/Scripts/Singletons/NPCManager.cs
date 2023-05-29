@@ -30,6 +30,12 @@ public class NPCManager : MonoBehaviour
 
     private void SetNpcPosition(NPC npc, TimeOfDay.Phase phase)
     {
+        if (npc.Data == null)
+        {
+            Debug.LogWarning($"{gameObject.name} NPC has no {nameof(NPCData)} ScriptableObject reference assigned. Cannot set TimeOfDay position.");
+            return;
+        }
+
         var location = npc.Data.GetLocationByDate(CalendarManager.CurrentDate);
         var position = location.GetPositionByPhase(phase);
 
