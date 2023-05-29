@@ -10,6 +10,7 @@ public class SingletonManager : MonoBehaviour
 
     private readonly EventService eventService = new EventService();
     public static EventService EventService => Instance.eventService;
+    private static bool init;
 
     private void Awake()
     {
@@ -22,14 +23,29 @@ public class SingletonManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void Start()
+    {
+        // For setting up without loading through the title screen 
+        if (SceneLoadingManager.GetCurrentSceneType() == SceneType.MainStation)
+        {
+            Init();
+        }
+    }
+
     public static void Init()
     {
+        if (init)
+        {
+            return;
+        }
+
         if (Instance.saveDataEnabled)
         {
             Instance.LoadAllSingletonData();
             EventService.Add<OnEndOfDayEvent>(Instance.OnEndOfDayHandler);
         }
         Instance.InitSingletons();
+        init = true;
     }
 
     private void InitSingletons()

@@ -14,6 +14,11 @@ public class NPC : MonoBehaviour
 
     private void Awake()
     {
+        if (Data == null)
+        {
+            Debug.LogWarning($"{gameObject.name} NPC has no {nameof(NPCData)} ScriptableObject reference assigned");
+            return;
+        }
         Data.LocationByDateContainer.InitLookup();
     }
 
