@@ -8,13 +8,13 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: SpriteShaderino
-  m_Shader: {fileID: 4800000, guid: 8d8595bc04e68504fa1e36c72d7ead57, type: 3}
+  m_Shader: {fileID: 4800000, guid: ac2f92f6b286eea439e509d2343487ea, type: 3}
   m_ValidKeywords:
   - _ALPHABLEND_ON
   - _ALPHA_CLIP
-  - _FIXED_NORMALS_VIEWSPACE
   - _FOG
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _FIXED_NORMALS_VIEWSPACE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -22,7 +22,7 @@ Material:
   stringTagMap:
     AlphaDepth: False
     IGNOREPROJECTOR: true
-    RenderType: SpriteViewSpaceFixedNormal
+    RenderType: TransparentCutout
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
