@@ -14,8 +14,8 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
     [SerializeField]
     private PlayerAnimationAssetMappingContainer playerAnimationAssetMappingContainer;
 
-    private CutsceneTimelinePlayer[] cutscenePlayers;
-    private CutsceneTimelinePlayer currentCutscenePlayer;
+    private static CutsceneTimelinePlayer[] cutscenePlayers;
+    private static CutsceneTimelinePlayer currentCutscenePlayer;
 
     private void Awake()
     {
@@ -70,6 +70,7 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
     {
         currentCutscenePlayer.VirtualCamera.Priority = TimelineConstants.CutsceneCameraBasePriority;
         currentCutscenePlayer.VirtualCamera.Follow = null;
+        currentCutscenePlayer.VirtualCamera.gameObject.SetActive(false);
 
         var cutscene = GetCutsceneByPlayableAsset(currentCutscenePlayer.PlayableDirector.playableAsset);
         if (cutscene != null)
@@ -95,7 +96,7 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
         if (cutscenePlayer == null)
             throw new System.Exception("Cutscene player component doesn't exist. Cannot play cutscene with name: " + cutscene.Name);
 
-        Instance.currentCutscenePlayer = cutscenePlayer;
+        currentCutscenePlayer = cutscenePlayer;
 
         Debug.Log("Playing cutscene with name: " + cutscene.Name);
         PlayTimeline();
@@ -109,9 +110,10 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
     private static void PlayTimeline()
     {
-        Debug.Log("Playing timeline with playable asset name: " + Instance.currentCutscenePlayer.PlayableDirector.playableAsset.name);
-        Instance.currentCutscenePlayer.PlayableDirector.gameObject.SetActive(true);
-        Instance.currentCutscenePlayer.PlayableDirector.Play();
+        Debug.Log("Playing timeline with playable asset name: " + currentCutscenePlayer.PlayableDirector.playableAsset.name);
+        currentCutscenePlayer.PlayableDirector.gameObject.SetActive(true);
+        currentCutscenePlayer.VirtualCamera.gameObject.SetActive(true);
+        currentCutscenePlayer.PlayableDirector.Play();
     }
 
     public Cutscene GetCutsceneByName(string name)
@@ -214,11 +216,6 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
                     : assetMapping.Player2Clip;
             }
         }
-    }
-
-    private void SetUpCutsceneCamera()
-    {
-        currentCutscenePlayer.VirtualCamera.Follow = PlayerManager.PlayerObject.transform;
     }
 
     public void FinishCurrentTimeline()
