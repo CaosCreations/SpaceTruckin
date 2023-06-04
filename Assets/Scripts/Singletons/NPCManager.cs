@@ -32,7 +32,7 @@ public class NPCManager : MonoBehaviour
     {
         if (npc.Data == null)
         {
-            Debug.LogWarning($"{gameObject.name} NPC has no {nameof(NPCData)} ScriptableObject reference assigned. Cannot set TimeOfDay position.");
+            Debug.LogWarning($"{npc.gameObject.name} NPC has no {nameof(NPCData)} ScriptableObject reference assigned. Cannot set TimeOfDay position.");
             return;
         }
 
