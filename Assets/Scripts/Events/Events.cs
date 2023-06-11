@@ -164,6 +164,10 @@ namespace Events
     {
     }
 
+    public class OnMorningStartEvent : IEvent
+    {
+    }
+
     public class OnLightsOutTimeEvent : IEvent
     {
     }
