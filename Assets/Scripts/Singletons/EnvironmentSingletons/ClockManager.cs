@@ -32,6 +32,7 @@ public class ClockManager : MonoBehaviour
         SingletonManager.EventService.Add<OnPlayerSleepEvent>(OnPlayerSleepHandler);
         SingletonManager.EventService.Add<OnPlayerPausedEvent>(OnPlayerPausedHandler);
         SingletonManager.EventService.Add<OnPlayerUnpausedEvent>(OnPlayerUnpausedHandler);
+        SingletonManager.EventService.Add<OnUITransitionEndedEvent>(OnUITransitionEndedHandler);
     }
 
     // Calculate how quick the clock should tick relative to real time 
@@ -130,6 +131,14 @@ public class ClockManager : MonoBehaviour
     private void OnPlayerUnpausedHandler()
     {
         StartClock();
+    }
+
+    private void OnUITransitionEndedHandler(OnUITransitionEndedEvent evt)
+    {
+        if (evt.TransitionType == TransitionUI.TransitionType.TimeOfDay && !isEvening)
+        {
+            SingletonManager.EventService.Dispatch<OnMorningStartEvent>();
+        }
     }
 
     private void OnGUI()
