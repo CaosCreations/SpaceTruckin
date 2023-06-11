@@ -41,4 +41,9 @@ public class SleepAction : ScriptableObject
     {
         return $"{nameof(SleepAction)} with name '{Name}'";
     }
+
+    private void OnValidate()
+    {
+        Date = Date.Validate();
+    }
 }

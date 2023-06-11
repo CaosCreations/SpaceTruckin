@@ -26,15 +26,14 @@ public class SleepActionManager : MonoBehaviour
 
     private void OnMorningStartHandler()
     {
-        Debug.Log("Checking for sleep actions...");
+        Debug.Log("OnMorningStartHandler - Checking for sleep actions...");
         foreach (var action in actionContainer.Elements)
         {
             // OnMorningStart uses the Wake phase 
-            if (action.SleepPhase != SleepAction.Phase.Wake || action.Date != CalendarManager.CurrentDate)
+            if (action.SleepPhase != SleepAction.Phase.Wake || !CalendarManager.DateIsToday(action.Date))
             {
                 continue;
             }
-
             Debug.Log("Executing " + action);
             action.Execute();
         }
