@@ -73,8 +73,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         SetDirection();
-
-        RotateWithView(MovementVector, CameraTransform);
     }
 
     // Move player in FixedUpdate 

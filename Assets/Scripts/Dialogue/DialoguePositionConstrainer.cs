@@ -7,14 +7,15 @@ public class DialoguePositionConstrainer : MonoBehaviour
     [SerializeField]
     private DialoguePositionConstrainerSettings settings;
 
-    private Vector3 playerResetPos;
-
+    private BoxCollider boxCollider;
     private bool active;
+
+    [SerializeField]
+    private float resetDistance = 1f;
 
     private void Awake()
     {
-        var colliderBounds = GetComponent<BoxCollider>().bounds;
-        playerResetPos = GetPlayerResetPos(colliderBounds);
+        boxCollider = GetComponent<BoxCollider>();
     }
 
     private void Start()
@@ -22,30 +23,36 @@ public class DialoguePositionConstrainer : MonoBehaviour
         SingletonManager.EventService.Add<OnConversationEndedEvent>(OnConversationEndedHandler);
     }
 
-    private Vector3 GetPlayerResetPos(Bounds bounds)
-    {
-        float centerX = bounds.center.x;
-        float centerZ = bounds.center.z;
-        float lengthX = bounds.size.x;
-        float lengthZ = bounds.size.z;
-
-        // If the rectangle is aligned with the X-axis
-        Vector3 centralPointX = new Vector3(centerX + lengthX / 2f, bounds.center.y, bounds.center.z);
-
-        // If the rectangle is aligned with the Z-axis
-        Vector3 centralPointZ = new Vector3(bounds.center.x, bounds.center.y, centerZ + lengthZ / 2f);
-        return centralPointZ + new Vector3(0f, 0f, 2f);
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        if (!active)
+        if (!active || !other.CompareTag(PlayerConstants.PlayerTag))
             return;
 
         DialogueUtils.StartConversationById(settings.PlayId);
-        PlayerManager.PlayerMovement.SetPosition(playerResetPos);
 
-        // TODO: Turn player around 
+        Vector3 centralPoint = boxCollider.bounds.GetCentralPointAlongLongEdge();
+        Vector3 playerPosition = other.transform.position;
+
+        Vector3 offset = playerPosition - centralPoint;
+        Vector3 newPosition;
+
+        if (Mathf.Abs(offset.x) > Mathf.Abs(offset.z))
+        {
+            // Player entered from the X-aligned long edge
+            float newX = centralPoint.x + Mathf.Sign(offset.x) * boxCollider.bounds.extents.x;
+            newPosition = new Vector3(newX, playerPosition.y, playerPosition.z);
+        }
+        else
+        {
+            // Player entered from the Z-aligned long edge
+            float newZ = centralPoint.z + Mathf.Sign(offset.z) * boxCollider.bounds.extents.z;
+            newPosition = new Vector3(playerPosition.x, playerPosition.y, newZ);
+        }
+
+        Vector3 oppositeDirection = (playerPosition - newPosition).normalized;
+        newPosition += oppositeDirection * resetDistance;
+
+        other.transform.position = newPosition;
     }
 
     private void OnConversationEndedHandler(OnConversationEndedEvent evt)
@@ -62,6 +69,15 @@ public class DialoguePositionConstrainer : MonoBehaviour
             Debug.Log("DialoguePositionConstrainer deactivating...");
             active = false;
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (!active)
+            return;
+
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireCube(transform.position + boxCollider.center, boxCollider.size);
     }
 }
 
@@ -85,7 +101,4 @@ public class DialoguePositionConstrainerSettings
     /// </summary>
     [field: SerializeField]
     public int PlayId { get; private set; }
-
-    [field: SerializeField]
-    public
 }
