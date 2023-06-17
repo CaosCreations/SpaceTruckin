@@ -10,9 +10,6 @@ public class Follower : MonoBehaviour
     [SerializeField]
     private float avoidanceDistance = 2.0f;
 
-    [SerializeField]
-    private float distanceFromPlayer = 1.5f;
-
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -23,14 +20,14 @@ public class Follower : MonoBehaviour
 
     private void Update()
     {
-        Vector3 targetPosition = playerTransform.position - playerTransform.forward * distanceFromPlayer;
+        Vector3 targetPosition = playerTransform.position - PlayerManager.PlayerMovement.PlayerFacingDirection.normalized * agent.stoppingDistance;
 
         // Check if the target position is obstructed by walls
         if (Physics.Linecast(playerTransform.position, targetPosition, out RaycastHit hit))
         {
             // If obstructed, find a new valid position using pathfinding
-            Vector3 obstacleAvoidanceDirection = (hit.point - playerTransform.position).normalized;
-            Vector3 obstacleAvoidancePosition = hit.point + obstacleAvoidanceDirection * avoidanceDistance;
+            Vector3 avoidanceDirection = (hit.point - playerTransform.position).normalized;
+            Vector3 obstacleAvoidancePosition = hit.point + avoidanceDirection * avoidanceDistance;
 
             if (NavMesh.SamplePosition(obstacleAvoidancePosition, out NavMeshHit navHit, 10.0f, NavMesh.AllAreas))
             {
