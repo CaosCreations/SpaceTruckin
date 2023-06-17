@@ -1,5 +1,7 @@
 ﻿using Language.Lua;
 using PixelCrushers.DialogueSystem;
+using System.Linq;
+using UnityEngine;
 
 public static class DialogueUtils
 {
@@ -24,4 +26,27 @@ public static class DialogueUtils
     }
 
     public static bool IsConversationActive => DialogueManager.IsConversationActive;
+
+    /// <summary>
+    /// Because PixelCrushers didn't include this...
+    /// </summary>
+    /// <param name="conversationId"></param>
+    /// <exception cref="System.Exception"></exception>
+    public static void StartConversationById(int conversationId)
+    {
+        var conversation = GetConversationById(conversationId) ?? throw new System.Exception($"Conversation not found with ID '{conversationId}'");
+
+        Debug.Log($"Starting conversation with Title '{conversation.Title}'...");
+        DialogueManager.StartConversation(conversation.Title);
+    }
+
+    public static Conversation GetConversationById(int conversationId)
+    {
+        return DialogueManager.DatabaseManager.loadedDatabases.First().GetConversation(conversationId);
+    }
+
+    public static Conversation GetConversationByTitle(string title)
+    {
+        return DialogueManager.DatabaseManager.loadedDatabases.First().GetConversation(title);
+    }
 }

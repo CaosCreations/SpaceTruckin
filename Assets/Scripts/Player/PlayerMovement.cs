@@ -73,8 +73,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         SetDirection();
-
-        RotateWithView(MovementVector, CameraTransform);
     }
 
     // Move player in FixedUpdate 
@@ -205,10 +203,8 @@ public class PlayerMovement : MonoBehaviour
         return hit.collider != null && hit.collider.gameObject == obj;
     }
 
-    public static void RotateWithView(Vector3 vector, Transform cameraTransform)
+    public void SetPosition(Vector3 position)
     {
-        Vector3 dir = cameraTransform.TransformDirection(vector);
-        dir.Set(dir.x, 0, dir.z);
-        vector = dir.normalized * vector.magnitude;
+        transform.position = position;
     }
 }
