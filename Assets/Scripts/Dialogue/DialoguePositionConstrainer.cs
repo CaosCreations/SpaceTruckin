@@ -7,15 +7,18 @@ public class DialoguePositionConstrainer : MonoBehaviour
     [SerializeField]
     private DialoguePositionConstrainerSettings settings;
 
-    private BoxCollider boxCollider;
+    private BoxCollider rectangleCollider;
+
+    [SerializeField]
     private bool active;
 
     [SerializeField]
-    private float resetDistance = 1f;
+    private float offsetDistance = 1f;
 
     private void Awake()
     {
-        boxCollider = GetComponent<BoxCollider>();
+        rectangleCollider = GetComponent<BoxCollider>();
+        active = false;
     }
 
     private void Start()
@@ -30,28 +33,9 @@ public class DialoguePositionConstrainer : MonoBehaviour
 
         DialogueUtils.StartConversationById(settings.PlayId);
 
-        Vector3 centralPoint = boxCollider.bounds.GetCentralPointAlongLongEdge();
         Vector3 playerPosition = other.transform.position;
-
-        Vector3 offset = playerPosition - centralPoint;
-        Vector3 newPosition;
-
-        if (Mathf.Abs(offset.x) > Mathf.Abs(offset.z))
-        {
-            // Player entered from the X-aligned long edge
-            float newX = centralPoint.x + Mathf.Sign(offset.x) * boxCollider.bounds.extents.x;
-            newPosition = new Vector3(newX, playerPosition.y, playerPosition.z);
-        }
-        else
-        {
-            // Player entered from the Z-aligned long edge
-            float newZ = centralPoint.z + Mathf.Sign(offset.z) * boxCollider.bounds.extents.z;
-            newPosition = new Vector3(playerPosition.x, playerPosition.y, newZ);
-        }
-
-        Vector3 oppositeDirection = (playerPosition - newPosition).normalized;
-        newPosition += oppositeDirection * resetDistance;
-
+        Vector3 centralPoint = rectangleCollider.bounds.GetCentralPointAlongLongEdge();
+        Vector3 newPosition = GetResetPosition(playerPosition, centralPoint);
         other.transform.position = newPosition;
     }
 
@@ -71,13 +55,42 @@ public class DialoguePositionConstrainer : MonoBehaviour
         }
     }
 
+    private Vector3 GetResetPosition(Vector3 playerPosition, Vector3 centralPoint)
+    {
+        float offsetZ = playerPosition.z - centralPoint.z;
+        float offsetX = playerPosition.x - centralPoint.x;
+
+        if (Mathf.Abs(offsetZ) > Mathf.Abs(offsetX))
+        {
+            if (offsetZ > 0)
+            {
+                return new Vector3(centralPoint.x, centralPoint.y, centralPoint.z - offsetDistance);
+            }
+            else
+            {
+                return new Vector3(centralPoint.x, centralPoint.y, centralPoint.z + offsetDistance);
+            }
+        }
+        else
+        {
+            if (offsetX > 0)
+            {
+                return new Vector3(centralPoint.x - offsetDistance, centralPoint.y, centralPoint.z);
+            }
+            else
+            {
+                return new Vector3(centralPoint.x + offsetDistance, centralPoint.y, centralPoint.z);
+            }
+        }
+    }
+
     private void OnDrawGizmos()
     {
         if (!active)
             return;
 
         Gizmos.color = Color.magenta;
-        Gizmos.DrawWireCube(transform.position + boxCollider.center, boxCollider.size);
+        Gizmos.DrawWireCube(transform.position + rectangleCollider.center, rectangleCollider.size);
     }
 }
 

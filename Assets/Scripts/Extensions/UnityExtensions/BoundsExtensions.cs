@@ -9,15 +9,15 @@ public static class BoundsExtensions
 
         if (size.x > size.z)
         {
-            // Rectangle is aligned with the x-axis
-            float centralPointX = center.x + size.x / 2f;
+            // Rectangle is aligned with the X-axis
+            float centralPointX = center.x;
             return new Vector3(centralPointX, center.y, center.z);
         }
 
         if (size.z > size.x)
         {
-            // Rectangle is aligned with the z-axis
-            float centralPointZ = center.z + size.z / 2f;
+            // Rectangle is aligned with the Y-axis
+            float centralPointZ = center.z;
             return new Vector3(center.x, center.y, centralPointZ);
         }
         // Rectangle might be a square or aligned with both axes
