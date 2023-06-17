@@ -5,23 +5,25 @@ public class Follower : MonoBehaviour
 {
     private Transform playerTransform;
     private NavMeshAgent agent;
-    private Vector3 offset;
     private Quaternion initialRotation;
 
     [SerializeField]
     private float avoidanceDistance = 2.0f;
 
+    [SerializeField]
+    private float distanceFromPlayer = 1.5f;
+
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         playerTransform = PlayerManager.PlayerObject.transform;
-        offset = transform.position - playerTransform.position;
         initialRotation = transform.rotation;
+        agent.updateRotation = false;
     }
 
     private void Update()
     {
-        Vector3 targetPosition = playerTransform.position + offset;
+        Vector3 targetPosition = playerTransform.position - playerTransform.forward * distanceFromPlayer;
 
         // Check if the target position is obstructed by walls
         if (Physics.Linecast(playerTransform.position, targetPosition, out RaycastHit hit))
@@ -44,7 +46,7 @@ public class Follower : MonoBehaviour
         agent.SetDestination(targetPosition);
 
         // Calculate the desired velocity
-        Vector3 desiredVelocity = (targetPosition - transform.position).normalized * agent.speed;
+        Vector3 desiredVelocity = (targetPosition - transform.position).normalized * PlayerManager.PlayerMovement.CurrentSpeed;
         agent.velocity = desiredVelocity;
 
         // Check if the follower should stop
