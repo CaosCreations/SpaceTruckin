@@ -50,7 +50,24 @@ public class Follower : MonoBehaviour
         float distance = Vector3.Distance(transform.position, targetPosition);
         if (distance <= agent.stoppingDistance)
         {
-            agent.velocity = Vector3.zero;
+            // Check if the follower is blocking the player's path
+            if (Physics.Linecast(playerTransform.position, targetPosition, out RaycastHit obstructHit))
+            {
+                // Move around the player if obstructed
+                Vector3 avoidanceDirection = (obstructHit.point - playerTransform.position).normalized;
+                Vector3 obstacleAvoidancePosition = obstructHit.point + avoidanceDirection * avoidanceDistance;
+
+                if (NavMesh.SamplePosition(obstacleAvoidancePosition, out NavMeshHit navHit, 10.0f, NavMesh.AllAreas))
+                {
+                    targetPosition = navHit.position;
+                    agent.SetDestination(targetPosition);
+                }
+            }
+            else
+            {
+                // Stop moving if not obstructed
+                agent.velocity = Vector3.zero;
+            }
         }
 
         // Lock rotation 

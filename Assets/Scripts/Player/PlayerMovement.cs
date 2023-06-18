@@ -150,7 +150,7 @@ public class PlayerMovement : MonoBehaviour
             CurrentSpeed = 0f;
         }
 
-        Vector3 movement = new Vector3(MovementVector.x, 0f, MovementVector.y);
+        Vector3 movement = new(MovementVector.x, 0f, MovementVector.y);
         characterController.Move(CurrentSpeed * Time.fixedDeltaTime * movement);
     }
 
