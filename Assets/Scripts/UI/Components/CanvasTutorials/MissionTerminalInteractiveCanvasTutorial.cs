@@ -1,7 +1,7 @@
 ﻿using Events;
 using UnityEngine;
 
-public class TerminalInteractiveCanvasTutorial : InteractiveCanvasTutorial
+public class MissionTerminalInteractiveCanvasTutorial : InteractiveCanvasTutorial
 {
     [SerializeField] private InteractiveCanvasTutorialCard cardAfterMissionSelected;
     [SerializeField] private InteractiveCanvasTutorialCard cardAfterPilotSelected;

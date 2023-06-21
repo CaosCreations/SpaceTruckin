@@ -27,6 +27,7 @@ public static class PlayerPrefsManager
 
     private static void SetBool(string key, bool value)
     {
+        Debug.Log($"Setting PlayerPref: Key = {key} | Value = {value}");
         PlayerPrefs.SetInt(key, value.ToInt());
     }
 }

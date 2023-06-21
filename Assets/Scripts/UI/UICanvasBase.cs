@@ -7,7 +7,7 @@ public class UICanvasBase : MonoBehaviour
     public UICanvasType CanvasType { get; private set; }
 
     [field: SerializeField]
-    public CanvasTutorialPrefabByDate[] CanvasTutorialMap { get; private set; }
+    public CanvasTutorialPrefabByDate[] CanvasTutorialsByDate { get; private set; }
 
     [field: SerializeField]
     public bool ShowUniversalCanvas { get; private set; }
@@ -20,7 +20,7 @@ public class UICanvasBase : MonoBehaviour
 
     private bool TryGetTutorial(Date date, out GameObject prefab)
     {
-        prefab = CanvasTutorialMap.FirstOrDefault(t => t.Date == date)?.Prefab;
+        prefab = CanvasTutorialsByDate.FirstOrDefault(t => t.Date == date)?.Prefab;
         return prefab != null;
     }
 
