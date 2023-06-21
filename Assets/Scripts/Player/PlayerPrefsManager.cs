@@ -2,66 +2,23 @@
 
 public static class PlayerPrefsManager
 {
-    #region UI
-    // Viewed UI keys - used to check if the player has seen the UI before
-    public static readonly string TerminalHasBeenViewedKey = "TerminalHasBeenViewed";
-    public static readonly string HangarHasBeenViewedKey = "HangarHasBeenViewed";
-    public static readonly string VendingHasBeenViewedKey = "VendingHasBeenViewed";
-    public static readonly string CasetteHasBeenViewedKey = "CasetteHasBeenViewed";
-    public static readonly string NoticeBoardHasBeenViewedKey = "NoticeBoardHasBeenViewed";
-    public static readonly string BedHasBeenViewedKey = "BedHasBeenViewed";
-    public static readonly string MainMenuHasBeenViewedKey = "MainMenuHasBeenViewed";
-    public static readonly string PauseMenuHasBeenViewedKey = "PauseMenuHasBeenViewed";
-
-    public static bool GetHasBeenViewedPref(UICanvasType canvasType)
+    public static bool GetCanvasTutorialPrefValue(UICanvasType canvasType, Date date)
     {
-        string key = GetHasBeenViewedKey(canvasType);
+        string key = GetCanvasTutorialPrefKey(canvasType, date);
         return GetBool(key);
     }
 
-    public static void SetHasBeenViewedPref(UICanvasType canvasType, bool value)
+    public static void SetCanvasTutorialPrefValue(UICanvasType canvasType, Date date, bool value)
     {
-        string key = GetHasBeenViewedKey(canvasType);
+        string key = GetCanvasTutorialPrefKey(canvasType, date);
         SetBool(key, value);
     }
 
-    private static string GetHasBeenViewedKey(UICanvasType canvasType)
+    private static string GetCanvasTutorialPrefKey(UICanvasType canvasType, Date date)
     {
-        string key;
-        switch (canvasType)
-        {
-            case UICanvasType.Terminal:
-                key = TerminalHasBeenViewedKey;
-                break;
-            case UICanvasType.Hangar:
-                key = HangarHasBeenViewedKey;
-                break;
-            case UICanvasType.Vending:
-                key = VendingHasBeenViewedKey;
-                break;
-            case UICanvasType.Cassette:
-                key = CasetteHasBeenViewedKey;
-                break;
-            case UICanvasType.NoticeBoard:
-                key = NoticeBoardHasBeenViewedKey;
-                break;
-            case UICanvasType.Bed:
-                key = BedHasBeenViewedKey;
-                break;
-            case UICanvasType.MainMenu:
-                key = MainMenuHasBeenViewedKey;
-                break;
-            case UICanvasType.PauseMenu:
-                key = PauseMenuHasBeenViewedKey;
-                break;
-            default:
-                Debug.LogError("Invalid UI type passed to PlayerPrefsManager.GetHasBeenViewedKey");
-                return default;
-        }
-        return key;
+        // e.g. "TUTORIAL_TERMINAL_1-1-1"
+        return $"TUTORIAL_{canvasType.ToString().ToUpper()}_{date}";
     }
-
-    #endregion
 
     private static bool GetBool(string key, int defaultValue = 0)
     {
@@ -70,16 +27,7 @@ public static class PlayerPrefsManager
 
     private static void SetBool(string key, bool value)
     {
+        Debug.Log($"Setting PlayerPref: Key = {key} | Value = {value}");
         PlayerPrefs.SetInt(key, value.ToInt());
-    }
-
-    private static int GetInt(string key, int defaultValue = 0)
-    {
-        return PlayerPrefs.GetInt(key, defaultValue);
-    }
-
-    private static void SetInt(string key, int value)
-    {
-        PlayerPrefs.SetInt(key, value);
     }
 }

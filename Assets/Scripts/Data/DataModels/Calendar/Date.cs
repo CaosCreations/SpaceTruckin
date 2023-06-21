@@ -60,6 +60,6 @@ public struct Date : IComparable<Date>
 
     public override string ToString()
     {
-        return $"{Day}/{Month}/{Year}";
+        return $"{Day}-{Month}-{Year}";
     }
 }

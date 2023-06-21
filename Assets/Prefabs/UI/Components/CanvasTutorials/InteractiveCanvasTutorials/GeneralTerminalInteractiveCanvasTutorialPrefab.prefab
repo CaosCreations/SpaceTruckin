@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6941131251218105384}
-  - component: {fileID: 8724280313663749826}
+  - component: {fileID: 2295049375351117089}
   m_Layer: 5
-  m_Name: TerminalInteractiveCanvasTutorialPrefab
+  m_Name: GeneralTerminalInteractiveCanvasTutorialPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40,7 +40,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8724280313663749826
+--- !u!114 &2295049375351117089
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -49,11 +49,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 727321637851118135}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 516b65ac9be269b4abaff0b7fdaf4c4a, type: 3}
+  m_Script: {fileID: 11500000, guid: 24dd19974f6e9274881bae85b8b3d2b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   keyCodeOverrides: []
-  tutorialCardCycle: {fileID: 0}
   openingCard: {fileID: 2526525108472311707}
   cardAfterMissionSelected: {fileID: 3879076493606554922}
   cardAfterPilotSelected: {fileID: 3193989617544244710}
@@ -67,14 +66,13 @@ PrefabInstance:
     - target: {fileID: 3553060809365805183, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
       propertyPath: m_Text
-      value: "Ok, I know there are a lot of tabs and buttons here but settle down,
-        it\u2019s easier than it looks.<br><br>Over to the left you got your money,
-        that\u2019s how much cash we currently have in the company .hen we got the
-        Jobs tab, the Messages tab, the Analytics tab, the Fleet tab and our company
-        licences tab but lets just focus on the Jobs tab for now.<br><br>You\u2019ll
-        notice the job you accepted back in the Notice Board terminal is here. To
-        assign it, drag it on over to the right, into one of the 2 available hangar
-        slots. "
+      value: "Looks like you've already got some jobs lined up from yesterday, nice.
+        We've only got 2 ships in the fleet, so you'll have to prioritize the ones
+        you want. Before that though, there's correspondence. I trust you know how
+        to work an email inbox, right? Click on the messages tab to check if anyone
+        has reached out to you. We sometimes get job requests via email, so keep
+        an eye out for those. \r\nFeel Free to mess about with the terminal. Once
+        you assign a job, I'll walk you through the rest of it.\r\n"
       objectReference: {fileID: 0}
     - target: {fileID: 6199420112288808843, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
@@ -226,8 +224,7 @@ PrefabInstance:
     - target: {fileID: 3553060809365805183, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
       propertyPath: m_Text
-      value: "Right now you have to go to the hangar and access the node you\u2019ve
-        assigned the pilot to! The hangar is just after that door behind the desk!"
+      value: TEST CARD 3
       objectReference: {fileID: 0}
     - target: {fileID: 6199420112288808843, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
@@ -337,7 +334,7 @@ PrefabInstance:
     - target: {fileID: 6622225993795418308, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
       propertyPath: m_Name
-      value: CardAfterPilotSelected
+      value: Card3
       objectReference: {fileID: 0}
     - target: {fileID: 6622225993795418308, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
@@ -374,10 +371,7 @@ PrefabInstance:
     - target: {fileID: 3553060809365805183, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
       propertyPath: m_Text
-      value: "Now you gotta chose a pilot to assign to this job. Go ahead and pick
-        one! When you a pilot to a hangar slot (with or without a job) they\u2019ll
-        park their ship there and you\u2019ll be able to refuel and repair it there.
-        You can also do a bunch of other stuff too but more on that later."
+      value: TEST CARD 2
       objectReference: {fileID: 0}
     - target: {fileID: 6199420112288808843, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
@@ -487,7 +481,7 @@ PrefabInstance:
     - target: {fileID: 6622225993795418308, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
       propertyPath: m_Name
-      value: CardAfterMissionSelected
+      value: Card2
       objectReference: {fileID: 0}
     - target: {fileID: 6622225993795418308, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
