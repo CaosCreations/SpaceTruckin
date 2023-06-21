@@ -242,20 +242,4 @@ public class UniversalHangarNodeUI : UICanvasBase
     {
         SetSliderValues();
     }
-
-    public override void ShowTutorial()
-    {
-        if (CanvasTutorialPrefab != null)
-        {
-            GameObject tutorial = Instantiate(CanvasTutorialPrefab, transform);
-
-            if (tutorial.TryGetComponent<CardCycle>(out var cardCycle))
-            {
-                // Show the name of the currently docked ship in the tutorial cards
-                cardCycle.CyclableContent.ReplaceTemplates(ShipToInspect);
-
-                cardCycle.SetupCardCycle();
-            }
-        }
-    }
 }
