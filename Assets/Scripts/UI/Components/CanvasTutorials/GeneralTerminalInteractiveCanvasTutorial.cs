@@ -16,15 +16,15 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
     [SerializeField] private Button fleetButton;
     [SerializeField] private Button licencesButton;
     [SerializeField] private Button analyticsButton;
-    [SerializeField] private Button closeTerminalButton;
+
+    [SerializeField] private UniversalUI universalUI;
 
     private void Start()
     {
         fleetButton.AddOnClick(FleetButtonHandler, removeListeners: false);
         licencesButton.AddOnClick(LicencesButtonHandler, removeListeners: false);
         analyticsButton.AddOnClick(AnalyticsButtonHandler, removeListeners: false);
-        // TODO: Show can't exit card 
-        //closeTerminalButton.AddOnClick()
+        universalUI.AddCloseWindowButtonListener(CloseTerminalButtonHandler);
         licencesCard.OnClosed += EndTutorial;
     }
 
@@ -36,11 +36,16 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
 
     private void ShowCard(InteractiveCanvasTutorialCard card, ref bool cardShown, Button button, UnityAction buttonHandler)
     {
-        CloseAllCards();
+        ShowCard(card);
         cardShown = true;
-        card.SetActive(true);
         button.onClick.RemoveListener(buttonHandler);
         EndIfAllShown();
+    }
+
+    private void ShowCard(InteractiveCanvasTutorialCard card)
+    {
+        CloseAllCards();
+        card.SetActive(true);
     }
 
     private void FleetButtonHandler()
@@ -60,7 +65,7 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
 
     private void CloseTerminalButtonHandler()
     {
-
+        ShowCard(cantExitCard);
     }
 
     private void CloseAllCards()
@@ -68,5 +73,12 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
         fleetCard.SetActive(false);
         licencesCard.SetActive(false);
         analyticsCard.SetActive(false);
+    }
+
+    protected override void EndTutorial()
+    {
+        base.EndTutorial();
+        universalUI.RemoveCloseWindowButtonListener(CloseTerminalButtonHandler);
+        universalUI.EnableCloseWindowButton();
     }
 }
