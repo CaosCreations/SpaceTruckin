@@ -47,11 +47,11 @@ public class TerminalUIManager : UICanvasBase
 
     private void SetupButtonListeners()
     {
-        missionsButton.AddOnClick(() => TabButtonClicked(Tab.Missions));
-        messagesButton.AddOnClick(() => TabButtonClicked(Tab.Messages));
-        analyticsButton.AddOnClick(() => TabButtonClicked(Tab.Analytics));
-        fleetButton.AddOnClick(() => TabButtonClicked(Tab.Fleet));
-        licencesButton.AddOnClick(() => TabButtonClicked(Tab.Licences));
+        missionsButton.AddOnClick(() => TabButtonClicked(Tab.Missions), removeListeners: false);
+        messagesButton.AddOnClick(() => TabButtonClicked(Tab.Messages), removeListeners: false);
+        analyticsButton.AddOnClick(() => TabButtonClicked(Tab.Analytics), removeListeners: false);
+        fleetButton.AddOnClick(() => TabButtonClicked(Tab.Fleet), removeListeners: false);
+        licencesButton.AddOnClick(() => TabButtonClicked(Tab.Licences), removeListeners: false);
     }
 
     private void TabButtonClicked(Tab tabClicked)

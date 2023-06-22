@@ -1,23 +1,72 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutorial
 {
-    // TODO: Cards 
-    [SerializeField] private InteractiveCanvasTutorialCard card2;
-    [SerializeField] private InteractiveCanvasTutorialCard card3;
+    [SerializeField] private InteractiveCanvasTutorialCard fleetCard;
+    [SerializeField] private InteractiveCanvasTutorialCard licencesCard;
+    [SerializeField] private InteractiveCanvasTutorialCard analyticsCard;
+    [SerializeField] private InteractiveCanvasTutorialCard cantExitCard;
 
-    private bool card2Shown;
-    private bool card3Shown;
+    private bool fleetCardShown;
+    private bool licencesCardShown;
+    private bool analyticsCardShown;
+
+    [SerializeField] private Button fleetButton;
+    [SerializeField] private Button licencesButton;
+    [SerializeField] private Button analyticsButton;
+    [SerializeField] private Button closeTerminalButton;
 
     private void Start()
     {
-        card3.OnClosed += EndTutorial;
+        fleetButton.AddOnClick(FleetButtonHandler, removeListeners: false);
+        licencesButton.AddOnClick(LicencesButtonHandler, removeListeners: false);
+        analyticsButton.AddOnClick(AnalyticsButtonHandler, removeListeners: false);
+        // TODO: Show can't exit card 
+        //closeTerminalButton.AddOnClick()
+        licencesCard.OnClosed += EndTutorial;
+    }
+
+    private void EndIfAllShown()
+    {
+        if (fleetCardShown && licencesCardShown && analyticsCardShown)
+            EndTutorial();
+    }
+
+    private void ShowCard(InteractiveCanvasTutorialCard card, ref bool cardShown, Button button, UnityAction buttonHandler)
+    {
+        CloseAllCards();
+        cardShown = true;
+        card.SetActive(true);
+        button.onClick.RemoveListener(buttonHandler);
+        EndIfAllShown();
+    }
+
+    private void FleetButtonHandler()
+    {
+        ShowCard(fleetCard, ref fleetCardShown, fleetButton, FleetButtonHandler);
+    }
+
+    private void LicencesButtonHandler()
+    {
+        ShowCard(licencesCard, ref licencesCardShown, licencesButton, LicencesButtonHandler);
+    }
+
+    private void AnalyticsButtonHandler()
+    {
+        ShowCard(analyticsCard, ref analyticsCardShown, analyticsButton, AnalyticsButtonHandler);
+    }
+
+    private void CloseTerminalButtonHandler()
+    {
+
     }
 
     private void CloseAllCards()
     {
-        openingCard.SetActive(false);
-        card2.SetActive(false);
-        card3.SetActive(false);
+        fleetCard.SetActive(false);
+        licencesCard.SetActive(false);
+        analyticsCard.SetActive(false);
     }
 }

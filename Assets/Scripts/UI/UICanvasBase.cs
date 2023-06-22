@@ -7,7 +7,7 @@ public class UICanvasBase : MonoBehaviour
     public UICanvasType CanvasType { get; private set; }
 
     [field: SerializeField]
-    public CanvasTutorialPrefabByDate[] CanvasTutorialsByDate { get; private set; }
+    public CanvasTutorialByDate[] CanvasTutorialsByDate { get; private set; }
 
     [field: SerializeField]
     public bool ShowUniversalCanvas { get; private set; }
@@ -18,16 +18,16 @@ public class UICanvasBase : MonoBehaviour
     [field: SerializeField]
     public bool ZoomInBeforeOpening { get; private set; }
 
-    private bool TryGetTutorial(Date date, out GameObject prefab)
+    private bool TryGetTutorial(Date date, out InteractiveCanvasTutorial tutorial)
     {
-        prefab = CanvasTutorialsByDate.FirstOrDefault(t => t.Date == date)?.Prefab;
-        return prefab != null;
+        tutorial = CanvasTutorialsByDate.FirstOrDefault(t => t.Date == date)?.Tutorial;
+        return tutorial != null;
     }
 
     public virtual void ShowTutorialIfExistsAndUnseen()
     {
         // Is there a tutorial to show for this date?
-        if (!TryGetTutorial(CalendarManager.CurrentDate, out var prefab))
+        if (!TryGetTutorial(CalendarManager.CurrentDate, out var tutorial))
         {
             return;
         }
@@ -38,7 +38,7 @@ public class UICanvasBase : MonoBehaviour
             return;
         }
 
-        Instantiate(prefab, transform);
+        tutorial.SetActive(true);
         PlayerPrefsManager.SetCanvasTutorialPrefValue(CanvasType, CalendarManager.CurrentDate, true);
     }
 }

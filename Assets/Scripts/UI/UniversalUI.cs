@@ -11,6 +11,16 @@ public class UniversalUI : MonoBehaviour
         closeWindowButton.AddOnClick(CloseWindow);
     }
 
+    public void DisableCloseWindowButton()
+    {
+
+    }
+
+    public void EnableCloseWindowButton()
+    {
+
+    }
+
     private void CloseWindow()
     {
         UIManager.ClearCanvases();

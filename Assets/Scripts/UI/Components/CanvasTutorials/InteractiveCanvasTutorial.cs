@@ -18,6 +18,6 @@ public abstract class InteractiveCanvasTutorial : SubMenu
     {
         // TODO: Set PlayerPrefs here instead of UIManager?
         UIManager.RemoveOverriddenKeys(uniqueKeyCodeOverrides);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

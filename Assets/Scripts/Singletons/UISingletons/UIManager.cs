@@ -248,6 +248,16 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void DisableUniversalCloseButton()
+    {
+        
+    }
+
+    public void EnableUniversalCloseButton()
+    {
+
+    }
+
     public static void BeginTransition(TransitionUI.TransitionType transitionType, string textContent)
     {
         Instance.transitionUI.BeginTransition(transitionType, textContent);
