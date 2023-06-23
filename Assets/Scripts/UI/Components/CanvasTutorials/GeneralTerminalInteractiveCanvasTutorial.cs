@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Events;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -13,11 +14,19 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
     private bool licencesCardShown;
     private bool analyticsCardShown;
 
+    /// <summary>
+    /// Tab button cards can be shown after a mission is scheduled with a pilot 
+    /// </summary>
+    private bool tabButtonCardsUnlocked;
+
     [SerializeField] private Button fleetButton;
     [SerializeField] private Button licencesButton;
     [SerializeField] private Button analyticsButton;
 
     [SerializeField] private UniversalUI universalUI;
+
+    // For testing 
+    [SerializeField] private bool resetFlags;
 
     private void Start()
     {
@@ -26,20 +35,27 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
         analyticsButton.AddOnClick(AnalyticsButtonHandler, removeListeners: false);
         universalUI.AddCloseWindowButtonListener(CloseTerminalButtonHandler);
         licencesCard.OnClosed += EndTutorial;
+        SingletonManager.EventService.Add<OnPilotSlottedWithMissionEvent>(OnPilotSlottedWithMissionEventHandler);
+
+        fleetCard.OnClosed += EndIfAllShown;
+        licencesCard.OnClosed += EndIfAllShown;
+        analyticsCard.OnClosed += EndIfAllShown;
+    }
+
+    private void ShowCard(InteractiveCanvasTutorialCard card, ref bool cardShown, Button button, UnityAction buttonHandler)
+    {
+        if (!tabButtonCardsUnlocked || cardShown)
+            return;
+
+        ShowCard(card);
+        cardShown = true;
+        button.onClick.RemoveListener(buttonHandler);
     }
 
     private void EndIfAllShown()
     {
         if (fleetCardShown && licencesCardShown && analyticsCardShown)
             EndTutorial();
-    }
-
-    private void ShowCard(InteractiveCanvasTutorialCard card, ref bool cardShown, Button button, UnityAction buttonHandler)
-    {
-        ShowCard(card);
-        cardShown = true;
-        button.onClick.RemoveListener(buttonHandler);
-        EndIfAllShown();
     }
 
     private void ShowCard(InteractiveCanvasTutorialCard card)
@@ -68,6 +84,11 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
         ShowCard(cantExitCard);
     }
 
+    private void OnPilotSlottedWithMissionEventHandler()
+    {
+        tabButtonCardsUnlocked = true;
+    }
+
     private void CloseAllCards()
     {
         fleetCard.SetActive(false);
@@ -75,10 +96,35 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
         analyticsCard.SetActive(false);
     }
 
+    public override void OnEnable()
+    {
+        base.OnEnable();
+        // TODO: Do we want to reset previous cards if exiting early or not?
+        fleetCardShown = false;
+        licencesCardShown = false;
+        analyticsCardShown = false;
+    }
+
+    private void ResetFlags()
+    {
+        fleetCardShown = false;
+        licencesCardShown = false;
+        analyticsCardShown = false;
+    }
+
     protected override void EndTutorial()
     {
         base.EndTutorial();
         universalUI.RemoveCloseWindowButtonListener(CloseTerminalButtonHandler);
         universalUI.EnableCloseWindowButton();
+    }
+
+    private void Update()
+    {
+        if (resetFlags)
+        {
+            ResetFlags();
+            resetFlags = false;
+        }
     }
 }

@@ -245,6 +245,10 @@ namespace Events
     {
     }
 
+    public class OnPilotSlottedWithMissionEvent : IEvent
+    {
+    }
+
     public class OnBatteryChargedEvent : IEvent
     {
         public StringBoolKeyValueEventArgs Args { get; }

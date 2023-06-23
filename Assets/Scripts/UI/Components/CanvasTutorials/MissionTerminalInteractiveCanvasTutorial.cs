@@ -12,6 +12,7 @@ public class MissionTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
     private void Start()
     {
         SingletonManager.EventService.Add<OnMissionSlottedEvent>(OnMissionSlottedHandler);
+        // TODO: May want to change this to listen for OnPilotSlottedWithMissionEvent instead
         SingletonManager.EventService.Add<OnPilotSlottedEvent>(OnPilotSlottedHandler);
         cardAfterPilotSelected.OnClosed += EndTutorial;
     }
