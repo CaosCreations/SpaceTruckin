@@ -28,7 +28,6 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
         fleetButton.AddOnClick(FleetButtonHandler, removeListeners: false);
         licencesButton.AddOnClick(LicencesButtonHandler, removeListeners: false);
         analyticsButton.AddOnClick(AnalyticsButtonHandler, removeListeners: false);
-        licencesCard.OnClosed += EndTutorial;
         SingletonManager.EventService.Add<OnPilotSlottedWithMissionEvent>(OnPilotSlottedWithMissionEventHandler);
 
         fleetCard.OnClosed += EndIfAllShown;
