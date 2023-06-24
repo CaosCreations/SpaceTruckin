@@ -15,7 +15,6 @@ public class HangarNodeInteractiveCanvasTutorial : InteractiveCanvasTutorial
     [SerializeField] private InteractiveCanvasTutorialCard backToMainPanelCard;
     [SerializeField] private InteractiveCanvasTutorialCard customisationsCard;
 
-    [SerializeField] private Button fuelButton;
     [SerializeField] private Button repairsButton;
     [SerializeField] private Button mainPanelButton;
 
@@ -33,17 +32,11 @@ public class HangarNodeInteractiveCanvasTutorial : InteractiveCanvasTutorial
         minigameCard4.OnClosed += () => ShowCard(backToMainPanelCard);
         backToMainPanelCard.OnClosed += () => ShowCard(customisationsCard);
         
-        fuelButton.AddOnClick(FuelButtonHandler, removeListeners: false);
         repairsButton.AddOnClick(RepairsButtonHandler, removeListeners: false);
         mainPanelButton.AddOnClick(MainPanelButtonHandler, removeListeners: false);
 
         SingletonManager.EventService.Add<OnFuelingEndedEvent>(OnFuelingEndedEventHandler);
         SingletonManager.EventService.Add<OnRepairsMinigameWonEvent>(OnRepairsMinigameWonEventHandler);
-    }
-
-    private void FuelButtonHandler()
-    {
-        ShowCard(repairsCard);
     }
 
     private void RepairsButtonHandler()
