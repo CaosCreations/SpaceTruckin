@@ -153,7 +153,7 @@ public class UniversalHangarNodeUI : UICanvasBase
 
             if (ShipToInspect.IsFullyFuelled)
             {
-                fuelButton.StopFuelling();
+                fuelButton.StopFueling();
             }
         }
     }

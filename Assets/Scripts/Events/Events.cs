@@ -282,4 +282,12 @@ namespace Events
         {
         }
     }
+
+    public class OnFuelingStartedEvent : IEvent
+    {
+    }
+
+    public class OnFuelingEndedEvent : IEvent
+    {
+    }
 }
