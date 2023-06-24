@@ -13,6 +13,9 @@ public class CalendarData : ScriptableObject, IDataModel
     public int DaysInMonth = 28;
     public int MonthsInYear = 4;
 
+    [field: SerializeField]
+    public TimeOfDay StationEntryTimeOfDay { get; private set; }
+        
     public TimeSpan EveningStartTime = new(18, 0, 0); // 6pm
     public TimeSpan MorningStartTime = new(6, 0, 0);
 

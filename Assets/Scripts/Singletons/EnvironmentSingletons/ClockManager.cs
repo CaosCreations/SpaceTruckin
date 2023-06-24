@@ -19,7 +19,11 @@ public class ClockManager : MonoBehaviour
     {
         CalculateTickSpeedMultiplier();
         RegisterEvents();
-        ResetClock();
+
+        // Default the initial time of day if not configured 
+        if (CalendarManager.StationEntryTimeOfDay.ToSeconds() == 0)
+            ResetClock();
+
         StartClock();
 
 #if UNITY_EDITOR
@@ -75,10 +79,21 @@ public class ClockManager : MonoBehaviour
         EndDay();
     }
 
-    public static void SetCurrentTime(int seconds)
+    public static void SetCurrentTime(int seconds, bool overrideTransition = false)
     {
+        if (overrideTransition && !clockStopped)
+        {
+            clockStopped = true;
+        }
+
         currentTimeInSeconds = seconds;
         CurrentTime = TimeSpan.FromSeconds(currentTimeInSeconds);
+
+        if (overrideTransition)
+        {
+            isEvening = CurrentTime >= CalendarManager.EveningStartTime;
+            clockStopped = false;
+        }
     }
 
     private void Update()

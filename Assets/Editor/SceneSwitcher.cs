@@ -9,11 +9,15 @@ public class SceneSwitcher : EditorWindow
     private int selectedSceneIndex = 0;
 
     private readonly List<(string name, string path)> sceneNamePathMap = new();
+    private static Vector2 maxWindowSize = new(320, 180);
+    private static Vector2 minWindowSize = maxWindowSize;
 
     [MenuItem("Space Truckin/Scene Switcher")]
     public static void ShowWindow()
     {
-        GetWindow<SceneSwitcher>("Scene Switcher");
+        var window = GetWindow<SceneSwitcher>("Scene Switcher");
+        window.maxSize = maxWindowSize;
+        window.minSize = minWindowSize;
     }
 
     void OnGUI()
