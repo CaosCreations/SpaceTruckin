@@ -391,6 +391,11 @@ PrefabInstance:
       objectReference: {fileID: 95966734}
     - target: {fileID: 2295049375351117089, guid: b3557fd377090554d82e4a6cc92cd8dc,
         type: 3}
+      propertyPath: cantExitCard
+      value: 
+      objectReference: {fileID: 5432191649794526342}
+    - target: {fileID: 2295049375351117089, guid: b3557fd377090554d82e4a6cc92cd8dc,
+        type: 3}
       propertyPath: licencesButton
       value: 
       objectReference: {fileID: 6496049797087172873}
@@ -399,6 +404,16 @@ PrefabInstance:
       propertyPath: analyticsButton
       value: 
       objectReference: {fileID: 6496049796172754404}
+    - target: {fileID: 2295049375351117089, guid: b3557fd377090554d82e4a6cc92cd8dc,
+        type: 3}
+      propertyPath: keyCodeOverrides.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2295049375351117089, guid: b3557fd377090554d82e4a6cc92cd8dc,
+        type: 3}
+      propertyPath: keyCodeOverrides.Array.data[0].<KeyCode>k__BackingField
+      value: 27
+      objectReference: {fileID: 0}
     - target: {fileID: 6941131251218105384, guid: b3557fd377090554d82e4a6cc92cd8dc,
         type: 3}
       propertyPath: m_Pivot.x
@@ -526,6 +541,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24dd19974f6e9274881bae85b8b3d2b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5432191649794526342 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5432191650059161753, guid: b3557fd377090554d82e4a6cc92cd8dc,
+    type: 3}
+  m_PrefabInstance: {fileID: 273030175}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8d2cafe50e6a524baed2158915155a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &390484858
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -647,6 +674,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8724280313663749826, guid: f798e4e21bc889f478222472ec804312,
+        type: 3}
+      propertyPath: keyCodeOverrides.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8724280313663749826, guid: f798e4e21bc889f478222472ec804312,
+        type: 3}
+      propertyPath: keyCodeOverrides.Array.data[0].<KeyCode>k__BackingField
+      value: 27
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f798e4e21bc889f478222472ec804312, type: 3}

@@ -99,10 +99,9 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
     public override void OnEnable()
     {
         base.OnEnable();
+        universalUI.DisableCloseWindowButton();
         // TODO: Do we want to reset previous cards if exiting early or not?
-        fleetCardShown = false;
-        licencesCardShown = false;
-        analyticsCardShown = false;
+        ResetFlags();
     }
 
     private void ResetFlags()
