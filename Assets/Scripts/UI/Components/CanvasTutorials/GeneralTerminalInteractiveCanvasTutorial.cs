@@ -8,7 +8,6 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
     [SerializeField] private InteractiveCanvasTutorialCard fleetCard;
     [SerializeField] private InteractiveCanvasTutorialCard licencesCard;
     [SerializeField] private InteractiveCanvasTutorialCard analyticsCard;
-    [SerializeField] private InteractiveCanvasTutorialCard cantExitCard;
 
     private bool fleetCardShown;
     private bool licencesCardShown;
@@ -23,17 +22,11 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
     [SerializeField] private Button licencesButton;
     [SerializeField] private Button analyticsButton;
 
-    [SerializeField] private UniversalUI universalUI;
-
-    // For testing 
-    [SerializeField] private bool resetFlags;
-
     private void Start()
     {
         fleetButton.AddOnClick(FleetButtonHandler, removeListeners: false);
         licencesButton.AddOnClick(LicencesButtonHandler, removeListeners: false);
         analyticsButton.AddOnClick(AnalyticsButtonHandler, removeListeners: false);
-        universalUI.AddCloseWindowButtonListener(CloseTerminalButtonHandler);
         licencesCard.OnClosed += EndTutorial;
         SingletonManager.EventService.Add<OnPilotSlottedWithMissionEvent>(OnPilotSlottedWithMissionEventHandler);
 
@@ -58,12 +51,6 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
             EndTutorial();
     }
 
-    private void ShowCard(InteractiveCanvasTutorialCard card)
-    {
-        CloseAllCards();
-        card.SetActive(true);
-    }
-
     private void FleetButtonHandler()
     {
         ShowCard(fleetCard, ref fleetCardShown, fleetButton, FleetButtonHandler);
@@ -79,51 +66,15 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
         ShowCard(analyticsCard, ref analyticsCardShown, analyticsButton, AnalyticsButtonHandler);
     }
 
-    private void CloseTerminalButtonHandler()
-    {
-        ShowCard(cantExitCard);
-    }
-
     private void OnPilotSlottedWithMissionEventHandler()
     {
         tabButtonCardsUnlocked = true;
     }
 
-    private void CloseAllCards()
+    protected override void CloseAllCards()
     {
         fleetCard.SetActive(false);
         licencesCard.SetActive(false);
         analyticsCard.SetActive(false);
-    }
-
-    public override void OnEnable()
-    {
-        base.OnEnable();
-        universalUI.DisableCloseWindowButton();
-        // TODO: Do we want to reset previous cards if exiting early or not?
-        ResetFlags();
-    }
-
-    private void ResetFlags()
-    {
-        fleetCardShown = false;
-        licencesCardShown = false;
-        analyticsCardShown = false;
-    }
-
-    protected override void EndTutorial()
-    {
-        base.EndTutorial();
-        universalUI.RemoveCloseWindowButtonListener(CloseTerminalButtonHandler);
-        universalUI.EnableCloseWindowButton();
-    }
-
-    private void Update()
-    {
-        if (resetFlags)
-        {
-            ResetFlags();
-            resetFlags = false;
-        }
     }
 }

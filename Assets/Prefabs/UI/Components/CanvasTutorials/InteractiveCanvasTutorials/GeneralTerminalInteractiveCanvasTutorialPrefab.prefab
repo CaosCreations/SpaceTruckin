@@ -56,6 +56,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   keyCodeOverrides: []
   openingCard: {fileID: 2526525108472311707}
+  lockCanvas: 1
+  cantExitCard: {fileID: 5432191650059161753}
+  universalUI: {fileID: 0}
   fleetCard: {fileID: 3879076493606554922}
   licencesCard: {fileID: 3193989617544244710}
   analyticsCard: {fileID: 9134651189682554041}
@@ -533,9 +536,10 @@ PrefabInstance:
     - target: {fileID: 3553060809365805183, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
       propertyPath: m_Text
-      value: "This is where you can get a detailed overview of your stats: your current
-        finances, how many jobs you run, how much money you've made... all that capitalist
-        stuff.\r"
+      value: 'No no no, go back in there and assign a job to a pilot. Like it or
+        not, I''m holding your hand through the whole thing.
+
+'
       objectReference: {fileID: 0}
     - target: {fileID: 6199420112288808843, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
@@ -660,6 +664,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 5455928891798690047}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5432191650059161753 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 59778170046187622, guid: b2489e8e63f317842b0bdb5eacfeecf8,
+    type: 3}
+  m_PrefabInstance: {fileID: 5455928891798690047}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8d2cafe50e6a524baed2158915155a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &9083922290337238239
 PrefabInstance:
   m_ObjectHideFlags: 0
