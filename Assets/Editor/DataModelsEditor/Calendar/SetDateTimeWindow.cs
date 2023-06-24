@@ -49,9 +49,10 @@ public class SetDateTimeWindow : EditorWindow
 
         if (CanEditTime)
         {
-            hours = Mathf.FloorToInt((float)ClockManager.CurrentTime.TotalHours).ToString();
-            minutes = Mathf.FloorToInt((float)ClockManager.CurrentTime.TotalMinutes).ToString();
-            seconds = Mathf.FloorToInt((float)ClockManager.CurrentTime.TotalSeconds).ToString();
+            TimeOfDay timeOfDay = ClockManager.CurrentTime.ToTimeOfDay();
+            hours = timeOfDay.Hours.ToString();
+            minutes = timeOfDay.Minutes.ToString();
+            seconds = timeOfDay.Seconds.ToString();
         }
     }
 
