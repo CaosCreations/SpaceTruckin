@@ -17,6 +17,15 @@ public class SetDateTimeWindow : EditorWindow
         window.Show();
     }
 
+    private void OnEnable()
+    {
+        CalendarData calendarData = EditorHelper.GetAsset<CalendarData>();
+        Date currentDate = calendarData.CurrentDate;
+        day = currentDate.Day.ToString();
+        month = currentDate.Month.ToString();
+        year = currentDate.Year.ToString();
+    }
+
     private void OnGUI()
     {
         float padding = 10f;
