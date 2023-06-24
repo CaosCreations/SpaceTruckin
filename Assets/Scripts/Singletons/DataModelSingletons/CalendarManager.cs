@@ -10,6 +10,7 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     [SerializeField] private CalendarData calendarData;
 
     #region Property Accessors
+    public static TimeOfDay StationEntryTimeOfDay => Instance.calendarData.StationEntryTimeOfDay;
     public static TimeSpan DayStartTime => Instance.calendarData.DayStartTime;
     public static TimeSpan DayEndTime => Instance.calendarData.DayEndTime;
     public static TimeSpan AwakeTimeDuration => DayEndTime.Subtract(DayStartTime);

@@ -39,6 +39,7 @@ public class StationSetupManager : MonoBehaviour
         SingletonManager.Init();
         PlayerManager.Instance.SetUpPlayer();
         TimelineManager.Instance.SetUp();
+        ClockManager.SetCurrentTime(CalendarManager.StationEntryTimeOfDay.ToSeconds(), overrideTransition: true);
         TimelineManager.PlayCutscene("Opening Cutscene");
     }
 }
