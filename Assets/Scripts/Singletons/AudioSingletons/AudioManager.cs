@@ -20,7 +20,7 @@ public class AudioManager : MonoBehaviour
     {
         if (audioClip != null)
         {
-            Debug.Log($"Playing audio clip '{audioClip.name}'");
+            //Debug.Log($"Playing audio clip '{audioClip.name}'");
 
             audioSource.clip = audioClip;
             audioSource.Play();

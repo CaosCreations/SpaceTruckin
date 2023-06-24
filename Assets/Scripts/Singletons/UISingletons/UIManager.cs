@@ -27,7 +27,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private UICanvasBase noticeBoardCanvas;
     [SerializeField] private UICanvasBase mainMenuCanvas;
     [SerializeField] private UICanvasBase pauseMenuCanvas;
-    [SerializeField] private Canvas universalCanvas;
+    [SerializeField] private UniversalUI universalUI;
     #endregion
 
     /// <summary>
@@ -174,7 +174,7 @@ public class UIManager : MonoBehaviour
             Instance.noticeBoardCanvas.SetActive(false);
             Instance.mainMenuCanvas.SetActive(false);
             Instance.pauseMenuCanvas.SetActive(false);
-            Instance.universalCanvas.gameObject.SetActive(false);
+            Instance.universalUI.gameObject.SetActive(false);
         }
     }
 
@@ -195,7 +195,7 @@ public class UIManager : MonoBehaviour
 
         if (canvas.ShowUniversalCanvas)
         {
-            Instance.universalCanvas.gameObject.SetActive(true);
+            Instance.universalUI.gameObject.SetActive(true);
         }
 
         OnCanvasActivated?.Invoke();

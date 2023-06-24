@@ -48,6 +48,7 @@ public class PilotSelectItem : MonoBehaviour
         if (mission != null)
         {
             MissionsManager.AddOrUpdateScheduledMission(pilot, mission);
+            SingletonManager.EventService.Dispatch<OnPilotSlottedWithMissionEvent>();
         }
 
         // Return to the mission select after a pilot has been selected
