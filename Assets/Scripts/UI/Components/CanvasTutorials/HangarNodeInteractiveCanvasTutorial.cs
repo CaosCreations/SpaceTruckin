@@ -19,7 +19,9 @@ public class HangarNodeInteractiveCanvasTutorial : InteractiveCanvasTutorial
     [SerializeField] private Button mainPanelButton;
 
     private bool repairsCardShown;
-    private bool minigameCard3Shown;
+    private bool minigameCard1Shown;
+    private bool minigameCard4Shown;
+    private bool customisationsCardShown;
 
     protected override void Start()
     {
@@ -30,8 +32,7 @@ public class HangarNodeInteractiveCanvasTutorial : InteractiveCanvasTutorial
         minigameCard1.OnClosed += () => ShowCard(minigameCard2);
         minigameCard2.OnClosed += () => ShowCard(minigameCard3);
         minigameCard4.OnClosed += () => ShowCard(backToMainPanelCard);
-        backToMainPanelCard.OnClosed += () => ShowCard(customisationsCard);
-        
+
         repairsButton.AddOnClick(RepairsButtonHandler, removeListeners: false);
         mainPanelButton.AddOnClick(MainPanelButtonHandler, removeListeners: false);
 
@@ -41,12 +42,12 @@ public class HangarNodeInteractiveCanvasTutorial : InteractiveCanvasTutorial
 
     private void RepairsButtonHandler()
     {
-        ShowCard(minigameCard1);
+        ShowCard(minigameCard1, ref minigameCard1Shown, repairsButton, RepairsButtonHandler);
     }
 
     private void MainPanelButtonHandler()
     {
-        ShowCard(minigameCard1);
+        ShowCard(customisationsCard, ref customisationsCardShown, mainPanelButton, MainPanelButtonHandler);
     }
 
     private void OnFuelingEndedEventHandler()
@@ -60,11 +61,11 @@ public class HangarNodeInteractiveCanvasTutorial : InteractiveCanvasTutorial
 
     private void OnRepairsMinigameWonEventHandler(OnRepairsMinigameWonEvent evt)
     {
-        if (minigameCard3Shown)
+        if (minigameCard4Shown)
             return;
 
-        ShowCard(minigameCard3);
-        minigameCard3Shown = true;
+        ShowCard(minigameCard4);
+        minigameCard4Shown = true;
     }
 
     protected override void CloseAllCards()

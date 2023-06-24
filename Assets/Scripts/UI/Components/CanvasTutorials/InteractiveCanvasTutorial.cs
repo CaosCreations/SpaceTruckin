@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public abstract class InteractiveCanvasTutorial : SubMenu
 {
@@ -64,5 +66,15 @@ public abstract class InteractiveCanvasTutorial : SubMenu
     {
         CloseAllCards();
         card.SetActive(true);
+    }
+
+    protected virtual void ShowCard(InteractiveCanvasTutorialCard card, ref bool cardShown, Button button, UnityAction buttonHandler)
+    {
+        if (cardShown)
+            return;
+
+        ShowCard(card);
+        cardShown = true;
+        button.onClick.RemoveListener(buttonHandler);
     }
 }

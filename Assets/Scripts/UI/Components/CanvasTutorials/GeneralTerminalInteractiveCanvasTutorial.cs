@@ -35,7 +35,7 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
         analyticsCard.OnClosed += EndIfAllShown;
     }
 
-    private void ShowCard(InteractiveCanvasTutorialCard card, ref bool cardShown, Button button, UnityAction buttonHandler)
+    protected override void ShowCard(InteractiveCanvasTutorialCard card, ref bool cardShown, Button button, UnityAction buttonHandler)
     {
         if (!tabButtonCardsUnlocked || cardShown)
             return;
