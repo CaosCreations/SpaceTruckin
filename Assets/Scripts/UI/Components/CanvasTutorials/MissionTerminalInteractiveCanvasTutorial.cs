@@ -9,8 +9,9 @@ public class MissionTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
     private bool cardAfterMissionSelectedShown;
     private bool cardAfterPilotSelectedShown;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         SingletonManager.EventService.Add<OnMissionSlottedEvent>(OnMissionSlottedHandler);
         SingletonManager.EventService.Add<OnPilotSlottedWithMissionEvent>(OnPilotSlottedWithMissionHandler);
         cardAfterPilotSelected.OnClosed += EndTutorial;

@@ -22,8 +22,9 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
     [SerializeField] private Button licencesButton;
     [SerializeField] private Button analyticsButton;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         fleetButton.AddOnClick(FleetButtonHandler, removeListeners: false);
         licencesButton.AddOnClick(LicencesButtonHandler, removeListeners: false);
         analyticsButton.AddOnClick(AnalyticsButtonHandler, removeListeners: false);
@@ -68,6 +69,9 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
 
     private void OnPilotSlottedWithMissionEventHandler()
     {
+        if (tabButtonCardsUnlocked)
+            return;
+
         Debug.Log("Unlocking tab button cards now pilot has been slotted with mission...");
         tabButtonCardsUnlocked = true;
         UnlockCanvas();

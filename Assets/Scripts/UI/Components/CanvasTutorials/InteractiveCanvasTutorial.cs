@@ -10,6 +10,10 @@ public abstract class InteractiveCanvasTutorial : SubMenu
     public override void OnEnable()
     {
         base.OnEnable();
+    }
+
+    protected virtual void Start()
+    {
         openingCard.SetActive(true);
         if (lockCanvas)
         {

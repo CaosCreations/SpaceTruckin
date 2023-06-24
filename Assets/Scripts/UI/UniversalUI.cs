@@ -14,7 +14,7 @@ public class UniversalUI : MonoBehaviour
 
     public void AddCloseWindowButtonListener(UnityAction action)
     {
-        closeWindowButton.AddOnClick(action, removeListeners: false);
+        closeWindowButton.AddOnClick(action);
     }
 
     public void RemoveCloseWindowButtonListener(UnityAction action)
@@ -23,11 +23,11 @@ public class UniversalUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Deliberately removes listener rather than greying out the button.
+    /// Deliberately removes listeners rather than greying out the button.
     /// </summary>
     public void DisableCloseWindowButton()
     {
-        RemoveCloseWindowButtonListener(CloseWindow);
+        closeWindowButton.onClick.RemoveAllListeners();
     }
 
     public void EnableCloseWindowButton()
