@@ -116,7 +116,7 @@ public class MessagesUI : MonoBehaviour
     }
 
     private Color GetMessageColour(Message message)
-        => message.HasBeenRead ? MessageConstants.UnreadColour : MessageConstants.ReadColour;
+        => message.HasBeenRead ? MessageConstants.ReadColour : MessageConstants.UnreadColour;
 
     private void GoToDetailView(Message message)
     {

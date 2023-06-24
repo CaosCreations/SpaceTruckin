@@ -6,20 +6,17 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
     public static MessagesManager Instance { get; private set; }
 
     [SerializeField] private MessageContainer messageContainer;
-    public Message[] Messages { get => messageContainer.Elements; }
+    public Message[] Messages => messageContainer.Elements;
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
+        if (Instance != null)
         {
             Destroy(gameObject);
             return;
         }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     public void Init()
@@ -27,6 +24,7 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
         if (Messages == null)
         {
             Debug.LogError("No message data");
+            return;
         }
 
         UnlockMessages();
@@ -49,57 +47,17 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
         UnlockMessages();
     }
 
-    /// <summary>
-    /// Unlock messages that have a Total Money Earned condition that the player satisfies. 
-    /// </summary>
-    public static void UnlockMessagesRequiringMoney()
-    {
-        foreach (Message message in Instance.Messages)
-        {
-            if (message != null
-                && !message.IsUnlocked
-                && message.IsUnlockedWithMoney
-                && PlayerManager.Instance.CanSpendMoney(message.MoneyNeededToUnlock))
-            {
-                message.IsUnlocked = true;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Unlock messages that have a Date condition that the current Date surpasses.
-    /// </summary>
-    public static void UnlockMessagesForTodaysDate()
-    {
-        foreach (Message message in Instance.Messages)
-        {
-            if (message != null
-                && !message.IsUnlocked
-                && message.IsUnlockedByDate
-                && CalendarManager.CurrentDate >= message.DateToUnlockOn)
-            {
-                message.IsUnlocked = true;
-            }
-        }
-    }
-
     private static bool IsMessageUnlockable(Message message)
     {
         if (message == null || message.IsUnlocked)
             return false;
 
-        switch (message.UnlockCondition)
+        return message.UnlockCondition switch
         {
-            case MessageUnlockCondition.TotalMoney:
-                return message.IsUnlockedWithMoney
-                    && PlayerManager.Instance.CanSpendMoney(message.MoneyNeededToUnlock);
-
-            case MessageUnlockCondition.Date:
-                return CalendarManager.CurrentDate >= message.DateToUnlockOn;
-
-            default:
-                return false;
-        }
+            MessageUnlockCondition.TotalMoney => message.IsUnlockedWithMoney && PlayerManager.Instance.CanSpendMoney(message.MoneyNeededToUnlock),
+            MessageUnlockCondition.Date => CalendarManager.CurrentDate >= message.DateToUnlockOn,
+            _ => false,
+        };
     }
 
     #region Persistence
