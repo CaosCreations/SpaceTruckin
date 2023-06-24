@@ -16,7 +16,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Animator animator;
     private CharacterController characterController;
 
-    private float currentSpeed;
+    public float CurrentSpeed { get; private set; }
+
     [SerializeField] private float maximumSpeed;
     [SerializeField] private float acceleration;
 
@@ -73,8 +74,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         SetDirection();
-
-        RotateWithView(MovementVector, CameraTransform);
     }
 
     // Move player in FixedUpdate 
@@ -130,29 +129,29 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(PlayerConstants.SprintKey))
         {
             animator.SetBool(AnimationConstants.AnimationRunParameter, true);
-            currentSpeed = PlayerConstants.RunSpeed;
+            CurrentSpeed = PlayerConstants.RunSpeed;
         }
         else
         {
             animator.SetBool(AnimationConstants.AnimationRunParameter, false);
-            currentSpeed = PlayerConstants.WalkSpeed;
+            CurrentSpeed = PlayerConstants.WalkSpeed;
         }
     }
 
     private void MovePlayer()
     {
-        if (currentSpeed < maximumSpeed)
+        if (CurrentSpeed < maximumSpeed)
         {
-            currentSpeed += acceleration;
+            CurrentSpeed += acceleration;
         }
 
         if (MovementVector == Vector3.zero)
         {
-            currentSpeed = 0f;
+            CurrentSpeed = 0f;
         }
 
-        Vector3 movement = new Vector3(MovementVector.x, 0f, MovementVector.y);
-        characterController.Move(movement * currentSpeed * Time.fixedDeltaTime);
+        Vector3 movement = new(MovementVector.x, 0f, MovementVector.y);
+        characterController.Move(CurrentSpeed * Time.fixedDeltaTime * movement);
     }
 
     private bool IsPlayerBelowKillFloor()
@@ -205,10 +204,8 @@ public class PlayerMovement : MonoBehaviour
         return hit.collider != null && hit.collider.gameObject == obj;
     }
 
-    public static void RotateWithView(Vector3 vector, Transform cameraTransform)
+    public void SetPosition(Vector3 position)
     {
-        Vector3 dir = cameraTransform.TransformDirection(vector);
-        dir.Set(dir.x, 0, dir.z);
-        vector = dir.normalized * vector.magnitude;
+        transform.position = position;
     }
 }

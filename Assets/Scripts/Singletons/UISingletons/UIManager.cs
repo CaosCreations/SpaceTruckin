@@ -27,7 +27,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private UICanvasBase noticeBoardCanvas;
     [SerializeField] private UICanvasBase mainMenuCanvas;
     [SerializeField] private UICanvasBase pauseMenuCanvas;
-    [SerializeField] private Canvas universalCanvas;
+    [SerializeField] private UniversalUI universalUI;
     #endregion
 
     /// <summary>
@@ -174,11 +174,11 @@ public class UIManager : MonoBehaviour
             Instance.noticeBoardCanvas.SetActive(false);
             Instance.mainMenuCanvas.SetActive(false);
             Instance.pauseMenuCanvas.SetActive(false);
-            Instance.universalCanvas.gameObject.SetActive(false);
+            Instance.universalUI.gameObject.SetActive(false);
         }
     }
 
-    /// <param name="canvasType">The type of canvas to display, which is set by collision or a shortcut
+    /// <param name="canvas">The canvas to display, which is set by collision or a shortcut
     /// </param>
     /// <param name="viaShortcut">For shortcut access. Will not alter player prefs. 
     /// </param>
@@ -188,16 +188,14 @@ public class UIManager : MonoBehaviour
         PlayerManager.EnterPausedState();
         canvas.SetActive(true);
 
-        // Show tutorial overlay if first time using the UI 
-        if (!viaShortcut && canvas.CanvasTutorialPrefab != null && !HasCurrentCanvasBeenViewed())
+        if (!viaShortcut)
         {
-            canvas.ShowTutorial();
+            canvas.ShowTutorialIfExistsAndUnseen();
         }
 
-        // Also show universal canvas if configured 
         if (canvas.ShowUniversalCanvas)
         {
-            Instance.universalCanvas.gameObject.SetActive(true);
+            Instance.universalUI.gameObject.SetActive(true);
         }
 
         OnCanvasActivated?.Invoke();
@@ -305,18 +303,6 @@ public class UIManager : MonoBehaviour
         }
 
         return interaction;
-    }
-    #endregion
-
-    #region PlayerPrefs
-    private static bool HasCurrentCanvasBeenViewed()
-    {
-        return PlayerPrefsManager.GetHasBeenViewedPref(currentCanvasType);
-    }
-
-    public static void SetCurrentCanvasHasBeenViewed(bool value)
-    {
-        PlayerPrefsManager.SetHasBeenViewedPref(currentCanvasType, value);
     }
     #endregion
 

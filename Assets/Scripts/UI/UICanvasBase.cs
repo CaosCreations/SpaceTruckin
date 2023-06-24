@@ -1,11 +1,15 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public class UICanvasBase : MonoBehaviour
 {
-    [field: SerializeField] 
-    public GameObject CanvasTutorialPrefab { get; private set; }
+    [field: SerializeField]
+    public UICanvasType CanvasType { get; private set; }
 
-    [field: SerializeField] 
+    [field: SerializeField]
+    public CanvasTutorialByDate[] CanvasTutorialsByDate { get; private set; }
+
+    [field: SerializeField]
     public bool ShowUniversalCanvas { get; private set; }
 
     [field: SerializeField]
@@ -14,16 +18,27 @@ public class UICanvasBase : MonoBehaviour
     [field: SerializeField]
     public bool ZoomInBeforeOpening { get; private set; }
 
-    public virtual void ShowTutorial()
+    private bool TryGetTutorial(Date date, out InteractiveCanvasTutorial tutorial)
     {
-        if (CanvasTutorialPrefab != null)
+        tutorial = CanvasTutorialsByDate.FirstOrDefault(t => t.Date == date)?.Tutorial;
+        return tutorial != null;
+    }
+
+    public virtual void ShowTutorialIfExistsAndUnseen()
+    {
+        // Is there a tutorial to show for this date?
+        if (!TryGetTutorial(CalendarManager.CurrentDate, out var tutorial))
         {
-            GameObject tutorial = Instantiate(CanvasTutorialPrefab, transform);
-            
-            if (tutorial.TryGetComponent<CardCycle>(out var cardCycle))
-            {
-                cardCycle.SetupCardCycle();
-            }
+            return;
         }
+
+        // Have we seen it already?
+        if (PlayerPrefsManager.GetCanvasTutorialPrefValue(CanvasType, CalendarManager.CurrentDate))
+        {
+            return;
+        }
+
+        tutorial.SetActive(true);
+        PlayerPrefsManager.SetCanvasTutorialPrefValue(CanvasType, CalendarManager.CurrentDate, true);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using PixelCrushers.DialogueSystem;
+using System.Linq;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
@@ -76,6 +77,30 @@ namespace Events
     public class OnTimelineFinishedEvent : OnTimelineEvent
     {
         public OnTimelineFinishedEvent(PlayableAsset playableAsset) : base(playableAsset)
+        {
+        }
+    }
+
+    public abstract class OnConversationEvent : IEvent
+    {
+        public Conversation Conversation { get; }
+
+        public OnConversationEvent(Conversation conversation)
+        {
+            Conversation = conversation;
+        }
+    }
+
+    public class OnConversationStartedEvent : OnConversationEvent
+    {
+        public OnConversationStartedEvent(Conversation conversation) : base(conversation)
+        {   
+        }
+    }
+
+    public class OnConversationEndedEvent : OnConversationEvent
+    {
+        public OnConversationEndedEvent(Conversation conversation) : base(conversation)
         {
         }
     }
@@ -217,6 +242,10 @@ namespace Events
     }
 
     public class OnPilotSlottedEvent : IEvent
+    {
+    }
+
+    public class OnPilotSlottedWithMissionEvent : IEvent
     {
     }
 

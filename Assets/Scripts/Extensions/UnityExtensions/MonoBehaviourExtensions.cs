@@ -12,7 +12,7 @@ public static class MonoBehaviourExtensions
     {
         if (self == null)
         {
-            Debug.LogError("MonoBehaviour was null when trying to set active to: " + value);
+            Debug.LogError($"MonoBehaviour '{self.name}' was null when trying to set active to: {value}");
             return;
         }
         self.gameObject.SetActive(value);
