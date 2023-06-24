@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ClockManager : MonoBehaviour
 {
-    public static TimeSpan CurrentTime;
+    public static TimeSpan CurrentTime { get; private set; }
 
     public static int TickSpeedMultiplier { get; private set; }
     private static int currentTimeInSeconds;
@@ -38,8 +38,7 @@ public class ClockManager : MonoBehaviour
     // Calculate how quick the clock should tick relative to real time 
     private void CalculateTickSpeedMultiplier()
     {
-        TickSpeedMultiplier = Convert.ToInt32(
-            CalendarManager.AwakeTimeDuration.TotalSeconds) / CalendarManager.RealTimeDayDurationInSeconds;
+        TickSpeedMultiplier = Convert.ToInt32(CalendarManager.AwakeTimeDuration.TotalSeconds) / CalendarManager.RealTimeDayDurationInSeconds;
     }
 
     public void ResetClock()
@@ -74,6 +73,12 @@ public class ClockManager : MonoBehaviour
     private void OnPlayerSleepHandler(OnPlayerSleepEvent evt)
     {
         EndDay();
+    }
+
+    public static void SetCurrentTime(int seconds)
+    {
+        currentTimeInSeconds = seconds;
+        CurrentTime = TimeSpan.FromSeconds(currentTimeInSeconds);
     }
 
     private void Update()
