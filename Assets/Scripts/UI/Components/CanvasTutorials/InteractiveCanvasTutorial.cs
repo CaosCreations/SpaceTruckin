@@ -19,6 +19,11 @@ public abstract class InteractiveCanvasTutorial : SubMenu
 
     protected void LockCanvas()
     {
+        if (cantExitCard == null)
+        {
+            Debug.LogError("Card for locking canvas does not exist");
+            return;
+        }
         universalUI.DisableCloseWindowButton();
         universalUI.AddCloseWindowButtonListener(CloseWindowButtonHandler);
     }

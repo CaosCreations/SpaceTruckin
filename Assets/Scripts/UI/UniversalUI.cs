@@ -7,7 +7,7 @@ public class UniversalUI : MonoBehaviour
     [SerializeField]
     private Button closeWindowButton;
 
-    private void Start()
+    private void Awake()
     {
         EnableCloseWindowButton();
     }

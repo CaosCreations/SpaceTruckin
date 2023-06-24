@@ -68,7 +68,9 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
 
     private void OnPilotSlottedWithMissionEventHandler()
     {
+        Debug.Log("Unlocking tab button cards now pilot has been slotted with mission...");
         tabButtonCardsUnlocked = true;
+        UnlockCanvas();
     }
 
     protected override void CloseAllCards()
