@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public abstract class InteractiveCanvasTutorial : SubMenu
 {
     [SerializeField] protected InteractiveCanvasTutorialCard openingCard;
+    [SerializeField] protected InteractiveCanvasTutorialCard endingCard;
     [SerializeField] protected bool lockCanvas;
     [SerializeField] protected InteractiveCanvasTutorialCard cantExitCard;
     [SerializeField] protected UniversalUI universalUI;
@@ -17,6 +18,13 @@ public abstract class InteractiveCanvasTutorial : SubMenu
     protected virtual void Start()
     {
         openingCard.SetActive(true);
+        
+        // Optional as some tutorials end via listening for external events or a combination of shown flags
+        if (endingCard != null)
+        {
+            endingCard.OnClosed += EndingCardHandler;
+        }
+
         if (lockCanvas)
         {
             LockCanvas();
@@ -39,6 +47,11 @@ public abstract class InteractiveCanvasTutorial : SubMenu
         universalUI.RemoveCloseWindowButtonListener(CloseWindowButtonHandler);
         universalUI.EnableCloseWindowButton();
         lockCanvas = false;
+    }
+
+    protected virtual void EndingCardHandler()
+    {
+        EndTutorial();
     }
 
     public override void OnDisable()

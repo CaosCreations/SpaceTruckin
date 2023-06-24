@@ -14,6 +14,8 @@ public class HangarNodeInteractiveCanvasTutorial : InteractiveCanvasTutorial
     [SerializeField] private InteractiveCanvasTutorialCard minigameCard4;
     [SerializeField] private InteractiveCanvasTutorialCard backToMainPanelCard;
     [SerializeField] private InteractiveCanvasTutorialCard customisationsCard;
+    [SerializeField] private InteractiveCanvasTutorialCard returnToQueueCard;
+    [SerializeField] private InteractiveCanvasTutorialCard startMissionCard;
 
     [SerializeField] private Button repairsButton;
     [SerializeField] private Button mainPanelButton;
@@ -32,6 +34,8 @@ public class HangarNodeInteractiveCanvasTutorial : InteractiveCanvasTutorial
         minigameCard1.OnClosed += () => ShowCard(minigameCard2);
         minigameCard2.OnClosed += () => ShowCard(minigameCard3);
         minigameCard4.OnClosed += () => ShowCard(backToMainPanelCard);
+        customisationsCard.OnClosed += () => ShowCard(returnToQueueCard);
+        returnToQueueCard.OnClosed += () => ShowCard(startMissionCard);
 
         repairsButton.AddOnClick(RepairsButtonHandler, removeListeners: false);
         mainPanelButton.AddOnClick(MainPanelButtonHandler, removeListeners: false);
