@@ -57,9 +57,9 @@ GameObject:
   - component: {fileID: 3177417807784654360}
   - component: {fileID: 8053463741523383692}
   - component: {fileID: 1028305205499463803}
-  - component: {fileID: 6416316660673004618}
+  - component: {fileID: 2945664911703497131}
   m_Layer: 0
-  m_Name: BatterSlotActivator
+  m_Name: BatterySlotActivator
   m_TagString: BatterySlot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -91,8 +91,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.273407, y: 1.4837036, z: 1.5073701}
-  m_Center: {x: -0.13670349, y: 0.58517456, z: -0.246315}
+  m_Size: {x: 1.6783847, y: 1.4837036, z: 1.5073701}
+  m_Center: {x: -0.33919227, y: 0.58517456, z: -0.246315}
 --- !u!54 &8053463741523383692
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -125,7 +125,7 @@ MonoBehaviour:
   RaycastTarget: {fileID: 1118439965535620125}
   interactableIcon: {fileID: 1250472073024309195}
   hangarSlot: {fileID: 0}
---- !u!114 &6416316660673004618
+--- !u!114 &2945664911703497131
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -134,7 +134,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3120180524817060452}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1839a77ea4b4314eb0a7081d08367b9, type: 3}
+  m_Script: {fileID: 11500000, guid: 3cda84437608c6646a91b927e057a15b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   slotTransform: {fileID: 1718543476407433577}

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4793441778659852044}
   - component: {fileID: 4793441778659852045}
   m_Layer: 0
-  m_Name: BatterySlot4
+  m_Name: HangarSlot4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,7 +46,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   node: 4
-  batterySlot: {fileID: 5530701561732065982}
 --- !u!1 &4793441778778187666
 GameObject:
   m_ObjectHideFlags: 0
@@ -95,7 +94,7 @@ GameObject:
   - component: {fileID: 4793441779341367835}
   - component: {fileID: 4793441779341367836}
   m_Layer: 0
-  m_Name: BatterySlot2
+  m_Name: HangarSlot2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -130,7 +129,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   node: 2
-  batterySlot: {fileID: 5530701561449239419}
 --- !u!1 &4793441779713024831
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,7 +140,7 @@ GameObject:
   - component: {fileID: 4793441779713024800}
   - component: {fileID: 4793441779713024801}
   m_Layer: 0
-  m_Name: BatterySlot1
+  m_Name: HangarSlot1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -177,7 +175,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   node: 1
-  batterySlot: {fileID: 7924408793685943127}
 --- !u!1 &4793441779849495848
 GameObject:
   m_ObjectHideFlags: 0
@@ -189,7 +186,7 @@ GameObject:
   - component: {fileID: 4793441779849495849}
   - component: {fileID: 4793441779849495850}
   m_Layer: 0
-  m_Name: BatterySlot5
+  m_Name: HangarSlot5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -224,7 +221,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   node: 5
-  batterySlot: {fileID: 5530701559844613905}
 --- !u!1 &4793441779970519229
 GameObject:
   m_ObjectHideFlags: 0
@@ -236,7 +232,7 @@ GameObject:
   - component: {fileID: 4793441779970519230}
   - component: {fileID: 4793441779970519231}
   m_Layer: 0
-  m_Name: BatterySlot6
+  m_Name: HangarSlot6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -271,7 +267,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   node: 6
-  batterySlot: {fileID: 5530701559969443820}
 --- !u!1 &4793441780137917296
 GameObject:
   m_ObjectHideFlags: 0
@@ -283,7 +278,7 @@ GameObject:
   - component: {fileID: 4793441780137917297}
   - component: {fileID: 4793441780137917298}
   m_Layer: 0
-  m_Name: BatterySlot3
+  m_Name: HangarSlot3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -318,7 +313,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   node: 3
-  batterySlot: {fileID: 5530701560217060899}
 --- !u!1001 &4793441778714272453
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -329,6 +323,11 @@ PrefabInstance:
     - target: {fileID: 1028305205499463803, guid: b486a5243d692c346adf56a7ecacf483,
         type: 3}
       propertyPath: hangarSlot
+      value: 
+      objectReference: {fileID: 4793441779341367836}
+    - target: {fileID: 1028305205499463803, guid: b486a5243d692c346adf56a7ecacf483,
+        type: 3}
+      propertyPath: <HangarSlot>k__BackingField
       value: 
       objectReference: {fileID: 4793441779341367836}
     - target: {fileID: 1592216790894970078, guid: b486a5243d692c346adf56a7ecacf483,
@@ -393,18 +392,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b486a5243d692c346adf56a7ecacf483, type: 3}
---- !u!114 &5530701561732065982 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1028305205499463803, guid: b486a5243d692c346adf56a7ecacf483,
-    type: 3}
-  m_PrefabInstance: {fileID: 4793441778714272453}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11e657e65eed88e4390594cd579bbb46, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &6097039756530738715 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1592216790894970078, guid: b486a5243d692c346adf56a7ecacf483,
@@ -421,6 +408,11 @@ PrefabInstance:
     - target: {fileID: 1028305205499463803, guid: b486a5243d692c346adf56a7ecacf483,
         type: 3}
       propertyPath: hangarSlot
+      value: 
+      objectReference: {fileID: 4793441780137917298}
+    - target: {fileID: 1028305205499463803, guid: b486a5243d692c346adf56a7ecacf483,
+        type: 3}
+      propertyPath: <HangarSlot>k__BackingField
       value: 
       objectReference: {fileID: 4793441780137917298}
     - target: {fileID: 1592216790894970078, guid: b486a5243d692c346adf56a7ecacf483,
@@ -485,18 +477,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b486a5243d692c346adf56a7ecacf483, type: 3}
---- !u!114 &5530701561449239419 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1028305205499463803, guid: b486a5243d692c346adf56a7ecacf483,
-    type: 3}
-  m_PrefabInstance: {fileID: 4793441778962946816}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11e657e65eed88e4390594cd579bbb46, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &6097039756777971678 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1592216790894970078, guid: b486a5243d692c346adf56a7ecacf483,
@@ -513,6 +493,11 @@ PrefabInstance:
     - target: {fileID: 1028305205499463803, guid: b486a5243d692c346adf56a7ecacf483,
         type: 3}
       propertyPath: hangarSlot
+      value: 
+      objectReference: {fileID: 4793441779849495850}
+    - target: {fileID: 1028305205499463803, guid: b486a5243d692c346adf56a7ecacf483,
+        type: 3}
+      propertyPath: <HangarSlot>k__BackingField
       value: 
       objectReference: {fileID: 4793441779849495850}
     - target: {fileID: 1592216790894970078, guid: b486a5243d692c346adf56a7ecacf483,
@@ -577,18 +562,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b486a5243d692c346adf56a7ecacf483, type: 3}
---- !u!114 &5530701560217060899 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1028305205499463803, guid: b486a5243d692c346adf56a7ecacf483,
-    type: 3}
-  m_PrefabInstance: {fileID: 4793441779138743896}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11e657e65eed88e4390594cd579bbb46, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &6097039754889644678 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1592216790894970078, guid: b486a5243d692c346adf56a7ecacf483,
@@ -605,6 +578,11 @@ PrefabInstance:
     - target: {fileID: 1028305205499463803, guid: b486a5243d692c346adf56a7ecacf483,
         type: 3}
       propertyPath: hangarSlot
+      value: 
+      objectReference: {fileID: 4793441779970519231}
+    - target: {fileID: 1028305205499463803, guid: b486a5243d692c346adf56a7ecacf483,
+        type: 3}
+      propertyPath: <HangarSlot>k__BackingField
       value: 
       objectReference: {fileID: 4793441779970519231}
     - target: {fileID: 1592216790894970078, guid: b486a5243d692c346adf56a7ecacf483,
@@ -669,18 +647,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b486a5243d692c346adf56a7ecacf483, type: 3}
---- !u!114 &5530701559969443820 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1028305205499463803, guid: b486a5243d692c346adf56a7ecacf483,
-    type: 3}
-  m_PrefabInstance: {fileID: 4793441779369535383}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11e657e65eed88e4390594cd579bbb46, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &6097039755036549961 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1592216790894970078, guid: b486a5243d692c346adf56a7ecacf483,
@@ -697,6 +663,11 @@ PrefabInstance:
     - target: {fileID: 1028305205499463803, guid: b486a5243d692c346adf56a7ecacf483,
         type: 3}
       propertyPath: hangarSlot
+      value: 
+      objectReference: {fileID: 4793441778659852045}
+    - target: {fileID: 1028305205499463803, guid: b486a5243d692c346adf56a7ecacf483,
+        type: 3}
+      propertyPath: <HangarSlot>k__BackingField
       value: 
       objectReference: {fileID: 4793441778659852045}
     - target: {fileID: 1592216790894970078, guid: b486a5243d692c346adf56a7ecacf483,
@@ -761,18 +732,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b486a5243d692c346adf56a7ecacf483, type: 3}
---- !u!114 &5530701559844613905 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1028305205499463803, guid: b486a5243d692c346adf56a7ecacf483,
-    type: 3}
-  m_PrefabInstance: {fileID: 4793441779511175018}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11e657e65eed88e4390594cd579bbb46, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &6097039755196933044 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1592216790894970078, guid: b486a5243d692c346adf56a7ecacf483,
@@ -789,6 +748,11 @@ PrefabInstance:
     - target: {fileID: 1028305205499463803, guid: b486a5243d692c346adf56a7ecacf483,
         type: 3}
       propertyPath: hangarSlot
+      value: 
+      objectReference: {fileID: 4793441779713024801}
+    - target: {fileID: 1028305205499463803, guid: b486a5243d692c346adf56a7ecacf483,
+        type: 3}
+      propertyPath: <HangarSlot>k__BackingField
       value: 
       objectReference: {fileID: 4793441779713024801}
     - target: {fileID: 1592216790894970078, guid: b486a5243d692c346adf56a7ecacf483,
@@ -853,18 +817,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b486a5243d692c346adf56a7ecacf483, type: 3}
---- !u!114 &7924408793685943127 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1028305205499463803, guid: b486a5243d692c346adf56a7ecacf483,
-    type: 3}
-  m_PrefabInstance: {fileID: 7186726801091783468}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11e657e65eed88e4390594cd579bbb46, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &8477130534213906418 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1592216790894970078, guid: b486a5243d692c346adf56a7ecacf483,

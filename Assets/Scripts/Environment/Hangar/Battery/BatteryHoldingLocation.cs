@@ -8,7 +8,7 @@ public class BatteryHoldingLocation : MonoBehaviour
 
     // This script is placed on an InteractableObject script.
     // We need it to check for collisions with the player.
-    [SerializeField] private InteractableObject interactableObjectWithSlot;
+    [SerializeField] protected InteractableObject interactableObjectWithSlot;
 
     public void Update()
     {
@@ -32,7 +32,8 @@ public class BatteryHoldingLocation : MonoBehaviour
         && Input.GetKeyDown(PlayerConstants.ActionKey)
         && interactableObjectWithSlot.IsPlayerInteractable;
 
-    private bool IsAbleToPutInSlot
+    // TODO: A lot of this logic probably ought to be put in the same place as the BatterySlot...
+    protected virtual bool IsAbleToPutInSlot
         => HangarManager.CurrentBatteryBeingHeld != null
         && HangarManager.CurrentBatteryBeingHeld.BatteryInteractable != null
         && batteryInteractableInSlot == null;
