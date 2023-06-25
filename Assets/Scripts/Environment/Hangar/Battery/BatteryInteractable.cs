@@ -10,6 +10,8 @@ public class BatteryInteractable : InteractableObject
     // Shows that the player is holding any battery
     public static bool IsPlayerHoldingABattery;
 
+    private bool cannotDrop;
+
     public void TakeBattery()
     {
         IsPlayerHoldingABattery = true;
@@ -65,8 +67,27 @@ public class BatteryInteractable : InteractableObject
 
     private void OnTriggerStay(Collider other)
     {
-        if (CanTakeBattery())
-            TakeBattery();
+        // Override drop behaviour if other interactables should take priority
+        if (other.CompareTag(HangarConstants.BatteryChargerTag))
+        {
+            var charger = other.GetComponent<BatteryChargePoint>();
+            if (charger != null && charger.IsPlayerInteractable)
+            {
+                cannotDrop = true;
+                return;
+            }
+        }
+
+        if (other.CompareTag(HangarConstants.BatterySlotTag))
+        {
+            var slot = other.GetComponent<BatterySlot>();
+            if (slot != null && slot.IsPlayerInteractable)
+            {
+                cannotDrop = true;
+                return;
+            }
+        }
+        cannotDrop = false;
     }
 
     /// <summary>
@@ -76,7 +97,7 @@ public class BatteryInteractable : InteractableObject
     {
         return !IsPlayerHoldingABattery
           && !PlayerManager.IsPaused
-          && Input.GetKey(PlayerConstants.ActionKey)
+          && Input.GetKeyDown(PlayerConstants.ActionKey)
           && IsPlayerInteractable;
     }
 
@@ -106,13 +127,23 @@ public class BatteryInteractable : InteractableObject
 
     protected override bool IsIconVisible => IsPlayerInteractable && !IsPlayerHoldingABattery;
 
+    private bool CanDropBattery()
+    {
+        return !cannotDrop
+            && transform.parent.gameObject == PlayerManager.PlayerObject
+            && !PlayerManager.IsPaused
+            && Input.GetKeyDown(PlayerConstants.ActionKey);
+    }
+
     protected override void Update()
     {
         base.Update();
 
-        if (!PlayerManager.IsPaused
-            && Input.GetKey(PlayerConstants.DropObjectKey)
-            && transform.parent.gameObject == PlayerManager.PlayerObject)
+        if (CanTakeBattery())
+        {
+            TakeBattery();
+        }
+        else if (CanDropBattery())
         {
             DropBattery();
         }

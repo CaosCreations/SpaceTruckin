@@ -35,5 +35,6 @@ public static class HangarConstants
     public const string BatteryTag = "Battery";
     public const string BatteriesContainerTag = "BatteriesContainer";
     public const string BatteryExitColliderTag = "BatteryExit";
-
+    public const string BatteryChargerTag = "BatteryChargePoint";
+    public const string BatterySlotTag = "BatterySlot";
 }

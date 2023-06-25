@@ -7,7 +7,6 @@ public class PlayerConstants : MonoBehaviour
     public const KeyCode ActionKey = KeyCode.E;
     public const KeyCode ExitKey = KeyCode.Escape;
     public const KeyCode PauseKey = KeyCode.Escape;
-    public const KeyCode DropObjectKey = KeyCode.Q;
     public const KeyCode RespawnKey = KeyCode.R;
     public const KeyCode SprintKey = KeyCode.LeftShift;
     public const KeyCode NextCardKey = KeyCode.RightArrow;
