@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Events;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -26,7 +27,7 @@ public class FuelButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         fuelCostPerUnit = costPerUnit;
     }
 
-    private void StartFuelling()
+    private void StartFueling()
     {
         if (shipToFuel == null || !UIUtils.IsFuelButtonInteractable(shipToFuel, fuelCostPerUnit))
         {
@@ -40,9 +41,10 @@ public class FuelButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             screenShake.Shake(shakeSettings);
         }
+        SingletonManager.EventService.Dispatch<OnFuelingStartedEvent>();
     }
 
-    public void StopFuelling()
+    public void StopFueling()
     {
         IsFueling = false;
 
@@ -50,15 +52,16 @@ public class FuelButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             screenShake.StopShake();
         }
+        SingletonManager.EventService.Dispatch<OnFuelingEndedEvent>();
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        StartFuelling();
+        StartFueling();
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        StopFuelling();
+        StopFueling();
     }
 }

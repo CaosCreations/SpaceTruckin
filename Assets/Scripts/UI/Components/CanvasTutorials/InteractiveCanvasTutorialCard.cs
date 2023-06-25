@@ -10,6 +10,9 @@ public class InteractiveCanvasTutorialCard : MonoBehaviour
     [SerializeField]
     private Text tutorialText;
 
+    [field: SerializeField]
+    public bool UnlockCanvas { get; private set; }
+
     public event UnityAction OnClosed;
 
     private void Awake()
@@ -19,6 +22,7 @@ public class InteractiveCanvasTutorialCard : MonoBehaviour
         tutorialText.SetText(tutorialText.text);
     }
 
+    // TODO: May need to be OnDisable? (If over tab buttons disable it indirectly)
     private void CloseButtonHandler()
     {
         OnClosed?.Invoke();

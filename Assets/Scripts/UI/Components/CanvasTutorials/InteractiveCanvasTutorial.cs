@@ -1,20 +1,33 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public abstract class InteractiveCanvasTutorial : SubMenu
 {
     [SerializeField] protected InteractiveCanvasTutorialCard openingCard;
+    [SerializeField] protected InteractiveCanvasTutorialCard endingCard;
     [SerializeField] protected bool lockCanvas;
     [SerializeField] protected InteractiveCanvasTutorialCard cantExitCard;
     [SerializeField] protected UniversalUI universalUI;
 
-    public override void OnEnable()
+    protected override void OnEnable()
     {
-        base.OnEnable();
+        if (lockCanvas)
+        {
+            base.OnEnable();
+        }
     }
 
     protected virtual void Start()
     {
         openingCard.SetActive(true);
+        
+        // Optional as some tutorials end via listening for external events or a combination of shown flags
+        if (endingCard != null)
+        {
+            endingCard.OnClosed += EndingCardHandler;
+        }
+
         if (lockCanvas)
         {
             LockCanvas();
@@ -23,24 +36,28 @@ public abstract class InteractiveCanvasTutorial : SubMenu
 
     protected void LockCanvas()
     {
-        if (cantExitCard == null)
-        {
-            Debug.LogError("Card for locking canvas does not exist");
-            return;
-        }
         universalUI.DisableCloseWindowButton();
-        universalUI.AddCloseWindowButtonListener(CloseWindowButtonHandler);
+        if (cantExitCard != null)
+        {
+            universalUI.AddCloseWindowButtonListener(CloseWindowButtonHandler);
+        }
+        else
+        {
+            Debug.LogWarning("\"Can't exit\" card for locking canvas does not exist");
+        }
     }
 
     protected void UnlockCanvas()
     {
         universalUI.RemoveCloseWindowButtonListener(CloseWindowButtonHandler);
         universalUI.EnableCloseWindowButton();
+        RemoveOverriddenKeys();
         lockCanvas = false;
     }
 
-    public override void OnDisable()
+    protected virtual void EndingCardHandler()
     {
+        EndTutorial();
     }
 
     protected virtual void EndTutorial()
@@ -49,7 +66,7 @@ public abstract class InteractiveCanvasTutorial : SubMenu
         {
             UnlockCanvas();
         }
-        UIManager.RemoveOverriddenKeys(uniqueKeyCodeOverrides);
+        RemoveOverriddenKeys();
         Destroy(gameObject);
     }
 
@@ -64,5 +81,19 @@ public abstract class InteractiveCanvasTutorial : SubMenu
     {
         CloseAllCards();
         card.SetActive(true);
+        if (card.UnlockCanvas)
+        {
+            UnlockCanvas();
+        }
+    }
+
+    protected virtual void ShowCard(InteractiveCanvasTutorialCard card, ref bool cardShown, Button button, UnityAction buttonHandler)
+    {
+        if (cardShown)
+            return;
+
+        ShowCard(card);
+        cardShown = true;
+        button.onClick.RemoveListener(buttonHandler);
     }
 }
