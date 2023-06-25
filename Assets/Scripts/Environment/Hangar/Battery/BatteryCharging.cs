@@ -5,9 +5,8 @@ public class BatteryCharging : MonoBehaviour
     public bool IsCharged { get; set; }
 
     [SerializeField] private MeshRenderer meshRenderer;
-
-    private Color depletedEmission;
-    private Color chargedEmission;
+    [SerializeField] private float emissionCoefficient = 1.0f;
+    private Color emission;
 
     private void Awake()
     {
@@ -27,8 +26,7 @@ public class BatteryCharging : MonoBehaviour
         if (meshRenderer != null)
         {
             meshRenderer.material.EnableKeyword("_EMISSION");
-            depletedEmission = meshRenderer.material.GetColor("_EmissionColor"); // Depleted by default
-            chargedEmission = depletedEmission * HangarConstants.BatteryEmissionCoefficient;
+            emission = meshRenderer.material.GetColor("_EmissionColor");
         }
         else
         {
@@ -50,8 +48,8 @@ public class BatteryCharging : MonoBehaviour
 
     private void SetEmission()
     {
-        Color emission = IsCharged ? chargedEmission : depletedEmission;
-        meshRenderer.material.SetColor("_EmissionColor", emission);
+        Color e = IsCharged ? emission * emissionCoefficient : emission;
+        meshRenderer.material.SetColor("_EmissionColor", e);
     }
 
     public void LoadData(BatterySaveData saveData)
