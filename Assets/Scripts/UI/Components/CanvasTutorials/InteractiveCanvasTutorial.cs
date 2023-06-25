@@ -10,9 +10,12 @@ public abstract class InteractiveCanvasTutorial : SubMenu
     [SerializeField] protected InteractiveCanvasTutorialCard cantExitCard;
     [SerializeField] protected UniversalUI universalUI;
 
-    public override void OnEnable()
+    protected override void OnEnable()
     {
-        base.OnEnable();
+        if (lockCanvas)
+        {
+            base.OnEnable();
+        }
     }
 
     protected virtual void Start()
@@ -33,19 +36,22 @@ public abstract class InteractiveCanvasTutorial : SubMenu
 
     protected void LockCanvas()
     {
-        if (cantExitCard == null)
-        {
-            Debug.LogError("Card for locking canvas does not exist");
-            return;
-        }
         universalUI.DisableCloseWindowButton();
-        universalUI.AddCloseWindowButtonListener(CloseWindowButtonHandler);
+        if (cantExitCard != null)
+        {
+            universalUI.AddCloseWindowButtonListener(CloseWindowButtonHandler);
+        }
+        else
+        {
+            Debug.LogWarning("\"Can't exit\" card for locking canvas does not exist");
+        }
     }
 
     protected void UnlockCanvas()
     {
         universalUI.RemoveCloseWindowButtonListener(CloseWindowButtonHandler);
         universalUI.EnableCloseWindowButton();
+        RemoveOverriddenKeys();
         lockCanvas = false;
     }
 
@@ -54,17 +60,13 @@ public abstract class InteractiveCanvasTutorial : SubMenu
         EndTutorial();
     }
 
-    public override void OnDisable()
-    {
-    }
-
     protected virtual void EndTutorial()
     {
         if (lockCanvas)
         {
             UnlockCanvas();
         }
-        UIManager.RemoveOverriddenKeys(uniqueKeyCodeOverrides);
+        RemoveOverriddenKeys();
         Destroy(gameObject);
     }
 
@@ -79,6 +81,10 @@ public abstract class InteractiveCanvasTutorial : SubMenu
     {
         CloseAllCards();
         card.SetActive(true);
+        if (card.UnlockCanvas)
+        {
+            UnlockCanvas();
+        }
     }
 
     protected virtual void ShowCard(InteractiveCanvasTutorialCard card, ref bool cardShown, Button button, UnityAction buttonHandler)

@@ -7,7 +7,7 @@ public class SubMenu : MonoBehaviour
     [SerializeField] private List<KeyCodeOverride> keyCodeOverrides;
 
     // Set of unique overrides 
-    protected HashSet<KeyCodeOverride> uniqueKeyCodeOverrides;
+    protected HashSet<KeyCodeOverride> uniqueKeyCodeOverrides = new();
 
     private void OnValidate()
     {
@@ -19,14 +19,24 @@ public class SubMenu : MonoBehaviour
         SetUniqueOverrides();
     }
 
-    public virtual void OnEnable()
+    protected void AddOverriddenKeys()
     {
         UIManager.AddOverriddenKeys(uniqueKeyCodeOverrides);
     }
 
-    public virtual void OnDisable()
+    protected void RemoveOverriddenKeys()
     {
         UIManager.RemoveOverriddenKeys(uniqueKeyCodeOverrides);
+    }
+
+    protected virtual void OnEnable()
+    {
+        AddOverriddenKeys();
+    }
+
+    protected virtual void OnDisable()
+    {
+        RemoveOverriddenKeys();
     }
 
     private void SetUniqueOverrides()
@@ -37,8 +47,7 @@ public class SubMenu : MonoBehaviour
         }
         else
         {
-            Debug.LogError(
-                $"{nameof(keyCodeOverrides)} is null in {nameof(SubMenu)}. Cannot set {nameof(uniqueKeyCodeOverrides)}");
+            Debug.LogError($"{nameof(keyCodeOverrides)} is null in {nameof(SubMenu)}. Cannot set {nameof(uniqueKeyCodeOverrides)}");
         }
     }
 }
