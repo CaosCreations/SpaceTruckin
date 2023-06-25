@@ -107,16 +107,12 @@ public class MessagesUI : MonoBehaviour
 
     private bool MessageIsFilteredOut(Message message)
     {
-        if (currentFilterMode == MessageFilterMode.Unread && !message.HasBeenRead
-            || currentFilterMode == MessageFilterMode.Read && message.HasBeenRead)
-        {
-            return true;
-        }
-        return false;
+        return currentFilterMode == MessageFilterMode.Unread && message.HasBeenRead 
+            || currentFilterMode == MessageFilterMode.Read && !message.HasBeenRead;
     }
 
     private Color GetMessageColour(Message message)
-        => message.HasBeenRead ? MessageConstants.UnreadColour : MessageConstants.ReadColour;
+        => message.HasBeenRead ? MessageConstants.ReadColour : MessageConstants.UnreadColour;
 
     private void GoToDetailView(Message message)
     {
