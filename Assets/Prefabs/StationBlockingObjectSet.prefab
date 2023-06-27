@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7038660896567996279}
+  - component: {fileID: 7038660896833267017}
   m_Layer: 0
-  m_Name: StationRestrictions
+  m_Name: StationBlockingObjectSet
   m_TagString: StationRestriction
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,6 +42,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7038660896833267017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7038660896567996264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86287348287f8db42a9f8cad03aadeeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeDates:
+  - Day: 1
+    Month: 1
+    Year: 1
 --- !u!1 &7038660896612674002
 GameObject:
   m_ObjectHideFlags: 0

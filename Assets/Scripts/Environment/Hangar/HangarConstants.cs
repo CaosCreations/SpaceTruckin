@@ -10,7 +10,6 @@ public static class HangarConstants
     // Batteries 
     public static readonly Color ChargedBatteryImageColour = Color.green;
     public static readonly Color DepletedBatteryImageColour = Color.red;
-    public const float BatteryEmissionCoefficient = 400f;
 
     // Fixed joint settings for battery
     public const float BatteryYPosition = 0.5f;

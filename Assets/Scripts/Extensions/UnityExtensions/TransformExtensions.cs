@@ -6,15 +6,15 @@ public static class TransformExtensions
     {
         foreach (Transform child in self)
         {
-            GameObject.Destroy(child.gameObject);
+            Object.Destroy(child.gameObject);
         }
     }
 
-    public static void DisableDirectChildren(this Transform self)
+    public static void SetDirectChildrenActive(this Transform self, bool active)
     {
         foreach (Transform child in self)
         {
-            child.gameObject.SetActive(false);
+            child.gameObject.SetActive(active);
         }
     }
 }

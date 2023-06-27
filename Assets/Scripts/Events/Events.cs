@@ -290,4 +290,8 @@ namespace Events
     public class OnFuelingEndedEvent : IEvent
     {
     }
+
+    public class OnStationSetUpEvent : IEvent
+    {
+    }
 }
