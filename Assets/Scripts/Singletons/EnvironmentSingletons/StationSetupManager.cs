@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Events;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class StationSetupManager : MonoBehaviour
@@ -41,5 +42,6 @@ public class StationSetupManager : MonoBehaviour
         TimelineManager.Instance.SetUp();
         ClockManager.SetCurrentTime(CalendarManager.StationEntryTimeOfDay.ToSeconds(), overrideTransition: true);
         TimelineManager.PlayCutscene("Opening Cutscene");
+        SingletonManager.EventService.Dispatch<OnStationSetUpEvent>();
     }
 }
