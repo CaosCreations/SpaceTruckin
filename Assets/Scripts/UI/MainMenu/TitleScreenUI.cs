@@ -16,7 +16,6 @@ public class TitleScreenUI : MonoBehaviour
 
     // Secondary canvases 
     [SerializeField] private GameObject optionsCanvas;
-    [SerializeField] private GameObject creditsCanvas;
     [SerializeField] private GameObject characterCreationCanvas;
     [SerializeField] private GameObject loadingScreenCanvas;
 
@@ -63,9 +62,9 @@ public class TitleScreenUI : MonoBehaviour
     private void OnCreditsButton()
     {
         ResetSecondaryCanvases();
-        creditsCanvas.SetActive(true);
-        backButton.SetActive(true);
+        backButton.SetActive(false);
         mainButtonContainer.SetActive(false);
+        LoadScene(SceneType.Credits);
     }
 
     private void OnBackButton()
@@ -77,23 +76,22 @@ public class TitleScreenUI : MonoBehaviour
 
     private void OnConfirmButton()
     {
-        if (SceneLoadingManager.Instance == null)
-            throw new System.Exception("SceneLoadingManager object not found. Unable to confirm character selection");
-
         ResetSecondaryCanvases();
         backButton.SetActive(false);
         mainButtonCanvas.SetActive(false);
         stationBackground.SetActive(false);
-        loadingScreenCanvas.SetActive(true);
+        LoadScene(SceneType.MainStation);
+    }
 
-        // Load scene after confirmation
-        SceneLoadingManager.Instance.LoadSceneAsync(SceneType.MainStation, loadingBarSlider);
+    private void LoadScene(SceneType scene)
+    {
+        loadingScreenCanvas.SetActive(true);
+        SceneLoadingManager.Instance.LoadSceneAsync(scene, loadingBarSlider);
     }
 
     private void ResetSecondaryCanvases()
     {
         optionsCanvas.SetActive(false);
-        creditsCanvas.SetActive(false);
         characterCreationCanvas.SetActive(false);
         loadingScreenCanvas.SetActive(false);
     }
