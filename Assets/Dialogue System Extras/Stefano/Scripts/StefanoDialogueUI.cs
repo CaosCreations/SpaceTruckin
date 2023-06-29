@@ -28,6 +28,11 @@ public class StefanoDialogueUI : SMSDialogueUI
         // If text is blank, that's all we do:
         if (string.IsNullOrWhiteSpace(subtitle.formattedText.text)) return;
 
+        if (!actor.IsPlayer)
+        {
+            InteractionSoundEffectsManager.Instance.PlaySoundEffect(InteractionSoundEffect.DialogueMessageReceived);
+        }
+
         // The rest is just a copy of the original AddMessage() method:
         var go = Instantiate(template.panel.gameObject) as GameObject;
         var text = subtitle.formattedText.text;
