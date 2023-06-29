@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4884013619859984392
+--- !u!1 &106949099050650603
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,47 +8,50 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4884013619859984399}
-  - component: {fileID: 4884013619859984398}
+  - component: {fileID: 106949099050650604}
+  - component: {fileID: 106949099050650602}
   m_Layer: 0
-  m_Name: AmbientSoundEffectManager
+  m_Name: InteractionSoundEffectManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4884013619859984399
+--- !u!4 &106949099050650604
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4884013619859984392}
+  m_GameObject: {fileID: 106949099050650603}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5454922988216110308}
+  - {fileID: 652936936849217287}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4884013619859984398
+--- !u!114 &106949099050650602
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4884013619859984392}
+  m_GameObject: {fileID: 106949099050650603}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c027566c79888948b8bb5eb3113bc77, type: 3}
+  m_Script: {fileID: 11500000, guid: be5604132bbda8b4b841b5c4349ef7ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 3585602051897537166}
+  audioSource: {fileID: 8322347755122551149}
   <AudioClips>k__BackingField: []
-  asteroidAirClip: {fileID: 8300000, guid: bd60a58fde264c342ac6e49ee59c1828, type: 3}
---- !u!1 &8787853526862519196
+  doorOpeningClip: {fileID: 0}
+  doorClosingClip: {fileID: 0}
+  dialogueMessageReceivedClip: {fileID: 8300000, guid: 2216b177d7048f14ab409520cc235740,
+    type: 3}
+--- !u!1 &4271891956446462079
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -56,46 +59,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5454922988216110308}
-  - component: {fileID: 3585602051897537166}
+  - component: {fileID: 652936936849217287}
+  - component: {fileID: 8322347755122551149}
   m_Layer: 0
-  m_Name: AmbientSoundEffectsSource
+  m_Name: InteractionSoundEffectsSource
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5454922988216110308
+--- !u!4 &652936936849217287
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8787853526862519196}
+  m_GameObject: {fileID: 4271891956446462079}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4884013619859984399}
+  m_Father: {fileID: 106949099050650604}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &3585602051897537166
+--- !u!82 &8322347755122551149
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8787853526862519196}
+  m_GameObject: {fileID: 4271891956446462079}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -3221590200194657124, guid: 420e73383fed53046b92403e0b98700b,
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 420e73383fed53046b92403e0b98700b,
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.25
+  m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

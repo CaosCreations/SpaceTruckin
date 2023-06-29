@@ -2,7 +2,7 @@
 
 public enum InteractionSoundEffect
 {
-    DoorOpening, DoorClosing
+    DoorOpening, DoorClosing, DialogueMessageReceived
 }
 
 public class InteractionSoundEffectsManager : SoundEffectsManager<InteractionSoundEffectsManager, InteractionSoundEffect>
@@ -10,6 +10,7 @@ public class InteractionSoundEffectsManager : SoundEffectsManager<InteractionSou
     #region AudioClips
     [SerializeField] private AudioClip doorOpeningClip;
     [SerializeField] private AudioClip doorClosingClip;
+    [SerializeField] private AudioClip dialogueMessageReceivedClip;
     #endregion
 
     public override AudioClip GetClipBySoundEffectType(InteractionSoundEffect effectType)
@@ -18,6 +19,7 @@ public class InteractionSoundEffectsManager : SoundEffectsManager<InteractionSou
         {
             InteractionSoundEffect.DoorOpening => doorOpeningClip,
             InteractionSoundEffect.DoorClosing => doorClosingClip,
+            InteractionSoundEffect.DialogueMessageReceived => dialogueMessageReceivedClip,
             _ => default,
         };
     }
