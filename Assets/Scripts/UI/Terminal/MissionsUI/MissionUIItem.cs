@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler
+public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("Set in Editor")]
     public Text MissionNameText;
@@ -33,8 +33,22 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         MissionNameText.SetText(mission.Name, FontType.ListItem);
     }
 
+    private void ShowDetails()
+    {
+        missionDetailsUI.missionBeingDisplayed = Mission;
+        missionDetailsUI.DisplayMissionDetails(this);
+    }
+
+    private void HideDetails()
+    {
+        missionDetailsUI.DestroyMissionDetails();
+        missionDetailsUI.missionBeingDisplayed = null;
+    }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
+        HideDetails();
+
         if (!Mission.IsInProgress())
         {
             myRectTransform.SetParent(missionsUI.transform);
@@ -123,6 +137,20 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         Destroy(gameObject);
     }
 
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        MissionScheduleSlot scheduleSlotAtPosition = missionsUI.GetSlotByPosition(eventData.position);
+        if (scheduleSlotAtPosition == null && missionDetailsUI.missionBeingDisplayed != Mission)
+        {
+            ShowDetails();
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        HideDetails();
+    }
+
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
@@ -141,21 +169,6 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
             {
                 // Reset the schedule slot if the player clicks and there is already one scheduled
                 Unschedule();
-            }
-        }
-        else if (eventData.button == PointerEventData.InputButton.Right)
-        {
-            if (missionDetailsUI.missionBeingDisplayed != Mission)
-            {
-                // Show the mission details for the scheduled mission 
-                missionDetailsUI.missionBeingDisplayed = Mission;
-                missionDetailsUI.DisplayMissionDetails(this);
-            }
-            else
-            {
-                // Hide the mission details if they are already visible 
-                missionDetailsUI.DestroyMissionDetails();
-                missionDetailsUI.missionBeingDisplayed = null;
             }
         }
     }
