@@ -1,21 +1,24 @@
-using System.Text;
+using Events;
 using UnityEngine;
 
 public class BatterySlot : InteractableObject
 {
     [SerializeField] private HangarSlot hangarSlot;
+    public int Node => hangarSlot.Node;
 
-    protected override bool IsIconVisible => HangarManager.CurrentBatteryBeingHeld != null 
-        && IsPlayerInteractable 
+    [SerializeField] private BatterySlotHoldingLocation holdingLocation;
+
+    protected override bool IsIconVisible => HangarManager.CurrentBatteryBeingHeld != null
+        && IsPlayerInteractable
         && CanTransferEnergy(HangarManager.CurrentBatteryBeingHeld.BatteryCharging);
 
     public void TransferEnergyToShip(BatteryCharging batteryCharging)
     {
-        // Shake hangar camera
         StationCameraManager.Instance.ShakeCamera(StationCamera.Identifier.Hangar);
-
+        holdingLocation.PutInSlot();
         ShipsManager.EnableWarp(hangarSlot.Ship);
         batteryCharging.Discharge();
+        SingletonManager.EventService.Dispatch(new OnShipChargedEvent(Node));
     }
 
     private bool CanTransferEnergy(BatteryCharging battery)
@@ -29,7 +32,7 @@ public class BatterySlot : InteractableObject
 
     public bool CanTransferEnergy()
     {
-        return HangarManager.CurrentBatteryBeingHeld != null 
+        return HangarManager.CurrentBatteryBeingHeld != null
             && CanTransferEnergy(HangarManager.CurrentBatteryBeingHeld.BatteryCharging);
     }
 

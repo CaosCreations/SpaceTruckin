@@ -290,4 +290,14 @@ namespace Events
     public class OnFuelingEndedEvent : IEvent
     {
     }
+
+    public class OnShipChargedEvent : IEvent
+    {
+        public int Node { get; }
+
+        public OnShipChargedEvent(int node)
+        {
+            Node = node;
+        }
+    }
 }
