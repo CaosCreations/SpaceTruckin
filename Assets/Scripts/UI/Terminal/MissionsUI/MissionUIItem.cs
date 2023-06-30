@@ -139,7 +139,8 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (missionDetailsUI.missionBeingDisplayed != Mission)
+        MissionScheduleSlot scheduleSlotAtPosition = missionsUI.GetSlotByPosition(eventData.position);
+        if (scheduleSlotAtPosition == null && missionDetailsUI.missionBeingDisplayed != Mission)
         {
             ShowDetails();
         }
