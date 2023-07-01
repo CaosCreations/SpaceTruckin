@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1972979662120986136}
   - component: {fileID: 1972979662120986133}
   - component: {fileID: 2023624654147407220}
+  - component: {fileID: 3662316477650013188}
   - component: {fileID: 6316198362758017279}
   - component: {fileID: 1389270015817412045}
   - component: {fileID: 1786745985134268546}
@@ -69,6 +70,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 916fd2eda085607459c580e62159065c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3662316477650013188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1972979662120986132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6af9b6d525334ed4bb26f1f97aafd8bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!95 &6316198362758017279
@@ -264,7 +277,6 @@ GameObject:
   - component: {fileID: 2017737145569339530}
   - component: {fileID: 5826309396914772397}
   - component: {fileID: 2140917669053840194}
-  - component: {fileID: 6590373580469667172}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -338,59 +350,3 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7389477075848068926}
   m_Enabled: 1
---- !u!114 &6590373580469667172
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7389477075848068926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 850bcffc7d7daa946818105dd83b35be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  duration: 1
-  start: 0
-  animationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0.21979599
-      outSlope: 0.21979599
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.09109986
-      value: 0.020023383
-      inSlope: 0.13365526
-      outSlope: 0.13365526
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.18313676
-      value: 0.024396474
-      inSlope: 0.008824244
-      outSlope: 0.008824244
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -0.029866043
-      outSlope: -0.029866043
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4

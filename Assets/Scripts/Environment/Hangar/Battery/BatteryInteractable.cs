@@ -10,6 +10,8 @@ public class BatteryInteractable : InteractableObject
     // Shows that the player is holding any battery
     public static bool IsPlayerHoldingABattery;
 
+    public static bool CannotDropBattery;
+
     public void TakeBattery()
     {
         IsPlayerHoldingABattery = true;
@@ -63,12 +65,6 @@ public class BatteryInteractable : InteractableObject
         PlayerAnimationManager.Instance.PlayAnimation(PlayerAnimationParameterType.BatteryGrab, isOn: false);
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (CanTakeBattery())
-            TakeBattery();
-    }
-
     /// <summary>
     /// Conditions for picking up a battery.
     /// </summary>
@@ -76,8 +72,16 @@ public class BatteryInteractable : InteractableObject
     {
         return !IsPlayerHoldingABattery
           && !PlayerManager.IsPaused
-          && Input.GetKey(PlayerConstants.ActionKey)
+          && Input.GetKeyDown(PlayerConstants.ActionKey)
           && IsPlayerInteractable;
+    }
+
+    private bool CanDropBattery()
+    {
+        return !CannotDropBattery
+            && transform.parent.gameObject == PlayerManager.PlayerObject
+            && !PlayerManager.IsPaused
+            && Input.GetKeyDown(PlayerConstants.ActionKey);
     }
 
     public override void OnTriggerEnter(Collider other)
@@ -110,12 +114,10 @@ public class BatteryInteractable : InteractableObject
     {
         base.Update();
 
-        if (!PlayerManager.IsPaused
-            && Input.GetKey(PlayerConstants.DropObjectKey)
-            && transform.parent.gameObject == PlayerManager.PlayerObject)
-        {
+        if (CanTakeBattery())
+            TakeBattery();
+        else if (CanDropBattery())
             DropBattery();
-        }
     }
 
     // At the moment, as the scene is loaded, the position of the battery is defined by the SpawnPosition Manager not the HangarManager
