@@ -50,7 +50,7 @@ GameObject:
   - component: {fileID: 1449895152142604868}
   m_Layer: 12
   m_Name: ProgressBarAnimation
-  m_TagString: Untagged
+  m_TagString: BatteryChargePoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -168,7 +168,7 @@ GameObject:
   - component: {fileID: 5341808707923851449}
   m_Layer: 12
   m_Name: RaycastTarget
-  m_TagString: Untagged
+  m_TagString: BatteryChargePoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -310,7 +310,7 @@ GameObject:
   - component: {fileID: 217720782655563718}
   m_Layer: 12
   m_Name: Battery slot
-  m_TagString: Untagged
+  m_TagString: BatteryChargePoint
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -396,6 +396,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: InteractableIcon
+      objectReference: {fileID: 0}
+    - target: {fileID: 8753860917802515900, guid: 50f29f6925116e14d825b01bfa448223,
+        type: 3}
+      propertyPath: m_TagString
+      value: BatteryChargePoint
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50f29f6925116e14d825b01bfa448223, type: 3}
@@ -492,6 +497,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e41a96e83f2ad84459f6e790b889d5be,
+        type: 3}
+      propertyPath: m_TagString
+      value: BatteryChargePoint
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e41a96e83f2ad84459f6e790b889d5be, type: 3}

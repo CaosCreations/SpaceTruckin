@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5252035257625473768}
   m_Layer: 0
   m_Name: RaycastTarget
-  m_TagString: Untagged
+  m_TagString: BatterySlot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -125,6 +125,7 @@ MonoBehaviour:
   RaycastTarget: {fileID: 1118439965535620125}
   interactableIcon: {fileID: 1250472073024309195}
   hangarSlot: {fileID: 0}
+  holdingLocation: {fileID: 0}
 --- !u!114 &2945664911703497131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,7 +187,7 @@ GameObject:
   - component: {fileID: 1718543476407433577}
   m_Layer: 0
   m_Name: Slot
-  m_TagString: Untagged
+  m_TagString: BatterySlot
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -273,6 +274,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BatteryToShipStation
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1dc00b59cd70bb846ab942fd73c86c93,
+        type: 3}
+      propertyPath: m_TagString
+      value: BatterySlot
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1dc00b59cd70bb846ab942fd73c86c93, type: 3}
 --- !u!4 &1434403479692207291 stripped
@@ -352,6 +358,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: InteractableIcon
+      objectReference: {fileID: 0}
+    - target: {fileID: 8753860917802515900, guid: 50f29f6925116e14d825b01bfa448223,
+        type: 3}
+      propertyPath: m_TagString
+      value: BatterySlot
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50f29f6925116e14d825b01bfa448223, type: 3}

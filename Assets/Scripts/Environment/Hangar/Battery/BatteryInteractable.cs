@@ -9,8 +9,7 @@ public class BatteryInteractable : InteractableObject
 
     // Shows that the player is holding any battery
     public static bool IsPlayerHoldingABattery;
-
-    private bool cannotDrop;
+    public static bool CannotDropBattery;
 
     public void TakeBattery()
     {
@@ -65,31 +64,6 @@ public class BatteryInteractable : InteractableObject
         PlayerAnimationManager.Instance.PlayAnimation(PlayerAnimationParameterType.BatteryGrab, isOn: false);
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        // Override drop behaviour if other interactables should take priority
-        if (other.CompareTag(HangarConstants.BatteryChargerTag))
-        {
-            var charger = other.GetComponent<BatteryChargePoint>();
-            if (charger != null && charger.IsPlayerInteractable)
-            {
-                cannotDrop = true;
-                return;
-            }
-        }
-
-        if (other.CompareTag(HangarConstants.BatterySlotTag))
-        {
-            var slot = other.GetComponent<BatterySlot>();
-            if (slot != null && slot.IsPlayerInteractable)
-            {
-                cannotDrop = true;
-                return;
-            }
-        }
-        cannotDrop = false;
-    }
-
     /// <summary>
     /// Conditions for picking up a battery.
     /// </summary>
@@ -129,7 +103,7 @@ public class BatteryInteractable : InteractableObject
 
     private bool CanDropBattery()
     {
-        return !cannotDrop
+        return !CannotDropBattery
             && transform.parent.gameObject == PlayerManager.PlayerObject
             && !PlayerManager.IsPaused
             && Input.GetKeyDown(PlayerConstants.ActionKey);

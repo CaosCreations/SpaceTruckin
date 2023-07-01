@@ -38,7 +38,9 @@ public class BatterySlot : InteractableObject
 
     private void OnTriggerStay(Collider other)
     {
-        if (IsPlayerColliding
+
+
+        if (IsPlayerInteractable
             && Input.GetKeyDown(PlayerConstants.ActionKey))
         {
             BatteryCharging batteryCharging = other.GetComponentInChildren<BatteryCharging>();
