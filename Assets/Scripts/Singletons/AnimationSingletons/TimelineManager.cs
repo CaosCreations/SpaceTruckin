@@ -19,18 +19,23 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
+        if (Instance != null)
         {
             Destroy(gameObject);
             return;
         }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
 
         cutscenePlayers = GetComponentsInChildren<CutsceneTimelinePlayer>(true);
+
+        foreach (var cutscenePlayer in cutscenePlayers)
+        {
+            if (cutscenePlayer.VirtualCamera == null || cutscenePlayer.PlayableDirector.state == PlayState.Playing)
+                continue;
+
+            cutscenePlayer.VirtualCamera.Priority = 0;
+        }
     }
 
     private void Start()
