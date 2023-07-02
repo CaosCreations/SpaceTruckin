@@ -153,6 +153,24 @@ public static class UIUtils
         return false;
     }
 
+    public static bool IsPointerOverObjectType(Type[] objectTypes)
+    {
+        List<RaycastResult> raycastResults = GetEventSystemRaycastResults();
+
+        for (int i = 0; i < raycastResults.Count; i++)
+        {
+            var type = raycastResults[i].gameObject.GetType();
+
+            if (objectTypes.Contains(type) 
+                || objectTypes.Any(t => raycastResults[i].gameObject.TryGetComponent(t, out _)))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public static bool AreAnyCanvasesActive()
     {
         return UnityEngine.Object.FindObjectsOfType<UICanvasBase>().Any();

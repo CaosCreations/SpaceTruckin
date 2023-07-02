@@ -42,9 +42,12 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TransitionUI transitionUI;
 
-    private static bool IsPointerOverButton => UIUtils.IsPointerOverObjectType(typeof(Button));
+    private static Type[] SuccessInputTypes => new[]
+    {
+        typeof(Button), typeof(Slider), typeof(AudioVolumeSlider), typeof(Scrollbar), typeof(MissionUIItem), typeof(PilotInMissionScheduleSlot)
+    };
     private static bool IsErrorInput => Input.GetMouseButtonDown(0)
-        && !IsPointerOverButton
+        && !UIUtils.IsPointerOverObjectType(SuccessInputTypes)
         && !DialogueUtils.IsConversationActive
         && currentCanvasType != UICanvasType.Bed;
 
@@ -55,16 +58,13 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
+        if (Instance != null)
         {
             Destroy(gameObject);
             return;
         }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
 
         currentlyOverriddenKeys = new HashSet<KeyCode>();
         interactionTextMesh = GetComponentInChildren<TextMeshPro>();

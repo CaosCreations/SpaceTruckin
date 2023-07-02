@@ -14,6 +14,11 @@ public class AmbientSoundEffectsManager : SoundEffectsManager<AmbientSoundEffect
 
     private void Start()
     {
+        if (SceneLoadingManager.GetCurrentSceneType() == SceneType.MainStation)
+        {
+            PlaySoundEffect(AmbientSoundEffect.AsteroidAir);
+        }
+
         SceneManager.activeSceneChanged += (Scene previous, Scene next) =>
         {
             if (SceneLoadingManager.GetSceneNameByType(SceneType.MainStation) == next.name)

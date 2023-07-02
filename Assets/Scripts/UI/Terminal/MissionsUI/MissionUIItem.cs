@@ -153,6 +153,8 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        UISoundEffectsManager.Instance.PlaySoundEffect(UISoundEffect.Confirm);
+
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             MissionScheduleSlot scheduleSlotAtPosition = missionsUI.GetSlotByPosition(eventData.position);

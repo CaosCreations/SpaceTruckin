@@ -53,6 +53,8 @@ public class PilotInMissionScheduleSlot : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        UISoundEffectsManager.Instance.PlaySoundEffect(UISoundEffect.Confirm);
+
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             // Left click to replace 
