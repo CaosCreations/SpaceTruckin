@@ -55,7 +55,7 @@ public class MissionsEditor : MonoBehaviour
 
             EditorUtility.SetDirty(missionContainer);
 
-            Debug.Log("All missions unlocked");
+            Debug.Log($"All missions {(hasBeenUnlocked ? "unlocked" : "locked")}");
         }
         catch (Exception ex)
         {
@@ -65,6 +65,38 @@ public class MissionsEditor : MonoBehaviour
 
     [MenuItem("Space Truckin/Missions/Lock All", false, 14)]
     private static void LockAll() => SetHasBeenUnlocked(false);
+
+    [MenuItem("Space Truckin/Missions/Complete All", false, 15)]
+    private static void CompleteAll() => SetHasBeenCompleted(true);
+
+    [MenuItem("Space Truckin/Missions/Incomplete All", false, 16)]
+    private static void IncompleteAll() => SetHasBeenCompleted(false);
+
+    private static void SetHasBeenCompleted(bool hasBeenCompleted)
+    {
+        try
+        {
+            if (hasBeenCompleted)
+            {
+                SetHasBeenUnlocked(true);
+            }
+
+            var missionContainer = EditorHelper.GetAsset<MissionContainer>();
+
+            foreach (var mission in missionContainer.Elements)
+            {
+                mission.NumberOfCompletions = hasBeenCompleted ? Math.Max(mission.NumberOfCompletions, 1) : 0;
+            }
+
+            EditorUtility.SetDirty(missionContainer);
+
+            Debug.Log($"All missions {(hasBeenCompleted ? "completed" : "not completed")}");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogException(ex);
+        }
+    }
 
     [MenuItem("Space Truckin/Missions/All In Progress Have 1 Day Remaining", false, 25)]
     private static void AllToOneDayRemaining()
