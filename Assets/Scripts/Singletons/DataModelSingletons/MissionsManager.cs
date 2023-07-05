@@ -83,7 +83,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     private static void CompleteMission(ScheduledMission scheduled)
     {
-        if (scheduled.Mission.NumberOfCompletions <= 0)
+        if (!scheduled.Mission.HasBeenCompleted)
         {
             // Send a thank you email on first completion of the Mission.
             if (scheduled.Mission.ThankYouMessage != null)
@@ -362,7 +362,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     public bool HasMissionBeenCompleted(string missionName)
     {
         Mission mission = MissionUtils.GetMissionByName(missionName);
-        return mission.NumberOfCompletions > 0;
+        return mission != null && mission.HasBeenCompleted;
     }
 
     public bool HasMissionBeenCompletedForCustomer(string missionName, string customerName)
@@ -371,7 +371,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
         if (missionForCustomer != null)
         {
-            return missionForCustomer.NumberOfCompletions > 0;
+            return missionForCustomer.HasBeenCompleted;
         }
 
         return false;
