@@ -1,7 +1,8 @@
 ﻿public static class DialogueConstants
 {
     // Custom Lua function names 
-    public const string MissionCompletedFunctionName = "HasMissionBeenCompletedForCustomer";
+    public const string MissionCompletedFunctionName = "HasMissionBeenCompleted";
+    public const string MissionCompletedForCustomerFunctionName = "HasMissionBeenCompletedForCustomer";
     public const string MissionOfferExpiredFunctionName = "HasMissionOfferExpired";
     public const string DateReachedFunctionName = "HasDateBeenReached";
     public const string SpendMoneyFunctionName = "SpendMoney";

@@ -71,6 +71,16 @@ public static class MissionUtils
         return null;
     }
 
+    public static Mission GetMissionByName(string missionName)
+    {
+        var mission = MissionsManager.Instance.Missions.FirstOrDefault(m => m.Name == missionName);
+        if (mission == null)
+        {
+            Debug.LogError("Mission doesn't exist with name: " + missionName);
+        }
+        return mission;
+    }
+
     public static void LogMissionOutcomeBreakdown(params object[] outcomeElements)
     {
         foreach (var element in outcomeElements)

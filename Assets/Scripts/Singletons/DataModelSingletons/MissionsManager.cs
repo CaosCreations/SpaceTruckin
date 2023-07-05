@@ -359,6 +359,12 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     #endregion
 
     #region Dialogue Integration
+    public bool HasMissionBeenCompleted(string missionName)
+    {
+        Mission mission = MissionUtils.GetMissionByName(missionName);
+        return mission.NumberOfCompletions > 0;
+    }
+
     public bool HasMissionBeenCompletedForCustomer(string missionName, string customerName)
     {
         Mission missionForCustomer = MissionUtils.GetMissionForCustomer(missionName, customerName);
@@ -409,6 +415,11 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         Lua.RegisterFunction(
             DialogueConstants.MissionCompletedFunctionName,
             this,
+            SymbolExtensions.GetMethodInfo(() => HasMissionBeenCompleted(string.Empty)));
+
+        Lua.RegisterFunction(
+            DialogueConstants.MissionCompletedForCustomerFunctionName,
+            this,
             SymbolExtensions.GetMethodInfo(() => HasMissionBeenCompletedForCustomer(string.Empty, string.Empty)));
 
         Lua.RegisterFunction(
@@ -419,7 +430,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     public void UnregisterLuaFunctions()
     {
-        Lua.UnregisterFunction(DialogueConstants.MissionCompletedFunctionName);
+        Lua.UnregisterFunction(DialogueConstants.MissionCompletedForCustomerFunctionName);
         Lua.UnregisterFunction(DialogueConstants.MissionOfferExpiredFunctionName);
     }
     #endregion
