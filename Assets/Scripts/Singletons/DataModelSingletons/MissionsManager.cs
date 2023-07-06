@@ -431,6 +431,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     public void UnregisterLuaFunctions()
     {
         Lua.UnregisterFunction(DialogueConstants.MissionCompletedForCustomerFunctionName);
+        Lua.UnregisterFunction(DialogueConstants.MissionCompletedFunctionName);
         Lua.UnregisterFunction(DialogueConstants.MissionOfferExpiredFunctionName);
     }
     #endregion
