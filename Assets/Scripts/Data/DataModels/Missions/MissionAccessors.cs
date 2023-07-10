@@ -28,6 +28,7 @@ public partial class Mission
         get => saveData.hasBeenAccepted;
         set => saveData.hasBeenAccepted = value;
     }
+    public bool HasBeenCompleted => NumberOfCompletions > 0;
     public int DurationInDays
     {
         get => missionDurationInDays;
