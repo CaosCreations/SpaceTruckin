@@ -9,8 +9,6 @@ public class ShadeSpr : MonoBehaviour
     {
         if (_renderer == null)
         {
-            Debug.Log("Renderer is empty");
-
             _renderer = GetComponent<Renderer>();
         }
 

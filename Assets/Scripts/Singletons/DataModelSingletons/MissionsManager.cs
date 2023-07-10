@@ -32,14 +32,11 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         }
     }
 
-    private void OnDisable() => UnregisterLuaFunctions();
-
     public void Init()
     {
         LogMissionDataStatus();
         ScheduledMissions = new List<ScheduledMission>();
         UnlockMissions();
-        RegisterLuaFunctions();
 
         SingletonManager.EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
     }
