@@ -129,7 +129,7 @@ TextureImporter:
       213: 4359287963646521807
     second: klapausius_41
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -189,6 +189,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -252,6 +253,18 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -1130,7 +1143,7 @@ TextureImporter:
       name: klapausius_41
       rect:
         serializedVersion: 2
-        x: 384
+        x: 192
         y: 64
         width: 64
         height: 64
@@ -1147,6 +1160,90 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: klapausius_42
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb8de81086447ad4abfa267b07662311
+      internalID: -792510426
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: klapausius_43
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60c6d73950afa75488f49d1a43360569
+      internalID: 1564827567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: klapausius_44
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 870a03bb8d28e7a4a84c433c90d5b8e6
+      internalID: -1088467253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: klapausius_45
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c1a1e0eb34f9d7f49a08353454d8b7f9
+      internalID: 2065645959
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -1159,47 +1256,51 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       klapausius_26: 6790430687171543283
-      klapausius_32: 1296130756529650766
-      klapausius_15: -7332286696125191690
-      klapausius_38: 926606274341143210
-      klapausius_39: 1599070716708062308
-      klapausius_24: -7682126267271659338
-      klapausius_35: 8019824643426305100
+      klapausius_45: 2065645959
       klapausius_8: 4058841473190862447
       klapausius_25: 1104251400706046356
-      klapausius_5: 1890290661039379656
       klapausius_34: 611099040665710517
       klapausius_17: -4071005478309435184
       klapausius_27: 1488190774548890171
-      klapausius_33: -5496847547488238649
       klapausius_28: 3942567909794130293
+      klapausius_42: -792510426
+      klapausius_16: 2842432377126045300
+      klapausius_19: -9069199966333329076
+      klapausius_4: 4897217487422885376
+      klapausius_30: 6246421816399732070
+      klapausius_22: 3801132755376438648
+      klapausius_29: 3216612349531545654
+      klapausius_37: -8909336584617062286
+      klapausius_39: 1599070716708062308
+      klapausius_3: -3626663853571513382
+      klapausius_32: 1296130756529650766
+      klapausius_15: -7332286696125191690
+      klapausius_38: 926606274341143210
+      klapausius_10: 7260564420227267116
+      klapausius_24: -7682126267271659338
+      klapausius_35: 8019824643426305100
+      klapausius_5: 1890290661039379656
+      klapausius_33: -5496847547488238649
       klapausius_18: -235461561226182085
       klapausius_2: 1227796207994256760
       klapausius_20: 2413276095267911474
-      klapausius_16: 2842432377126045300
       klapausius_23: 1923170242350137949
       klapausius_1: -1550130603149436522
       klapausius_13: -9070534422147342336
-      klapausius_19: -9069199966333329076
       klapausius_21: 28604864088832832
-      klapausius_4: 4897217487422885376
+      klapausius_43: 1564827567
       klapausius_40: -4248216290002289302
       klapausius_11: -5359813199030818087
       klapausius_7: -8225491067757917458
       klapausius_36: -4671861523533223682
       klapausius_31: 5994076741978471302
-      klapausius_30: 6246421816399732070
       klapausius_41: 4359287963646521807
       klapausius_6: -3356357483213543940
       klapausius_12: -4003354644622344619
-      klapausius_22: 3801132755376438648
       klapausius_14: -7836928014271859670
       klapausius_9: -7256783189930917930
       klapausius_0: 4771342207361566932
-      klapausius_29: 3216612349531545654
-      klapausius_37: -8909336584617062286
-      klapausius_3: -3626663853571513382
-      klapausius_10: 7260564420227267116
+      klapausius_44: -1088467253
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
