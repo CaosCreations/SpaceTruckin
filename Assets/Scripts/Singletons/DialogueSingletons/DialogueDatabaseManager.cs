@@ -162,9 +162,4 @@ public class DialogueDatabaseManager : MonoBehaviour
             Debug.LogError($"Failed to set Lua variable '{variableName}'.");
         }
     }
-
-    public void RegisterLuaFunctions()
-    {
-
-    }
 }

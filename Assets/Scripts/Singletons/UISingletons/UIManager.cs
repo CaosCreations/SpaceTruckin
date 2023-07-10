@@ -382,11 +382,20 @@ public class UIManager : MonoBehaviour
 
     private void OnCutsceneFinishedHandler(OnCutsceneFinishedEvent startedEvent)
     {
-        if (startedEvent.Cutscene.ConversationSettings != null
-            && startedEvent.Cutscene.ConversationSettings.CloseDialogueUIOnStart)
+        var convoSettings = startedEvent.Cutscene.ConversationSettings;
+        if (convoSettings != null)
         {
-            Debug.Log("Dialogue cutscene finished event call back fired. Re-opening dialogue UI...");
-            DialogueManager.DialogueUI.Open();
+            if (convoSettings.CloseDialogueUIOnStart)
+            {
+                Debug.Log("Dialogue cutscene finished event call back fired. Re-opening dialogue UI...");
+                DialogueManager.DialogueUI.Open();
+            }
+
+            if (convoSettings.ContinueOnEnd)
+            {
+                Debug.Log("Dialogue cutscene finished event call back fired. Continuing to next node...");
+                FindObjectOfType<AbstractDialogueUI>().OnContinueConversation();
+            }
         }
     }
 

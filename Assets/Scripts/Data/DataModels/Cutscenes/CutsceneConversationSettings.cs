@@ -9,4 +9,7 @@ public class CutsceneConversationSettings
 
     [field: SerializeField]
     public bool CloseDialogueUIOnStart { get; private set; }
+
+    [field: SerializeField]
+    public bool ContinueOnEnd { get; private set; }
 }
