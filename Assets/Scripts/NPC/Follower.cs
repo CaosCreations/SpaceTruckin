@@ -83,6 +83,7 @@ public class Follower : MonoBehaviour
 		 {
             lilAnim.SetFloat("Zdirection", -1);
             lilAnim.SetBool("goingUp",true);
+            lilAnim.SetBool("goingIdle",false);
 
 		 }
 
@@ -90,6 +91,7 @@ public class Follower : MonoBehaviour
 		 {
             lilAnim.SetFloat("Zdirection", 1);
             lilAnim.SetBool("goingUp",false);
+            lilAnim.SetBool("goingIdle",false);
 
 		 }
 
@@ -97,6 +99,7 @@ public class Follower : MonoBehaviour
 		 {
             lilAnim.SetFloat("Xdirection", 1);
             lilAnim.SetBool("goingRight",true);
+            lilAnim.SetBool("goingIdle",false);
 
 		 }
 
@@ -104,8 +107,11 @@ public class Follower : MonoBehaviour
 		 {
             lilAnim.SetFloat("Xdirection", -1);
              lilAnim.SetBool("goingRight",false);
+             lilAnim.SetBool("goingIdle",false);
 
 		 }
+         
+         if(!Input.anyKey){lilAnim.SetBool("goingIdle",true);}
 
         // Lock rotation 
         transform.rotation = initialRotation;
