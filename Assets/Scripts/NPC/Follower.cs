@@ -10,9 +10,15 @@ public class Follower : MonoBehaviour
     [SerializeField]
     private float avoidanceDistance = 2.0f;
 
+
+    //animator Test
+    public Animator lilAnim;
+   
+
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        lilAnim = GetComponent<Animator>();
         playerTransform = PlayerManager.PlayerObject.transform;
         initialRotation = transform.rotation;
         agent.updateRotation = false;
@@ -20,6 +26,8 @@ public class Follower : MonoBehaviour
 
     private void Update()
     {
+      
+
         Vector3 targetPosition = playerTransform.position - PlayerManager.PlayerMovement.PlayerFacingDirection.normalized * agent.stoppingDistance;
 
         // Check if the target position is obstructed by walls
@@ -70,7 +78,41 @@ public class Follower : MonoBehaviour
             }
         }
 
+        
+		 if(playerTransform.transform.position.z>this.transform.position.z+1)
+		 {
+            lilAnim.SetFloat("Zdirection", -1);
+            lilAnim.SetBool("goingUp",true);
+
+		 }
+
+          if(playerTransform.transform.position.z<=this.transform.position.z-1)
+		 {
+            lilAnim.SetFloat("Zdirection", 1);
+            lilAnim.SetBool("goingUp",false);
+
+		 }
+
+          if(playerTransform.transform.position.x>this.transform.position.x)
+		 {
+            lilAnim.SetFloat("Xdirection", 1);
+            lilAnim.SetBool("goingRight",true);
+
+		 }
+
+          if(playerTransform.transform.position.x<=this.transform.position.x)
+		 {
+            lilAnim.SetFloat("Xdirection", -1);
+             lilAnim.SetBool("goingRight",false);
+
+		 }
+
         // Lock rotation 
         transform.rotation = initialRotation;
+
+
+
+
+
     }
 }
