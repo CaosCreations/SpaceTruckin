@@ -13,6 +13,7 @@ public class Follower : MonoBehaviour
 
     //animator Test
     public Animator lilAnim;
+    public float accChar;
    
 
     private void Start()
@@ -81,37 +82,47 @@ public class Follower : MonoBehaviour
         
 		 if(playerTransform.transform.position.z>this.transform.position.z+1)
 		 {
-            lilAnim.SetFloat("Zdirection", -1);
+            accChar-=0.3f;
+            lilAnim.SetFloat("Zdirection", -accChar);
             lilAnim.SetBool("goingUp",true);
+            lilAnim.SetBool("goingDown",false);
             lilAnim.SetBool("goingIdle",false);
 
 		 }
 
           if(playerTransform.transform.position.z<=this.transform.position.z-1)
 		 {
-            lilAnim.SetFloat("Zdirection", 1);
+            accChar+=0.3f;
+            lilAnim.SetFloat("Zdirection", -accChar);
             lilAnim.SetBool("goingUp",false);
+             lilAnim.SetBool("goingDown",true);
             lilAnim.SetBool("goingIdle",false);
 
 		 }
 
-          if(playerTransform.transform.position.x>this.transform.position.x)
+
+         if(accChar>2.1f){accChar=2;}
+         if(accChar<-2.1f){accChar=-2;}
+
+          if(playerTransform.transform.position.x>this.transform.position.x+1)
 		 {
             lilAnim.SetFloat("Xdirection", 1);
             lilAnim.SetBool("goingRight",true);
             lilAnim.SetBool("goingIdle",false);
+               lilAnim.SetBool("goingLeft",false);
 
-		 }
+		 }else{lilAnim.SetBool("goingRight",false);}
 
-          if(playerTransform.transform.position.x<=this.transform.position.x)
+          if(playerTransform.transform.position.x<=this.transform.position.x-1)
 		 {
             lilAnim.SetFloat("Xdirection", -1);
              lilAnim.SetBool("goingRight",false);
+              lilAnim.SetBool("goingLeft",true);
              lilAnim.SetBool("goingIdle",false);
 
-		 }
+		 }else{lilAnim.SetBool("goingLeft",false);}
          
-         if(!Input.anyKey){lilAnim.SetBool("goingIdle",true);}
+         if(!Input.anyKey){lilAnim.SetBool("goingIdle",true);accChar=0;lilAnim.SetFloat("Zdirection",accChar);}
 
         // Lock rotation 
         transform.rotation = initialRotation;
