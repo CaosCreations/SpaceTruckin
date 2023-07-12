@@ -46,11 +46,10 @@ public class DialogueEventManager : MonoBehaviour
 
     private void OnCutsceneFinishedHandler(OnCutsceneFinishedEvent evt)
     {
-        if (evt.Cutscene.ConversationSettings != null
-            && evt.Cutscene.ConversationSettings.CloseDialogueUIOnStart)
+        if (evt.Cutscene.ConversationSettings != null && evt.Cutscene.ConversationSettings.StartConversationId > 0)
         {
-            Debug.Log($"Dialogue cutscene finished event call back fired and conversation configured. Starting conversation with ID '{evt.Cutscene.ConversationSettings.ConversationId}'...");
-            DialogueUtils.StartConversationById(evt.Cutscene.ConversationSettings.ConversationId);
+            Debug.Log($"Dialogue cutscene finished event call back fired and conversation configured. Starting conversation with ID '{evt.Cutscene.ConversationSettings.StartConversationId}'...");
+            DialogueUtils.StartConversationById(evt.Cutscene.ConversationSettings.StartConversationId);
         }
     }
 }

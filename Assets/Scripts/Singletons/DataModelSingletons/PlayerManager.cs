@@ -69,7 +69,6 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
     public void Init()
     {
-        RegisterLuaFunctions();
         RegisterDialogueEvents();
 
 #if UNITY_EDITOR
@@ -129,8 +128,6 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         var animatorSettingsMapper = new PlayerAnimatorSettingsMapper();
         animatorSettingsMapper.MapSettings(playerAnimator, PlayerAnimatorSettings);
     }
-
-    private void OnDisable() => UnregisterLuaFunctions();
 
     public bool CanSpendMoney(long amount)
     {

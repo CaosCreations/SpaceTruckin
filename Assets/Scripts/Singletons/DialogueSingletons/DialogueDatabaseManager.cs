@@ -2,6 +2,7 @@
 using Language.Lua;
 using PixelCrushers.DialogueSystem;
 using System;
+using System.Linq;
 using UnityEngine;
 
 public class DialogueDatabaseManager : MonoBehaviour
@@ -25,6 +26,20 @@ public class DialogueDatabaseManager : MonoBehaviour
     private void Start()
     {
         RegisterEvents();
+        var subscribers = FindObjectsOfType<MonoBehaviour>().OfType<ILuaFunctionRegistrar>();
+        foreach (var subscriber in subscribers)
+        {
+            subscriber.RegisterLuaFunctions();
+        }
+    }
+
+    private void OnDisable()
+    {
+        var subscribers = FindObjectsOfType<MonoBehaviour>().OfType<ILuaFunctionRegistrar>();
+        foreach (var subscriber in subscribers)
+        {
+            subscriber.UnregisterLuaFunctions();
+        }
     }
 
     private void RegisterEvents()
