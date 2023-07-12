@@ -378,6 +378,8 @@ public class UIManager : MonoBehaviour
             Debug.Log("Dialogue cutscene started event call back fired. Closing dialogue UI...");
             DialogueManager.DialogueUI.Close();
         }
+        Debug.Log("Pausing Dialogue System...");
+        DialogueManager.Instance.Pause();
     }
 
     private void OnCutsceneFinishedHandler(OnCutsceneFinishedEvent startedEvent)
@@ -390,11 +392,14 @@ public class UIManager : MonoBehaviour
                 Debug.Log("Dialogue cutscene finished event call back fired. Re-opening dialogue UI...");
                 DialogueManager.DialogueUI.Open();
             }
+            Debug.Log("Unpausing Dialogue System...");
+            DialogueManager.Instance.Unpause();
 
             if (convoSettings.ContinueOnEnd)
             {
                 Debug.Log("Dialogue cutscene finished event call back fired. Continuing to next node...");
-                FindObjectOfType<AbstractDialogueUI>().OnContinueConversation();
+                var dialogueUI = FindObjectOfType<AbstractDialogueUI>();
+                dialogueUI.OnContinueConversation();
             }
         }
     }
