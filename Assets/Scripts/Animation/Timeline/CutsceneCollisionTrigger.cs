@@ -7,6 +7,11 @@ public class CutsceneCollisionTrigger : MonoBehaviour
 
     private BoxCollider boxCollider;
 
+    protected virtual bool CutsceneTriggerable(Collider other)
+    {
+        return other.CompareTag(PlayerConstants.PlayerTag);
+    }
+
     private void Awake()
     {
         if (cutscene == null)
@@ -17,7 +22,7 @@ public class CutsceneCollisionTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(PlayerConstants.PlayerTag))
+        if (CutsceneTriggerable(other))
         {
             Debug.Log("Player collided with CutsceneCollisionTrigger");
             TimelineManager.PlayCutscene(cutscene);
