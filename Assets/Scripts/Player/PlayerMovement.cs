@@ -38,13 +38,6 @@ public class PlayerMovement : MonoBehaviour
         {
             CameraTransform = Camera.main.transform;
         }
-
-        // Temp workaround for opening cutscene end position
-        SingletonManager.EventService.Add<OnTimelineFinishedEvent>((evt) =>
-        {
-            if (evt.PlayableAsset.name == TimelineConstants.OpeningCutsceneTimelineAssetName)
-                RespawnPlayer();
-        });
     }
 
     // Get input in Update 
