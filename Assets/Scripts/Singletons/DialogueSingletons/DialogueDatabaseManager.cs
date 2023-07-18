@@ -131,6 +131,17 @@ public class DialogueDatabaseManager : MonoBehaviour
         return string.Empty;
     }
 
+    public static bool GetLuaVariableAsBool(string variableName)
+    {
+        if (DialogueUtils.VariableExists(variableName))
+        {
+            return DialogueLua.GetVariable(variableName).asBool;
+        }
+
+        Debug.LogError($"Lua variable '{variableName}' does not exist");
+        return false;
+    }
+
     public static string GetActorFieldAsString(string actorName, string fieldName)
     {
         if (DialogueUtils.ActorFieldExists(actorName, fieldName))
