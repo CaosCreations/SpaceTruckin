@@ -46,14 +46,14 @@ public class ClockManager : MonoBehaviour
         TickSpeedMultiplier = Convert.ToInt32(CalendarManager.AwakeTimeDuration.TotalSeconds) / CalendarManager.RealTimeDayDurationInSeconds;
     }
 
-    private void ResetClock()
+    private static void ResetClock()
     {
         clockStopped = true;
         CurrentTime = CalendarManager.DayStartTime;
         currentTimeInSeconds = (int)CurrentTime.TotalSeconds;
     }
 
-    private void StartClock()
+    private static void StartClock()
     {
         clockStopped = false;
     }
