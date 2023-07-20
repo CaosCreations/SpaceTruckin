@@ -13,7 +13,7 @@ public class ClockManager : MonoBehaviour
 
     private static bool clockStopped;
     private static bool isEvening;
-    private static bool showOnGui = false;
+    private static readonly bool showOnGui = false;
 
     private void Start()
     {
@@ -24,7 +24,8 @@ public class ClockManager : MonoBehaviour
         if (CalendarManager.StationEntryTimeOfDay.ToSeconds() == 0)
             ResetClock();
 
-        StartClock();
+        if (CalendarManager.CurrentDate != new Date(1, 1, 1))
+            StartClock();
 
 #if UNITY_EDITOR
         Application.targetFrameRate = PlayerConstants.EditorTargetFrameRate;
@@ -45,19 +46,19 @@ public class ClockManager : MonoBehaviour
         TickSpeedMultiplier = Convert.ToInt32(CalendarManager.AwakeTimeDuration.TotalSeconds) / CalendarManager.RealTimeDayDurationInSeconds;
     }
 
-    public void ResetClock()
+    private static void ResetClock()
     {
         clockStopped = true;
         CurrentTime = CalendarManager.DayStartTime;
         currentTimeInSeconds = (int)CurrentTime.TotalSeconds;
     }
 
-    public void StartClock()
+    private static void StartClock()
     {
         clockStopped = false;
     }
 
-    private void StopClock()
+    public static void StopClock()
     {
         clockStopped = true;
     }
@@ -180,12 +181,5 @@ public class ClockManager : MonoBehaviour
             UIConstants.ClockTextHeight),
             dateTimeText,
             localStyle);
-    }
-
-    private void LogClockData()
-    {
-        Debug.Log("Current time: " + CurrentTime);
-        Debug.Log("Current time in seconds: " + currentTimeInSeconds);
-        Debug.Log("Time remaining: " + CalendarManager.DayEndTime.Subtract(CurrentTime));
     }
 }

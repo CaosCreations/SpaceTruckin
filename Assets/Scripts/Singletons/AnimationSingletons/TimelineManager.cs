@@ -1,5 +1,7 @@
 ﻿using Events;
 using PixelCrushers.DialogueSystem;
+using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
@@ -40,8 +42,6 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
     private void Start()
     {
-        RegisterLuaFunctions();
-
         foreach (var cutscenePlayer in cutscenePlayers)
         {
             RegisterEvents(cutscenePlayer.PlayableDirector);
@@ -52,6 +52,7 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
     {
         playableDirector.played += (_) => OnTimelineStartedHandler();
         playableDirector.stopped += (_) => OnTimelineFinishedHandler();
+        SingletonManager.EventService.Add<OnSceneLoadedEvent>(OnSceneLoadedHandler);
     }
 
     private void OnTimelineStartedHandler()
@@ -94,17 +95,20 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
     public static void PlayCutscene(Cutscene cutscene)
     {
         if (cutscene == null)
-            throw new System.Exception("Cutscene scriptable object doesn't exist. Cannot play cutscene with name: " + cutscene.Name);
+            throw new Exception("Cutscene scriptable object doesn't exist. Cannot play cutscene with name: " + cutscene.Name);
 
         var cutscenePlayer = Instance.GetCutscenePlayerByCutscene(cutscene);
 
+#pragma warning disable IDE0270 // Use coalesce expression
         if (cutscenePlayer == null)
-            throw new System.Exception("Cutscene player component doesn't exist. Cannot play cutscene with name: " + cutscene.Name);
+            throw new Exception("Cutscene player component doesn't exist. Cannot play cutscene with name: " + cutscene.Name);
+#pragma warning restore IDE0270 // Use coalesce expression
 
         currentCutscenePlayer = cutscenePlayer;
 
         Debug.Log("Playing cutscene with name: " + cutscene.Name);
         PlayTimeline();
+        cutscene.Played = true;
     }
 
     public static void PlayCutscene(string cutsceneName)
@@ -160,6 +164,7 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
             if (cutscenePlayer.Cutscene == cutscene)
                 return cutscenePlayer;
         }
+        Debug.LogError("CutsceneTimelinePlayer not found by " + cutscene);
         return null;
     }
 
@@ -176,7 +181,7 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
     {
         if (!PlayerManager.PlayerObject.TryGetComponent<Animator>(out var playerAnimator))
         {
-            throw new System.Exception("Unable to get player animator to bind to Timeline director");
+            throw new Exception("Unable to get player animator to bind to Timeline director");
         }
 
         foreach (var binding in playableDirector.playableAsset.outputs)
@@ -192,7 +197,7 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
     private void SetUpAnimationTracks(PlayableDirector playableDirector)
     {
         if (!PlayerManager.PlayerObject.TryGetComponent<Animator>(out var playerAnimator))
-            throw new System.Exception("Unable to get player animator to set animation tracks");
+            throw new Exception("Unable to get player animator to set animation tracks");
 
         var timelineAsset = playableDirector.playableAsset as TimelineAsset;
 
@@ -225,15 +230,26 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
     public void FinishCurrentTimeline()
     {
+        if (currentCutscenePlayer == null)
+            return;
+
         if (currentCutscenePlayer.PlayableDirector.playableAsset != null && currentCutscenePlayer.PlayableDirector.time > 0)
             currentCutscenePlayer.PlayableDirector.time = 100000;
     }
 
-    public void RegisterLuaFunctions()
+    private void OnSceneLoadedHandler(OnSceneLoadedEvent evt)
     {
-        if (DialogueManager.Instance == null)
+        var onSceneLoadCutscene = cutsceneContainer.Elements
+            .FirstOrDefault(cutscene => cutscene.OnSceneLoadName.Equals(evt.Scene.name, StringComparison.InvariantCultureIgnoreCase));
+
+        if (onSceneLoadCutscene == null /*|| onSceneLoadCutscene.Played*/)
             return;
 
+        PlayCutscene(onSceneLoadCutscene);
+    }
+
+    public void RegisterLuaFunctions()
+    {
         Lua.RegisterFunction(
             DialogueConstants.PlayCutsceneFunctionName,
             this,

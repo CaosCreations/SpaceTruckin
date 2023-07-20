@@ -82,6 +82,7 @@ public class UIManager : MonoBehaviour
         SingletonManager.EventService.Add<OnSceneLoadedEvent>(OnSceneLoadedHandler);
         SingletonManager.EventService.Add<OnSceneUnloadedEvent>(OnSceneUnloadedHandler);
         SingletonManager.EventService.Add<OnCutsceneStartedEvent>(OnCutsceneStartedHandler);
+        SingletonManager.EventService.Add<OnCutsceneFinishedEvent>(OnCutsceneFinishedHandler);
 
         DialogueManager.Instance.conversationStarted += OnConversationStartedHandler;
         DialogueManager.Instance.conversationEnded += OnConversationEndedHandler;
@@ -376,6 +377,30 @@ public class UIManager : MonoBehaviour
         {
             Debug.Log("Dialogue cutscene started event call back fired. Closing dialogue UI...");
             DialogueManager.DialogueUI.Close();
+        }
+        Debug.Log("Pausing Dialogue System...");
+        DialogueManager.Instance.Pause();
+    }
+
+    private void OnCutsceneFinishedHandler(OnCutsceneFinishedEvent startedEvent)
+    {
+        var convoSettings = startedEvent.Cutscene.ConversationSettings;
+        if (convoSettings != null)
+        {
+            if (convoSettings.CloseDialogueUIOnStart)
+            {
+                Debug.Log("Dialogue cutscene finished event call back fired. Re-opening dialogue UI...");
+                DialogueManager.DialogueUI.Open();
+            }
+            Debug.Log("Unpausing Dialogue System...");
+            DialogueManager.Instance.Unpause();
+
+            if (convoSettings.ContinueOnEnd)
+            {
+                Debug.Log("Dialogue cutscene finished event call back fired. Continuing to next node...");
+                var dialogueUI = FindObjectOfType<AbstractDialogueUI>();
+                dialogueUI.OnContinueConversation();
+            }
         }
     }
 

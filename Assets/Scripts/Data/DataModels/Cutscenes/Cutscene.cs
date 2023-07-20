@@ -15,4 +15,11 @@ public class Cutscene : ScriptableObject
 
     [field: SerializeField]
     public CutsceneConversationSettings ConversationSettings { get; private set; }
+
+    public bool Played { get; set; }
+
+    public override string ToString()
+    {
+        return $"Cutscene with name '{Name}'";
+    }
 }

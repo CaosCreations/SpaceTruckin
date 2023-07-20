@@ -68,12 +68,6 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
             return;
         }
         calendarData.ValidateFields();
-        RegisterLuaFunctions();
-    }
-
-    private void OnDisable()
-    {
-        UnregisterLuaFunctions();
     }
 
     /// <summary>

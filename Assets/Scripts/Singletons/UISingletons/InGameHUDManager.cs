@@ -1,5 +1,5 @@
+using Events;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class InGameHUDManager : MonoBehaviour
 {
@@ -22,24 +22,36 @@ public class InGameHUDManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private static bool IsDateTimeUIActive()
+    {
+        return SceneLoadingManager.IsLoadedSceneName(SceneType.MainStation) && CalendarManager.CurrentDate != new Date(1, 1, 1);
+    }
+
     private void Start()
     {
-        SceneManager.activeSceneChanged += (Scene previous, Scene next) =>
-        {
-            bool isActive = next.name == SceneLoadingManager.GetSceneNameByType(SceneType.MainStation);
-            SetActive(isActive);
-        };
+        SingletonManager.EventService.Add<OnSceneLoadedEvent>(OnSceneLoadedHandler);
+        SingletonManager.EventService.Add<OnMorningStartEvent>(OnMorningStartHandler);
+        SetActive();
     }
 
     private static void SetActive(bool active)
     {
-        if (Instance.hudCanvas == null)
-        {
-            Debug.LogWarning("Can't set HUD canvas object to active/inactive because it is null.");
-            return;
-        }
-
         Instance.hudCanvas.SetActive(active);
         Instance.dateTimeText.SetActive(active);
+    }
+
+    private static void SetActive()
+    {
+        SetActive(IsDateTimeUIActive());
+    }
+
+    private void OnSceneLoadedHandler(OnSceneLoadedEvent evt)
+    {
+        SetActive();
+    }
+
+    private void OnMorningStartHandler()
+    {
+        SetActive();
     }
 }

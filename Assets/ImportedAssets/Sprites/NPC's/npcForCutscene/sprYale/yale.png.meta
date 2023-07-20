@@ -153,7 +153,7 @@ TextureImporter:
       213: 5976913911537155912
     second: yale_49
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -213,6 +213,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -286,6 +287,18 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -294,7 +307,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 607
+        y: 850
         width: 64
         height: 64
       alignment: 0
@@ -315,7 +328,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 607
+        y: 850
         width: 64
         height: 64
       alignment: 0
@@ -336,7 +349,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 607
+        y: 850
         width: 64
         height: 64
       alignment: 0
@@ -357,7 +370,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 607
+        y: 850
         width: 64
         height: 64
       alignment: 0
@@ -378,7 +391,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
-        y: 607
+        y: 850
         width: 64
         height: 64
       alignment: 0
@@ -399,7 +412,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 543
+        y: 786
         width: 64
         height: 64
       alignment: 0
@@ -420,7 +433,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 543
+        y: 786
         width: 64
         height: 64
       alignment: 0
@@ -441,7 +454,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 543
+        y: 786
         width: 64
         height: 64
       alignment: 0
@@ -462,7 +475,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 543
+        y: 786
         width: 64
         height: 64
       alignment: 0
@@ -483,7 +496,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
-        y: 543
+        y: 786
         width: 64
         height: 64
       alignment: 0
@@ -504,7 +517,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 320
-        y: 543
+        y: 786
         width: 64
         height: 64
       alignment: 0
@@ -525,7 +538,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 384
-        y: 543
+        y: 786
         width: 64
         height: 64
       alignment: 0
@@ -546,7 +559,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 448
-        y: 543
+        y: 786
         width: 64
         height: 64
       alignment: 0
@@ -567,7 +580,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 479
+        y: 722
         width: 64
         height: 64
       alignment: 0
@@ -588,7 +601,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 479
+        y: 722
         width: 64
         height: 64
       alignment: 0
@@ -609,7 +622,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 479
+        y: 722
         width: 64
         height: 64
       alignment: 0
@@ -630,7 +643,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 479
+        y: 722
         width: 64
         height: 64
       alignment: 0
@@ -651,7 +664,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
-        y: 479
+        y: 722
         width: 64
         height: 64
       alignment: 0
@@ -672,7 +685,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 320
-        y: 479
+        y: 722
         width: 64
         height: 64
       alignment: 0
@@ -693,7 +706,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 415
+        y: 658
         width: 64
         height: 64
       alignment: 0
@@ -714,7 +727,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 415
+        y: 658
         width: 64
         height: 64
       alignment: 0
@@ -735,7 +748,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 415
+        y: 658
         width: 64
         height: 64
       alignment: 0
@@ -756,7 +769,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 415
+        y: 658
         width: 64
         height: 64
       alignment: 0
@@ -777,7 +790,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
-        y: 415
+        y: 658
         width: 64
         height: 64
       alignment: 0
@@ -798,7 +811,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 320
-        y: 415
+        y: 658
         width: 64
         height: 64
       alignment: 0
@@ -819,7 +832,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 384
-        y: 415
+        y: 658
         width: 64
         height: 64
       alignment: 0
@@ -840,7 +853,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 351
+        y: 594
         width: 64
         height: 64
       alignment: 0
@@ -861,7 +874,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 351
+        y: 594
         width: 64
         height: 64
       alignment: 0
@@ -882,7 +895,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 351
+        y: 594
         width: 64
         height: 64
       alignment: 0
@@ -903,7 +916,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 351
+        y: 594
         width: 64
         height: 64
       alignment: 0
@@ -924,7 +937,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
-        y: 351
+        y: 594
         width: 64
         height: 64
       alignment: 0
@@ -945,7 +958,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 287
+        y: 530
         width: 64
         height: 64
       alignment: 0
@@ -966,7 +979,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 287
+        y: 530
         width: 64
         height: 64
       alignment: 0
@@ -987,7 +1000,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 287
+        y: 530
         width: 64
         height: 64
       alignment: 0
@@ -1008,7 +1021,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 287
+        y: 530
         width: 64
         height: 64
       alignment: 0
@@ -1029,7 +1042,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
-        y: 287
+        y: 530
         width: 64
         height: 64
       alignment: 0
@@ -1050,7 +1063,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 320
-        y: 287
+        y: 530
         width: 64
         height: 64
       alignment: 0
@@ -1071,7 +1084,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 223
+        y: 466
         width: 64
         height: 64
       alignment: 0
@@ -1092,7 +1105,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 223
+        y: 466
         width: 64
         height: 64
       alignment: 0
@@ -1113,7 +1126,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 223
+        y: 466
         width: 64
         height: 64
       alignment: 0
@@ -1134,7 +1147,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
-        y: 223
+        y: 466
         width: 64
         height: 64
       alignment: 0
@@ -1155,7 +1168,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 320
-        y: 223
+        y: 466
         width: 64
         height: 64
       alignment: 0
@@ -1176,7 +1189,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 384
-        y: 223
+        y: 466
         width: 64
         height: 64
       alignment: 0
@@ -1197,7 +1210,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 159
+        y: 402
         width: 64
         height: 64
       alignment: 0
@@ -1218,7 +1231,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 159
+        y: 402
         width: 64
         height: 64
       alignment: 0
@@ -1239,7 +1252,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 159
+        y: 402
         width: 64
         height: 64
       alignment: 0
@@ -1260,7 +1273,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 159
+        y: 402
         width: 64
         height: 64
       alignment: 0
@@ -1281,7 +1294,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
-        y: 159
+        y: 402
         width: 64
         height: 64
       alignment: 0
@@ -1302,7 +1315,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 320
-        y: 159
+        y: 402
         width: 64
         height: 64
       alignment: 0
@@ -1323,7 +1336,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 384
-        y: 159
+        y: 402
         width: 64
         height: 64
       alignment: 0
@@ -1335,6 +1348,426 @@ TextureImporter:
       bones: []
       spriteID: 84f3346198342f250800000000000000
       internalID: 5976913911537155912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yale_50
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 338
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4cb3bb7e99c3614a83e18172dc44e3b
+      internalID: 1160302303
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yale_51
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 338
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b5af7bf9ddf43e46ba325bcbf8e1f5a
+      internalID: -1229274083
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yale_52
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 338
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e064688b36ccbad48a9fff48b63e1f38
+      internalID: -2018908850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yale_53
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 338
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b8f0e5cf3dd906843aba3a8e97df5ac7
+      internalID: 630164538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yale_54
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 338
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 531d50248d851544793acfa69ccd8d27
+      internalID: -1148581101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yale_55
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 338
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4562e8877a0548b419990dff4460baf4
+      internalID: -990303270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yale_56
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 338
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5969c7aad4fc795459352be60600628f
+      internalID: 1932656389
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yale_57
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 338
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1571a9198c4885644898e57ae60f131f
+      internalID: 142356927
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yale_58
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 274
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb83a8b5df4618c4b93e772d492e9f09
+      internalID: 807057817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yale_59
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 274
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e272ca4a3d92a4b459a7c1621076eda4
+      internalID: 1820329157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yale_60
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 274
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4f8ee987fb01504a9156fc026e5809c
+      internalID: -1713201719
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yale_61
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 274
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 57f890cea05af8e4fad716b2ad4de67d
+      internalID: -1402515958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yale_62
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 274
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd3e7d6b8fa08eb468744ae37ecc9c63
+      internalID: 839248510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yale_63
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 274
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d153a07dbbe979b40a6b8c49d8271b55
+      internalID: -188207041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yale_64
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 274
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6fcb542e3d07684e98e9b3c8055486c
+      internalID: 1880420860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yale_65
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 274
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dfb151e8a8de987489b04c471b64b6a0
+      internalID: 984100818
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yale_66
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 210
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5fe5133679e0b38498fb7d752c69e4f9
+      internalID: -360604103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yale_67
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 210
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ce37a970b0ed254784a341b84b43002
+      internalID: 916211008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yale_68
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 210
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 964f3a05b044741448b3697f7d1cbcaf
+      internalID: -1984929779
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yale_69
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 210
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 590831d5c4b2ac043b6b0560ad981af0
+      internalID: 301294040
       vertices: []
       indices: 
       edges: []
@@ -1352,17 +1785,24 @@ TextureImporter:
     nameFileIdTable:
       yale_4: 741597174572326911
       yale_18: 3342870471679396128
+      yale_60: -1713201719
       yale_19: 6037325298222078745
+      yale_69: 301294040
+      yale_66: -360604103
       yale_41: -966785166057395217
       yale_31: -202016882399308027
+      yale_58: 807057817
       yale_5: 6359483098468585325
       yale_47: 4485603583166303668
+      yale_68: -1984929779
       yale_15: -6477800256891074458
       yale_28: -6394740620618790797
       yale_34: 5941950288905306768
       yale_35: -7568452860089895337
       yale_43: -3213986364103658134
       yale_9: 7808423682145149746
+      yale_52: -2018908850
+      yale_62: 839248510
       yale_8: 5188511591993076421
       yale_30: -8409291686173220185
       yale_16: 8403253394881897941
@@ -1370,6 +1810,7 @@ TextureImporter:
       yale_44: -8292225834410169656
       yale_21: -7634097438948924550
       yale_33: 1808091800740084647
+      yale_57: 142356927
       yale_11: 2779971294196993802
       yale_24: 2838358097728834913
       yale_32: 8999741995867357085
@@ -1387,19 +1828,31 @@ TextureImporter:
       yale_36: 666635407832820185
       yale_42: 2098409251436334911
       yale_45: 2570650148358967558
+      yale_55: -990303270
       yale_49: 5976913911537155912
       yale_20: 2912480544583399957
       yale_38: 4390539888030602328
       yale_13: 518018771668130041
+      yale_50: 1160302303
       yale_17: -4383827896887240662
+      yale_54: -1148581101
       yale_2: 7942045510899539694
       yale_29: -8160465666430038305
+      yale_59: 1820329157
+      yale_64: 1880420860
+      yale_61: -1402515958
+      yale_63: -188207041
+      yale_56: 1932656389
       yale_25: -6080673100671073956
       yale_3: -2464178290492292695
       yale_1: -6558534346884123104
       yale_27: 6337016019755047292
       yale_39: -8933044870379346841
+      yale_65: 984100818
+      yale_51: -1229274083
       yale_14: 5804803299631823867
+      yale_67: 916211008
+      yale_53: 630164538
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
