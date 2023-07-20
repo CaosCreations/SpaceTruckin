@@ -164,6 +164,7 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
             if (cutscenePlayer.Cutscene == cutscene)
                 return cutscenePlayer;
         }
+        Debug.LogError("CutsceneTimelinePlayer not found by " + cutscene);
         return null;
     }
 
@@ -229,6 +230,9 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
     public void FinishCurrentTimeline()
     {
+        if (currentCutscenePlayer == null)
+            return;
+
         if (currentCutscenePlayer.PlayableDirector.playableAsset != null && currentCutscenePlayer.PlayableDirector.time > 0)
             currentCutscenePlayer.PlayableDirector.time = 100000;
     }
