@@ -30,6 +30,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private UniversalUI universalUI;
     #endregion
 
+    [SerializeField] private TransitionUI transitionUI;
+    [SerializeField] private AccessBlockedUI accessBlockedUI;
+
     /// <summary>
     /// Keys that cannot be used for regular UI input until the override is lifted.
     /// e.g. Escape key when in a submenu. 
@@ -38,9 +41,6 @@ public class UIManager : MonoBehaviour
 
     private TextMeshPro interactionTextMesh;
     private static UICanvasType currentCanvasType;
-
-    [SerializeField]
-    private TransitionUI transitionUI;
 
     private static Type[] SuccessInputTypes => new[]
     {
@@ -187,6 +187,13 @@ public class UIManager : MonoBehaviour
     {
         ClearCanvases();
         PlayerManager.EnterPausedState();
+
+        if (!Instance.accessBlockedUI.IsCanvasAccessible(canvas.CanvasType))
+        {
+            Instance.accessBlockedUI.ShowPopup();
+            return;
+        }
+
         canvas.SetActive(true);
 
         if (!viaShortcut)
