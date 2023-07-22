@@ -111,7 +111,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7513093811224638328}
-  m_RootOrder: 16
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5311470511390535747
 SpriteRenderer:
@@ -296,7 +296,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7513093811224638328}
-  m_RootOrder: 15
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1876756299168748946
 SpriteRenderer:
@@ -415,7 +415,6 @@ Transform:
   - {fileID: 853429861686721934}
   - {fileID: 6364764380135890366}
   - {fileID: 6008384802577963730}
-  - {fileID: 2819488473337875959}
   - {fileID: 538736241896168122}
   - {fileID: 4439559701909236683}
   m_Father: {fileID: 0}
@@ -443,7 +442,10 @@ MonoBehaviour:
   pauseMenuCanvas: {fileID: 5763554009720977247}
   universalUI: {fileID: 95966734}
   transitionUI: {fileID: 6247349102081101013}
-  accessBlockedUI: {fileID: 7543597390708281162}
+  accessSettings:
+  - <DialogueVariableName>k__BackingField: BedCanvasAccessible
+    <CanvasType>k__BackingField: 8
+    <Text>k__BackingField: Don't touch that you idiot!
 --- !u!114 &377607164264223043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3522,93 +3524,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 5269011770708557501}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &7205501972781482065
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 7513093811224638328}
-    m_Modifications:
-    - target: {fileID: 4962896464265645478, guid: 711647ec8c09de5448a24f1510afc495,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 4962896464265645478, guid: 711647ec8c09de5448a24f1510afc495,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 789.802
-      objectReference: {fileID: 0}
-    - target: {fileID: 4962896464265645478, guid: 711647ec8c09de5448a24f1510afc495,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 177.46552
-      objectReference: {fileID: 0}
-    - target: {fileID: 4962896464265645478, guid: 711647ec8c09de5448a24f1510afc495,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 239.0912
-      objectReference: {fileID: 0}
-    - target: {fileID: 4962896464265645478, guid: 711647ec8c09de5448a24f1510afc495,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4962896464265645478, guid: 711647ec8c09de5448a24f1510afc495,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4962896464265645478, guid: 711647ec8c09de5448a24f1510afc495,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4962896464265645478, guid: 711647ec8c09de5448a24f1510afc495,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4962896464265645478, guid: 711647ec8c09de5448a24f1510afc495,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4962896464265645478, guid: 711647ec8c09de5448a24f1510afc495,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4962896464265645478, guid: 711647ec8c09de5448a24f1510afc495,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6563204386056506248, guid: 711647ec8c09de5448a24f1510afc495,
-        type: 3}
-      propertyPath: m_Name
-      value: AccessBlockedUI
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 711647ec8c09de5448a24f1510afc495, type: 3}
---- !u!4 &2819488473337875959 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4962896464265645478, guid: 711647ec8c09de5448a24f1510afc495,
-    type: 3}
-  m_PrefabInstance: {fileID: 7205501972781482065}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7543597390708281162 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 814914063237599003, guid: 711647ec8c09de5448a24f1510afc495,
-    type: 3}
-  m_PrefabInstance: {fileID: 7205501972781482065}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c283417c960519f4c9023f3f05819edf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &7506714831236640267
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@
 using PixelCrushers.DialogueSystem;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,7 +32,9 @@ public class UIManager : MonoBehaviour
     #endregion
 
     [SerializeField] private TransitionUI transitionUI;
-    [SerializeField] private AccessBlockedUI accessBlockedUI;
+    
+    [SerializeField]
+    private List<CanvasAccessSettings> accessSettings = new();
 
     /// <summary>
     /// Keys that cannot be used for regular UI input until the override is lifted.
@@ -188,9 +191,9 @@ public class UIManager : MonoBehaviour
         ClearCanvases();
         PlayerManager.EnterPausedState();
 
-        if (!Instance.accessBlockedUI.IsCanvasAccessible(canvas.CanvasType))
+        if (!Instance.IsCanvasAccessible(canvas.CanvasType, out CanvasAccessSettings setting))
         {
-            Instance.accessBlockedUI.ShowPopup();
+            PopupManager.ShowPopup(bodyText: setting.Text);
             return;
         }
 
@@ -259,6 +262,12 @@ public class UIManager : MonoBehaviour
     public static void BeginTransition(TransitionUI.TransitionType transitionType, string textContent)
     {
         Instance.transitionUI.BeginTransition(transitionType, textContent);
+    }
+
+    private bool IsCanvasAccessible(UICanvasType type, out CanvasAccessSettings setting)
+    {
+        setting = accessSettings.FirstOrDefault(s => s.CanvasType == type);
+        return setting == null || DialogueDatabaseManager.GetLuaVariableAsBool(setting.DialogueVariableName);
     }
 
     #region Interaction
