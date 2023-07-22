@@ -142,23 +142,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    [Obsolete("Replaced by interactable button image")]
-    private void SetInteractionTextMesh()
-    {
-        if (currentCanvasType != UICanvasType.None)
-        {
-            interactionTextMesh.gameObject.SetActive(true);
-            interactionTextMesh.SetText(GetInteractionString());
-
-            interactionTextMesh.transform.position =
-                PlayerManager.PlayerMovement.transform.position + new Vector3(0, 0.5f, 0);
-        }
-        else
-        {
-            interactionTextMesh.gameObject.SetActive(false);
-        }
-    }
-
     public static void ClearCanvases(bool unpausePlayer = true)
     {
         if (unpausePlayer)
@@ -289,37 +272,6 @@ public class UIManager : MonoBehaviour
             currentCanvasType = UICanvasType.None;
         }
         HangarNode = -1;
-    }
-
-    private static string GetInteractionString()
-    {
-        string interaction = $"Press {PlayerConstants.ActionKey} to ";
-        switch (currentCanvasType)
-        {
-            case UICanvasType.Bed:
-                interaction += "Sleep";
-                break;
-            case UICanvasType.Cassette:
-                interaction += "Play Music";
-                break;
-            case UICanvasType.Hangar:
-                interaction += "Manage Ship";
-                break;
-            case UICanvasType.NoticeBoard:
-                interaction += "Accept Missions";
-                break;
-            case UICanvasType.Terminal:
-                interaction += "Manage Company";
-                break;
-            case UICanvasType.Vending:
-                interaction += "Buy Snax";
-                break;
-            case UICanvasType.MainMenu:
-            default:
-                return string.Empty;
-        }
-
-        return interaction;
     }
     #endregion
 

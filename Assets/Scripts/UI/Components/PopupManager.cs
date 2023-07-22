@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -16,9 +15,6 @@ public class PopupManager : MonoBehaviour
     [SerializeField] private string defaultCancelText = "Cancel";
     [SerializeField] private Text bodyText;
 
-    private UnityAction onOk;
-    private UnityAction onCancel;
-
     private void Awake()
     {
         if (Instance != null)
@@ -28,12 +24,6 @@ public class PopupManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-    }
-
-    private void Start()
-    {
-        bodyText = popup.GetComponentInChildren<Text>();
-        HidePopup();
     }
 
     public static void ShowPopup(UnityAction onOk = null, UnityAction onCancel = null, string bodyText = null, string okText = null, string cancelText = null)
@@ -58,7 +48,7 @@ public class PopupManager : MonoBehaviour
                 Instance.HidePopup();
             });
         }
-        Instance.SetButtonTexts(okText, cancelText);
+        Instance.SetButtonTexts(bodyText, okText, cancelText);
     }
 
     private void HidePopup()
@@ -67,8 +57,6 @@ public class PopupManager : MonoBehaviour
         PlayerManager.ExitPausedState();
         okButton.onClick.RemoveAllListeners();
         cancelButton.onClick.RemoveAllListeners();
-        onOk = null;
-        onCancel = null;
         cancelButton.SetActive(false);
         canvas.gameObject.SetActive(false);
     }
