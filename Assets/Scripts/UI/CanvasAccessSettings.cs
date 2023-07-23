@@ -9,4 +9,7 @@ public class CanvasAccessSettings
 
     [field: SerializeField]
     public UICanvasType CanvasType { get; private set; }
+
+    [field: SerializeField]
+    public string Text { get; private set; }
 }

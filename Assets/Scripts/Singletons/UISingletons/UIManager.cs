@@ -2,6 +2,7 @@
 using PixelCrushers.DialogueSystem;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,7 +32,9 @@ public class UIManager : MonoBehaviour
     #endregion
 
     [SerializeField] private TransitionUI transitionUI;
-    [SerializeField] private AccessBlockedUI accessBlockedUI;
+    
+    [SerializeField]
+    private List<CanvasAccessSettings> accessSettings = new();
 
     /// <summary>
     /// Keys that cannot be used for regular UI input until the override is lifted.
@@ -139,23 +142,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    [Obsolete("Replaced by interactable button image")]
-    private void SetInteractionTextMesh()
-    {
-        if (currentCanvasType != UICanvasType.None)
-        {
-            interactionTextMesh.gameObject.SetActive(true);
-            interactionTextMesh.SetText(GetInteractionString());
-
-            interactionTextMesh.transform.position =
-                PlayerManager.PlayerMovement.transform.position + new Vector3(0, 0.5f, 0);
-        }
-        else
-        {
-            interactionTextMesh.gameObject.SetActive(false);
-        }
-    }
-
     public static void ClearCanvases(bool unpausePlayer = true)
     {
         if (unpausePlayer)
@@ -188,9 +174,9 @@ public class UIManager : MonoBehaviour
         ClearCanvases();
         PlayerManager.EnterPausedState();
 
-        if (!Instance.accessBlockedUI.IsCanvasAccessible(canvas.CanvasType))
+        if (!Instance.IsCanvasAccessible(canvas.CanvasType, out CanvasAccessSettings setting))
         {
-            Instance.accessBlockedUI.ShowPopup();
+            PopupManager.ShowPopup(bodyText: setting.Text);
             return;
         }
 
@@ -261,6 +247,12 @@ public class UIManager : MonoBehaviour
         Instance.transitionUI.BeginTransition(transitionType, textContent);
     }
 
+    private bool IsCanvasAccessible(UICanvasType type, out CanvasAccessSettings setting)
+    {
+        setting = accessSettings.FirstOrDefault(s => s.CanvasType == type);
+        return setting == null || DialogueDatabaseManager.GetLuaVariableAsBool(setting.DialogueVariableName);
+    }
+
     #region Interaction
     public static void SetCanInteract(UICanvasType canvasType, int node = -1)
     {
@@ -280,37 +272,6 @@ public class UIManager : MonoBehaviour
             currentCanvasType = UICanvasType.None;
         }
         HangarNode = -1;
-    }
-
-    private static string GetInteractionString()
-    {
-        string interaction = $"Press {PlayerConstants.ActionKey} to ";
-        switch (currentCanvasType)
-        {
-            case UICanvasType.Bed:
-                interaction += "Sleep";
-                break;
-            case UICanvasType.Cassette:
-                interaction += "Play Music";
-                break;
-            case UICanvasType.Hangar:
-                interaction += "Manage Ship";
-                break;
-            case UICanvasType.NoticeBoard:
-                interaction += "Accept Missions";
-                break;
-            case UICanvasType.Terminal:
-                interaction += "Manage Company";
-                break;
-            case UICanvasType.Vending:
-                interaction += "Buy Snax";
-                break;
-            case UICanvasType.MainMenu:
-            default:
-                return string.Empty;
-        }
-
-        return interaction;
     }
     #endregion
 
