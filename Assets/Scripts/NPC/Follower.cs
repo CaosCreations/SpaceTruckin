@@ -10,9 +10,17 @@ public class Follower : MonoBehaviour
     [SerializeField]
     private float avoidanceDistance = 2.0f;
 
+
+    //animator Test
+    public Animator lilAnim;
+    public float accChar;
+    public int npcFacing;
+   
+
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        lilAnim = GetComponent<Animator>();
         playerTransform = PlayerManager.PlayerObject.transform;
         initialRotation = transform.rotation;
         agent.updateRotation = false;
@@ -20,6 +28,8 @@ public class Follower : MonoBehaviour
 
     private void Update()
     {
+      
+
         Vector3 targetPosition = playerTransform.position - PlayerManager.PlayerMovement.PlayerFacingDirection.normalized * agent.stoppingDistance;
 
         // Check if the target position is obstructed by walls
@@ -70,7 +80,54 @@ public class Follower : MonoBehaviour
             }
         }
 
+            lilAnim.SetInteger("faceDirection",npcFacing);
+          if(accChar>2.1f){accChar=2;}
+         if(accChar<-2.1f){accChar=-2;}
+
+         		 if(playerTransform.transform.position.z< this.transform.position.z-1)
+		 {			  
+                accChar-=0.3f;
+			    npcFacing=1;
+				lilAnim.SetBool("goingDown",true);
+		 }else{lilAnim.SetBool("goingDown",false);}
+
+
+
+
+          if(playerTransform.transform.position.z>this.transform.position.z+1)
+		 {
+            accChar+=0.3f;
+            lilAnim.SetFloat("Zdirection", -accChar);
+            lilAnim.SetBool("goingUp",true);
+            npcFacing=2;
+
+		 }else{lilAnim.SetBool("goingUp",false);}
+
+
+       
+
+          if(playerTransform.transform.position.x>this.transform.position.x+1)
+		 {
+               lilAnim.SetBool("goingRight",true);
+               npcFacing=4;
+
+		 }else{lilAnim.SetBool("goingRight",false);}
+
+          if(playerTransform.transform.position.x<this.transform.position.x-1)
+		 {
+            lilAnim.SetBool("goingLeft",true);
+              npcFacing=3;
+
+		 }else{lilAnim.SetBool("goingLeft",false);}
+         
+         if(!Input.anyKey){lilAnim.SetBool("goingIdle",true);}else{{lilAnim.SetBool("goingIdle",false);}}
+
         // Lock rotation 
         transform.rotation = initialRotation;
+
+
+
+
+
     }
 }
