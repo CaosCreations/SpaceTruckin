@@ -53,6 +53,7 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        calendarData.Init();
     }
 
     private void Start()
@@ -68,12 +69,6 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
             return;
         }
         calendarData.ValidateFields();
-        RegisterLuaFunctions();
-    }
-
-    private void OnDisable()
-    {
-        UnregisterLuaFunctions();
     }
 
     /// <summary>

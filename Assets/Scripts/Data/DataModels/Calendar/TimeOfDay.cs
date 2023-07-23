@@ -10,6 +10,13 @@ public struct TimeOfDay
     public int Minutes;
     public int Seconds;
 
+    public TimeOfDay(int hours, int minutes, int seconds)
+    {
+        Hours = hours;
+        Minutes = minutes;
+        Seconds = seconds;
+    }
+
     public enum Phase
     {
         Morning, Evening

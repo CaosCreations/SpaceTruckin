@@ -2,6 +2,7 @@
 using Language.Lua;
 using PixelCrushers.DialogueSystem;
 using System;
+using System.Linq;
 using UnityEngine;
 
 public class DialogueDatabaseManager : MonoBehaviour
@@ -25,6 +26,20 @@ public class DialogueDatabaseManager : MonoBehaviour
     private void Start()
     {
         RegisterEvents();
+        var subscribers = FindObjectsOfType<MonoBehaviour>().OfType<ILuaFunctionRegistrar>();
+        foreach (var subscriber in subscribers)
+        {
+            subscriber.RegisterLuaFunctions();
+        }
+    }
+
+    private void OnDisable()
+    {
+        var subscribers = FindObjectsOfType<MonoBehaviour>().OfType<ILuaFunctionRegistrar>();
+        foreach (var subscriber in subscribers)
+        {
+            subscriber.UnregisterLuaFunctions();
+        }
     }
 
     private void RegisterEvents()
@@ -114,6 +129,17 @@ public class DialogueDatabaseManager : MonoBehaviour
 
         Debug.LogError($"Lua variable '{variableName}' does not exist");
         return string.Empty;
+    }
+
+    public static bool GetLuaVariableAsBool(string variableName)
+    {
+        if (DialogueUtils.VariableExists(variableName))
+        {
+            return DialogueLua.GetVariable(variableName).asBool;
+        }
+
+        Debug.LogError($"Lua variable '{variableName}' does not exist");
+        return false;
     }
 
     public static string GetActorFieldAsString(string actorName, string fieldName)

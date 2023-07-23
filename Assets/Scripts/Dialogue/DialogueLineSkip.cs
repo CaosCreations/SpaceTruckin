@@ -21,7 +21,7 @@ public class DialogueLineSkip : MonoBehaviour
 
     private void Update()
     {
-        if (!DialogueManager.IsConversationActive)
+        if (!DialogueManager.IsConversationActive || !dialogueUI.IsActive())
             return;
 
         if (IsSkipInput())

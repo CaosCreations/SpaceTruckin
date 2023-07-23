@@ -10,6 +10,13 @@ public struct Date : IComparable<Date>
     public int Month;
     public int Year;
 
+    public Date(int day, int month, int year)
+    {
+        Day = day;
+        Month = month; 
+        Year = year;
+    }
+
     public int CompareTo(Date otherDate)
     {
         int thisDateInDays = this.ToDays();

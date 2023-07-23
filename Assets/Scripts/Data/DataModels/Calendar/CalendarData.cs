@@ -6,18 +6,20 @@ using UnityEngine;
 public class CalendarData : ScriptableObject, IDataModel
 {
     [Header("Set in Editor")]
-    public TimeSpan DayStartTime = new(6, 0, 0); // 6am
-    public TimeSpan DayEndTime = new(26, 0, 0); // 2am the next day
-    public int RealTimeDayDurationInSeconds = 900; // 15 mins 
+    public TimeOfDay DayStartTimeOfDay = new(6, 0, 0);
+    public TimeOfDay DayEndTimeOfDay = new(26, 0, 0);
+    public TimeOfDay MorningStartTimeOfDay = new(6, 0, 0);
+    public TimeOfDay EveningStartTimeOfDay = new(18, 0, 0);
+    public TimeOfDay StationEntryTimeOfDay = new(18, 0, 0);
 
+    public int RealTimeDayDurationInSeconds = 900; // 15 mins 
     public int DaysInMonth = 28;
     public int MonthsInYear = 4;
 
-    [field: SerializeField]
-    public TimeOfDay StationEntryTimeOfDay { get; private set; }
-        
-    public TimeSpan EveningStartTime = new(18, 0, 0); // 6pm
-    public TimeSpan MorningStartTime = new(6, 0, 0);
+    public TimeSpan DayStartTime;
+    public TimeSpan DayEndTime;
+    public TimeSpan MorningStartTime;
+    public TimeSpan EveningStartTime;
 
     public Date GameEndDate;
 
@@ -31,6 +33,14 @@ public class CalendarData : ScriptableObject, IDataModel
 
     [Header("Data to update IN GAME")]
     public Date CurrentDate;
+
+    public void Init()
+    {
+        DayStartTime = DayStartTimeOfDay.ToTimeSpan();
+        DayEndTime = DayEndTimeOfDay.ToTimeSpan();
+        MorningStartTime = MorningStartTimeOfDay.ToTimeSpan();
+        EveningStartTime = EveningStartTimeOfDay.ToTimeSpan();
+    }
 
     private void OnEnable()
     {

@@ -2,6 +2,7 @@
 using PixelCrushers.DialogueSystem;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,6 +31,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private UniversalUI universalUI;
     #endregion
 
+    [SerializeField] private TransitionUI transitionUI;
+    
+    [SerializeField]
+    private List<CanvasAccessSettings> accessSettings = new();
+
     /// <summary>
     /// Keys that cannot be used for regular UI input until the override is lifted.
     /// e.g. Escape key when in a submenu. 
@@ -38,9 +44,6 @@ public class UIManager : MonoBehaviour
 
     private TextMeshPro interactionTextMesh;
     private static UICanvasType currentCanvasType;
-
-    [SerializeField]
-    private TransitionUI transitionUI;
 
     private static Type[] SuccessInputTypes => new[]
     {
@@ -82,6 +85,7 @@ public class UIManager : MonoBehaviour
         SingletonManager.EventService.Add<OnSceneLoadedEvent>(OnSceneLoadedHandler);
         SingletonManager.EventService.Add<OnSceneUnloadedEvent>(OnSceneUnloadedHandler);
         SingletonManager.EventService.Add<OnCutsceneStartedEvent>(OnCutsceneStartedHandler);
+        SingletonManager.EventService.Add<OnCutsceneFinishedEvent>(OnCutsceneFinishedHandler);
 
         DialogueManager.Instance.conversationStarted += OnConversationStartedHandler;
         DialogueManager.Instance.conversationEnded += OnConversationEndedHandler;
@@ -138,23 +142,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    [Obsolete("Replaced by interactable button image")]
-    private void SetInteractionTextMesh()
-    {
-        if (currentCanvasType != UICanvasType.None)
-        {
-            interactionTextMesh.gameObject.SetActive(true);
-            interactionTextMesh.SetText(GetInteractionString());
-
-            interactionTextMesh.transform.position =
-                PlayerManager.PlayerMovement.transform.position + new Vector3(0, 0.5f, 0);
-        }
-        else
-        {
-            interactionTextMesh.gameObject.SetActive(false);
-        }
-    }
-
     public static void ClearCanvases(bool unpausePlayer = true)
     {
         if (unpausePlayer)
@@ -186,6 +173,13 @@ public class UIManager : MonoBehaviour
     {
         ClearCanvases();
         PlayerManager.EnterPausedState();
+
+        if (!Instance.IsCanvasAccessible(canvas.CanvasType, out CanvasAccessSettings setting))
+        {
+            PopupManager.ShowPopup(bodyText: setting.Text);
+            return;
+        }
+
         canvas.SetActive(true);
 
         if (!viaShortcut)
@@ -253,6 +247,12 @@ public class UIManager : MonoBehaviour
         Instance.transitionUI.BeginTransition(transitionType, textContent);
     }
 
+    private bool IsCanvasAccessible(UICanvasType type, out CanvasAccessSettings setting)
+    {
+        setting = accessSettings.FirstOrDefault(s => s.CanvasType == type);
+        return setting == null || DialogueDatabaseManager.GetLuaVariableAsBool(setting.DialogueVariableName);
+    }
+
     #region Interaction
     public static void SetCanInteract(UICanvasType canvasType, int node = -1)
     {
@@ -272,37 +272,6 @@ public class UIManager : MonoBehaviour
             currentCanvasType = UICanvasType.None;
         }
         HangarNode = -1;
-    }
-
-    private static string GetInteractionString()
-    {
-        string interaction = $"Press {PlayerConstants.ActionKey} to ";
-        switch (currentCanvasType)
-        {
-            case UICanvasType.Bed:
-                interaction += "Sleep";
-                break;
-            case UICanvasType.Cassette:
-                interaction += "Play Music";
-                break;
-            case UICanvasType.Hangar:
-                interaction += "Manage Ship";
-                break;
-            case UICanvasType.NoticeBoard:
-                interaction += "Accept Missions";
-                break;
-            case UICanvasType.Terminal:
-                interaction += "Manage Company";
-                break;
-            case UICanvasType.Vending:
-                interaction += "Buy Snax";
-                break;
-            case UICanvasType.MainMenu:
-            default:
-                return string.Empty;
-        }
-
-        return interaction;
     }
     #endregion
 
@@ -376,6 +345,30 @@ public class UIManager : MonoBehaviour
         {
             Debug.Log("Dialogue cutscene started event call back fired. Closing dialogue UI...");
             DialogueManager.DialogueUI.Close();
+        }
+        Debug.Log("Pausing Dialogue System...");
+        DialogueManager.Instance.Pause();
+    }
+
+    private void OnCutsceneFinishedHandler(OnCutsceneFinishedEvent startedEvent)
+    {
+        var convoSettings = startedEvent.Cutscene.ConversationSettings;
+        if (convoSettings != null)
+        {
+            if (convoSettings.CloseDialogueUIOnStart)
+            {
+                Debug.Log("Dialogue cutscene finished event call back fired. Re-opening dialogue UI...");
+                DialogueManager.DialogueUI.Open();
+            }
+            Debug.Log("Unpausing Dialogue System...");
+            DialogueManager.Instance.Unpause();
+
+            if (convoSettings.ContinueOnEnd)
+            {
+                Debug.Log("Dialogue cutscene finished event call back fired. Continuing to next node...");
+                var dialogueUI = FindObjectOfType<AbstractDialogueUI>();
+                dialogueUI.OnContinueConversation();
+            }
         }
     }
 
