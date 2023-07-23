@@ -12,6 +12,7 @@ public class BedCanvasUI : UICanvasBase
 
     private void OnSleep()
     {
+        PlayerManager.EnterPausedState();
         UIManager.ClearCanvases(false);
         SingletonManager.EventService.Dispatch(new OnPlayerSleepEvent());
     }
