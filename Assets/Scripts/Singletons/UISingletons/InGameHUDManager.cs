@@ -24,7 +24,7 @@ public class InGameHUDManager : MonoBehaviour
 
     private static bool IsDateTimeUIActive()
     {
-        return SceneLoadingManager.IsLoadedSceneName(SceneType.MainStation) && CalendarManager.CurrentDate != new Date(1, 1, 1);
+        return SceneLoadingManager.IsSceneLoaded(SceneType.MainStation) && CalendarManager.CurrentDate != new Date(1, 1, 1);
     }
 
     private void Start()

@@ -91,7 +91,7 @@ public class SceneRepairsMinigamesManager : MonoBehaviour, IRepairsMinigamesMana
             return false;
 
         var minigameSceneName = SceneLoadingManager.GetSceneNameByType(minigame.Scene);
-        return SceneLoadingManager.IsLoadedSceneName(minigameSceneName);
+        return SceneLoadingManager.IsSceneLoaded(minigameSceneName);
     }
 
     private void OnSceneLoadedHandler(OnSceneLoadedEvent loadedEvent)

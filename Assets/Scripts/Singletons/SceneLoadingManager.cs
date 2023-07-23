@@ -220,15 +220,10 @@ public class SceneLoadingManager : MonoBehaviour
         return loadedScenes.Any(scene => scene.name == sceneName);
     }
 
-    public static bool IsLoadedSceneName(string sceneName)
-    {
-        return Instance.loadedSceneNames.Contains(sceneName);
-    }
-
-    public static bool IsLoadedSceneName(SceneType sceneType)
+    public static bool IsSceneLoaded(SceneType sceneType)
     {
         var sceneName = GetSceneNameByType(sceneType);
-        return Instance.loadedSceneNames.Contains(sceneName);
+        return IsSceneLoaded(sceneName);
     }
 
     private void OnEndOfCalendarTransitionHandler(OnUITransitionEndedEvent evt)
