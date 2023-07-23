@@ -34,8 +34,8 @@ public class PopupManager : MonoBehaviour
 
         Instance.okButton.AddOnClick(() =>
         {
-            onOk?.Invoke();
             Instance.HidePopup();
+            onOk?.Invoke();
         });
 
         // Some popups only have ok button 
@@ -44,8 +44,8 @@ public class PopupManager : MonoBehaviour
             Instance.cancelButton.gameObject.SetActive(true);
             Instance.cancelButton.AddOnClick(() =>
             {
-                onCancel();
                 Instance.HidePopup();
+                onCancel();
             });
         }
         Instance.SetButtonTexts(bodyText, okText, cancelText);
