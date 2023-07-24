@@ -294,4 +294,8 @@ namespace Events
     public class OnStationSetUpEvent : IEvent
     {
     }
+
+    public class OnMessageReadEvent : IEvent
+    {
+    }
 }
