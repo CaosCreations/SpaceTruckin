@@ -94,6 +94,7 @@ public class UniversalHangarNodeUI : UICanvasBase
             UIManager.SetCannotInteract();
         }
 
+        SceneRepairsMinigamesManager.Instance.StopMinigame();
         SingletonManager.EventService.Dispatch<OnHangarNodeTerminalClosedEvent>();
     }
 
