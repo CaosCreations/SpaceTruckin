@@ -1,6 +1,7 @@
 ﻿using Events;
 using PixelCrushers.DialogueSystem;
 using System;
+using System.Linq;
 using UnityEngine;
 
 public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegistrar
@@ -41,6 +42,8 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         get => Instance.calendarData.GameEndDate;
         set => Instance.calendarData.GameEndDate = value;
     }
+    public static Date[] TimeFreezeDates => Instance.calendarData.TimeFreezeDates;
+    public static bool IsTimeFrozenToday => TimeFreezeDates != null && TimeFreezeDates.Length > 0 && TimeFreezeDates.Any(d => d == CurrentDate);
     public static bool IsEndOfCalendar => CurrentDate >= GameEndDate;
     #endregion
 

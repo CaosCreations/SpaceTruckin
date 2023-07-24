@@ -41,7 +41,6 @@ public class StationSetupManager : MonoBehaviour
         PlayerManager.Instance.SetUpPlayer();
         TimelineManager.Instance.SetUp();
         ClockManager.SetCurrentTime(CalendarManager.StationEntryTimeOfDay.ToSeconds(), overrideTransition: true);
-        ClockManager.StopClock();
         SingletonManager.EventService.Dispatch<OnStationSetUpEvent>();
     }
 }
