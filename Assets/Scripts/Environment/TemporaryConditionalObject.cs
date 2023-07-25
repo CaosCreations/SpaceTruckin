@@ -13,7 +13,7 @@ public class TemporaryConditionalObject : MonoBehaviour
     private Condition condition;
 
     [SerializeField]
-    private Date[] activeDates;
+    private DateWithPhase[] activeDates;
 
     [SerializeField]
     private Message message;
@@ -24,7 +24,9 @@ public class TemporaryConditionalObject : MonoBehaviour
     private void Start()
     {
         SingletonManager.EventService.Add<OnEndOfDayEvent>(EndOfDayHandler);
+        SingletonManager.EventService.Add<OnEveningStartEvent>(EveningStartHandler);
         SingletonManager.EventService.Add<OnMessageReadEvent>(MessageReadHandler);
+        SingletonManager.EventService.Add<OnMissionCompletedEvent>(MissionCompletedHandler);
         SetActive();
     }
 
@@ -32,7 +34,7 @@ public class TemporaryConditionalObject : MonoBehaviour
     {
         return condition switch
         {
-            Condition.Date => activeDates.Any(d => CalendarManager.CurrentDate == d),
+            Condition.Date => activeDates.Any(d => d.Date == CalendarManager.CurrentDate && d.Phase == ClockManager.CurrentTimeOfDayPhase),
             Condition.Message => message.HasBeenRead,
             Condition.Mission => mission.HasBeenCompleted,
             _ => false,
@@ -49,7 +51,17 @@ public class TemporaryConditionalObject : MonoBehaviour
         SetActive();
     }
 
+    private void EveningStartHandler()
+    {
+        SetActive();
+    }
+
     private void MessageReadHandler()
+    {
+        SetActive();
+    }
+
+    private void MissionCompletedHandler()
     {
         SetActive();
     }

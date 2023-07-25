@@ -249,6 +249,10 @@ namespace Events
     {
     }
 
+    public class OnMissionCompletedEvent : IEvent
+    {
+    }
+
     public class OnBatteryChargedEvent : IEvent
     {
         public StringBoolKeyValueEventArgs Args { get; }
