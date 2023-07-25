@@ -116,6 +116,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         ArchivedMissionsManager.AddToArchive(scheduled.Mission.MissionToArchive);
 
         ScheduledMissions.Remove(scheduled);
+        SingletonManager.EventService.Dispatch<OnMissionCompletedEvent>();
     }
 
     private static bool DetermineIfMissionWasSuccessful(ScheduledMission scheduled)

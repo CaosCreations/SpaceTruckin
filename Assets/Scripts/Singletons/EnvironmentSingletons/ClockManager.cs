@@ -5,6 +5,7 @@ using UnityEngine;
 public class ClockManager : MonoBehaviour
 {
     public static TimeSpan CurrentTime { get; private set; }
+    public static TimeOfDay.Phase CurrentTimeOfDayPhase => isEvening ? TimeOfDay.Phase.Evening : TimeOfDay.Phase.Morning;
 
     public static int TickSpeedMultiplier { get; private set; }
     private static int currentTimeInSeconds;
