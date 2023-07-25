@@ -1,4 +1,3 @@
-using Events;
 using System;
 using UnityEngine;
 
@@ -17,12 +16,10 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController characterController;
 
     public float CurrentSpeed { get; private set; }
+    private bool CanRun => !BatteryInteractable.IsPlayerHoldingABattery;
 
     [SerializeField] private float maximumSpeed;
     [SerializeField] private float acceleration;
-
-    // Player movement relates to camera
-    public Transform CameraTransform;
 
     public Vector3 PlayerFacingDirection;
 
@@ -30,13 +27,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!TryGetComponent(out characterController))
         {
-            throw new NullReferenceException("Character controller component not found in Player Movement script.");
-        }
-
-        // Initialize the player's Camera
-        if (Camera.main != null)
-        {
-            CameraTransform = Camera.main.transform;
+            throw new MissingReferenceException("Character controller component not found in Player Movement script.");
         }
     }
 
@@ -119,7 +110,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void DetermineSpeed()
     {
-        if (Input.GetKey(PlayerConstants.SprintKey))
+        if (CanRun && Input.GetKey(PlayerConstants.SprintKey))
         {
             animator.SetBool(AnimationConstants.AnimationRunParameter, true);
             CurrentSpeed = PlayerConstants.RunSpeed;
@@ -187,7 +178,7 @@ public class PlayerMovement : MonoBehaviour
         LayerMask layerMask = LayerMask.GetMask(layerName);
         return Physics.Raycast(transform.position, PlayerFacingDirection, out hit, PlayerConstants.RaycastDistance, layerMask);
     }
-    
+
     public bool IsFirstRaycastHit(GameObject obj)
     {
         var layerName = LayerMask.LayerToName(obj.layer);
