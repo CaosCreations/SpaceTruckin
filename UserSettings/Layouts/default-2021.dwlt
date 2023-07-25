@@ -14,15 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PixelRect:
     serializedVersion: 2
-    x: 1505
-    y: 651
-    width: 320
-    height: 201
+    x: -1238
+    y: 219
+    width: 1085
+    height: 718
   m_ShowMode: 0
-  m_Title: Scene Switcher
+  m_Title: Game
   m_RootView: {fileID: 4}
-  m_MinSize: {x: 320, y: 201}
-  m_MaxSize: {x: 320, y: 201}
+  m_MinSize: {x: 200, y: 221}
+  m_MaxSize: {x: 4000, y: 4021}
   m_Maximized: 0
 --- !u!114 &2
 MonoBehaviour:
@@ -40,12 +40,12 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 43
-    width: 1920
-    height: 989
+    width: 1366
+    height: 685
   m_ShowMode: 4
-  m_Title: Hierarchy
-  m_RootView: {fileID: 5}
-  m_MinSize: {x: 875, y: 371}
+  m_Title: Console
+  m_RootView: {fileID: 9}
+  m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
   m_Maximized: 1
 --- !u!114 &3
@@ -58,20 +58,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: SceneSwitcher
+  m_Name: GameView
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 320
-    height: 201
-  m_MinSize: {x: 320, y: 180}
-  m_MaxSize: {x: 320, y: 180}
-  m_ActualView: {fileID: 15}
+    width: 1085
+    height: 718
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_ActualView: {fileID: 19}
   m_Panes:
-  - {fileID: 15}
+  - {fileID: 19}
   m_Selected: 0
   m_LastSelected: 0
 --- !u!114 &4
@@ -92,13 +92,117 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 320
-    height: 201
-  m_MinSize: {x: 320, y: 201}
-  m_MaxSize: {x: 320, y: 201}
+    width: 1085
+    height: 718
+  m_MinSize: {x: 200, y: 221}
+  m_MaxSize: {x: 4000, y: 4021}
   vertical: 0
-  controlID: 93
+  controlID: 15
 --- !u!114 &5
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12010, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Children:
+  - {fileID: 12}
+  - {fileID: 6}
+  m_Position:
+    serializedVersion: 2
+    x: 0
+    y: 30
+    width: 1366
+    height: 635
+  m_MinSize: {x: 300, y: 200}
+  m_MaxSize: {x: 24288, y: 16192}
+  vertical: 0
+  controlID: 46
+--- !u!114 &6
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Children: []
+  m_Position:
+    serializedVersion: 2
+    x: 1043
+    y: 0
+    width: 323
+    height: 635
+  m_MinSize: {x: 276, y: 71}
+  m_MaxSize: {x: 4001, y: 4021}
+  m_ActualView: {fileID: 16}
+  m_Panes:
+  - {fileID: 16}
+  m_Selected: 0
+  m_LastSelected: 0
+--- !u!114 &7
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Children: []
+  m_Position:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 258
+    height: 376
+  m_MinSize: {x: 201, y: 221}
+  m_MaxSize: {x: 4001, y: 4021}
+  m_ActualView: {fileID: 17}
+  m_Panes:
+  - {fileID: 17}
+  m_Selected: 0
+  m_LastSelected: 0
+--- !u!114 &8
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: ConsoleWindow
+  m_EditorClassIdentifier: 
+  m_Children: []
+  m_Position:
+    serializedVersion: 2
+    x: 0
+    y: 376
+    width: 1043
+    height: 259
+  m_MinSize: {x: 101, y: 121}
+  m_MaxSize: {x: 4001, y: 4021}
+  m_ActualView: {fileID: 20}
+  m_Panes:
+  - {fileID: 15}
+  - {fileID: 20}
+  m_Selected: 1
+  m_LastSelected: 0
+--- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -111,22 +215,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Children:
-  - {fileID: 6}
-  - {fileID: 8}
-  - {fileID: 7}
+  - {fileID: 10}
+  - {fileID: 5}
+  - {fileID: 11}
   m_Position:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1920
-    height: 989
+    width: 1366
+    height: 685
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
   m_UseTopView: 1
   m_TopViewHeight: 30
   m_UseBottomView: 1
   m_BottomViewHeight: 20
---- !u!114 &6
+--- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,12 +247,12 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1920
+    width: 1366
     height: 30
   m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 0, y: 0}
   m_LastLoadedLayoutName: 
---- !u!114 &7
+--- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -164,112 +268,11 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
     x: 0
-    y: 969
-    width: 1920
+    y: 665
+    width: 1366
     height: 20
   m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 0, y: 0}
---- !u!114 &8
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 1
-  m_Script: {fileID: 12010, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Children:
-  - {fileID: 9}
-  - {fileID: 14}
-  m_Position:
-    serializedVersion: 2
-    x: 0
-    y: 30
-    width: 1920
-    height: 939
-  m_MinSize: {x: 300, y: 200}
-  m_MaxSize: {x: 24288, y: 16192}
-  vertical: 0
-  controlID: 82
---- !u!114 &9
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 12010, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Children:
-  - {fileID: 10}
-  - {fileID: 13}
-  m_Position:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1410
-    height: 939
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 16192, y: 16192}
-  vertical: 1
-  controlID: 83
---- !u!114 &10
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 1
-  m_Script: {fileID: 12010, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Children:
-  - {fileID: 11}
-  - {fileID: 12}
-  m_Position:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1410
-    height: 632
-  m_MinSize: {x: 200, y: 100}
-  m_MaxSize: {x: 16192, y: 8096}
-  vertical: 0
-  controlID: 84
---- !u!114 &11
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 1
-  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Children: []
-  m_Position:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 363
-    height: 632
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_ActualView: {fileID: 19}
-  m_Panes:
-  - {fileID: 19}
-  m_Selected: 0
-  m_LastSelected: 0
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -279,26 +282,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 1
-  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: DialogueEditorWindow
+  m_Script: {fileID: 12010, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
   m_EditorClassIdentifier: 
-  m_Children: []
+  m_Children:
+  - {fileID: 13}
+  - {fileID: 8}
   m_Position:
     serializedVersion: 2
-    x: 363
+    x: 0
     y: 0
-    width: 1047
-    height: 632
-  m_MinSize: {x: 722, y: 261}
-  m_MaxSize: {x: 4002, y: 4021}
-  m_ActualView: {fileID: 20}
-  m_Panes:
-  - {fileID: 18}
-  - {fileID: 20}
-  - {fileID: 17}
-  - {fileID: 16}
-  m_Selected: 1
-  m_LastSelected: 0
+    width: 1043
+    height: 635
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 16192, y: 16192}
+  vertical: 1
+  controlID: 47
 --- !u!114 &13
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -308,24 +307,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 1
-  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: ProjectBrowser
+  m_Script: {fileID: 12010, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
   m_EditorClassIdentifier: 
-  m_Children: []
+  m_Children:
+  - {fileID: 7}
+  - {fileID: 14}
   m_Position:
     serializedVersion: 2
     x: 0
-    y: 632
-    width: 1410
-    height: 307
-  m_MinSize: {x: 231, y: 271}
-  m_MaxSize: {x: 10001, y: 10021}
-  m_ActualView: {fileID: 21}
-  m_Panes:
-  - {fileID: 21}
-  - {fileID: 22}
-  m_Selected: 0
-  m_LastSelected: 1
+    y: 0
+    width: 1043
+    height: 376
+  m_MinSize: {x: 200, y: 100}
+  m_MaxSize: {x: 16192, y: 8096}
+  vertical: 0
+  controlID: 48
 --- !u!114 &14
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -336,20 +333,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
+  m_Name: SceneView
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 1410
+    x: 258
     y: 0
-    width: 510
-    height: 939
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_ActualView: {fileID: 23}
+    width: 785
+    height: 376
+  m_MinSize: {x: 202, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
+  m_ActualView: {fileID: 18}
   m_Panes:
-  - {fileID: 23}
+  - {fileID: 18}
   m_Selected: 0
   m_LastSelected: 0
 --- !u!114 &15
@@ -360,26 +357,139 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3b5d8895f899b144ba6ad52951b1e94, type: 3}
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12014, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MinSize: {x: 320, y: 180}
-  m_MaxSize: {x: 320, y: 180}
+  m_MinSize: {x: 230, y: 250}
+  m_MaxSize: {x: 10000, y: 10000}
   m_TitleContent:
-    m_Text: Scene Switcher
-    m_Image: {fileID: 0}
+    m_Text: Project
+    m_Image: {fileID: -5467254957812901981, guid: 0000000000000000d000000000000000,
+      type: 0}
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 1505
-    y: 651
-    width: 320
-    height: 180
+    x: 0
+    y: 449
+    width: 1042
+    height: 238
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
     m_SaveData: []
+  m_SearchFilter:
+    m_NameFilter: 
+    m_ClassNames: []
+    m_AssetLabels: []
+    m_AssetBundleNames: []
+    m_VersionControlStates: []
+    m_SoftLockControlStates: []
+    m_ReferencingInstanceIDs: 
+    m_SceneHandles: 
+    m_ShowAllHits: 0
+    m_SkipHidden: 0
+    m_SearchArea: 1
+    m_Folders:
+    - Assets/ImportedAssets/StationAssets/Ships/Vesta/Models
+    m_Globs: []
+    m_OriginalText: 
+  m_ViewMode: 1
+  m_StartGridSize: 64
+  m_LastFolders:
+  - Assets/ImportedAssets/StationAssets/Ships/Vesta/Models
+  m_LastFoldersGridSize: -1
+  m_LastProjectPath: C:\Users\ACER\Documents\GitHub\SpaceTruckin
+  m_LockTracker:
+    m_IsLocked: 0
+  m_FolderTreeState:
+    scrollPos: {x: 0, y: 1170}
+    m_SelectedIDs: 6cea0000
+    m_LastClickedID: 60012
+    m_ExpandedIDs: 0000000072e5000074e5000076e5000078e500007ae500007ce500007ee5000080e5000082e5000084e5000086e5000088e500008ae500008ce500008ee5000090e5000092e5000094e5000096e5000098e500009ae500009ce500009ee50000a0e50000a2e50000a4e50000a6e50000a8e50000aae50000ace50000aee50000b0e50000b2e50000b4e50000b6e50000b8e50000bae50000bce50000bee50000c0e50000c2e50000c4e50000c6e5000024e600007ce6000006ea000000ca9a3b
+    m_RenameOverlay:
+      m_UserAcceptedRename: 0
+      m_Name: 
+      m_OriginalName: 
+      m_EditFieldRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      m_UserData: 0
+      m_IsWaitingForDelay: 0
+      m_IsRenaming: 0
+      m_OriginalEventType: 11
+      m_IsRenamingFilename: 1
+      m_ClientGUIView: {fileID: 0}
+    m_SearchString: 
+    m_CreateAssetUtility:
+      m_EndAction: {fileID: 0}
+      m_InstanceID: 0
+      m_Path: 
+      m_Icon: {fileID: 0}
+      m_ResourceFile: 
+  m_AssetTreeState:
+    scrollPos: {x: 0, y: 0}
+    m_SelectedIDs: 
+    m_LastClickedID: 0
+    m_ExpandedIDs: 0000000072e5000074e5000076e5000078e500007ae500007ce500007ee5000080e5000082e5000084e5000086e5000088e500008ae500008ce500008ee5000090e5000092e5000094e5000096e5000098e500009ae500009ce500009ee50000a0e50000a2e50000a4e50000a6e50000a8e50000aae50000ace50000aee50000b0e50000b2e50000b4e50000b6e50000b8e50000bae50000bce50000bee50000c0e50000c2e50000c4e50000c6e50000
+    m_RenameOverlay:
+      m_UserAcceptedRename: 0
+      m_Name: 
+      m_OriginalName: 
+      m_EditFieldRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      m_UserData: 0
+      m_IsWaitingForDelay: 0
+      m_IsRenaming: 0
+      m_OriginalEventType: 11
+      m_IsRenamingFilename: 1
+      m_ClientGUIView: {fileID: 0}
+    m_SearchString: 
+    m_CreateAssetUtility:
+      m_EndAction: {fileID: 0}
+      m_InstanceID: 0
+      m_Path: 
+      m_Icon: {fileID: 0}
+      m_ResourceFile: 
+  m_ListAreaState:
+    m_SelectedInstanceIDs: 
+    m_LastClickedInstanceID: 0
+    m_HadKeyboardFocusLastEvent: 1
+    m_ExpandedInstanceIDs: c6230000
+    m_RenameOverlay:
+      m_UserAcceptedRename: 0
+      m_Name: 
+      m_OriginalName: 
+      m_EditFieldRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      m_UserData: 0
+      m_IsWaitingForDelay: 0
+      m_IsRenaming: 0
+      m_OriginalEventType: 11
+      m_IsRenamingFilename: 1
+      m_ClientGUIView: {fileID: 8}
+    m_CreateAssetUtility:
+      m_EndAction: {fileID: 0}
+      m_InstanceID: 0
+      m_Path: 
+      m_Icon: {fileID: 0}
+      m_ResourceFile: 
+    m_NewAssetIndexInList: -1
+    m_ScrollPosition: {x: 0, y: 0}
+    m_GridSize: 64
+  m_SkipHiddenPackages: 0
+  m_DirectoriesAreaWidth: 207
 --- !u!114 &16
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -388,11 +498,472 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
-  m_EditorHideFlags: 0
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12019, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_TitleContent:
+    m_Text: Inspector
+    m_Image: {fileID: -2667387946076563598, guid: 0000000000000000d000000000000000,
+      type: 0}
+    m_Tooltip: 
+  m_Pos:
+    serializedVersion: 2
+    x: 1043
+    y: 73
+    width: 322
+    height: 614
+  m_ViewDataDictionary: {fileID: 0}
+  m_OverlayCanvas:
+    m_LastAppliedPresetName: Default
+    m_SaveData: []
+  m_ObjectsLockedBeforeSerialization: []
+  m_InstanceIDsLockedBeforeSerialization: 
+  m_PreviewResizer:
+    m_CachedPref: 160
+    m_ControlHash: -371814159
+    m_PrefName: Preview_InspectorPreview
+  m_LastInspectedObjectInstanceID: -1
+  m_LastVerticalScrollValue: 0
+  m_GlobalObjectId: 
+  m_InspectorMode: 0
+  m_LockTracker:
+    m_IsLocked: 0
+  m_PreviewWindow: {fileID: 0}
+--- !u!114 &17
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12061, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_TitleContent:
+    m_Text: Hierarchy
+    m_Image: {fileID: 7966133145522015247, guid: 0000000000000000d000000000000000,
+      type: 0}
+    m_Tooltip: 
+  m_Pos:
+    serializedVersion: 2
+    x: 0
+    y: 73
+    width: 257
+    height: 355
+  m_ViewDataDictionary: {fileID: 0}
+  m_OverlayCanvas:
+    m_LastAppliedPresetName: Default
+    m_SaveData: []
+  m_SceneHierarchy:
+    m_TreeViewState:
+      scrollPos: {x: 0, y: 2242}
+      m_SelectedIDs: a26bffff
+      m_LastClickedID: -37982
+      m_ExpandedIDs: 5eaeffff5ee0ffff68e0ffff5cf4ffffe6fafffff4ffffff7c6a0000
+      m_RenameOverlay:
+        m_UserAcceptedRename: 0
+        m_Name: 
+        m_OriginalName: 
+        m_EditFieldRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        m_UserData: 0
+        m_IsWaitingForDelay: 0
+        m_IsRenaming: 0
+        m_OriginalEventType: 11
+        m_IsRenamingFilename: 0
+        m_ClientGUIView: {fileID: 0}
+      m_SearchString: 
+    m_ExpandedScenes: []
+    m_CurrenRootInstanceID: 0
+    m_LockTracker:
+      m_IsLocked: 0
+    m_CurrentSortingName: TransformSorting
+  m_WindowGUID: 4c969a2b90040154d917609493e03593
+--- !u!114 &18
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12013, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_TitleContent:
+    m_Text: Scene
+    m_Image: {fileID: 2593428753322112591, guid: 0000000000000000d000000000000000,
+      type: 0}
+    m_Tooltip: 
+  m_Pos:
+    serializedVersion: 2
+    x: 258
+    y: 73
+    width: 783
+    height: 355
+  m_ViewDataDictionary: {fileID: 0}
+  m_OverlayCanvas:
+    m_LastAppliedPresetName: Default
+    m_SaveData:
+    - dockPosition: 0
+      containerId: overlay-toolbar__top
+      floating: 0
+      collapsed: 0
+      displayed: 1
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: -101, y: -26}
+      snapCorner: 3
+      id: Tool Settings
+      index: 0
+      layout: 1
+    - dockPosition: 0
+      containerId: overlay-toolbar__top
+      floating: 0
+      collapsed: 0
+      displayed: 1
+      snapOffset: {x: -141, y: 149}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 1
+      id: unity-grid-and-snap-toolbar
+      index: 1
+      layout: 1
+    - dockPosition: 1
+      containerId: overlay-toolbar__top
+      floating: 0
+      collapsed: 0
+      displayed: 1
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      id: unity-scene-view-toolbar
+      index: 0
+      layout: 1
+    - dockPosition: 1
+      containerId: overlay-toolbar__top
+      floating: 0
+      collapsed: 0
+      displayed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 1
+      id: unity-search-toolbar
+      index: 1
+      layout: 1
+    - dockPosition: 0
+      containerId: overlay-container--left
+      floating: 0
+      collapsed: 0
+      displayed: 1
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      id: unity-transform-toolbar
+      index: 0
+      layout: 2
+    - dockPosition: 0
+      containerId: overlay-container--left
+      floating: 0
+      collapsed: 0
+      displayed: 1
+      snapOffset: {x: 0, y: 197}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      id: unity-component-tools
+      index: 1
+      layout: 2
+    - dockPosition: 0
+      containerId: overlay-container--right
+      floating: 0
+      collapsed: 0
+      displayed: 1
+      snapOffset: {x: 67.5, y: 86}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      id: Orientation
+      index: 0
+      layout: 4
+    - dockPosition: 1
+      containerId: overlay-container--right
+      floating: 0
+      collapsed: 0
+      displayed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      id: Scene View/Light Settings
+      index: 0
+      layout: 4
+    - dockPosition: 1
+      containerId: overlay-container--right
+      floating: 0
+      collapsed: 0
+      displayed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      id: Scene View/Camera
+      index: 1
+      layout: 4
+    - dockPosition: 1
+      containerId: overlay-container--right
+      floating: 0
+      collapsed: 0
+      displayed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      id: Scene View/Cloth Constraints
+      index: 2
+      layout: 4
+    - dockPosition: 1
+      containerId: overlay-container--right
+      floating: 0
+      collapsed: 0
+      displayed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      id: Scene View/Cloth Collisions
+      index: 3
+      layout: 4
+    - dockPosition: 1
+      containerId: overlay-container--right
+      floating: 0
+      collapsed: 0
+      displayed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      id: Scene View/Navmesh Display
+      index: 4
+      layout: 4
+    - dockPosition: 1
+      containerId: overlay-container--right
+      floating: 0
+      collapsed: 0
+      displayed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      id: Scene View/Agent Display
+      index: 5
+      layout: 4
+    - dockPosition: 1
+      containerId: overlay-container--right
+      floating: 0
+      collapsed: 0
+      displayed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      id: Scene View/Obstacle Display
+      index: 6
+      layout: 4
+    - dockPosition: 1
+      containerId: overlay-container--right
+      floating: 0
+      collapsed: 0
+      displayed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      id: Scene View/Occlusion Culling
+      index: 7
+      layout: 4
+    - dockPosition: 1
+      containerId: overlay-container--right
+      floating: 0
+      collapsed: 0
+      displayed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      id: Scene View/Physics Debugger
+      index: 8
+      layout: 4
+    - dockPosition: 1
+      containerId: overlay-container--right
+      floating: 0
+      collapsed: 0
+      displayed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      id: Scene View/Scene Visibility
+      index: 9
+      layout: 4
+    - dockPosition: 1
+      containerId: overlay-container--right
+      floating: 0
+      collapsed: 0
+      displayed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      id: Scene View/Particles
+      index: 10
+      layout: 4
+    - dockPosition: 1
+      containerId: overlay-container--right
+      floating: 0
+      collapsed: 0
+      displayed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      id: Scene View/Tilemap
+      index: 11
+      layout: 4
+    - dockPosition: 1
+      containerId: overlay-container--right
+      floating: 0
+      collapsed: 0
+      displayed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      id: Scene View/Tilemap Palette Helper
+      index: 12
+      layout: 4
+    - dockPosition: 1
+      containerId: overlay-toolbar__top
+      floating: 0
+      collapsed: 0
+      displayed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      id: Scene View/Open Tile Palette
+      index: 2
+      layout: 4
+    - dockPosition: 1
+      containerId: overlay-toolbar__top
+      floating: 0
+      collapsed: 0
+      displayed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      id: Scene View/Tilemap Focus
+      index: 3
+      layout: 4
+  m_WindowGUID: cc27987af1a868c49b0894db9c0f5429
+  m_Gizmos: 1
+  m_OverrideSceneCullingMask: 6917529027641081856
+  m_SceneIsLit: 1
+  m_SceneLighting: 1
+  m_2DMode: 0
+  m_isRotationLocked: 0
+  m_PlayAudio: 0
+  m_AudioPlay: 0
+  m_Position:
+    m_Target: {x: 197.99495, y: 378.1284, z: -224.1843}
+    speed: 2
+    m_Value: {x: 197.99495, y: 378.1284, z: -224.1843}
+  m_RenderMode: 0
+  m_CameraMode:
+    drawMode: 0
+    name: Shaded
+    section: Shading Mode
+  m_ValidateTrueMetals: 0
+  m_DoValidateTrueMetals: 0
+  m_ExposureSliderValue: 0
+  m_SceneViewState:
+    m_AlwaysRefresh: 0
+    showFog: 1
+    showSkybox: 1
+    showFlares: 1
+    showImageEffects: 1
+    showParticleSystems: 1
+    showVisualEffectGraphs: 1
+    m_FxEnabled: 0
+  m_Grid:
+    xGrid:
+      m_Fade:
+        m_Target: 0
+        speed: 2
+        m_Value: 0
+      m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.4}
+      m_Pivot: {x: 0, y: 0, z: 0}
+      m_Size: {x: 0, y: 0}
+    yGrid:
+      m_Fade:
+        m_Target: 1
+        speed: 2
+        m_Value: 1
+      m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.4}
+      m_Pivot: {x: 0, y: 0, z: 0}
+      m_Size: {x: 1, y: 1}
+    zGrid:
+      m_Fade:
+        m_Target: 0
+        speed: 2
+        m_Value: 0
+      m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.4}
+      m_Pivot: {x: 0, y: 0, z: 0}
+      m_Size: {x: 0, y: 0}
+    m_ShowGrid: 1
+    m_GridAxis: 1
+    m_gridOpacity: 0.5
+  m_Rotation:
+    m_Target: {x: 0.11271164, y: -0.20707116, z: 0.024023639, w: 0.97151446}
+    speed: 2
+    m_Value: {x: 0.11271165, y: -0.20707119, z: 0.024023643, w: 0.9715146}
+  m_Size:
+    m_Target: 12.935183
+    speed: 2
+    m_Value: 13.544694
+  m_Ortho:
+    m_Target: 0
+    speed: 2
+    m_Value: 0
+  m_CameraSettings:
+    m_Speed: 1
+    m_SpeedNormalized: 0.5
+    m_SpeedMin: 0.001
+    m_SpeedMax: 2
+    m_EasingEnabled: 1
+    m_EasingDuration: 0.4
+    m_AccelerationEnabled: 1
+    m_FieldOfViewHorizontalOrVertical: 60
+    m_NearClip: 0.03
+    m_FarClip: 10000
+    m_DynamicClip: 1
+    m_OcclusionCulling: 0
+  m_LastSceneViewRotation: {x: 0, y: 0, z: 0, w: 0}
+  m_LastSceneViewOrtho: 0
+  m_ReplacementShader: {fileID: 0}
+  m_ReplacementString: 
+  m_SceneVisActive: 1
+  m_LastLockedObject: {fileID: 0}
+  m_ViewIsLockedToObject: 0
+--- !u!114 &19
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
   m_Script: {fileID: 12015, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MinSize: {x: 100, y: 100}
+  m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 4000, y: 4000}
   m_TitleContent:
     m_Text: Game
@@ -401,10 +972,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 363
-    y: 73
-    width: 1045
-    height: 611
+    x: -1238
+    y: 219
+    width: 1085
+    height: 697
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -439,7 +1010,7 @@ MonoBehaviour:
     m_VAllowExceedBaseRangeMin: 1
     m_VAllowExceedBaseRangeMax: 1
     m_ScaleWithWindow: 0
-    m_HSlider: 0
+    m_HSlider: 1
     m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
     m_EnableMouseInput: 1
@@ -451,1583 +1022,29 @@ MonoBehaviour:
       serializedVersion: 2
       x: 0
       y: 21
-      width: 1045
-      height: 590
-    m_Scale: {x: 0.5442708, y: 0.5442708}
-    m_Translation: {x: 522.5, y: 295}
+      width: 1085
+      height: 676
+    m_Scale: {x: 0.5651042, y: 0.5651042}
+    m_Translation: {x: 542.49994, y: 338}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -960.00006
-      y: -542.0096
-      width: 1920.0001
-      height: 1084.0192
+      x: -959.9999
+      y: -598.1198
+      width: 1919.9999
+      height: 1196.2396
     m_MinimalGUI: 1
-  m_defaultScale: 0.5442708
-  m_LastWindowPixelSize: {x: 1045, y: 611}
+  m_defaultScale: 0.5651042
+  m_LastWindowPixelSize: {x: 1085, y: 697}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 01000000000000000000
   m_XRRenderMode: 0
   m_RenderTexture: {fileID: 0}
---- !u!114 &17
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 12914, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MinSize: {x: 100, y: 100}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_TitleContent:
-    m_Text: Animator
-    m_Image: {fileID: -1673928668082335149, guid: 0000000000000000d000000000000000,
-      type: 0}
-    m_Tooltip: 
-  m_Pos:
-    serializedVersion: 2
-    x: -869
-    y: 241
-    width: 675
-    height: 325
-  m_ViewDataDictionary: {fileID: 0}
-  m_OverlayCanvas:
-    m_LastAppliedPresetName: Default
-    m_SaveData: []
-  m_ViewTransforms:
-    m_KeySerializationHelper:
-    - {fileID: -6383047444758151144, guid: 6043ef39b209ecf4ca2d33bf36f1f13c, type: 2}
-    m_ValueSerializationHelper:
-    - e00: 1
-      e01: 0
-      e02: 0
-      e03: 25
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 87
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-  m_PreviewAnimator: {fileID: 0}
-  m_AnimatorController: {fileID: 9100000, guid: 6043ef39b209ecf4ca2d33bf36f1f13c,
-    type: 2}
-  m_BreadCrumbs:
-  - m_Target: {fileID: -6383047444758151144, guid: 6043ef39b209ecf4ca2d33bf36f1f13c,
-      type: 2}
-    m_ScrollPosition: {x: 0, y: 0}
-  stateMachineGraph: {fileID: 0}
-  stateMachineGraphGUI: {fileID: 0}
-  blendTreeGraph: {fileID: 0}
-  blendTreeGraphGUI: {fileID: 0}
-  m_AutoLiveLink: 1
-  m_MiniTool: 0
-  m_LockTracker:
-    m_IsLocked: 0
-  m_CurrentEditor: 0
-  m_LayerEditor:
-    m_SelectedLayerIndex: 0
---- !u!114 &18
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 1
-  m_Script: {fileID: 12013, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_TitleContent:
-    m_Text: Scene
-    m_Image: {fileID: 2593428753322112591, guid: 0000000000000000d000000000000000,
-      type: 0}
-    m_Tooltip: 
-  m_Pos:
-    serializedVersion: 2
-    x: 363
-    y: 73
-    width: 1045
-    height: 611
-  m_ViewDataDictionary: {fileID: 0}
-  m_OverlayCanvas:
-    m_LastAppliedPresetName: Default
-    m_SaveData:
-    - dockPosition: 0
-      containerId: overlay-toolbar__top
-      floating: 0
-      collapsed: 0
-      displayed: 1
-      snapOffset: {x: -101, y: -26}
-      snapOffsetDelta: {x: 0, y: 0}
-      snapCorner: 3
-      id: Tool Settings
-      index: 0
-      layout: 1
-    - dockPosition: 0
-      containerId: overlay-toolbar__top
-      floating: 0
-      collapsed: 0
-      displayed: 1
-      snapOffset: {x: -141, y: 25}
-      snapOffsetDelta: {x: 0, y: 0}
-      snapCorner: 1
-      id: unity-grid-and-snap-toolbar
-      index: 1
-      layout: 1
-    - dockPosition: 1
-      containerId: overlay-toolbar__top
-      floating: 0
-      collapsed: 0
-      displayed: 1
-      snapOffset: {x: 0, y: 25}
-      snapOffsetDelta: {x: 0, y: 0}
-      snapCorner: 0
-      id: unity-scene-view-toolbar
-      index: 0
-      layout: 1
-    - dockPosition: 1
-      containerId: overlay-toolbar__top
-      floating: 0
-      collapsed: 0
-      displayed: 0
-      snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 25}
-      snapCorner: 1
-      id: unity-search-toolbar
-      index: 1
-      layout: 1
-    - dockPosition: 0
-      containerId: overlay-container--left
-      floating: 0
-      collapsed: 0
-      displayed: 1
-      snapOffset: {x: 0, y: 25}
-      snapOffsetDelta: {x: 0, y: 0}
-      snapCorner: 0
-      id: unity-transform-toolbar
-      index: 0
-      layout: 2
-    - dockPosition: 0
-      containerId: overlay-container--left
-      floating: 0
-      collapsed: 0
-      displayed: 1
-      snapOffset: {x: 0, y: 197}
-      snapOffsetDelta: {x: 0, y: 0}
-      snapCorner: 0
-      id: unity-component-tools
-      index: 1
-      layout: 2
-    - dockPosition: 0
-      containerId: overlay-container--right
-      floating: 0
-      collapsed: 0
-      displayed: 1
-      snapOffset: {x: -111, y: 26}
-      snapOffsetDelta: {x: 0, y: 0}
-      snapCorner: 1
-      id: Orientation
-      index: 0
-      layout: 4
-    - dockPosition: 1
-      containerId: overlay-container--right
-      floating: 0
-      collapsed: 0
-      displayed: 0
-      snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 25}
-      snapCorner: 0
-      id: Scene View/Light Settings
-      index: 0
-      layout: 4
-    - dockPosition: 1
-      containerId: overlay-container--right
-      floating: 0
-      collapsed: 0
-      displayed: 0
-      snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 25}
-      snapCorner: 0
-      id: Scene View/Camera
-      index: 1
-      layout: 4
-    - dockPosition: 1
-      containerId: overlay-container--right
-      floating: 0
-      collapsed: 0
-      displayed: 0
-      snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 25}
-      snapCorner: 0
-      id: Scene View/Cloth Constraints
-      index: 2
-      layout: 4
-    - dockPosition: 1
-      containerId: overlay-container--right
-      floating: 0
-      collapsed: 0
-      displayed: 0
-      snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 25}
-      snapCorner: 0
-      id: Scene View/Cloth Collisions
-      index: 3
-      layout: 4
-    - dockPosition: 1
-      containerId: overlay-container--right
-      floating: 0
-      collapsed: 0
-      displayed: 0
-      snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 25}
-      snapCorner: 0
-      id: Scene View/Navmesh Display
-      index: 4
-      layout: 4
-    - dockPosition: 1
-      containerId: overlay-container--right
-      floating: 0
-      collapsed: 0
-      displayed: 0
-      snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 25}
-      snapCorner: 0
-      id: Scene View/Agent Display
-      index: 5
-      layout: 4
-    - dockPosition: 1
-      containerId: overlay-container--right
-      floating: 0
-      collapsed: 0
-      displayed: 0
-      snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 25}
-      snapCorner: 0
-      id: Scene View/Obstacle Display
-      index: 6
-      layout: 4
-    - dockPosition: 1
-      containerId: overlay-container--right
-      floating: 0
-      collapsed: 0
-      displayed: 0
-      snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 25}
-      snapCorner: 0
-      id: Scene View/Occlusion Culling
-      index: 7
-      layout: 4
-    - dockPosition: 1
-      containerId: overlay-container--right
-      floating: 0
-      collapsed: 0
-      displayed: 0
-      snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 25}
-      snapCorner: 0
-      id: Scene View/Physics Debugger
-      index: 8
-      layout: 4
-    - dockPosition: 1
-      containerId: overlay-container--right
-      floating: 0
-      collapsed: 0
-      displayed: 0
-      snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 25}
-      snapCorner: 0
-      id: Scene View/Scene Visibility
-      index: 9
-      layout: 4
-    - dockPosition: 1
-      containerId: overlay-container--right
-      floating: 0
-      collapsed: 0
-      displayed: 0
-      snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 25}
-      snapCorner: 0
-      id: Scene View/Particles
-      index: 10
-      layout: 4
-    - dockPosition: 1
-      containerId: overlay-container--right
-      floating: 0
-      collapsed: 0
-      displayed: 0
-      snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 0}
-      snapCorner: 0
-      id: Scene View/Tilemap
-      index: 11
-      layout: 4
-    - dockPosition: 1
-      containerId: overlay-container--right
-      floating: 0
-      collapsed: 0
-      displayed: 0
-      snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 0}
-      snapCorner: 0
-      id: Scene View/Tilemap Palette Helper
-      index: 12
-      layout: 4
-    - dockPosition: 1
-      containerId: overlay-toolbar__top
-      floating: 0
-      collapsed: 0
-      displayed: 0
-      snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 25}
-      snapCorner: 0
-      id: Scene View/Open Tile Palette
-      index: 2
-      layout: 4
-    - dockPosition: 1
-      containerId: overlay-toolbar__top
-      floating: 0
-      collapsed: 0
-      displayed: 0
-      snapOffset: {x: 0, y: 0}
-      snapOffsetDelta: {x: 0, y: 25}
-      snapCorner: 0
-      id: Scene View/Tilemap Focus
-      index: 3
-      layout: 4
-  m_WindowGUID: cc27987af1a868c49b0894db9c0f5429
-  m_Gizmos: 1
-  m_OverrideSceneCullingMask: 4611686018427387906
-  m_SceneIsLit: 1
-  m_SceneLighting: 1
-  m_2DMode: 1
-  m_isRotationLocked: 0
-  m_PlayAudio: 0
-  m_AudioPlay: 0
-  m_Position:
-    m_Target: {x: 1076.6876, y: 623.5824, z: -1.7072482}
-    speed: 2
-    m_Value: {x: 1076.6876, y: 623.5824, z: -1.7072482}
-  m_RenderMode: 0
-  m_CameraMode:
-    drawMode: 0
-    name: Shaded
-    section: Shading Mode
-  m_ValidateTrueMetals: 0
-  m_DoValidateTrueMetals: 0
-  m_ExposureSliderValue: 0
-  m_SceneViewState:
-    m_AlwaysRefresh: 0
-    showFog: 1
-    showSkybox: 1
-    showFlares: 1
-    showImageEffects: 1
-    showParticleSystems: 1
-    showVisualEffectGraphs: 1
-    m_FxEnabled: 0
-  m_Grid:
-    xGrid:
-      m_Fade:
-        m_Target: 0
-        speed: 2
-        m_Value: 0
-      m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.4}
-      m_Pivot: {x: 0, y: 0, z: 0}
-      m_Size: {x: 0, y: 0}
-    yGrid:
-      m_Fade:
-        m_Target: 0
-        speed: 2
-        m_Value: 0
-      m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.4}
-      m_Pivot: {x: 0, y: 0, z: 0}
-      m_Size: {x: 1, y: 1}
-    zGrid:
-      m_Fade:
-        m_Target: 0
-        speed: 2
-        m_Value: 0
-      m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.4}
-      m_Pivot: {x: 0, y: 0, z: 0}
-      m_Size: {x: 1, y: 1}
-    m_ShowGrid: 0
-    m_GridAxis: 1
-    m_gridOpacity: 0.5
-  m_Rotation:
-    m_Target: {x: 0, y: 0, z: 0, w: 1}
-    speed: 2
-    m_Value: {x: 0, y: 0, z: 0, w: 1}
-  m_Size:
-    m_Target: 728.3208
-    speed: 2
-    m_Value: 728.3208
-  m_Ortho:
-    m_Target: 1
-    speed: 2
-    m_Value: 1
-  m_CameraSettings:
-    m_Speed: 1.0554726
-    m_SpeedNormalized: 0.52750003
-    m_SpeedMin: 0.001
-    m_SpeedMax: 2
-    m_EasingEnabled: 1
-    m_EasingDuration: 0.4
-    m_AccelerationEnabled: 1
-    m_FieldOfViewHorizontalOrVertical: 60
-    m_NearClip: 0.03
-    m_FarClip: 10000
-    m_DynamicClip: 1
-    m_OcclusionCulling: 0
-  m_LastSceneViewRotation: {x: 0.08194482, y: -0.88069874, z: -0.1654447, w: -0.4362243}
-  m_LastSceneViewOrtho: 0
-  m_ReplacementShader: {fileID: 0}
-  m_ReplacementString: 
-  m_SceneVisActive: 1
-  m_LastLockedObject: {fileID: 0}
-  m_ViewIsLockedToObject: 0
---- !u!114 &19
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 1
-  m_Script: {fileID: 12061, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_TitleContent:
-    m_Text: Hierarchy
-    m_Image: {fileID: 7966133145522015247, guid: 0000000000000000d000000000000000,
-      type: 0}
-    m_Tooltip: 
-  m_Pos:
-    serializedVersion: 2
-    x: 0
-    y: 73
-    width: 362
-    height: 611
-  m_ViewDataDictionary: {fileID: 0}
-  m_OverlayCanvas:
-    m_LastAppliedPresetName: Default
-    m_SaveData: []
-  m_SceneHierarchy:
-    m_TreeViewState:
-      scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 1ecd0400
-      m_LastClickedID: 314654
-      m_ExpandedIDs: 7a3af1ffc03af1ff1ecd0400
-      m_RenameOverlay:
-        m_UserAcceptedRename: 0
-        m_Name: 
-        m_OriginalName: 
-        m_EditFieldRect:
-          serializedVersion: 2
-          x: 0
-          y: 0
-          width: 0
-          height: 0
-        m_UserData: 0
-        m_IsWaitingForDelay: 0
-        m_IsRenaming: 0
-        m_OriginalEventType: 11
-        m_IsRenamingFilename: 0
-        m_ClientGUIView: {fileID: 11}
-      m_SearchString: 
-    m_ExpandedScenes: []
-    m_CurrenRootInstanceID: 0
-    m_LockTracker:
-      m_IsLocked: 0
-    m_CurrentSortingName: TransformSorting
-  m_WindowGUID: 4c969a2b90040154d917609493e03593
 --- !u!114 &20
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3424c03dd9e533544a90f81267b56ab8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MinSize: {x: 720, y: 240}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_TitleContent:
-    m_Text: Dialogue
-    m_Image: {fileID: 0}
-    m_Tooltip: 
-  m_Pos:
-    serializedVersion: 2
-    x: 363
-    y: 73
-    width: 1045
-    height: 611
-  m_ViewDataDictionary: {fileID: 0}
-  m_OverlayCanvas:
-    m_LastAppliedPresetName: Default
-    m_SaveData: []
-  actorFoldouts:
-    propertiesKeys: 
-    propertiesValues: 
-    fieldsKeys: ffffffff0a000000080000001e0000003a000000470000006a000000100000001100000012000000130000001400000015000000160000001700000018000000190000001a0000001b0000001c0000001d0000000b000000
-    fieldsValues: 01010100000000000000000000000000000000000000
-  actorFilter: 
-  actorListSelectedIndex: 11
-  actorTexturesFoldout: 1
-  actorSpritesFoldout: 1
-  showNodeEditor: 1
-  currentConversationID: 24
-  globalSearchText: 
-  globalReplaceText: 
-  globalSearchSpecificConversation: 0
-  globalSearchConversationIndex: -1
-  globalSearchUseRegex: 0
-  databaseFoldouts:
-    database: 1
-    emphasisSettings: 0
-    emphasisSetting: 
-    globalReplace: 1
-    merge: 0
-    export: 0
-    localization: 0
-    editorSettings: 0
-  databaseToMerge: {fileID: 0}
-  conflictingIDRule: 0
-  mergeProperties: 1
-  mergeEmphases: 1
-  mergeActors: 1
-  mergeItems: 1
-  mergeLocations: 1
-  mergeVariables: 1
-  mergeConversations: 1
-  exportFormat: 0
-  chatMapperExportPath: 
-  csvExportPath: 
-  jsonExportPath: 
-  voiceoverExportPath: 
-  languageTextExportPath: 
-  screenplayExportPath: 
-  entrytagFormat: 0
-  encodingType: 4
-  isSearchBarOpen: 0
-  searchString: 
-  searchCaseSensitive: 0
-  currentEntryID: 0
-  itemFoldouts:
-    propertiesKeys: 
-    propertiesValues: 
-    fieldsKeys: 
-    fieldsValues: 
-  itemFilter: 
-  itemListSelectedIndex: -1
-  questEntrySelectedIdx: -1
-  showCompactQuestEntryList: 1
-  localizationLanguages:
-    languages: []
-    extraEntryFields: []
-    extraQuestFields: []
-    extraItemFields: []
-    importMainTextIndex: -1
-    outputFolder: 
-  exportLocalizationConversationTitle: 0
-  exportLocalizationKeyField: 0
-  exportAssignFieldValues: 0
-  exportLocalizationCreateNewFields: 0
-  localizationKeyField: Articy Id
-  locationFoldouts:
-    propertiesKeys: 
-    propertiesValues: 
-    fieldsKeys: 
-    fieldsValues: 
-  locationFilter: 
-  locationListSelectedIndex: -1
-  toolbar:
-    current: 1
-  database: {fileID: 11400000, guid: 1fe95450e9068405a9e0206f87d85c87, type: 2}
-  debug: 0
-  registerCompleteObjectUndo: 1
-  scrollPosition: {x: 0, y: 60}
-  templateFoldouts:
-    templates: 0
-    actors: 0
-    items: 0
-    quests: 0
-    locations: 0
-    conversations: 0
-    dialogueEntries: 0
-    variables: 0
-  variableView:
-    database: {fileID: 11400000, guid: 1fe95450e9068405a9e0206f87d85c87, type: 2}
-    isDialogueEditorWindow: 1
-    variableFilter: 
-    showVariableGroupFoldouts: 0
-    expandedVariableGroups: []
-  watches: []
-  autoUpdateWatches: 0
-  watchUpdateFrequency: 1
-  nextWatchUpdateTime: 6555.146728299999
-  watchableVariableNames:
-  - Actor
-  - ActorIndex
-  - Alert
-  - Barry_Relationship
-  - Conversant
-  - ConversantIndex
-  - Gilli_Relationship
-  - IsBatteryTutorialComplete
-  - Kmi_Relationship
-  - Lrul_&_Klap_Convo_1_seen
-  - Lrul_&_Klap_Convo_2_seen
-  - Lrurl_&_Klap_Relationship
-  - McKenna_Relationship
-  - Pet_Name__Kmi_
-  - Pet_Name__Lrurl_&_Klap_
-  - PossiblePhrases
-  - Quiz_Q1
-  - Quiz_Q2
-  - Quiz_Q3
-  - Quiz_Q4
-  - Quiz_Q5
-  - RandoAdam
-  - RandoAlu_Krado
-  - RandoArona
-  - RandoAzo_Kmoni
-  - RandoBilliam
-  - RandoBimi
-  - RandoBleem
-  - RandoBlijil
-  - RandoBxi_Takol
-  - RandoBzi_Kamoto
-  - RandoChibi
-  - RandoCindy
-  - RandoDeborah
-  - RandoDodi
-  - RandoFernanda
-  - RandoFho_Qwani
-  - RandoFibnee
-  - RandoFinmi
-  - RandoFtu_Asakk
-  - RandoFzi_Hoxuni
-  - RandoGakee
-  - RandoGammi
-  - RandoGenesio
-  - RandoGllylo
-  - RandoGlorl
-  - RandoHammi
-  - RandoHanni
-  - RandoHarryJohn
-  - RandoHmi_Satak
-  - RandoIka_Natimi
-  - RandoJancy
-  - RandoJiajl
-  - RandoJligli
-  - RandoJmi_Gtakz
-  - RandoJni_Kronz
-  - RandoJobll
-  - RandoJulul
-  - RandoJunichi
-  - RandoKfi_Kafami
-  - RandoKfo_Oasi
-  - RandoKikee
-  - RandoKimee
-  - RandoKji_Makel
-  - RandoKli_Mazaku
-  - RandoKoomi
-  - RandoKor_Eyko
-  - RandoKsa_Oasi
-  - RandoKvo_Taliz
-  - RandoKzx_Patanek
-  - RandoLauren
-  - RandoLazarus
-  - RandoLgi_Dpkao
-  - RandoLmi_Motror
-  - RandoLomni
-  - RandoLybll
-  - RandoManfred
-  - RandoNki_Aido
-  - RandoObee
-  - RandoOko_Hazofa
-  - RandoOsee
-  - RandoPaul
-  - RandoRay
-  - RandoRhonda
-  - RandoRka_Matui
-  - RandoRxo_Daprak
-  - RandoSabni
-  - RandoSlickback
-  - RandoStefan
-  - RandoSwa_Kfiki
-  - RandoTimothyEwan
-  - RandoTrv_Oror
-  - RandoTse_Dziks
-  - RandoVeronica
-  - RandoVra_Ktoono
-  - RandoWajl
-  - RandoXL%#&DH
-  - RandoXpu_Fawaz
-  - RandoXqo_Takol
-  - RandoZek_Hmano
-  - RandoZji_Mazaku
-  - RandoZmi_Oasi
-  - Shun_Relationship
-  - SSwithBarry
-  - SSwithGilli
-  - SSwithKlap
-  - SSwithKmi
-  - SSwithLrurl
-  - SSwithMcKenna
-  - SSwithNammi
-  - SSwithShun
-  - SSwithYally
-  - TestBedCanvasAccessible
-  - TestTrigger
-  watchableQuestNames: []
-  luaCommand: 
-  showNodeIDs: 0
-  showTitlesInsteadOfText: 0
-  showAllActorNames: 0
-  showOtherActorNames: 1
-  showActorPortraits: 0
-  showDescriptions: 0
-  showParticipantNames: 1
-  showEndNodeMarkers: 1
-  showFullTextOnHover: 1
-  addNewNodesToRight: 0
-  autoArrangeOnCreate: 0
-  zoomLocked: 0
-  _zoom: 1.03
-  canvasRectWidthMultiplier: 1
-  canvasScrollView: {x: 100000, y: 100000}
-  canvasScrollPosition: {x: 8.330081, y: 4.893194}
-  conversationTitles:
-  - Rando Bark
-  - Rando Dialogue Test
-  - Rando Finmi
-  - Rando Stefan
-  - Rando Deborah
-  - Rando Azo-Kmoni
-  - Rando Cindy
-  - Rando Lybll
-  - Rando Gllylo
-  - Rando Lazarus
-  - Rando Junichi
-  - Rando Veronica
-  - Rando Fzi-Hoxuni
-  - Rando Hammi
-  - Rando Lomni
-  - Rando Hanni
-  - Rando Sabni
-  - Rando Fibnee
-  - Rando Xpu-Fawaz
-  - Rando Osee
-  - Rando Manfred
-  - Rando Billiam
-  - Rando Arona
-  - Rando Gakee
-  - Rando Jobll
-  - Rando Fernanda
-  - Rando Adam
-  - Rando Alu-Krado
-  - Rando Jancy
-  - Rando XL%#<AMPERSAND>DH
-  - Rando Kji-Makel
-  - Rando Wajl
-  - Rando Harry-John
-  - Rando Timothy-Ewan
-  - Rando Glorl
-  - Rando Rxo-Daprak
-  - Rando Jiajl
-  - Rando Kzx-Patanek
-  - Rando Kikee
-  - Rando Blijil
-  - Rando Swa-Kfiki
-  - Rando Obee
-  - Rando Slickback
-  - Rando Bimi
-  - Rando Bxi-Takol
-  - Rando Julul
-  - Rando Jligli
-  - Rando Bleem
-  - Rando Kimee
-  - Rando Chibi
-  - Rando Rhonda
-  - Rando Lauren
-  - Rando Ray
-  - Rando Oko-Hazofa
-  - Rando Genesio
-  - Rando Koomi
-  - Rando Kfi-Kafami
-  - Rando Xqo-Takol
-  - Rando Ftu-Asakk
-  - Rando Ika-Natimi
-  - Rando Bzi-Kamoto
-  - Rando Paul
-  - Rando Vra-Ktoono
-  - Rando Hmi-Satak
-  - Rando Nki-Aido
-  - Rando Fho-Qwani
-  - Rando Kfo-Oasi
-  - Rando Ksa-Oasi
-  - Rando Gammi
-  - Rando Zmi-Oasi
-  - Rando Jni-Kronz
-  - Rando Jmi-Gtakz
-  - Rando Tse-Dziks
-  - Rando Kli-Mazaku
-  - Rando Zji-Mazaku
-  - Rando Lmi-Motror
-  - Rando Trv-Oror
-  - Rando Kor-Eyko
-  - Rando Rka-Matui
-  - Rando Zek-Hmano
-  - Rando Kvo-Taliz
-  - Rando Lgi-Dpkao
-  - Rando Harry-John Day 1
-  - Rando Timothy-Ewan Day 1
-  - Rando Zmi-Oasi Day 1
-  - Rando Lgi-Dpkao Day 1
-  - Rando Dodi
-  conversationIndex: 1
-  snapToGridAmount: 0
-  confirmDelete: 1
-  trimWhitespaceAroundPipes: 1
-  conversationTitleFilter: rando
-  prevConversationStack:
-  - Lrurl and Klap convo 2
-  - Yally Convo 2
-  - Meet Kmi
-  - Meet Kmi
-  - Yally Convo 2
-  - Meet McKenna
-  - Lrurl and Klapaucius (Klap)
-  - What up Daniel?
-  - Meet Kmi
-  - Kmi Hub
-  - MAX TEST CONVO (HUB)
-  - Kmi Hub
-  - MAX TEST CONVO (HUB)
-  - Kmi Hub
-  - MAX TEST CONVO (HUB)
-  - Kmi Hub
-  - MAX TEST CONVO (HUB)
-  - Kmi Hub
-  - MAX TEST CONVO (HUB)
-  - Kmi Hub
-  - MAX TEST CONVO (HUB)
-  - Kmi Hub
-  - MAX TEST CONVO (HUB)
-  - Kmi Hub
-  - MAX TEST CONVO (HUB)
-  - Kmi Hub
-  - MAX TEST CONVO (HUB)
-  - Kmi Convo 2
-  - Kmi Hub
-  - ShootinTheShit(Kmi)
-  - What up Daniel?
-  - New Conversation 28
-  - ShootinTheShit(Kmi)
-  - New Conversation 28
-  - ShootinTheShit(Kmi)
-  - ShootinTheShit(Barry)
-  - What up Daniel?
-  - ShootinTheShit(Barry)
-  - What up Daniel?
-  - ShootinTheShit(Nammi)
-  - ShootinTheShit(Barry)
-  - ShootinTheShit(Lrurl)
-  - Kmi Hub
-  - ShootinTheShit(Kmi)
-  - Meet Kmi
-  - ShootinTheShit(Kmi)
-  - Barry Hub
-  - Kmi Hub
-  - Barry Hub
-  - Kmi Hub
-  - Barry Hub
-  - Kmi Hub
-  - Barry Hub
-  - Kmi Hub
-  - Barry Hub
-  - Kmi Hub
-  - Barry Hub
-  - Kmi Hub
-  - Barry Hub
-  - Kmi Hub
-  - Barry Hub
-  - Kmi Hub
-  - Barry Hub
-  - Yally Hub
-  - Barry Hub
-  - Yally Hub
-  - Barry Hub
-  - Yally Hub
-  - Barry Hub
-  - Yally Hub
-  - Barry Hub
-  - Yally Hub
-  - Barry Hub
-  - Yally Hub
-  - Barry Hub
-  - Nammi Hub
-  - Yally Hub
-  - Nammi Hub
-  - Yally Hub
-  - Nammi Hub
-  - Yally Hub
-  - Nammi Hub
-  - Kmi Hub
-  - Shunsuke Hub
-  - Nammi Hub
-  - Kmi Hub
-  - Shunsuke Hub
-  - Yally Hub
-  - McKenna Hub
-  - Yally Hub
-  - McKenna Hub
-  - Yally Hub
-  - Gilli Hub
-  - Yally Hub
-  - Gilli Hub
-  - Shunsuke Hub
-  - Gilli Hub
-  - Lrurl Hub
-  - Gilli Hub
-  - Lrurl Hub
-  - Gilli Hub
-  - Lrurl Hub
-  - Gilli Hub
-  - Kmi Hub
-  - Klapaucius Hub
-  - Lrurl and Klapaucius (Klap)
-  - Klapaucius Hub
-  - Lrurl Hub
-  - Klapaucius Hub
-  - Lrurl and Klapaucius (Klap)
-  - Klapaucius Hub
-  - Lrurl Hub
-  - Klapaucius Hub
-  - Lrurl Hub
-  - Klapaucius Hub
-  - Meet Kmi
-  - Lrurl and Klapaucius (Lrurl)
-  - Lrurl and Klapaucius (Klap)
-  - Meet Kmi
-  - Lrurl and Klapaucius (Lrurl)
-  - Meet Shunsuke
-  - Meet Yally
-  - Meet Gilli
-  - Meet McKenna
-  - New Conversation 49
-  - onvo 2 (yes + PostRep) PostRep)
-  - Meet Kmi
-  - Meet Barry
-  - Meet Nammi (Part 1)
-  - Meet Nammi (Part 2)
-  - Meet McKenna
-  - Meet Barry
-  - Meet McKenna
-  - Lrurl and Klapaucius (Lrurl)
-  - Lrurl and Klapaucius (Klap)
-  - Lrurl and Klapaucius (Lrurl)
-  - Lrurl and Klapaucius (Klap)
-  - Lrurl and Klapaucius (Lrurl)
-  - Lrurl and Klapaucius (Klap)
-  - Lrurl and Klapaucius (Lrurl)
-  - Lrurl and Klapaucius (Klap)
-  - Lrurl and Klapaucius (Lrurl)
-  - Lrurl and Klapaucius (Klap)
-  - Meet Nammi (Part 1)
-  - Meet Nammi (Part 2)
-  - Meet Gilli
-  - Meet Shunsuke
-  - Meet Gilli
-  - Meet Shunsuke
-  - Meet Gilli
-  - Meet Shunsuke
-  - Meet Gilli
-  - Meet Shunsuke
-  - Kmi Convo 2
-  - Meet Barry
-  - Kmi Convo 2
-  - Meet Kmi
-  - Meet McKenna
-  - Barry Convo 2
-  - Shun Convo 2
-  - McKenna Convo 2
-  - Lrurl and Klap convo 2
-  - Lrurl and Klapaucius (Klap)
-  - Yally Convo 2
-  - Gilli convo 2
-  - Day 1 Lori Convo
-  - Meet Kmi
-  - Meet Barry
-  - Meet Kmi
-  - Meet Nammi (Part 1)
-  - Meet Kmi
-  - Meet Nammi (Part 1)
-  - Meet Shunsuke
-  - Meet Kmi
-  - Meet Shunsuke
-  - Meet Kmi
-  - Meet Shunsuke
-  - Meet Barry
-  - Meet Kmi
-  - Meet Shunsuke OLD
-  - Meet McKenna
-  - Lrurl and Klapaucius (Lrurl)
-  - Lrurl and Klapaucius (Klap)
-  - Meet Gilli
-  - Lrurl and Klap convo 2
-  - Meet Kmi
-  - Kmi Convo 2
-  - Barry Convo 2
-  - Shunsuke Hub
-  - Barry Convo 2
-  - Barry Hub
-  - McKenna Convo 2
-  - Shun Convo 2
-  - Yally Convo 2
-  - Gilli convo 2
-  - Meet Kmi
-  - Meet Nammi (Part 1)
-  - Meet Nammi (Part 2)
-  - Meet McKenna
-  - Meet Gilli
-  - Meet Yally
-  - Meet Gilli
-  - Meet Yally
-  - Meet Gilli
-  - Meet McKenna
-  - Meet Nammi (Part 2)
-  - Meet Kmi
-  - Meet Nammi (Part 1)
-  - Day 1 Lori Convo
-  - Meet Nammi (Part 1)
-  - Meet Nammi (Part 2)
-  - Meet McKenna
-  - Meet Gilli
-  - Meet Yally
-  - Meet Shunsuke
-  - Meet Barry
-  - Lrurl and Klapaucius (Lrurl)
-  - Lrurl and Klapaucius (Klap)
-  - Kmi Convo 2
-  - Barry Convo 2
-  - Shun Convo 2
-  - McKenna Convo 2
-  - Yally Convo 2
-  - Gilli convo 2
-  - Nammi Convo 2
-  - Rando Manfred
-  - What up Daniel?
-  - Rando Billiam
-  - Rando Manfred
-  - Rando Wajl
-  - Rando Jobll
-  - Rando Lazarus
-  - Rando Chibi
-  - Rando Jligli
-  - Rando Lgi-Dpkao
-  - Rando Zji-Mazaku
-  - Rando Zek-Hmano
-  - Rando Gammi
-  - Vukra Convo 1
-  - Vukra Convo 2 (yes + ULSS)
-  - Vukra Convo 2 (yes + Pirates)
-  - Vukra Convo 2 (yes + PostRep)
-  - Vukra Convo 1
-  - Vukra convo 2 (Pirates + PostRep)
-  - 'Vukra Convo 2 (Pirates + ULSS) '
-  - Vukra Convo 2 (ULSS + PostRep)
-  - 'Vukra Convo 2 (Pirates + ULSS) '
-  - Vukra Convo 2 (ULSS + PostRep)
-  - Vukra Convo 2 (Pirates + PostRep)
-  - Vukra Convo 2 (ULSS + PostRep)
-  - 'Vukra Convo 2 (Pirates + ULSS) '
-  - Lori Day 2
-  - ' Lori Day 1'
-  - Lori Day 4 Deja Vu
-  - Lori Day 2
-  - Lori Day 4 Deja Vu
-  - Lori Day 2
-  - Lori Day 4 Deja Vu
-  - Lori Day 2
-  - Lori Day 4 Deja Vu
-  - Lori Day 2
-  - Return to Lori
-  - Lori Day 4 Deja Vu
-  - Pirates Convo 1
-  - Meet Kmi
-  - Meet McKenna
-  - Gilli convo 2
-  - Lrurl and Klapaucius (Lrurl)
-  - Lrurl and Klapaucius (Klap)
-  - Lrurl and Klap convo 2
-  - Gilli convo 2
-  - Meet Yally
-  - Yally Convo 2
-  - Meet Barry
-  - McKenna Convo 2
-  - Kmi Convo 2
-  - Meet Barry
-  - Meet Nammi (Part 1)
-  - Meet Nammi (Part 2)
-  - Meet McKenna
-  - Gilli convo 2
-  - Lori Day 1
-  - Vukra Convo 1
-  - Vukra Convo 2 (yes + ULSS)
-  - Vukra Convo 2 (yes + Pirates)
-  - Vukra Convo 2 (yes + PostRep)
-  - 'Vukra Convo 2 (Pirates + ULSS) '
-  - Vukra Convo 2 (Pirates + PostRep)
-  - Vukra Convo 2 (ULSS + PostRep)
-  - Pirates Convo 1
-  - Pirates convo 2 (yes + ULSS)
-  - Pirates convo 2 (Vukra + PostRep)
-  - Pirates convo 2 (ULSS + Vukra)
-  - Pirates convo 2 (ULSS + PostRep)
-  - Post-Republic Convo 1
-  - Post-Republic convo 2 (yes + Pirates)
-  - Post-Republic convo 2 (yes + Vukra)
-  - Post-Republic convo 2 (yes + ULSS)
-  - Post-Republic convo 2 (Pirates + ULSS)
-  - Post-Republic convo 2 (ULSS + Vukra)
-  - Post-Republic convo 2 (Pirates + Vukra)
-  - ULSS Convo 1 - Wabll First
-  - ULSS Convo 1 - Didee Second
-  - ULSS Convo 1 - Rajni First
-  - ULSS Convo 1 - Rajni Second
-  - ULSS Convo 1 - Didee First
-  - ULSS Convo 1 - Didee Third
-  - ULSS Convo 1 - Wabll Second
-  - ULSS Convo 1 - Wabll Third
-  - ULSS Convo 1 - Didee Second
-  - ULSS convo 2 (yes + Vukra)
-  - ULSS convo 2 (Vukra + PostRep)
-  - ULSS convo 2 (Vukra + Pirates)
-  - ULSS convo 2 (PostRep + Pirates)
-  - Lori Day 2
-  - Return to Lori
-  - Kmi Convo 2
-  - Meet Barry
-  - Barry Convo 2
-  - Meet Nammi (Part 2)
-  - Meet McKenna
-  - McKenna Convo 2
-  - Lrurl and Klapaucius (Lrurl)
-  - Lrurl and Klapaucius (Klap)
-  - Lrurl and Klap convo 2
-  - Meet Gilli
-  - Gilli convo 2
-  - Meet Yally
-  - Yally Convo 2
-  - Meet Shunsuke
-  - Shun Convo 2
-  - Vukra Convo 1
-  - Post-Republic Convo 1
-  - ULSS Convo 1 - Wabll First
-  - Meet Shunsuke
-  - Lori Day 1
-  - Return to Lori
-  - Meet Barry
-  - Meet Nammi (Part 1)
-  - Meet Nammi (Part 2)
-  - McKenna Convo 2
-  - Lori Day 1 Part 2
-  - Lori Day 1 Part 1
-  - Lori Day 1 Part 3
-  - Lori Day 1 Part 2
-  - Lori Day 2
-  - Return to Lori Part 2
-  - Return to Lori Part 1
-  - Lori Day 1 Part 1
-  - Return to Lori Part 2
-  - Meet Shunsuke
-  - Lori Day 2 Part 2
-  - Lrurl and Klapaucius (Lrurl)
-  - Lrurl and Klapaucius (Klap)
-  - Lrurl and Klapaucius (Lrurl)
-  - Lrurl and Klapaucius (Klap)
-  - Meet McKenna
-  - Meet Yally
-  - Meet Nammi (Part 1)
-  - Meet Nammi (Part 2)
-  - Meet Shunsuke
-  - Meet Gilli
-  - Meet Barry
-  - Lori Day 1 Part 2
-  - Lori Day 1 Part 3
-  - Return to Lori Part 2
-  - Lori Day 2 Part 2
-  - Lori Day 2
-  - Lori Day 2 Part 2
-  - Return to Lori Part 2
-  - Lori Day 2 Part 1
-  - Return to Lori Part 1
-  - Rando Finmi
-  - ShootinTheShit(Kmi)
-  - ShootinTheShit(Barry)
-  - ShootinTheShit(Nammi)
-  - ShootinTheShit(Kmi)
-  - ShootinTheShit(Barry)
-  - ShootinTheShit(Nammi)
-  - ShootinTheShit(Shun)
-  - ShootinTheShit(Yally)
-  - ShootinTheShit(Gilli)
-  - ShootinTheShit(McKenna)
-  - ShootinTheShit(Klap)
-  - ShootinTheShit(Lrurl)
-  - Barry Hub
-  - Yally Hub
-  - Rando Finmi
-  - Pirates Convo 1
-  - McKenna Convo 2
-  - Rando Finmi
-  - Rando Stefan
-  - Rando Deborah
-  - Rando Azo-Kmoni
-  - Rando Cindy
-  - Rando Lybll
-  - Rando Gllylo
-  - Rando Lazarus
-  - Rando Veronica
-  - Rando Junichi
-  - Rando Fzi-Hoxuni
-  - Rando Hammi
-  - Rando Lomni
-  - Rando Hanni
-  - Rando Sabni
-  - Rando Fibnee
-  - Rando Xpu-Fawaz
-  - Rando Osee
-  - Rando Manfred
-  - Rando Billiam
-  - Rando Arona
-  - Rando Gakee
-  - Rando Jobll
-  - Rando Fernanda
-  - Rando Adam
-  - Rando Alu-Krado
-  - Rando Jancy
-  - Rando XL%#&DH
-  - Rando Kji-Makel
-  - Rando Wajl
-  - Rando Harry-John
-  - Rando Timothy-Ewan
-  - Rando Glorl
-  - Rando Rxo-Daprak
-  - Rando Jiajl
-  - Rando Kzx-Patanek
-  - Rando Kikee
-  - Rando Blijil
-  - Rando Swa-Kfiki
-  - Rando Obee
-  - Rando Slickback
-  - Rando Bimi
-  - Rando Bxi-Takol
-  - Rando Julul
-  - Rando Jligli
-  - Rando Bleem
-  - Rando Kimee
-  - Rando Chibi
-  - Rando Rhonda
-  - Rando Lauren
-  - Rando Ray
-  - Rando Oko-Hazofa
-  - Rando Genesio
-  - Rando Koomi
-  - Rando Kfi-Kafami
-  - Rando Xqo-Takol
-  - Rando Ftu-Asakk
-  - Rando Ika-Natimi
-  - Rando Bzi-Kamoto
-  - Rando Paul
-  - Rando Vra-Ktoono
-  - Rando Hmi-Satak
-  - Rando Nki-Aido
-  - Rando Fho-Qwani
-  - Rando Kfo-Oasi
-  - Rando Fho-Qwani
-  - Rando Ksa-Oasi
-  - Rando Gammi
-  - Rando Zmi-Oasi
-  - Rando Jni-Kronz
-  - Rando Jmi-Gtakz
-  - Rando Tse-Dziks
-  - Rando Kli-Mazaku
-  - Rando Zji-Mazaku
-  - Rando Lmi-Motror
-  - Rando Trv-Oror
-  - Rando Kor-Eyko
-  - Rando Rka-Matui
-  - Rando Zek-Hmano
-  - Rando Kvo-Taliz
-  - Lori Day 1 Part 1
-  - Lori Day 1 Part 2
-  - Lori Day 1 Part 3
-  - 'Lori Day 1 Part 2: Vukra'
-  - 'Lori Day 1 Part 4: PostRep'
-  - 'Lori Day 1 Part 3: Pirates + PostRep'
-  - 'Lori Day 1 Part 5: ULSS'
-  - 'Lori Day 1 Part 4: PostRep'
-  - 'Lori Day 1 Part 5: ULSS'
-  - 'Lori Day 1 Part 4: PostRep'
-  - Lori Day 2 Part 1
-  - Return to Lori Part 1
-  - Post-Republic Convo 1
-  - Rando Harry-John Day 1
-  - Lori Day 1 Part 1
-  - Rando Harry-John Day 1
-  - Rando Timothy-Ewan Day 1
-  - Rando Zmi-Oasi Day 1
-  - Lori Day 2 Part 2
-  - Lori Day 1 Part 1
-  - 'Lori Day 1 Part 2: Vukra'
-  - Lori Day 1 Part 1
-  - 'Lori Day 1 Part 1: Vukra'
-  - 'Lori Day 1 Part 2: Pirates + PostRep'
-  - 'Lori Day 1 Part 3: PostRep'
-  - 'Lori Day 1 Part 4: ULSS'
-  - 'OLD - DELETE: Lori Day 1 Part 1'
-  - Yally Convo 2
-  - Meet Yally
-  - Shun Convo 2
-  - Meet Gilli
-  - Gilli convo 2
-  - Kmi Convo 2
-  - Kmi Hub
-  - Kmi Convo 2
-  - Gilli convo 2
-  - Meet Kmi
-  - Kmi Convo 2
-  - Meet Kmi
-  - Lrurl and Klapaucius (Klap)
-  - Lrurl and Klap convo 2
-  - Klapaucius Hub
-  - Lrurl Hub
-  - Klapaucius Hub
-  - Lrurl Hub
-  - Meet Kmi
-  - Kmi Convo 2
-  - Meet Kmi
-  - Lrurl and Klapaucius (Klap)
-  - Lrurl and Klapaucius (Lrurl)
-  - Lrurl and Klapaucius (Klap)
-  - Lrurl and Klap convo 2
-  - Lrurl and Klapaucius (Klap)
-  - Lrurl and Klapaucius (Lrurl)
-  - Lrurl and Klapaucius (Klap)
-  - Shun Convo 2
-  - Meet Kmi
-  - Meet Nammi (Part 1)
-  - Meet Nammi (Part 2)
-  - Meet McKenna
-  - Meet Gilli
-  - Meet Yally
-  - Meet Shunsuke
-  - Meet Barry
-  - Lrurl and Klapaucius (Lrurl)
-  - Kmi Convo 2
-  - Barry Convo 2
-  - Shun Convo 2
-  - McKenna Convo 2
-  - Yally Convo 2
-  - Gilli convo 2
-  - Nammi Convo 2
-  - New Conversation 19
-  - Lrurl and Klapaucius (Klap)
-  - New Conversation 21
-  - Lrurl and Klap convo 2
-  - MAX TEST CONVO (CUTSCENE)
-  - Rando Dialogue Test
-  - Vukra Convo 1
-  - Post-Republic Convo 1
-  - Pirates Convo 1
-  - ULSS Rajni Before Job
-  - ULSS Convo 1 - Rajni First
-  - ULSS Rajni Before Job
-  - ULSS Convo 1 - Rajni First
-  - ULSS Before Job - Rajni
-  - ULSS Before Job - Didee
-  - ULSS Before Job - Wabll
-  - Pirates Before Job - Bibnee
-  - Meet Nammi (Part 1)
-  - Pirates Before Job - Blebl
-  - Pirates Before Job - Bibnee
-  - Post-Republic Before Job - Ksr
-  - Post-Republic Convo 1
-  - Post-Republic convo 2 (yes + Pirates)
-  - New Conversation 185
-  - Post-Republic Convo 1
-  - Post-Republic Before Job - Bek
-  - Post-Republic Before Job - Ksr
-  - Meet Yally
-  - Lrurl and Klap convo 2
-  nextConversationStack: []
---- !u!114 &21
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 1
-  m_Script: {fileID: 12014, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MinSize: {x: 230, y: 250}
-  m_MaxSize: {x: 10000, y: 10000}
-  m_TitleContent:
-    m_Text: Project
-    m_Image: {fileID: -5467254957812901981, guid: 0000000000000000d000000000000000,
-      type: 0}
-    m_Tooltip: 
-  m_Pos:
-    serializedVersion: 2
-    x: 0
-    y: 705
-    width: 1409
-    height: 286
-  m_ViewDataDictionary: {fileID: 0}
-  m_OverlayCanvas:
-    m_LastAppliedPresetName: Default
-    m_SaveData: []
-  m_SearchFilter:
-    m_NameFilter: MAX TEST RANDO ACTOR Variant
-    m_ClassNames: []
-    m_AssetLabels: []
-    m_AssetBundleNames: []
-    m_VersionControlStates: []
-    m_SoftLockControlStates: []
-    m_ReferencingInstanceIDs: 
-    m_SceneHandles: 
-    m_ShowAllHits: 0
-    m_SkipHidden: 0
-    m_SearchArea: 1
-    m_Folders:
-    - Assets/ImportedAssets/Sprites/Pilots
-    m_Globs: []
-    m_OriginalText: MAX TEST RANDO ACTOR Variant
-  m_ViewMode: 1
-  m_StartGridSize: 16
-  m_LastFolders:
-  - Assets/ImportedAssets/Sprites/Pilots
-  m_LastFoldersGridSize: 16
-  m_LastProjectPath: C:\Users\maxwe\UnityProjects\SpaceTruckin
-  m_LockTracker:
-    m_IsLocked: 0
-  m_FolderTreeState:
-    scrollPos: {x: 0, y: 287}
-    m_SelectedIDs: f0cc0400
-    m_LastClickedID: 314608
-    m_ExpandedIDs: 000000001ce000001ee0000020e0000022e0000056e100005ee1000060e10000ac5d0100b85d010046cc040048cc04004acc0400f2cc040000ca9a3b
-    m_RenameOverlay:
-      m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
-      m_EditFieldRect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
-      m_UserData: 0
-      m_IsWaitingForDelay: 0
-      m_IsRenaming: 0
-      m_OriginalEventType: 11
-      m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 13}
-    m_SearchString: 
-    m_CreateAssetUtility:
-      m_EndAction: {fileID: 0}
-      m_InstanceID: 0
-      m_Path: 
-      m_Icon: {fileID: 0}
-      m_ResourceFile: 
-  m_AssetTreeState:
-    scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 
-    m_LastClickedID: 0
-    m_ExpandedIDs: 000000001ce000001ee0000020e0000022e00000
-    m_RenameOverlay:
-      m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
-      m_EditFieldRect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
-      m_UserData: 0
-      m_IsWaitingForDelay: 0
-      m_IsRenaming: 0
-      m_OriginalEventType: 11
-      m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 0}
-    m_SearchString: 
-    m_CreateAssetUtility:
-      m_EndAction: {fileID: 0}
-      m_InstanceID: 0
-      m_Path: 
-      m_Icon: {fileID: 0}
-      m_ResourceFile: 
-  m_ListAreaState:
-    m_SelectedInstanceIDs: 
-    m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: c6230000e0890000a8cc0000b27b0000300b0300d89f00009ad900006a770000946902002eda00004ace0000d2ba000070630000220b01000ea202002e65020000000000a8b60000c8830000
-    m_RenameOverlay:
-      m_UserAcceptedRename: 0
-      m_Name: MAX TEST RANDO ACTOR Variant
-      m_OriginalName: MAX TEST RANDO ACTOR Variant
-      m_EditFieldRect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
-      m_UserData: 48188
-      m_IsWaitingForDelay: 0
-      m_IsRenaming: 0
-      m_OriginalEventType: 0
-      m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 13}
-    m_CreateAssetUtility:
-      m_EndAction: {fileID: 0}
-      m_InstanceID: 0
-      m_Path: 
-      m_Icon: {fileID: 0}
-      m_ResourceFile: 
-    m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 0}
-    m_GridSize: 16
-  m_SkipHiddenPackages: 0
-  m_DirectoriesAreaWidth: 289
---- !u!114 &22
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2049,52 +1066,10 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 705
-    width: 1409
-    height: 286
+    y: 449
+    width: 1042
+    height: 238
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
     m_SaveData: []
---- !u!114 &23
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 1
-  m_Script: {fileID: 12019, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_TitleContent:
-    m_Text: Inspector
-    m_Image: {fileID: -2667387946076563598, guid: 0000000000000000d000000000000000,
-      type: 0}
-    m_Tooltip: 
-  m_Pos:
-    serializedVersion: 2
-    x: 1410
-    y: 73
-    width: 509
-    height: 918
-  m_ViewDataDictionary: {fileID: 0}
-  m_OverlayCanvas:
-    m_LastAppliedPresetName: Default
-    m_SaveData: []
-  m_ObjectsLockedBeforeSerialization: []
-  m_InstanceIDsLockedBeforeSerialization: 
-  m_PreviewResizer:
-    m_CachedPref: 160
-    m_ControlHash: -371814159
-    m_PrefName: Preview_InspectorPreview
-  m_LastInspectedObjectInstanceID: -1
-  m_LastVerticalScrollValue: 0
-  m_GlobalObjectId: 
-  m_InspectorMode: 0
-  m_LockTracker:
-    m_IsLocked: 0
-  m_PreviewWindow: {fileID: 0}
