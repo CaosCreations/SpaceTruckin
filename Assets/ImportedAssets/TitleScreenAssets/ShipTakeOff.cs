@@ -9,19 +9,28 @@ public class ShipTakeOff: MonoBehaviour {
   public bool RotateOnY = false;
   public bool RotateOnZ = false;
 
-  public bool MoveOnX = false;
-  public bool MoveOnY = false;
-  public bool MoveOnZ = false;
-
   public bool takeOffStart;
   public float movTimer;
+
+  private Vector3 originalPosition;
+  private Quaternion originalRotation;
+  [SerializeField] private bool manualStart;
+
   // Start is called before the first frame update
   void Start() {
-
+      originalPosition = transform.position;
+      originalRotation = transform.rotation;
   }
 
   // Update is called once per frame
   void Update() {
+    if (manualStart)
+    {
+        transform.SetPositionAndRotation(originalPosition, originalRotation);
+        movTimer = 0f;
+        takeOffStart = true;
+        manualStart = false;
+    }
 
     Vector3 rotFactor = Vector3.one * Speed;
 
