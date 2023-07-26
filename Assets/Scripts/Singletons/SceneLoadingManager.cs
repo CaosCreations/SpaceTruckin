@@ -134,6 +134,11 @@ public class SceneLoadingManager : MonoBehaviour
     {
         try
         {
+            if (!IsSceneLoaded(sceneName))
+            {
+                Debug.Log($"Scene '{sceneName}' is not loaded. Unable to unload.");
+                return;
+            }
             StartCoroutine(Instance.UnloadAsync(sceneName));
         }
         catch (System.Exception ex)
@@ -151,14 +156,18 @@ public class SceneLoadingManager : MonoBehaviour
             Debug.Log($"Scene '{sceneName}' is not loaded. Unable to unload.");
             return;
         }
-
         UnloadSceneAsync(sceneName);
     }
 
     private IEnumerator UnloadAsync(string sceneName)
     {
-        Debug.Log("Starting unloading scene asynsc...");
+        Debug.Log("Starting unloading scene async...");
         var asyncOperation = SceneManager.UnloadSceneAsync(sceneName);
+
+        if (asyncOperation == null)
+        {
+            yield break;
+        }
 
         while (!asyncOperation.isDone)
         {

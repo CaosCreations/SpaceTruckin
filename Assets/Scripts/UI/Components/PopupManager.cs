@@ -24,6 +24,7 @@ public class PopupManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        cancelButton.SetActive(false);
     }
 
     public static void ShowPopup(UnityAction onOk = null, UnityAction onCancel = null, string bodyText = null, string okText = null, string cancelText = null)

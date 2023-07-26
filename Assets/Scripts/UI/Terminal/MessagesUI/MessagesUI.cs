@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Events;
+using UnityEngine;
 using UnityEngine.UI;
 
 public enum MessageFilterMode
@@ -83,9 +84,8 @@ public class MessagesUI : MonoBehaviour
         buttonHandler.Init(message, () =>
         {
             GoToDetailView(message);
-
-            // Set read flag to true upon opening the message  
             message.HasBeenRead = true;
+            SingletonManager.EventService.Dispatch<OnMessageReadEvent>();
         });
     }
 

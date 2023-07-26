@@ -5,6 +5,7 @@ using UnityEngine;
 public class ClockManager : MonoBehaviour
 {
     public static TimeSpan CurrentTime { get; private set; }
+    public static TimeOfDay.Phase CurrentTimeOfDayPhase => isEvening ? TimeOfDay.Phase.Evening : TimeOfDay.Phase.Morning;
 
     public static int TickSpeedMultiplier { get; private set; }
     private static int currentTimeInSeconds;
@@ -13,19 +14,23 @@ public class ClockManager : MonoBehaviour
 
     private static bool clockStopped;
     private static bool isEvening;
-    private static readonly bool showOnGui = false;
+    
+    [SerializeField] 
+    private bool showOnGui = false;
 
     private void Start()
     {
         CalculateTickSpeedMultiplier();
         RegisterEvents();
 
-        // Default the initial time of day if not configured 
-        if (CalendarManager.StationEntryTimeOfDay.ToSeconds() == 0)
-            ResetClock();
-
-        if (CalendarManager.CurrentDate != new Date(1, 1, 1))
+        if (!CalendarManager.IsTimeFrozenToday)
+        {
             StartClock();
+        }
+        else
+        {
+            StopClock();
+        }
 
 #if UNITY_EDITOR
         Application.targetFrameRate = PlayerConstants.EditorTargetFrameRate;
@@ -151,6 +156,9 @@ public class ClockManager : MonoBehaviour
 
     private void OnPlayerUnpausedHandler()
     {
+        if (CalendarManager.IsTimeFrozenToday)
+            return;
+
         StartClock();
     }
 

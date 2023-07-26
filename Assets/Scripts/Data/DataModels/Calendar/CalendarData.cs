@@ -22,6 +22,7 @@ public class CalendarData : ScriptableObject, IDataModel
     public TimeSpan EveningStartTime;
 
     public Date GameEndDate;
+    public Date[] TimeFreezeDates;
 
     public const string FolderName = "CalendarSaveData";
     public const string FileName = "CalendarData";
