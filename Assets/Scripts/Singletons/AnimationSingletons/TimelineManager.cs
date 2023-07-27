@@ -58,7 +58,7 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
     private void OnTimelineStartedHandler()
     {
         PlayerManager.EnterPausedState(false);
-        currentCutscenePlayer.VirtualCamera.Priority = TimelineConstants.CutsceneCameraPlayPriority;
+        currentCutscenePlayer.VirtualCamera.Priority = currentCutscenePlayer.Cutscene.PriorityOnStart;
         currentCutscenePlayer.VirtualCamera.Follow = PlayerManager.PlayerObject.transform;
 
         var cutscene = GetCutsceneByPlayableAsset(currentCutscenePlayer.PlayableDirector.playableAsset);
@@ -74,8 +74,11 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
     private void OnTimelineFinishedHandler()
     {
-        currentCutscenePlayer.VirtualCamera.Priority = TimelineConstants.CutsceneCameraBasePriority;
-        currentCutscenePlayer.VirtualCamera.Follow = null;
+        currentCutscenePlayer.VirtualCamera.Priority = currentCutscenePlayer.Cutscene.PriorityOnFinish;
+        if (currentCutscenePlayer.Cutscene.ResetFollowOnFinish)
+        {
+            currentCutscenePlayer.VirtualCamera.Follow = null;
+        }
         currentCutscenePlayer.VirtualCamera.gameObject.SetActive(false);
 
         var cutscene = GetCutsceneByPlayableAsset(currentCutscenePlayer.PlayableDirector.playableAsset);
