@@ -1,4 +1,3 @@
-using Events;
 using System;
 using UnityEngine;
 
@@ -10,33 +9,21 @@ public enum Direction
 public class PlayerMovement : MonoBehaviour
 {
     public static Vector3 MovementVector;
+    public Vector3 PlayerFacingDirection;
 
     public Rigidbody PlayerRigidbody;
-
-    [SerializeField] private Animator animator;
     private CharacterController characterController;
+    public PlayerMovementAnimation MovementAnimation;
 
     public float CurrentSpeed { get; private set; }
-
     [SerializeField] private float maximumSpeed;
     [SerializeField] private float acceleration;
-
-    // Player movement relates to camera
-    public Transform CameraTransform;
-
-    public Vector3 PlayerFacingDirection;
 
     private void Start()
     {
         if (!TryGetComponent(out characterController))
         {
             throw new NullReferenceException("Character controller component not found in Player Movement script.");
-        }
-
-        // Initialize the player's Camera
-        if (Camera.main != null)
-        {
-            CameraTransform = Camera.main.transform;
         }
     }
 
@@ -66,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
             PlayerFacingDirection = new Vector3(MovementVector.x, 0f, MovementVector.y);
         }
 
-        SetDirection();
+        MovementAnimation.SetDirection();
     }
 
     // Move player in FixedUpdate 
@@ -90,28 +77,6 @@ public class PlayerMovement : MonoBehaviour
         Debug.DrawRay(transform.position, PlayerFacingDirection, Color.yellow);
     }
 
-    private void SetDirection()
-    {
-        ResetDirection();
-
-        if (AnimationConstants.MovementAnimationMap.ContainsKey(MovementVector))
-        {
-            // Get the matching parameters for the player's current direction  
-            string[] activeParams = AnimationConstants.MovementAnimationMap[MovementVector];
-
-            // Update the state machine 
-            Array.ForEach(activeParams, x => animator.SetBool(x, true));
-        }
-    }
-
-    public void ResetDirection()
-    {
-        animator.SetBool(AnimationConstants.AnimationUpParameter, false);
-        animator.SetBool(AnimationConstants.AnimationLeftParameter, false);
-        animator.SetBool(AnimationConstants.AnimationDownParameter, false);
-        animator.SetBool(AnimationConstants.AnimationRightParameter, false);
-    }
-
     private void ApplyGravity()
     {
         characterController.Move(new Vector3(0, PlayerConstants.Gravity * Time.fixedDeltaTime, 0));
@@ -119,14 +84,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void DetermineSpeed()
     {
-        if (Input.GetKey(PlayerConstants.SprintKey))
+        if (Input.GetKey(PlayerConstants.SprintKey) && !MovementAnimation.BabyMode && !BatteryInteractable.IsPlayerHoldingABattery)
         {
-            animator.SetBool(AnimationConstants.AnimationRunParameter, true);
             CurrentSpeed = PlayerConstants.RunSpeed;
         }
         else
         {
-            animator.SetBool(AnimationConstants.AnimationRunParameter, false);
             CurrentSpeed = PlayerConstants.WalkSpeed;
         }
     }
@@ -187,7 +150,7 @@ public class PlayerMovement : MonoBehaviour
         LayerMask layerMask = LayerMask.GetMask(layerName);
         return Physics.Raycast(transform.position, PlayerFacingDirection, out hit, PlayerConstants.RaycastDistance, layerMask);
     }
-    
+
     public bool IsFirstRaycastHit(GameObject obj)
     {
         var layerName = LayerMask.LayerToName(obj.layer);
