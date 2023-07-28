@@ -3,19 +3,22 @@
 public class ShipLaunch : MonoBehaviour
 {
     [Header("Movement Settings")]
-    [SerializeField] private float launchSpeed = 10f;
-    [SerializeField] private float rotationSpeed = 5f;
-    [SerializeField] private float acceleration = 5f;
-    [SerializeField] private float liftHeight = 10f;
+    [SerializeField] private float liftSpeed = 1f;
+    [SerializeField] private float rotationSpeed = 1f;
+    [SerializeField] private float launchSpeed = 1f;
+    [SerializeField] private float acceleration = 1f;
+    [SerializeField] private float liftHeight = 5f;
     [SerializeField] private Transform hangarDoors;
 
     private bool isLaunching = false;
-    private bool isLifted = false; 
+    private bool hasLifted = false;
+    private bool isRotating = false;
     private Vector3 targetPosition;
     private Quaternion targetRotation;
 
     private Vector3 originalPosition;
     private Quaternion originalRotation;
+    private Vector3 liftVelocity; 
     private Vector3 currentVelocity;
 
     [SerializeField] private bool manualStart;
@@ -37,26 +40,35 @@ public class ShipLaunch : MonoBehaviour
 
         if (isLaunching)
         {
-            if (!isLifted)
+            if (!hasLifted)
             {
                 Vector3 targetUpPosition = originalPosition + Vector3.up * liftHeight;
-                transform.position = Vector3.SmoothDamp(transform.position, targetUpPosition, ref currentVelocity, 1f / launchSpeed);
-                
-                // Has the ship reached the lift height
+                transform.position = Vector3.SmoothDamp(transform.position, targetUpPosition, ref liftVelocity, 1f / liftSpeed, acceleration);
+
+                // Check if the ship has reached the lift height
                 if (Vector3.Distance(transform.position, targetUpPosition) < 0.1f)
                 {
-                    isLifted = true;
+                    hasLifted = true;
                 }
+            }
+            else if (!isRotating)
+            {
+                isRotating = true;
+                targetRotation = Quaternion.LookRotation(hangarDoors.position - transform.position, Vector3.up);
             }
             else
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-                // Move towards the exit 
-                Vector3 targetForwardPosition = targetPosition - hangarDoors.forward * 10f; // Adjust the distance as needed
-                transform.position = Vector3.SmoothDamp(transform.position, targetForwardPosition, ref currentVelocity, 1f / acceleration);
+
+                // Finish rotation before moving towards exit 
+                if (Quaternion.Angle(transform.rotation, targetRotation) < 1f)
+                {
+                    Vector3 targetForwardPosition = targetPosition - hangarDoors.forward * 10f;
+                    transform.position = Vector3.SmoothDamp(transform.position, targetForwardPosition, ref currentVelocity, 1f / launchSpeed);
+                }
             }
 
-            if (isLifted && Quaternion.Angle(transform.rotation, targetRotation) < 1f && Vector3.Distance(transform.position, targetPosition) < 0.1f)
+            if (isRotating && Vector3.Distance(transform.position, targetPosition) < 0.1f)
             {
                 isLaunching = false;
             }
@@ -67,7 +79,8 @@ public class ShipLaunch : MonoBehaviour
     {
         Vector3 exitDirection = (hangarDoors.position - transform.position).normalized;
         targetPosition = hangarDoors.position + exitDirection * 10f;
-        targetRotation = Quaternion.LookRotation(exitDirection, Vector3.up);
         isLaunching = true;
+        hasLifted = false;
+        isRotating = false;
     }
 }
