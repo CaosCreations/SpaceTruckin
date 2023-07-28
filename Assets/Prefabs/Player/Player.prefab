@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1972979662120986136}
   - component: {fileID: 1972979662120986133}
+  - component: {fileID: 8154028225357696398}
   - component: {fileID: 2023624654147407220}
   - component: {fileID: 3662316477650013188}
   - component: {fileID: 6316198362758017279}
@@ -54,12 +55,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32efae1bbf32a9c4b9f9313206942c04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerFacingDirection: {x: 0, y: 0, z: 0}
   PlayerRigidbody: {fileID: 1786745985134268546}
-  animator: {fileID: 6316198362758017279}
+  MovementAnimation: {fileID: 8154028225357696398}
   maximumSpeed: 8
   acceleration: 0.5
-  CameraTransform: {fileID: 2017737145569339530}
-  PlayerFacingDirection: {x: 0, y: 0, z: 0}
+--- !u!114 &8154028225357696398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1972979662120986132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd7b13884b6ccb541ab17b977c25620c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 6316198362758017279}
 --- !u!114 &2023624654147407220
 MonoBehaviour:
   m_ObjectHideFlags: 0
