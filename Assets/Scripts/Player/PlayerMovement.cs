@@ -84,7 +84,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void DetermineSpeed()
     {
-        CurrentSpeed = Input.GetKey(PlayerConstants.SprintKey) ? PlayerConstants.RunSpeed : PlayerConstants.WalkSpeed;
+        if (Input.GetKeyDown(PlayerConstants.SprintKey) && !MovementAnimation.BabyMode && !BatteryInteractable.IsPlayerHoldingABattery)
+        {
+            CurrentSpeed = PlayerConstants.RunSpeed;
+        }
+        else
+        {
+            CurrentSpeed = PlayerConstants.WalkSpeed;
+        }
     }
 
     private void MovePlayer()

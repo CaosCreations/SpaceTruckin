@@ -10,9 +10,19 @@ public class PlayerMovementAnimation : MonoBehaviour
 
     private Dictionary<Vector3, string[]> parameterMap;
 
+    [Header("Cutscene settings")]
+    [SerializeField] private string babyStartCutsceneName;
+    [SerializeField] private string babyStopCutsceneName;
+    public bool BabyMode => parameterMap == AnimationConstants.BabyMovementAnimationMap;
+
     private void Awake()
     {
         parameterMap = AnimationConstants.PlayerMovementAnimationMap;
+    }
+
+    private void Start()
+    {
+        SingletonManager.EventService.Add<OnCutsceneFinishedEvent>(OnCutsceneFinishedHandler);
     }
 
     public void SetDirection()
@@ -39,8 +49,14 @@ public class PlayerMovementAnimation : MonoBehaviour
 
     public void OnCutsceneFinishedHandler(OnCutsceneFinishedEvent evt)
     {
-        // TODO: Could be more than one cutscene 
-        //paramMap = evt.Cutscene.Name == "OpeningCutsceneSplinted" ? AnimationConstants.BabyMovementAnimationMap : AnimationConstants.PlayerMovementAnimationMap;
+        if (parameterMap == AnimationConstants.PlayerMovementAnimationMap && evt.Cutscene.Name == babyStartCutsceneName)
+        {
+            parameterMap = AnimationConstants.BabyMovementAnimationMap;
+        }
+        else if (parameterMap == AnimationConstants.BabyMovementAnimationMap && evt.Cutscene.Name == babyStopCutsceneName)
+        {
+            parameterMap = AnimationConstants.PlayerMovementAnimationMap;
+        }
     }
 
     private void FixedUpdate()
