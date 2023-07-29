@@ -89,4 +89,9 @@ public partial class Pilot : ScriptableObject
             pilotName = string.Empty;
         }
     }
+
+    public override string ToString()
+    {
+        return $"Pilot \"{Name}\"";
+    }
 }

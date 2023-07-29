@@ -184,6 +184,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
             if (pilot.HasLeft && pilot.IsHired)
             {
                 pilot.IsHired = false;
+                Debug.Log($"Current date {CalendarManager.CurrentDate} has reached {pilot}'s leaving date.");
             }
         }
     }
