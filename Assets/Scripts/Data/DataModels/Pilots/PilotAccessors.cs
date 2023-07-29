@@ -54,6 +54,7 @@ public partial class Pilot
     {
         get => saveData.IsHired; set { saveData.IsHired = value; }
     }
+    public bool HasLeft => leavingDate > new Date(1, 1, 1) && CalendarManager.CurrentDate >= leavingDate;
     public bool HasMission => PilotsManager.PilotHasMission(this);
     public bool IsOnMission => PilotsManager.PilotHasMissionInProgress(this);
     public Mission CurrentMission => MissionsManager.GetMission(this);

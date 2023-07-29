@@ -4,7 +4,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Text))]
 public class DateTimeText : MonoBehaviour
 {
-    // Todo: Change to TMP 
+    // TODO: Change to TMP 
     [SerializeField]
     private Text dateTimeText;
 

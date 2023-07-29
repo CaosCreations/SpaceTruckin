@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Events;
+using System;
 using System.Linq;
 using UnityEngine;
 
@@ -27,6 +28,11 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
             // Randomise pilots once required data has loaded 
             PilotAssetsManager.OnPilotTextDataLoaded += RandomisePilots;
         }
+    }
+
+    private void Start()
+    {
+        SingletonManager.EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
     }
 
     public void Init()
@@ -59,7 +65,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
 
         if (pilot.CanGainAttributePoint)
         {
-            // Todo: Replace this choice with player input when the UI is done. 
+            // TODO: Replace this choice with player input when the UI is done. 
             PilotAttributeType attributeType = PilotUtils.GetRandomAttributeType();
 
             GainAttributePoints(pilot, attributeType);
@@ -169,6 +175,17 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
     public static Pilot GetPilotByShip(Ship ship)
     {
         return Instance.Pilots.FirstOrDefault(pilot => pilot.Ship == ship);
+    }
+
+    private void OnEndOfDayHandler(OnEndOfDayEvent evt)
+    {
+        foreach (var pilot in Pilots)
+        {
+            if (pilot.HasLeft && pilot.IsHired)
+            {
+                pilot.IsHired = false;
+            }
+        }
     }
 
     #region Persistence

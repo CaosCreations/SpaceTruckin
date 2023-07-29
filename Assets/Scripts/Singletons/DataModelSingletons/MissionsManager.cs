@@ -88,7 +88,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
                 scheduled.Mission.ThankYouMessage.IsUnlocked = true;
             }
 
-            // Todo: Success/failure of mission affects client relationship change?*
+            // TODO: Success/failure of mission affects client relationship change?*
 
             // Improve relationship with the client of the mission.
             DialogueDatabaseManager.AddToActorFondness(scheduled.Mission.Customer, scheduled.Mission.FondnessGranted);
@@ -97,7 +97,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         // Success of the mission depends on factors such as Pilot traits
         scheduled.Mission.WasSuccessful = DetermineIfMissionWasSuccessful(scheduled);
 
-        // Todo: Don't increment if mission failed?*
+        // TODO: Don't increment if mission failed?*
         scheduled.Mission.NumberOfCompletions++;
 
         // Instantiate an Archived Mission object to store the stats of the completed Mission.
@@ -107,7 +107,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         // The Archived Mission fields are set throughout the outcome processing.
         ProcessMissionOutcomes(scheduled);
 
-        // Todo: Don't increment if mission failed?* 
+        // TODO: Don't increment if mission failed?* 
         scheduled.Pilot.MissionsCompleted++;
 
         scheduled.MissionToArchive.ArchivedPilotInfo.MissionsCompletedAtTimeOfMission = scheduled.Pilot.MissionsCompleted;
