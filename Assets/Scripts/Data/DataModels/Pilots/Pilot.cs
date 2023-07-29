@@ -33,6 +33,7 @@ public partial class Pilot : ScriptableObject
     [SerializeField] private Ship ship;
     [SerializeField] private Sprite avatar;
     [SerializeField] private PilotTrait[] traits;
+    [SerializeField] private Date leavingDate;
 
     [Header("Data to update IN GAME")]
     [SerializeField] private PilotSaveData saveData;
@@ -87,5 +88,10 @@ public partial class Pilot : ScriptableObject
             // Random pilot cannot have pre-declared name 
             pilotName = string.Empty;
         }
+    }
+
+    public override string ToString()
+    {
+        return $"Pilot \"{Name}\"";
     }
 }
