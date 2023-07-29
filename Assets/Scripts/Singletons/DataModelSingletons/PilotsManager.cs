@@ -100,7 +100,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
 
     public static Pilot[] HiredPilots => Instance.Pilots.Where(p => p != null && p.IsHired).ToArray();
 
-    public static Pilot[] PilotsForHire => Instance.Pilots.Where(p => p != null && !p.IsHired).ToArray();
+    public static Pilot[] PilotsForHire => Instance.Pilots.Where(p => p != null && !p.IsHired && !p.HasLeft).ToArray();
 
     public static Pilot[] PilotsInQueue => Instance.Pilots
             .Where(p => p.Ship.IsInQueue)
