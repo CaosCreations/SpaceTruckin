@@ -36,7 +36,7 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
             if (cutscenePlayer.VirtualCamera == null || cutscenePlayer.PlayableDirector.state == PlayState.Playing)
                 continue;
 
-            cutscenePlayer.VirtualCamera.Priority = 0;
+            //cutscenePlayer.VirtualCamera.Priority = 0;
         }
     }
 
@@ -58,7 +58,7 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
     private void OnTimelineStartedHandler()
     {
         PlayerManager.EnterPausedState(false);
-        currentCutscenePlayer.VirtualCamera.Priority = currentCutscenePlayer.Cutscene.PriorityOnStart;
+        //currentCutscenePlayer.VirtualCamera.Priority = currentCutscenePlayer.Cutscene.PriorityOnStart;
         currentCutscenePlayer.VirtualCamera.Follow = PlayerManager.PlayerObject.transform;
 
         var cutscene = GetCutsceneByPlayableAsset(currentCutscenePlayer.PlayableDirector.playableAsset);
@@ -74,7 +74,7 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
     private void OnTimelineFinishedHandler()
     {
-        currentCutscenePlayer.VirtualCamera.Priority = currentCutscenePlayer.Cutscene.PriorityOnFinish;
+        //currentCutscenePlayer.VirtualCamera.Priority = currentCutscenePlayer.Cutscene.PriorityOnFinish;
         if (currentCutscenePlayer.Cutscene.ResetFollowOnFinish)
         {
             currentCutscenePlayer.VirtualCamera.Follow = null;
