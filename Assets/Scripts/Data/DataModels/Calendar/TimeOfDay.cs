@@ -19,6 +19,6 @@ public struct TimeOfDay
 
     public enum Phase
     {
-        Morning, Evening
+        Morning, Evening, Either
     }
 }

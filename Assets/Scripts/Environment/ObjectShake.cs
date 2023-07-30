@@ -5,9 +5,17 @@ public class ObjectShake : MonoBehaviour
     [Header("Shake settings")]
     [Range(0f, 1f)] public float ShakeIntensity = 0.1f;
     [Range(0f, 1f)] public float ShakeRandomness = 0.1f;
+    [Range(0f, 1f)] public float ShakeSmoothening;
 
-    private Vector3 originalPosition;
-    private bool isShaking;
+    public Vector3 originalPosition;
+    private Vector3 shakeVelocity;
+    private bool isShaking = false;
+    [SerializeField] private bool start;
+
+    private void Awake()
+    {
+        originalPosition = transform.localPosition;
+    }
 
     private void Start()
     {
@@ -16,10 +24,16 @@ public class ObjectShake : MonoBehaviour
 
     private void Update()
     {
+        if (start)
+        {
+            StartShaking();
+            start = false;
+        }
+
         if (isShaking)
         {
-            Vector3 newPosition = originalPosition + ShakeIntensity * ShakeRandomness * Random.insideUnitSphere;
-            transform.localPosition = newPosition;
+            Vector3 targetPosition = originalPosition + ShakeIntensity * ShakeRandomness * Random.insideUnitSphere;
+            transform.localPosition = Vector3.SmoothDamp(transform.localPosition, targetPosition, ref shakeVelocity, ShakeSmoothening);
         }
     }
 
