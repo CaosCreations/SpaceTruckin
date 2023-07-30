@@ -21,5 +21,16 @@ public class AutoRotate : MonoBehaviour
         transform.Rotate(
             rotFactor * Time.deltaTime
        );
+
+
+
+
+
+   
+
+
+
+
+
     }
 }
