@@ -40,6 +40,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2017737145569339530}
+  - {fileID: 1641430028156319372}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -73,6 +74,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 6316198362758017279}
+  babyStartCutsceneName: 
+  babyStopCutsceneName: 
 --- !u!114 &2023624654147407220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -363,3 +366,103 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7389477075848068926}
   m_Enabled: 1
+--- !u!1001 &452632345286340557
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1972979662120986136}
+    m_Modifications:
+    - target: {fileID: 1193336604577388865, guid: 6c38b90f13add0b4883b13cb4bb1ba40,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1193336604577388865, guid: 6c38b90f13add0b4883b13cb4bb1ba40,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1193336604577388865, guid: 6c38b90f13add0b4883b13cb4bb1ba40,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.580017
+      objectReference: {fileID: 0}
+    - target: {fileID: 1193336604577388865, guid: 6c38b90f13add0b4883b13cb4bb1ba40,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7.279999
+      objectReference: {fileID: 0}
+    - target: {fileID: 1193336604577388865, guid: 6c38b90f13add0b4883b13cb4bb1ba40,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9848078
+      objectReference: {fileID: 0}
+    - target: {fileID: 1193336604577388865, guid: 6c38b90f13add0b4883b13cb4bb1ba40,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.17364816
+      objectReference: {fileID: 0}
+    - target: {fileID: 1193336604577388865, guid: 6c38b90f13add0b4883b13cb4bb1ba40,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1193336604577388865, guid: 6c38b90f13add0b4883b13cb4bb1ba40,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1193336604577388865, guid: 6c38b90f13add0b4883b13cb4bb1ba40,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1193336604577388865, guid: 6c38b90f13add0b4883b13cb4bb1ba40,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1193336604577388865, guid: 6c38b90f13add0b4883b13cb4bb1ba40,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4635051991597676634, guid: 6c38b90f13add0b4883b13cb4bb1ba40,
+        type: 3}
+      propertyPath: m_Name
+      value: REALCUTSCAM
+      objectReference: {fileID: 0}
+    - target: {fileID: 4635051991597676634, guid: 6c38b90f13add0b4883b13cb4bb1ba40,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8010545060555677355, guid: 6c38b90f13add0b4883b13cb4bb1ba40,
+        type: 3}
+      propertyPath: m_Follow
+      value: 
+      objectReference: {fileID: 1972979662120986136}
+    - target: {fileID: 8010545060555677355, guid: 6c38b90f13add0b4883b13cb4bb1ba40,
+        type: 3}
+      propertyPath: m_Priority
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8010545060555677355, guid: 6c38b90f13add0b4883b13cb4bb1ba40,
+        type: 3}
+      propertyPath: m_Lens.m_SensorSize.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8010545060555677355, guid: 6c38b90f13add0b4883b13cb4bb1ba40,
+        type: 3}
+      propertyPath: m_Lens.m_SensorSize.y
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6c38b90f13add0b4883b13cb4bb1ba40, type: 3}
+--- !u!4 &1641430028156319372 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1193336604577388865, guid: 6c38b90f13add0b4883b13cb4bb1ba40,
+    type: 3}
+  m_PrefabInstance: {fileID: 452632345286340557}
+  m_PrefabAsset: {fileID: 0}
