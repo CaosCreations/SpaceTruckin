@@ -45,10 +45,10 @@ public class PlayerMovementAnimation : MonoBehaviour
         animator.SetBool(AnimationConstants.AnimationLeftParameter, false);
         animator.SetBool(AnimationConstants.AnimationDownParameter, false);
         animator.SetBool(AnimationConstants.AnimationRightParameter, false);
-        animator.SetBool(AnimationConstants.BabyUpParameter, false);
-        animator.SetBool(AnimationConstants.BabyLeftParameter, false);
-        animator.SetBool(AnimationConstants.BabyDownParameter, false);
-        animator.SetBool(AnimationConstants.BabyRightParameter, false);
+        //animator.SetBool(AnimationConstants.BabyUpParameter, false);
+        //animator.SetBool(AnimationConstants.BabyLeftParameter, false);
+        //animator.SetBool(AnimationConstants.BabyDownParameter, false);
+        //animator.SetBool(AnimationConstants.BabyRightParameter, false);
     }
 
     public void OnCutsceneFinishedHandler(OnCutsceneFinishedEvent evt)
