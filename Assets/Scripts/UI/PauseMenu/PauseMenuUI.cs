@@ -27,7 +27,8 @@ public class PauseMenuUI : UICanvasBase
 
         mainButton.AddOnClick(() => SwitchPanel(PauseMenuPanel.Main));
         optionsButton.AddOnClick(() => SwitchPanel(PauseMenuPanel.Options));
-        mainMenuButton.AddOnClick(GoToTitleScreen);
+        // Disabled for the demo
+        //mainMenuButton.AddOnClick(GoToTitleScreen);
     }
 
     private void OnEnable()

@@ -57,7 +57,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4bef16fa04eb364f98c0561b1bc702b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <CanvasTutorialPrefab>k__BackingField: {fileID: 0}
+  <CanvasType>k__BackingField: 0
+  <CanvasTutorialsByDate>k__BackingField: []
   <ShowUniversalCanvas>k__BackingField: 0
   <CameraZoomSettings>k__BackingField:
     <TargetDistance>k__BackingField: 0
@@ -73,7 +74,6 @@ MonoBehaviour:
   playerImage: {fileID: 7385375443993020192}
   playerNameText: {fileID: 4791489955668472465}
   mainMenuButton: {fileID: 5027335737270804207}
-  quitGameButton: {fileID: 0}
 --- !u!223 &8710192863948225717
 Canvas:
   m_ObjectHideFlags: 0
@@ -572,7 +572,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2362057184568204394
 RectTransform:
   m_ObjectHideFlags: 0
