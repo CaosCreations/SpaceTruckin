@@ -14,7 +14,10 @@ public class ClockManager : MonoBehaviour
 
     private static bool clockStopped;
     private static bool isEvening;
-    
+
+    [SerializeField]
+    private Cutscene clockStartCutscene;
+
     [SerializeField] 
     private bool showOnGui = false;
 
@@ -43,6 +46,7 @@ public class ClockManager : MonoBehaviour
         SingletonManager.EventService.Add<OnPlayerPausedEvent>(OnPlayerPausedHandler);
         SingletonManager.EventService.Add<OnPlayerUnpausedEvent>(OnPlayerUnpausedHandler);
         SingletonManager.EventService.Add<OnUITransitionEndedEvent>(OnUITransitionEndedHandler);
+        SingletonManager.EventService.Add<OnCutsceneFinishedEvent>(OnCutsceneFinishedHandler);
     }
 
     // Calculate how quick the clock should tick relative to real time 
@@ -160,6 +164,14 @@ public class ClockManager : MonoBehaviour
             return;
 
         StartClock();
+    }
+
+    private void OnCutsceneFinishedHandler(OnCutsceneFinishedEvent evt)
+    {
+        if (evt.Cutscene == clockStartCutscene)
+        {
+            StartClock();
+        }
     }
 
     private void OnUITransitionEndedHandler(OnUITransitionEndedEvent evt)
