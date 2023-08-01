@@ -11,6 +11,9 @@ public class InGameHUDManager : MonoBehaviour
     [SerializeField]
     private DateTimeText dateTimeText;
 
+    [SerializeField]
+    private Cutscene dateTimeUIActivateCutscene;
+
     private void Awake()
     {
         if (Instance != null)
@@ -24,13 +27,14 @@ public class InGameHUDManager : MonoBehaviour
 
     private static bool IsDateTimeUIActive()
     {
-        return SceneLoadingManager.IsSceneLoaded(SceneType.MainStation) && CalendarManager.CurrentDate != new Date(1, 1, 1);
+        return SceneLoadingManager.IsSceneLoaded(SceneType.MainStation) && CalendarManager.CurrentDate > new Date(2, 1, 1);
     }
 
     private void Start()
     {
         SingletonManager.EventService.Add<OnSceneLoadedEvent>(OnSceneLoadedHandler);
         SingletonManager.EventService.Add<OnMorningStartEvent>(OnMorningStartHandler);
+        SingletonManager.EventService.Add<OnCutsceneFinishedEvent>(OnCutsceneFinishedHandler);
         SetActive();
     }
 
@@ -53,5 +57,13 @@ public class InGameHUDManager : MonoBehaviour
     private void OnMorningStartHandler()
     {
         SetActive();
+    }
+
+    private void OnCutsceneFinishedHandler(OnCutsceneFinishedEvent evt)
+    {
+        if (evt.Cutscene == dateTimeUIActivateCutscene)
+        {
+            SetActive(true);
+        }
     }
 }
