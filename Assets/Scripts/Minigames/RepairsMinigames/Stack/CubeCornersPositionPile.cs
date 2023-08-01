@@ -4,24 +4,27 @@ using UnityEngine;
 
 public class CubeCornersPositionPile
 {
-    public List<CubeCornersPositionTracker> CubeCornersPositionList { get; private set; } = new List<CubeCornersPositionTracker>();
+    public CubeCornersPositionTracker TopCube { get; private set; }
 
-    public void Add(CubeCornersPositionTracker cubeCornersPositionTracker)
+    public CubeCornersPositionTracker BottomCube { get; private set; }
+
+    public void Add(CubeCornersPositionTracker cubeToAdd)
     {
-        if (CubeCornersPositionList.Count < 2)
-        {
-            CubeCornersPositionList.Add(cubeCornersPositionTracker);
-        }
+        if (BottomCube == null)
+            BottomCube = cubeToAdd;
+
+        else if (TopCube == null)
+            TopCube = cubeToAdd;
 
         else
         {
-            CubeCornersPositionList[0] = CubeCornersPositionList[1];
-            CubeCornersPositionList[1] = cubeCornersPositionTracker;
+            BottomCube = TopCube;
+            TopCube = cubeToAdd;
         }
     }
 
     public void ResetPile()
     {
-        CubeCornersPositionList.Clear();
+        TopCube = BottomCube = null;
     }
 }
