@@ -30,13 +30,12 @@ public class PlayerMovement : MonoBehaviour
     // Get input in Update 
     private void Update()
     {
-        if (PlayerManager.IsPaused)
+        if (PlayerManager.IsPaused || DialogueUtils.IsConversationActive)
         {
             return;
         }
 
-        if (IsPlayerBelowKillFloor()
-            || Input.GetKeyDown(PlayerConstants.RespawnKey))
+        if (IsPlayerBelowKillFloor() || Input.GetKeyDown(PlayerConstants.RespawnKey))
         {
             RespawnPlayer();
             return;
