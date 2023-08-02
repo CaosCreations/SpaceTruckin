@@ -9,13 +9,6 @@ public class SceneLoadFadeIn : MonoBehaviour
     private Texture2D fadeTexture;
     private float fadeAlpha = 1.0f;
 
-    private void Start()
-    {
-        fadeTexture = new Texture2D(1, 1);
-        fadeTexture.SetPixel(0, 0, fadeColor);
-        fadeTexture.Apply();
-    } 
-
     private void OnGUI()
     {
         GUI.color = new Color(GUI.color.r, GUI.color.g, GUI.color.b, fadeAlpha);
@@ -24,6 +17,9 @@ public class SceneLoadFadeIn : MonoBehaviour
 
     public void StartFadeIn()
     {
+        fadeTexture = new Texture2D(1, 1);
+        fadeTexture.SetPixel(0, 0, fadeColor);
+        fadeTexture.Apply();
         StartCoroutine(FadeIn());
     }
 
