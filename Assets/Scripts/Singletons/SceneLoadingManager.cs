@@ -24,7 +24,7 @@ public class SceneLoadingManager : MonoBehaviour
         { SceneType.TileMinigame, "TileMinigameScene" }
     };
 
-    private readonly HashSet<string> loadedSceneNames = new();
+    private SceneLoadFadeIn fadeIn;
 
     private void Awake()
     {
@@ -35,6 +35,7 @@ public class SceneLoadingManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        fadeIn = GetComponent<SceneLoadFadeIn>();
     }
 
     private void Start()
@@ -54,7 +55,10 @@ public class SceneLoadingManager : MonoBehaviour
         if (SingletonManager.Instance == null)
             return;
 
-        loadedSceneNames.Add(scene.name);
+        var sceneType = GetSceneTypeByName(scene.name);
+        if (sceneType == SceneType.MainStation)
+            fadeIn.StartFadeIn();
+
         SingletonManager.EventService.Dispatch(new OnSceneLoadedEvent(scene));
     }
 
@@ -63,7 +67,6 @@ public class SceneLoadingManager : MonoBehaviour
         if (SingletonManager.Instance == null)
             return;
 
-        loadedSceneNames.Remove(scene.name);
         SingletonManager.EventService.Dispatch(new OnSceneUnloadedEvent(scene));
     }
 
