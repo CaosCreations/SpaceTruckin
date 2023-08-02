@@ -119,7 +119,7 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(PlayerConstants.PauseKey))
+        if (Input.GetKeyDown(PlayerConstants.PauseKey) && !StationCameraManager.IsLiveCameraZooming)
         {
             UICanvasBase canvas = GetCanvasByType(UICanvasType.PauseMenu);
             ShowCanvas(canvas);
@@ -136,7 +136,7 @@ public class UIManager : MonoBehaviour
         }
 
         // Don't clear canvases if there is KeyCode override in place, e.g. in Submenus
-        if (GetNonOverriddenKeyDown(PlayerConstants.ExitKey))
+        if (GetNonOverriddenKeyDown(PlayerConstants.ExitKey) && !StationCameraManager.IsLiveCameraZooming)
         {
             ClearCanvases();
         }

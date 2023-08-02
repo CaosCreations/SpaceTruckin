@@ -10,6 +10,8 @@ public class StationCameraManager : MonoBehaviour
     private CinemachineLiveCameraZoom liveCameraZoom;
     private CinemachineLiveCameraShake liveCameraShake;
 
+    public static bool IsLiveCameraZooming;
+
     private void Awake()
     {
         if (Instance != null)

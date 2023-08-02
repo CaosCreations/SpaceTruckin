@@ -49,6 +49,7 @@ public class CinemachineLiveCameraZoom : CinemachineLiveCameraBehaviour
 
     private IEnumerator ZoomInCameraRoutine(float targetDistance, float speed, Action action = null, bool resetAfter = false, bool hidePlayer = false, bool lockPlayer = false)
     {
+        StationCameraManager.IsLiveCameraZooming = true;
         UpdateActiveCamera();
 
         if (hidePlayer)
@@ -84,6 +85,7 @@ public class CinemachineLiveCameraZoom : CinemachineLiveCameraBehaviour
         {
             ResetZoom();
         }
+        StationCameraManager.IsLiveCameraZooming = false;
     }
 
     private void Update()
