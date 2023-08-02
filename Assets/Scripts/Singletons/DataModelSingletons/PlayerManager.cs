@@ -82,17 +82,19 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
     private void RegisterDialogueEvents()
     {
-        if (DialogueManager.Instance != null)
-        {
-            // Pause when a conversation starts and unpause when it ends
-            DialogueManager.Instance.conversationStarted += (t) =>
-            {
-                EnterPausedState();
-                PlayerAnimationManager.ResetBoolParameters();
-            };
+        SingletonManager.EventService.Add<OnConversationStartedEvent>(OnConversationStartedHandler);
+        SingletonManager.EventService.Add<OnConversationEndedEvent>(OnConversationEndedHandler);
+    }
 
-            DialogueManager.Instance.conversationEnded += (t) => ExitPausedState();
-        }
+    private void OnConversationStartedHandler(OnConversationStartedEvent evt)
+    {
+        EnterPausedState();
+        PlayerAnimationManager.ResetBoolParameters();
+    }
+
+    private void OnConversationEndedHandler(OnConversationEndedEvent evt)
+    {
+        ExitPausedState();
     }
 
     private void RegisterSceneChangeEvents()
