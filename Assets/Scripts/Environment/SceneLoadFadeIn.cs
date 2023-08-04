@@ -4,6 +4,7 @@ using UnityEngine;
 public class SceneLoadFadeIn : MonoBehaviour
 {
     public float fadeDuration = 1.0f;
+    public float startDelayDuration = 1.0f;
     public Color fadeColor = Color.black;
     public float noiseIntensity = 0.2f;
     public float noiseSpeed = 1.0f;
@@ -37,7 +38,7 @@ public class SceneLoadFadeIn : MonoBehaviour
 
     private Texture2D CreateProceduralTexture()
     {
-        Texture2D texture = new(Screen.width, Screen.height);
+        Texture2D texture = new Texture2D(Screen.width, Screen.height);
         Color[] pixels = new Color[Screen.width * Screen.height];
 
         for (int x = 0; x < Screen.width; x++)
@@ -52,15 +53,15 @@ public class SceneLoadFadeIn : MonoBehaviour
             }
         }
 
-#pragma warning disable UNT0017 // SetPixels invocation is slow
         texture.SetPixels(pixels);
-#pragma warning restore UNT0017 // SetPixels invocation is slow
         texture.Apply();
         return texture;
     }
 
     private IEnumerator FadeIn()
     {
+        yield return new WaitForSeconds(startDelayDuration);
+
         float elapsedTime = 0.0f;
         while (elapsedTime < fadeDuration)
         {
