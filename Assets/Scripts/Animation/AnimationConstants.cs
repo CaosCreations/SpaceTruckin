@@ -18,11 +18,10 @@ public static class AnimationConstants
     public const string NpcMorningParameter = "Morning";
     public const string NpcEveningParameter = "Evening";
 
-    // TODO: Add real values 
-    public const string BabyUpParameter = "";
-    public const string BabyLeftParameter = "";
-    public const string BabyDownParameter = "";
-    public const string BabyRightParameter = "";
+    public const string BabyUpParameter = "WalkUpHdBaby";
+    public const string BabyLeftParameter = "WalkLeftHdBaby";
+    public const string BabyDownParameter = "walkDownHdBaby";
+    public const string BabyRightParameter = "WalkRightHdBaby";
 
     // Input vectors 
     public static readonly Vector3 Vector3UpLeft = new(-1f, 1f);

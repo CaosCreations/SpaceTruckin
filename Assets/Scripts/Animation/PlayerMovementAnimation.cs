@@ -15,6 +15,9 @@ public class PlayerMovementAnimation : MonoBehaviour
     [SerializeField] private string babyStopCutsceneName;
     public bool BabyMode => parameterMap == AnimationConstants.BabyMovementAnimationMap;
 
+    [SerializeField]
+    private bool manualSwitchMode;
+
     private void Awake()
     {
         parameterMap = AnimationConstants.PlayerMovementAnimationMap;
@@ -25,30 +28,27 @@ public class PlayerMovementAnimation : MonoBehaviour
         SingletonManager.EventService.Add<OnCutsceneFinishedEvent>(OnCutsceneFinishedHandler);
     }
 
-    public void SetDirection()
+    public void SetParams()
     {
-        ResetDirection();
+        ResetParams();
 
         if (parameterMap.ContainsKey(PlayerMovement.MovementVector))
         {
-            // Get the matching parameters for the player's current direction  
             string[] activeParams = parameterMap[PlayerMovement.MovementVector];
-
-            // Update the state machine 
             Array.ForEach(activeParams, p => animator.SetBool(p, true));
         }
     }
-
-    public void ResetDirection()
+        
+    public void ResetParams()
     {
         animator.SetBool(AnimationConstants.AnimationUpParameter, false);
         animator.SetBool(AnimationConstants.AnimationLeftParameter, false);
         animator.SetBool(AnimationConstants.AnimationDownParameter, false);
         animator.SetBool(AnimationConstants.AnimationRightParameter, false);
-        //animator.SetBool(AnimationConstants.BabyUpParameter, false);
-        //animator.SetBool(AnimationConstants.BabyLeftParameter, false);
-        //animator.SetBool(AnimationConstants.BabyDownParameter, false);
-        //animator.SetBool(AnimationConstants.BabyRightParameter, false);
+        animator.SetBool(AnimationConstants.BabyUpParameter, false);
+        animator.SetBool(AnimationConstants.BabyLeftParameter, false);
+        animator.SetBool(AnimationConstants.BabyDownParameter, false);
+        animator.SetBool(AnimationConstants.BabyRightParameter, false);
     }
 
     public void OnCutsceneFinishedHandler(OnCutsceneFinishedEvent evt)
@@ -72,6 +72,15 @@ public class PlayerMovementAnimation : MonoBehaviour
         else
         {
             animator.SetBool(AnimationConstants.AnimationRunParameter, false);
+        }
+    }
+
+    private void Update()
+    {
+        if (manualSwitchMode)
+        {
+            parameterMap = parameterMap == AnimationConstants.PlayerMovementAnimationMap ? AnimationConstants.BabyMovementAnimationMap : AnimationConstants.PlayerMovementAnimationMap;
+            manualSwitchMode = false;
         }
     }
 }

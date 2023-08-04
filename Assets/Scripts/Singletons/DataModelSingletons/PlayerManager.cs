@@ -189,7 +189,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
     public static void EnterPausedState(bool stopClock = true)
     {
         if (PlayerMovement != null)
-            PlayerMovement.MovementAnimation.ResetDirection();
+            PlayerMovement.MovementAnimation.ResetParams();
 
         IsPaused = true;
         SingletonManager.EventService.Dispatch(new OnPlayerPausedEvent(stopClock));

@@ -52,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
             PlayerFacingDirection = new Vector3(MovementVector.x, 0f, MovementVector.y);
         }
 
-        MovementAnimation.SetDirection();
+        MovementAnimation.SetParams();
     }
 
     // Move player in FixedUpdate 
