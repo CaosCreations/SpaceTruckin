@@ -38,8 +38,8 @@ public class SceneLoadFadeIn : MonoBehaviour
 
     private Texture2D CreateProceduralTexture()
     {
-        Texture2D texture = new Texture2D(Screen.width, Screen.height);
-        Color[] pixels = new Color[Screen.width * Screen.height];
+        Texture2D texture = new(Screen.width, Screen.height);
+        Color32[] pixels = new Color32[Screen.width * Screen.height];
 
         for (int x = 0; x < Screen.width; x++)
         {
@@ -48,12 +48,12 @@ public class SceneLoadFadeIn : MonoBehaviour
                 float noiseX = Mathf.PerlinNoise((float)x / Screen.width * noiseSpeed, (float)y / Screen.height * noiseSpeed);
                 float noiseY = Mathf.PerlinNoise((float)y / Screen.height * noiseSpeed, (float)x / Screen.width * noiseSpeed);
                 float noise = (noiseX + noiseY) * 0.5f * noiseIntensity;
-                Color color = fadeColor + new Color(noise, noise, noise, 0f);
+                Color32 color = (Color32)(fadeColor + new Color(noise, noise, noise, 0f));
                 pixels[x + y * Screen.width] = color;
             }
         }
 
-        texture.SetPixels(pixels);
+        texture.SetPixels32(pixels);
         texture.Apply();
         return texture;
     }
