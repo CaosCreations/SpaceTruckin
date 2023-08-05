@@ -129,6 +129,13 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         var playerAnimator = PlayerObject.GetComponent<Animator>();
         var animatorSettingsMapper = new PlayerAnimatorSettingsMapper();
         animatorSettingsMapper.MapSettings(playerAnimator, PlayerAnimatorSettings);
+
+        SetStartingDataValues();
+    }
+
+    private static void SetStartingDataValues()
+    {
+        Instance.playerData.SetStartingValues();
     }
 
     public bool CanSpendMoney(long amount)

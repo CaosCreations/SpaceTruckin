@@ -69,6 +69,19 @@ public class PlayerData : ScriptableObject, IDataModel
         get => saveData.animatorSettings; set => saveData.animatorSettings = value;
     }
 
+    [Header("Starting values")]
+    public long PlayerStartingMoney;
+    public int PlayerStartingLicencePoints;
+    public int PlayerStartingRepairTools;
+
+    public void SetStartingValues()
+    {
+        PlayerMoney = PlayerStartingMoney;
+        PlayerTotalMoneyAcquired = PlayerMoney;
+        PlayerLicencePoints = PlayerStartingLicencePoints;
+        PlayerRepairTools = PlayerStartingRepairTools;
+    }
+
     public void SaveData()
     {
         DataUtils.SaveFileAsync(name, FolderName, saveData);
