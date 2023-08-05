@@ -3871,7 +3871,7 @@ PrefabInstance:
     - target: {fileID: 461582358313822400, guid: 267ca3cbf973c224ab29b3c37a321f6c,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.9999999
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 461582358313822400, guid: 267ca3cbf973c224ab29b3c37a321f6c,
         type: 3}
@@ -4830,7 +4830,7 @@ PrefabInstance:
     - target: {fileID: 5559016574968878716, guid: 267ca3cbf973c224ab29b3c37a321f6c,
         type: 3}
       propertyPath: m_Size
-      value: 0.9999999
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5559016574968878716, guid: 267ca3cbf973c224ab29b3c37a321f6c,
         type: 3}
@@ -4865,7 +4865,7 @@ PrefabInstance:
     - target: {fileID: 5977437756422009644, guid: 267ca3cbf973c224ab29b3c37a321f6c,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.000061035156
+      value: -0.000061035156
       objectReference: {fileID: 0}
     - target: {fileID: 5977437756422009644, guid: 267ca3cbf973c224ab29b3c37a321f6c,
         type: 3}
@@ -4951,6 +4951,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661610404606036801, guid: 267ca3cbf973c224ab29b3c37a321f6c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -25.75
       objectReference: {fileID: 0}
     - target: {fileID: 6755594719330855413, guid: 267ca3cbf973c224ab29b3c37a321f6c,
         type: 3}
@@ -5044,6 +5049,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 12800000, guid: 75e427007e42f1d4b9bc5e21ba864cd9,
         type: 3}
+    - target: {fileID: 7737520784026660684, guid: 267ca3cbf973c224ab29b3c37a321f6c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -15
+      objectReference: {fileID: 0}
     - target: {fileID: 7802878085876732124, guid: 267ca3cbf973c224ab29b3c37a321f6c,
         type: 3}
       propertyPath: m_Color.b
@@ -6851,6 +6861,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hudCanvas: {fileID: 6465776053962152344}
   dateTimeText: {fileID: 7292932348266536710}
+  dateTimeUIActivateCutscene: {fileID: 0}
 --- !u!224 &7205830442125262990 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2279445269760763300, guid: 3dc8a49308fa33b4bb83208707e81b9e,
