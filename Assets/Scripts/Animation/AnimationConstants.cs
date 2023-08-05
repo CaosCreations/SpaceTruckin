@@ -18,11 +18,7 @@ public static class AnimationConstants
     public const string NpcMorningParameter = "Morning";
     public const string NpcEveningParameter = "Evening";
 
-    // TODO: Add real values 
-    public const string BabyUpParameter = "";
-    public const string BabyLeftParameter = "";
-    public const string BabyDownParameter = "";
-    public const string BabyRightParameter = "";
+    public const string HoldingBabyParameter = "BabyHold";
 
     // Input vectors 
     public static readonly Vector3 Vector3UpLeft = new(-1f, 1f);
@@ -40,15 +36,6 @@ public static class AnimationConstants
     public static readonly string[] MovementAnimationDownRightMap = new[] { AnimationDownParameter, AnimationRightParameter };
     public static readonly string[] MovementAnimationRightMap = new[] { AnimationRightParameter };
 
-    public static readonly string[] BabyAnimationUpMap = new[] { BabyUpParameter };
-    public static readonly string[] BabyAnimationUpLeftMap = new[] { BabyUpParameter, BabyLeftParameter };
-    public static readonly string[] BabyAnimationUpRightMap = new[] { BabyUpParameter, BabyRightParameter };
-    public static readonly string[] BabyAnimationLeftMap = new[] { BabyLeftParameter };
-    public static readonly string[] BabyAnimationDownMap = new[] { BabyDownParameter };
-    public static readonly string[] BabyAnimationDownLeftMap = new[] { BabyDownParameter, BabyLeftParameter };
-    public static readonly string[] BabyAnimationDownRightMap = new[] { BabyDownParameter, BabyRightParameter };
-    public static readonly string[] BabyAnimationRightMap = new[] { BabyRightParameter };
-
     /// <summary>
     /// The relationships between animator parameter values and the player's movement vector.
     /// </summary>
@@ -62,18 +49,6 @@ public static class AnimationConstants
         { Vector3DownLeft, MovementAnimationDownLeftMap },
         { Vector3DownRight, MovementAnimationDownRightMap },
         { Vector3.right, MovementAnimationRightMap },
-    };
-
-    public static readonly Dictionary<Vector3, string[]> BabyMovementAnimationMap = new()
-    {
-        { Vector3.up, BabyAnimationUpMap },
-        { Vector3UpLeft, BabyAnimationUpLeftMap },
-        { Vector3UpRight, BabyAnimationUpRightMap },
-        { Vector3.left, BabyAnimationLeftMap },
-        { Vector3.down, BabyAnimationDownMap },
-        { Vector3DownLeft, BabyAnimationDownLeftMap },
-        { Vector3DownRight, BabyAnimationDownRightMap },
-        { Vector3.right, BabyAnimationRightMap },
     };
 
     public const string Player1ControllerName = "SprPlayernewAnim";

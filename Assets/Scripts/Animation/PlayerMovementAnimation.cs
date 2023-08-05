@@ -11,13 +11,17 @@ public class PlayerMovementAnimation : MonoBehaviour
     private Dictionary<Vector3, string[]> parameterMap;
 
     [Header("Cutscene settings")]
-    [SerializeField] private string babyStartCutsceneName;
-    [SerializeField] private string babyStopCutsceneName;
-    public bool BabyMode => parameterMap == AnimationConstants.BabyMovementAnimationMap;
+    [SerializeField] private Cutscene babyHoldStartCutscene;
+    [SerializeField] private Cutscene babyHoldStopCutscene;
+    public bool IsHoldingBaby { get; private set; }
+
+    [SerializeField]
+    private bool manualSwitchBabyMode;
 
     private void Awake()
     {
         parameterMap = AnimationConstants.PlayerMovementAnimationMap;
+        IsHoldingBaby = false;
     }
 
     private void Start()
@@ -25,53 +29,51 @@ public class PlayerMovementAnimation : MonoBehaviour
         SingletonManager.EventService.Add<OnCutsceneFinishedEvent>(OnCutsceneFinishedHandler);
     }
 
-    public void SetDirection()
+    public void SetParams()
     {
-        ResetDirection();
+        ResetParams();
+        animator.SetBool(AnimationConstants.HoldingBabyParameter, IsHoldingBaby);
+        animator.SetBool(AnimationConstants.AnimationRunParameter, PlayerManager.PlayerMovement.IsRunning);
 
         if (parameterMap.ContainsKey(PlayerMovement.MovementVector))
         {
-            // Get the matching parameters for the player's current direction  
             string[] activeParams = parameterMap[PlayerMovement.MovementVector];
-
-            // Update the state machine 
             Array.ForEach(activeParams, p => animator.SetBool(p, true));
         }
     }
 
-    public void ResetDirection()
+    public void ResetParams()
     {
         animator.SetBool(AnimationConstants.AnimationUpParameter, false);
         animator.SetBool(AnimationConstants.AnimationLeftParameter, false);
         animator.SetBool(AnimationConstants.AnimationDownParameter, false);
         animator.SetBool(AnimationConstants.AnimationRightParameter, false);
-        //animator.SetBool(AnimationConstants.BabyUpParameter, false);
-        //animator.SetBool(AnimationConstants.BabyLeftParameter, false);
-        //animator.SetBool(AnimationConstants.BabyDownParameter, false);
-        //animator.SetBool(AnimationConstants.BabyRightParameter, false);
     }
 
     public void OnCutsceneFinishedHandler(OnCutsceneFinishedEvent evt)
     {
-        if (parameterMap == AnimationConstants.PlayerMovementAnimationMap && evt.Cutscene.Name == babyStartCutsceneName)
+        if (evt.Cutscene == babyHoldStartCutscene)
         {
-            parameterMap = AnimationConstants.BabyMovementAnimationMap;
+            SwitchBabyHolding(true);
         }
-        else if (parameterMap == AnimationConstants.BabyMovementAnimationMap && evt.Cutscene.Name == babyStopCutsceneName)
+        else if (evt.Cutscene == babyHoldStopCutscene)
         {
-            parameterMap = AnimationConstants.PlayerMovementAnimationMap;
+            SwitchBabyHolding(false);
         }
     }
 
-    private void FixedUpdate()
+    private void SwitchBabyHolding(bool isHoldingBaby)
     {
-        if (parameterMap == AnimationConstants.PlayerMovementAnimationMap && Input.GetKey(PlayerConstants.SprintKey))
+        animator.Play("StandUpP");
+        IsHoldingBaby = isHoldingBaby;
+    }
+
+    private void Update()
+    {
+        if (manualSwitchBabyMode)
         {
-            animator.SetBool(AnimationConstants.AnimationRunParameter, true);
-        }
-        else
-        {
-            animator.SetBool(AnimationConstants.AnimationRunParameter, false);
+            SwitchBabyHolding(!IsHoldingBaby);
+            manualSwitchBabyMode = false;
         }
     }
 }

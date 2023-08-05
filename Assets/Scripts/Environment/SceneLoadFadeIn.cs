@@ -4,6 +4,7 @@ using UnityEngine;
 public class SceneLoadFadeIn : MonoBehaviour
 {
     public float fadeDuration = 1.0f;
+    public float startDelayDuration = 1.0f;
     public Color fadeColor = Color.black;
     public float noiseIntensity = 0.2f;
     public float noiseSpeed = 1.0f;
@@ -38,7 +39,7 @@ public class SceneLoadFadeIn : MonoBehaviour
     private Texture2D CreateProceduralTexture()
     {
         Texture2D texture = new(Screen.width, Screen.height);
-        Color[] pixels = new Color[Screen.width * Screen.height];
+        Color32[] pixels = new Color32[Screen.width * Screen.height];
 
         for (int x = 0; x < Screen.width; x++)
         {
@@ -47,20 +48,20 @@ public class SceneLoadFadeIn : MonoBehaviour
                 float noiseX = Mathf.PerlinNoise((float)x / Screen.width * noiseSpeed, (float)y / Screen.height * noiseSpeed);
                 float noiseY = Mathf.PerlinNoise((float)y / Screen.height * noiseSpeed, (float)x / Screen.width * noiseSpeed);
                 float noise = (noiseX + noiseY) * 0.5f * noiseIntensity;
-                Color color = fadeColor + new Color(noise, noise, noise, 0f);
+                Color32 color = (Color32)(fadeColor + new Color(noise, noise, noise, 0f));
                 pixels[x + y * Screen.width] = color;
             }
         }
 
-#pragma warning disable UNT0017 // SetPixels invocation is slow
-        texture.SetPixels(pixels);
-#pragma warning restore UNT0017 // SetPixels invocation is slow
+        texture.SetPixels32(pixels);
         texture.Apply();
         return texture;
     }
 
     private IEnumerator FadeIn()
     {
+        yield return new WaitForSeconds(startDelayDuration);
+
         float elapsedTime = 0.0f;
         while (elapsedTime < fadeDuration)
         {
