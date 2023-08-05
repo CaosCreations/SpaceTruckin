@@ -54,19 +54,25 @@ public class PlayerMovementAnimation : MonoBehaviour
     {
         if (evt.Cutscene == babyHoldStartCutscene)
         {
-            IsHoldingBaby = true;
+            SwitchBabyHolding(true);
         }
         else if (evt.Cutscene == babyHoldStopCutscene)
         {
-            IsHoldingBaby = false;
+            SwitchBabyHolding(false);
         }
+    }
+
+    private void SwitchBabyHolding(bool isHoldingBaby)
+    {
+        animator.Play("StandUpP");
+        IsHoldingBaby = isHoldingBaby;
     }
 
     private void Update()
     {
         if (manualSwitchBabyMode)
         {
-            IsHoldingBaby = !IsHoldingBaby;
+            SwitchBabyHolding(!IsHoldingBaby);
             manualSwitchBabyMode = false;
         }
     }
