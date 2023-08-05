@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     public PlayerMovementAnimation MovementAnimation;
 
     public float CurrentSpeed { get; private set; }
+    public bool IsRunning => CurrentSpeed == PlayerConstants.RunSpeed;
     [SerializeField] private float maximumSpeed;
     [SerializeField] private float acceleration;
 
@@ -83,7 +84,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void DetermineSpeed()
     {
-        if (Input.GetKey(PlayerConstants.SprintKey) && !MovementAnimation.BabyMode && !BatteryInteractable.IsPlayerHoldingABattery)
+        if (Input.GetKey(PlayerConstants.RunKey) && !MovementAnimation.IsHoldingBaby && !BatteryInteractable.IsPlayerHoldingABattery)
         {
             CurrentSpeed = PlayerConstants.RunSpeed;
         }
