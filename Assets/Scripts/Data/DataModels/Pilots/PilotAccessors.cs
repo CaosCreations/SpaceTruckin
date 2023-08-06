@@ -55,6 +55,7 @@ public partial class Pilot
         get => saveData.IsHired; set { saveData.IsHired = value; }
     }
     public bool HasStarted => startDate > new Date(1, 1, 1) && startDate <= CalendarManager.CurrentDate;
+    public bool IsPendingStart => startDate > new Date(1, 1, 1) && startDate > CalendarManager.CurrentDate;
     public bool HasLeft => leavingDate > new Date(1, 1, 1) && CalendarManager.CurrentDate >= leavingDate;
     public bool HasMission => PilotsManager.PilotHasMission(this);
     public bool IsOnMission => PilotsManager.PilotHasMissionInProgress(this);
