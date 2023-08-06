@@ -127,6 +127,11 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         UIManager.BeginTransition(TransitionUI.TransitionType.EndOfCalendar, textContent);
     }
 
+    public static void ResetCalendar()
+    {
+        Instance.calendarData.ResetDate();
+    }
+
     private static void LogCalendarData()
     {
         Debug.Log("Current day: " + CurrentDay);

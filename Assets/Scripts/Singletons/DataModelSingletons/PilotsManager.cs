@@ -100,7 +100,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
 
     public static Pilot[] HiredPilots => Instance.Pilots.Where(p => p != null && p.IsHired).ToArray();
 
-    public static Pilot[] PilotsForHire => Instance.Pilots.Where(p => p != null && !p.IsHired && !p.HasLeft).ToArray();
+    public static Pilot[] PilotsForHire => Instance.Pilots.Where(p => p != null && !p.IsHired && !p.HasLeft && !p.IsPendingStart).ToArray();
 
     public static Pilot[] PilotsInQueue => Instance.Pilots
             .Where(p => p.Ship.IsInQueue)
@@ -184,7 +184,14 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
             if (pilot.HasLeft && pilot.IsHired)
             {
                 pilot.IsHired = false;
-                Debug.Log($"Current date {CalendarManager.CurrentDate} has reached {pilot}'s leaving date.");
+                Debug.Log($"Current date {CalendarManager.CurrentDate} has reached {pilot}'s leaving date. Pilot no longer hired.");
+                continue;
+            }
+            // Note: If we implement selling pilots, this will need to be changed 
+            if (pilot.HasStarted && !pilot.IsHired)
+            {
+                pilot.IsHired = true;
+                Debug.Log($"Current date {CalendarManager.CurrentDate} has reached {pilot}'s start date. Pilot now hired.");
             }
         }
     }

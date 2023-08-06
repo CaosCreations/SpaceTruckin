@@ -53,6 +53,11 @@ public class CalendarData : ScriptableObject, IDataModel
         ValidateFields();
     }
 
+    public void ResetDate()
+    {
+        CurrentDate = new Date(1, 1, 1);
+    }
+
     public void ValidateFields()
     {
         // Cannot be below 1 

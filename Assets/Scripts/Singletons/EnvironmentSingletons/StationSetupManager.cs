@@ -40,6 +40,7 @@ public class StationSetupManager : MonoBehaviour
         SingletonManager.Init();
         PlayerManager.Instance.SetUpPlayer();
         TimelineManager.Instance.SetUp();
+        CalendarManager.ResetCalendar();
         ClockManager.SetCurrentTime(CalendarManager.StationEntryTimeOfDay.ToSeconds(), overrideTransition: true);
         SingletonManager.EventService.Dispatch<OnStationSetUpEvent>();
     }
