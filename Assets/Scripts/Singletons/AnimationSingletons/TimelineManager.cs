@@ -60,16 +60,7 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
         PlayerManager.EnterPausedState(false);
         //currentCutscenePlayer.VirtualCamera.Priority = currentCutscenePlayer.Cutscene.PriorityOnStart;
         currentCutscenePlayer.VirtualCamera.Follow = PlayerManager.PlayerObject.transform;
-
-        var cutscene = GetCutsceneByPlayableAsset(currentCutscenePlayer.PlayableDirector.playableAsset);
-        if (cutscene != null)
-        {
-            SingletonManager.EventService.Dispatch(new OnCutsceneStartedEvent(cutscene));
-        }
-        else
-        {
-            SingletonManager.EventService.Dispatch(new OnTimelineStartedEvent(currentCutscenePlayer.PlayableDirector.playableAsset));
-        }
+        SingletonManager.EventService.Dispatch(new OnCutsceneStartedEvent(currentCutscenePlayer.Cutscene));
     }
 
     private void OnTimelineFinishedHandler()
@@ -80,17 +71,7 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
             currentCutscenePlayer.VirtualCamera.Follow = null;
         }
         currentCutscenePlayer.VirtualCamera.gameObject.SetActive(false);
-
-        var cutscene = GetCutsceneByPlayableAsset(currentCutscenePlayer.PlayableDirector.playableAsset);
-        if (cutscene != null)
-        {
-            SingletonManager.EventService.Dispatch(new OnCutsceneFinishedEvent(cutscene));
-        }
-        else
-        {
-            SingletonManager.EventService.Dispatch(new OnTimelineFinishedEvent(currentCutscenePlayer.PlayableDirector.playableAsset));
-        }
-
+        SingletonManager.EventService.Dispatch(new OnCutsceneFinishedEvent(currentCutscenePlayer.Cutscene));
         currentCutscenePlayer = null;
         PlayerManager.ExitPausedState();
     }
@@ -136,27 +117,6 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
                 return cutscene;
         }
         Debug.LogError("Cannot find cutscene with name: " + name);
-        return null;
-    }
-
-    public Cutscene GetCutsceneByPlayableAsset(PlayableAsset playableAsset)
-    {
-        foreach (var cutscene in cutsceneContainer.Elements)
-        {
-            if (cutscene.PlayableAsset == playableAsset)
-                return cutscene;
-        }
-        Debug.LogError("Cannot find cutscene with playable asset: " + playableAsset);
-        return null;
-    }
-
-    public Cutscene GetCutsceneByOnLoadSceneName(string onSceneLoadName)
-    {
-        foreach (var cutscene in cutsceneContainer.Elements)
-        {
-            if (cutscene.OnSceneLoadName == onSceneLoadName)
-                return cutscene;
-        }
         return null;
     }
 
