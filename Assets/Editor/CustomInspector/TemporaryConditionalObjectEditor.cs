@@ -1,40 +1,45 @@
 ﻿using UnityEditor;
+using UnityEngine;
 
 [CustomEditor(typeof(TemporaryConditionalObject))]
 public class TemporaryConditionalObjectEditor : Editor
 {
-    private SerializedProperty conditionProperty;
-    private SerializedProperty activeDatesProperty;
-    private SerializedProperty messageProperty;
-    private SerializedProperty missionProperty;
+    private SerializedProperty conditionsProperty;
 
     private void OnEnable()
     {
-        conditionProperty = serializedObject.FindProperty("condition");
-        activeDatesProperty = serializedObject.FindProperty("activeDates");
-        messageProperty = serializedObject.FindProperty("message");
-        missionProperty = serializedObject.FindProperty("mission");
+        conditionsProperty = serializedObject.FindProperty("conditions");
     }
 
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
 
-        EditorGUILayout.PropertyField(conditionProperty);
-
-        TemporaryConditionalObject.Condition condition = (TemporaryConditionalObject.Condition)conditionProperty.enumValueIndex;
-
-        switch (condition)
+        EditorGUILayout.LabelField("Conditions");
+        for (int i = 0; i < conditionsProperty.arraySize; i++)
         {
-            case TemporaryConditionalObject.Condition.Date:
-                EditorGUILayout.PropertyField(activeDatesProperty, true);
-                break;
-            case TemporaryConditionalObject.Condition.Message:
-                EditorGUILayout.PropertyField(messageProperty, true);
-                break;
-            case TemporaryConditionalObject.Condition.Mission:
-                EditorGUILayout.PropertyField(missionProperty, true);
-                break;
+            SerializedProperty conditionProperty = conditionsProperty.GetArrayElementAtIndex(i);
+            EditorGUILayout.PropertyField(conditionProperty.FindPropertyRelative("type"));
+
+            TemporaryConditionalObject.ConditionType conditionType = (TemporaryConditionalObject.ConditionType)conditionProperty.FindPropertyRelative("type").enumValueIndex;
+
+            switch (conditionType)
+            {
+                case TemporaryConditionalObject.ConditionType.Date:
+                    EditorGUILayout.PropertyField(conditionProperty.FindPropertyRelative("activeDates"), true);
+                    break;
+                case TemporaryConditionalObject.ConditionType.Message:
+                    EditorGUILayout.PropertyField(conditionProperty.FindPropertyRelative("message"), true);
+                    break;
+                case TemporaryConditionalObject.ConditionType.Mission:
+                    EditorGUILayout.PropertyField(conditionProperty.FindPropertyRelative("mission"), true);
+                    break;
+            }
+        }
+
+        if (GUILayout.Button("Add Condition"))
+        {
+            conditionsProperty.InsertArrayElementAtIndex(conditionsProperty.arraySize);
         }
 
         serializedObject.ApplyModifiedProperties();

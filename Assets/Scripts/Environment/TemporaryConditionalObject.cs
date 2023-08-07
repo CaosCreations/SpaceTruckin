@@ -1,25 +1,27 @@
 ﻿using Events;
+using System;
 using System.Linq;
 using UnityEngine;
 
 public class TemporaryConditionalObject : MonoBehaviour
 {
-    public enum Condition
+    public enum ConditionType
     {
         Date, Message, Mission
     }
 
-    [SerializeField]
-    private Condition condition;
+    [Serializable]
+    public class Condition
+    {
+        public ConditionType type;
+
+        public DateWithPhase[] activeDates;
+        public Message message;
+        public Mission mission;
+    }
 
     [SerializeField]
-    private DateWithPhase[] activeDates;
-
-    [SerializeField]
-    private Message message;
-
-    [SerializeField]
-    private Mission mission;
+    private Condition[] conditions;
 
     private void Start()
     {
@@ -32,13 +34,13 @@ public class TemporaryConditionalObject : MonoBehaviour
 
     private bool IsActive()
     {
-        return condition switch
+        return conditions.All(c => c.type switch
         {
-            Condition.Date => activeDates.Any(d => d.Date == CalendarManager.CurrentDate && d.Phase == ClockManager.CurrentTimeOfDayPhase),
-            Condition.Message => message.HasBeenRead,
-            Condition.Mission => mission.HasBeenCompleted,
-            _ => false,
-        };
+            ConditionType.Date => c.activeDates.Any(d => d.Date == CalendarManager.CurrentDate && d.Phase == ClockManager.CurrentTimeOfDayPhase),
+            ConditionType.Message => c.message.HasBeenRead,
+            ConditionType.Mission => c.mission.HasBeenCompleted,
+            _ => false
+        });
     }
 
     private void SetActive()
