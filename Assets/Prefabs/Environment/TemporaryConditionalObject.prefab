@@ -110,12 +110,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fc4f673593f29f4dbdcb4be74953a69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  condition: 0
-  activeDates:
-  - <Date>k__BackingField:
-      Day: 2
-      Month: 1
-      Year: 1
-    <Phase>k__BackingField: 1
-  message: {fileID: 11400000, guid: 06235e99447d15c43908098b4156c9a0, type: 2}
-  mission: {fileID: 0}
+  conditions:
+  - type: 0
+    activeDates:
+    - <Date>k__BackingField:
+        Day: 0
+        Month: 0
+        Year: 0
+      <Phase>k__BackingField: 0
+    message: {fileID: 0}
+    mission: {fileID: 0}
