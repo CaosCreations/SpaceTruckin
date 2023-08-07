@@ -12,6 +12,8 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
     [SerializeField]
     private CutsceneContainer cutsceneContainer;
+    [SerializeField]
+    private Cutscene openingCutscene;
 
     [SerializeField]
     private PlayerAnimationAssetMappingContainer playerAnimationAssetMappingContainer;
@@ -28,69 +30,34 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
-        cutscenePlayers = GetComponentsInChildren<CutsceneTimelinePlayer>(true);
-
-        foreach (var cutscenePlayer in cutscenePlayers)
-        {
-            if (cutscenePlayer.VirtualCamera == null || cutscenePlayer.PlayableDirector.state == PlayState.Playing)
-                continue;
-
-            //cutscenePlayer.VirtualCamera.Priority = 0;
-        }
     }
 
-    private void Start()
+    private void RegisterEvents()
     {
         foreach (var cutscenePlayer in cutscenePlayers)
         {
             RegisterEvents(cutscenePlayer.PlayableDirector);
         }
+        SingletonManager.EventService.Add<OnSceneLoadedEvent>(OnSceneLoadedHandler);
     }
 
     private void RegisterEvents(PlayableDirector playableDirector)
     {
         playableDirector.played += (_) => OnTimelineStartedHandler();
         playableDirector.stopped += (_) => OnTimelineFinishedHandler();
-        SingletonManager.EventService.Add<OnSceneLoadedEvent>(OnSceneLoadedHandler);
     }
 
     private void OnTimelineStartedHandler()
     {
         PlayerManager.EnterPausedState(false);
-        //currentCutscenePlayer.VirtualCamera.Priority = currentCutscenePlayer.Cutscene.PriorityOnStart;
         currentCutscenePlayer.VirtualCamera.Follow = PlayerManager.PlayerObject.transform;
-
-        var cutscene = GetCutsceneByPlayableAsset(currentCutscenePlayer.PlayableDirector.playableAsset);
-        if (cutscene != null)
-        {
-            SingletonManager.EventService.Dispatch(new OnCutsceneStartedEvent(cutscene));
-        }
-        else
-        {
-            SingletonManager.EventService.Dispatch(new OnTimelineStartedEvent(currentCutscenePlayer.PlayableDirector.playableAsset));
-        }
+        SingletonManager.EventService.Dispatch(new OnCutsceneStartedEvent(currentCutscenePlayer.Cutscene));
     }
 
     private void OnTimelineFinishedHandler()
     {
-        //currentCutscenePlayer.VirtualCamera.Priority = currentCutscenePlayer.Cutscene.PriorityOnFinish;
-        if (currentCutscenePlayer.Cutscene.ResetFollowOnFinish)
-        {
-            currentCutscenePlayer.VirtualCamera.Follow = null;
-        }
         currentCutscenePlayer.VirtualCamera.gameObject.SetActive(false);
-
-        var cutscene = GetCutsceneByPlayableAsset(currentCutscenePlayer.PlayableDirector.playableAsset);
-        if (cutscene != null)
-        {
-            SingletonManager.EventService.Dispatch(new OnCutsceneFinishedEvent(cutscene));
-        }
-        else
-        {
-            SingletonManager.EventService.Dispatch(new OnTimelineFinishedEvent(currentCutscenePlayer.PlayableDirector.playableAsset));
-        }
-
+        SingletonManager.EventService.Dispatch(new OnCutsceneFinishedEvent(currentCutscenePlayer.Cutscene));
         currentCutscenePlayer = null;
         PlayerManager.ExitPausedState();
     }
@@ -111,7 +78,6 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
         Debug.Log("Playing cutscene with name: " + cutscene.Name);
         PlayTimeline();
-        cutscene.Played = true;
     }
 
     public static void PlayCutscene(string cutsceneName)
@@ -139,27 +105,6 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
         return null;
     }
 
-    public Cutscene GetCutsceneByPlayableAsset(PlayableAsset playableAsset)
-    {
-        foreach (var cutscene in cutsceneContainer.Elements)
-        {
-            if (cutscene.PlayableAsset == playableAsset)
-                return cutscene;
-        }
-        Debug.LogError("Cannot find cutscene with playable asset: " + playableAsset);
-        return null;
-    }
-
-    public Cutscene GetCutsceneByOnLoadSceneName(string onSceneLoadName)
-    {
-        foreach (var cutscene in cutsceneContainer.Elements)
-        {
-            if (cutscene.OnSceneLoadName == onSceneLoadName)
-                return cutscene;
-        }
-        return null;
-    }
-
     public CutsceneTimelinePlayer GetCutscenePlayerByCutscene(Cutscene cutscene)
     {
         foreach (var cutscenePlayer in cutscenePlayers)
@@ -173,11 +118,14 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
     public void SetUp()
     {
+        cutscenePlayers = FindObjectsOfType<CutsceneTimelinePlayer>();
         foreach (var cutscenePlayer in cutscenePlayers)
         {
             SetUpDirectorBindings(cutscenePlayer.PlayableDirector);
             SetUpAnimationTracks(cutscenePlayer.PlayableDirector);
         }
+        RegisterEvents();
+        PlayCutscene(openingCutscene);
     }
 
     private void SetUpDirectorBindings(PlayableDirector playableDirector)
