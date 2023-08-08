@@ -8,9 +8,6 @@ public class Cutscene : ScriptableObject
     public string Name { get; private set; }
 
     [field: SerializeField]
-    public string OnSceneLoadName { get; private set; }
-
-    [field: SerializeField]
     public PlayableAsset PlayableAsset { get; private set; }
 
     [field: SerializeField]

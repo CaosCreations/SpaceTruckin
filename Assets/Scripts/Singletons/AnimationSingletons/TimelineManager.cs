@@ -1,7 +1,6 @@
 ﻿using Events;
 using PixelCrushers.DialogueSystem;
 using System;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
@@ -38,7 +37,6 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
         {
             RegisterEvents(cutscenePlayer.PlayableDirector);
         }
-        SingletonManager.EventService.Add<OnSceneLoadedEvent>(OnSceneLoadedHandler);
     }
 
     private void RegisterEvents(PlayableDirector playableDirector)
@@ -50,13 +48,11 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
     private void OnTimelineStartedHandler()
     {
         PlayerManager.EnterPausedState(false);
-        currentCutscenePlayer.VirtualCamera.Follow = PlayerManager.PlayerObject.transform;
         SingletonManager.EventService.Dispatch(new OnCutsceneStartedEvent(currentCutscenePlayer.Cutscene));
     }
 
     private void OnTimelineFinishedHandler()
     {
-        currentCutscenePlayer.VirtualCamera.gameObject.SetActive(false);
         SingletonManager.EventService.Dispatch(new OnCutsceneFinishedEvent(currentCutscenePlayer.Cutscene));
         currentCutscenePlayer = null;
         PlayerManager.ExitPausedState();
@@ -90,7 +86,6 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
     {
         Debug.Log("Playing timeline with playable asset name: " + currentCutscenePlayer.PlayableDirector.playableAsset.name);
         currentCutscenePlayer.PlayableDirector.gameObject.SetActive(true);
-        currentCutscenePlayer.VirtualCamera.gameObject.SetActive(true);
         currentCutscenePlayer.PlayableDirector.Play();
     }
 
@@ -186,17 +181,6 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
         if (currentCutscenePlayer.PlayableDirector.playableAsset != null && currentCutscenePlayer.PlayableDirector.time > 0)
             currentCutscenePlayer.PlayableDirector.time = 100000;
-    }
-
-    private void OnSceneLoadedHandler(OnSceneLoadedEvent evt)
-    {
-        var onSceneLoadCutscene = cutsceneContainer.Elements
-            .FirstOrDefault(cutscene => cutscene.OnSceneLoadName.Equals(evt.Scene.name, StringComparison.InvariantCultureIgnoreCase));
-
-        if (onSceneLoadCutscene == null /*|| onSceneLoadCutscene.Played*/)
-            return;
-
-        PlayCutscene(onSceneLoadCutscene);
     }
 
     public void RegisterLuaFunctions()
