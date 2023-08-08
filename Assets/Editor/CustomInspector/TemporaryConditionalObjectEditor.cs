@@ -19,20 +19,20 @@ public class TemporaryConditionalObjectEditor : Editor
         for (int i = 0; i < conditionsProperty.arraySize; i++)
         {
             SerializedProperty conditionProperty = conditionsProperty.GetArrayElementAtIndex(i);
-            EditorGUILayout.PropertyField(conditionProperty.FindPropertyRelative("type"));
+            EditorGUILayout.PropertyField(conditionProperty.FindPropertyRelative("Type"));
 
-            TemporaryConditionalObject.ConditionType conditionType = (TemporaryConditionalObject.ConditionType)conditionProperty.FindPropertyRelative("type").enumValueIndex;
+            TemporaryConditionalObject.ConditionType conditionType = (TemporaryConditionalObject.ConditionType)conditionProperty.FindPropertyRelative("Type").enumValueIndex;
 
             switch (conditionType)
             {
                 case TemporaryConditionalObject.ConditionType.Date:
-                    EditorGUILayout.PropertyField(conditionProperty.FindPropertyRelative("activeDates"), true);
+                    EditorGUILayout.PropertyField(conditionProperty.FindPropertyRelative("ActiveDates"), true);
                     break;
                 case TemporaryConditionalObject.ConditionType.Message:
-                    EditorGUILayout.PropertyField(conditionProperty.FindPropertyRelative("message"), true);
+                    EditorGUILayout.PropertyField(conditionProperty.FindPropertyRelative("Message"), true);
                     break;
                 case TemporaryConditionalObject.ConditionType.Mission:
-                    EditorGUILayout.PropertyField(conditionProperty.FindPropertyRelative("mission"), true);
+                    EditorGUILayout.PropertyField(conditionProperty.FindPropertyRelative("Mission"), true);
                     break;
             }
         }
