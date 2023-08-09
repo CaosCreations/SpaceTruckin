@@ -9,6 +9,7 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     public static CalendarManager Instance { get; private set; }
 
     [SerializeField] private CalendarData calendarData;
+    [SerializeField] private Cutscene endOfCalendarCutscene;
 
     #region Property Accessors
     public static TimeOfDay StationEntryTimeOfDay => Instance.calendarData.StationEntryTimeOfDay;
@@ -62,6 +63,7 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     private void Start()
     {
         SingletonManager.EventService.Add<OnEndOfDayClockEvent>(OnEndOfDayClockHandler);
+        SingletonManager.EventService.Add<OnCutsceneFinishedEvent>(OnCutsceneFinishedHandler);
     }
 
     public void Init()
@@ -81,7 +83,6 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     {
         UpdateCalendarData();
         LogCalendarData();
-        HandleSignificantDates();
         SingletonManager.EventService.Dispatch(new OnEndOfDayEvent());
     }
 
@@ -110,11 +111,10 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         return date.Equals(CurrentDate);
     }
 
-    private static void HandleSignificantDates()
+    private void OnCutsceneFinishedHandler(OnCutsceneFinishedEvent evt)
     {
-        if (IsEndOfCalendar)
+        if (evt.Cutscene == endOfCalendarCutscene)
         {
-            // Go to credits when final day of calendar passed 
             Debug.Log("Current date has reached the game end date in the CalendarData. Transitioning to end of game...");
             EndCalendar();
         }
