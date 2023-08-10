@@ -19,11 +19,11 @@ public class StationSetupManager : MonoBehaviour
 
     private void Start()
     {
-        RegisterEvents();
-    }
-
-    private void RegisterEvents()
-    {
+        if (SceneLoadingManager.GetCurrentSceneType() == SceneType.MainStation)
+        {
+            SetUpStation();
+            return;
+        }
         SceneManager.activeSceneChanged += (Scene previous, Scene next) =>
         {
             // When changing to main station scene 

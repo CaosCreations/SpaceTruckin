@@ -116,8 +116,8 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
         cutscenePlayers = FindObjectsOfType<CutsceneTimelinePlayer>();
         foreach (var cutscenePlayer in cutscenePlayers)
         {
-            SetUpDirectorBindings(cutscenePlayer.PlayableDirector);
-            SetUpAnimationTracks(cutscenePlayer.PlayableDirector);
+            //SetUpDirectorBindings(cutscenePlayer.PlayableDirector);
+            //SetUpAnimationTracks(cutscenePlayer.PlayableDirector);
         }
         RegisterEvents();
         PlayCutscene(openingCutscene);
