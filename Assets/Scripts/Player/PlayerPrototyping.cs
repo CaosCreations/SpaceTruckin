@@ -26,26 +26,24 @@ public class PlayerPrototyping : MonoBehaviour
         }
     }
 
+    private void HandlePositionShortcuts()
+    {
+        if (!Input.GetKey(KeyCode.LeftAlt))
+        {
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            PlayerManager.PlayerMovement.SetPosition(PlayerConstants.PlayerRefugeeCampPosition);
+        }
+    }
+
     private void Update()
     {
 #if UNITY_EDITOR
         HandleMenuShortcuts();
+        HandlePositionShortcuts();
 #endif
-    }
-
-    public int GetHangarNodeFromKey()
-    {
-        int node = -1;
-
-        foreach (var keyCode in PlayerConstants.HangarNodeShortcuts)
-        {
-            if (Input.GetKeyDown(keyCode))
-            {
-                // Convert the numeric portion of the KeyCode string to an int 
-                char keyChar = keyCode.ToString().Last();
-                node = keyChar - '0';
-            }
-        }
-        return node;
     }
 }
