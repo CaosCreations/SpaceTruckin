@@ -5,7 +5,7 @@ namespace Events
 {
     public class EventRegistry : IEventRegistry, IEventDispatcher
     {
-        private Dictionary<Type, IContainer> eventLookup = new Dictionary<Type, IContainer>();
+        private readonly Dictionary<Type, IContainer> eventLookup = new();
 
         public void Dispatch<T>()
         {

@@ -30,7 +30,7 @@ public class Follower : MonoBehaviour
     {
       
 
-        Vector3 targetPosition = playerTransform.position - PlayerManager.PlayerMovement.PlayerFacingDirection.normalized * agent.stoppingDistance;
+        Vector3 targetPosition = playerTransform.position - PlayerMovement.PlayerFacingDirection.normalized * agent.stoppingDistance;
 
         // Check if the target position is obstructed by walls
         if (Physics.Linecast(playerTransform.position, targetPosition, out RaycastHit hit))

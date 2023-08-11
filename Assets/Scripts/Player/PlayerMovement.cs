@@ -9,7 +9,7 @@ public enum Direction
 public class PlayerMovement : MonoBehaviour
 {
     public static Vector3 MovementVector;
-    public Vector3 PlayerFacingDirection;
+    public static Vector3 PlayerFacingDirection;
 
     public Rigidbody PlayerRigidbody;
     private CharacterController characterController;
@@ -158,5 +158,10 @@ public class PlayerMovement : MonoBehaviour
         characterController.enabled = false;
         transform.position = position;
         characterController.enabled = true;
+    }
+
+    public void FlipFacingDirection()
+    {
+        PlayerFacingDirection = -PlayerFacingDirection;
     }
 }

@@ -54,7 +54,7 @@ public class BatteryInteractable : InteractableObject
 
         gameObject.SetParent(HangarManager.BatteriesContainer);
 
-        transform.position += PlayerManager.PlayerMovement.PlayerFacingDirection.normalized * 0.5f;
+        transform.position += PlayerMovement.PlayerFacingDirection.normalized * 0.5f;
 
         batteryModelCollider.enabled = true;
 

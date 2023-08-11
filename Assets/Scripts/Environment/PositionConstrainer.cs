@@ -31,6 +31,9 @@ public class PositionConstrainer : MonoBehaviour
         Vector3 centralPoint = rectangleCollider.bounds.GetCentralPointAlongLongEdge();
         Vector3 newPosition = GetResetPosition(playerPosition, centralPoint);
         other.transform.position = newPosition;
+
+        PlayerManager.PlayerMovement.FlipFacingDirection();
+        PlayerManager.PlayerMovementAnimation.UpdateIdle();
     }
 
     private Vector3 GetResetPosition(Vector3 playerPosition, Vector3 centralPoint)
