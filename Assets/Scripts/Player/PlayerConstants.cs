@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerConstants : MonoBehaviour
 {
@@ -7,7 +6,6 @@ public class PlayerConstants : MonoBehaviour
     public const KeyCode ActionKey = KeyCode.E;
     public const KeyCode ExitKey = KeyCode.Escape;
     public const KeyCode PauseKey = KeyCode.Escape;
-    public const KeyCode DropObjectKey = KeyCode.Q;
     public const KeyCode RespawnKey = KeyCode.R;
     public const KeyCode RunKey = KeyCode.LeftShift;
     public const KeyCode NextCardKey = KeyCode.RightArrow;
@@ -31,6 +29,7 @@ public class PlayerConstants : MonoBehaviour
     public const KeyCode TerminalShortcut = KeyCode.T;
     public const KeyCode NoticeboardShortcut = KeyCode.G;
     public const KeyCode FinishTimelineShortcut = KeyCode.F;
+    public const KeyCode SpeedUpTimeKey = KeyCode.Q;
 
 
     // Misc
