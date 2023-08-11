@@ -68,6 +68,32 @@ public class PlayerMovementAnimation : MonoBehaviour
         IsHoldingBaby = isHoldingBaby;
     }
 
+    public void UpdateIdle()
+    {
+        string stateName = default;
+        if (PlayerMovement.PlayerFacingDirection == new Vector3(-1, 0, 0))
+        {
+            stateName = AnimationConstants.PlayerIdleLeftParameter;
+        }
+        else if (PlayerMovement.PlayerFacingDirection == new Vector3(1, 0, 0))
+        {
+            stateName = AnimationConstants.PlayerIdleRightParameter;
+        }
+        else if (PlayerMovement.PlayerFacingDirection == new Vector3(0, 0, 1))
+        {
+            stateName = AnimationConstants.PlayerIdleUpParameter;
+        }
+        else if (PlayerMovement.PlayerFacingDirection == new Vector3(0, 0, -1))
+        {
+            stateName = AnimationConstants.PlayerIdleDownParameter;
+        }
+
+        if (stateName != null)
+        {
+            animator.Play(stateName);
+        }
+    }
+
     private void Update()
     {
         if (manualSwitchBabyMode)

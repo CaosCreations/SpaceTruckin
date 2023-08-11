@@ -9,7 +9,7 @@ public enum Direction
 public class PlayerMovement : MonoBehaviour
 {
     public static Vector3 MovementVector;
-    public Vector3 PlayerFacingDirection;
+    public static Vector3 PlayerFacingDirection;
 
     public Rigidbody PlayerRigidbody;
     private CharacterController characterController;
@@ -115,16 +115,9 @@ public class PlayerMovement : MonoBehaviour
         return characterController.transform.position.y < PlayerConstants.KillFloorHeight;
     }
 
-    private void ResetPlayerPosition()
-    {
-        characterController.enabled = false;
-        transform.position = PlayerConstants.PlayerResetPosition;
-        characterController.enabled = true;
-    }
-
     private void RespawnPlayer()
     {
-        ResetPlayerPosition();
+        SetPosition(PlayerConstants.PlayerRespawnPosition);
         CounteractRespawnSideEffects();
     }
 
@@ -162,6 +155,13 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetPosition(Vector3 position)
     {
+        characterController.enabled = false;
         transform.position = position;
+        characterController.enabled = true;
+    }
+
+    public void FlipFacingDirection()
+    {
+        PlayerFacingDirection = -PlayerFacingDirection;
     }
 }

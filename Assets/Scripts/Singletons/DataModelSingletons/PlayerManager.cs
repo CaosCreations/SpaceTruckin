@@ -45,6 +45,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
     public static GameObject PlayerObject { get; private set; }
     public static PlayerMovement PlayerMovement { get; private set; }
+    public static PlayerMovementAnimation PlayerMovementAnimation { get; private set; }
     public AnimatorSettings PlayerAnimatorSettings
     {
         get => playerData.AnimatorSettings; set => playerData.AnimatorSettings = value;
@@ -124,6 +125,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         }
 
         PlayerMovement = PlayerObject.GetComponent<PlayerMovement>();
+        PlayerMovementAnimation = PlayerObject.GetComponent<PlayerMovementAnimation>();
 
         // Animator field setup 
         var playerAnimator = PlayerObject.GetComponent<Animator>();

@@ -1,51 +1,52 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>To speed up prototyping. Will only be enabled in the editor</summary>
 public class PlayerPrototyping : MonoBehaviour
 {
-    private void HandleMenuShortcuts()
-    {
-        if (!Input.GetKey(PlayerConstants.PrototypingModifier))
-        {
-            return;
-        }
-
-        // Allow accessing menus remotely 
-        if (Input.GetKeyDown(PlayerConstants.TerminalShortcut))
-        {
-            UIManager.ToggleCanvas(UICanvasType.Terminal);
-        }
-        else if (Input.GetKeyDown(PlayerConstants.NoticeboardShortcut))
-        {
-            UIManager.ToggleCanvas(UICanvasType.NoticeBoard);
-        }
-        else if (Input.GetKeyDown(PlayerConstants.FinishTimelineShortcut))
-        {
-            TimelineManager.Instance.FinishCurrentTimeline();
-        }
-    }
+    [SerializeField]
+    private float fastTime = 5f;
 
     private void Update()
     {
 #if UNITY_EDITOR
-        HandleMenuShortcuts();
-#endif
-    }
-
-    public int GetHangarNodeFromKey()
-    {
-        int node = -1;
-
-        foreach (var keyCode in PlayerConstants.HangarNodeShortcuts)
+        if (Input.GetKey(PlayerConstants.PrototypingModifier))
         {
-            if (Input.GetKeyDown(keyCode))
+            // Access menus remotely 
+            if (Input.GetKeyDown(PlayerConstants.TerminalShortcut))
             {
-                // Convert the numeric portion of the KeyCode string to an int 
-                char keyChar = keyCode.ToString().Last();
-                node = keyChar - '0';
+                UIManager.ToggleCanvas(UICanvasType.Terminal);
+            }
+            else if (Input.GetKeyDown(PlayerConstants.NoticeboardShortcut))
+            {
+                UIManager.ToggleCanvas(UICanvasType.NoticeBoard);
+            }
+            else if (Input.GetKeyDown(PlayerConstants.FinishTimelineShortcut))
+            {
+                TimelineManager.Instance.FinishCurrentTimeline();
+            }
+            // Speed up time 
+            else if (Input.GetKeyDown(PlayerConstants.SpeedUpTimeKey))
+            {
+                if (Time.timeScale == fastTime)
+                {
+                    Time.timeScale = 1f;
+                    ClockManager.StartClock();
+                }
+                else
+                {
+                    ClockManager.StopClock();
+                    Time.timeScale = fastTime;
+                }
             }
         }
-        return node;
+        // Port to station locations 
+        else if (Input.GetKey(KeyCode.LeftAlt))
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                PlayerManager.PlayerMovement.SetPosition(PlayerConstants.PlayerRefugeeCampPosition);
+            }
+        }
+#endif
     }
 }

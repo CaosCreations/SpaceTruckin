@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerConstants : MonoBehaviour
 {
@@ -7,7 +6,6 @@ public class PlayerConstants : MonoBehaviour
     public const KeyCode ActionKey = KeyCode.E;
     public const KeyCode ExitKey = KeyCode.Escape;
     public const KeyCode PauseKey = KeyCode.Escape;
-    public const KeyCode DropObjectKey = KeyCode.Q;
     public const KeyCode RespawnKey = KeyCode.R;
     public const KeyCode RunKey = KeyCode.LeftShift;
     public const KeyCode NextCardKey = KeyCode.RightArrow;
@@ -22,7 +20,8 @@ public class PlayerConstants : MonoBehaviour
     public const float Gravity = -9.81f;
     public const float KillFloorHeight = -25;
     public const float RaycastDistance = 10f;
-    public static readonly Vector3 PlayerResetPosition = new Vector3(209.728f, 380.065f, -252.4218f);
+    public static readonly Vector3 PlayerRespawnPosition = new(209.728f, 380.065f, -252.4218f);
+    public static readonly Vector3 PlayerRefugeeCampPosition = new(151.312759f, 380.410004f, -282.76001f);
     public const int EditorTargetFrameRate = 60;
 
     // Prototyping
@@ -30,16 +29,8 @@ public class PlayerConstants : MonoBehaviour
     public const KeyCode TerminalShortcut = KeyCode.T;
     public const KeyCode NoticeboardShortcut = KeyCode.G;
     public const KeyCode FinishTimelineShortcut = KeyCode.F;
+    public const KeyCode SpeedUpTimeKey = KeyCode.Q;
 
-    public static readonly List<KeyCode> HangarNodeShortcuts = new List<KeyCode>()
-    {
-        KeyCode.Alpha1,
-        KeyCode.Alpha2,
-        KeyCode.Alpha3,
-        KeyCode.Alpha4,
-        KeyCode.Alpha5,
-        KeyCode.Alpha6
-    };
 
     // Misc
     public const int MaxPlayerNameLength = 24;

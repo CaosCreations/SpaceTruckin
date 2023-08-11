@@ -13,6 +13,11 @@ public static class AnimationConstants
     public const string AnimationRunParameter = "RUN";
     public const string AnimationBatteryGrabbingParameter = "batteryGrabbing";
 
+    public const string PlayerIdleUpParameter = "StandUpP";
+    public const string PlayerIdleLeftParameter = "StandLefttP";
+    public const string PlayerIdleDownParameter = "StandDownP";
+    public const string PlayerIdleRightParameter = "StandRightP";
+
     public const string NpcWalkParameter = "Walk";
     public const string NpcIdleParameterPrefix = "Idle";
     public const string NpcMorningParameter = "Morning";
@@ -57,13 +62,13 @@ public static class AnimationConstants
     /// <summary>
     ///     P1 to P2 mappings of animation clip names.
     /// </summary>
-    public static readonly Dictionary<string, string> TimelineAnimationClipNameMappings = new Dictionary<string, string>
+    public static readonly Dictionary<string, string> TimelineAnimationClipNameMappings = new()
     {
         { "WalkLeft", "player2_walkLeft" },
-        { "StandDownP", "player2_IdleDown" },
-        { "StandRightP", "player2_IdleRight" },
-        { "StandUpP", "player2_IdleUp" },
-        { "StandLefttP", "player2_IdleLeft" },
+        { PlayerIdleDownParameter, "player2_IdleDown" },
+        { PlayerIdleRightParameter, "player2_IdleRight" },
+        { PlayerIdleUpParameter, "player2_IdleUp" },
+        { PlayerIdleLeftParameter, "player2_IdleLeft" },
         { "RunDown", "player2_runDown" },
         { "RunLeft", "player2_runLeft" },
         { "RunUP", "player2_runUp" }

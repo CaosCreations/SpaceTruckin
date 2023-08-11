@@ -62,7 +62,7 @@ public class ClockManager : MonoBehaviour
         currentTimeInSeconds = (int)CurrentTime.TotalSeconds;
     }
 
-    private static void StartClock()
+    public static void StartClock()
     {
         clockStopped = false;
     }
