@@ -35,7 +35,7 @@ public class StationBlockingObjectSet : MonoBehaviour
         transform.SetDirectChildrenActive(active);
     }
 
-    private void OnStationSetUpHandler(OnStationSetUpEvent evt)
+    private void OnStationSetUpHandler()
     {
         UpdateBlockingObjects();
     }
