@@ -180,12 +180,13 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         SingletonManager.EventService.Dispatch<OnRepairsToolSpentEvent>();
     }
 
-    public void AcquireLicence(Licence licence)
+    public void AcquireLicence(Licence licence, bool startingValue = false)
     {
-        if (playerData.PlayerLicencePoints >= licence.PointsCost)
+        if (startingValue || playerData.PlayerLicencePoints >= licence.PointsCost)
         {
             playerData.PlayerLicencePoints -= licence.PointsCost;
             playerData.PlayerTotalLicencePointsAcquired += licence.PointsCost;
+            licence.IsUnlocked = true;
             licence.IsOwned = true;
             Debug.Log($"{licence.Name} has been acquired\nRemaining LP: {playerData.PlayerLicencePoints}");
         }
