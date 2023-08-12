@@ -83,7 +83,7 @@ public class PlayerData : ScriptableObject, IDataModel
         PlayerRepairTools = PlayerStartingRepairTools;
         Array.ForEach(PlayerStartingLicences, (l) =>
         {
-            PlayerManager.Instance.AcquireLicence(l);
+            PlayerManager.Instance.AcquireLicence(l, true);
         });
     }
 

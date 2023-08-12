@@ -28,12 +28,6 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
-        Array.ForEach(Licences, (l) =>
-        {
-            l.IsUnlocked = false; 
-            l.IsOwned = false;
-        });
     }
 
     public void Init()
