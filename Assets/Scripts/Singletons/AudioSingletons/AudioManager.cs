@@ -16,20 +16,19 @@ public class AudioManager : MonoBehaviour
     public bool IsPaused => currentState.Equals(AudioState.Paused);
     public bool IsStopped => currentState.Equals(AudioState.Stopped);
 
-    protected void PlayAudioClip(AudioClip audioClip)
+    protected void PlayAudioClip(AudioClip audioClip, AudioSource customSource = null)
     {
-        if (audioClip != null)
-        {
-            //Debug.Log($"Playing audio clip '{audioClip.name}'");
-
-            audioSource.clip = audioClip;
-            audioSource.Play();
-            currentState = AudioState.Playing;
-        }
-        else
+        if (audioClip == null)
         {
             Debug.LogError($"Audio clip {nameof(audioClip)} not found");
+            return;
         }
+        Debug.Log($"Playing audio clip '{audioClip.name}'");
+
+        var source = customSource != null ? customSource : audioSource;
+        source.clip = audioClip;
+        source.Play();
+        currentState = AudioState.Playing;
     }
 
     protected void PauseAudioClip()

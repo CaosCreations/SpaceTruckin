@@ -10,6 +10,7 @@
     public const string GiveMissionBonusFunctionName = "GiveMissionBonus";
     public const string PlayCutsceneFunctionName = "PlayCutscene";
     public const string EndCalendarFunctionName = "EndCalendar";
+    public const string PlaySoundEffectFunctionName = "PlaySoundEffect";
 
     // Actor field names
     public const string FondnessFieldName = "Fondness";
