@@ -73,6 +73,7 @@ public class PlayerData : ScriptableObject, IDataModel
     public long PlayerStartingMoney;
     public int PlayerStartingLicencePoints;
     public int PlayerStartingRepairTools;
+    public Licence[] PlayerStartingLicences;
 
     public void SetStartingValues()
     {
@@ -80,6 +81,10 @@ public class PlayerData : ScriptableObject, IDataModel
         PlayerTotalMoneyAcquired = PlayerMoney;
         PlayerLicencePoints = PlayerStartingLicencePoints;
         PlayerRepairTools = PlayerStartingRepairTools;
+        Array.ForEach(PlayerStartingLicences, (l) =>
+        {
+            PlayerManager.Instance.AcquireLicence(l);
+        });
     }
 
     public void SaveData()

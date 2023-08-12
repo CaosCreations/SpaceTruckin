@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -20,16 +21,19 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
+        if (Instance != null)
         {
             Destroy(gameObject);
             return;
         }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        Array.ForEach(Licences, (l) =>
+        {
+            l.IsUnlocked = false; 
+            l.IsOwned = false;
+        });
     }
 
     public void Init()

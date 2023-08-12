@@ -186,6 +186,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         {
             playerData.PlayerLicencePoints -= licence.PointsCost;
             playerData.PlayerTotalLicencePointsAcquired += licence.PointsCost;
+            licence.IsUnlocked = true;
             licence.IsOwned = true;
             Debug.Log($"{licence.Name} has been acquired\nRemaining LP: {playerData.PlayerLicencePoints}");
         }
