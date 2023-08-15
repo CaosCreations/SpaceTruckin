@@ -33,7 +33,7 @@ public class InteractionSoundEffectsManager : SoundEffectsManager<InteractionSou
         var soundEffect = dialogueSoundEffectContainer.Elements.FirstOrDefault(e => e.Name == name);
         if (soundEffect == null)
         {
-            Debug.Log($"No dialogue sound effect with name \"{name}\".");
+            Debug.LogError($"No dialogue sound effect with name \"{name}\".");
             return;
         }
         PlayAudioClip(soundEffect.Clip, dialogueSoundEffectSource);

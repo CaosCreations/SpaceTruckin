@@ -19,7 +19,7 @@ public struct PilotAttributes
 }
 
 [CreateAssetMenu(fileName = "Pilot", menuName = "ScriptableObjects/Pilots/Pilot", order = 1)]
-public partial class Pilot : ScriptableObject
+public partial class Pilot : ScriptableObject, IDataModel
 {
     [Header("Set in Editor")]
     [SerializeField] private bool isRandom;

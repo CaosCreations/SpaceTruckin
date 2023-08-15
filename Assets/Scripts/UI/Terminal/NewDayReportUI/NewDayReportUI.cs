@@ -1,38 +1,23 @@
 ﻿using Events;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class NewDayReportUI : MonoBehaviour
 {
     [SerializeField] private NewDayReportCard reportCard;
-    [SerializeField] private MissionModifierReportCard missionModifierReportCard;
     [SerializeField] private Text welcomeMessageText;
-
-    private int currentReportIndex;
-
     private TerminalUIManager terminalManager;
 
-    // We can only view the report once per day 
     public bool HasBeenViewedToday { get; set; }
-
+    private int currentReportIndex;
     private List<ArchivedMission> MissionsToAppearInReport { get; set; }
-    public ArchivedMission CurrentMissionToReport
-    {
-        get => MissionsToAppearInReport[currentReportIndex];
-    }
+    public ArchivedMission CurrentMissionToReport => MissionsToAppearInReport[currentReportIndex];
 
     private void Awake()
     {
         SingletonManager.EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
-
         terminalManager = GetComponentInParent<TerminalUIManager>();
-    }
-
-    private void Start()
-    {
-        SingletonManager.EventService.Add<OnModifierReportCardClosedEvent>(OnModifierReportCardClosedHandler);
     }
 
     private void OnEnable()
@@ -63,30 +48,19 @@ public class NewDayReportUI : MonoBehaviour
         reportCard.NextCardButton.SetText(UIConstants.NextCardText);
         UpdateNextCardButtonListener();
         ShowNextReport();
-
-        // Insert Player Data in the welcome message, e.g. their name 
         welcomeMessageText.ReplaceTemplates();
     }
 
     private void ShowNextReport()
     {
-        if (CurrentMissionToReport != null)
-        {
-            reportCard.gameObject.SetActive(true);
-            reportCard.ShowReport(CurrentMissionToReport);
-            CurrentMissionToReport.HasBeenViewedInReport = true;
-
-            if (!CurrentMissionToReport.Mission.HasModifier || CurrentMissionToReport.ArchivedModifierOutcome.HasBeenViewedInReport)
-            {
-                UpdateNextCardButtonListener();
-            }
-        }
+        reportCard.gameObject.SetActive(true);
+        reportCard.ShowReport(CurrentMissionToReport);
+        CurrentMissionToReport.HasBeenViewedInReport = true;
     }
 
     private void UpdateNextCardButtonListener()
     {
-        if (!CurrentMissionToReport.HasBeenViewedInReport
-            || (CurrentMissionToReport.Mission.HasModifier && !CurrentMissionToReport.ArchivedModifierOutcome.HasBeenViewedInReport))
+        if (!CurrentMissionToReport.HasBeenViewedInReport)
         {
             reportCard.NextCardButton.AddOnClick(ShowNextReport);
             return;
@@ -103,25 +77,11 @@ public class NewDayReportUI : MonoBehaviour
         }
     }
 
-    private void OnModifierReportCardClosedHandler()
-    {
-        if (MissionsToAppearInReport.All(m => m.HasBeenViewedInReport))
-        {
-            terminalManager.SwitchPanel(TerminalUIManager.Tab.Missions);
-        }
-        else
-        {
-            ShowNextReport();
-        }
-    }
-
     private void CloseReport()
     {
         reportCard.gameObject.SetActive(false);
         gameObject.SetActive(false);
         terminalManager.SwitchPanel(TerminalUIManager.Tab.Missions);
-
-        // Allow the exit key to be used as normal now that the report has finished.
         UIManager.RemoveOverriddenKey(PlayerConstants.ExitKey);
     }
 
@@ -132,4 +92,4 @@ public class NewDayReportUI : MonoBehaviour
             CloseReport();
         }
     }
-} 
+}
