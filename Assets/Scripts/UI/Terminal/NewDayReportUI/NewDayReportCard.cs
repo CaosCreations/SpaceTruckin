@@ -37,12 +37,12 @@ public class NewDayReportCard : MonoBehaviour
             levelledUpDetailsCard,
             levelledUpMiniDetailsCard,
         };
-        Array.ForEach(detailsCards, dc => dc.SetActive(false));
+        Array.ForEach(detailsCards, dc => dc.HideDetails());
     }
 
     public virtual void ShowReport(ArchivedMission archivedMission)
     {
-        Array.ForEach(detailsCards, dc => dc.SetActive(false));
+        Array.ForEach(detailsCards, dc => dc.HideDetails());
         NextCardButton.SetActive(false);
 
         if (archivedMission == null
@@ -64,7 +64,8 @@ public class NewDayReportCard : MonoBehaviour
         xpDetailsCard.SetText($"{vm.Pilot.Name} has gained <b>{vm.XpGains.BaseXpGain}EXP</b>");
         bonusXpDetailsCard.SetText($"Bonus EXP: <b>{vm.XpGains.BonusesXpGain}</b>");
         completedCountDetailsCard.SetText($"<b>{vm.Pilot.Name} has completed {vm.Pilot.MissionsCompleted} Jobs!</b>");
-
+        levelledUpDetailsCard.SetText("Levelled Up!");
+        levelledUpMiniDetailsCard.SetText("Levelled Up!");
         StartCoroutine(ShowDetailsCards(vm));
     }
 
