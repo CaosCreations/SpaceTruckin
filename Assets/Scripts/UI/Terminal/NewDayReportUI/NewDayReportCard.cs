@@ -57,7 +57,7 @@ public class NewDayReportCard : MonoBehaviour
         ShipAvatar.sprite = archivedMission.Pilot.Ship.Avatar;
 
         var vm = new ArchivedMissionViewModel(archivedMission);
-        headerText.SetText($"{vm.Pilot.Ship.Name} has returned from {vm.Mission.Name}!");
+        headerText.SetText($"{vm.Pilot.Name} has returned from {vm.Mission.Name}!");
         shipDetailsCard.SetText($"{vm.Pilot.Ship.Name} has sustained <b>{vm.ShipChanges.DamageTaken} Damage</b> to its <b>Hull</b> and used up <b>{vm.ShipChanges.FuelLost} Fuel Units</b>");
         moneyDetailsCard.SetText($"Money Earned from Job: <b>R${vm.Earnings.BaseEarnings}</b>");
         bonusMoneyDetailsCard.SetText($"Bonus Earnings: <b>R${vm.Earnings.BonusesEarnings}</b>");
@@ -93,11 +93,14 @@ public class NewDayReportCard : MonoBehaviour
 
     private void ShowNextDetailsCard(bool levelledUp)
     {
-        var nextCard = detailsCards[detailsCardIndex];
-        if ((detailsCardIndex >= detailsCards.Length) || ((nextCard == levelledUpDetailsCard || nextCard == levelledUpMiniDetailsCard) && !levelledUp))
+        if (detailsCardIndex >= detailsCards.Length)
             return;
 
-        nextCard.ShowDetails();
+        var nextCard = detailsCards[detailsCardIndex];
+        if (!((nextCard == levelledUpDetailsCard || nextCard == levelledUpMiniDetailsCard) && !levelledUp))
+        {
+            nextCard.ShowDetails();
+        }
         detailsCardIndex++;
 
         if (detailsCardIndex == detailsCards.Length - 1)
