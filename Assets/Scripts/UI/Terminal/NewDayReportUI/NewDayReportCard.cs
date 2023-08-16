@@ -18,13 +18,25 @@ public class NewDayReportCard : MonoBehaviour
     [SerializeField] private NewDayReportDetailsCard xpDetailsCard;
     [SerializeField] private NewDayReportDetailsCard bonusXpDetailsCard;
     [SerializeField] private NewDayReportDetailsCard completedCountDetailsCard;
+    [SerializeField] private NewDayReportDetailsCard levelledUpDetailsCard;
+    [SerializeField] NewDayReportDetailsCard levelledUpMiniDetailsCard;
     private NewDayReportDetailsCard[] detailsCards;
     private int detailsCardIndex;
     [SerializeField] private float detailsCardDelay = 2f;
 
     public void Init()
     {
-        detailsCards = new[] { shipDetailsCard, moneyDetailsCard, bonusMoneyDetailsCard, xpDetailsCard, bonusXpDetailsCard, completedCountDetailsCard };
+        detailsCards = new[]
+        {
+            shipDetailsCard,
+            moneyDetailsCard,
+            bonusMoneyDetailsCard,
+            xpDetailsCard,
+            bonusXpDetailsCard,
+            completedCountDetailsCard,
+            levelledUpDetailsCard,
+            levelledUpMiniDetailsCard,
+        };
         Array.ForEach(detailsCards, dc => dc.SetActive(false));
     }
 
@@ -53,10 +65,10 @@ public class NewDayReportCard : MonoBehaviour
         bonusXpDetailsCard.SetText($"Bonus EXP: <b>{vm.XpGains.BonusesXpGain}</b>");
         completedCountDetailsCard.SetText($"<b>{vm.Pilot.Name} has completed {vm.Pilot.MissionsCompleted} Jobs!</b>");
 
-        StartCoroutine(ShowDetailsCards());
+        StartCoroutine(ShowDetailsCards(vm));
     }
 
-    private IEnumerator ShowDetailsCards()
+    private IEnumerator ShowDetailsCards(ArchivedMissionViewModel vm)
     {
         while (detailsCardIndex < detailsCards.Length)
         {
@@ -68,34 +80,27 @@ public class NewDayReportCard : MonoBehaviour
                 if (Input.GetMouseButtonDown(0))
                 {
                     cardShown = true;
-                    ShowNextDetailsCard();
+                    ShowNextDetailsCard(vm.LevelledUp);
                 }
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }
             // If the card was not shown by the mouse click, show it after the delay
             if (!cardShown)
-                ShowNextDetailsCard();
+                ShowNextDetailsCard(vm.LevelledUp);
         }
     }
 
-    private void ShowNextDetailsCard()
+    private void ShowNextDetailsCard(bool levelledUp)
     {
-        if (detailsCardIndex >= detailsCards.Length)
+        var nextCard = detailsCards[detailsCardIndex];
+        if ((detailsCardIndex >= detailsCards.Length) || ((nextCard == levelledUpDetailsCard || nextCard == levelledUpMiniDetailsCard) && !levelledUp))
             return;
 
-        detailsCards[detailsCardIndex].ShowDetails();
+        nextCard.ShowDetails();
         detailsCardIndex++;
 
         if (detailsCardIndex == detailsCards.Length - 1)
             NextCardButton.SetActive(true);
-    }
-
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            ShowNextDetailsCard();
-        }
     }
 }

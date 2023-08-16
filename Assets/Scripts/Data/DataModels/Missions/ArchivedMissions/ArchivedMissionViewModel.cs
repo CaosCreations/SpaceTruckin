@@ -6,6 +6,7 @@
     public MissionEarnings Earnings { get; }
     public MissionXpGains XpGains { get; }
     public MissionShipChanges ShipChanges { get; }
+    public bool LevelledUp => ArchivedPilotInfo.LevelAtTimeOfMission < Pilot.Level;
 
     public ArchivedMissionViewModel(ArchivedMission archivedMission)
     {

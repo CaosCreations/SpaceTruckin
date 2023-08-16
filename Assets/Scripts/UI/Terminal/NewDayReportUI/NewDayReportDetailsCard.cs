@@ -8,6 +8,9 @@ public class NewDayReportDetailsCard : MonoBehaviour
 
     public void SetText(string text)
     {
+        // Text is optional 
+        if (detailsText == null)
+            return;
         detailsText.SetText(text);
     }
 
