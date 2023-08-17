@@ -12,6 +12,10 @@ public class TransitionUI : MonoBehaviour
     [SerializeField]
     private TransitionCanvas[] transitionCanvases;
 
+    [Header("Transition texts")]
+    [SerializeField] private string morningTransitionText = "Morning begins...";
+    [SerializeField] private string eveningTransitionText = "Evening begins...";
+
     private void Start()
     {
         SingletonManager.EventService.Add<OnEveningStartEvent>(OnEveningStartHandler);
@@ -27,7 +31,7 @@ public class TransitionUI : MonoBehaviour
 
     private void OnEveningStartHandler()
     {
-        BeginTransition(TransitionType.TimeOfDay, UIConstants.EveningStartText);
+        BeginTransition(TransitionType.TimeOfDay, eveningTransitionText);
     }
 
     private void OnEndOfDayHandler(OnEndOfDayEvent evt)
@@ -35,6 +39,6 @@ public class TransitionUI : MonoBehaviour
         if (CalendarManager.IsEndOfCalendar)
             return;
 
-        BeginTransition(TransitionType.TimeOfDay, UIConstants.MorningStartText);
+        BeginTransition(TransitionType.TimeOfDay, morningTransitionText);
     }
 }

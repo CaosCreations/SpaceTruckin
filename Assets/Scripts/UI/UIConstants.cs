@@ -53,8 +53,6 @@ public class UIConstants : MonoBehaviour
     // UI element text
     public const string NextCardText = "Next";
     public const string CloseCardCycleText = "Close";
-    public const string EveningStartText = "Evening begins...";
-    public const string MorningStartText = "Morning begins...";
     public const string EndOfCalendarText = "End of calendar...";
     public const string GameOverText = "Game over...";
 
