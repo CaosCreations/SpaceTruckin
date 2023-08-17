@@ -372,7 +372,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 2161954804819691878}
-  fadeSpeed: 1
+  timeCoeff: 1
+  duration: 1.5
   startFadeIn: 0
   startFadeOut: 0
   startFadeInAndOut: 0
@@ -394,7 +395,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5134304534137927123
 RectTransform:
   m_ObjectHideFlags: 0
@@ -431,9 +432,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShipAvatar: {fileID: 3162707901681970244}
-  DetailsText: {fileID: 5579808588418497019}
   NextCardButton: {fileID: 7962913063520823360}
-  modifierReportCard: {fileID: 0}
+  shipDetailsCard: {fileID: 0}
+  moneyDetailsCard: {fileID: 0}
+  bonusMoneyDetailsCard: {fileID: 0}
+  xpDetailsCard: {fileID: 0}
+  bonusXpDetailsCard: {fileID: 0}
+  detailsCardDelay: 0
 --- !u!222 &3797956035454303975
 CanvasRenderer:
   m_ObjectHideFlags: 0

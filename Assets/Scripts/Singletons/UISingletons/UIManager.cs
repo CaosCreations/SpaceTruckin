@@ -47,7 +47,7 @@ public class UIManager : MonoBehaviour
 
     private static Type[] SuccessInputTypes => new[]
     {
-        typeof(Button), typeof(Slider), typeof(AudioVolumeSlider), typeof(Scrollbar), typeof(MissionUIItem), typeof(PilotInMissionScheduleSlot)
+        typeof(Button), typeof(Slider), typeof(AudioVolumeSlider), typeof(Scrollbar), typeof(MissionUIItem), typeof(PilotInMissionScheduleSlot), typeof(NewDayReportCard),
     };
     private static bool IsErrorInput => Input.GetMouseButtonDown(0)
         && !UIUtils.IsPointerOverObjectType(SuccessInputTypes)

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,19 +9,42 @@ using UnityEngine.UI;
 public class NewDayReportCard : MonoBehaviour
 {
     public Image ShipAvatar;
-    public TextFade DetailsText;
     public Button NextCardButton;
 
-    [SerializeField]
-    private MissionModifierReportCard modifierReportCard;
+    [SerializeField] private Text headerText;
+    [SerializeField] private NewDayReportDetailsCard shipDetailsCard;
+    [SerializeField] private NewDayReportDetailsCard moneyDetailsCard;
+    [SerializeField] private NewDayReportDetailsCard bonusMoneyDetailsCard;
+    [SerializeField] private NewDayReportDetailsCard xpDetailsCard;
+    [SerializeField] private NewDayReportDetailsCard bonusXpDetailsCard;
+    [SerializeField] private NewDayReportDetailsCard completedCountDetailsCard;
+    [SerializeField] private NewDayReportDetailsCard levelledUpDetailsCard;
+    [SerializeField] NewDayReportDetailsCard levelledUpMiniDetailsCard;
+    private NewDayReportDetailsCard[] detailsCards;
+    private int detailsCardIndex;
+    [SerializeField] private float detailsCardDelay = 2f;
 
     public void Init()
     {
-        DetailsText.Clear();
+        detailsCards = new[]
+        {
+            shipDetailsCard,
+            moneyDetailsCard,
+            bonusMoneyDetailsCard,
+            xpDetailsCard,
+            bonusXpDetailsCard,
+            completedCountDetailsCard,
+            levelledUpDetailsCard,
+            levelledUpMiniDetailsCard,
+        };
+        Array.ForEach(detailsCards, dc => dc.HideDetails());
     }
 
     public virtual void ShowReport(ArchivedMission archivedMission)
     {
+        Array.ForEach(detailsCards, dc => dc.HideDetails());
+        NextCardButton.SetActive(false);
+
         if (archivedMission == null
             || archivedMission.Pilot == null
             || archivedMission.Pilot.Ship == null
@@ -29,81 +53,58 @@ public class NewDayReportCard : MonoBehaviour
             Debug.LogError("Invalid arguments passed to ShowReport method");
             return;
         }
-
+        detailsCardIndex = 0;
         ShipAvatar.sprite = archivedMission.Pilot.Ship.Avatar;
 
-        ArchivedMissionViewModel viewModel = new(archivedMission);
-        DetailsText.SetTextWithFade(BuildReportDetails(viewModel));
+        var vm = new ArchivedMissionViewModel(archivedMission);
+        headerText.SetText($"{vm.Pilot.Name} has returned from {vm.Mission.Name}!");
+        shipDetailsCard.SetText($"{vm.Pilot.Ship.Name} has sustained <b>{vm.ShipChanges.DamageTaken} Damage</b> to its <b>Hull</b> and used up <b>{vm.ShipChanges.FuelLost} Fuel Units</b>");
+        moneyDetailsCard.SetText($"Money Earned from Job: <b>R${vm.Earnings.BaseEarnings}</b>");
+        bonusMoneyDetailsCard.SetText($"Bonus Earnings: <b>R${vm.Earnings.BonusesEarnings}</b>");
+        xpDetailsCard.SetText($"{vm.Pilot.Name} has gained <b>{vm.XpGains.BaseXpGain}EXP</b>");
+        bonusXpDetailsCard.SetText($"Bonus EXP: <b>{vm.XpGains.BonusesXpGain}</b>");
+        completedCountDetailsCard.SetText($"<b>{vm.Pilot.Name} has completed {vm.Pilot.MissionsCompleted} Jobs!</b>");
+        levelledUpDetailsCard.SetText("Levelled Up!");
+        levelledUpMiniDetailsCard.SetText("Levelled Up!");
+        StartCoroutine(ShowDetailsCards(vm));
+    }
 
-        if (archivedMission.Mission.HasModifier)
+    private IEnumerator ShowDetailsCards(ArchivedMissionViewModel vm)
+    {
+        while (detailsCardIndex < detailsCards.Length)
         {
-            Debug.Log($"{archivedMission.Mission} has modifier. Will show modifier report details next..");
-            NextCardButton.AddOnClick(() => ShowMissionModifierReport(archivedMission));
+            float elapsedTime = 0;
+            bool cardShown = false;
+
+            while (elapsedTime < detailsCardDelay && !cardShown)
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    cardShown = true;
+                    ShowNextDetailsCard(vm.LevelledUp);
+                }
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+            // If the card was not shown by the mouse click, show it after the delay
+            if (!cardShown)
+                ShowNextDetailsCard(vm.LevelledUp);
         }
     }
 
-    private string BuildReportDetails(ArchivedMissionViewModel viewModel)
+    private void ShowNextDetailsCard(bool levelledUp)
     {
-        StringBuilder builder = new();
-        builder.AppendLineWithBreaks($"{viewModel.Pilot.Name} of the {viewModel.Pilot.Ship.Name} completed the mission \"{viewModel.Mission.Name}\"!");
+        if (detailsCardIndex >= detailsCards.Length)
+            return;
 
-        string outcomeDetails = BuildOutcomeDetails(viewModel.Pilot, viewModel.Earnings, viewModel.XpGains, viewModel.ShipChanges);
-        builder.AppendLineWithBreaks(outcomeDetails);
-
-        builder.AppendLineWithBreaks($"{viewModel.Pilot.Name} has now completed {viewModel.ArchivedPilotInfo.MissionsCompletedAtTimeOfMission} missions.");
-
-        // Check if the pilot leveled up
-        if (viewModel.ArchivedPilotInfo.LevelAtTimeOfMission < viewModel.Pilot.Level)
+        var nextCard = detailsCards[detailsCardIndex];
+        if (!((nextCard == levelledUpDetailsCard || nextCard == levelledUpMiniDetailsCard) && !levelledUp))
         {
-            builder.AppendLineWithBreaks($"{viewModel.Pilot.Name} has leveled up! (now level {viewModel.Pilot.Level}).");
+            nextCard.ShowDetails();
         }
+        detailsCardIndex++;
 
-        return builder.ToString();
-    }
-
-    protected string BuildOutcomeDetails(
-        Pilot pilot,
-        MissionEarnings earnings,
-        MissionXpGains xpGains,
-        MissionShipChanges shipChanges)
-    {
-        StringBuilder builder = new();
-        string moneyText = $"{pilot.Name} earned ${earnings.TotalEarnings.RoundTo2()} in total.";
-        string moneyBonusesText = $"{pilot.Name} earned ${earnings.BonusesEarnings.RoundTo2()} from bonuses.";
-        string moneyLicencesText = $"{pilot.Name} earned ${earnings.LicencesEarnings.RoundTo2()} from licences.";
-        string damageText = $"{pilot.Ship.Name} took {shipChanges.DamageTaken} damage to its {shipChanges.DamageType}.";
-        string fuelText = $"{pilot.Ship.Name} lost {shipChanges.FuelLost} fuel.";
-        string xpText = $"{pilot.Name} gained {xpGains.TotalXpGain.RoundTo2()} xp in total.";
-        string xpBonusesText = $"{pilot.Name} gained {xpGains.BonusesXpGain.RoundTo2()} xp from bonuses.";
-        string xpLicencesText = $"{pilot.Name} gained {xpGains.LicencesXpGain.RoundTo2()} xp from licences.";
-
-        builder.AppendLineWithBreaks(moneyText);
-
-        // Show additional money sources if they exist 
-        if (earnings.BonusesEarnings > 0)
-            builder.AppendLineWithBreaks(moneyBonusesText);
-
-        if (earnings.LicencesEarnings > 0)
-            builder.AppendLineWithBreaks(moneyLicencesText);
-
-        builder.AppendLineWithBreaks(damageText);
-        builder.AppendLineWithBreaks(fuelText);
-        builder.AppendLineWithBreaks(xpText);
-
-        // Show additional XP sources if they exist 
-        if (xpGains.BonusesXpGain > 0)
-            builder.AppendLineWithBreaks(xpBonusesText);
-
-        if (xpGains.LicencesXpGain > 0)
-            builder.AppendLineWithBreaks(xpLicencesText);
-
-        return builder.ToString();
-    }
-
-    private void ShowMissionModifierReport(ArchivedMission archivedMission)
-    {
-        modifierReportCard.gameObject.SetActive(true);
-        modifierReportCard.ShowReport(archivedMission);
-        gameObject.SetActive(false);
+        if (detailsCardIndex == detailsCards.Length - 1)
+            NextCardButton.SetActive(true);
     }
 }
