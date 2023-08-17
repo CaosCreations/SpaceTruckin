@@ -56,6 +56,7 @@ public class NewDayReportUI : MonoBehaviour
         reportCard.gameObject.SetActive(true);
         reportCard.ShowReport(CurrentMissionToReport);
         CurrentMissionToReport.HasBeenViewedInReport = true;
+        UpdateNextCardButtonListener();
     }
 
     private void UpdateNextCardButtonListener()
