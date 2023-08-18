@@ -118,8 +118,8 @@ public class FleetUI : MonoBehaviour
         // If the pilot doesn't already work for us, then set up a button to handle hiring him 
         if (!pilot.IsHired)
         {
-            hireButton = GeneratePilotProfileButton(
-                hireButtonPrefab, PilotsConstants.HireButtonAnchors, () => HirePilot(pilot));
+            hireButton = GeneratePilotProfileButton(hireButtonPrefab, PilotsConstants.HireButtonAnchors, () => HirePilot(pilot));
+            hireButton.interactable = PlayerManager.Instance.CanSpendMoney(pilot.HireCost);
         }
         else
         {

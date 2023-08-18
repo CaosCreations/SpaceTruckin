@@ -11,7 +11,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
     [Header("Set In Editor")]
     [SerializeField] private PlayerData playerData;
 
-    public static event System.Action OnFinancialTransaction;
+    public static event System.Action OnMoneySpent;
 
     #region Property Accessors
     public string PlayerName
@@ -148,20 +148,20 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
     public void SpendMoney(long amount)
     {
         Instance.Money -= amount;
-        OnFinancialTransaction?.Invoke();
+        OnMoneySpent?.Invoke();
     }
 
     public void SpendMoney(double amount)
     {
         Instance.Money -= (long)amount;
-        OnFinancialTransaction?.Invoke();
+        OnMoneySpent?.Invoke();
     }
 
     public void ReceiveMoney(long amount)
     {
         Instance.Money += amount;
         Instance.TotalMoneyAcquired += amount;
-        OnFinancialTransaction?.Invoke();
+        OnMoneySpent?.Invoke();
     }
 
     public void BuyRepairTools(int amount)

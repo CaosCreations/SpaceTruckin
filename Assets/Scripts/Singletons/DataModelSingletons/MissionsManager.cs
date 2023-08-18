@@ -183,7 +183,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
             {
                 // Unlock missions that require money and subscribe to event to keep them updated.
                 mission.UnlockIfConditionMet();
-                PlayerManager.OnFinancialTransaction += mission.UnlockIfConditionMet;
+                PlayerManager.OnMoneySpent += mission.UnlockIfConditionMet;
             }
         }
     }
