@@ -87,7 +87,7 @@ public partial class Mission : ScriptableObject, IDataModel
                     UnlockMission();
 
                     // This mission is unlocked, so it no longer needs to be notified of any money changes. 
-                    PlayerManager.OnFinancialTransaction -= UnlockIfConditionMet;
+                    PlayerManager.OnMoneySpent -= UnlockIfConditionMet;
                 }
                 break;
 

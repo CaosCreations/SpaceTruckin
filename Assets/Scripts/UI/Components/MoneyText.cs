@@ -25,7 +25,7 @@ public class MoneyText : MonoBehaviour
             totalEarningsPrefix = defaultPrefix;
 
         UpdateMoneyText();
-        PlayerManager.OnFinancialTransaction += UpdateMoneyText;
+        PlayerManager.OnMoneySpent += UpdateMoneyText;
     }
 
     private void OnEnable() => UpdateMoneyText();
