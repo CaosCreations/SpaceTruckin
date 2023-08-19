@@ -16,6 +16,7 @@ public class MissionsUI : MonoBehaviour
     private GameObject pilotsUnavailableText;
 
     public MissionScheduleSlot[] scheduleSlots;
+    public MissionDetailsUI missionDetailsUI;
 
     private void OnEnable()
     {
@@ -23,6 +24,7 @@ public class MissionsUI : MonoBehaviour
         PopulateScheduleSlots();
         PopulateMissionSelect();
         pilotSelectCloseButton.SetActive(false);
+        missionDetailsUI.DestroyMissionDetails();
     }
 
     private void Start()
