@@ -87,44 +87,25 @@ public class FleetUI : MonoBehaviour
     {
         SetPilotListVisibility(visible: false);
 
-        if (pilot.Ship != null)
-        {
-            // Show ship avatar 
-            if (pilot.Ship.Avatar != null)
-            {
-                shipAvatar.sprite = pilot.Ship.Avatar;
-            }
-            else
-            {
-                Debug.LogError($"{pilot.Name}'s ship avatar is null");
-            }
-        }
-        else
-        {
-            Debug.LogError($"{pilot.Name}'s ship is null");
-        }
-
-        // Show pilot avatar
-        if (pilot.Avatar != null)
-        {
-            pilotAvatar.sprite = pilot.Avatar;
-        }
-        else
-        {
-            Debug.Log($"{pilot}'s avatar is null");
-        }
+        shipAvatar.sprite = pilot.Ship.Avatar;
+        pilotAvatar.sprite = pilot.Avatar;
         pilotDetailsText.SetText(BuildDetailsString(pilot));
 
-        // If the pilot doesn't already work for us, then set up a button to handle hiring him 
-        if (!pilot.IsHired)
+        if (pilot.IsHired)
+        {
+            hireButton.DestroyIfExists();
+            return;
+        }
+
+        if (hireButton == null)
         {
             hireButton = GeneratePilotProfileButton(hireButtonPrefab, PilotsConstants.HireButtonAnchors, () => HirePilot(pilot));
-            hireButton.interactable = PlayerManager.Instance.CanSpendMoney(pilot.HireCost);
         }
         else
         {
-            hireButton.DestroyIfExists();
+            hireButton.AddOnClick(() => HirePilot(pilot));
         }
+        hireButton.interactable = PlayerManager.Instance.CanSpendMoney(pilot.HireCost);
     }
 
     private Button GeneratePilotProfileButton(GameObject prefab, (Vector2, Vector2) anchors, UnityAction callback)
