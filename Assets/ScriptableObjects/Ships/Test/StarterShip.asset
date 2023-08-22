@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65c61d5d74a340740ad66c5ce01d5754, type: 3}
+  m_Name: StarterShip
+  m_EditorClassIdentifier: 
+  shipName: Starter Ship
+  maxHullIntegrity: 100
+  maxFuel: 100
+  shipPrefab: {fileID: 919132149155446097, guid: 280f8146f178903468315847e2995577,
+    type: 3}
+  shipAvatar: {fileID: 3189072148735213718, guid: d751617d2558c644ebc5bf7465d07572,
+    type: 3}
+  saveData:
+    currentFuel: 0
+    currentHullIntegrity: 0
+    canWarp: 0
