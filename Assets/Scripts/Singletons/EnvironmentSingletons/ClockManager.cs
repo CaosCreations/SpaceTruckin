@@ -1,8 +1,9 @@
 ﻿using Events;
+using PixelCrushers.DialogueSystem;
 using System;
 using UnityEngine;
 
-public class ClockManager : MonoBehaviour
+public class ClockManager : MonoBehaviour, ILuaFunctionRegistrar
 {
     public static TimeSpan CurrentTime { get; private set; }
     public static TimeOfDay.Phase CurrentTimeOfDayPhase => isEvening ? TimeOfDay.Phase.Evening : TimeOfDay.Phase.Morning;
@@ -18,7 +19,7 @@ public class ClockManager : MonoBehaviour
     [SerializeField]
     private Cutscene clockStartCutscene;
 
-    [SerializeField] 
+    [SerializeField]
     private bool showOnGui = false;
 
     private void Start()
@@ -201,5 +202,21 @@ public class ClockManager : MonoBehaviour
             UIConstants.ClockTextHeight),
             dateTimeText,
             localStyle);
+    }
+
+    private void PassMinutes(double minutes)
+    {
+        Debug.Log($"Adding {minutes} minutes to current time");
+        currentTimeInSeconds += (int)Math.Floor(minutes * 60);
+    }
+
+    public void RegisterLuaFunctions()
+    {
+        Lua.RegisterFunction(DialogueConstants.PassMinutesFunctionName, this, SymbolExtensions.GetMethodInfo(() => PassMinutes(0D)));
+    }
+
+    public void UnregisterLuaFunctions()
+    {
+        Lua.UnregisterFunction(DialogueConstants.PassMinutesFunctionName);
     }
 }
