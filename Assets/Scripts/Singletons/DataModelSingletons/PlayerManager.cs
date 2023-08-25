@@ -247,9 +247,6 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
     #region Lua Function Registration
     public void RegisterLuaFunctions()
     {
-        if (DialogueManager.Instance == null)
-            return;
-
         Lua.RegisterFunction(
             DialogueConstants.SpendMoneyFunctionName,
             this,

@@ -11,6 +11,7 @@
     public const string PlayCutsceneFunctionName = "PlayCutscene";
     public const string EndCalendarFunctionName = "EndCalendar";
     public const string PlaySoundEffectFunctionName = "PlaySoundEffect";
+    public const string PassMinutesFunctionName = "PassMinutes";
 
     // Actor field names
     public const string FondnessFieldName = "Fondness";
