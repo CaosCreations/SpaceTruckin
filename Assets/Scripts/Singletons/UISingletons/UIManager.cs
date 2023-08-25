@@ -32,7 +32,7 @@ public class UIManager : MonoBehaviour
     #endregion
 
     [SerializeField] private TransitionUI transitionUI;
-    
+
     [SerializeField]
     private List<CanvasAccessSettings> accessSettings = new();
 
@@ -121,13 +121,18 @@ public class UIManager : MonoBehaviour
 
         if (Input.GetKeyDown(PlayerConstants.PauseKey) && !StationCameraManager.IsLiveCameraZooming)
         {
-            UICanvasBase canvas = GetCanvasByType(UICanvasType.PauseMenu);
-            ShowCanvas(canvas);
+            currentCanvasType = UICanvasType.PauseMenu;
+            ShowCanvas(currentCanvasType);
         }
     }
 
     private void HandlePausedInput()
     {
+        if (currentCanvasType == UICanvasType.None)
+        {
+            return;
+        }
+
         // Play an Error sound effect if a non-interactable region is clicked
         if (IsErrorInput)
         {
@@ -151,18 +156,15 @@ public class UIManager : MonoBehaviour
 
         OnCanvasDeactivated?.Invoke();
 
-        if (Instance != null)
-        {
-            Instance.bedCanvas.SetActive(false);
-            Instance.terminalCanvas.SetActive(false);
-            Instance.hangarNodeCanvas.SetActive(false);
-            Instance.vendingCanvas.SetActive(false);
-            Instance.casetteCanvas.SetActive(false);
-            Instance.noticeBoardCanvas.SetActive(false);
-            Instance.mainMenuCanvas.SetActive(false);
-            Instance.pauseMenuCanvas.SetActive(false);
-            Instance.universalUI.gameObject.SetActive(false);
-        }
+        Instance.bedCanvas.SetActive(false);
+        Instance.terminalCanvas.SetActive(false);
+        Instance.hangarNodeCanvas.SetActive(false);
+        Instance.vendingCanvas.SetActive(false);
+        Instance.casetteCanvas.SetActive(false);
+        Instance.noticeBoardCanvas.SetActive(false);
+        Instance.mainMenuCanvas.SetActive(false);
+        Instance.pauseMenuCanvas.SetActive(false);
+        Instance.universalUI.gameObject.SetActive(false);
     }
 
     /// <param name="canvas">The canvas to display, which is set by collision or a shortcut
