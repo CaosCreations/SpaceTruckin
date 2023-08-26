@@ -82,6 +82,19 @@ public class PlayerEditor : MonoBehaviour
         }
     }
 
+    [MenuItem("Space Truckin/Player/Toggle Baby Mode")]
+    private static void ToggleBabyMode()
+    {
+        try
+        {
+            PlayerManager.PlayerMovementAnimation.ToggleBabyHolding();
+        }
+        catch (Exception ex)
+        {
+            Debug.LogException(ex);
+        }
+    }
+
     public static void DeleteSaveData()
     {
         var playerData = EditorHelper.GetAsset<PlayerData>();

@@ -62,10 +62,16 @@ public class PlayerMovementAnimation : MonoBehaviour
         }
     }
 
+    public void ToggleBabyHolding()
+    {
+        SwitchBabyHolding(!IsHoldingBaby);
+    }
+
     private void SwitchBabyHolding(bool isHoldingBaby)
     {
         animator.Play("StandUpP");
         IsHoldingBaby = isHoldingBaby;
+        Debug.Log("Baby holding switched to: " + isHoldingBaby);
     }
 
     public void UpdateIdle()
@@ -98,7 +104,7 @@ public class PlayerMovementAnimation : MonoBehaviour
     {
         if (manualSwitchBabyMode)
         {
-            SwitchBabyHolding(!IsHoldingBaby);
+            ToggleBabyHolding();
             manualSwitchBabyMode = false;
         }
     }
