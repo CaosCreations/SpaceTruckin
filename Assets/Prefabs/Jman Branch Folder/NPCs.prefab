@@ -10974,6 +10974,7 @@ Transform:
   m_Children:
   - {fileID: 2119071631167154417}
   - {fileID: 2119071631208470424}
+  - {fileID: 2119071631345409855}
   m_Father: {fileID: 2071730220}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11807,6 +11808,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: dc469e16be0b84517a6cf4969742bd8b,
         type: 3}
+    - target: {fileID: 1380008505, guid: d86c9053994b5404aa21954f055886f6, type: 3}
+      propertyPath: standardDialogueUISettings.subtitlePanelNumber
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 433024637706506137, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: m_Sprite
@@ -11913,6 +11918,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1390731360908081716}
     m_Modifications:
+    - target: {fileID: 696095477, guid: d86c9053994b5404aa21954f055886f6, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 48af792303bab7c4db61382dc0d8cad6, type: 2}
     - target: {fileID: 1380008505, guid: d86c9053994b5404aa21954f055886f6, type: 3}
       propertyPath: actor
       value: Klapaucius
@@ -12239,6 +12248,123 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
     type: 3}
   m_PrefabInstance: {fileID: 1390731359586106187}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1390731359594552179
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 3396672080521572371}
+    m_Modifications:
+    - target: {fileID: 696095477, guid: d86c9053994b5404aa21954f055886f6, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 696095477, guid: d86c9053994b5404aa21954f055886f6, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: ba1d83dc6477ecf4aacb812894d5e746, type: 2}
+    - target: {fileID: 1380008505, guid: d86c9053994b5404aa21954f055886f6, type: 3}
+      propertyPath: actor
+      value: Blebl
+      objectReference: {fileID: 0}
+    - target: {fileID: 1380008505, guid: d86c9053994b5404aa21954f055886f6, type: 3}
+      propertyPath: spritePortrait
+      value: 
+      objectReference: {fileID: 21300000, guid: 4eee1b8607f034d12a947e1578f1d620,
+        type: 3}
+    - target: {fileID: 1380008505, guid: d86c9053994b5404aa21954f055886f6, type: 3}
+      propertyPath: standardDialogueUISettings.subtitlePanelNumber
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 433024637706506137, guid: d86c9053994b5404aa21954f055886f6,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -708472864, guid: 61f9bf60fdf43c841910179c4de8a20f,
+        type: 3}
+    - target: {fileID: 433024637706506137, guid: d86c9053994b5404aa21954f055886f6,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 975445818079797909, guid: d86c9053994b5404aa21954f055886f6,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887104, guid: d86c9053994b5404aa21954f055886f6,
+        type: 3}
+      propertyPath: m_Name
+      value: Blebl
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 329
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 380.545
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -276.233
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8553291468905247584, guid: d86c9053994b5404aa21954f055886f6,
+        type: 3}
+      propertyPath: conversationActor
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d86c9053994b5404aa21954f055886f6, type: 3}
+--- !u!4 &2119071631345409855 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1390731359594552179}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1390731359714712423
 PrefabInstance:
@@ -13756,7 +13882,7 @@ PrefabInstance:
     - target: {fileID: 8553291468905247584, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: conversation
-      value: 'Lori Day 1 Part 1: Vukra'
+      value: Lori HUB
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d86c9053994b5404aa21954f055886f6, type: 3}
