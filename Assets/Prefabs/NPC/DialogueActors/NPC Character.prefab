@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 1380008506}
   - component: {fileID: 696095477}
   - component: {fileID: 696095475}
+  - component: {fileID: 4069167998314399042}
   m_Layer: 24
   m_Name: NPC Character
   m_TagString: NPC
@@ -237,15 +238,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a64578247383140469c45370654a984a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actor: Qza-Faroku
+  actor: Blebl
   persistentDataName: 
   portrait: {fileID: 0}
-  spritePortrait: {fileID: 21300000, guid: 24d73295e04a34795b2525eeedea1575, type: 3}
+  spritePortrait: {fileID: 21300000, guid: 4eee1b8607f034d12a947e1578f1d620, type: 3}
   barkUISettings:
     barkUI: {fileID: 0}
     barkUIOffset: {x: 0, y: 2, z: 0}
   standardDialogueUISettings:
-    subtitlePanelNumber: 0
+    subtitlePanelNumber: 5
     customSubtitlePanel: {fileID: 0}
     customSubtitlePanelOffset: {x: 0, y: 0, z: 0}
     menuPanelNumber: 0
@@ -283,7 +284,7 @@ Animator:
   m_GameObject: {fileID: 1019127046796887104}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e48e68210ed63584eaeab0ebd0da87a0, type: 2}
+  m_Controller: {fileID: 9100000, guid: ba1d83dc6477ecf4aacb812894d5e746, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -294,6 +295,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
 --- !u!114 &696095475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019127046796887104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ac7fae2710eae44786ab79cdad7ba0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  npcData: {fileID: 0}
+  npcAnimated: {fileID: 0}
+--- !u!114 &4069167998314399042
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
