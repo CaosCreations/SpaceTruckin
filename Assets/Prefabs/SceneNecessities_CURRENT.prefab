@@ -6373,6 +6373,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1302945407348996243 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7387135033695423676, guid: d9aaa0164875a6b42b84bd35a1ba3806,
+    type: 3}
+  m_PrefabInstance: {fileID: 8399386879463601199}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1302945407254984334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1302945407348996243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a9511f38ad33114eabcf4ad94b3b024, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1302945407348996271}
+--- !u!95 &1302945407348996271 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7387135033695423616, guid: d9aaa0164875a6b42b84bd35a1ba3806,
+    type: 3}
+  m_PrefabInstance: {fileID: 8399386879463601199}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1302945407354767549 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7387135033684442258, guid: d9aaa0164875a6b42b84bd35a1ba3806,
@@ -6434,6 +6459,66 @@ GameObject:
   m_PrefabInstance: {fileID: 8399386879463601199}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &2000920385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1302945407675653780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e501d18bb52cf8c40b1853ca4904654f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CollideAgainst:
+    serializedVersion: 2
+    m_Bits: 1073741824
+  m_IgnoreTag: 
+  m_TransparentLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_MinimumDistanceFromTarget: 0.1
+  m_AvoidObstacles: 1
+  m_DistanceLimit: 0
+  m_MinimumOcclusionTime: 0
+  m_CameraRadius: 0.01
+  m_Strategy: 1
+  m_MaximumEffort: 4
+  m_SmoothingTime: 0.66
+  m_Damping: 2.8
+  m_DampingWhenOccluded: 1.1
+  m_OptimalTargetDistance: 0
+--- !u!114 &6092867091267612118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1302945407675653780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e501d18bb52cf8c40b1853ca4904654f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CollideAgainst:
+    serializedVersion: 2
+    m_Bits: 1073741824
+  m_IgnoreTag: 
+  m_TransparentLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_MinimumDistanceFromTarget: 0.1
+  m_AvoidObstacles: 1
+  m_DistanceLimit: 0
+  m_MinimumOcclusionTime: 0
+  m_CameraRadius: 0.01
+  m_Strategy: 1
+  m_MaximumEffort: 4
+  m_SmoothingTime: 0.66
+  m_Damping: 2.8
+  m_DampingWhenOccluded: 1.1
+  m_OptimalTargetDistance: 0
+--- !u!114 &8410020332894408429
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

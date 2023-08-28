@@ -9,6 +9,7 @@ public class StationCameraManager : MonoBehaviour
     private StationCamera[] stationCameras;
     private CinemachineLiveCameraZoom liveCameraZoom;
     private CinemachineLiveCameraShake liveCameraShake;
+    [SerializeField] private CamAnimStateChange animStateChange;
 
     public static bool IsLiveCameraZooming;
 
@@ -72,6 +73,11 @@ public class StationCameraManager : MonoBehaviour
     public void ShakeLiveCamera(float amplitude)
     {
         liveCameraShake.Shake(amplitude);
+    }
+
+    public void PlayCamAnimState(string stateName)
+    {
+        animStateChange.PlayState(stateName);
     }
 
     private StationCamera GetCameraByIdentifier(StationCamera.Identifier cameraIdentifier)

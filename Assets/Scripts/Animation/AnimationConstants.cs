@@ -74,4 +74,6 @@ public static class AnimationConstants
         { "RunUP", "player2_runUp" }
     };
     #endregion
+
+    public const string OfficeCameraStateName = "Base Layer.Cam Normal Angle30";
 }
