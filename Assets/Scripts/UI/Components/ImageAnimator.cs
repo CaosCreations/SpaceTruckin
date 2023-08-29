@@ -1,18 +1,15 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 public class ImageAnimator : MonoBehaviour
 {
     [SerializeField] private bool isLooping;
-    [SerializeField] private string loopStateName = "LoopAnimation";
-    [SerializeField] private Sprite staticSprite; 
-    private Animator animator;
-    private Image image;
+    [SerializeField] private string loopStateName;
+    [SerializeField] private Sprite staticSprite;
+    [SerializeField] private Animator animator;
+    [SerializeField] private SpriteRenderer spriteRenderer;
 
     private void Start()
     {
-        animator = GetComponent<Animator>();
-        image = GetComponent<Image>();
         UpdateAnimation();
     }
 
@@ -27,12 +24,15 @@ public class ImageAnimator : MonoBehaviour
         if (isLooping)
         {
             animator.enabled = true;
-            animator.Play(loopStateName);
+            if (!string.IsNullOrWhiteSpace(loopStateName))
+            {
+                animator.Play(loopStateName);
+            }
         }
         else
         {
             animator.enabled = false;
-            image.sprite = staticSprite;
+            spriteRenderer.sprite = staticSprite;
         }
     }
 }
