@@ -6,24 +6,38 @@ public class PlayAnimByDistance : MonoBehaviour
 {
     public float range;
     private Transform player;
-   // public float playerZ;
-   // public float playerX;
-   public float stDistance;
+   public int randomAnimState;
 
     public Animator myAnimator;
     private bool animationStarted=false;
 
     public bool zDistance;
 
-    void Start()
+    void Awake()
     {
         player = GameObject.FindWithTag("Player").GetComponent<Transform>();
+        myAnimator = GetComponent<Animator>();
+        randomAnimState= Random.Range(0, 5);
+           //setting up RandomIddle
+        if(randomAnimState==0){myAnimator.Play("Base Layer.birbIdle000",0,0);}
+        if(randomAnimState==1){myAnimator.Play("Base Layer.birbIdle001",0,0);}
+        if(randomAnimState==2){myAnimator.Play("Base Layer.birbIdle002",0,0);}
+        if(randomAnimState==3){myAnimator.Play("Base Layer.birbIdle003",0,0);}
+        if(randomAnimState==4){myAnimator.Play("Base Layer.birbIdle004",0,0);}
+        if(randomAnimState==5){myAnimator.Play("Base Layer.birbIdle005",0,0);}
+        
+        
+
+        
+
+
     }
 
     void Update()
     {
-        stDistance=  Vector3.Distance(player.position, transform.position);
-
+      
+     
+       
         //idk if vector distance is a good
         // I heard from a guy...that is not good for performance.
 
@@ -44,7 +58,8 @@ public class PlayAnimByDistance : MonoBehaviour
        if(player.transform.position.x>this.transform.position.x+2 && animationStarted==false)
        {
          myAnimator.Play("Base Layer.birb001flyLeft",0,0);
-           animationStarted=true;   
+           animationStarted=true;
+           randomAnimState=-10;   
 
        }
 
@@ -52,6 +67,7 @@ public class PlayAnimByDistance : MonoBehaviour
        {
          myAnimator.Play("Base Layer.birb001flyRight",0,0);
            animationStarted=true;   
+           randomAnimState=-10;   
 
        }
 
@@ -69,18 +85,19 @@ public class PlayAnimByDistance : MonoBehaviour
        {
          myAnimator.Play("Base Layer.birb001flysoutht",0,0);
            animationStarted=true;   
+           randomAnimState=-10;   
 
        }
 
            if(player.transform.position.z<this.transform.position.z+1 && animationStarted==false)
        {
          myAnimator.Play("Base Layer.birb001flynortht",0,0);
-           animationStarted=true;   
+           animationStarted=true;  
+           randomAnimState=-10;    
 
        }
 
         }
-       
 
 
 
