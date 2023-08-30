@@ -218,7 +218,14 @@ public class UniversalHangarNodeUI : UICanvasBase
 
     private void SetBatteryChargeImage()
     {
-        batteryChargeAnimator.UpdateAnimation(ShipToInspect.CanWarp);
+        if (ShipToInspect.CanWarp)
+        {
+            batteryChargeAnimator.StartAnimation();
+        }
+        else
+        {
+            batteryChargeAnimator.StopAnimation();
+        }
     }
 
     private void SetSliderValues()

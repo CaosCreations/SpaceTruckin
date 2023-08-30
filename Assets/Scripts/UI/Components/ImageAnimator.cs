@@ -1,38 +1,37 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class ImageAnimator : MonoBehaviour
 {
-    [SerializeField] private bool isLooping;
-    [SerializeField] private string loopStateName;
-    [SerializeField] private Sprite staticSprite;
-    [SerializeField] private Animator animator;
-    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Sprite[] sprites;
+    [SerializeField] private float frameRate = 0.1f;
+    [SerializeField] private Image image;
+    private bool isAnimating;
 
-    private void Start()
+    public void StartAnimation()
     {
-        UpdateAnimation();
-    }
-
-    public void UpdateAnimation(bool isLooping)
-    {
-        this.isLooping = isLooping;
-        UpdateAnimation();
-    }
-
-    private void UpdateAnimation()
-    {
-        if (isLooping)
+        if (!isAnimating)
         {
-            animator.enabled = true;
-            if (!string.IsNullOrWhiteSpace(loopStateName))
-            {
-                animator.Play(loopStateName);
-            }
+            isAnimating = true;
+            StartCoroutine(AnimateImage());
         }
-        else
+    }
+
+    public void StopAnimation()
+    {
+        isAnimating = false;
+        image.sprite = sprites[0];
+    }
+
+    private IEnumerator AnimateImage()
+    {
+        int currentFrame = 0;
+        while (isAnimating)
         {
-            animator.enabled = false;
-            spriteRenderer.sprite = staticSprite;
+            image.sprite = sprites[currentFrame];
+            yield return new WaitForSeconds(frameRate);
+            currentFrame = (currentFrame + 1) % sprites.Length;
         }
     }
 }
