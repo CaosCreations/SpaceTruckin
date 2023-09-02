@@ -17,7 +17,7 @@ public class UniversalHangarNodeUI : UICanvasBase
     [SerializeField] private Button customizationButton;
     [SerializeField] private Button overviewButton;
 
-    [SerializeField] private Image batteryChargeImage;
+    [SerializeField] private ImageAnimator batteryChargeAnimator;
 
     [Header("Set at Runtime")]
     [SerializeField] private GameObject shipPreview;
@@ -218,9 +218,14 @@ public class UniversalHangarNodeUI : UICanvasBase
 
     private void SetBatteryChargeImage()
     {
-        batteryChargeImage.color = ShipToInspect.CanWarp ?
-            HangarConstants.ChargedBatteryImageColour :
-            HangarConstants.DepletedBatteryImageColour;
+        if (ShipToInspect.CanWarp)
+        {
+            batteryChargeAnimator.StartAnimation();
+        }
+        else
+        {
+            batteryChargeAnimator.StopAnimation();
+        }
     }
 
     private void SetSliderValues()

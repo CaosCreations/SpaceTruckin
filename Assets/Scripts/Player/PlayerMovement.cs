@@ -136,6 +136,7 @@ public class PlayerMovement : MonoBehaviour
         {
             collidingDoor.CloseDoor();
         }
+        StationCameraManager.Instance.PlayCamAnimState(AnimationConstants.OfficeCameraStateName);
     }
 
     public bool Raycast(string layerName, out RaycastHit hit)
