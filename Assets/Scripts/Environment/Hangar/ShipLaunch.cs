@@ -8,7 +8,7 @@ public class ShipLaunch : MonoBehaviour
     [SerializeField] private float launchSpeed = 1f;
     [SerializeField] private float acceleration = 1f;
     [SerializeField] private float liftHeight = 5f;
-    [SerializeField] private Transform hangarDoors;
+    private Transform hangarDoors;
 
     private bool isLaunching = false;
     private bool hasLifted = false;
@@ -18,7 +18,7 @@ public class ShipLaunch : MonoBehaviour
 
     private Vector3 originalPosition;
     private Quaternion originalRotation;
-    private Vector3 liftVelocity; 
+    private Vector3 liftVelocity;
     private Vector3 currentVelocity;
 
     [SerializeField] private bool manualStart;
@@ -27,6 +27,7 @@ public class ShipLaunch : MonoBehaviour
     {
         originalPosition = transform.position;
         originalRotation = transform.rotation;
+        hangarDoors = GameObject.FindGameObjectWithTag("HangarDoors").transform;
     }
 
     private void Update()
@@ -63,14 +64,14 @@ public class ShipLaunch : MonoBehaviour
                 // Finish rotation before moving towards exit 
                 if (Quaternion.Angle(transform.rotation, targetRotation) < 1f)
                 {
-                    Vector3 targetForwardPosition = targetPosition - hangarDoors.forward * 10f;
-                    transform.position = Vector3.SmoothDamp(transform.position, targetForwardPosition, ref currentVelocity, 1f / launchSpeed);
+                    transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref currentVelocity, 1f / launchSpeed);
                 }
             }
 
             if (isRotating && Vector3.Distance(transform.position, targetPosition) < 0.1f)
             {
                 isLaunching = false;
+                Destroy(gameObject);
             }
         }
     }
