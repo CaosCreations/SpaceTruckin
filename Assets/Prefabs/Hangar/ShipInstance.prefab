@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6053673093598348286}
   - component: {fileID: 2895143086846650676}
-  - component: {fileID: 2490979484966654459}
+  - component: {fileID: 6069765092656155818}
   m_Layer: 0
   m_Name: ShipInstance
   m_TagString: Untagged
@@ -28,6 +28,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -44,24 +45,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eabeb7fb9f1d6c40b0f2d4b72c5c2a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLaunching: 0
-  launchAnimator: {fileID: 0}
---- !u!95 &2490979484966654459
-Animator:
-  serializedVersion: 3
+  IsLaunching: 0
+  takeOff: {fileID: 0}
+  launch: {fileID: 6069765092656155818}
+--- !u!114 &6069765092656155818
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6567717090386942404}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b40ea99c72931284b9d55a50759ad21b, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2967971cd795bb478978645baa12b3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  liftSpeed: 1
+  rotationSpeed: 1
+  launchSpeed: 1
+  acceleration: 1
+  liftHeight: 3
+  manualStart: 0
