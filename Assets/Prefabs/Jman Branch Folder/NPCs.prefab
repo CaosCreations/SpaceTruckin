@@ -2404,7 +2404,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: ecc23ff23da089545956ecf878486015, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4903,7 +4903,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1390731359852081791
 Transform:
   m_ObjectHideFlags: 0
@@ -7879,7 +7879,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: ecc23ff23da089545956ecf878486015, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10005,7 +10005,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: ecc23ff23da089545956ecf878486015, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10643,7 +10643,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: ecc23ff23da089545956ecf878486015, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11432,6 +11432,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8553291468905247584, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
+      propertyPath: conversation
+      value: Tna HUB
+      objectReference: {fileID: 0}
+    - target: {fileID: 8553291468905247584, guid: d86c9053994b5404aa21954f055886f6,
+        type: 3}
       propertyPath: conversationActor
       value: 
       objectReference: {fileID: 0}
@@ -11532,7 +11537,7 @@ PrefabInstance:
     - target: {fileID: 8553291468905247584, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: conversation
-      value: ULSS Convo 1 - Didee First
+      value: Didee HUB
       objectReference: {fileID: 0}
     - target: {fileID: 8553291468905247584, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
@@ -11573,6 +11578,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 837429573, guid: 8171a8a5e1e7a934d90ed932f1ff1af3,
         type: 3}
+    - target: {fileID: 433024637706506137, guid: d86c9053994b5404aa21954f055886f6,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ecc23ff23da089545956ecf878486015, type: 2}
     - target: {fileID: 1019127046796887104, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: m_Name
@@ -11632,6 +11642,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8553291468905247584, guid: d86c9053994b5404aa21954f055886f6,
+        type: 3}
+      propertyPath: conversation
+      value: Captain Bibnee HUB
       objectReference: {fileID: 0}
     - target: {fileID: 8553291468905247584, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
@@ -11721,17 +11736,17 @@ PrefabInstance:
     - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
@@ -11813,6 +11828,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -708472864, guid: 61f9bf60fdf43c841910179c4de8a20f,
         type: 3}
+    - target: {fileID: 433024637706506137, guid: d86c9053994b5404aa21954f055886f6,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ecc23ff23da089545956ecf878486015, type: 2}
     - target: {fileID: 1019127046796887104, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: m_Name
@@ -12225,7 +12245,7 @@ PrefabInstance:
     - target: {fileID: 8553291468905247584, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: conversation
-      value: Post-Republic Convo 1
+      value: Orx HUB
       objectReference: {fileID: 0}
     - target: {fileID: 8553291468905247584, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
@@ -12486,6 +12506,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8553291468905247584, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
+      propertyPath: conversation
+      value: Qza HUB
+      objectReference: {fileID: 0}
+    - target: {fileID: 8553291468905247584, guid: d86c9053994b5404aa21954f055886f6,
+        type: 3}
       propertyPath: conversationActor
       value: 
       objectReference: {fileID: 0}
@@ -12691,7 +12716,7 @@ PrefabInstance:
     - target: {fileID: 8553291468905247584, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: conversation
-      value: Post-Republic Convo 1
+      value: Ksr HUB
       objectReference: {fileID: 0}
     - target: {fileID: 8553291468905247584, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
@@ -12745,17 +12770,17 @@ PrefabInstance:
     - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 209.75
+      value: 186.416
       objectReference: {fileID: 0}
     - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 380.3
+      value: 380.33
       objectReference: {fileID: 0}
     - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -275.22
+      value: -251.863
       objectReference: {fileID: 0}
     - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
@@ -12765,17 +12790,17 @@ PrefabInstance:
     - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
@@ -12930,7 +12955,7 @@ PrefabInstance:
     - target: {fileID: 8553291468905247584, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: conversation
-      value: Post-Republic Convo 1
+      value: Bek HUB
       objectReference: {fileID: 0}
     - target: {fileID: 8553291468905247584, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
@@ -13273,6 +13298,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8553291468905247584, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
+      propertyPath: conversation
+      value: Bti HUB
+      objectReference: {fileID: 0}
+    - target: {fileID: 8553291468905247584, guid: d86c9053994b5404aa21954f055886f6,
+        type: 3}
       propertyPath: conversationActor
       value: 
       objectReference: {fileID: 0}
@@ -13373,7 +13403,7 @@ PrefabInstance:
     - target: {fileID: 8553291468905247584, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: conversation
-      value: ULSS Convo 1 - Didee First
+      value: Rajni HUB
       objectReference: {fileID: 0}
     - target: {fileID: 8553291468905247584, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
@@ -13557,7 +13587,7 @@ PrefabInstance:
     - target: {fileID: 8553291468905247584, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: conversation
-      value: ULSS Convo 1 - Wabll First
+      value: Wabll HUB
       objectReference: {fileID: 0}
     - target: {fileID: 8553291468905247584, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
@@ -14078,17 +14108,17 @@ PrefabInstance:
     - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
