@@ -165,4 +165,9 @@ public class PlayerMovement : MonoBehaviour
     {
         PlayerFacingDirection = -PlayerFacingDirection;
     }
+
+    public void StopPlayer()
+    {
+        MovementVector = Vector3.zero;
+    }    
 }
