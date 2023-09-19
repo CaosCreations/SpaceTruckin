@@ -10,8 +10,8 @@ public class CamAnimHandle : MonoBehaviour {
 		Transform cTrans;
 		Animator anim;
 		public static bool top_camHandler;
-		public static bool angle_camHandler;
-		public static bool new_camHandler;
+		public  bool angle_camHandler;
+		public  bool new_camHandler;
 		public int camadress;
 
 		
