@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using UnityEngine;
 
@@ -132,6 +133,11 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetPosition(Vector3 position, string cameraStateName = null)
     {
+        if (cameraStateName != null)
+        {
+            StationCameraManager.Instance.SetBlend(CinemachineBlendDefinition.Style.Cut, 0f);
+        }
+
         characterController.enabled = false;
         transform.position = position;
         characterController.enabled = true;
@@ -150,6 +156,7 @@ public class PlayerMovement : MonoBehaviour
         if (cameraStateName != null)
         {
             StationCameraManager.Instance.PlayCamAnimState(cameraStateName);
+            StationCameraManager.Instance.SetBlend(CinemachineBlendDefinition.Style.EaseInOut, 2f);
         }
     }
 
