@@ -63,4 +63,10 @@ public static class DialogueUtils
     {
         return GetConversationByTitle(DialogueManager.lastConversationStarted);
     }
+
+    public static DialogueEntry GetCurrentEntry()
+    {
+        var currentState = DialogueManager.Instance.CurrentConversationState;
+        return currentState.subtitle.dialogueEntry;
+    }
 }
