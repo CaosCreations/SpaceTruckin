@@ -27,10 +27,10 @@ public class PlayerConstants : MonoBehaviour
     // Prototyping
     public const KeyCode PrototypingModifier = KeyCode.LeftControl;
     public const KeyCode TerminalShortcut = KeyCode.T;
-    public const KeyCode NoticeboardShortcut = KeyCode.G;
+    public const KeyCode NoticeboardShortcut = KeyCode.Y;
     public const KeyCode FinishTimelineShortcut = KeyCode.F;
     public const KeyCode SpeedUpTimeKey = KeyCode.Q;
-    public const KeyCode SkipConvoKey = KeyCode.S;
+    public const KeyCode SkipConvoKey = KeyCode.G;
 
 
     // Misc

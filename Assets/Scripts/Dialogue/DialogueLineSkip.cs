@@ -32,10 +32,11 @@ public class DialogueLineSkip : MonoBehaviour
         if (IsSkipConvoInput())
         {
             var conversation = DialogueUtils.GetLastStartedConversation();
-            if (conversation.FieldExists(DialogueConstants.ConversationSeenVariableName))
+
+            var seenVarName = DialogueUtils.GetSeenVariableName(conversation);
+            if (seenVarName != null)
             {
-                var varName = DialogueDatabaseManager.GetConversationFieldAsString(conversation, DialogueConstants.ConversationSeenVariableName);
-                DialogueDatabaseManager.Instance.UpdateDatabaseVariable(varName, true);
+                DialogueDatabaseManager.Instance.UpdateDatabaseVariable(seenVarName, true);
             }
             DialogueManager.StopConversation();
         }

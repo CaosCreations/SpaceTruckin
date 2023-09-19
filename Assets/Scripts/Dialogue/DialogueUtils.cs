@@ -25,6 +25,15 @@ public static class DialogueUtils
         return DialogueLua.GetActorField(actorName, fieldName).luaValue != null;
     }
 
+    public static string GetSeenVariableName(this Conversation conversation)
+    {
+        if (!conversation.FieldExists(DialogueConstants.ConversationSeenVariableName)) 
+        {
+            return null;
+        }
+        return DialogueDatabaseManager.GetConversationFieldAsString(conversation, DialogueConstants.ConversationSeenVariableName);
+    }
+
     public static bool IsConversationActive => DialogueManager.IsConversationActive;
 
     /// <summary>
