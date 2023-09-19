@@ -26,21 +26,26 @@ public class DialogueEventManager : MonoBehaviour
     {
         DialogueManager.Instance.conversationStarted += OnConversationStartedHandler;
         DialogueManager.Instance.conversationEnded += OnConversationEndedHandler;
-        
+
         SingletonManager.EventService.Add<OnCutsceneFinishedEvent>(OnCutsceneFinishedHandler);
     }
 
     private void OnConversationStartedHandler(Transform t)
     {
-        Debug.Log("OnConversationStartedHandler: Last conversation started = " + DialogueManager.lastConversationStarted);
-        var conversation = DialogueUtils.GetConversationByTitle(DialogueManager.lastConversationStarted);
+        Debug.Log("OnConversationStartedHandler: Last convo started = " + DialogueManager.lastConversationStarted);
+        var conversation = DialogueUtils.GetLastStartedConversation();
+        var seenVarName = DialogueUtils.GetSeenVariableName(conversation);
+        if (seenVarName != null)
+        {
+            Debug.Log($"Convo seen variable: <color=green>{seenVarName}</color>.");
+        }
         SingletonManager.EventService.Dispatch(new OnConversationStartedEvent(conversation));
     }
 
     private void OnConversationEndedHandler(Transform t)
     {
-        Debug.Log("OnConversationEndedHandler: Last conversation ended = " + DialogueManager.lastConversationEnded);
-        var conversation = DialogueUtils.GetConversationByTitle(DialogueManager.lastConversationStarted);
+        Debug.Log("OnConversationEndedHandler: Last convo ended = " + DialogueManager.lastConversationEnded);
+        var conversation = DialogueUtils.GetLastStartedConversation();
         SingletonManager.EventService.Dispatch(new OnConversationEndedEvent(conversation));
     }
 

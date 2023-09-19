@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cinemachine;
+using System;
 using System.Linq;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ public class StationCameraManager : MonoBehaviour
     public static StationCameraManager Instance { get; private set; }
 
     private StationCamera[] stationCameras;
+    private CinemachineBrain cinemachineBrain;
     private CinemachineLiveCameraZoom liveCameraZoom;
     private CinemachineLiveCameraShake liveCameraShake;
     [SerializeField] private CamAnimStateChange animStateChange;
@@ -24,6 +26,7 @@ public class StationCameraManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         stationCameras = FindObjectsOfType<StationCamera>(true);
+        cinemachineBrain = FindObjectOfType<CinemachineBrain>(true);
         liveCameraZoom = GetComponent<CinemachineLiveCameraZoom>();
         liveCameraShake = GetComponent<CinemachineLiveCameraShake>();
     }
@@ -78,6 +81,11 @@ public class StationCameraManager : MonoBehaviour
     public void PlayCamAnimState(string stateName)
     {
         animStateChange.PlayState(stateName);
+    }
+
+    public void SetBlend(CinemachineBlendDefinition.Style style, float time)
+    {
+        cinemachineBrain.m_DefaultBlend = new CinemachineBlendDefinition(style, time);
     }
 
     private StationCamera GetCameraByIdentifier(StationCamera.Identifier cameraIdentifier)

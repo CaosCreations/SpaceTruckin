@@ -25,6 +25,15 @@ public static class DialogueUtils
         return DialogueLua.GetActorField(actorName, fieldName).luaValue != null;
     }
 
+    public static string GetSeenVariableName(this Conversation conversation)
+    {
+        if (!conversation.FieldExists(DialogueConstants.ConversationSeenVariableName)) 
+        {
+            return null;
+        }
+        return DialogueDatabaseManager.GetConversationFieldAsString(conversation, DialogueConstants.ConversationSeenVariableName);
+    }
+
     public static bool IsConversationActive => DialogueManager.IsConversationActive;
 
     /// <summary>
@@ -48,5 +57,16 @@ public static class DialogueUtils
     public static Conversation GetConversationByTitle(string title)
     {
         return DialogueManager.DatabaseManager.loadedDatabases.First().GetConversation(title);
+    }
+
+    public static Conversation GetLastStartedConversation()
+    {
+        return GetConversationByTitle(DialogueManager.lastConversationStarted);
+    }
+
+    public static DialogueEntry GetCurrentEntry()
+    {
+        var currentState = DialogueManager.Instance.CurrentConversationState;
+        return currentState.subtitle.dialogueEntry;
     }
 }

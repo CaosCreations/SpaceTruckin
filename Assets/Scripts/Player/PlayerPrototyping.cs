@@ -44,7 +44,15 @@ public class PlayerPrototyping : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                PlayerManager.PlayerMovement.SetPosition(PlayerConstants.PlayerRefugeeCampPosition);
+                PlayerManager.PlayerMovement.SetPosition(PlayerConstants.PlayerRefugeeCampPosition, AnimationConstants.RefugeeCampStateName);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                PlayerManager.PlayerMovement.SetPosition(PlayerConstants.PlayerUlssPosition, AnimationConstants.UlssStateName);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                PlayerManager.PlayerMovement.SetPosition(PlayerConstants.PlayerSpaceportPosition, AnimationConstants.SpaceportStateName);
             }
         }
 #endif
