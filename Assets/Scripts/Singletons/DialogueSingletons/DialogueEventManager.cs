@@ -33,7 +33,7 @@ public class DialogueEventManager : MonoBehaviour
     private void OnConversationStartedHandler(Transform t)
     {
         Debug.Log("OnConversationStartedHandler: Last conversation started = " + DialogueManager.lastConversationStarted);
-        var conversation = DialogueUtils.GetConversationByTitle(DialogueManager.lastConversationStarted);
+        var conversation = DialogueUtils.GetLastStartedConversation();
         SingletonManager.EventService.Dispatch(new OnConversationStartedEvent(conversation));
     }
 

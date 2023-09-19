@@ -30,6 +30,7 @@ public class PlayerConstants : MonoBehaviour
     public const KeyCode NoticeboardShortcut = KeyCode.G;
     public const KeyCode FinishTimelineShortcut = KeyCode.F;
     public const KeyCode SpeedUpTimeKey = KeyCode.Q;
+    public const KeyCode SkipConvoKey = KeyCode.S;
 
 
     // Misc

@@ -49,4 +49,9 @@ public static class DialogueUtils
     {
         return DialogueManager.DatabaseManager.loadedDatabases.First().GetConversation(title);
     }
+
+    public static Conversation GetLastStartedConversation()
+    {
+        return GetConversationByTitle(DialogueManager.lastConversationStarted);
+    }
 }

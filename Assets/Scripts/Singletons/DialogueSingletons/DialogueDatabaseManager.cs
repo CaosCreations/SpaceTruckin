@@ -153,6 +153,17 @@ public class DialogueDatabaseManager : MonoBehaviour
         return string.Empty;
     }
 
+    public static string GetConversationFieldAsString(Conversation conversation, string fieldName)
+    {
+        if (conversation.FieldExists(fieldName))
+        {
+            return DialogueLua.GetConversationField(conversation.id, fieldName).asString;
+        }
+
+        Debug.LogError($"Conversation field '{fieldName}' does not exist");
+        return string.Empty;
+    }
+
     public void OnBatteryChargedHandler(OnBatteryChargedEvent evt)
     {
         UpdateDatabaseVariable(evt.Args.Key, evt.Args.Value);
