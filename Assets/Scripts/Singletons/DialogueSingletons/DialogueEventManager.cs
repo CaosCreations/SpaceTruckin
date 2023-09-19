@@ -26,7 +26,7 @@ public class DialogueEventManager : MonoBehaviour
     {
         DialogueManager.Instance.conversationStarted += OnConversationStartedHandler;
         DialogueManager.Instance.conversationEnded += OnConversationEndedHandler;
-        
+
         SingletonManager.EventService.Add<OnCutsceneFinishedEvent>(OnCutsceneFinishedHandler);
     }
 

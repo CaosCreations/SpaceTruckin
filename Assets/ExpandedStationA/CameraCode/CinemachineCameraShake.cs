@@ -49,7 +49,7 @@ public class CinemachineCameraShake : MonoBehaviour
             return;
 
         timer -= Time.deltaTime;
-        
+
         if (timer <= 0)
         {
             perlinNoise.m_AmplitudeGain = 0f;
