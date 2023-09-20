@@ -24,16 +24,34 @@ public class DialogueLineSkip : MonoBehaviour
         if (!DialogueManager.IsConversationActive || !dialogueUI.IsActive())
             return;
 
-        if (IsSkipInput())
+        if (IsSkipLineInput())
         {
             dialogueUI.OnContinueConversation();
         }
+
+        if (IsSkipConvoInput())
+        {
+            var entry = DialogueUtils.GetCurrentEntry();
+            var conversation = DialogueUtils.GetConversationById(entry.conversationID);
+            Debug.Log($"Skipping convo {conversation.Title} at node {entry.id}");
+
+            var seenVarName = DialogueUtils.GetSeenVariableName(conversation);
+            if (seenVarName != null)
+            {
+                DialogueDatabaseManager.Instance.UpdateDatabaseVariable(seenVarName, true);
+            }
+            DialogueManager.StopAllConversations();
+        }
     }
 
-    private bool IsSkipInput()
+    private bool IsSkipLineInput()
     {
-        return keyCodes.Any(key => Input.GetKeyDown(key))
-            || mouseButtonCodes.Any(btn => Input.GetMouseButtonDown(btn));
+        return keyCodes.Any(key => Input.GetKeyDown(key)) || mouseButtonCodes.Any(btn => Input.GetMouseButtonDown(btn));
+    }
+
+    private bool IsSkipConvoInput()
+    {
+        return Input.GetKey(PlayerConstants.PrototypingModifier) && Input.GetKeyDown(PlayerConstants.SkipConvoKey);
     }
 
     private void OnValidate()

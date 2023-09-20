@@ -17,4 +17,6 @@
     public const string FondnessFieldName = "Fondness";
     public const string HasCompletedConversationTodayFieldName = "HasCompletedConversationToday";
 
+    public const string ConversationSeenVariableName = "SeenName";
+
 }

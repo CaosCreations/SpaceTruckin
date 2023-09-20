@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using UnityEngine;
 
@@ -38,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (IsPlayerBelowKillFloor() || Input.GetKeyDown(PlayerConstants.RespawnKey))
         {
-            RespawnPlayer();
+            SetPosition(PlayerConstants.PlayerRespawnPosition, AnimationConstants.OfficeCameraStateName);
             return;
         }
 
@@ -115,30 +116,6 @@ public class PlayerMovement : MonoBehaviour
         return characterController.transform.position.y < PlayerConstants.KillFloorHeight;
     }
 
-    private void RespawnPlayer()
-    {
-        SetPosition(PlayerConstants.PlayerRespawnPosition);
-        CounteractRespawnSideEffects();
-    }
-
-    /// <summary>
-    /// Stop respawning affecting other game state in undesired ways.
-    /// </summary>
-    private void CounteractRespawnSideEffects()
-    {
-        // Stop UI canvas remaining interactable 
-        UIManager.SetCannotInteract();
-
-        // Stop door remaining open 
-        OfficeDoor collidingDoor = EnvironmentUtils.GetDoorCollidingWithPlayer();
-
-        if (collidingDoor != null)
-        {
-            collidingDoor.CloseDoor();
-        }
-        StationCameraManager.Instance.PlayCamAnimState(AnimationConstants.OfficeCameraStateName);
-    }
-
     public bool Raycast(string layerName, out RaycastHit hit)
     {
         LayerMask layerMask = LayerMask.GetMask(layerName);
@@ -154,15 +131,42 @@ public class PlayerMovement : MonoBehaviour
         return hit.collider != null && hit.collider.gameObject == obj;
     }
 
-    public void SetPosition(Vector3 position)
+    public void SetPosition(Vector3 position, string cameraStateName = null)
     {
+        if (cameraStateName != null)
+        {
+            StationCameraManager.Instance.SetBlend(CinemachineBlendDefinition.Style.Cut, 0f);
+        }
+
         characterController.enabled = false;
         transform.position = position;
         characterController.enabled = true;
+
+        // Stop UI canvas remaining interactable 
+        UIManager.SetCannotInteract();
+
+        // Stop door remaining open 
+        OfficeDoor collidingDoor = EnvironmentUtils.GetDoorCollidingWithPlayer();
+
+        if (collidingDoor != null)
+        {
+            collidingDoor.CloseDoor();
+        }
+
+        if (cameraStateName != null)
+        {
+            StationCameraManager.Instance.PlayCamAnimState(cameraStateName);
+            StationCameraManager.Instance.SetBlend(CinemachineBlendDefinition.Style.EaseInOut, 2f);
+        }
     }
 
     public void FlipFacingDirection()
     {
         PlayerFacingDirection = -PlayerFacingDirection;
+    }
+
+    public void StopPlayer()
+    {
+        MovementVector = Vector3.zero;
     }
 }

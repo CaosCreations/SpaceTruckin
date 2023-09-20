@@ -75,5 +75,9 @@ public static class AnimationConstants
     };
     #endregion
 
-    public const string OfficeCameraStateName = "Base Layer.Cam Normal Angle30";
+    public const string NormalAngleStateName = "Base Layer.Cam Normal Angle30";
+    public const string OfficeCameraStateName = "Base Layer.OfficeAndLoung";
+    public const string RefugeeCampStateName = "Base Layer.RefugeeCamI";
+    public const string SpaceportStateName = "Base Layer.SpacePortCam";
+    public const string UlssStateName = "Base Layer.PRHQcam";
 }
