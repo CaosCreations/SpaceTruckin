@@ -91,9 +91,10 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
     public Cutscene GetCutsceneByName(string name)
     {
+        var insensitiveName = name.Replace(" ", string.Empty).ToUpper();
         foreach (var cutscene in cutsceneContainer.Elements)
         {
-            if (cutscene.Name == name)
+            if (cutscene.Name.Replace(" ", string.Empty).ToUpper() == insensitiveName)
                 return cutscene;
         }
         Debug.LogError("Cannot find cutscene with name: " + name);
