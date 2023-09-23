@@ -26,7 +26,7 @@ public class BedCanvasUI : UICanvasBase
 
     private void OnCutsceneFinishedHandler(OnCutsceneFinishedEvent evt)
     {
-        if (endOfDayCutscenes != null && endOfDayCutscenes.Contains(evt.Cutscene))
+        if (endOfDayCutscenes != null && endOfDayCutscenes.Contains(evt.Cutscene) && CalendarManager.DateIsToday(evt.Cutscene.Date))
         {
             Sleep();
         }
