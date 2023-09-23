@@ -9,6 +9,7 @@ public abstract class InteractiveCanvasTutorial : SubMenu
     [SerializeField] protected bool lockCanvas;
     [SerializeField] protected InteractiveCanvasTutorialCard cantExitCard;
     [SerializeField] protected UniversalUI universalUI;
+    [SerializeField] protected string dialogueBoolOnComplete;
 
     protected override void OnEnable()
     {
@@ -66,6 +67,7 @@ public abstract class InteractiveCanvasTutorial : SubMenu
         {
             UnlockCanvas();
         }
+        DialogueDatabaseManager.Instance.UpdateDatabaseVariable(dialogueBoolOnComplete, true);
         RemoveOverriddenKeys();
         Destroy(gameObject);
     }
