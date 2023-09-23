@@ -13,6 +13,9 @@ public class Cutscene : ScriptableObject
     [field: SerializeField]
     public CutsceneConversationSettings ConversationSettings { get; private set; }
 
+    [field: SerializeField]
+    public Date Date { get; private set; }
+
     public override string ToString()
     {
         return $"Cutscene with name '{Name}'";
