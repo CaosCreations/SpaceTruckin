@@ -22,7 +22,7 @@ public abstract class InteractiveCanvasTutorial : SubMenu
     protected virtual void Start()
     {
         openingCard.SetActive(true);
-        
+
         // Optional as some tutorials end via listening for external events or a combination of shown flags
         if (endingCard != null)
         {
@@ -67,7 +67,11 @@ public abstract class InteractiveCanvasTutorial : SubMenu
         {
             UnlockCanvas();
         }
-        DialogueDatabaseManager.Instance.UpdateDatabaseVariable(dialogueBoolOnComplete, true);
+
+        if (!string.IsNullOrWhiteSpace(dialogueBoolOnComplete))
+        {
+            DialogueDatabaseManager.Instance.UpdateDatabaseVariable(dialogueBoolOnComplete, true);
+        }
         RemoveOverriddenKeys();
         Destroy(gameObject);
     }
@@ -78,7 +82,7 @@ public abstract class InteractiveCanvasTutorial : SubMenu
     }
 
     protected abstract void CloseAllCards();
-    
+
     protected virtual void ShowCard(InteractiveCanvasTutorialCard card)
     {
         CloseAllCards();
