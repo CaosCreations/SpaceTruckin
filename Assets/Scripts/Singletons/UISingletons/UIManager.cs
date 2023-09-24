@@ -119,7 +119,7 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(PlayerConstants.PauseKey) && !StationCameraManager.IsLiveCameraZooming)
+        if (GetNonOverriddenKeyDown(PlayerConstants.PauseKey) && !StationCameraManager.IsLiveCameraZooming)
         {
             currentCanvasType = UICanvasType.PauseMenu;
             ShowCanvas(currentCanvasType);

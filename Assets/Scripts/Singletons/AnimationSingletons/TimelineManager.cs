@@ -1,6 +1,7 @@
 ﻿using Events;
 using PixelCrushers.DialogueSystem;
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
@@ -43,6 +44,7 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
     {
         playableDirector.played += (_) => OnTimelineStartedHandler();
         playableDirector.stopped += (_) => OnTimelineFinishedHandler();
+        SingletonManager.EventService.Add<OnConversationEndedEvent>(OnConversationEndedHandler);
     }
 
     private void OnTimelineStartedHandler()
@@ -56,6 +58,17 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
         SingletonManager.EventService.Dispatch(new OnCutsceneFinishedEvent(currentCutscenePlayer.Cutscene));
         currentCutscenePlayer = null;
         PlayerManager.ExitPausedState();
+    }
+
+    private void OnConversationEndedHandler(OnConversationEndedEvent evt)
+    {
+        var convoId = evt.Conversation.id;
+        var cutsceneToTrigger = cutsceneContainer.Elements.FirstOrDefault(c => c.ConversationSettings.EndConversationId == convoId);
+        if (cutsceneToTrigger != null)
+        {
+            Debug.Log($"Triggering {cutsceneToTrigger} from end of convo {convoId}.");
+            PlayCutscene(cutsceneToTrigger);
+        }
     }
 
     public static void PlayCutscene(Cutscene cutscene)

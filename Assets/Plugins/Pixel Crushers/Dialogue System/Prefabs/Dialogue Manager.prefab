@@ -153,7 +153,6 @@ GameObject:
   - component: {fileID: 11426072}
   - component: {fileID: 11471062}
   - component: {fileID: 11424616}
-  - component: {fileID: 1272575638}
   - component: {fileID: 1272575639}
   m_Layer: 0
   m_Name: Dialogue Manager
@@ -258,7 +257,7 @@ MonoBehaviour:
       - Fire1
       - Fire2
       cancel:
-        key: 27
+        key: 0
         buttonName: 
       cancelConversation:
         key: 27
@@ -358,20 +357,6 @@ MonoBehaviour:
   onUseTouch:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1272575638
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 125852}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0922695a2c73f24283a3f2581bdf97c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerColor: {r: 0, g: 0, b: 1, a: 1}
-  npcColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &1272575639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -633,7 +618,7 @@ PrefabInstance:
     - target: {fileID: 2487104511564768483, guid: 092a60aad0ba92f42b54192eefc53a9e,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.0000019073486
+      value: 0.0000076293945
       objectReference: {fileID: 0}
     - target: {fileID: 2487104511586300773, guid: 092a60aad0ba92f42b54192eefc53a9e,
         type: 3}

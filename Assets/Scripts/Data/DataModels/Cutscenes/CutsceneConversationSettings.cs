@@ -8,6 +8,9 @@ public class CutsceneConversationSettings
     public int StartConversationId { get; private set; }
 
     [field: SerializeField]
+    public int EndConversationId { get; private set; }
+
+    [field: SerializeField]
     public bool CloseDialogueUIOnStart { get; private set; }
 
     [field: SerializeField]
