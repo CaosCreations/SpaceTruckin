@@ -35,7 +35,7 @@ public class ClockManager : MonoBehaviour, ILuaFunctionRegistrar
         {
             StopClock();
         }
-
+        UpdateDateTimeText();
 #if UNITY_EDITOR
         Application.targetFrameRate = PlayerConstants.EditorTargetFrameRate;
 #endif
