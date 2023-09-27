@@ -23,7 +23,7 @@ public class AudioManager : MonoBehaviour
             Debug.LogError($"Audio clip {nameof(audioClip)} not found");
             return;
         }
-        Debug.Log($"Playing audio clip '{audioClip.name}'");
+        //Debug.Log($"Playing audio clip '{audioClip.name}'");
 
         var source = customSource != null ? customSource : audioSource;
         source.clip = audioClip;
