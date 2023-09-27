@@ -255,6 +255,14 @@ public class UIManager : MonoBehaviour
         return setting == null || DialogueDatabaseManager.GetLuaVariableAsBool(setting.DialogueVariableName);
     }
 
+    public static void LiftAccessSettings()
+    {
+        Instance.accessSettings.ForEach(a =>
+        {
+            DialogueDatabaseManager.Instance.UpdateDatabaseVariable(a.DialogueVariableName, true);
+        });
+    }
+
     #region Interaction
     public static void SetCanInteract(UICanvasType canvasType, int node = -1)
     {
