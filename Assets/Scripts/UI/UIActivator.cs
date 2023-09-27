@@ -10,7 +10,7 @@ public class UIActivator : InteractableObject
         {
             UIManager.SetCanInteract(canvasType);
         }
-        else
+        else if (UIManager.CurrentCanvasType == canvasType)
         {
             UIManager.SetCannotInteract();
         }

@@ -35,7 +35,7 @@ public class ClockManager : MonoBehaviour, ILuaFunctionRegistrar
         {
             StopClock();
         }
-
+        UpdateDateTimeText();
 #if UNITY_EDITOR
         Application.targetFrameRate = PlayerConstants.EditorTargetFrameRate;
 #endif
@@ -179,6 +179,14 @@ public class ClockManager : MonoBehaviour, ILuaFunctionRegistrar
     {
         if (evt.TransitionType == TransitionUI.TransitionType.TimeOfDay && !isEvening)
         {
+            if (!CalendarManager.IsTimeFrozenToday)
+            {
+                StartClock();
+            }
+            else
+            {
+                StopClock();
+            }
             SingletonManager.EventService.Dispatch<OnMorningStartEvent>();
         }
     }

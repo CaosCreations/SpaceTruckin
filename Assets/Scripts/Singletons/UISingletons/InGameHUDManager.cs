@@ -27,12 +27,13 @@ public class InGameHUDManager : MonoBehaviour
 
     private static bool IsDateTimeUIActive()
     {
-        return SceneLoadingManager.IsSceneLoaded(SceneType.MainStation) && CalendarManager.CurrentDate > new Date(2, 1, 1);
+        return SceneLoadingManager.IsSceneLoaded(SceneType.MainStation) && !CalendarManager.IsTimeFrozenToday;
     }
 
     private void Start()
     {
         SingletonManager.EventService.Add<OnSceneLoadedEvent>(OnSceneLoadedHandler);
+        SingletonManager.EventService.Add<OnStationSetUpEvent>(OnStationSetUpHandler);
         SingletonManager.EventService.Add<OnMorningStartEvent>(OnMorningStartHandler);
         SingletonManager.EventService.Add<OnCutsceneFinishedEvent>(OnCutsceneFinishedHandler);
         SetActive();
@@ -50,6 +51,11 @@ public class InGameHUDManager : MonoBehaviour
     }
 
     private void OnSceneLoadedHandler(OnSceneLoadedEvent evt)
+    {
+        SetActive();
+    }
+
+    private void OnStationSetUpHandler()
     {
         SetActive();
     }
