@@ -43,7 +43,7 @@ public class UIManager : MonoBehaviour
     private static HashSet<KeyCode> currentlyOverriddenKeys;
 
     private TextMeshPro interactionTextMesh;
-    private static UICanvasType currentCanvasType;
+    public static UICanvasType CurrentCanvasType { get; private set; }
 
     private static Type[] SuccessInputTypes => new[]
     {
@@ -52,7 +52,7 @@ public class UIManager : MonoBehaviour
     private static bool IsErrorInput => Input.GetMouseButtonDown(0)
         && !UIUtils.IsPointerOverObjectType(SuccessInputTypes)
         && !DialogueUtils.IsConversationActive
-        && currentCanvasType != UICanvasType.Bed;
+        && CurrentCanvasType != UICanvasType.Bed;
 
     public static int HangarNode;
 
@@ -105,9 +105,9 @@ public class UIManager : MonoBehaviour
 
     private void HandleUnpausedInput()
     {
-        if (currentCanvasType != UICanvasType.None && Input.GetKeyDown(PlayerConstants.ActionKey))
+        if (CurrentCanvasType != UICanvasType.None && Input.GetKeyDown(PlayerConstants.ActionKey))
         {
-            UICanvasBase canvas = GetCanvasByType(currentCanvasType);
+            UICanvasBase canvas = GetCanvasByType(CurrentCanvasType);
 
             if (canvas.ZoomInBeforeOpening && canvas.CameraZoomSettings != null)
             {
@@ -121,14 +121,14 @@ public class UIManager : MonoBehaviour
 
         if (GetNonOverriddenKeyDown(PlayerConstants.PauseKey) && !StationCameraManager.IsLiveCameraZooming)
         {
-            currentCanvasType = UICanvasType.PauseMenu;
-            ShowCanvas(currentCanvasType);
+            CurrentCanvasType = UICanvasType.PauseMenu;
+            ShowCanvas(CurrentCanvasType);
         }
     }
 
     private void HandlePausedInput()
     {
-        if (currentCanvasType == UICanvasType.None)
+        if (CurrentCanvasType == UICanvasType.None)
         {
             return;
         }
@@ -144,6 +144,7 @@ public class UIManager : MonoBehaviour
         if (GetNonOverriddenKeyDown(PlayerConstants.ExitKey) && !StationCameraManager.IsLiveCameraZooming)
         {
             ClearCanvases();
+            CurrentCanvasType = UICanvasType.None;
         }
     }
 
@@ -266,9 +267,9 @@ public class UIManager : MonoBehaviour
     #region Interaction
     public static void SetCanInteract(UICanvasType canvasType, int node = -1)
     {
-        currentCanvasType = canvasType;
+        CurrentCanvasType = canvasType;
 
-        // We pass in a node value when opening the hangar UI
+        // Determines which node we're viewing 
         if (canvasType == UICanvasType.Hangar && HangarManager.NodeIsValid(node))
         {
             HangarNode = node;
@@ -277,9 +278,9 @@ public class UIManager : MonoBehaviour
 
     public static void SetCannotInteract()
     {
-        if (currentCanvasType != UICanvasType.None)
+        if (CurrentCanvasType != UICanvasType.None)
         {
-            currentCanvasType = UICanvasType.None;
+            CurrentCanvasType = UICanvasType.None;
         }
         HangarNode = -1;
     }

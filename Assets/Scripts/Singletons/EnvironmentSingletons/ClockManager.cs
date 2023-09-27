@@ -179,6 +179,14 @@ public class ClockManager : MonoBehaviour, ILuaFunctionRegistrar
     {
         if (evt.TransitionType == TransitionUI.TransitionType.TimeOfDay && !isEvening)
         {
+            if (!CalendarManager.IsTimeFrozenToday)
+            {
+                StartClock();
+            }
+            else
+            {
+                StopClock();
+            }
             SingletonManager.EventService.Dispatch<OnMorningStartEvent>();
         }
     }
