@@ -17,7 +17,7 @@ public class AnimationTimeHandler : MonoBehaviour
     {
         Animator.Play(stateName);
         isRecording = true;
-        Debug.Log($"Animation from {gameObject.name} has finished. State playing: {stateName}.");
+        Debug.Log($"Animation from {gameObject.name} has started. State playing: {stateName}.");
     }
 
     private void Start()
