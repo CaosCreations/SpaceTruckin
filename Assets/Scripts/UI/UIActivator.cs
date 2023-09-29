@@ -6,7 +6,7 @@ public class UIActivator : InteractableObject
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag(PlayerConstants.PlayerTag) && IsPlayerInteractable)
+        if (IsPlayerInteractable)
         {
             UIManager.SetCanInteract(canvasType);
         }
