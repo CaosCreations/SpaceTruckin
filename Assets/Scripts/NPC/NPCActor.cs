@@ -16,22 +16,24 @@ public class NPCActor : InteractableObject
     public void OnUse(Transform player)
     {
         Debug.Log($"{gameObject.name} is being used by {player}.");
-        usable.enabled = false;
-        usableLocked = true;
     }
 
     public void OnConversationStart(Transform actor)
     {
         Debug.Log($"{gameObject.name}'s conversation with {actor} is starting.");
-        usable.enabled = false;
-        usableLocked = true;
+        SetUsable(false);
     }
 
     public void OnConversationEnd(Transform actor)
     {
         Debug.Log($"{gameObject.name}'s conversation with {actor} is ending.");
-        usable.enabled = true;
-        usableLocked = false;
+        SetUsable(true);
+    }
+
+    public void SetUsable(bool value)
+    {
+        usable.enabled = value;
+        usableLocked = !value;
     }
 
     // Toggle usable on/off based on whether player is in range/facing the right direction
