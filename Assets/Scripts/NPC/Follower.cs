@@ -28,8 +28,6 @@ public class Follower : MonoBehaviour
 
     private void Update()
     {
-      
-
         Vector3 targetPosition = playerTransform.position - PlayerMovement.PlayerFacingDirection.normalized * agent.stoppingDistance;
 
         // Check if the target position is obstructed by walls
@@ -46,7 +44,7 @@ public class Follower : MonoBehaviour
             else
             {
                 // Fallback behavior if NavMesh sampling fails
-                Debug.Log("Failed to find a valid position for the object to move to!");
+                //Debug.Log("Failed to find a valid position for the object to move to!");
             }
         }
 
