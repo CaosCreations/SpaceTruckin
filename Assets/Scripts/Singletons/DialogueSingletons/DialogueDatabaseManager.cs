@@ -2,6 +2,7 @@
 using Language.Lua;
 using PixelCrushers.DialogueSystem;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -183,5 +184,41 @@ public class DialogueDatabaseManager : MonoBehaviour
             Debug.LogException(ex);
             Debug.LogError($"Failed to set Lua variable '{variableName}'.");
         }
+    }
+
+    public static List<string> GetSeenVarNames()
+    {
+        var seenVarNames = new List<string>();
+
+        foreach (var conversation in DialogueManager.DatabaseManager.DefaultDatabase.conversations)
+        {
+            var seenVarName = DialogueUtils.GetSeenVariableName(conversation);
+            if (seenVarName != null)
+            {
+                seenVarNames.Add(seenVarName);
+            }
+        }
+        return seenVarNames;
+    }
+
+    public static List<ConversationSeenInfo> GetSeenInfo()
+    {
+        var seenInfo = new List<ConversationSeenInfo>();
+
+        foreach (var conversation in DialogueManager.DatabaseManager.DefaultDatabase.conversations)
+        {
+            var seenVarName = DialogueUtils.GetSeenVariableName(conversation);
+            if (seenVarName != null)
+            {
+                var value = GetLuaVariableAsBool(seenVarName);
+                seenInfo.Add(new ConversationSeenInfo
+                {
+                    Id = conversation.id,
+                    Title = conversation.Title,
+                    SeenVariableKvp = new KeyValuePair<string, bool>(seenVarName, value),
+                });
+            }
+        }
+        return seenInfo;
     }
 }
