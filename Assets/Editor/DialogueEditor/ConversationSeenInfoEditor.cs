@@ -19,19 +19,26 @@ public class ConversationSeenInfoEditor : EditorWindow
 
     private void OnEnable()
     {
-        if (CanSubscribe())
+#if UNITY_EDITOR
+        EditorApplication.playModeStateChanged += OnPlayModeStateChangedHandler;
+#endif
+        if (SingletonManager.Instance != null)
         {
             SingletonManager.EventService.Add<OnConversationEndedEvent>(OnConversationEndedHandler);
+            seenInfo = DialogueDatabaseManager.GetSeenInfo();
         }
-        seenInfo = DialogueDatabaseManager.GetSeenInfo();
     }
 
     private void OnDisable()
     {
-        if (CanSubscribe())
+#if UNITY_EDITOR
+        EditorApplication.playModeStateChanged -= OnPlayModeStateChangedHandler;
+#endif
+        if (SingletonManager.Instance != null)
         {
             SingletonManager.EventService.Remove<OnConversationEndedEvent>(OnConversationEndedHandler);
         }
+        seenInfo = null;
     }
 
     private void OnGUI()
@@ -68,12 +75,20 @@ public class ConversationSeenInfoEditor : EditorWindow
         EditorGUILayout.EndScrollView();
     }
 
-    private bool CanSubscribe()
+    private void OnConversationEndedHandler(OnConversationEndedEvent evt)
     {
-        return FindObjectOfType<SingletonManager>() != null;
+        Refresh();
     }
 
-    private void OnConversationEndedHandler(OnConversationEndedEvent evt)
+    private void OnPlayModeStateChangedHandler(PlayModeStateChange state)
+    {
+        if (state == PlayModeStateChange.EnteredPlayMode)
+        {
+            Refresh();
+        }
+    }
+
+    private void Refresh()
     {
         seenInfo = DialogueDatabaseManager.GetSeenInfo();
         Repaint();

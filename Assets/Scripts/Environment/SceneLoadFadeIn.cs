@@ -17,6 +17,10 @@ public class SceneLoadFadeIn : MonoBehaviour
 
     private void OnGUI()
     {
+        if (fadeTexture == null)
+        {
+            return;
+        }
         GUI.color = new Color(GUI.color.r, GUI.color.g, GUI.color.b, fadeAlpha);
         GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), fadeTexture);
     }
