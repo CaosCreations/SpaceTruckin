@@ -2,14 +2,34 @@
 
 public class InteractableObject : MonoBehaviour
 {
-    // Set this OnEnter and OnExit to avoiding repeatedly comparing tags
-    public bool IsPlayerColliding { get; protected set; }
-
     public Collider Collider;
     public GameObject RaycastTarget;
 
     [SerializeField]
     protected SpriteRenderer interactableIcon;
+
+    [SerializeField]
+    private bool isPlayerColliding;
+    [SerializeField]
+    private bool isPlayerInteractable;
+    private string layerName;
+
+    public bool IsPlayerColliding
+    {
+        get { return isPlayerColliding; }
+        protected set { isPlayerColliding = value; }
+    }
+
+    public bool IsPlayerInteractable
+    {
+        get
+        {
+            isPlayerInteractable = IsPlayerColliding && PlayerManager.IsPlayerFacingObject(RaycastTarget, layerName);
+            return isPlayerInteractable;
+        }
+    }
+
+    protected virtual bool IsIconVisible => IsPlayerInteractable;
 
     protected virtual void Start()
     {
@@ -19,36 +39,8 @@ public class InteractableObject : MonoBehaviour
 
         if (interactableIcon != null)
             interactableIcon.gameObject.SetActive(false);
-    }
 
-    /// <summary>
-    /// Is the player in range and facing the direction of the interactable object.
-    /// </summary>
-    public bool IsPlayerInteractable => IsPlayerColliding && PlayerManager.IsFirstRaycastHit(RaycastTarget);
-
-    protected virtual bool IsIconVisible => IsPlayerInteractable;
-
-    /// <summary>
-    /// Can be called whenever we want to check whether the object is colliding with the player
-    /// As it doesn't rely on trigger OnTriggerEnter and OnTriggerExit, it can be used in the rare situations where the object's
-    /// position is changed without triggering OnTriggerExit (when being dropped from the player's head for instance)
-    /// </summary>
-    protected void SetPlayerIsColliding()
-    {
-        Collider[] colliders = Physics.OverlapBox(transform.position, Collider.bounds.extents, Quaternion.identity);
-
-        foreach (Collider item in colliders)
-        {
-            Debug.Log(item.name);
-
-            if (item.CompareTag(PlayerConstants.PlayerTag))
-            {
-                IsPlayerColliding = true;
-                return;
-            }
-        }
-
-        IsPlayerColliding = false;
+        layerName = LayerMask.LayerToName(gameObject.layer);
     }
 
     public virtual void OnTriggerEnter(Collider other)

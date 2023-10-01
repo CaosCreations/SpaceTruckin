@@ -232,6 +232,11 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         return PlayerMovement.IsFirstRaycastHit(obj);
     }
 
+    public static bool IsPlayerFacingObject(GameObject obj, string layerName = null)
+    {
+        return PlayerMovement.IsPlayerFacingObject(obj, layerName);
+    }
+
     public string GetPlayerName()
     {
         return PlayerName;

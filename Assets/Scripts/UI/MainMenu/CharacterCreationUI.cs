@@ -52,9 +52,6 @@ public class CharacterCreationUI : MonoBehaviour
 
     protected void ChooseName()
     {
-        if (PlayerManager.Instance == null)
-            throw new System.Exception("PlayerManager is null. Cannot set name");
-
         if (NameIsValid(CharacterName))
         {
             PlayerManager.SetPlayerName(CharacterName);

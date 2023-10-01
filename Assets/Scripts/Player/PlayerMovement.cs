@@ -131,6 +131,30 @@ public class PlayerMovement : MonoBehaviour
         return hit.collider != null && hit.collider.gameObject == obj;
     }
 
+    public bool IsPlayerFacingObject(GameObject obj, string layerName = null)
+    {
+        LayerMask mask = ~0;
+        RaycastHit[] hits = Physics.RaycastAll(transform.position, PlayerFacingDirection, PlayerConstants.RaycastDistance, mask);
+        Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+        foreach (var hit in hits)
+        {
+            GameObject hitObject = hit.collider.gameObject;
+
+            if (hitObject == obj)
+                return true;
+
+            if (hitObject.transform.IsChildOf(obj.transform))
+                continue;
+
+            if (layerName != null && hitObject.layer == LayerMask.NameToLayer(layerName))
+                continue;
+
+            break;
+        }
+        return false;
+    }
+
     public void SetPosition(Vector3 position, string cameraStateName = null)
     {
         if (cameraStateName != null)
