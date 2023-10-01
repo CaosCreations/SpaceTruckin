@@ -41,6 +41,11 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         SingletonManager.EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
     }
 
+    public static List<Mission> GetMissions()
+    {
+        return Instance.Missions.ToList();
+    }
+
     /// <summary>
     /// Missions are 'selectable' if they have been taken from the notice board
     /// but a pilot is not currently assigned to them
