@@ -10,13 +10,6 @@ public abstract class DataModelEditorWindow<T> : EditorWindow where T : IEditabl
     protected string searchBarFilter = string.Empty;
     protected List<T> dataModels;
 
-    public static void ShowWindow(string title)
-    {
-        var window = GetWindow<DataModelEditorWindow<T>>(title);
-        window.titleContent = new GUIContent(title);
-        window.Show();
-    }
-
     private void OnGUI()
     {
         if (dataModels == null)
