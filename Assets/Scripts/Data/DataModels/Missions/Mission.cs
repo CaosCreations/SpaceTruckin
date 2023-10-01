@@ -10,7 +10,7 @@ public enum MissionUnlockCondition
 }
 
 [CreateAssetMenu(fileName = "Mission", menuName = "ScriptableObjects/Missions/Mission", order = 1)]
-public partial class Mission : ScriptableObject, IDataModel
+public partial class Mission : ScriptableObject, IDataModel, IEditableDataModel
 {
     [Header("Set in Editor")]
     [SerializeField] private string missionName, customer, cargo, description;
@@ -59,6 +59,14 @@ public partial class Mission : ScriptableObject, IDataModel
         public int daysLeftToComplete, numberOfCompletions;
         public Date dateUnlocked, dateAccepted;
         public MissionBonus missionBonus;
+    }
+
+    public string DisplayTitle => missionName;
+
+    public bool ToggleValue
+    {
+        get => HasBeenCompleted;
+        set => NumberOfCompletions = value ? 1 : 0;
     }
 
     private void OnValidate()
