@@ -146,6 +146,11 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         return CalendarUtils.ConvertDateToDays(CurrentDay, CurrentMonth, CurrentYear)
             >= CalendarUtils.ConvertDateToDays(day, month, year);
     }
+
+    public bool IsCurrentDate(double day, double month, double year = 1)
+    {
+        return IsCurrentDate(day, month, year);
+    }
     #endregion
 
     #region Lua Function Registration
@@ -157,6 +162,11 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
             SymbolExtensions.GetMethodInfo(() => HasDateBeenReached(0, 0, 0)));
 
         Lua.RegisterFunction(
+            DialogueConstants.IsCurrentDateFunctionName,
+            this,
+            SymbolExtensions.GetMethodInfo(() => IsCurrentDate(0, 0, 0)));
+
+        Lua.RegisterFunction(
             DialogueConstants.EndCalendarFunctionName,
             this,
             SymbolExtensions.GetMethodInfo(() => EndCalendar()));
@@ -165,6 +175,7 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     public void UnregisterLuaFunctions()
     {
         Lua.UnregisterFunction(DialogueConstants.DateReachedFunctionName);
+        Lua.UnregisterFunction(DialogueConstants.IsCurrentDateFunctionName);
         Lua.UnregisterFunction(DialogueConstants.EndCalendarFunctionName);
     }
     #endregion
