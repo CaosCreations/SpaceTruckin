@@ -368,18 +368,6 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         return mission != null && mission.HasBeenCompleted;
     }
 
-    public bool HasMissionBeenCompletedForCustomer(string missionName, string customerName)
-    {
-        Mission missionForCustomer = MissionUtils.GetMissionForCustomer(missionName, customerName);
-
-        if (missionForCustomer != null)
-        {
-            return missionForCustomer.HasBeenCompleted;
-        }
-
-        return false;
-    }
-
     public bool HasMissionOfferExpired(string missionName, string customerName)
     {
         Mission missionForCustomer = MissionUtils.GetMissionForCustomer(missionName, customerName);
@@ -421,11 +409,6 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
             SymbolExtensions.GetMethodInfo(() => HasMissionBeenCompleted(string.Empty)));
 
         Lua.RegisterFunction(
-            DialogueConstants.MissionCompletedForCustomerFunctionName,
-            this,
-            SymbolExtensions.GetMethodInfo(() => HasMissionBeenCompletedForCustomer(string.Empty, string.Empty)));
-
-        Lua.RegisterFunction(
             DialogueConstants.MissionOfferExpiredFunctionName,
             this,
             SymbolExtensions.GetMethodInfo(() => HasMissionOfferExpired(string.Empty, string.Empty)));
@@ -433,7 +416,6 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     public void UnregisterLuaFunctions()
     {
-        Lua.UnregisterFunction(DialogueConstants.MissionCompletedForCustomerFunctionName);
         Lua.UnregisterFunction(DialogueConstants.MissionCompletedFunctionName);
         Lua.UnregisterFunction(DialogueConstants.MissionOfferExpiredFunctionName);
     }

@@ -13,17 +13,17 @@ MonoBehaviour:
   m_Name: CustomLuaFunctionInfo
   m_EditorClassIdentifier: 
   conditionFunctions:
-  - functionName: HasMissionBeenCompletedForCustomer
-    parameters: 0200000002000000
-    returnValue: 0
   - functionName: HasDateBeenReached
     parameters: 010000000100000001000000
-    returnValue: 0
+    returnValue: 1
   - functionName: HasMissionOfferExpired
     parameters: 0200000002000000
-    returnValue: 0
+    returnValue: 1
   - functionName: HasMissionBeenCompleted
     parameters: 02000000
+    returnValue: 1
+  - functionName: IsCurrentDate
+    parameters: 010000000100000001000000
     returnValue: 1
   scriptFunctions:
   - functionName: SpendMoney
