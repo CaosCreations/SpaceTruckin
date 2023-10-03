@@ -12,6 +12,8 @@
     public const string EndCalendarFunctionName = "EndCalendar";
     public const string PlaySoundEffectFunctionName = "PlaySoundEffect";
     public const string PassMinutesFunctionName = "PassMinutes";
+    public const string LockZoneFunctionName = "LockZone";
+    public const string UnlockZoneFunctionName = "UnlockZone";
 
     // Actor field names
     public const string FondnessFieldName = "Fondness";

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class DialoguePositionConstrainerActivator : MonoBehaviour
 {
+    [field: SerializeField]
+    public string ZoneName { get; private set; }
+
     [SerializeField]
     private DialoguePositionConstrainerSettings settings;
 
@@ -27,16 +30,26 @@ public class DialoguePositionConstrainerActivator : MonoBehaviour
     {
         if (!IsActive && evt.Conversation.id == settings.ActivateId)
         {
-            Debug.Log("DialoguePositionConstrainer activating...");
-            IsActive = true;
+            Activate();
             return;
         }
 
         if (IsActive && evt.Conversation.id == settings.DeactivateId)
         {
-            Debug.Log("DialoguePositionConstrainer deactivating...");
-            IsActive = false;
+            Deactivate();
         }
+    }
+
+    public void Activate()
+    {
+        Debug.Log("DialoguePositionConstrainer activating...");
+        IsActive = true;
+    }
+
+    public void Deactivate() 
+    {
+        Debug.Log("DialoguePositionConstrainer deactivating...");
+        IsActive = false;
     }
 }
 
