@@ -20,5 +20,6 @@
     public const string HasCompletedConversationTodayFieldName = "HasCompletedConversationToday";
 
     public const string ConversationSeenVariableName = "SeenName";
+    public const string AccessVariableName = "AccessName";
 
 }

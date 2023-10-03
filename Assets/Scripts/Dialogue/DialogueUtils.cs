@@ -34,6 +34,15 @@ public static class DialogueUtils
         return DialogueDatabaseManager.GetConversationFieldAsString(conversation, DialogueConstants.ConversationSeenVariableName);
     }
 
+    public static string GetAccessVariableName(this Conversation conversation)
+    {
+        if (!conversation.FieldExists(DialogueConstants.AccessVariableName))
+        {
+            return null;
+        }
+        return DialogueDatabaseManager.GetConversationFieldAsString(conversation, DialogueConstants.AccessVariableName);
+    }
+
     public static bool IsConversationActive => DialogueManager.IsConversationActive;
 
     /// <summary>
