@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1154642109020134073}
   - component: {fileID: 1073490529}
   - component: {fileID: 202104538}
+  - component: {fileID: 851895463}
   m_Layer: 0
   m_Name: StationCameraManager
   m_TagString: Untagged
@@ -46,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9f7f8df43992684697b0aba1cdf86da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animStateChange: {fileID: 0}
+  animStateChange: {fileID: 851895463}
 --- !u!114 &1073490529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,3 +76,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4269ec42d30c544686e6f88dde25343, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &851895463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1154642109020134023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a9511f38ad33114eabcf4ad94b3b024, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}

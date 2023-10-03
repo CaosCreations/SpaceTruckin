@@ -16244,6 +16244,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1387432454}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &546563557 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 1302945407348996271, guid: 689aaf94f41e78c4292d37ced16ba8ed,
+    type: 3}
+  m_PrefabInstance: {fileID: 1302945407254984332}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &547589401
 GameObject:
   m_ObjectHideFlags: 0
@@ -30867,6 +30873,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 851895463, guid: 75f0f256afb61684687ff664afcf8ac4, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 546563557}
     - target: {fileID: 1154642109020134022, guid: 75f0f256afb61684687ff664afcf8ac4,
         type: 3}
       propertyPath: m_RootOrder
@@ -30926,11 +30936,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: StationCameraManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 1154642109020134073, guid: 75f0f256afb61684687ff664afcf8ac4,
-        type: 3}
-      propertyPath: animStateChange
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 75f0f256afb61684687ff664afcf8ac4, type: 3}
