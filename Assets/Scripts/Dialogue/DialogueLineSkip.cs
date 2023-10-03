@@ -41,6 +41,13 @@ public class DialogueLineSkip : MonoBehaviour
                 DialogueDatabaseManager.Instance.UpdateDatabaseVariable(seenVarName, true);
             }
             DialogueManager.StopAllConversations();
+
+            var accessName = DialogueUtils.GetAccessVariableName(conversation);
+            if (accessName != null)
+            {
+                DialogueDatabaseManager.Instance.UpdateDatabaseVariable(accessName, true);
+            }
+            DialogueManager.StopAllConversations();
         }
     }
 
