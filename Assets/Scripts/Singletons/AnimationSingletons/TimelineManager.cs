@@ -78,10 +78,8 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
         var cutscenePlayer = Instance.GetCutscenePlayerByCutscene(cutscene);
 
-#pragma warning disable IDE0270 // Use coalesce expression
         if (cutscenePlayer == null)
             throw new Exception("Cutscene player component doesn't exist. Cannot play cutscene with name: " + cutscene.Name);
-#pragma warning restore IDE0270 // Use coalesce expression
 
         currentCutscenePlayer = cutscenePlayer;
 
