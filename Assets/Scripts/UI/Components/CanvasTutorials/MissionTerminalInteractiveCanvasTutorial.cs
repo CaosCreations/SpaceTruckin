@@ -31,8 +31,7 @@ public class MissionTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
         if (shownFlag)
             return;
 
-        CloseAllCards();
-        card.SetActive(true);
+        ShowCard(card);
         shownFlag = true;
     }
 
