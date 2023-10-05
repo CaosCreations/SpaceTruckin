@@ -19,9 +19,18 @@ public abstract class InteractiveCanvasTutorial : SubMenu
         }
     }
 
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        if (endingCard.gameObject.activeSelf)
+        {
+            EndTutorial();
+        }
+    }
+
     protected virtual void Start()
     {
-        openingCard.SetActive(true);
+        ShowCard(openingCard);
 
         // Optional as some tutorials end via listening for external events or a combination of shown flags
         if (endingCard != null)
@@ -83,14 +92,19 @@ public abstract class InteractiveCanvasTutorial : SubMenu
 
     protected abstract void CloseAllCards();
 
-    protected virtual void ShowCard(InteractiveCanvasTutorialCard card)
+    protected virtual void ShowCard(InteractiveCanvasTutorialCard card, bool closeOtherCards = true)
     {
-        CloseAllCards();
+        if (closeOtherCards)
+        {
+            CloseAllCards();
+        }
+
         card.SetActive(true);
         if (card.UnlockCanvas)
         {
             UnlockCanvas();
         }
+        card.SetSpotlightOjectsActive(true);
     }
 
     protected virtual void ShowCard(InteractiveCanvasTutorialCard card, ref bool cardShown, Button button, UnityAction buttonHandler)
