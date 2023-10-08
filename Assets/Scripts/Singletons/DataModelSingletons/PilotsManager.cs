@@ -41,6 +41,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
         {
             Debug.LogError("No pilot data");
         }
+        HandleStartAndLeavingDates();
     }
 
     public static double AwardXp(Pilot pilot, double xpGained)
@@ -178,6 +179,11 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
     }
 
     private void OnEndOfDayHandler(OnEndOfDayEvent evt)
+    {
+        HandleStartAndLeavingDates();
+    }
+
+    private void HandleStartAndLeavingDates()
     {
         foreach (var pilot in Pilots)
         {
