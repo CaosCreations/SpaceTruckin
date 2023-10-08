@@ -30,6 +30,7 @@ public class TemporaryConditionalObject : MonoBehaviour
         SingletonManager.EventService.Add<OnMessageReadEvent>(MessageReadHandler);
         SingletonManager.EventService.Add<OnMissionCompletedEvent>(MissionCompletedHandler);
         SingletonManager.EventService.Add<OnConversationEndedEvent>(ConversationEndedHandler);
+        SingletonManager.EventService.Add<OnDialogueVariableUpdatedEvent>(DialogueVariableUpdatedHandler);
         SetActive();
     }
 
@@ -71,6 +72,11 @@ public class TemporaryConditionalObject : MonoBehaviour
     }
 
     private void ConversationEndedHandler(OnConversationEndedEvent evt)
+    {
+        SetActive();
+    }
+
+    private void DialogueVariableUpdatedHandler()
     {
         SetActive();
     }

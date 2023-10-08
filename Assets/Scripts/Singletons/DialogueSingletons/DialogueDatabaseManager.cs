@@ -175,6 +175,7 @@ public class DialogueDatabaseManager : MonoBehaviour
             DialogueLua.SetVariable(variableName, value);
             var variable = DialogueLua.GetVariable(variableName);
             Debug.Log($"Lua variable <color=green>{variableName}</color> is now set to <color=blue>{variable.asBool}</color>.");
+            SingletonManager.EventService.Dispatch<OnDialogueVariableUpdatedEvent>();
         }
         catch (Exception ex)
         {
