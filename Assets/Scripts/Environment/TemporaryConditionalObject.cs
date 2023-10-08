@@ -10,10 +10,16 @@ public class TemporaryConditionalObject : MonoBehaviour
         Date, Message, Mission
     }
 
+    public enum Operator
+    {
+        True, False,
+    }
+
     [Serializable]
     public class Condition
     {
         public ConditionType Type;
+        public Operator Operator;
         public DateWithPhase[] ActiveDates;
         public Message Message;
         public Mission Mission;
