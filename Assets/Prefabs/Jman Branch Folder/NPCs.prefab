@@ -12229,7 +12229,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   conditions:
   - Type: 0
-    Operator: 0
     ActiveDates:
     - <Date>k__BackingField:
         Day: 2
@@ -12253,8 +12252,8 @@ MonoBehaviour:
       <Phase>k__BackingField: 1
     Message: {fileID: 0}
     Mission: {fileID: 0}
+    DialogueVariableName: 
   - Type: 1
-    Operator: 0
     ActiveDates:
     - <Date>k__BackingField:
         Day: 2
@@ -12278,6 +12277,32 @@ MonoBehaviour:
       <Phase>k__BackingField: 1
     Message: {fileID: 11400000, guid: b5f770b13feb98c47aeef730adb6221d, type: 2}
     Mission: {fileID: 0}
+    DialogueVariableName: 
+  - Type: 3
+    ActiveDates:
+    - <Date>k__BackingField:
+        Day: 2
+        Month: 1
+        Year: 1
+      <Phase>k__BackingField: 1
+    - <Date>k__BackingField:
+        Day: 3
+        Month: 1
+        Year: 1
+      <Phase>k__BackingField: 1
+    - <Date>k__BackingField:
+        Day: 4
+        Month: 1
+        Year: 1
+      <Phase>k__BackingField: 1
+    - <Date>k__BackingField:
+        Day: 5
+        Month: 1
+        Year: 1
+      <Phase>k__BackingField: 1
+    Message: {fileID: 11400000, guid: b5f770b13feb98c47aeef730adb6221d, type: 2}
+    Mission: {fileID: 0}
+    DialogueVariableName: 
 --- !u!1001 &1390731359586106187
 PrefabInstance:
   m_ObjectHideFlags: 0
