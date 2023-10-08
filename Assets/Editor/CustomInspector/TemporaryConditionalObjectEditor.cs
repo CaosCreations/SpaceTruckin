@@ -34,6 +34,9 @@ public class TemporaryConditionalObjectEditor : Editor
                 case TemporaryConditionalObject.ConditionType.Mission:
                     EditorGUILayout.PropertyField(conditionProperty.FindPropertyRelative("Mission"), true);
                     break;
+                case TemporaryConditionalObject.ConditionType.DialogueVariable:
+                    EditorGUILayout.PropertyField(conditionProperty.FindPropertyRelative("DialogueVariableName"), true);
+                    break;
             }
         }
 

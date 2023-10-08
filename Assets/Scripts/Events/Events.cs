@@ -105,6 +105,10 @@ namespace Events
         }
     }
 
+    public class OnDialogueVariableUpdatedEvent : IEvent
+    {
+    }
+
     public class OnHangarNodeTerminalClosedEvent : IEvent
     {
     }
