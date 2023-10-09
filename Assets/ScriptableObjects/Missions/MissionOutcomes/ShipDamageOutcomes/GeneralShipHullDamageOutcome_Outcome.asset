@@ -9,10 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f3381501a54b6942b227ca0cd889ea5, type: 3}
-  m_Name: PilotXpOutcome_Outcome
+  m_Script: {fileID: 11500000, guid: edd46c725defd364bb51231d53b7584a, type: 3}
+  m_Name: GeneralShipHullDamageOutcome_Outcome
   m_EditorClassIdentifier: 
-  probability: 100
-  flavourText: Your dude has earned some xp
-  xpMin: 900
-  xpMax: 1800
+  Probability: 40
+  <RequiresMissionSuccess>k__BackingField: 0
+  <FlavourText>k__BackingField: 
+  shipDamage: 50
+  damageType: 0
+  hasRandomDamageType: 0
