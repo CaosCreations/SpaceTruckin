@@ -26,9 +26,27 @@ public class CutsceneCollisionTrigger : MonoBehaviour
     {
         if (CutsceneTriggerable(other))
         {
-            Debug.Log("Player collided with CutsceneCollisionTrigger");
+            Debug.Log("Player collided with CutsceneCollisionTrigger: " + name);
             TimelineManager.PlayCutscene(cutscene);
+            DestroyLinkedTriggers();
             gameObject.DestroyIfExists();
+        }
+    }
+
+    private void DestroyLinkedTriggers()
+    {
+        var triggers = FindObjectsOfType<CutsceneCollisionTrigger>();
+
+        for (int i = 0; i < triggers.Length; i++)
+        {
+            var trigger = triggers[i];
+            if (trigger == null || trigger == this || trigger.cutscene != cutscene)
+            {
+                continue;
+            }
+            Debug.Log("Destroying linked trigger: " + trigger.name);
+            // Trigger has the same cutscene as this trigger, so it's now redundant 
+            trigger.gameObject.DestroyIfExists();
         }
     }
 
