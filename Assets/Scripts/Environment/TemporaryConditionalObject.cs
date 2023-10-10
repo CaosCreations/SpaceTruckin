@@ -5,21 +5,6 @@ using UnityEngine;
 
 public class TemporaryConditionalObject : MonoBehaviour
 {
-    public enum ConditionType
-    {
-        Date, Message, Mission, DialogueVariable,
-    }
-
-    [Serializable]
-    public class Condition
-    {
-        public ConditionType Type;
-        public DateWithPhase[] ActiveDates;
-        public Message Message;
-        public Mission Mission;
-        public string DialogueVariableName;
-    }
-
     [SerializeField]
     private Condition[] conditions;
 
@@ -36,14 +21,7 @@ public class TemporaryConditionalObject : MonoBehaviour
 
     private bool IsActive()
     {
-        return conditions.All(c => c.Type switch
-        {
-            ConditionType.Date => c.ActiveDates.Any(d => d.Date == CalendarManager.CurrentDate && d.Phase == ClockManager.CurrentTimeOfDayPhase),
-            ConditionType.Message => c.Message.HasBeenRead,
-            ConditionType.Mission => c.Mission.HasBeenCompleted,
-            ConditionType.DialogueVariable => DialogueDatabaseManager.GetLuaVariableAsBool(c.DialogueVariableName),
-            _ => false
-        });
+        return conditions.AreAllMet();
     }
 
     private void SetActive()

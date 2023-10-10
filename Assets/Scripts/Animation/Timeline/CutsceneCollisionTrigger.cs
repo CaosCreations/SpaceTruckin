@@ -4,12 +4,14 @@ using UnityEngine;
 public class CutsceneCollisionTrigger : MonoBehaviour
 {
     [SerializeField] private Cutscene cutscene;
+    [Header("Leave all blank that aren't used in the condition")]
+    [SerializeField] private Condition[] conditions;
 
     private BoxCollider boxCollider;
 
     protected virtual bool CutsceneTriggerable(Collider other)
     {
-        return other.CompareTag(PlayerConstants.PlayerTag);
+        return other.CompareTag(PlayerConstants.PlayerTag) && conditions.AreAllMet();
     }
 
     private void Awake()
@@ -35,7 +37,7 @@ public class CutsceneCollisionTrigger : MonoBehaviour
         if (boxCollider != null)
         {
             Gizmos.color = Color.magenta;
-            Gizmos.DrawWireCube(transform.position + boxCollider.center, boxCollider.size);
+            Gizmos.DrawWireCube(boxCollider.transform.position + boxCollider.center, boxCollider.size);
         }
     }
 }
