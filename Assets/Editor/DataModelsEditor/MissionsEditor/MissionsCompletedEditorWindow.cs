@@ -41,7 +41,7 @@ public class MissionsCompletedEditor : DataModelEditorWindow<Mission>
         }
     }
 
-    private void OnMissionCompletedHandler(OnMissionCompletedEvent evt)
+    private void OnMissionCompletedHandler()
     {
         RefreshData(MissionsManager.GetMissions());
     }
