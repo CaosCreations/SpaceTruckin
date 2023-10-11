@@ -136,7 +136,7 @@ public class DialogueDatabaseManager : MonoBehaviour
             return DialogueLua.GetVariable(variableName).asBool;
         }
 
-        Debug.LogError($"Lua variable '{variableName}' does not exist");
+        Debug.LogWarning($"Lua variable '{variableName}' does not exist");
         return false;
     }
 
