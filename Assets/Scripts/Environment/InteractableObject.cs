@@ -29,7 +29,7 @@ public class InteractableObject : MonoBehaviour
         }
     }
 
-    protected virtual bool IsIconVisible => IsPlayerInteractable;
+    protected virtual bool IsIconVisible => !PlayerManager.IsPaused && IsPlayerInteractable;
 
     protected virtual void Start()
     {
