@@ -14,5 +14,8 @@ public class CutsceneConversationSettings
     public bool CloseDialogueUIOnStart { get; private set; }
 
     [field: SerializeField]
+    public bool OpenDialogueUIOnEnd { get; private set; }
+
+    [field: SerializeField]
     public bool ContinueOnEnd { get; private set; }
 }
