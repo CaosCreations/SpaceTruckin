@@ -351,10 +351,9 @@ public class UIManager : MonoBehaviour
 
     private void OnCutsceneStartedHandler(OnCutsceneStartedEvent startedEvent)
     {
-        if (startedEvent.Cutscene.ConversationSettings != null
-            && startedEvent.Cutscene.ConversationSettings.CloseDialogueUIOnStart)
+        if (startedEvent.Cutscene.ConversationSettings.CloseDialogueUIOnStart)
         {
-            Debug.Log("Dialogue cutscene started event call back fired. Closing dialogue UI...");
+            Debug.Log("Closing dialogue UI on cutscene start...");
             DialogueManager.DialogueUI.Close();
         }
         Debug.Log("Pausing Dialogue System...");
@@ -368,7 +367,7 @@ public class UIManager : MonoBehaviour
         {
             if (convoSettings.OpenDialogueUIOnEnd)
             {
-                Debug.Log("Dialogue cutscene finished event call back fired. Re-opening dialogue UI...");
+                Debug.Log("Opening dialogue UI on cutscene end...");
                 DialogueManager.DialogueUI.Open();
             }
             Debug.Log("Unpausing Dialogue System...");
@@ -376,7 +375,7 @@ public class UIManager : MonoBehaviour
 
             if (convoSettings.ContinueOnEnd)
             {
-                Debug.Log("Dialogue cutscene finished event call back fired. Continuing to next node...");
+                Debug.Log("Continuing to next node on cutscene end...");
                 var dialogueUI = FindObjectOfType<AbstractDialogueUI>();
                 dialogueUI.OnContinueConversation();
             }

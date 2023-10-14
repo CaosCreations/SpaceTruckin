@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c90981045dcf564ca5a5e8e5da29649, type: 3}
+  m_Name: AlcoholForAdults_Mission2
+  m_EditorClassIdentifier: 
+  missionName: Alcohol for adults
+  customer: Chris M.P.
+  cargo: 10 Kegs of Oshunian Ale <br> 5 Cases of Myorjiin Energy Drink <br> 5 Cases
+    of Vesta Wine
+  description: "\u201CI just got off a weird call, where a client requested we deliver
+    \u2018a thousand alcohols\u2019. They say it\u2019s for a grown-up party. Actually,
+    they said \u2018grown-up\u2019 A LOT. I\u2019m pretty sure it was just three
+    kids stacked on top of each other in their dad\u2019s overcoat. But they paid
+    upfront so I didn\u2019t ask any questions.<br>  They\u2019re way over in Galak
+    so it will be a whole day\u2019s journey through the disputed asteroid belt.
+    It\u2019s risky, I know, but did I mention they paid upfront? You can probably
+    squeeze a hefty tip out of them too.\u201D"
+  missionDurationInDays: 1
+  fuelCost: 35
+  unlockCondition: 0
+  moneyNeededToUnlock: 1000
+  isRepeatable: 0
+  hasRandomOutcomes: 1
+  outcomes:
+  - {fileID: 11400000, guid: 251d15616e2d8864e89a6e62a4640dfa, type: 2}
+  missionModifier: {fileID: 11400000, guid: 19df9cfaac1f5de4b8fb064a33cc0f3c, type: 2}
+  successChance: 0
+  missionPilotTraitEffects: {fileID: 11400000, guid: c03947f7c3ab22547949ea6d974c31f7,
+    type: 2}
+  fondnessGranted: 0
+  offerTimeLimitInDays: 0
+  offerExpiryFondnessDeduction: 0
+  thankYouMessage: {fileID: 0}
+  saveData:
+    hasBeenUnlocked: 1
+    hasBeenAccepted: 1
+    offerExpiryConsequencesApplied: 0
+    daysLeftToComplete: 0
+    numberOfCompletions: 0
+    dateUnlocked:
+      Day: 6
+      Month: 1
+      Year: 1
+    dateAccepted:
+      Day: 0
+      Month: 0
+      Year: 0
+    missionBonus: {fileID: 11400000, guid: c5ccf81c396bf094a96dfa76f73b4d1b, type: 2}

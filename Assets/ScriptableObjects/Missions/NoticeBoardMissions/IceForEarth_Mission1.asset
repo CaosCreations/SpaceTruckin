@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c90981045dcf564ca5a5e8e5da29649, type: 3}
+  m_Name: IceForEarth_Mission1
+  m_EditorClassIdentifier: 
+  missionName: Ice For Earth
+  customer: Eurasia Secretary of Sanitation
+  cargo: Sakris Ice Chunks
+  description: "\u201CThere\u2019s a serious water shortage on Earth (Ha! Remember
+    Earth? What a dump!) To be clear, the planet is still covered in water, but it\u2019s
+    mostly a radioactive sludge at this point. The president of Eurasia herself has
+    ordered four tons of pure ice from the moons of Sakris.<br>If we can get it to
+    her quickly this time, we may be able to secure a long-term contract, making
+    a delivery every few weeks. Plus, with what they\u2019re used to, I\u2019ll bet
+    Earthlings can\u2019t tell the difference between Sakris moon ice and ice from
+    the station\u2019s sewage purification system, so we can save a pretty penny
+    going forward.\u201D"
+  missionDurationInDays: 1
+  fuelCost: 35
+  unlockCondition: 0
+  moneyNeededToUnlock: 0
+  isRepeatable: 0
+  hasRandomOutcomes: 0
+  outcomes:
+  - {fileID: 11400000, guid: cd808da8f4f8bf544a83cb5dad3bb0e9, type: 2}
+  - {fileID: 11400000, guid: 5096a8f285b35a24d916c02ff8d5e371, type: 2}
+  - {fileID: 11400000, guid: 4786970603a2361419f643b4f0f7b901, type: 2}
+  missionModifier: {fileID: 0}
+  successChance: 1
+  missionPilotTraitEffects: {fileID: 11400000, guid: c03947f7c3ab22547949ea6d974c31f7,
+    type: 2}
+  fondnessGranted: 0
+  offerTimeLimitInDays: 0
+  offerExpiryFondnessDeduction: 0
+  thankYouMessage: {fileID: 0}
+  saveData:
+    hasBeenUnlocked: 1
+    hasBeenAccepted: 1
+    offerExpiryConsequencesApplied: 0
+    daysLeftToComplete: 0
+    numberOfCompletions: 0
+    dateUnlocked:
+      Day: 1
+      Month: 1
+      Year: 1
+    dateAccepted:
+      Day: 0
+      Month: 0
+      Year: 0
+    missionBonus: {fileID: 11400000, guid: 201d3e5cdfb7eb449aa6174f20668d65, type: 2}
