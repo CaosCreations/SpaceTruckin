@@ -55,7 +55,7 @@ public class CutsceneCollisionTrigger : MonoBehaviour
         if (boxCollider != null)
         {
             Gizmos.color = Color.magenta;
-            Gizmos.DrawWireCube(boxCollider.transform.position + boxCollider.center, boxCollider.size);
+            Gizmos.DrawWireCube(boxCollider.center, boxCollider.size);
         }
     }
 }

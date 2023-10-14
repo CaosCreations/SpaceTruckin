@@ -366,7 +366,7 @@ public class UIManager : MonoBehaviour
         var convoSettings = startedEvent.Cutscene.ConversationSettings;
         if (convoSettings != null)
         {
-            if (convoSettings.CloseDialogueUIOnStart)
+            if (convoSettings.OpenDialogueUIOnEnd)
             {
                 Debug.Log("Dialogue cutscene finished event call back fired. Re-opening dialogue UI...");
                 DialogueManager.DialogueUI.Open();

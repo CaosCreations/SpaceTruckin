@@ -11,7 +11,7 @@ public class Cutscene : ScriptableObject
     public PlayableAsset PlayableAsset { get; private set; }
 
     [field: SerializeField]
-    public CutsceneConversationSettings ConversationSettings { get; private set; }
+    public CutsceneConversationSettings ConversationSettings { get; private set; } = new();
 
     [field: SerializeField]
     public Date Date { get; private set; }
