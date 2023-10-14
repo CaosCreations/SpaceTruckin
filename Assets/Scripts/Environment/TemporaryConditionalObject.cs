@@ -1,6 +1,4 @@
 ﻿using Events;
-using System;
-using System.Linq;
 using UnityEngine;
 
 public class TemporaryConditionalObject : MonoBehaviour
