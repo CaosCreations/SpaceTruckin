@@ -24,11 +24,12 @@ public class NPCData : ScriptableObject
     public NPCLocation GetLocationByDate(Date date)
     {
         // If the location needs to be overridden for this date, then return the one from the date map
-        if (LocationByDateContainer.Lookup.TryGetValue(date, out var value))
+        // Having generic Conditions is janky when we're already indexed by Date, but leave here for now for backwards compatibility
+        if (!LocationByDateContainer.Lookup.TryGetValue(date, out var value) || !value.Conditions.AreAllMet())
         {
-            return value;
+            return DefaultLocation;
         }
-        return DefaultLocation;
+        return value;
     }
 
     public NPCAnimationContext GetAnimationContextByDate(Date date)
