@@ -1,73 +1,82 @@
-using UnityEditor;
-using UnityEngine;
+//using UnityEditor;
+//using UnityEngine;
 
-[CustomEditor(typeof(Object), true)]
-public class UniversalConditionsEditor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        serializedObject.Update();
+//[CustomEditor(typeof(Object), true)]
+//public class UniversalConditionsEditor : Editor
+//{
+//    public override void OnInspectorGUI()
+//    {
+//        serializedObject.Update();
 
-        DrawDefaultInspector();
+//        SerializedProperty conditionsProperty = serializedObject.FindProperty("conditions");
 
-        SerializedProperty conditionsProperty = serializedObject.FindProperty("conditions");
-        if (conditionsProperty == null || !conditionsProperty.isArray || conditionsProperty.GetType() != typeof(Condition))
-        {
-            return;
-        }
+//        bool shouldDrawDefaultInspector = conditionsProperty != null && conditionsProperty.isArray;
 
-        EditorGUILayout.LabelField("Conditions");
+//        if (shouldDrawDefaultInspector)
+//        {
+//            EditorGUI.BeginChangeCheck();
+//            DrawDefaultInspector();
+//            if (EditorGUI.EndChangeCheck())
+//            {
+//                return;
+//            }
+//        }
 
-        for (int i = 0; i < conditionsProperty.arraySize; i++)
-        {
-            SerializedProperty conditionProperty = conditionsProperty.GetArrayElementAtIndex(i);
-            SerializedProperty typeProperty = conditionProperty.FindPropertyRelative("Type");
+//        if (shouldDrawDefaultInspector)
+//        {
+//            EditorGUILayout.LabelField("Conditions");
 
-            EditorGUILayout.PropertyField(typeProperty, new GUIContent("Condition Type"));
+//            for (int i = 0; i < conditionsProperty.arraySize; i++)
+//            {
+//                SerializedProperty conditionProperty = conditionsProperty.GetArrayElementAtIndex(i);
+//                SerializedProperty typeProperty = conditionProperty.FindPropertyRelative("Type");
 
-            ConditionType conditionType = (ConditionType)typeProperty.enumValueIndex;
+//                EditorGUILayout.PropertyField(typeProperty, new GUIContent("Condition Type"));
 
-            EditorGUI.indentLevel++;
+//                ConditionType conditionType = (ConditionType)typeProperty.enumValueIndex;
 
-            switch (conditionType)
-            {
-                case ConditionType.Date:
-                    EditorGUILayout.PropertyField(conditionProperty.FindPropertyRelative("ActiveDates"), true);
-                    break;
-                case ConditionType.Message:
-                    EditorGUILayout.PropertyField(conditionProperty.FindPropertyRelative("Message"), true);
-                    break;
-                case ConditionType.Mission:
-                    EditorGUILayout.PropertyField(conditionProperty.FindPropertyRelative("Mission"), true);
-                    break;
-                case ConditionType.DialogueVariable:
-                    EditorGUILayout.PropertyField(conditionProperty.FindPropertyRelative("DialogueVariableName"), true);
-                    break;
-            }
+//                EditorGUI.indentLevel++;
 
-            EditorGUI.indentLevel--;
-        }
+//                switch (conditionType)
+//                {
+//                    case ConditionType.Date:
+//                        EditorGUILayout.PropertyField(conditionProperty.FindPropertyRelative("ActiveDates"), true);
+//                        break;
+//                    case ConditionType.Message:
+//                        EditorGUILayout.PropertyField(conditionProperty.FindPropertyRelative("Message"), true);
+//                        break;
+//                    case ConditionType.Mission:
+//                        EditorGUILayout.PropertyField(conditionProperty.FindPropertyRelative("Mission"), true);
+//                        break;
+//                    case ConditionType.DialogueVariable:
+//                        EditorGUILayout.PropertyField(conditionProperty.FindPropertyRelative("DialogueVariableName"), true);
+//                        break;
+//                }
 
-        if (GUILayout.Button("Add Condition"))
-        {
-            conditionsProperty.InsertArrayElementAtIndex(conditionsProperty.arraySize);
-        }
+//                EditorGUI.indentLevel--;
+//            }
 
-        serializedObject.ApplyModifiedProperties();
-    }
+//            if (GUILayout.Button("Add Condition"))
+//            {
+//                conditionsProperty.InsertArrayElementAtIndex(conditionsProperty.arraySize);
+//            }
+//        }
 
-    public override bool RequiresConstantRepaint()
-    {
-        return true;
-    }
+//        serializedObject.ApplyModifiedProperties();
+//    }
 
-    public override bool HasPreviewGUI()
-    {
-        return true;
-    }
+//    public override bool RequiresConstantRepaint()
+//    {
+//        return true;
+//    }
 
-    public override GUIContent GetPreviewTitle()
-    {
-        return new GUIContent("Preview");
-    }
-}
+//    public override bool HasPreviewGUI()
+//    {
+//        return true;
+//    }
+
+//    public override GUIContent GetPreviewTitle()
+//    {
+//        return new GUIContent("Preview");
+//    }
+//}
