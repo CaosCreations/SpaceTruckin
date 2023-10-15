@@ -4,7 +4,6 @@ using UnityEngine;
 public class CutsceneCollisionTrigger : MonoBehaviour
 {
     [SerializeField] private Cutscene cutscene;
-    [Header("Leave all blank that aren't used in the condition")]
     [SerializeField] private Condition[] conditions;
 
     private BoxCollider boxCollider;

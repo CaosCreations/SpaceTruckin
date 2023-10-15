@@ -1,27 +1,33 @@
-﻿using UnityEditor;
+using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(TemporaryConditionalObject))]
-public class TemporaryConditionalObjectEditor : Editor
+[CustomEditor(typeof(Object), true)]
+public class UniversalConditionsEditor : Editor
 {
-    private SerializedProperty conditionsProperty;
-
-    private void OnEnable()
-    {
-        conditionsProperty = serializedObject.FindProperty("conditions");
-    }
-
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
 
+        DrawDefaultInspector();
+
+        SerializedProperty conditionsProperty = serializedObject.FindProperty("conditions");
+        if (conditionsProperty == null || !conditionsProperty.isArray || conditionsProperty.GetType() != typeof(Condition))
+        {
+            return;
+        }
+
         EditorGUILayout.LabelField("Conditions");
+
         for (int i = 0; i < conditionsProperty.arraySize; i++)
         {
             SerializedProperty conditionProperty = conditionsProperty.GetArrayElementAtIndex(i);
-            EditorGUILayout.PropertyField(conditionProperty.FindPropertyRelative("Type"));
+            SerializedProperty typeProperty = conditionProperty.FindPropertyRelative("Type");
 
-            ConditionType conditionType = (ConditionType)conditionProperty.FindPropertyRelative("Type").enumValueIndex;
+            EditorGUILayout.PropertyField(typeProperty, new GUIContent("Condition Type"));
+
+            ConditionType conditionType = (ConditionType)typeProperty.enumValueIndex;
+
+            EditorGUI.indentLevel++;
 
             switch (conditionType)
             {
@@ -38,6 +44,8 @@ public class TemporaryConditionalObjectEditor : Editor
                     EditorGUILayout.PropertyField(conditionProperty.FindPropertyRelative("DialogueVariableName"), true);
                     break;
             }
+
+            EditorGUI.indentLevel--;
         }
 
         if (GUILayout.Button("Add Condition"))
@@ -46,5 +54,20 @@ public class TemporaryConditionalObjectEditor : Editor
         }
 
         serializedObject.ApplyModifiedProperties();
+    }
+
+    public override bool RequiresConstantRepaint()
+    {
+        return true;
+    }
+
+    public override bool HasPreviewGUI()
+    {
+        return true;
+    }
+
+    public override GUIContent GetPreviewTitle()
+    {
+        return new GUIContent("Preview");
     }
 }
