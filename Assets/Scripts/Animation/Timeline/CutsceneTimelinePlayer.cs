@@ -8,4 +8,7 @@ public class CutsceneTimelinePlayer : MonoBehaviour
 
     [field: SerializeField]
     public Cutscene Cutscene { get; private set; }
+
+    [field: SerializeField]
+    public CutsceneAnimatorSettings AnimatorSettings { get; private set; } = new();
 }
