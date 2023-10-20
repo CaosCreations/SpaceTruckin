@@ -12,7 +12,7 @@ public class InteractableObject : MonoBehaviour
     private bool isPlayerColliding;
     [SerializeField]
     private bool isPlayerInteractable;
-    private string layerName;
+    private string[] layersToIgnore;
 
     public bool IsPlayerColliding
     {
@@ -24,7 +24,7 @@ public class InteractableObject : MonoBehaviour
     {
         get
         {
-            isPlayerInteractable = IsPlayerColliding && PlayerManager.IsPlayerFacingObject(RaycastTarget, layerName);
+            isPlayerInteractable = IsPlayerColliding && PlayerManager.IsPlayerFacingObject(RaycastTarget, layersToIgnore);
             return isPlayerInteractable;
         }
     }
@@ -40,7 +40,7 @@ public class InteractableObject : MonoBehaviour
         if (interactableIcon != null)
             interactableIcon.gameObject.SetActive(false);
 
-        layerName = LayerMask.LayerToName(gameObject.layer);
+        layersToIgnore = new string[] { LayerMask.LayerToName(gameObject.layer), PlayerConstants.RaycastIgnoreLayer };
     }
 
     public virtual void OnTriggerEnter(Collider other)

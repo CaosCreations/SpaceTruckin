@@ -1,5 +1,6 @@
 using Cinemachine;
 using System;
+using System.Linq;
 using UnityEngine;
 
 public enum Direction
@@ -116,22 +117,7 @@ public class PlayerMovement : MonoBehaviour
         return characterController.transform.position.y < PlayerConstants.KillFloorHeight;
     }
 
-    public bool Raycast(string layerName, out RaycastHit hit)
-    {
-        LayerMask layerMask = LayerMask.GetMask(layerName);
-        return Physics.Raycast(transform.position, PlayerFacingDirection, out hit, PlayerConstants.RaycastDistance, layerMask);
-    }
-
-    public bool IsFirstRaycastHit(GameObject obj)
-    {
-        var layerName = LayerMask.LayerToName(obj.layer);
-        if (!Raycast(layerName, out RaycastHit hit))
-            return false;
-
-        return hit.collider != null && hit.collider.gameObject == obj;
-    }
-
-    public bool IsPlayerFacingObject(GameObject obj, string layerName = null)
+    public bool IsPlayerFacingObject(GameObject obj, string[] layersToIgnore = null)
     {
         LayerMask mask = ~0;
         RaycastHit[] hits = Physics.RaycastAll(transform.position, PlayerFacingDirection, PlayerConstants.RaycastDistance, mask);
@@ -147,7 +133,7 @@ public class PlayerMovement : MonoBehaviour
             if (hitObject.transform.IsChildOf(obj.transform))
                 continue;
 
-            if (layerName != null && hitObject.layer == LayerMask.NameToLayer(layerName))
+            if (layersToIgnore != null && layersToIgnore.Any(l => LayerMask.NameToLayer(l) == hitObject.layer))
                 continue;
 
             break;

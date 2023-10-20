@@ -20,6 +20,7 @@ public class PlayerConstants : MonoBehaviour
     public const float Gravity = -9.81f;
     public const float KillFloorHeight = -25;
     public const float RaycastDistance = 10f;
+    public const string RaycastIgnoreLayer = "Ignore Raycast";
     public static readonly Vector3 PlayerRespawnPosition = new(209.728f, 380.065f, -252.4218f);
     public static readonly Vector3 PlayerRefugeeCampPosition = new(151.312759f, 380.410004f, -282.76001f);
     public static readonly Vector3 PlayerSpaceportPosition = new(303.287994f, 379.882996f, -283f);

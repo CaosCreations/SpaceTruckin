@@ -222,19 +222,9 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         spriteRenderer.enabled = enabled;
     }
 
-    public static bool Raycast(string layerName, out RaycastHit hit)
+    public static bool IsPlayerFacingObject(GameObject obj, string[] layersToIgnore = null)
     {
-        return PlayerMovement.Raycast(layerName, out hit);
-    }
-
-    public static bool IsFirstRaycastHit(GameObject obj)
-    {
-        return PlayerMovement.IsFirstRaycastHit(obj);
-    }
-
-    public static bool IsPlayerFacingObject(GameObject obj, string layerName = null)
-    {
-        return PlayerMovement.IsPlayerFacingObject(obj, layerName);
+        return PlayerMovement.IsPlayerFacingObject(obj, layersToIgnore);
     }
 
     public string GetPlayerName()
