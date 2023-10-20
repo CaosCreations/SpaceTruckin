@@ -28492,6 +28492,10 @@ PrefabInstance:
       propertyPath: m_SceneBindings.Array.data[1].value
       value: 
       objectReference: {fileID: 278381288}
+    - target: {fileID: 152757952, guid: 25439ce858ea34242bd5e2a878aa5034, type: 3}
+      propertyPath: <AnimatorSettings>k__BackingField.<Animator>k__BackingField
+      value: 
+      objectReference: {fileID: 1390731359182535928}
     - target: {fileID: 852138640, guid: 25439ce858ea34242bd5e2a878aa5034, type: 3}
       propertyPath: m_SceneBindings.Array.data[0].value
       value: 
@@ -28857,6 +28861,16 @@ PrefabInstance:
       propertyPath: m_SceneBindings.Array.data[1].value
       value: 
       objectReference: {fileID: 62907691}
+    - target: {fileID: 3881816079439487063, guid: 25439ce858ea34242bd5e2a878aa5034,
+        type: 3}
+      propertyPath: m_SceneBindings.Array.data[0].value
+      value: 
+      objectReference: {fileID: 1390731359182535928}
+    - target: {fileID: 3881816079439487063, guid: 25439ce858ea34242bd5e2a878aa5034,
+        type: 3}
+      propertyPath: m_SceneBindings.Array.data[1].value
+      value: 
+      objectReference: {fileID: 1390731359182535928}
     - target: {fileID: 3881816079546049094, guid: 25439ce858ea34242bd5e2a878aa5034,
         type: 3}
       propertyPath: m_SceneBindings.Array.data[2].value
@@ -65842,9 +65856,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 757102131, guid: e294169dc449042f2a0575d68746a44f, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1772685084, guid: e294169dc449042f2a0575d68746a44f, type: 3}
       propertyPath: m_RootOrder
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1390731359966021165, guid: e294169dc449042f2a0575d68746a44f,
+        type: 3}
+      propertyPath: npcData
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1390731360852519248, guid: e294169dc449042f2a0575d68746a44f,
         type: 3}
@@ -66175,6 +66198,12 @@ Animator:
 --- !u!95 &1390731359182535927 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 2940178, guid: e294169dc449042f2a0575d68746a44f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1390731359182535925}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1390731359182535928 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 1686906710, guid: e294169dc449042f2a0575d68746a44f,
     type: 3}
   m_PrefabInstance: {fileID: 1390731359182535925}
   m_PrefabAsset: {fileID: 0}

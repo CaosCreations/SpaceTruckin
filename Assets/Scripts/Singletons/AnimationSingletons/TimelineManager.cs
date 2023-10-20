@@ -55,7 +55,14 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
     private void OnTimelineFinishedHandler()
     {
-        SingletonManager.EventService.Dispatch(new OnCutsceneFinishedEvent(currentCutscenePlayer.Cutscene));
+        var cutscene = currentCutscenePlayer.Cutscene;
+        var animatorSettings = currentCutscenePlayer.AnimatorSettings;
+
+        if (!string.IsNullOrWhiteSpace(animatorSettings.StateOnEnd))
+        {
+            animatorSettings.Animator.Play(animatorSettings.StateOnEnd);
+        }
+        SingletonManager.EventService.Dispatch(new OnCutsceneFinishedEvent(cutscene));
         currentCutscenePlayer = null;
         PlayerManager.ExitPausedState();
     }
