@@ -17,7 +17,7 @@ public class CutsceneCollisionTrigger : MonoBehaviour
     private void Awake()
     {
         if (cutscene == null)
-            throw new NullReferenceException("Cutscene reference missing on CutsceneCollisionTrigger");
+            throw new NullReferenceException("Cutscene reference missing on CutsceneCollisionTrigger " + name);
 
         boxCollider = GetComponent<BoxCollider>();
     }
