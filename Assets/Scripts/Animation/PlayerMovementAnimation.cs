@@ -32,7 +32,6 @@ public class PlayerMovementAnimation : MonoBehaviour
     public void SetParams()
     {
         ResetParams();
-        animator.SetBool(AnimationConstants.HoldingBabyParameter, IsHoldingBaby);
         animator.SetBool(AnimationConstants.AnimationRunParameter, PlayerManager.PlayerMovement.IsRunning);
 
         if (parameterMap.ContainsKey(PlayerMovement.MovementVector))
