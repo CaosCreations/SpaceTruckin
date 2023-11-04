@@ -10,6 +10,8 @@ public abstract class InteractiveCanvasTutorial : SubMenu
     [SerializeField] protected InteractiveCanvasTutorialCard cantExitCard;
     [SerializeField] protected UniversalUI universalUI;
     [SerializeField] protected string dialogueBoolOnComplete;
+    [SerializeField] protected Cutscene cutsceneOnComplete;
+    [SerializeField] protected int conversationIdOnComplete; 
 
     protected override void OnEnable()
     {
@@ -80,6 +82,14 @@ public abstract class InteractiveCanvasTutorial : SubMenu
         if (!string.IsNullOrWhiteSpace(dialogueBoolOnComplete))
         {
             DialogueDatabaseManager.Instance.UpdateDatabaseVariable(dialogueBoolOnComplete, true);
+        }
+        if (cutsceneOnComplete != null)
+        {
+            TimelineManager.PlayCutscene(cutsceneOnComplete);
+        }
+        if (conversationIdOnComplete > 0)
+        {
+            DialogueUtils.StartConversationById(conversationIdOnComplete);
         }
         RemoveOverriddenKeys();
         Destroy(gameObject);
