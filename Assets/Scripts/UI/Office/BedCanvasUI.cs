@@ -1,5 +1,4 @@
-﻿using Events;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BedCanvasUI : UICanvasBase
 {
