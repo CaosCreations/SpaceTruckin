@@ -149,7 +149,7 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
     public bool IsCurrentDate(double day, double month, double year = 1)
     {
-        return IsCurrentDate(day, month, year);
+        return new Date(day, month, year) == CurrentDate;
     }
     #endregion
 

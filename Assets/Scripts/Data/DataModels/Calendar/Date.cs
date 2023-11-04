@@ -17,6 +17,13 @@ public struct Date : IComparable<Date>
         Year = year;
     }
 
+    public Date(double day, double month, double year)
+    {
+        Day = (int)day;
+        Month = (int)month;
+        Year = (int)year;
+    }
+
     public int CompareTo(Date otherDate)
     {
         int thisDateInDays = this.ToDays();
