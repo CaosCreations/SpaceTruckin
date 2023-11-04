@@ -11,8 +11,7 @@ public class HangarEditor : MonoBehaviour
         hangarNode = -1;
         try
         {
-            HangarSlot hangarSlot = HangarManager.HangarSlots
-                .FirstOrDefault(x => x.IsUnlocked && x.Ship == null);
+            HangarSlot hangarSlot = HangarManager.HangarSlots.FirstOrDefault(x => x.IsUnlocked && x.Ship == null);
 
             hangarNode = hangarSlot.Node;
 
@@ -42,8 +41,7 @@ public class HangarEditor : MonoBehaviour
             // Prepare ship for launch
             ShipsEditor.MaxOutResources();
 
-            Mission mission = MissionsManager.Instance.Missions
-                .FirstOrDefault(x => MissionsManager.GetScheduledMission(x) == null);
+            Mission mission = MissionsManager.Instance.Missions.FirstOrDefault(x => MissionsManager.GetScheduledMission(x) == null);
 
             MissionsManager.AddOrUpdateScheduledMission(ship.Pilot, mission);
         }
@@ -58,19 +56,7 @@ public class HangarEditor : MonoBehaviour
     {
         try
         {
-            foreach (HangarSlot hangarSlot in HangarManager.HangarSlots)
-            {
-                if (hangarSlot.Ship == null || hangarSlot.Ship.CurrentMission == null)
-                {
-                    continue;
-                }
-
-                ScheduledMission scheduled = MissionsManager.GetScheduledMission(hangarSlot.Ship);
-                scheduled.Mission.StartMission();
-
-                HangarManager.LaunchShip(hangarSlot.Node);
-                hangarSlot.LaunchShip();
-            }
+            HangarManager.LaunchAllShips();
         }
         catch (Exception ex)
         {

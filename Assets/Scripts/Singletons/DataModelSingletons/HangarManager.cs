@@ -1,4 +1,5 @@
 ﻿using Events;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,13 +9,13 @@ public class HangarManager : MonoBehaviour
     public static HangarManager Instance { get; private set; }
 
     [SerializeField] private GameObject shipInstancePrefab;
+    [SerializeField] private Cutscene[] autoLaunchCutscenes;
 
     public static HangarSlot[] HangarSlots { get; private set; }
     public static BatteryWrapper[] BatteryWrappers { get; private set; }
     public static GameObject BatteriesContainer { get; private set; }
 
     public static BatteryWrapper CurrentBatteryBeingHeld;
-
     public static BatterySpawnPositionManager BatterySpawnPositionManager;
 
     private void Awake()
@@ -31,6 +32,11 @@ public class HangarManager : MonoBehaviour
         }
 
         FindSceneObjects();
+    }
+
+    private void Start()
+    {
+        SingletonManager.EventService.Add<OnCutsceneFinishedEvent>(OnCutsceneFinishedHandler);
     }
 
     public void Init()
@@ -151,6 +157,11 @@ public class HangarManager : MonoBehaviour
         return slot != null && slot.Ship != null;
     }
 
+    public static IEnumerable<HangarSlot> GetOccupiedSlots()
+    {
+        return HangarSlots.Where(slot => slot.Ship != null);
+    }
+
     // Call this at the end of the day to get the total queue for the next day
     public List<Ship> GetShipsInQueue()
     {
@@ -160,6 +171,24 @@ public class HangarManager : MonoBehaviour
     public static bool NodeIsValid(int node)
     {
         return node >= 1 && node <= HangarConstants.MaximumNumberOfSlots;
+    }
+
+    public static void LaunchAllShips()
+    {
+
+        foreach (HangarSlot hangarSlot in HangarSlots)
+        {
+            if (hangarSlot.Ship == null || hangarSlot.Ship.CurrentMission == null)
+            {
+                continue;
+            }
+
+            ScheduledMission scheduled = MissionsManager.GetScheduledMission(hangarSlot.Ship);
+            scheduled.Mission.StartMission();
+
+            LaunchShip(hangarSlot.Node);
+            hangarSlot.LaunchShip();
+        }
     }
 
     private static void FindSceneObjects()
@@ -172,7 +201,7 @@ public class HangarManager : MonoBehaviour
         }
 
         BatteryWrappers = FindObjectsOfType<BatteryWrapper>();
-        
+
         if (BatteryWrappers.IsNullOrEmpty())
         {
             Debug.LogError("Battery wrappers are not found");
@@ -180,17 +209,25 @@ public class HangarManager : MonoBehaviour
 
         BatteriesContainer = GameObject.FindGameObjectWithTag(
             HangarConstants.BatteriesContainerTag);
-        
+
         if (BatteriesContainer == null)
         {
             Debug.LogError("Batteries container not found");
         }
 
         BatterySpawnPositionManager = FindObjectOfType<BatterySpawnPositionManager>();
-        
-        if(BatterySpawnPositionManager == null)
+
+        if (BatterySpawnPositionManager == null)
         {
             Debug.LogError("Battery spawn position manager not found");
+        }
+    }
+
+    private void OnCutsceneFinishedHandler(OnCutsceneFinishedEvent evt)
+    {
+        if (autoLaunchCutscenes.Contains(evt.Cutscene))
+        {
+            LaunchAllShips();
         }
     }
 
