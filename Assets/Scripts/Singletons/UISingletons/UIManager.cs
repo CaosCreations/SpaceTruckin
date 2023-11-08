@@ -56,9 +56,6 @@ public class UIManager : MonoBehaviour
 
     public static int HangarNode;
 
-    public static event Action OnCanvasActivated;
-    public static event Action OnCanvasDeactivated;
-
     private void Awake()
     {
         if (Instance != null)
@@ -154,9 +151,6 @@ public class UIManager : MonoBehaviour
         {
             PlayerManager.ExitPausedState();
         }
-
-        OnCanvasDeactivated?.Invoke();
-
         Instance.bedCanvas.SetActive(false);
         Instance.terminalCanvas.SetActive(false);
         Instance.hangarNodeCanvas.SetActive(false);
@@ -194,8 +188,6 @@ public class UIManager : MonoBehaviour
         {
             Instance.universalUI.gameObject.SetActive(true);
         }
-
-        OnCanvasActivated?.Invoke();
     }
 
     public static void ShowCanvas(UICanvasType canvasType, bool viaShortcut = false)

@@ -11,7 +11,13 @@ public abstract class InteractiveCanvasTutorial : SubMenu
     [SerializeField] protected UniversalUI universalUI;
     [SerializeField] protected string dialogueBoolOnComplete;
     [SerializeField] protected Cutscene cutsceneOnComplete;
-    [SerializeField] protected int conversationIdOnComplete; 
+    [SerializeField] protected int conversationIdOnComplete;
+    private UnityAction onComplete;
+
+    public void Init(UnityAction onComplete = null)
+    {
+        this.onComplete = onComplete;
+    }
 
     protected override void OnEnable()
     {
