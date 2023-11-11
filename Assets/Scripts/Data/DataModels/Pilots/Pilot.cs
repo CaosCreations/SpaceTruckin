@@ -27,14 +27,15 @@ public partial class Pilot : ScriptableObject, IDataModel
     [SerializeField] private string like;
     [SerializeField] private string dislike;
     [SerializeField] private int hireCost;
+    [SerializeField] private bool startsHired;
+    //[SerializeField] private Date startDate;
+    [SerializeField] private Date leavingDate;
     [SerializeField] private int levelsNeededForAttributePointGain = 1;
     [SerializeField] private float xpThresholdExponent;
     [SerializeField] private Species species;
     [SerializeField] private Ship ship;
     [SerializeField] private Sprite avatar;
     [SerializeField] private PilotTrait[] traits;
-    [SerializeField] private Date startDate;
-    [SerializeField] private Date leavingDate;
 
     [Header("Data to update IN GAME")]
     [SerializeField] private PilotSaveData saveData;
@@ -93,6 +94,6 @@ public partial class Pilot : ScriptableObject, IDataModel
 
     public override string ToString()
     {
-        return $"Pilot \"{Name}\"";
+        return $"Pilot \"{name}\"";
     }
 }

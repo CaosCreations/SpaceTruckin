@@ -8,7 +8,7 @@ public class SingletonManager : MonoBehaviour
 
     public static SingletonManager Instance { get; private set; }
 
-    private readonly EventService eventService = new EventService();
+    private readonly EventService eventService = new();
     public static EventService EventService => Instance.eventService;
     private static bool init;
 
