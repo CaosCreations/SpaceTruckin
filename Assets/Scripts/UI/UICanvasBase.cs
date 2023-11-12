@@ -39,6 +39,6 @@ public class UICanvasBase : MonoBehaviour
         }
 
         tutorial.SetActive(true);
-        PlayerPrefsManager.SetCanvasTutorialPrefValue(CanvasType, CalendarManager.CurrentDate, true);
+        tutorial.Init(() => PlayerPrefsManager.SetCanvasTutorialPrefValue(CanvasType, CalendarManager.CurrentDate, true));
     }
 }

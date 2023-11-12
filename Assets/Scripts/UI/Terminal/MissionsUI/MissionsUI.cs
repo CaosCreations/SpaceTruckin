@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Events;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,7 +30,7 @@ public class MissionsUI : MonoBehaviour
 
     private void Start()
     {
-        pilotSelectCloseButton.AddOnClick(PopulateMissionSelect);
+        pilotSelectCloseButton.AddOnClick(ClosePilotSelect);
         scheduleSlots.OrderBy(slot => slot.hangarNode);
     }
 
@@ -42,6 +43,12 @@ public class MissionsUI : MonoBehaviour
                 slot.IsActive = HangarManager.NodeIsUnlocked(slot.hangarNode);
             }
         }
+    }
+
+    private void ClosePilotSelect()
+    {
+        SingletonManager.EventService.Dispatch<OnPilotSelectClosedEvent>();
+        PopulateMissionSelect();
     }
 
     public void PopulateMissionSelect()

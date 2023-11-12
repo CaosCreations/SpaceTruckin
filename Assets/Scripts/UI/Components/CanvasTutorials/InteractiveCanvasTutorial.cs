@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -11,7 +12,15 @@ public abstract class InteractiveCanvasTutorial : SubMenu
     [SerializeField] protected UniversalUI universalUI;
     [SerializeField] protected string dialogueBoolOnComplete;
     [SerializeField] protected Cutscene cutsceneOnComplete;
-    [SerializeField] protected int conversationIdOnComplete; 
+    [SerializeField] protected int conversationIdOnComplete;
+
+    protected Stack<InteractiveCanvasTutorialCard> seenCards = new();
+    private UnityAction onComplete;
+
+    public void Init(UnityAction onComplete = null)
+    {
+        this.onComplete = onComplete;
+    }
 
     protected override void OnEnable()
     {
@@ -91,19 +100,25 @@ public abstract class InteractiveCanvasTutorial : SubMenu
         {
             DialogueUtils.StartConversationById(conversationIdOnComplete);
         }
+        onComplete?.Invoke();
         RemoveOverriddenKeys();
         Destroy(gameObject);
     }
 
     protected void CloseWindowButtonHandler()
     {
-        ShowCard(cantExitCard);
+        ShowCard(cantExitCard, false);
     }
 
     protected abstract void CloseAllCards();
 
     protected virtual void ShowCard(InteractiveCanvasTutorialCard card, bool closeOtherCards = true)
     {
+        if (card != cantExitCard)
+        {
+            seenCards.Push(card);
+        }
+
         if (closeOtherCards)
         {
             CloseAllCards();
@@ -115,6 +130,12 @@ public abstract class InteractiveCanvasTutorial : SubMenu
             UnlockCanvas();
         }
         card.SetSpotlightOjectsActive(true);
+    }
+
+    protected virtual void ToPreviousCard()
+    {
+        seenCards.Pop();
+        ShowCard(seenCards.Peek());
     }
 
     protected virtual void ShowCard(InteractiveCanvasTutorialCard card, ref bool cardShown, Button button, UnityAction buttonHandler)
