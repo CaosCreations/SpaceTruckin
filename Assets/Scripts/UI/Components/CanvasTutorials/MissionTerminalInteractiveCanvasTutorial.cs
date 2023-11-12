@@ -6,33 +6,38 @@ public class MissionTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
     [SerializeField] private InteractiveCanvasTutorialCard cardAfterMissionSelected;
     [SerializeField] private InteractiveCanvasTutorialCard cardAfterPilotSelected;
 
-    private bool cardAfterMissionSelectedShown;
-    private bool cardAfterPilotSelectedShown;
-
     protected override void Start()
     {
         base.Start();
         SingletonManager.EventService.Add<OnMissionSlottedEvent>(OnMissionSlottedHandler);
         SingletonManager.EventService.Add<OnPilotSlottedWithMissionEvent>(OnPilotSlottedWithMissionHandler);
+        SingletonManager.EventService.Add<OnPilotSelectClosedEvent>(OnPilotSelectClosedHandler);
+    }
+
+    private void OnPilotSelectClosedHandler()
+    {
+        if (cardAfterMissionSelected.gameObject.activeSelf)
+        {
+            ToPreviousCard();
+        }
     }
 
     private void OnMissionSlottedHandler()
     {
-        OnSlottedHandler(cardAfterMissionSelected, ref cardAfterMissionSelectedShown);
+        OnSlottedHandler(cardAfterMissionSelected);
     }
 
     private void OnPilotSlottedWithMissionHandler()
     {
-        OnSlottedHandler(cardAfterPilotSelected, ref cardAfterPilotSelectedShown);
+        OnSlottedHandler(cardAfterPilotSelected);
     }
 
-    private void OnSlottedHandler(InteractiveCanvasTutorialCard card, ref bool shownFlag)
+    private void OnSlottedHandler(InteractiveCanvasTutorialCard card)
     {
-        if (shownFlag)
+        if (seenCards.Contains(card))
             return;
 
         ShowCard(card);
-        shownFlag = true;
     }
 
     protected override void CloseAllCards()

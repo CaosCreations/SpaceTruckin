@@ -253,6 +253,10 @@ namespace Events
     {
     }
 
+    public class OnPilotSelectClosedEvent : IEvent
+    {
+    }
+
     public class OnMissionCompletedEvent : IEvent
     {
     }
