@@ -54,6 +54,7 @@ public class UIManager : MonoBehaviour
         && !DialogueUtils.IsConversationActive
         && CurrentCanvasType != UICanvasType.Bed;
 
+    public static TerminalUIManager TerminalManager => Instance.terminalCanvas as TerminalUIManager;
     public static int HangarNode;
 
     private void Awake()

@@ -7,7 +7,6 @@ public class NewDayReportUI : MonoBehaviour
 {
     [SerializeField] private NewDayReportCard reportCard;
     [SerializeField] private Text welcomeMessageText;
-    private TerminalUIManager terminalManager;
 
     public bool HasBeenViewedToday { get; set; }
     private int currentReportIndex;
@@ -17,7 +16,6 @@ public class NewDayReportUI : MonoBehaviour
     private void Awake()
     {
         SingletonManager.EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
-        terminalManager = GetComponentInParent<TerminalUIManager>();
     }
 
     private void OnEnable()
@@ -82,7 +80,7 @@ public class NewDayReportUI : MonoBehaviour
     {
         reportCard.gameObject.SetActive(false);
         gameObject.SetActive(false);
-        terminalManager.SwitchPanel(TerminalUIManager.Tab.Missions);
+        UIManager.TerminalManager.SwitchPanel(TerminalUIManager.Tab.Missions);
         UIManager.RemoveOverriddenKey(PlayerConstants.ExitKey);
     }
 
