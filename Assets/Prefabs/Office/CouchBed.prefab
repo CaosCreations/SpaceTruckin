@@ -54,6 +54,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2661574595456336179}
+  - component: {fileID: 1761671989}
   m_Layer: 0
   m_Name: CouchBed
   m_TagString: Untagged
@@ -80,6 +81,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &1761671989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3432903255893564297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8a133b0d05a95546b943c0f6e0d56f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  endOfDayCutscenes:
+  - {fileID: 11400000, guid: b94e4d73f3571f544aa19a6ec664500d, type: 2}
 --- !u!1 &5920497049919431504
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,6 +254,8 @@ MonoBehaviour:
   Collider: {fileID: 5767901444892130945}
   RaycastTarget: {fileID: 185223443723805513}
   interactableIcon: {fileID: 3432839527592635196}
+  isPlayerColliding: 0
+  isPlayerInteractable: 0
   canvasType: 8
 --- !u!1001 &7823769553824737562
 PrefabInstance:
