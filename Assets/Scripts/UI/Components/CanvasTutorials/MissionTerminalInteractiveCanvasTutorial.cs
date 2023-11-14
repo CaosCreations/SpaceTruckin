@@ -14,6 +14,18 @@ public class MissionTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
         SingletonManager.EventService.Add<OnPilotSelectClosedEvent>(OnPilotSelectClosedHandler);
     }
 
+    protected override void OnEnable()
+    {
+        UIManager.TerminalManager.SetSingleTabButtonInteractable(TerminalUIManager.Tab.Missions);
+        base.OnEnable();
+    }
+
+    protected override void EndTutorial()
+    {
+        UIManager.TerminalManager.SetTabButtonsInteractable(true);
+        base.EndTutorial();
+    }
+
     private void OnPilotSelectClosedHandler()
     {
         if (cardAfterMissionSelected.gameObject.activeSelf)

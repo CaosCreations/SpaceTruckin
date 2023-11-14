@@ -26,6 +26,8 @@ public class TerminalUIManager : UICanvasBase
         Missions, Messages, Analytics, Fleet, Licences
     }
 
+    private static Tab currentTab;
+
     private void Awake()
     {
         SetupButtonListeners();
@@ -54,16 +56,21 @@ public class TerminalUIManager : UICanvasBase
         licencesButton.AddOnClick(() => TabButtonClicked(Tab.Licences), removeListeners: false);
     }
 
-    private void TabButtonClicked(Tab tabClicked)
+    private void TabButtonClicked(Tab tab)
     {
-        SwitchPanel(tabClicked);
+        SwitchPanel(tab);
     }
 
-    public void SwitchPanel(Tab tabClicked)
+    public void SwitchPanel(Tab tab)
     {
+        if (tab == currentTab)
+        {
+            return;
+        }
         ClearPanels();
-        GetPanelByTabClicked(tabClicked).SetActive(true);
-        SetTabButtonColours(tabClicked);
+        GetPanelByTab(tab).SetActive(true);
+        SetTabButtonColours(tab);
+        currentTab = tab;
     }
 
     private void ClearPanels()
@@ -76,9 +83,9 @@ public class TerminalUIManager : UICanvasBase
         newDayReportPanel.SetActive(false);
     }
 
-    private GameObject GetPanelByTabClicked(Tab tabClicked)
+    private GameObject GetPanelByTab(Tab tab)
     {
-        return tabClicked switch
+        return tab switch
         {
             Tab.Missions => missionsPanel,
             Tab.Messages => messagesPanel,
@@ -89,11 +96,11 @@ public class TerminalUIManager : UICanvasBase
         };
     }
 
-    private void SetTabButtonColours(Tab tabClicked)
+    private void SetTabButtonColours(Tab tab)
     {
         ResetTabButtonColours();
-        Color tabButtonColour = GetPanelByTabClicked(tabClicked).GetImageColour();
-        GetTabButtonByTabClicked(tabClicked).SetColour(tabButtonColour);
+        Color tabButtonColour = GetPanelByTab(tab).GetImageColour();
+        GetTabButtonByTab(tab).SetColour(tabButtonColour);
     }
 
     public void ResetTabButtonColours()
@@ -105,9 +112,9 @@ public class TerminalUIManager : UICanvasBase
         licencesButton.SetColour(UIConstants.InactiveTabButtonColour);
     }
 
-    private Button GetTabButtonByTabClicked(Tab tabClicked)
+    private Button GetTabButtonByTab(Tab tab)
     {
-        return tabClicked switch
+        return tab switch
         {
             Tab.Missions => missionsButton,
             Tab.Messages => messagesButton,
@@ -116,5 +123,21 @@ public class TerminalUIManager : UICanvasBase
             Tab.Licences => licencesButton,
             _ => null,
         };
+    }
+
+    public void SetTabButtonsInteractable(bool interactable)
+    {
+        missionsButton.interactable = interactable;
+        messagesButton.interactable = interactable;
+        analyticsButton.interactable = interactable;
+        fleetButton.interactable = interactable;
+        licencesButton.interactable = interactable;
+    }
+
+    public void SetSingleTabButtonInteractable(Tab tab)
+    {
+        SetTabButtonsInteractable(false);
+        var tabButton = GetTabButtonByTab(tab);
+        tabButton.interactable = true;
     }
 }
