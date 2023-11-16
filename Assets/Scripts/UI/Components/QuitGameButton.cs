@@ -14,13 +14,10 @@ public class QuitGameButton : MonoBehaviour
     private void Quit()
     {
         Debug.Log("Quitting game...");
-        if (Application.isEditor)
-        {
-            UnityEditor.EditorApplication.isPlaying = false;
-        }
-        else if (Application.isPlaying)
-        {
-            Application.Quit();
-        }
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }

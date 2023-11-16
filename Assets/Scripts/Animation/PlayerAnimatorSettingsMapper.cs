@@ -12,7 +12,7 @@ public class PlayerAnimatorSettingsMapper : IAnimatorSettingsMapper
             throw new ArgumentNullException(nameof(settings));
 
         target.avatar = settings.Avatar;
-        target.runtimeAnimatorController = settings.AnimatorController;
+        //target.runtimeAnimatorController = settings.AnimatorController;
         return target;
     }
 }
