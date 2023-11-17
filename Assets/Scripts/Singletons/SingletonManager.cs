@@ -23,15 +23,6 @@ public class SingletonManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    private void Start()
-    {
-        // For setting up without loading through the title screen 
-        if (SceneLoadingManager.GetCurrentSceneType() == SceneType.MainStation)
-        {
-            Init();
-        }
-    }
-
     public static void Init()
     {
         if (init)

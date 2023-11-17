@@ -37,11 +37,11 @@ public class StationSetupManager : MonoBehaviour
 
     public static void SetUpStation()
     {
+        CalendarManager.ResetCalendar();
+        ClockManager.SetCurrentTime(CalendarManager.StationEntryTimeOfDay.ToSeconds(), overrideTransition: true);
         SingletonManager.Init();
         PlayerManager.Instance.SetUpPlayer();
         TimelineManager.Instance.SetUp();
-        CalendarManager.ResetCalendar();
-        ClockManager.SetCurrentTime(CalendarManager.StationEntryTimeOfDay.ToSeconds(), overrideTransition: true);
         SingletonManager.EventService.Dispatch<OnStationSetUpEvent>();
     }
 }

@@ -26,7 +26,7 @@ public class PlayerMovementAnimation : MonoBehaviour
 
     private void Start()
     {
-        SingletonManager.EventService.Add<OnCutsceneFinishedEvent>(OnCutsceneFinishedHandler);
+        //SingletonManager.EventService.Add<OnCutsceneFinishedEvent>(OnCutsceneFinishedHandler);
     }
 
     public void SetParams()

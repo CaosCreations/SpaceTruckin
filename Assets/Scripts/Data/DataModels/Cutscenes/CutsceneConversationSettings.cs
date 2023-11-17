@@ -18,4 +18,10 @@ public class CutsceneConversationSettings
 
     [field: SerializeField]
     public bool ContinueOnEnd { get; private set; }
+
+    [field: SerializeField]
+    public bool DontPauseDialogueOnStart { get; private set; }
+
+    [field: SerializeField]
+    public bool DontUnpauseDialogueOnEnd { get; private set; }
 }
