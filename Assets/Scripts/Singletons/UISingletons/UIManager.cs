@@ -349,29 +349,33 @@ public class UIManager : MonoBehaviour
             Debug.Log("Closing dialogue UI on cutscene start...");
             DialogueManager.DialogueUI.Close();
         }
-        Debug.Log("Pausing Dialogue System...");
-        DialogueManager.Instance.Pause();
+
+        if (!startedEvent.Cutscene.ConversationSettings.DontPauseDialogueOnStart)
+        {
+            Debug.Log("Pausing Dialogue System...");
+            DialogueManager.Instance.Pause();
+        }
     }
 
-    private void OnCutsceneFinishedHandler(OnCutsceneFinishedEvent startedEvent)
+    private void OnCutsceneFinishedHandler(OnCutsceneFinishedEvent finishedEvent)
     {
-        var convoSettings = startedEvent.Cutscene.ConversationSettings;
-        if (convoSettings != null)
+        if (finishedEvent.Cutscene.ConversationSettings.OpenDialogueUIOnEnd)
         {
-            if (convoSettings.OpenDialogueUIOnEnd)
-            {
-                Debug.Log("Opening dialogue UI on cutscene end...");
-                DialogueManager.DialogueUI.Open();
-            }
+            Debug.Log("Opening dialogue UI on cutscene end...");
+            DialogueManager.DialogueUI.Open();
+        }
+
+        if (!finishedEvent.Cutscene.ConversationSettings.DontUnpauseDialogueOnEnd)
+        {
             Debug.Log("Unpausing Dialogue System...");
             DialogueManager.Instance.Unpause();
+        }
 
-            if (convoSettings.ContinueOnEnd)
-            {
-                Debug.Log("Continuing to next node on cutscene end...");
-                var dialogueUI = FindObjectOfType<AbstractDialogueUI>();
-                dialogueUI.OnContinueConversation();
-            }
+        if (finishedEvent.Cutscene.ConversationSettings.ContinueOnEnd)
+        {
+            Debug.Log("Continuing to next node on cutscene end...");
+            var dialogueUI = FindObjectOfType<AbstractDialogueUI>();
+            dialogueUI.OnContinueConversation();
         }
     }
 
