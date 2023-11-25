@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class InGameHUDManager : MonoBehaviour
 {
-    public static InGameHUDManager Instance { get; private set; }
-
     [SerializeField]
     private GameObject hudCanvas;
 
@@ -14,18 +12,7 @@ public class InGameHUDManager : MonoBehaviour
     [SerializeField]
     private Cutscene dateTimeUIActivateCutscene;
 
-    private void Awake()
-    {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
-
-    private static bool IsDateTimeUIActive()
+    private bool IsDateTimeUIActive()
     {
         return SceneLoadingManager.IsSceneLoaded(SceneType.MainStation) && !CalendarManager.IsTimeFrozenToday;
     }
@@ -39,13 +26,13 @@ public class InGameHUDManager : MonoBehaviour
         SetActive();
     }
 
-    private static void SetActive(bool active)
+    private void SetActive(bool active)
     {
-        Instance.hudCanvas.SetActive(active);
-        Instance.dateTimeText.SetActive(active);
+        hudCanvas.SetActive(active);
+        dateTimeText.SetActive(active);
     }
 
-    private static void SetActive()
+    private void SetActive()
     {
         SetActive(IsDateTimeUIActive());
     }
