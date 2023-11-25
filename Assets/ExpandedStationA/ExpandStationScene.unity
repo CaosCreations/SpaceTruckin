@@ -7300,42 +7300,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.8253402, y: 1.0110168, z: 2.2009065}
   m_Center: {x: 0.020655006, y: 0.5055084, z: -7.148074e-17}
---- !u!1 &231433962 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3881816079073999527, guid: 25439ce858ea34242bd5e2a878aa5034,
-    type: 3}
-  m_PrefabInstance: {fileID: 935582694}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &231433966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 231433962}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Events:
-    m_Signals:
-    - {fileID: 11400000, guid: 205f01a19ca38ee42937a278feaaf4c4, type: 2}
-    m_Events:
-    - m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1782457496}
-          m_TargetAssemblyTypeName: PlayerManager, Assembly-CSharp
-          m_MethodName: EnterPausedState
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
 --- !u!4 &239710209 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: aefca80ef39a6294395f561bddb16961,
@@ -30818,10 +30782,6 @@ PrefabInstance:
       propertyPath: <AnimatorSettings>k__BackingField.<Animator>k__BackingField
       value: 
       objectReference: {fileID: 1657388718}
-    - target: {fileID: 1742994486, guid: 25439ce858ea34242bd5e2a878aa5034, type: 3}
-      propertyPath: <AnimatorSettings>k__BackingField.<StateOnEnd>k__BackingField
-      value: 0SleepIdle
-      objectReference: {fileID: 0}
     - target: {fileID: 1795130922, guid: 25439ce858ea34242bd5e2a878aa5034, type: 3}
       propertyPath: m_SceneBindings.Array.data[0].value
       value: 
@@ -30830,11 +30790,11 @@ PrefabInstance:
       propertyPath: m_SceneBindings.Array.data[1].value
       value: 
       objectReference: {fileID: 937057463}
-    - target: {fileID: 1236078549153165389, guid: 25439ce858ea34242bd5e2a878aa5034,
+    - target: {fileID: 183174096311205773, guid: 25439ce858ea34242bd5e2a878aa5034,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: m_Events.m_Events.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2100000, guid: f7871659b3110104e9329bda58b68af7, type: 2}
+      objectReference: {fileID: 1782457496}
     - target: {fileID: 1520487805256499346, guid: 25439ce858ea34242bd5e2a878aa5034,
         type: 3}
       propertyPath: m_SceneBindings.Array.data[8].value
@@ -30879,11 +30839,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CutsceneTimelinePlayers
-      objectReference: {fileID: 0}
-    - target: {fileID: 2361892479752509777, guid: 25439ce858ea34242bd5e2a878aa5034,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2361892479752509778, guid: 25439ce858ea34242bd5e2a878aa5034,
         type: 3}
@@ -30960,17 +30915,6 @@ PrefabInstance:
       propertyPath: m_SceneBindings.Array.data[3].value
       value: 
       objectReference: {fileID: 1657388718}
-    - target: {fileID: 3881816078202940467, guid: 25439ce858ea34242bd5e2a878aa5034,
-        type: 3}
-      propertyPath: m_SceneBindings.Array.size
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 3881816078202940467, guid: 25439ce858ea34242bd5e2a878aa5034,
-        type: 3}
-      propertyPath: m_SceneBindings.Array.data[7].key
-      value: 
-      objectReference: {fileID: 5948661711255002370, guid: 4d871d8410280c847ac463706d275362,
-        type: 2}
     - target: {fileID: 3881816078202940467, guid: 25439ce858ea34242bd5e2a878aa5034,
         type: 3}
       propertyPath: m_SceneBindings.Array.data[1].value
@@ -31266,19 +31210,10 @@ PrefabInstance:
       propertyPath: m_SceneBindings.Array.data[1].value
       value: 
       objectReference: {fileID: 1657388718}
-    - target: {fileID: 5016811701510489235, guid: 25439ce858ea34242bd5e2a878aa5034,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: f7871659b3110104e9329bda58b68af7, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3881816079073999527, guid: 25439ce858ea34242bd5e2a878aa5034,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 231433966}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25439ce858ea34242bd5e2a878aa5034, type: 3}
 --- !u!1 &935649552 stripped
 GameObject:
@@ -70792,17 +70727,17 @@ PrefabInstance:
     - target: {fileID: 1302945407120924044, guid: 689aaf94f41e78c4292d37ced16ba8ed,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -82.55435
+      value: 0.3346405
       objectReference: {fileID: 0}
     - target: {fileID: 1302945407120924044, guid: 689aaf94f41e78c4292d37ced16ba8ed,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.2131386
+      value: 2.0251503
       objectReference: {fileID: 0}
     - target: {fileID: 1302945407120924044, guid: 689aaf94f41e78c4292d37ced16ba8ed,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 26.404037
+      value: -6.230957
       objectReference: {fileID: 0}
     - target: {fileID: 1302945407120924046, guid: 689aaf94f41e78c4292d37ced16ba8ed,
         type: 3}
@@ -70877,17 +70812,17 @@ PrefabInstance:
     - target: {fileID: 1302945407354767523, guid: 689aaf94f41e78c4292d37ced16ba8ed,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -82.55435
+      value: 0.3346405
       objectReference: {fileID: 0}
     - target: {fileID: 1302945407354767523, guid: 689aaf94f41e78c4292d37ced16ba8ed,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.0126991
+      value: 1.8247108
       objectReference: {fileID: 0}
     - target: {fileID: 1302945407354767523, guid: 689aaf94f41e78c4292d37ced16ba8ed,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 28.483719
+      value: -4.1512756
       objectReference: {fileID: 0}
     - target: {fileID: 1302945407354767549, guid: 689aaf94f41e78c4292d37ced16ba8ed,
         type: 3}
