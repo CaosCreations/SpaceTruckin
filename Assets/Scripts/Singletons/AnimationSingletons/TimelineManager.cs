@@ -64,7 +64,11 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
         }
         SingletonManager.EventService.Dispatch(new OnCutsceneFinishedEvent(cutscene));
         currentCutscenePlayer = null;
-        PlayerManager.ExitPausedState();
+
+        if (!cutscene.ConversationSettings.DontUnpausePlayerOnEnd)
+        {
+            PlayerManager.ExitPausedState();
+        }
     }
 
     private void OnConversationEndedHandler(OnConversationEndedEvent evt)

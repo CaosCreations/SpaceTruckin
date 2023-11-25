@@ -21,5 +21,5 @@
 
     public const string ConversationSeenVariableName = "SeenName";
     public const string AccessVariableName = "AccessName";
-
+    public const string DontUnpausePlayerOnEndVariableName = "DontUnpausePlayerOnEnd";
 }

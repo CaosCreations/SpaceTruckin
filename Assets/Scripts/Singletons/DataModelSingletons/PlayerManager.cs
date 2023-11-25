@@ -95,6 +95,10 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
     private void OnConversationEndedHandler(OnConversationEndedEvent evt)
     {
+        if (DialogueDatabaseManager.GetConversationFieldAsBool(evt.Conversation, DialogueConstants.DontUnpausePlayerOnEndVariableName))
+        {
+            return;
+        }
         ExitPausedState();
     }
 
@@ -198,20 +202,16 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
     public static void EnterPausedState(bool stopClock = true)
     {
+        Debug.Log("Entering player paused state");
         PlayerMovement.MovementAnimation.ResetParams();
         PlayerMovement.StopPlayer();
         IsPaused = true;
         SingletonManager.EventService.Dispatch(new OnPlayerPausedEvent(stopClock));
     }
 
-    public static void EnterPausedState(PlayableDirector playableDirector)
-    {
-        Debug.Log("Entering paused state from playable director: " + playableDirector.name);
-        EnterPausedState();
-    }
-
     public static void ExitPausedState()
     {
+        Debug.Log("Exiting player paused state");
         IsPaused = false;
         SingletonManager.EventService.Dispatch<OnPlayerUnpausedEvent>();
     }

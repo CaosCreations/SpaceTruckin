@@ -162,6 +162,15 @@ public class DialogueDatabaseManager : MonoBehaviour
         return string.Empty;
     }
 
+    public static bool GetConversationFieldAsBool(Conversation conversation, string fieldName)
+    {
+        if (conversation.FieldExists(fieldName))
+        {
+            return DialogueLua.GetConversationField(conversation.id, fieldName).asBool;
+        }
+        return false;
+    }
+
     public void OnBatteryChargedHandler(OnBatteryChargedEvent evt)
     {
         UpdateDatabaseVariable(evt.Args.Key, evt.Args.Value);
