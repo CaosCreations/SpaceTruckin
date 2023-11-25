@@ -24,4 +24,7 @@ public class CutsceneConversationSettings
 
     [field: SerializeField]
     public bool DontUnpauseDialogueOnEnd { get; private set; }
+
+    [field: SerializeField]
+    public bool DontUnpausePlayerOnEnd { get; private set; }
 }
