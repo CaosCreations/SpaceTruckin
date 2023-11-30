@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class MissionTerminalInteractiveCanvasTutorial : InteractiveCanvasTutorial
 {
+    [SerializeField] private InteractiveCanvasTutorialCard cardAfterMissionsListClicked;
     [SerializeField] private InteractiveCanvasTutorialCard cardAfterMissionSelected;
     [SerializeField] private InteractiveCanvasTutorialCard cardAfterPilotSelected;
 
@@ -18,6 +19,14 @@ public class MissionTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
     {
         UIManager.TerminalManager.SetSingleTabButtonInteractable(TerminalUIManager.Tab.Missions);
         base.OnEnable();
+    }
+
+    private void Update()
+    {
+        if (openingCard.gameObject.activeSelf && UIUtils.IsPointerOverTag(MissionConstants.MissionsListTag))
+        {
+            ShowCard(cardAfterMissionsListClicked);
+        }
     }
 
     protected override void EndTutorial()

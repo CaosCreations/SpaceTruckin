@@ -171,6 +171,12 @@ public static class UIUtils
         return false;
     }
 
+    public static IEnumerable<Type> GetTypesUnderPointer()
+    {
+        List<RaycastResult> raycastResults = GetEventSystemRaycastResults();
+        return raycastResults.Select(r => r.gameObject.GetType());
+    }
+
     public static bool AreAnyCanvasesActive()
     {
         return UnityEngine.Object.FindObjectsOfType<UICanvasBase>().Any();

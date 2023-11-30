@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -12,7 +11,7 @@ public class InteractiveCanvasTutorialCard : MonoBehaviour
     private Text tutorialText;
 
     [field: SerializeField]
-    public GameObject[] SpotlightObjects { get; private set; }
+    public GameObject SpotlightObjectsContainer { get; private set; }
 
     [field: SerializeField]
     public bool UnlockCanvas { get; private set; }
@@ -39,10 +38,10 @@ public class InteractiveCanvasTutorialCard : MonoBehaviour
 
     public void SetSpotlightOjectsActive(bool value)
     {
-        if (SpotlightObjects == null)
+        if (SpotlightObjectsContainer == null)
         {
             return;
         }
-        Array.ForEach(SpotlightObjects, s => s.SetActive(value));
+        SpotlightObjectsContainer.SetActive(value);
     }
 }
