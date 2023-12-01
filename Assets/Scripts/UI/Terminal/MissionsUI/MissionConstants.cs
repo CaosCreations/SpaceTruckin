@@ -41,5 +41,5 @@ public class MissionConstants : MonoBehaviour
     public const float DropAlpha = 1f;
 
     // Tags 
-    public const string MissionsListTag = "MissionsList";
+    public const string MissionsListRaycastTag = "MissionsListRaycast";
 }

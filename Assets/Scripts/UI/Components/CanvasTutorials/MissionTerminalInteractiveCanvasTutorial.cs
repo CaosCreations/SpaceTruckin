@@ -23,9 +23,15 @@ public class MissionTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
 
     private void Update()
     {
-        if (openingCard.gameObject.activeSelf && UIUtils.IsPointerOverTag(MissionConstants.MissionsListTag))
+        if (openingCard.gameObject.activeSelf && Input.GetMouseButtonDown(0) && UIUtils.IsPointerOverTag(MissionConstants.MissionsListRaycastTag))
         {
             ShowCard(cardAfterMissionsListClicked);
+
+            var missionsListTarget = GameObject.FindGameObjectWithTag(MissionConstants.MissionsListRaycastTag);
+            if (missionsListTarget != null)
+            {
+                Destroy(missionsListTarget);
+            }
         }
     }
 

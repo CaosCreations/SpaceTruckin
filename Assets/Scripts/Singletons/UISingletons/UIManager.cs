@@ -49,10 +49,17 @@ public class UIManager : MonoBehaviour
     {
         typeof(Button), typeof(Slider), typeof(AudioVolumeSlider), typeof(Scrollbar), typeof(MissionUIItem), typeof(PilotInMissionScheduleSlot), typeof(NewDayReportCard),
     };
+    private static string[] SuccessInputTags = new[] { MissionConstants.MissionsListRaycastTag };
     private static bool IsErrorInput => Input.GetMouseButtonDown(0)
-        && !UIUtils.IsPointerOverObjectType(SuccessInputTypes)
+        && CurrentCanvasType != UICanvasType.Bed
         && !DialogueUtils.IsConversationActive
-        && CurrentCanvasType != UICanvasType.Bed;
+        && TypesUnderPointer != null
+        && !TypesUnderPointer.Any(t => SuccessInputTypes.Contains(t))
+        && TagsUnderPointer != null
+        && !TagsUnderPointer.Any(t => SuccessInputTags.Contains(t)); 
+
+    public static HashSet<Type> TypesUnderPointer { get; private set; }
+    public static HashSet<string> TagsUnderPointer { get; private set; }
 
     public static TerminalUIManager TerminalManager => Instance.terminalCanvas as TerminalUIManager;
     public static int HangarNode;
@@ -130,6 +137,9 @@ public class UIManager : MonoBehaviour
         {
             return;
         }
+
+        TypesUnderPointer = UIUtils.GetAllUnderPointer(out var tagsUnderPointer);
+        TagsUnderPointer = tagsUnderPointer;
 
         // Play an Error sound effect if a non-interactable region is clicked
         if (IsErrorInput)
