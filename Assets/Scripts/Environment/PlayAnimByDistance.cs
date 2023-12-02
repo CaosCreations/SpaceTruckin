@@ -6,7 +6,7 @@ public class PlayAnimByDistance : MonoBehaviour
 {
     public float range;
     private Transform player;
-   public int randomAnimState;
+    public int randomAnimState;
 
     public Animator myAnimator;
     private bool animationStarted=false;
