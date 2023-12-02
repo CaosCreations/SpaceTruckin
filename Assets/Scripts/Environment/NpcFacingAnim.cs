@@ -30,6 +30,8 @@ public class NpcFacingAnim : MonoBehaviour
         //set overall dist
         overallDist= Vector3.Distance(player.transform.position, this.transform.position);
 
+
+        //change to OntriggerStay
         if (overallDist < 1f)
         {
             if (player.transform.position.z < this.transform.position.z + distZ && player.transform.position.z > this.transform.position.z - distZ)

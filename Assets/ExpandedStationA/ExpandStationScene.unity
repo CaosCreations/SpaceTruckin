@@ -18168,6 +18168,7 @@ MonoBehaviour:
   zDistance: 0
   distZ: 0.4
   distX: 0.1
+  overallDist: 0
 --- !u!4 &573577036 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 11026b4418872e64bac81dbb4bd90b3c,
@@ -24613,6 +24614,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1062077564}
     m_Modifications:
+    - target: {fileID: 5362712060320312253, guid: 598b78709e9e10849a61300ec20f287a,
+        type: 3}
+      propertyPath: respawDist
+      value: 9999999
+      objectReference: {fileID: 0}
     - target: {fileID: 5362712060743319810, guid: 598b78709e9e10849a61300ec20f287a,
         type: 3}
       propertyPath: m_Name
@@ -26265,6 +26271,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1062077564}
     m_Modifications:
+    - target: {fileID: 5362712060320312253, guid: 598b78709e9e10849a61300ec20f287a,
+        type: 3}
+      propertyPath: respawDist
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5362712060743319810, guid: 598b78709e9e10849a61300ec20f287a,
         type: 3}
       propertyPath: m_Name

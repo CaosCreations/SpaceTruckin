@@ -106,6 +106,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &5362712060320312253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,9 +120,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 4
-  stDistance: 0
+  respawDist: 14
+  randomAnimState: 0
   myAnimator: {fileID: 5362712060320312251}
   zDistance: 0
+  ooverallDist: 0
 --- !u!1 &5362712060743319810
 GameObject:
   m_ObjectHideFlags: 0
