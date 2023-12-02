@@ -161,7 +161,7 @@ public static class UIUtils
         {
             var type = raycastResults[i].gameObject.GetType();
 
-            if (objectTypes.Contains(type) 
+            if (objectTypes.Contains(type)
                 || objectTypes.Any(t => raycastResults[i].gameObject.TryGetComponent(t, out _)))
             {
                 return true;
@@ -169,6 +169,26 @@ public static class UIUtils
         }
 
         return false;
+    }
+
+    public static IEnumerable<Type> GetTypesUnderPointer()
+    {
+        List<RaycastResult> raycastResults = GetEventSystemRaycastResults();
+        return raycastResults.Select(r => r.gameObject.GetType());
+    }
+
+    public static HashSet<Type> GetAllUnderPointer(out HashSet<string> tags)
+    {
+        List<RaycastResult> raycastResults = GetEventSystemRaycastResults();
+        tags = new HashSet<string>();
+        HashSet<Type> types = new();
+
+        foreach (RaycastResult result in raycastResults)
+        {
+            types.Add(result.gameObject.GetType());
+            tags.Add(result.gameObject.tag);
+        }
+        return types;
     }
 
     public static bool AreAnyCanvasesActive()
