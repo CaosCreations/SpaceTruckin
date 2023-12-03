@@ -2,23 +2,21 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Tab = TerminalUIManager.Tab;
 
 public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutorial
 {
     [SerializeField] private InteractiveCanvasTutorialCard messagesCard;
+    [SerializeField] private InteractiveCanvasTutorialCard analyticsCard;
     [SerializeField] private InteractiveCanvasTutorialCard fleetCard;
     [SerializeField] private InteractiveCanvasTutorialCard licencesCard;
-    [SerializeField] private InteractiveCanvasTutorialCard analyticsCard;
+    [SerializeField] private InteractiveCanvasTutorialCard scheduledMissionsCard;
+    [SerializeField] private InteractiveCanvasTutorialCard afterScheduledMissionsCard;
 
     private bool messagesCardShown;
     private bool fleetCardShown;
     private bool licencesCardShown;
     private bool analyticsCardShown;
-
-    /// <summary>
-    /// Tab button cards can be shown after a mission is scheduled with a pilot 
-    /// </summary>
-    private bool tabButtonCardsUnlocked;
 
     [SerializeField] private Button messagesButton;
     [SerializeField] private Button fleetButton;
@@ -32,17 +30,13 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
         fleetButton.AddOnClick(FleetButtonHandler, removeListeners: false);
         licencesButton.AddOnClick(LicencesButtonHandler, removeListeners: false);
         analyticsButton.AddOnClick(AnalyticsButtonHandler, removeListeners: false);
+        UIManager.TerminalManager.SetSingleTabButtonInteractable(Tab.Messages);
         SingletonManager.EventService.Add<OnPilotSlottedWithMissionEvent>(OnPilotSlottedWithMissionEventHandler);
-
-        messagesCard.OnClosed += EndIfAllShown;
-        fleetCard.OnClosed += EndIfAllShown;
-        licencesCard.OnClosed += EndIfAllShown;
-        analyticsCard.OnClosed += EndIfAllShown;
     }
 
     protected override void ShowCard(InteractiveCanvasTutorialCard card, ref bool cardShown, Button button, UnityAction buttonHandler)
     {
-        if (!tabButtonCardsUnlocked || cardShown)
+        if (cardShown)
             return;
 
         ShowCard(card);
@@ -50,46 +44,46 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
         button.onClick.RemoveListener(buttonHandler);
     }
 
-    private void EndIfAllShown()
-    {
-        if (fleetCardShown && licencesCardShown && analyticsCardShown)
-            EndTutorial();
-    }
-
     private void MessagesButtonHandler()
     {
-        ShowCard(fleetCard, ref fleetCardShown, fleetButton, MessagesButtonHandler);
-    }
-
-    private void FleetButtonHandler()
-    {
-        ShowCard(fleetCard, ref fleetCardShown, fleetButton, FleetButtonHandler);
-    }
-
-    private void LicencesButtonHandler()
-    {
-        ShowCard(licencesCard, ref licencesCardShown, licencesButton, LicencesButtonHandler);
+        ShowCard(messagesCard, ref messagesCardShown, messagesButton, MessagesButtonHandler);
+        UIManager.TerminalManager.SetSingleTabButtonInteractable(Tab.Analytics);
     }
 
     private void AnalyticsButtonHandler()
     {
         ShowCard(analyticsCard, ref analyticsCardShown, analyticsButton, AnalyticsButtonHandler);
+        UIManager.TerminalManager.SetSingleTabButtonInteractable(Tab.Fleet);
+    }
+
+    private void FleetButtonHandler()
+    {
+        ShowCard(fleetCard, ref fleetCardShown, fleetButton, FleetButtonHandler);
+        UIManager.TerminalManager.SetSingleTabButtonInteractable(Tab.Licences);
+    }
+
+    private void LicencesButtonHandler()
+    {
+        ShowCard(licencesCard, ref licencesCardShown, licencesButton, LicencesButtonHandler);
+        UIManager.TerminalManager.SetSingleTabButtonInteractable(Tab.Missions);
     }
 
     private void OnPilotSlottedWithMissionEventHandler()
     {
-        if (tabButtonCardsUnlocked)
-            return;
-
-        Debug.Log("Unlocking tab button cards now pilot has been slotted with mission...");
-        tabButtonCardsUnlocked = true;
-        UnlockCanvas();
+        if (HangarManager.AreAllSlotsOccupied())
+        {
+            ShowCard(afterScheduledMissionsCard);
+        }
     }
 
     protected override void CloseAllCards()
     {
+        openingCard.SetActive(false);
+        messagesCard.SetActive(false);
+        analyticsCard.SetActive(false);
         fleetCard.SetActive(false);
         licencesCard.SetActive(false);
-        analyticsCard.SetActive(false);
+        scheduledMissionsCard.SetActive(false);
+        afterScheduledMissionsCard.SetActive(false);
     }
 }
