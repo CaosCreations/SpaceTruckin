@@ -161,6 +161,11 @@ public class HangarManager : MonoBehaviour
     {
         return HangarSlots.Where(slot => slot.Ship != null);
     }
+    
+    public static bool AreAllSlotsOccupied()
+    {
+        return HangarSlots.Where(slot => slot.IsUnlocked).All(slot => slot.IsOccupied);
+    }
 
     // Call this at the end of the day to get the total queue for the next day
     public List<Ship> GetShipsInQueue()

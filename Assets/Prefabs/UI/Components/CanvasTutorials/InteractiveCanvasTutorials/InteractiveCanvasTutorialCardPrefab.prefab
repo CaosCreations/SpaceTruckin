@@ -114,7 +114,7 @@ RectTransform:
   - {fileID: 1545923707932336883}
   - {fileID: 271119612228748915}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.7, y: 0.1}
   m_AnchorMax: {x: 0.95, y: 0.4}
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   closeButton: {fileID: 8775910442599911087}
   tutorialText: {fileID: 3553060809365805183}
-  <SpotlightObjects>k__BackingField: []
+  <SpotlightObjectsContainer>k__BackingField: {fileID: 0}
   <UnlockCanvas>k__BackingField: 0
 --- !u!1 &8095224145761025446
 GameObject:
@@ -243,10 +243,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 63317de6cd89e6a46b9f85c06c54b0ec, type: 3}
-    m_FontSize: 14
+    m_FontSize: 18
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 10
+    m_BestFit: 0
+    m_MinSize: 1
     m_MaxSize: 40
     m_Alignment: 0
     m_AlignByGeometry: 0
