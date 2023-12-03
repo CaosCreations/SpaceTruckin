@@ -5,10 +5,12 @@ using UnityEngine.UI;
 
 public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutorial
 {
+    [SerializeField] private InteractiveCanvasTutorialCard messagesCard;
     [SerializeField] private InteractiveCanvasTutorialCard fleetCard;
     [SerializeField] private InteractiveCanvasTutorialCard licencesCard;
     [SerializeField] private InteractiveCanvasTutorialCard analyticsCard;
 
+    private bool messagesCardShown;
     private bool fleetCardShown;
     private bool licencesCardShown;
     private bool analyticsCardShown;
@@ -18,6 +20,7 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
     /// </summary>
     private bool tabButtonCardsUnlocked;
 
+    [SerializeField] private Button messagesButton;
     [SerializeField] private Button fleetButton;
     [SerializeField] private Button licencesButton;
     [SerializeField] private Button analyticsButton;
@@ -25,11 +28,13 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
     protected override void Start()
     {
         base.Start();
+        messagesButton.AddOnClick(MessagesButtonHandler, removeListeners: false);
         fleetButton.AddOnClick(FleetButtonHandler, removeListeners: false);
         licencesButton.AddOnClick(LicencesButtonHandler, removeListeners: false);
         analyticsButton.AddOnClick(AnalyticsButtonHandler, removeListeners: false);
         SingletonManager.EventService.Add<OnPilotSlottedWithMissionEvent>(OnPilotSlottedWithMissionEventHandler);
 
+        messagesCard.OnClosed += EndIfAllShown;
         fleetCard.OnClosed += EndIfAllShown;
         licencesCard.OnClosed += EndIfAllShown;
         analyticsCard.OnClosed += EndIfAllShown;
@@ -49,6 +54,11 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
     {
         if (fleetCardShown && licencesCardShown && analyticsCardShown)
             EndTutorial();
+    }
+
+    private void MessagesButtonHandler()
+    {
+        ShowCard(fleetCard, ref fleetCardShown, fleetButton, MessagesButtonHandler);
     }
 
     private void FleetButtonHandler()
