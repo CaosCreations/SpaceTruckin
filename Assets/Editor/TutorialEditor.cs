@@ -9,8 +9,7 @@ public class TutorialEditor : MonoBehaviour
     {
         try
         {
-            SetAllTutorialPlayerPrefs(true);
-            PlayerPrefsManager.SetCanvasTutorialPrefValue(UICanvasType.Terminal, new Date(1, 1, 1), false);
+            EnableTutorial(UICanvasType.Terminal, new Date(1, 1, 1));
         }
         catch (Exception ex)
         {
@@ -23,8 +22,7 @@ public class TutorialEditor : MonoBehaviour
     {
         try
         {
-            SetAllTutorialPlayerPrefs(true);
-            PlayerPrefsManager.SetCanvasTutorialPrefValue(UICanvasType.Terminal, new Date(2, 1, 1), false);
+            EnableTutorial(UICanvasType.Terminal, new Date(2, 1, 1));
         }
         catch (Exception ex)
         {
@@ -37,13 +35,20 @@ public class TutorialEditor : MonoBehaviour
     {
         try
         {
-            SetAllTutorialPlayerPrefs(true);
-            PlayerPrefsManager.SetCanvasTutorialPrefValue(UICanvasType.Hangar, new Date(2, 1, 1), false);
+            EnableTutorial(UICanvasType.Hangar, new Date(2, 1, 1));
         }
         catch (Exception ex)
         {
             Debug.LogException(ex);
         }
+    }
+
+    private static void EnableTutorial(UICanvasType canvasType, Date date)
+    {
+        DialogueEditor.LiftUIAccess();
+        SetAllTutorialPlayerPrefs(true);
+        PlayerPrefsManager.SetCanvasTutorialPrefValue(canvasType, date, false);
+        CalendarEditor.SetDate(date);
     }
 
     private static void SetAllTutorialPlayerPrefs(bool value)
