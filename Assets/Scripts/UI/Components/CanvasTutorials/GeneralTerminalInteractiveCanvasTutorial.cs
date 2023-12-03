@@ -13,11 +13,13 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
     [SerializeField] private InteractiveCanvasTutorialCard scheduledMissionsCard;
     [SerializeField] private InteractiveCanvasTutorialCard afterScheduledMissionsCard;
 
+    private bool missionsCardShown;
     private bool messagesCardShown;
     private bool fleetCardShown;
     private bool licencesCardShown;
     private bool analyticsCardShown;
 
+    [SerializeField] private Button missionsButton;
     [SerializeField] private Button messagesButton;
     [SerializeField] private Button fleetButton;
     [SerializeField] private Button licencesButton;
@@ -26,10 +28,12 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
     protected override void Start()
     {
         base.Start();
+        missionsButton.AddOnClick(MissionsButtonHandler, removeListeners: false);
         messagesButton.AddOnClick(MessagesButtonHandler, removeListeners: false);
         fleetButton.AddOnClick(FleetButtonHandler, removeListeners: false);
         licencesButton.AddOnClick(LicencesButtonHandler, removeListeners: false);
         analyticsButton.AddOnClick(AnalyticsButtonHandler, removeListeners: false);
+
         UIManager.TerminalManager.SetSingleTabButtonInteractable(Tab.Messages);
         SingletonManager.EventService.Add<OnPilotSlottedWithMissionEvent>(OnPilotSlottedWithMissionEventHandler);
     }
@@ -42,6 +46,15 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
         ShowCard(card);
         cardShown = true;
         button.onClick.RemoveListener(buttonHandler);
+    }
+
+    private void MissionsButtonHandler()
+    {
+        if (licencesCardShown)
+        {
+            ShowCard(scheduledMissionsCard, ref missionsCardShown, missionsButton, MissionsButtonHandler);
+            UIManager.TerminalManager.SetSingleTabButtonInteractable(Tab.Missions);
+        }
     }
 
     private void MessagesButtonHandler()
@@ -73,6 +86,7 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
         if (HangarManager.AreAllSlotsOccupied())
         {
             ShowCard(afterScheduledMissionsCard);
+            UnlockCanvas();
         }
     }
 
