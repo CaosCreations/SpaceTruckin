@@ -6,7 +6,7 @@ public class MissionTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
     [SerializeField] private InteractiveCanvasTutorialCard cardAfterMissionsListClicked;
     [SerializeField] private InteractiveCanvasTutorialCard cardAfterMissionSelected;
     [SerializeField] private InteractiveCanvasTutorialCard cardAfterPilotSelected;
-    private GameObject missionsListTarget;
+    [SerializeField] private GameObject missionsListTarget;
 
     protected override void Start()
     {
@@ -19,7 +19,6 @@ public class MissionTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
     protected override void OnEnable()
     {
         UIManager.TerminalManager.SetSingleTabButtonInteractable(TerminalUIManager.Tab.Missions);
-        missionsListTarget = GameObject.FindGameObjectWithTag(MissionConstants.MissionsListRaycastTag);
         missionsListTarget.SetActive(true);
         base.OnEnable();
     }
