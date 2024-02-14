@@ -26,7 +26,7 @@ public class PlayerMovementAnimation : MonoBehaviour
 
     private void Start()
     {
-        //SingletonManager.EventService.Add<OnCutsceneFinishedEvent>(OnCutsceneFinishedHandler);
+        SingletonManager.EventService.Add<OnCutsceneFinishedEvent>(OnCutsceneFinishedHandler);
     }
 
     public void SetParams()
@@ -70,6 +70,7 @@ public class PlayerMovementAnimation : MonoBehaviour
     {
         animator.Play("StandUpP");
         IsHoldingBaby = isHoldingBaby;
+        animator.SetBool(AnimationConstants.HoldingBabyParameter, IsHoldingBaby);
         Debug.Log("Baby holding switched to: " + isHoldingBaby);
     }
 
