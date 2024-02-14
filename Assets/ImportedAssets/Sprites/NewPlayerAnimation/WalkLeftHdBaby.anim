@@ -7,7 +7,7 @@ AnimationClip:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: WalkLeftHdBaby
-  serializedVersion: 6
+  serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
   m_UseHighQualityCurve: 1
@@ -18,21 +18,23 @@ AnimationClip:
   m_ScaleCurves: []
   m_FloatCurves: []
   m_PPtrCurves:
-  - curve:
+  - serializedVersion: 2
+    curve:
     - time: 0
       value: {fileID: 734522420, guid: a53d3058de9877e4b922387c29186c2d, type: 3}
-    - time: 0.033333335
+    - time: 0.06666667
       value: {fileID: -294205327, guid: a53d3058de9877e4b922387c29186c2d, type: 3}
-    - time: 0.083333336
+    - time: 0.15
       value: {fileID: 938782680, guid: a53d3058de9877e4b922387c29186c2d, type: 3}
-    - time: 0.13333334
+    - time: 0.25
       value: {fileID: 2076496290, guid: a53d3058de9877e4b922387c29186c2d, type: 3}
-    - time: 0.18333334
+    - time: 0.33333334
       value: {fileID: 734522420, guid: a53d3058de9877e4b922387c29186c2d, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
     script: {fileID: 0}
+    flags: 2
   m_SampleRate: 60
   m_WrapMode: 0
   m_Bounds:
@@ -47,6 +49,8 @@ AnimationClip:
       typeID: 212
       customType: 23
       isPPtrCurve: 1
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     pptrCurveMapping:
     - {fileID: 734522420, guid: a53d3058de9877e4b922387c29186c2d, type: 3}
     - {fileID: -294205327, guid: a53d3058de9877e4b922387c29186c2d, type: 3}
@@ -58,7 +62,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.2
+    m_StopTime: 0.35000002
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
