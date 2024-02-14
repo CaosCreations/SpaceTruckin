@@ -5,4 +5,7 @@ public class MissionContainer : ScriptableObject, IScriptableObjectContainer<Mis
 {
     [field: SerializeField]
     public Mission[] Elements { get; set; }
+
+    [field: SerializeField]
+    public Mission[] StartingMissions { get; private set; }
 }
