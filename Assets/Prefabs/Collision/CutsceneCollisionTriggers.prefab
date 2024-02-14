@@ -23,6 +23,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1617741008469135250}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -36,7 +37,6 @@ Transform:
   - {fileID: 970000951372626061}
   - {fileID: 970000950266967842}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1617741007545681489
 PrefabInstance:
@@ -676,7 +676,22 @@ PrefabInstance:
         type: 2}
     - target: {fileID: 1947099138658610041, guid: bb1dbdd0fda1315409df9d2f8722e121,
         type: 3}
+      propertyPath: conditions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1947099138658610041, guid: bb1dbdd0fda1315409df9d2f8722e121,
+        type: 3}
       propertyPath: dialogueBoolVariableName
+      value: Lori_Convo_2_seen
+      objectReference: {fileID: 0}
+    - target: {fileID: 1947099138658610041, guid: bb1dbdd0fda1315409df9d2f8722e121,
+        type: 3}
+      propertyPath: conditions.Array.data[0].Type
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1947099138658610041, guid: bb1dbdd0fda1315409df9d2f8722e121,
+        type: 3}
+      propertyPath: conditions.Array.data[0].DialogueVariableName
       value: Lori_Convo_2_seen
       objectReference: {fileID: 0}
     - target: {fileID: 1947099138658610042, guid: bb1dbdd0fda1315409df9d2f8722e121,

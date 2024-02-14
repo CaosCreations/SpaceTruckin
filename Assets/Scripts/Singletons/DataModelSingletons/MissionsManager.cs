@@ -199,6 +199,16 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         ApplyOfferExpiryConsequences();
     }
 
+    public void SetUp()
+    {
+        foreach (var mission in Instance.Missions)
+        {
+            var isStartingMission = Instance.missionContainer.StartingMissions.Contains(mission);
+            mission.HasBeenUnlocked = isStartingMission;
+            mission.HasBeenAccepted = isStartingMission;
+        }
+    }
+
     #region Scheduled Missions
     public static ScheduledMission GetScheduledMission(Mission mission)
     {
