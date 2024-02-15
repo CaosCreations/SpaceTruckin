@@ -1,19 +1,19 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
+
+public enum PopupType
+{
+    Default, DemoFeature,
+}
 
 public class PopupManager : MonoBehaviour
 {
     public static PopupManager Instance { get; private set; }
 
     [SerializeField] private Canvas canvas;
-    [SerializeField] private GameObject popup;
-    [SerializeField] private Button okButton;
-    [SerializeField] private Button cancelButton;
-
-    [SerializeField] private string defaultOkText = "OK";
-    [SerializeField] private string defaultCancelText = "Cancel";
-    [SerializeField] private Text bodyText;
+    [SerializeField] private Popup defaultPopup;
+    [SerializeField] private Popup demoFeaturePopup;
+    private Popup currentPopup;
 
     private void Awake()
     {
@@ -24,49 +24,33 @@ public class PopupManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        cancelButton.SetActive(false);
     }
 
-    public static void ShowPopup(UnityAction onOk = null, UnityAction onCancel = null, string bodyText = null, string okText = null, string cancelText = null)
+    public static void ShowPopup(UnityAction onOk = null, UnityAction onCancel = null, string bodyText = null, string okText = null, string cancelText = null, PopupType type = PopupType.Default)
     {
         UIManager.AddOverriddenKey(KeyCode.Escape);
         PlayerManager.EnterPausedState();
         Instance.canvas.gameObject.SetActive(true);
 
-        Instance.okButton.AddOnClick(() =>
+        Instance.currentPopup = type == PopupType.Default ? Instance.defaultPopup : Instance.demoFeaturePopup;
+        Instance.currentPopup.SetActive(true);
+        Instance.currentPopup.Init(() =>
         {
-            Instance.HidePopup();
+            Instance.OnHide();
             onOk?.Invoke();
-        });
-
-        // Some popups only have ok button 
-        if (onCancel != null)
+        }, bodyText, okText, cancelText, onCancel == null ? null : () =>
         {
-            Instance.cancelButton.gameObject.SetActive(true);
-            Instance.cancelButton.AddOnClick(() =>
-            {
-                Instance.HidePopup();
-                onCancel();
-            });
-        }
-        Instance.SetButtonTexts(bodyText, okText, cancelText);
+            Instance.OnHide();
+            onCancel?.Invoke();
+        });
     }
 
-    private void HidePopup()
+    private void OnHide()
     {
         UIManager.RemoveOverriddenKey(KeyCode.Escape);
         PlayerManager.ExitPausedState();
-        okButton.onClick.RemoveAllListeners();
-        cancelButton.onClick.RemoveAllListeners();
-        cancelButton.SetActive(false);
         canvas.gameObject.SetActive(false);
-    }
-
-    private void SetButtonTexts(string bodyText, string okText = null, string cancelText = null)
-    {
-        this.bodyText.SetText(bodyText);
-        okButton.SetText(okText ?? defaultOkText);
-        cancelButton.SetText(cancelText ?? defaultCancelText);
+        currentPopup = null;
     }
 
     private void Update()

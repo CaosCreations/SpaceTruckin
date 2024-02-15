@@ -40,13 +40,16 @@ public class UniversalHangarNodeUI : UICanvasBase
 
     private void RepairsButtonHandler()
     {
-        shipPreview.SetActive(false);
-        SceneRepairsMinigamesManager.Instance.StartMinigame();
+        //shipPreview.SetActive(false);
+        //SceneRepairsMinigamesManager.Instance.StartMinigame();
+        PopupManager.ShowPopup(type: PopupType.DemoFeature);
+        ShipsManager.RepairShip(100f);
+        repairsButton.interactable = false;
     }
 
     private void OverviewButtonHandler()
     {
-        StopMinigame();
+        //StopMinigame();
     }
 
     private void StopMinigame()
