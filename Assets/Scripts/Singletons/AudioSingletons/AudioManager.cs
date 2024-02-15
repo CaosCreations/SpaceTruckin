@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 /// <summary>Represents the possible states of an AudioSource</summary>
 public enum AudioState
@@ -9,6 +10,7 @@ public enum AudioState
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] protected AudioSource audioSource;
+    [SerializeField] private float crossfadeDuration = 2f;
     [field: SerializeField] public AudioClip[] AudioClips { get; private set; }
 
     protected AudioState currentState;
@@ -16,7 +18,7 @@ public class AudioManager : MonoBehaviour
     public bool IsPaused => currentState.Equals(AudioState.Paused);
     public bool IsStopped => currentState.Equals(AudioState.Stopped);
 
-    protected void PlayAudioClip(AudioClip audioClip, AudioSource customSource = null)
+    protected void PlayAudioClip(AudioClip audioClip, AudioSource customSource = null, bool fade = false)
     {
         if (audioClip == null)
         {
@@ -26,8 +28,16 @@ public class AudioManager : MonoBehaviour
         //Debug.Log($"Playing audio clip '{audioClip.name}'");
 
         var source = customSource != null ? customSource : audioSource;
-        source.clip = audioClip;
-        source.Play();
+
+        if (fade)
+        {
+            CrossfadeAudioClips(audioClip, source);
+        }
+        else
+        {
+            source.clip = audioClip;
+            source.Play();
+        }
         currentState = AudioState.Playing;
     }
 
@@ -41,5 +51,43 @@ public class AudioManager : MonoBehaviour
     {
         audioSource.Stop();
         currentState = AudioState.Stopped;
+    }
+
+    private void CrossfadeAudioClips(AudioClip audioClip, AudioSource audioSource)
+    {
+        StartCoroutine(Crossfade(audioClip, audioSource));
+    }
+
+    private IEnumerator Crossfade(AudioClip audioClip, AudioSource audioSource)
+    {
+        var elapsedTime = 0f;
+        var startVolume = audioSource.volume;
+
+        if (audioSource.isPlaying)
+        {
+            // Fade out
+            while (elapsedTime < crossfadeDuration)
+            {
+                audioSource.volume = Mathf.Lerp(startVolume, 0f, elapsedTime / crossfadeDuration);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            audioSource.Stop();
+        }
+
+        // Fade in 
+        audioSource.clip = audioClip;
+        audioSource.Play();
+
+        elapsedTime = 0f;
+        while (elapsedTime < crossfadeDuration)
+        {
+            audioSource.volume = Mathf.Lerp(0f, startVolume, elapsedTime / crossfadeDuration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        audioSource.volume = startVolume;
     }
 }
