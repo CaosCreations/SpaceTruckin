@@ -33,6 +33,7 @@ public class PopupManager : MonoBehaviour
         Instance.canvas.gameObject.SetActive(true);
 
         Instance.currentPopup = type == PopupType.Default ? Instance.defaultPopup : Instance.demoFeaturePopup;
+        Instance.currentPopup.SetActive(true);
         Instance.currentPopup.Init(() =>
         {
             Instance.OnHide();

@@ -13,31 +13,40 @@ public class Popup : MonoBehaviour
 
     private void Awake()
     {
-        cancelButton.SetActive(false);
-
+        if (cancelButton != null)
+        {
+            cancelButton.SetActive(false);
+        }
     }
 
-    public void Init(UnityAction onOk, string bodyText, string okText = null, string cancelText = null, UnityAction onCancel = null)
+    public void Init(UnityAction onOk, string bodyText = null, string okText = null, string cancelText = null, UnityAction onCancel = null)
     {
         okButton.AddOnClick(() => Hide(onOk));
 
         // Some popups only have ok button 
-        if (onCancel != null)
+        if (cancelButton != null && onCancel != null)
         {
             cancelButton.gameObject.SetActive(true);
+            cancelButton.SetText(cancelText ?? defaultCancelText);
             cancelButton.AddOnClick(() => Hide(onCancel));
         }
 
-        this.bodyText.SetText(bodyText);
+        if (bodyText != null)
+        {
+            this.bodyText.SetText(bodyText);
+        }
         okButton.SetText(okText ?? defaultOkText);
-        cancelButton.SetText(cancelText ?? defaultCancelText);
     }
 
     public void Hide(UnityAction callback)
     {
         callback?.Invoke();
         okButton.onClick.RemoveAllListeners();
-        cancelButton.onClick.RemoveAllListeners();
-        cancelButton.SetActive(false);
+
+        if (cancelButton != null)
+        {
+            cancelButton.onClick.RemoveAllListeners();
+            cancelButton.SetActive(false);
+        }
     }
 }
