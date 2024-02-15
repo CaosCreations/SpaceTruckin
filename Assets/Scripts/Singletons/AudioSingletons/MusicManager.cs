@@ -4,8 +4,14 @@ public class MusicManager : AudioManager
 {
     public static MusicManager Instance { get; private set; }
 
-    private int currentTrackIndex;
+    /// <summary>
+    /// Track cycling just used by the cassette player currently.
+    /// </summary>
     private AudioClip CurrentTrack => Instance.AudioClips[currentTrackIndex];
+    private int currentTrackIndex;
+
+    [SerializeField] private AudioClip titleScreenMusic;
+    [SerializeField] private AudioClip mainStationMusic;
 
     private void Awake()
     {
@@ -26,12 +32,19 @@ public class MusicManager : AudioManager
         }
     }
 
-    private void Start()
+    public void PlayTitleScreenMusic()
     {
-        PlayMusicOnStart();
+        PlayAudioClip(titleScreenMusic, fade: true);
+        //PlayAudioClip(titleScreenMusic);
     }
 
-    private void PlayMusicOnStart()
+    public void PlayMainStationMusic()
+    {
+        PlayAudioClip(mainStationMusic, fade: true);
+        //PlayAudioClip(mainStationMusic);
+    }
+
+    private void PlayRandomTrack()
     {
         currentTrackIndex = GetRandomTrackIndex();
         PlayTrack();

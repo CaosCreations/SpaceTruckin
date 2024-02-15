@@ -32,6 +32,7 @@ public class TitleScreenUI : MonoBehaviour
 
         ResetSecondaryCanvases();
         AddListeners();
+        MusicManager.Instance.PlayTitleScreenMusic();
     }
 
     private void AddListeners()

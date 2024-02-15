@@ -44,5 +44,6 @@ public class StationSetupManager : MonoBehaviour
         TimelineManager.Instance.SetUp();
         SingletonManager.EventService.Dispatch<OnStationSetUpEvent>();
         MissionsManager.Instance.SetUp();
+        MusicManager.Instance.PlayMainStationMusic();
     }
 }
