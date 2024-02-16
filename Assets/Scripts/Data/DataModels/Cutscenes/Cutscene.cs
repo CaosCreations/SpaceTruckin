@@ -17,6 +17,9 @@ public class Cutscene : ScriptableObject
     public Date Date { get; private set; }
 
     [field: SerializeField]
+    public UICanvasType CanvasTypeOnEnd { get; private set; } = UICanvasType.None;
+
+    [field: SerializeField]
     public UICanvasType CanvasTutorialTypeOnEnd { get; private set; } = UICanvasType.None;
 
     public override string ToString()

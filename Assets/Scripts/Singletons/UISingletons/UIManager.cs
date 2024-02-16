@@ -191,7 +191,7 @@ public class UIManager : MonoBehaviour
 
         canvas.SetActive(true);
 
-        if (!viaShortcut)
+        if (!viaShortcut && canvas.TryGetTutorial(CalendarManager.CurrentDate, out var tutorial) && !tutorial.DoNotAutomaticallyOpen)
         {
             canvas.ShowTutorialIfExistsAndUnseen();
         }
@@ -204,13 +204,14 @@ public class UIManager : MonoBehaviour
 
     public static void ShowCanvas(UICanvasType canvasType, bool viaShortcut = false)
     {
+        CurrentCanvasType = canvasType;
         UICanvasBase canvas = GetCanvasByType(canvasType);
         ShowCanvas(canvas, viaShortcut);
     }
 
-    public static void ShowTutorial()
+    public static void ShowTutorial(UICanvasType canvasType)
     {
-        var canvas = GetCanvasByType(CurrentCanvasType);
+        var canvas = GetCanvasByType(canvasType);
         if (canvas != null)
         {
             canvas.ShowTutorialIfExistsAndUnseen();
@@ -402,6 +403,12 @@ public class UIManager : MonoBehaviour
             Debug.Log("Continuing to next node on cutscene end...");
             var dialogueUI = FindObjectOfType<AbstractDialogueUI>();
             dialogueUI.OnContinueConversation();
+        }
+
+        if (finishedEvent.Cutscene.CanvasTypeOnEnd != UICanvasType.None)
+        {
+            Debug.Log("Opening canvas on cutscene end. Canvas type: " + finishedEvent.Cutscene.CanvasTypeOnEnd);
+            ShowCanvas(finishedEvent.Cutscene.CanvasTypeOnEnd);
         }
 
         if (finishedEvent.Cutscene.CanvasTutorialTypeOnEnd != UICanvasType.None)

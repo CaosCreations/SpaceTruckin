@@ -63,10 +63,10 @@ public class TerminalUIManager : UICanvasBase
 
     public void SwitchPanel(Tab tab)
     {
-        if (tab == currentTab)
-        {
-            return;
-        }
+        //if (tab == currentTab)
+        //{
+        //    return;
+        //}
         ClearPanels();
         GetPanelByTab(tab).SetActive(true);
         SetTabButtonColours(tab);

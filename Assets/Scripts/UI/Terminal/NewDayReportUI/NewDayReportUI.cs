@@ -85,7 +85,7 @@ public class NewDayReportUI : MonoBehaviour
 
         if (CalendarManager.CurrentDate == new Date(2, 1, 1))
         {
-            UIManager.ShowTutorial();
+            UIManager.ShowTutorial(UICanvasType.Terminal);
         }
     }
 
