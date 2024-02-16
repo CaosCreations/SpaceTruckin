@@ -205,7 +205,7 @@ public class UIManager : MonoBehaviour
     public static void ShowCanvas(UICanvasType canvasType, bool viaShortcut = false)
     {
         CurrentCanvasType = canvasType;
-        UICanvasBase canvas = GetCanvasByType(canvasType);
+        UICanvasBase canvas = GetCanvasByType(CurrentCanvasType);
         ShowCanvas(canvas, viaShortcut);
     }
 
