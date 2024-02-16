@@ -87,4 +87,9 @@ public class CalendarData : ScriptableObject, IDataModel
         string json = await DataUtils.ReadFileAsync(FilePath);
         CurrentDate = JsonUtility.FromJson<Date>(json);
     }
+
+    public void ResetData()
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -93,5 +93,13 @@ public class MessagesManager : MonoBehaviour, IDataModelManager
     {
         Instance.DeleteData();
     }
+
+    public void ResetData()
+    {
+        foreach (var message in Instance.Messages)
+        {
+            message.ResetData();
+        }
+    }
     #endregion
 }

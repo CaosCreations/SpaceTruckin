@@ -14,6 +14,7 @@ public class PopupManager : MonoBehaviour
     [SerializeField] private Popup defaultPopup;
     [SerializeField] private Popup demoFeaturePopup;
     private Popup currentPopup;
+    public static bool IsPopupActive => Instance.currentPopup != null;
 
     private void Awake()
     {

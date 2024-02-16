@@ -83,5 +83,10 @@ public class ArchivedMissionsManager : MonoBehaviour, IDataModelManager
     }
 
     public void DeleteData() => DataUtils.RecursivelyDeleteSaveData(ArchivedMission.FolderName);
+
+    public void ResetData()
+    {
+        throw new System.NotImplementedException();
+    }
     #endregion
 }

@@ -131,10 +131,10 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         PlayerMovement = PlayerObject.GetComponent<PlayerMovement>();
         PlayerMovementAnimation = PlayerObject.GetComponent<PlayerMovementAnimation>();
 
-        // Animator field setup 
-        var playerAnimator = PlayerObject.GetComponent<Animator>();
-        var animatorSettingsMapper = new PlayerAnimatorSettingsMapper();
-        animatorSettingsMapper.MapSettings(playerAnimator, PlayerAnimatorSettings);
+        //// Animator field setup 
+        //var playerAnimator = PlayerObject.GetComponent<Animator>();
+        //var animatorSettingsMapper = new PlayerAnimatorSettingsMapper();
+        //animatorSettingsMapper.MapSettings(playerAnimator, PlayerAnimatorSettings);
 
         SetStartingDataValues();
     }
@@ -280,6 +280,11 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
     public void DeleteData()
     {
         DataUtils.RecursivelyDeleteSaveData(PlayerData.FolderName);
+    }
+
+    public void ResetData()
+    {
+        Instance.playerData.ResetData();
     }
     #endregion
 }

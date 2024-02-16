@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -110,6 +109,14 @@ public class LicencesManager : MonoBehaviour, IDataModelManager
     public void DeleteData()
     {
         Instance.DeleteData();
+    }
+
+    public void ResetData()
+    {
+        foreach (var licence in Instance.Licences)
+        {
+            licence.ResetData();
+        }
     }
     #endregion
 }

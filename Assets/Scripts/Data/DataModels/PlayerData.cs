@@ -96,4 +96,9 @@ public class PlayerData : ScriptableObject, IDataModel
     {
         saveData = await DataUtils.LoadFileAsync<PlayerSaveData>(name, FolderName);
     }
+
+    public void ResetData()
+    {
+        saveData = new();
+    }
 }

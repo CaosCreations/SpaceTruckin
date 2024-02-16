@@ -176,13 +176,27 @@ public class DialogueDatabaseManager : MonoBehaviour
         UpdateDatabaseVariable(evt.Args.Key, evt.Args.Value);
     }
 
+    public void UpdateDatabaseVariables(Dictionary<string, bool> variables)
+    {
+        foreach (var variable in variables)
+        {
+            UpdateDatabaseVariable(variable.Key, variable.Value);
+        }
+    }
+
     public void UpdateDatabaseVariable(string variableName, bool value)
     {
-        Debug.Log($"Setting Lua variable '{variableName}' to value '{value}'...");
+        //Debug.Log($"Setting Lua variable '{variableName}' to value '{value}'...");
         try
         {
             DialogueLua.SetVariable(variableName, value);
             var variable = DialogueLua.GetVariable(variableName);
+
+            if (!variable.IsBool)
+            {
+                Debug.LogWarning($"Variable '{variableName}' is not a bool");
+            }
+
             Debug.Log($"Lua variable <color=green>{variableName}</color> is now set to <color=blue>{variable.asBool}</color>.");
             SingletonManager.EventService.Dispatch<OnDialogueVariableUpdatedEvent>();
         }
@@ -221,7 +235,7 @@ public class DialogueDatabaseManager : MonoBehaviour
                 seenInfo.Add(new ConversationSeenInfo
                 {
                     Id = conversation.id,
-                    Title = conversation.Title,
+                    Title = $"{conversation.Title} [{seenVarName}]",
                     SeenVariableKvp = new KeyValuePair<string, bool>(seenVarName, value),
                 });
             }

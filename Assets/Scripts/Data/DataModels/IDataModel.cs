@@ -4,4 +4,5 @@ public interface IDataModel
 { 
     void SaveData();
     Task LoadDataAsync();
+    void ResetData();
 }

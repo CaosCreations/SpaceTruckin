@@ -55,4 +55,9 @@ public partial class Ship : ScriptableObject, IDataModel
     {
         saveData = await DataUtils.LoadFileAsync<ShipSaveData>(name, FolderName);
     }
+
+    public void ResetData()
+    {
+        saveData = new();
+    }
 }

@@ -120,7 +120,9 @@ public class PlayerMovement : MonoBehaviour
     public bool IsPlayerFacingObject(GameObject obj, string[] layersToIgnore = null)
     {
         LayerMask mask = ~0;
+#pragma warning disable UNT0028 // Use non-allocating physics APIs
         RaycastHit[] hits = Physics.RaycastAll(transform.position, PlayerFacingDirection, PlayerConstants.RaycastDistance, mask);
+#pragma warning restore UNT0028 // Use non-allocating physics APIs
         Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
         foreach (var hit in hits)
