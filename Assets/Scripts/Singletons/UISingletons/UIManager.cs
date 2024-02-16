@@ -208,6 +208,15 @@ public class UIManager : MonoBehaviour
         ShowCanvas(canvas, viaShortcut);
     }
 
+    public static void ShowTutorial()
+    {
+        var canvas = GetCanvasByType(CurrentCanvasType);
+        if (canvas != null)
+        {
+            canvas.ShowTutorialIfExistsAndUnseen();
+        }
+    }
+
     private static UICanvasBase GetCanvasByType(UICanvasType canvasType)
     {
         return canvasType switch

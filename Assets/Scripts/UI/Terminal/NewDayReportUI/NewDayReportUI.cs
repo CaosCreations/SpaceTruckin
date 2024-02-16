@@ -82,6 +82,11 @@ public class NewDayReportUI : MonoBehaviour
         gameObject.SetActive(false);
         UIManager.TerminalManager.SwitchPanel(TerminalUIManager.Tab.Missions);
         UIManager.RemoveOverriddenKey(PlayerConstants.ExitKey);
+
+        if (CalendarManager.CurrentDate == new Date(2, 1, 1))
+        {
+            UIManager.ShowTutorial();
+        }
     }
 
     private void Update()
