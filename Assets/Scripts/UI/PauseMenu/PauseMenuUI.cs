@@ -13,7 +13,7 @@ public class PauseMenuUI : UICanvasBase
     [SerializeField] private Button mainButton;
     [SerializeField] private Button optionsButton;
 
-    [SerializeField] private Image playerImage;
+    //[SerializeField] private Image playerImage;
     [SerializeField] private Text playerNameText;
     [SerializeField] private Button mainMenuButton;
 
@@ -21,7 +21,7 @@ public class PauseMenuUI : UICanvasBase
 
     private void Awake()
     {
-        playerImage.sprite = PlayerManager.Instance.PlayerAnimatorSettings.Sprite;
+        //playerImage.sprite = PlayerManager.Instance.PlayerAnimatorSettings.Sprite;
         playerNameText.SetText(PlayerManager.Instance.PlayerName, FontType.Title);
         SwitchPanel(PauseMenuPanel.Main);
 
