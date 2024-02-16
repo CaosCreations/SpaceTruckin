@@ -57,7 +57,7 @@ public class UIManager : MonoBehaviour
         && TypesUnderPointer != null
         && !TypesUnderPointer.Any(t => SuccessInputTypes.Contains(t))
         && TagsUnderPointer != null
-        && !TagsUnderPointer.Any(t => SuccessInputTags.Contains(t)); 
+        && !TagsUnderPointer.Any(t => SuccessInputTags.Contains(t));
 
     public static HashSet<Type> TypesUnderPointer { get; private set; }
     public static HashSet<string> TagsUnderPointer { get; private set; }
@@ -142,8 +142,8 @@ public class UIManager : MonoBehaviour
         TypesUnderPointer = UIUtils.GetAllUnderPointer(out var tagsUnderPointer);
         TagsUnderPointer = tagsUnderPointer;
 
-        // Play an Error sound effect if a non-interactable region is clicked
-        if (IsErrorInput)
+        // Play an Error sound effect if a non-interactable region is clicked. For now ignore if we're showing a popup.
+        if (!PopupManager.IsPopupActive && IsErrorInput)
         {
             UISoundEffectsManager.Instance.PlaySoundEffect(UISoundEffect.Error);
             return;
@@ -393,6 +393,14 @@ public class UIManager : MonoBehaviour
             Debug.Log("Continuing to next node on cutscene end...");
             var dialogueUI = FindObjectOfType<AbstractDialogueUI>();
             dialogueUI.OnContinueConversation();
+        }
+
+        if (finishedEvent.Cutscene.CanvasTutorialTypeOnEnd != UICanvasType.None)
+        {
+            Debug.Log("Showing tutorial on cutscene end. Canvas type: " + finishedEvent.Cutscene.CanvasTutorialTypeOnEnd);
+            var canvas = GetCanvasByType(finishedEvent.Cutscene.CanvasTutorialTypeOnEnd);
+            ShowCanvas(canvas);
+            canvas.ShowTutorialIfExistsAndUnseen();
         }
     }
 

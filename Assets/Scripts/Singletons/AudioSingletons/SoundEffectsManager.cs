@@ -29,7 +29,7 @@ public abstract class SoundEffectsManager<TInstance, TSoundEffect> : AudioManage
 
     public virtual void PlaySoundEffect(TSoundEffect effectType)
     {
-        Instance.PlayAudioClip(GetClipBySoundEffectType(effectType));
+        Instance.PlayAudioClip(GetClipBySoundEffectType(effectType), fade: true);
     }
 
     public abstract AudioClip GetClipBySoundEffectType(TSoundEffect effectType);

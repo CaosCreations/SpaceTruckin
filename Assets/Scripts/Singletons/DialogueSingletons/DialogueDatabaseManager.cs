@@ -221,7 +221,7 @@ public class DialogueDatabaseManager : MonoBehaviour
                 seenInfo.Add(new ConversationSeenInfo
                 {
                     Id = conversation.id,
-                    Title = conversation.Title,
+                    Title = $"{conversation.Title} [{seenVarName}]",
                     SeenVariableKvp = new KeyValuePair<string, bool>(seenVarName, value),
                 });
             }
