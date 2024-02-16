@@ -137,65 +137,65 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
     public void SetUp()
     {
         cutscenePlayers = FindObjectsOfType<CutsceneTimelinePlayer>();
-        foreach (var cutscenePlayer in cutscenePlayers)
-        {
-            //SetUpDirectorBindings(cutscenePlayer.PlayableDirector);
-            //SetUpAnimationTracks(cutscenePlayer.PlayableDirector);
-        }
+        //foreach (var cutscenePlayer in cutscenePlayers)
+        //{
+        //    SetUpDirectorBindings(cutscenePlayer.PlayableDirector);
+        //    SetUpAnimationTracks(cutscenePlayer.PlayableDirector);
+        //}
         RegisterEvents();
         PlayCutscene(openingCutscene);
     }
 
-    private void SetUpDirectorBindings(PlayableDirector playableDirector)
-    {
-        if (!PlayerManager.PlayerObject.TryGetComponent<Animator>(out var playerAnimator))
-        {
-            throw new Exception("Unable to get player animator to bind to Timeline director");
-        }
+    //private void SetUpDirectorBindings(PlayableDirector playableDirector)
+    //{
+    //    if (!PlayerManager.PlayerObject.TryGetComponent<Animator>(out var playerAnimator))
+    //    {
+    //        throw new Exception("Unable to get player animator to bind to Timeline director");
+    //    }
 
-        foreach (var binding in playableDirector.playableAsset.outputs)
-        {
-            if (binding.streamName == "playerAnim" || binding.streamName == "Animation Track")
-            {
-                Debug.Log($"Setting binding with name: '{binding.streamName}' to player animator object");
-                playableDirector.SetGenericBinding(binding.sourceObject, playerAnimator);
-            }
-        }
-    }
+    //    foreach (var binding in playableDirector.playableAsset.outputs)
+    //    {
+    //        if (binding.streamName == "playerAnim" || binding.streamName == "Animation Track")
+    //        {
+    //            Debug.Log($"Setting binding with name: '{binding.streamName}' to player animator object");
+    //            playableDirector.SetGenericBinding(binding.sourceObject, playerAnimator);
+    //        }
+    //    }
+    //}
 
-    private void SetUpAnimationTracks(PlayableDirector playableDirector)
-    {
-        if (!PlayerManager.PlayerObject.TryGetComponent<Animator>(out var playerAnimator))
-            throw new Exception("Unable to get player animator to set animation tracks");
+    //private void SetUpAnimationTracks(PlayableDirector playableDirector)
+    //{
+    //    if (!PlayerManager.PlayerObject.TryGetComponent<Animator>(out var playerAnimator))
+    //        throw new Exception("Unable to get player animator to set animation tracks");
 
-        var timelineAsset = playableDirector.playableAsset as TimelineAsset;
+    //    var timelineAsset = playableDirector.playableAsset as TimelineAsset;
 
-        foreach (var track in timelineAsset.GetOutputTracks())
-        {
-            var animationTrack = track as AnimationTrack;
+    //    foreach (var track in timelineAsset.GetOutputTracks())
+    //    {
+    //        var animationTrack = track as AnimationTrack;
 
-            if (animationTrack == null)
-                continue;
+    //        if (animationTrack == null)
+    //            continue;
 
-            // Match and set the player clips on each of the animation assets in the timeline 
-            foreach (var clip in animationTrack.GetClips())
-            {
-                var animationAsset = clip.asset as AnimationPlayableAsset;
+    //        // Match and set the player clips on each of the animation assets in the timeline 
+    //        foreach (var clip in animationTrack.GetClips())
+    //        {
+    //            var animationAsset = clip.asset as AnimationPlayableAsset;
 
-                if (animationAsset == null)
-                    continue;
+    //            if (animationAsset == null)
+    //                continue;
 
-                var assetMapping = playerAnimationAssetMappingContainer.GetMappingByClipName(animationAsset.clip.name);
+    //            var assetMapping = playerAnimationAssetMappingContainer.GetMappingByClipName(animationAsset.clip.name);
 
-                if (assetMapping == null)
-                    continue;
+    //            if (assetMapping == null)
+    //                continue;
 
-                animationAsset.clip = playerAnimator.runtimeAnimatorController.name == AnimationConstants.Player1ControllerName
-                    ? assetMapping.Player1Clip
-                    : assetMapping.Player2Clip;
-            }
-        }
-    }
+    //            animationAsset.clip = playerAnimator.runtimeAnimatorController.name == AnimationConstants.Player1ControllerName
+    //                ? assetMapping.Player1Clip
+    //                : assetMapping.Player2Clip;
+    //        }
+    //    }
+    //}
 
     public void FinishCurrentTimeline()
     {

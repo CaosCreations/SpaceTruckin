@@ -187,7 +187,7 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
     {
         foreach (var pilot in Pilots)
         {
-            if (CalendarManager.CurrentDate == new Date(1,1,1))
+            if (CalendarManager.CurrentDate == new Date(1, 1, 1))
             {
                 pilot.IsHired = pilot.StartsHired;
             }
@@ -233,6 +233,14 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
     public void DeleteData()
     {
         DataUtils.RecursivelyDeleteSaveData(Pilot.FolderName);
+    }
+
+    public void ResetData()
+    {
+        foreach (var pilot in Instance.Pilots)
+        {
+            pilot.ResetData();
+        }
     }
     #endregion
 }

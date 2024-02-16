@@ -70,7 +70,7 @@ public static class UIUtils
             pixels[i] = colour;
         }
 
-        Texture2D texture = new Texture2D(width, height);
+        Texture2D texture = new(width, height);
         texture.SetPixels32(pixels);
         texture.Apply();
 
@@ -82,12 +82,12 @@ public static class UIUtils
     /// </summary>
     public static List<RaycastResult> GetEventSystemRaycastResults()
     {
-        PointerEventData eventData = new PointerEventData(EventSystem.current)
+        PointerEventData eventData = new(EventSystem.current)
         {
             position = Input.mousePosition
         };
 
-        List<RaycastResult> raycastResults = new List<RaycastResult>();
+        List<RaycastResult> raycastResults = new();
         EventSystem.current.RaycastAll(eventData, raycastResults);
         return raycastResults;
     }

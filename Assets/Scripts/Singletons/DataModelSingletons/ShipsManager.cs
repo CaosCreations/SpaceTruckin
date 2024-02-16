@@ -10,7 +10,7 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
     [SerializeField] private ShipsContainer shipsContainer;
     public Ship[] Ships => shipsContainer.Elements;
 
-    public static ShipUnderRepair ShipUnderRepair = new ShipUnderRepair();
+    public static ShipUnderRepair ShipUnderRepair = new();
     public static bool CanRepair => PlayerManager.CanRepair
         && !ShipUnderRepair.IsFullyRepaired;
 
@@ -123,6 +123,14 @@ public class ShipsManager : MonoBehaviour, IDataModelManager
     public void DeleteData()
     {
         DataUtils.RecursivelyDeleteSaveData(Ship.FolderName);
+    }
+
+    public void ResetData()
+    {
+        foreach (var ship in Instance.Ships)
+        {
+            ship.ResetData();
+        }
     }
     #endregion
 }

@@ -203,6 +203,11 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     {
         foreach (var mission in Instance.Missions)
         {
+            if (mission.IsInProgress())
+            {
+                mission.DaysLeftToComplete = 0;
+            }
+
             var isStartingMission = Instance.missionContainer.StartingMissions.Contains(mission);
             mission.HasBeenUnlocked = isStartingMission;
             mission.HasBeenAccepted = isStartingMission;
@@ -498,6 +503,14 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
         if (Instance.Bonuses.IsNullOrEmpty())
             Debug.LogError("No MissionBonus data found");
+    }
+
+    public void ResetData()
+    {
+        foreach (var mission in Instance.Missions)
+        {
+            mission.ResetData();
+        }
     }
     #endregion
 }

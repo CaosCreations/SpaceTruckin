@@ -6,6 +6,9 @@ public class SingletonManager : MonoBehaviour
     [SerializeField]
     private bool saveDataEnabled;
 
+    [SerializeField]
+    private bool resetDataOnInit;
+
     public static SingletonManager Instance { get; private set; }
 
     private readonly EventService eventService = new();
@@ -35,6 +38,12 @@ public class SingletonManager : MonoBehaviour
             Instance.LoadAllSingletonData();
             EventService.Add<OnEndOfDayEvent>(Instance.OnEndOfDayHandler);
         }
+
+        if (Instance.resetDataOnInit)
+        {
+            ResetAllSingletonData();
+        }
+
         Instance.InitSingletons();
         init = true;
     }
@@ -75,6 +84,18 @@ public class SingletonManager : MonoBehaviour
         MessagesManager.Instance.SaveData();
         LicencesManager.Instance.SaveData();
         CalendarManager.Instance.SaveData();
+    }
+
+    private static void ResetAllSingletonData()
+    {
+        PlayerManager.Instance.ResetData();
+        MissionsManager.Instance.ResetData();
+        //ArchivedMissionsManager.Instance.ResetData();
+        PilotsManager.Instance.ResetData();
+        ShipsManager.Instance.ResetData();
+        MessagesManager.Instance.ResetData();
+        LicencesManager.Instance.ResetData();
+        //CalendarManager.Instance.ResetData();
     }
 
     private void OnEndOfDayHandler(OnEndOfDayEvent evt)

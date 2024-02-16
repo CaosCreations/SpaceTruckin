@@ -96,4 +96,9 @@ public partial class Pilot : ScriptableObject, IDataModel
     {
         return $"Pilot \"{name}\"";
     }
+
+    public void ResetData()
+    {
+        saveData = new();
+    }
 }

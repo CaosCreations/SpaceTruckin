@@ -47,4 +47,9 @@ public partial class Message : ScriptableObject, IDataModel
     {
         saveData = await DataUtils.LoadFileAsync<MessageSaveData>(name, FolderName);
     }
+
+    public void ResetData()
+    {
+        saveData = new();
+    }
 }

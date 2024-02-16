@@ -50,7 +50,7 @@ public class UIManager : MonoBehaviour
     {
         typeof(Button), typeof(Slider), typeof(AudioVolumeSlider), typeof(Scrollbar), typeof(MissionUIItem), typeof(PilotInMissionScheduleSlot), typeof(NewDayReportCard),
     };
-    private static string[] SuccessInputTags = new[] { MissionConstants.MissionsListRaycastTag };
+    private static readonly string[] SuccessInputTags = new[] { MissionConstants.MissionsListRaycastTag };
     private static bool IsErrorInput => Input.GetMouseButtonDown(0)
         && CurrentCanvasType != UICanvasType.Bed
         && !DialogueUtils.IsConversationActive

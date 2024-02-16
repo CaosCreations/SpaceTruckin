@@ -135,13 +135,13 @@ public class MissionsUI : MonoBehaviour
         }
     }
 
-    private void ShowMissionProgress(MissionUIItem missionItem)
-    {
-        string substring = missionItem.Mission.DaysLeftToComplete > 1 ? "days" : "day";
+    //private void ShowMissionProgress(MissionUIItem missionItem)
+    //{
+    //    string substring = missionItem.Mission.DaysLeftToComplete > 1 ? "days" : "day";
 
-        missionItem.MissionNameText.SetText(missionItem.Mission.Name
-            + $"\n({missionItem.Mission.DaysLeftToComplete} {substring} remaining)", FontType.ListItem);
-    }
+    //    missionItem.MissionNameText.SetText(missionItem.Mission.Name
+    //        + $"\n({missionItem.Mission.DaysLeftToComplete} {substring} remaining)", FontType.ListItem);
+    //}
 
     public MissionScheduleSlot GetSlotByPosition(Vector2 position)
     {

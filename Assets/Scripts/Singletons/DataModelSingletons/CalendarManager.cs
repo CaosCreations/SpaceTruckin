@@ -201,5 +201,10 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     {
         DataUtils.RecursivelyDeleteSaveData(PlayerData.FolderName);
     }
+
+    public void ResetData()
+    {
+        throw new NotImplementedException();
+    }
     #endregion
 }

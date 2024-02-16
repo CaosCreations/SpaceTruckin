@@ -159,4 +159,9 @@ public partial class Mission : ScriptableObject, IDataModel, IEditableDataModel
     {
         return $"Mission with name '{Name}'";
     }
+
+    public void ResetData()
+    {
+        saveData = new();
+    }
 }

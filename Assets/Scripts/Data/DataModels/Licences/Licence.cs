@@ -34,4 +34,9 @@ public partial class Licence : ScriptableObject, IDataModel
     {
         saveData = await DataUtils.LoadFileAsync<LicenceSaveData>(name, FolderName);
     }
+
+    public void ResetData()
+    {
+        saveData = new();
+    }
 }
