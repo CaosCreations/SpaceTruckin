@@ -32,6 +32,7 @@ public class UIManager : MonoBehaviour
     #endregion
 
     [SerializeField] private TransitionUI transitionUI;
+    public static bool IsTransitioning => Instance.transitionUI.IsTransitioning;
 
     [SerializeField]
     private List<CanvasAccessSettings> accessSettings = new();

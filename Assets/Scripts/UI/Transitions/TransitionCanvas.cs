@@ -16,6 +16,8 @@ public class TransitionCanvas : MonoBehaviour
     [field: SerializeField]
     public TransitionUI.TransitionType TransitionType { get; private set; }
 
+    public bool IsTransitioning { get; private set; }
+
     private void Awake()
     {
         imageOpacityTransition.OnTransitionEnd += EndTransition;
@@ -23,6 +25,7 @@ public class TransitionCanvas : MonoBehaviour
 
     public void BeginTransition(string textContent)
     {
+        IsTransitioning = true;
         canvas.gameObject.SetActive(true);
         imageOpacityTransition.SetActive(true);
         imageOpacityTransition.enabled = true;
@@ -37,5 +40,6 @@ public class TransitionCanvas : MonoBehaviour
         imageOpacityTransition.SetActive(false);
         PlayerManager.ExitPausedState();
         SingletonManager.EventService.Dispatch(new OnUITransitionEndedEvent(TransitionType));
+        IsTransitioning = false;
     }
 }

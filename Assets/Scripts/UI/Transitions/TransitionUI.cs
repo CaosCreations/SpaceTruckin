@@ -16,6 +16,8 @@ public class TransitionUI : MonoBehaviour
     [SerializeField] private string morningTransitionText = "Morning begins...";
     [SerializeField] private string eveningTransitionText = "Evening begins...";
 
+    public bool IsTransitioning => transitionCanvases.Any(c => c.IsTransitioning);
+
     private void Start()
     {
         SingletonManager.EventService.Add<OnEveningStartEvent>(OnEveningStartHandler);
