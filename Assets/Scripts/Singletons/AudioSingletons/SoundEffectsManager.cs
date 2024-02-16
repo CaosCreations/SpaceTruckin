@@ -27,9 +27,9 @@ public abstract class SoundEffectsManager<TInstance, TSoundEffect> : AudioManage
         }
     }
 
-    public virtual void PlaySoundEffect(TSoundEffect effectType)
+    public virtual void PlaySoundEffect(TSoundEffect effectType, bool fade = false)
     {
-        Instance.PlayAudioClip(GetClipBySoundEffectType(effectType), fade: true);
+        Instance.PlayAudioClip(GetClipBySoundEffectType(effectType), fade: fade);
     }
 
     public abstract AudioClip GetClipBySoundEffectType(TSoundEffect effectType);

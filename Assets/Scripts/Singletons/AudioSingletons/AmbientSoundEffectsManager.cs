@@ -16,14 +16,14 @@ public class AmbientSoundEffectsManager : SoundEffectsManager<AmbientSoundEffect
     {
         if (SceneLoadingManager.GetCurrentSceneType() == SceneType.MainStation)
         {
-            PlaySoundEffect(AmbientSoundEffect.AsteroidAir);
+            PlaySoundEffect(AmbientSoundEffect.AsteroidAir, fade: true);
         }
 
         SceneManager.activeSceneChanged += (Scene previous, Scene next) =>
         {
             if (SceneLoadingManager.GetSceneNameByType(SceneType.MainStation) == next.name)
             {
-                PlaySoundEffect(AmbientSoundEffect.AsteroidAir);
+                PlaySoundEffect(AmbientSoundEffect.AsteroidAir, fade: true);
             }
         };
     }
