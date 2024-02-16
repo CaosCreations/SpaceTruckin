@@ -33,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
     // Get input in Update 
     private void Update()
     {
-        if (PlayerManager.IsPaused || DialogueUtils.IsConversationActive)
+        if (PlayerManager.IsPaused || DialogueUtils.IsConversationActive || UIManager.IsTransitioning)
         {
             return;
         }
