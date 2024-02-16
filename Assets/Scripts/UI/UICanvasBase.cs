@@ -20,10 +20,16 @@ public class UICanvasBase : MonoBehaviour
 
     public bool IsTutorialActive => CanvasTutorialsByDate != null && CanvasTutorialsByDate.Any(t => t.Tutorial.gameObject.activeSelf);
 
-    private bool TryGetTutorial(Date date, out InteractiveCanvasTutorial tutorial)
+    public bool TryGetTutorial(Date date, out InteractiveCanvasTutorial tutorial)
     {
         tutorial = CanvasTutorialsByDate.FirstOrDefault(t => t.Date == date)?.Tutorial;
         return tutorial != null;
+    }
+
+    private void ShowTutorial(InteractiveCanvasTutorial tutorial)
+    {
+        tutorial.SetActive(true);
+        tutorial.Init(() => PlayerPrefsManager.SetCanvasTutorialPrefValue(CanvasType, CalendarManager.CurrentDate, true));
     }
 
     public virtual void ShowTutorialIfExistsAndUnseen()
@@ -40,7 +46,6 @@ public class UICanvasBase : MonoBehaviour
             return;
         }
 
-        tutorial.SetActive(true);
-        tutorial.Init(() => PlayerPrefsManager.SetCanvasTutorialPrefValue(CanvasType, CalendarManager.CurrentDate, true));
+        ShowTutorial(tutorial);
     }
 }

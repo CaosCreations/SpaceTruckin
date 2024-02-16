@@ -80,8 +80,13 @@ public class NewDayReportUI : MonoBehaviour
     {
         reportCard.gameObject.SetActive(false);
         gameObject.SetActive(false);
-        UIManager.TerminalManager.SwitchPanel(TerminalUIManager.Tab.Missions);
+        UIManager.TerminalManager.SwitchPanel(TerminalUIManager.Tab.Missions, true);
         UIManager.RemoveOverriddenKey(PlayerConstants.ExitKey);
+
+        if (CalendarManager.CurrentDate == new Date(2, 1, 1))
+        {
+            UIManager.ShowTutorial(UICanvasType.Terminal);
+        }
     }
 
     private void Update()

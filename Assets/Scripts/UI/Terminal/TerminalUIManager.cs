@@ -61,9 +61,9 @@ public class TerminalUIManager : UICanvasBase
         SwitchPanel(tab);
     }
 
-    public void SwitchPanel(Tab tab)
+    public void SwitchPanel(Tab tab, bool reset = false)
     {
-        if (tab == currentTab)
+        if (!reset && tab == currentTab)
         {
             return;
         }

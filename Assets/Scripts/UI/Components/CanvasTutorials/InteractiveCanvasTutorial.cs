@@ -14,6 +14,9 @@ public abstract class InteractiveCanvasTutorial : SubMenu
     [SerializeField] protected Cutscene cutsceneOnComplete;
     [SerializeField] protected int conversationIdOnComplete;
 
+    [field: SerializeField]
+    public bool DoNotAutomaticallyOpen { get; private set; }
+
     protected Stack<InteractiveCanvasTutorialCard> seenCards = new();
     private UnityAction onComplete;
 

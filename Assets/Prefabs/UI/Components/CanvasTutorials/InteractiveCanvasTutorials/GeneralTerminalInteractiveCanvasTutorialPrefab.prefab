@@ -30,7 +30,6 @@ RectTransform:
   m_Children:
   - {fileID: 5384753396809391947}
   m_Father: {fileID: 6199420114293323750}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -67,7 +66,6 @@ RectTransform:
   m_Children:
   - {fileID: 5384753396109450116}
   m_Father: {fileID: 6199420113331930873}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -104,7 +102,6 @@ RectTransform:
   m_Children:
   - {fileID: 5384753397209719471}
   m_Father: {fileID: 6199420113856201655}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -149,7 +146,6 @@ RectTransform:
   - {fileID: 2964280780031199995}
   - {fileID: 6199420113004874408}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -179,6 +175,7 @@ MonoBehaviour:
   dialogueBoolOnComplete: 
   cutsceneOnComplete: {fileID: 0}
   conversationIdOnComplete: 0
+  <DoNotAutomaticallyOpen>k__BackingField: 1
   messagesCard: {fileID: 6940548644312701787}
   analyticsCard: {fileID: 59778168923369748}
   fleetCard: {fileID: 59778169616629771}
@@ -220,7 +217,6 @@ RectTransform:
   m_Children:
   - {fileID: 775257297673825128}
   m_Father: {fileID: 3930890867801074870}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -257,7 +253,6 @@ RectTransform:
   m_Children:
   - {fileID: 2172227589151975698}
   m_Father: {fileID: 6199420113664140314}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -293,7 +288,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2964280780031199995}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -329,7 +323,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5530098390434674083}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1280,7 +1273,7 @@ PrefabInstance:
       value: "Licenses are company-wide perks that apply to your entire fleet. They\u2019re
         abilities like transporting larger or more dangerous cargo. You can make
         a lot more money that way. Don\u2019t worry, you\u2019ll get there eventually,
-        champ.\r Now let's go back to the Missions tab."
+        champ.\r Now let's go back to the Jobs tab."
       objectReference: {fileID: 0}
     - target: {fileID: 6199420112288808843, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
