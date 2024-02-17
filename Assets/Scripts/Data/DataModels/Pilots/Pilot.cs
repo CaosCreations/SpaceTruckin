@@ -28,7 +28,7 @@ public partial class Pilot : ScriptableObject, IDataModel
     [SerializeField] private string dislike;
     [SerializeField] private int hireCost;
     [SerializeField] private bool startsHired;
-    //[SerializeField] private Date startDate;
+    [SerializeField] private Date startDate;
     [SerializeField] private Date leavingDate;
     [SerializeField] private int levelsNeededForAttributePointGain = 1;
     [SerializeField] private float xpThresholdExponent;

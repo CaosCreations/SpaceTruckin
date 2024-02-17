@@ -415,6 +415,10 @@ public class UIManager : MonoBehaviour
         {
             Debug.Log("Showing tutorial on cutscene end. Canvas type: " + finishedEvent.Cutscene.CanvasTutorialTypeOnEnd);
             var canvas = GetCanvasByType(finishedEvent.Cutscene.CanvasTutorialTypeOnEnd);
+            if (finishedEvent.Cutscene.CanvasTutorialTypeOnEnd == UICanvasType.Hangar)
+            {
+                HangarNode = 1;
+            }
             ShowCanvas(canvas);
             canvas.ShowTutorialIfExistsAndUnseen();
         }
