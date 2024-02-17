@@ -35,13 +35,11 @@ public class MusicManager : AudioManager
     public void PlayTitleScreenMusic()
     {
         PlayAudioClip(titleScreenMusic, fade: true);
-        //PlayAudioClip(titleScreenMusic);
     }
 
     public void PlayMainStationMusic()
     {
         PlayAudioClip(mainStationMusic, fade: true);
-        //PlayAudioClip(mainStationMusic);
     }
 
     private void PlayRandomTrack()
@@ -84,5 +82,10 @@ public class MusicManager : AudioManager
         {
             currentTrackIndex = Instance.AudioClips.Length - 1;
         }
+    }
+
+    private void Update()
+    {
+        
     }
 }

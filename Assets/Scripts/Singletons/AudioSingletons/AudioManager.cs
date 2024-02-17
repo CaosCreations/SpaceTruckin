@@ -35,10 +35,16 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            source.clip = audioClip;
-            source.Play();
+            PlayAudioClip(audioClip, source);
         }
         currentState = AudioState.Playing;
+    }
+
+    private void PlayAudioClip(AudioClip audioClip, AudioSource audioSource)
+    {
+        audioSource.clip = audioClip;
+        audioSource.pitch = 1;
+        audioSource.Play();
     }
 
     protected void PauseAudioClip()
@@ -77,8 +83,7 @@ public class AudioManager : MonoBehaviour
         }
 
         // Fade in 
-        audioSource.clip = audioClip;
-        audioSource.Play();
+        PlayAudioClip(audioClip, audioSource);
 
         elapsedTime = 0f;
         while (elapsedTime < crossfadeDuration)

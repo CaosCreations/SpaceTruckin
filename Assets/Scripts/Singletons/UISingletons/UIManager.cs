@@ -396,7 +396,7 @@ public class UIManager : MonoBehaviour
             DialogueManager.DialogueUI.Open();
         }
 
-        if (!finishedEvent.Cutscene.ConversationSettings.DontUnpauseDialogueOnEnd)
+        if (!finishedEvent.Cutscene.ConversationSettings.DontUnpauseDialogueOnEnd && DialogueManager.Instance != null)
         {
             Debug.Log("Unpausing Dialogue System...");
             DialogueManager.Instance.Unpause();
