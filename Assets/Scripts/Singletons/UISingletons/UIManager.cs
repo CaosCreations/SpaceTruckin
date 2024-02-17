@@ -285,12 +285,16 @@ public class UIManager : MonoBehaviour
     }
 
     #region Interaction
-    public static void SetCanInteract(UICanvasType canvasType, int node = -1)
+    public static void SetCanInteract(UICanvasType canvasType)
     {
         CurrentCanvasType = canvasType;
+    }
 
-        // Determines which node we're viewing 
-        if (canvasType == UICanvasType.Hangar && HangarManager.NodeIsValid(node))
+    public static void SetCanInteract(UICanvasType canvasType, int node)
+    {
+        SetCanInteract(canvasType);
+
+        if (HangarManager.NodeIsValid(node))
         {
             HangarNode = node;
         }
@@ -302,7 +306,7 @@ public class UIManager : MonoBehaviour
         {
             CurrentCanvasType = UICanvasType.None;
         }
-        HangarNode = -1;
+        //HangarNode = -1;
     }
     #endregion
 

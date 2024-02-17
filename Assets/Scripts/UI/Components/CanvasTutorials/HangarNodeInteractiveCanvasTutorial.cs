@@ -19,6 +19,7 @@ public class HangarNodeInteractiveCanvasTutorial : InteractiveCanvasTutorial
 
     [SerializeField] private Button repairsButton;
     [SerializeField] private Button mainPanelButton;
+    [SerializeField] private Button startMissionButton;
 
     private bool repairsCardShown;
     //private bool minigameCard1Shown;
@@ -39,6 +40,7 @@ public class HangarNodeInteractiveCanvasTutorial : InteractiveCanvasTutorial
 
         repairsButton.AddOnClick(RepairsButtonHandler, removeListeners: false);
         mainPanelButton.AddOnClick(MainPanelButtonHandler, removeListeners: false);
+        startMissionButton.AddOnClick(EndTutorial, removeListeners: false);
 
         SingletonManager.EventService.Add<OnFuelingEndedEvent>(OnFuelingEndedEventHandler);
         //SingletonManager.EventService.Add<OnRepairsMinigameWonEvent>(OnRepairsMinigameWonEventHandler);

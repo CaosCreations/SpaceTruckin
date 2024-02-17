@@ -161,7 +161,7 @@ public class HangarManager : MonoBehaviour
     {
         return HangarSlots.Where(slot => slot.Ship != null);
     }
-    
+
     public static bool AreAllSlotsOccupied()
     {
         return HangarSlots.Where(slot => slot.IsUnlocked).All(slot => slot.IsOccupied);
@@ -175,7 +175,12 @@ public class HangarManager : MonoBehaviour
 
     public static bool NodeIsValid(int node)
     {
-        return node >= 1 && node <= HangarConstants.MaximumNumberOfSlots;
+        var isValid = node >= 1 && node <= HangarConstants.MaximumNumberOfSlots;
+        if (!isValid)
+        {
+            Debug.LogError("Node is invalid: " + node);
+        }
+        return isValid;
     }
 
     public static void LaunchAllShips()
