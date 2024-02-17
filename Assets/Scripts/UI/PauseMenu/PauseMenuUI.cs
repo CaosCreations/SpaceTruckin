@@ -61,12 +61,12 @@ public class PauseMenuUI : UICanvasBase
         optionsPanel.SetActive(false);
     }
 
-    private void GoToTitleScreen()
-    {
-        if (SceneLoadingManager.Instance == null)
-            throw new System.Exception("SceneLoadingManager object not found. Unable to go back to title screen.");
+    //private void GoToTitleScreen()
+    //{
+    //    if (SceneLoadingManager.Instance == null)
+    //        throw new System.Exception("SceneLoadingManager object not found. Unable to go back to title screen.");
 
-        UIManager.ClearCanvases();
-        SceneLoadingManager.Instance.LoadScene(SceneType.TitleScreen);
-    }
+    //    UIManager.ClearCanvases();
+    //    SceneLoadingManager.Instance.LoadScene(SceneType.TitleScreen);
+    //}
 }

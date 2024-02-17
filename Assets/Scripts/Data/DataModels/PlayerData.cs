@@ -99,6 +99,6 @@ public class PlayerData : ScriptableObject, IDataModel
 
     public void ResetData()
     {
-        throw new NotImplementedException();
+        PlayerPrefs.DeleteAll();
     }
 }

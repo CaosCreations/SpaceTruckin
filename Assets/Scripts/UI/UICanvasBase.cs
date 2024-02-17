@@ -18,7 +18,8 @@ public class UICanvasBase : MonoBehaviour
     [field: SerializeField]
     public bool ZoomInBeforeOpening { get; private set; }
 
-    public bool IsTutorialActive => CanvasTutorialsByDate != null && CanvasTutorialsByDate.Any(t => t.Tutorial.gameObject.activeSelf);
+    public bool IsTutorialActive => CanvasTutorialsByDate != null 
+        && CanvasTutorialsByDate.Any(t => t != null && t.Tutorial != null && t.Tutorial.gameObject != null && t.Tutorial.gameObject.activeSelf);
 
     public bool TryGetTutorial(Date date, out InteractiveCanvasTutorial tutorial)
     {

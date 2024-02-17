@@ -44,7 +44,6 @@ RectTransform:
   - {fileID: 5333501801041911386}
   - {fileID: 6335771619147247450}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -71,15 +70,14 @@ MonoBehaviour:
   lockCanvas: 0
   cantExitCard: {fileID: 0}
   universalUI: {fileID: 0}
+  dialogueBoolOnComplete: 
+  cutsceneOnComplete: {fileID: 0}
+  conversationIdOnComplete: 0
+  <DoNotAutomaticallyOpen>k__BackingField: 0
   pilotDetailsCard: {fileID: 3879076493606554922}
   moneyAndToolsCard: {fileID: 3193989617544244710}
   fuelCard: {fileID: 4495666048463064113}
   repairsCard: {fileID: 2998386628400753968}
-  minigameCard1: {fileID: 6878705153685484913}
-  minigameCard2: {fileID: 5306203618413362334}
-  minigameCard3: {fileID: 6734243937560119684}
-  minigameCard4: {fileID: 7938705969748913870}
-  backToMainPanelCard: {fileID: 6842236055321974855}
   customisationsCard: {fileID: 8183975367203415714}
   returnToQueueCard: {fileID: 4025462461421579734}
   startMissionCard: {fileID: 2078688251485202871}
@@ -90,6 +88,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6941131251218105384}
     m_Modifications:
     - target: {fileID: 1103694079560115338, guid: b2489e8e63f317842b0bdb5eacfeecf8,
@@ -101,6 +100,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Text
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3553060809365805183, guid: b2489e8e63f317842b0bdb5eacfeecf8,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 6199420112288808843, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
@@ -218,6 +222,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2489e8e63f317842b0bdb5eacfeecf8, type: 3}
 --- !u!224 &6335771619147247450 stripped
 RectTransform:
@@ -230,6 +237,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6941131251218105384}
     m_Modifications:
     - target: {fileID: 1103694079560115338, guid: b2489e8e63f317842b0bdb5eacfeecf8,
@@ -243,6 +251,11 @@ PrefabInstance:
       value: "This one\u2019s good to go, so you can just shoot it off. If you send
         it back to the queue, you'll have to reassign the job from the terminal,
         so make sure to click the right button.\r"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3553060809365805183, guid: b2489e8e63f317842b0bdb5eacfeecf8,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 6199420112288808843, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
@@ -360,6 +373,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2489e8e63f317842b0bdb5eacfeecf8, type: 3}
 --- !u!114 &2078688251485202871 stripped
 MonoBehaviour:
@@ -384,6 +400,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6941131251218105384}
     m_Modifications:
     - target: {fileID: 3553060809365805183, guid: b2489e8e63f317842b0bdb5eacfeecf8,
@@ -391,6 +408,11 @@ PrefabInstance:
       propertyPath: m_Text
       value: "So you\u2019ve got the big ship in the middle. That\u2019s the one
         currently in this hangar slot if you hadn't noticed.\r"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3553060809365805183, guid: b2489e8e63f317842b0bdb5eacfeecf8,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 6199420112288808843, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
@@ -508,6 +530,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2489e8e63f317842b0bdb5eacfeecf8, type: 3}
 --- !u!114 &2526525108472311707 stripped
 MonoBehaviour:
@@ -532,6 +557,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6941131251218105384}
     m_Modifications:
     - target: {fileID: 1103694079560115338, guid: b2489e8e63f317842b0bdb5eacfeecf8,
@@ -542,8 +568,13 @@ PrefabInstance:
     - target: {fileID: 3553060809365805183, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
       propertyPath: m_Text
-      value: "Below that, we\u2019ve got the run diagnostics button, where you scan
-        the ship\u2019s systems for any damage and repair it. Go ahead and hit that.\r"
+      value: "Below that, we\u2019ve got the Repair button, where you scan the ship\u2019s
+        systems for any damage and repair it. Go ahead and hit that.\r"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3553060809365805183, guid: b2489e8e63f317842b0bdb5eacfeecf8,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 6199420112288808843, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
@@ -661,6 +692,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2489e8e63f317842b0bdb5eacfeecf8, type: 3}
 --- !u!114 &2998386628400753968 stripped
 MonoBehaviour:
@@ -685,6 +719,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6941131251218105384}
     m_Modifications:
     - target: {fileID: 1103694079560115338, guid: b2489e8e63f317842b0bdb5eacfeecf8,
@@ -697,6 +732,11 @@ PrefabInstance:
       propertyPath: m_Text
       value: "Top right is where you\u2019ll find your main info: current funds,
         how many omni tools you got for repairs, date and time, the basics.\r"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3553060809365805183, guid: b2489e8e63f317842b0bdb5eacfeecf8,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 6199420112288808843, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
@@ -814,6 +854,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2489e8e63f317842b0bdb5eacfeecf8, type: 3}
 --- !u!114 &3193989617544244710 stripped
 MonoBehaviour:
@@ -838,12 +881,18 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6941131251218105384}
     m_Modifications:
     - target: {fileID: 3553060809365805183, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
       propertyPath: m_Text
       value: "You can see the ship\u2019s captain in the bottom left corner.\r"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3553060809365805183, guid: b2489e8e63f317842b0bdb5eacfeecf8,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 6199420112288808843, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
@@ -961,6 +1010,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2489e8e63f317842b0bdb5eacfeecf8, type: 3}
 --- !u!114 &3879076493606554922 stripped
 MonoBehaviour:
@@ -985,6 +1037,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6941131251218105384}
     m_Modifications:
     - target: {fileID: 1103694079560115338, guid: b2489e8e63f317842b0bdb5eacfeecf8,
@@ -999,6 +1052,11 @@ PrefabInstance:
         back to space parking: sometimes you just wanna call a ship in to repair
         and/or modify it and that\u2019s okay. The other button is for launching
         the ship to its assigned job.\r"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3553060809365805183, guid: b2489e8e63f317842b0bdb5eacfeecf8,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 6199420112288808843, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
@@ -1116,6 +1174,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2489e8e63f317842b0bdb5eacfeecf8, type: 3}
 --- !u!114 &4025462461421579734 stripped
 MonoBehaviour:
@@ -1140,6 +1201,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6941131251218105384}
     m_Modifications:
     - target: {fileID: 1103694079560115338, guid: b2489e8e63f317842b0bdb5eacfeecf8,
@@ -1153,6 +1215,11 @@ PrefabInstance:
       value: "Below that is the fuel button. Press and hold that one until you've
         filled the ship\u2026 or until your money runs out, happens to the best of
         us. Go ahead and fill her up."
+      objectReference: {fileID: 0}
+    - target: {fileID: 3553060809365805183, guid: b2489e8e63f317842b0bdb5eacfeecf8,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 6199420112288808843, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
@@ -1270,6 +1337,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2489e8e63f317842b0bdb5eacfeecf8, type: 3}
 --- !u!114 &4495666048463064113 stripped
 MonoBehaviour:
@@ -1294,6 +1364,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6941131251218105384}
     m_Modifications:
     - target: {fileID: 1103694079560115338, guid: b2489e8e63f317842b0bdb5eacfeecf8,
@@ -1307,6 +1378,11 @@ PrefabInstance:
       value: "Ok so the refractor prisms are gonna dash from side to side until you
         halt them. You have to stack them one in front of the other in order for
         the optical data stream to pass through!\r"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3553060809365805183, guid: b2489e8e63f317842b0bdb5eacfeecf8,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 6199420112288808843, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
@@ -1424,6 +1500,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2489e8e63f317842b0bdb5eacfeecf8, type: 3}
 --- !u!224 &2269796899683060595 stripped
 RectTransform:
@@ -1431,23 +1510,12 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 5293757053473830136}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5306203618413362334 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 59778170046187622, guid: b2489e8e63f317842b0bdb5eacfeecf8,
-    type: 3}
-  m_PrefabInstance: {fileID: 5293757053473830136}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8d2cafe50e6a524baed2158915155a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &6746542614242410978
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6941131251218105384}
     m_Modifications:
     - target: {fileID: 1103694079560115338, guid: b2489e8e63f317842b0bdb5eacfeecf8,
@@ -1460,6 +1528,11 @@ PrefabInstance:
       propertyPath: m_Text
       value: "You don't have to stack them all the way to the end for it to work
         but you'll get some kind of bonus or a buff if you manage!\r"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3553060809365805183, guid: b2489e8e63f317842b0bdb5eacfeecf8,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 6199420112288808843, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
@@ -1577,6 +1650,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2489e8e63f317842b0bdb5eacfeecf8, type: 3}
 --- !u!224 &840004327687241321 stripped
 RectTransform:
@@ -1584,23 +1660,12 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 6746542614242410978}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6734243937560119684 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 59778170046187622, guid: b2489e8e63f317842b0bdb5eacfeecf8,
-    type: 3}
-  m_PrefabInstance: {fileID: 6746542614242410978}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8d2cafe50e6a524baed2158915155a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &6782665804782178337
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6941131251218105384}
     m_Modifications:
     - target: {fileID: 1103694079560115338, guid: b2489e8e63f317842b0bdb5eacfeecf8,
@@ -1612,6 +1677,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Text
       value: "OK, let\u2019s head back to the main screen.\r"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3553060809365805183, guid: b2489e8e63f317842b0bdb5eacfeecf8,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 6199420112288808843, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
@@ -1729,6 +1799,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2489e8e63f317842b0bdb5eacfeecf8, type: 3}
 --- !u!224 &587751783277391786 stripped
 RectTransform:
@@ -1736,23 +1809,12 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 6782665804782178337}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6842236055321974855 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 59778170046187622, guid: b2489e8e63f317842b0bdb5eacfeecf8,
-    type: 3}
-  m_PrefabInstance: {fileID: 6782665804782178337}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8d2cafe50e6a524baed2158915155a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &6891156183596367127
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6941131251218105384}
     m_Modifications:
     - target: {fileID: 1103694079560115338, guid: b2489e8e63f317842b0bdb5eacfeecf8,
@@ -1766,6 +1828,11 @@ PrefabInstance:
       value: "Apparently this dude knocked his navigational systems right out. You'll
         need to realign the refractor lenses in order to reboot the optical wayfinder.
         Go on then, click that and be a mechanic.\r"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3553060809365805183, guid: b2489e8e63f317842b0bdb5eacfeecf8,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 6199420112288808843, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
@@ -1883,6 +1950,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2489e8e63f317842b0bdb5eacfeecf8, type: 3}
 --- !u!224 &696524908303057564 stripped
 RectTransform:
@@ -1890,23 +1960,12 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 6891156183596367127}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6878705153685484913 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 59778170046187622, guid: b2489e8e63f317842b0bdb5eacfeecf8,
-    type: 3}
-  m_PrefabInstance: {fileID: 6891156183596367127}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8d2cafe50e6a524baed2158915155a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &7998301582003611304
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6941131251218105384}
     m_Modifications:
     - target: {fileID: 1103694079560115338, guid: b2489e8e63f317842b0bdb5eacfeecf8,
@@ -1921,6 +1980,11 @@ PrefabInstance:
         do. If you only get through half of it, you might have to spend another tool
         to complete repairs. Or you could just send the ship out as is. It might
         not make it back in one piece, though.\r"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3553060809365805183, guid: b2489e8e63f317842b0bdb5eacfeecf8,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 6199420112288808843, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
@@ -2038,6 +2102,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2489e8e63f317842b0bdb5eacfeecf8, type: 3}
 --- !u!224 &4104872002671073571 stripped
 RectTransform:
@@ -2045,23 +2112,12 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 7998301582003611304}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7938705969748913870 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 59778170046187622, guid: b2489e8e63f317842b0bdb5eacfeecf8,
-    type: 3}
-  m_PrefabInstance: {fileID: 7998301582003611304}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8d2cafe50e6a524baed2158915155a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &8162508043789659844
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6941131251218105384}
     m_Modifications:
     - target: {fileID: 1103694079560115338, guid: b2489e8e63f317842b0bdb5eacfeecf8,
@@ -2074,6 +2130,11 @@ PrefabInstance:
       propertyPath: m_Text
       value: "Below the diagnostics, you have the modify button. Don't worry about
         that for now, it\u2019s currently out of order.\r"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3553060809365805183, guid: b2489e8e63f317842b0bdb5eacfeecf8,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 6199420112288808843, guid: b2489e8e63f317842b0bdb5eacfeecf8,
         type: 3}
@@ -2191,6 +2252,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2489e8e63f317842b0bdb5eacfeecf8, type: 3}
 --- !u!224 &2832709665370607951 stripped
 RectTransform:

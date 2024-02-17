@@ -88,7 +88,7 @@ public class SingletonManager : MonoBehaviour
 
     private static void ResetAllSingletonData()
     {
-        //PlayerManager.Instance.ResetData();
+        PlayerManager.Instance.ResetData();
         MissionsManager.Instance.ResetData();
         //ArchivedMissionsManager.Instance.ResetData();
         PilotsManager.Instance.ResetData();

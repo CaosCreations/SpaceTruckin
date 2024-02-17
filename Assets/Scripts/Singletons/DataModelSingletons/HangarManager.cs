@@ -36,7 +36,7 @@ public class HangarManager : MonoBehaviour
 
     private void Start()
     {
-        SingletonManager.EventService.Add<OnCutsceneFinishedEvent>(OnCutsceneFinishedHandler);
+        SingletonManager.EventService.Add<OnCutsceneStartedEvent>(OnCutsceneStartedHandler);
     }
 
     public void Init()
@@ -228,7 +228,7 @@ public class HangarManager : MonoBehaviour
         }
     }
 
-    private void OnCutsceneFinishedHandler(OnCutsceneFinishedEvent evt)
+    private void OnCutsceneStartedHandler(OnCutsceneStartedEvent evt)
     {
         if (autoLaunchCutscenes.Contains(evt.Cutscene))
         {

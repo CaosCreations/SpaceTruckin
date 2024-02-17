@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class TerminalUIManager : UICanvasBase
@@ -26,6 +27,7 @@ public class TerminalUIManager : UICanvasBase
         Missions, Messages, Analytics, Fleet, Licences
     }
 
+    [SerializeField] private Tab[] demoFeatureTabs;
     private static Tab currentTab;
 
     private void Awake()
@@ -71,6 +73,11 @@ public class TerminalUIManager : UICanvasBase
         GetPanelByTab(tab).SetActive(true);
         SetTabButtonColours(tab);
         currentTab = tab;
+
+        if (demoFeatureTabs.Contains(currentTab))
+        {
+            PopupManager.ShowPopup(type: PopupType.DemoFeature);
+        }
     }
 
     private void ClearPanels()

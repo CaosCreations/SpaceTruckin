@@ -61,9 +61,7 @@ public class DialogueDatabaseManager : MonoBehaviour
 
             if (actorFondnessField.luaValue == null)
             {
-                Debug.LogError(
-                    $"Actor '{actorName}' field '{DialogueConstants.FondnessFieldName}' does not exist");
-
+                Debug.LogWarning($"Actor '{actorName}' field '{DialogueConstants.FondnessFieldName}' does not exist");
                 return;
             }
 

@@ -198,12 +198,13 @@ public class PilotsManager : MonoBehaviour, IDataModelManager
                 Debug.Log($"Current date {CalendarManager.CurrentDate} has reached {pilot}'s leaving date. Pilot no longer hired.");
                 continue;
             }
-            //// Note: If we implement selling pilots, this will need to be changed 
-            //if (pilot.HasStarted && !pilot.IsHired)
-            //{
-            //    pilot.IsHired = true;
-            //    Debug.Log($"Current date {CalendarManager.CurrentDate} has reached {pilot}'s start date. Pilot now hired.");
-            //}
+
+            // Note: If we implement selling pilots, this will need to be changed 
+            if (pilot.HasStarted && !pilot.IsHired)
+            {
+                pilot.IsHired = true;
+                Debug.Log($"Current date {CalendarManager.CurrentDate} has reached {pilot}'s start date. Pilot now hired.");
+            }
         }
     }
 
