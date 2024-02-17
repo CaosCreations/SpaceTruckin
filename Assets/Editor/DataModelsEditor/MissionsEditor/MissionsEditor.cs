@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -104,7 +105,7 @@ public class MissionsEditor : MonoBehaviour
         try
         {
             var missionContainer = EditorHelper.GetAsset<MissionContainer>();
-            
+
             foreach (var mission in missionContainer.Elements)
             {
                 if (mission.IsInProgress())
@@ -139,7 +140,7 @@ public class MissionsEditor : MonoBehaviour
             }
 
             Debug.Log("Money needed to unlock all missions = " + highestValue.ToString());
-            
+
             return highestValue;
         }
         catch (Exception ex)
@@ -160,5 +161,29 @@ public class MissionsEditor : MonoBehaviour
         }
 
         EditorUtility.SetDirty(missionContainer);
+    }
+
+    public static void AcceptMission(string missionName)
+    {
+        var mission = GetMissionByName(missionName);
+        mission.AcceptMission();
+    }
+
+    public static Mission GetMissionByName(string missionName)
+    {
+        var missionContainer = EditorHelper.GetAsset<MissionContainer>();
+        var mission = missionContainer.Elements.FirstOrDefault(m => m.Name == missionName);
+        return mission;
+    }
+
+    public static void StartMission(string missionName, string pilotName)
+    {
+        var mission = GetMissionByName(missionName);
+
+        var pilotContainer = EditorHelper.GetAsset<PilotsContainer>();
+        var pilot = pilotContainer.Elements.FirstOrDefault(p => p.Name == pilotName);
+
+        MissionsManager.AddOrUpdateScheduledMission(pilot, mission);
+        mission.StartMission();
     }
 }

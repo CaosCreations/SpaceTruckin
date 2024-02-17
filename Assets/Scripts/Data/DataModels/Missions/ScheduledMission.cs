@@ -15,6 +15,16 @@ public class ScheduledMission
     public const string FileName = "ScheduledMissionSaveData"; // We store them in all in one file
     public static string FilePath => DataUtils.GetSaveFilePath(Mission.FolderName, FileName);
 
+    public ScheduledMission()
+    {
+    }
+
+    public ScheduledMission(Mission mission, Pilot pilot)
+    {
+        Mission = mission;
+        Pilot = pilot;
+    }
+
     public override string ToString()
     {
         if (mission != null && pilot != null)

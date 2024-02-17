@@ -58,8 +58,8 @@ public class UIConstants : MonoBehaviour
 
 
     // UI element dimensions 
-    public static readonly Vector3 ShipPreviewOffset = new Vector3(-1.5f, 0f, 0f);
-    public static readonly Vector3 ShipPreviewRotationSpeed = new Vector3(0f, 0.15f, 0f);
+    public static readonly Vector3 ShipPreviewOffset = new(-1.5f, 0f, 0f);
+    public static readonly Vector3 ShipPreviewRotationSpeed = new(0f, 0.15f, 0f);
     public const float ShipPreviewScaleFactor = 0.85f;
 
     public const float ClockTextWidth = 128f;

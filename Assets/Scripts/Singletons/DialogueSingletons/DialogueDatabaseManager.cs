@@ -205,6 +205,25 @@ public class DialogueDatabaseManager : MonoBehaviour
         }
     }
 
+    public void SetConversationSeen(int id)
+    {
+        var conversation = DialogueUtils.GetConversationById(id);
+        var seenVarName = DialogueUtils.GetSeenVariableName(conversation);
+
+        if (seenVarName != null)
+        {
+            UpdateDatabaseVariable(seenVarName, true);
+        }
+    }
+
+    public void SetConversationsSeen(IEnumerable<int> ids)
+    {
+        foreach (var id in ids)
+        {
+            SetConversationSeen(id);
+        }
+    }
+
     public static List<string> GetSeenVarNames()
     {
         var seenVarNames = new List<string>();
