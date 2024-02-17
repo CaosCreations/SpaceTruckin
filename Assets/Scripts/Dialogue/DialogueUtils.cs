@@ -27,7 +27,7 @@ public static class DialogueUtils
 
     public static string GetSeenVariableName(this Conversation conversation)
     {
-        if (!conversation.FieldExists(DialogueConstants.ConversationSeenVariableName)) 
+        if (!conversation.FieldExists(DialogueConstants.ConversationSeenVariableName))
         {
             return null;
         }
@@ -52,14 +52,24 @@ public static class DialogueUtils
     /// <exception cref="System.Exception"></exception>
     public static void StartConversationById(int conversationId)
     {
-        var conversation = GetConversationById(conversationId) ?? throw new System.Exception($"Conversation not found with ID '{conversationId}'");
+        //var conversation = GetConversationById(conversationId) ?? throw new System.Exception($"Conversation not found with ID '{conversationId}'");
+        var conversation = GetConversationById(conversationId);
 
+        if (conversation == null)
+        {
+            return;
+        }
         Debug.Log($"Starting conversation with Title '{conversation.Title}'...");
         DialogueManager.StartConversation(conversation.Title);
     }
 
     public static Conversation GetConversationById(int conversationId)
     {
+        if (DialogueManager.DatabaseManager == null || DialogueManager.DatabaseManager.loadedDatabases == null)
+        {
+            Debug.LogError("DatabaseManager was null or no databases were loaded. Can't get conversation by ID " + conversationId);
+            return null;
+        }
         return DialogueManager.DatabaseManager.loadedDatabases.First().GetConversation(conversationId);
     }
 
