@@ -36,7 +36,7 @@ public abstract class InteractiveCanvasTutorial : SubMenu
     protected override void OnDisable()
     {
         base.OnDisable();
-        if (endingCard.gameObject.activeSelf)
+        if (endingCard != null && endingCard.gameObject.activeSelf)
         {
             EndTutorial();
         }
