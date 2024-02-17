@@ -4,7 +4,6 @@ using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Playables;
-using UnityEngine.Timeline;
 
 public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 {
@@ -65,9 +64,15 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
         SingletonManager.EventService.Dispatch(new OnCutsceneFinishedEvent(cutscene));
         currentCutscenePlayer = null;
 
+        // TODO: Maybe put this before notifying subscribers 
         if (!cutscene.ConversationSettings.DontUnpausePlayerOnEnd)
         {
             PlayerManager.ExitPausedState();
+        }
+
+        if (cutscene.CutsceneOnEnd != null)
+        {
+            PlayCutscene(cutscene.CutsceneOnEnd);
         }
     }
 
