@@ -44,7 +44,7 @@ public class UniversalHangarNodeUI : UICanvasBase
         //SceneRepairsMinigamesManager.Instance.StartMinigame();
         PopupManager.ShowPopup(type: PopupType.DemoFeature);
         ShipsManager.RepairShip(100f);
-        repairsButton.interactable = false;
+        SetButtonInteractability();
     }
 
     private void OverviewButtonHandler()
@@ -208,8 +208,8 @@ public class UniversalHangarNodeUI : UICanvasBase
         if (ShipToInspect.CurrentMission != null)
         {
             return ShipToInspect.CurrentFuel >= ShipToInspect.CurrentMission.FuelCost
-                && ShipToInspect.CurrentHullIntegrity > 0
-                && ShipToInspect.CanWarp;
+                && ShipToInspect.CurrentHullIntegrity > 0;
+                //&& ShipToInspect.CanWarp;
         }
         return false;
     }

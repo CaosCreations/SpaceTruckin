@@ -12,7 +12,7 @@ public class HangarNodeInteractiveCanvasTutorial : InteractiveCanvasTutorial
     //[SerializeField] private InteractiveCanvasTutorialCard minigameCard2;
     //[SerializeField] private InteractiveCanvasTutorialCard minigameCard3;
     //[SerializeField] private InteractiveCanvasTutorialCard minigameCard4;
-    [SerializeField] private InteractiveCanvasTutorialCard backToMainPanelCard;
+    //[SerializeField] private InteractiveCanvasTutorialCard backToMainPanelCard;
     [SerializeField] private InteractiveCanvasTutorialCard customisationsCard;
     [SerializeField] private InteractiveCanvasTutorialCard returnToQueueCard;
     [SerializeField] private InteractiveCanvasTutorialCard startMissionCard;
@@ -31,7 +31,6 @@ public class HangarNodeInteractiveCanvasTutorial : InteractiveCanvasTutorial
         openingCard.OnClosed += () => ShowCard(pilotDetailsCard);
         pilotDetailsCard.OnClosed += () => ShowCard(moneyAndToolsCard);
         moneyAndToolsCard.OnClosed += () => ShowCard(fuelCard);
-        repairsCard.OnClosed += () => ShowCard(backToMainPanelCard);
         //minigameCard1.OnClosed += () => ShowCard(minigameCard2);
         //minigameCard2.OnClosed += () => ShowCard(minigameCard3);
         //minigameCard4.OnClosed += () => ShowCard(backToMainPanelCard);
@@ -48,6 +47,7 @@ public class HangarNodeInteractiveCanvasTutorial : InteractiveCanvasTutorial
     private void RepairsButtonHandler()
     {
         //ShowCard(minigameCard1, ref minigameCard1Shown, repairsButton, RepairsButtonHandler);
+        ShowCard(customisationsCard, ref customisationsCardShown, repairsButton, RepairsButtonHandler);
     }
 
     private void MainPanelButtonHandler()
@@ -83,7 +83,7 @@ public class HangarNodeInteractiveCanvasTutorial : InteractiveCanvasTutorial
         //minigameCard2.SetActive(false);
         //minigameCard3.SetActive(false);
         //minigameCard4.SetActive(false);
-        backToMainPanelCard.SetActive(false);
+        //backToMainPanelCard.SetActive(false);
         customisationsCard.SetActive(false);
     }
 }

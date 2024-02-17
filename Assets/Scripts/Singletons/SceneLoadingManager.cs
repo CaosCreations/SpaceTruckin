@@ -156,7 +156,7 @@ public class SceneLoadingManager : MonoBehaviour
 
         if (!IsSceneLoaded(sceneName))
         {
-            Debug.Log($"Scene '{sceneName}' is not loaded. Unable to unload.");
+            Debug.LogWarning($"Scene '{sceneName}' is not loaded. Unable to unload.");
             return;
         }
         UnloadSceneAsync(sceneName);
