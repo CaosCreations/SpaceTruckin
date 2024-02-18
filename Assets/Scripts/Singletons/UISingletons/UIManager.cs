@@ -50,14 +50,18 @@ public class UIManager : MonoBehaviour
     {
         typeof(Button), typeof(Slider), typeof(AudioVolumeSlider), typeof(Scrollbar), typeof(MissionUIItem), typeof(PilotInMissionScheduleSlot), typeof(NewDayReportCard),
     };
-    private static readonly string[] SuccessInputTags = new[] { MissionConstants.MissionsListRaycastTag };
-    private static bool IsErrorInput => Input.GetMouseButtonDown(0)
-        && CurrentCanvasType != UICanvasType.Bed
-        && !DialogueUtils.IsConversationActive
-        && TypesUnderPointer != null
-        && !TypesUnderPointer.Any(t => SuccessInputTypes.Contains(t))
-        && TagsUnderPointer != null
-        && !TagsUnderPointer.Any(t => SuccessInputTags.Contains(t));
+    private static readonly string[] SuccessInputTags = new[] { MissionConstants.MissionsListRaycastTag, UIConstants.AudioVolumeSliderTag, };
+
+    private static bool IsErrorInput()
+    {
+        var pointerUnderTypes = TypesUnderPointer != null && TypesUnderPointer.Any(t => SuccessInputTypes.Contains(t));
+        var pointerUnderTags = TagsUnderPointer != null && TagsUnderPointer.Any(t => SuccessInputTags.Contains(t));
+
+        return Input.GetMouseButtonDown(0)
+            && CurrentCanvasType != UICanvasType.Bed
+            && !DialogueUtils.IsConversationActive
+            && !(pointerUnderTypes || pointerUnderTags);
+    }
 
     public static HashSet<Type> TypesUnderPointer { get; private set; }
     public static HashSet<string> TagsUnderPointer { get; private set; }
@@ -143,7 +147,7 @@ public class UIManager : MonoBehaviour
         TagsUnderPointer = tagsUnderPointer;
 
         // Play an Error sound effect if a non-interactable region is clicked. For now ignore if we're showing a popup.
-        if (!PopupManager.IsPopupActive && IsErrorInput)
+        if (!PopupManager.IsPopupActive && IsErrorInput())
         {
             UISoundEffectsManager.Instance.PlaySoundEffect(UISoundEffect.Error);
             return;
