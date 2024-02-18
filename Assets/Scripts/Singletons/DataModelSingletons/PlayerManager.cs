@@ -65,7 +65,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
             return;
         }
 
-        RegisterSceneChangeEvents();
+        RegisterEvents();
     }
 
     public void Init()
@@ -102,7 +102,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         ExitPausedState();
     }
 
-    private void OnMorningStartHandler(OnMorningStartEvent evt)
+    private void OnMorningStartHandler()
     {
         foreach (var licence in day2Licences)
         {
@@ -110,7 +110,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         }
     }
 
-    private void RegisterSceneChangeEvents()
+    private void RegisterEvents()
     {
         // Set up player when station scene loads 
         SceneManager.activeSceneChanged += (Scene previous, Scene next) =>
@@ -120,6 +120,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
                 SetUpPlayer();
             }
         };
+        SingletonManager.EventService.Add<OnMorningStartEvent>(OnMorningStartHandler);
     }
 
     public void SetUpPlayer()
