@@ -3,7 +3,6 @@ using PixelCrushers.DialogueSystem;
 using System;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Animations;
 using UnityEngine.Playables;
 
 public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
@@ -19,9 +18,6 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
     private static CutsceneTimelinePlayer currentCutscenePlayer;
     public static bool IsPlaying { get; private set; }
     private static bool isPaused;
-    private double pausedTime;
-
-    private AnimationMixerPlayable mixer;
 
     private void Awake()
     {
@@ -74,7 +70,6 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
         SingletonManager.EventService.Dispatch(new OnCutsceneFinishedEvent(cutscene));
         currentCutscenePlayer = null;
-        mixer = default;
 
         // TODO: Maybe put this before notifying subscribers 
         if (!cutscene.ConversationSettings.DontUnpausePlayerOnEnd)
@@ -228,13 +223,7 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
         if (currentCutscenePlayer == null)
             return;
 
-        //currentCutscenePlayer.PlayableDirector.Pause();
-        //var asset = currentCutscenePlayer.PlayableDirector.playableAsset as TimelineAsset;
-        //mixer = AnimationMixerPlayable.Create(currentCutscenePlayer.PlayableDirector.playableGraph, asset.outputTrackCount);
-        //currentCutscenePlayer.PlayableDirector.playableGraph.GetOutput(0).GetSourcePlayable().AddInput(mixer, 0);
-        //mixer.SetSpeed(0f);
-
-        pausedTime = currentCutscenePlayer.PlayableDirector.time;
+        Debug.Log("Timeline paused at: " + currentCutscenePlayer.PlayableDirector.time);
         isPaused = true;
         Time.timeScale = 0f;
     }
@@ -244,8 +233,6 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
         if (currentCutscenePlayer == null)
             return;
 
-        //currentCutscenePlayer.PlayableDirector.Resume();
-        //mixer.SetSpeed(1f);
         isPaused = false;
         Time.timeScale = 1f;
     }
@@ -265,23 +252,17 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
     private void Update()
     {
-        if (!IsPlaying)
+        if (!IsPlaying || !Input.GetKeyDown(PlayerConstants.PauseKey))
             return;
 
-        //if (isPaused)
-        //    currentCutscenePlayer.PlayableDirector.time = pausedTime;
-
-        if (Input.GetKeyDown(PlayerConstants.PauseKey))
+        if (isPaused)
         {
-            if (isPaused)
-            {
-                ResumeTimeline();
-            }
-            else
-            {
-                PauseTimeline();
-            }
-            pauseView.SetActive(isPaused);
+            ResumeTimeline();
         }
+        else
+        {
+            PauseTimeline();
+        }
+        pauseView.SetActive(isPaused);
     }
 }
