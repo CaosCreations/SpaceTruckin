@@ -91,7 +91,7 @@ public class BatteryInteractable : InteractableObject
         if (other.CompareTag(HangarConstants.BatteryExitColliderTag))
         {
             DropBattery();
-            HangarManager.BatterySpawnPositionManager.RespawnBattery(transform, Collider);
+            //HangarManager.BatterySpawnPositionManager.RespawnBattery(transform, Collider);
         }
     }
 
