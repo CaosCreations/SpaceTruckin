@@ -43,7 +43,7 @@ public class HangarManager : MonoBehaviour
     {
         if (BatterySpawnPositionManager == null)
         {
-            Debug.LogError("BatterySpawnManager was null. Will be unable to spawn batteries");
+            Debug.LogWarning("BatterySpawnManager was null. Will be unable to spawn batteries");
         }
     }
 
@@ -225,12 +225,12 @@ public class HangarManager : MonoBehaviour
             Debug.LogError("Batteries container not found");
         }
 
-        BatterySpawnPositionManager = FindObjectOfType<BatterySpawnPositionManager>();
+        //BatterySpawnPositionManager = FindObjectOfType<BatterySpawnPositionManager>();
 
-        if (BatterySpawnPositionManager == null)
-        {
-            Debug.LogError("Battery spawn position manager not found");
-        }
+        //if (BatterySpawnPositionManager == null)
+        //{
+        //    Debug.LogError("Battery spawn position manager not found");
+        //}
     }
 
     private void OnCutsceneStartedHandler(OnCutsceneStartedEvent evt)

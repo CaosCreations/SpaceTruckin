@@ -34,6 +34,7 @@ public class PopupManager : MonoBehaviour
         Instance.canvas.gameObject.SetActive(true);
 
         Instance.currentPopup = type == PopupType.Default ? Instance.defaultPopup : Instance.demoFeaturePopup;
+        Debug.Log("Showing popup: " + Instance.currentPopup.name);
         Instance.currentPopup.SetActive(true);
         Instance.currentPopup.Init(() =>
         {
@@ -51,6 +52,8 @@ public class PopupManager : MonoBehaviour
         UIManager.RemoveOverriddenKey(KeyCode.Escape);
         PlayerManager.ExitPausedState();
         canvas.gameObject.SetActive(false);
+        defaultPopup.SetActive(false);
+        demoFeaturePopup.SetActive(false);
         currentPopup = null;
     }
 
