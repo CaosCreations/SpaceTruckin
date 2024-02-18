@@ -100,4 +100,10 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
         scheduledMissionsCard.SetActive(false);
         afterScheduledMissionsCard.SetActive(false);
     }
+
+    protected override void EndTutorial()
+    {
+        UIManager.TerminalManager.SetTabButtonsInteractable(true);
+        base.EndTutorial();
+    }
 }

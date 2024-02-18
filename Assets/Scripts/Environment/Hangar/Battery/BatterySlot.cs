@@ -15,7 +15,7 @@ public class BatterySlot : InteractableObject
         if (canTransferEnergy)
         {
             // Shake hangar camera
-            StationCameraManager.Instance.ShakeCamera(StationCamera.Identifier.Hangar);
+            StationCameraManager.ShakeCamera(StationCamera.Identifier.Hangar);
 
             ShipsManager.EnableWarp(hangarSlot.Ship);
             batteryCharging.Discharge();

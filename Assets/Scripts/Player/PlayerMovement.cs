@@ -147,7 +147,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (cameraStateName != null)
         {
-            StationCameraManager.Instance.SetBlend(CinemachineBlendDefinition.Style.Cut, 0f);
+            StationCameraManager.SetBlend(CinemachineBlendDefinition.Style.Cut, 0f);
         }
 
         characterController.enabled = false;
@@ -167,8 +167,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (cameraStateName != null)
         {
-            StationCameraManager.Instance.PlayCamAnimState(cameraStateName);
-            StationCameraManager.Instance.SetBlend(CinemachineBlendDefinition.Style.EaseInOut, 2f);
+            StationCameraManager.PlayCamAnimState(cameraStateName);
+            StationCameraManager.SetBlend(CinemachineBlendDefinition.Style.EaseInOut, 2f);
         }
     }
 

@@ -27,8 +27,7 @@ public class PauseMenuUI : UICanvasBase
 
         mainButton.AddOnClick(() => SwitchPanel(PauseMenuPanel.Main));
         optionsButton.AddOnClick(() => SwitchPanel(PauseMenuPanel.Options));
-        // Disabled for the demo
-        //mainMenuButton.AddOnClick(GoToTitleScreen);
+        mainMenuButton.AddOnClick(GoToTitleScreen);
     }
 
     private void OnEnable()
@@ -61,12 +60,12 @@ public class PauseMenuUI : UICanvasBase
         optionsPanel.SetActive(false);
     }
 
-    //private void GoToTitleScreen()
-    //{
-    //    if (SceneLoadingManager.Instance == null)
-    //        throw new System.Exception("SceneLoadingManager object not found. Unable to go back to title screen.");
+    private void GoToTitleScreen()
+    {
+        if (SceneLoadingManager.Instance == null)
+            throw new System.Exception("SceneLoadingManager object not found. Unable to go back to title screen.");
 
-    //    UIManager.ClearCanvases();
-    //    SceneLoadingManager.Instance.LoadScene(SceneType.TitleScreen);
-    //}
+        UIManager.ClearCanvases();
+        SceneLoadingManager.Instance.LoadSceneAsync(SceneType.TitleScreen);
+    }
 }

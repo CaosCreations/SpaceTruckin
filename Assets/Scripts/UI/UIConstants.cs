@@ -104,4 +104,8 @@ public class UIConstants : MonoBehaviour
 
     // Character creation
     public const float PlayerNameSettingsDelayInSeconds = .5f;
+
+
+    // Tags
+    public const string AudioVolumeSliderTag = "AudioVolumeSlider";
 }
