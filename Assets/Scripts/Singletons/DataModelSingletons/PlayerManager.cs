@@ -1,7 +1,6 @@
 ﻿using Events;
 using PixelCrushers.DialogueSystem;
 using UnityEngine;
-using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegistrar
@@ -10,6 +9,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
     [Header("Set In Editor")]
     [SerializeField] private PlayerData playerData;
+    [SerializeField] private Licence[] day2Licences;
 
     public static event System.Action OnMoneySpent;
 
@@ -100,6 +100,14 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
             return;
         }
         ExitPausedState();
+    }
+
+    private void OnMorningStartHandler(OnMorningStartEvent evt)
+    {
+        foreach (var licence in day2Licences)
+        {
+            AcquireLicence(licence, true);
+        }
     }
 
     private void RegisterSceneChangeEvents()
