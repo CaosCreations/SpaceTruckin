@@ -9,16 +9,15 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 {
     public static TimelineManager Instance { get; private set; }
 
-    [SerializeField]
-    private CutsceneContainer cutsceneContainer;
-    [SerializeField]
-    private Cutscene openingCutscene;
-
-    [SerializeField]
-    private PlayerAnimationAssetMappingContainer playerAnimationAssetMappingContainer;
+    [SerializeField] private CutsceneContainer cutsceneContainer;
+    [SerializeField] private Cutscene openingCutscene;
+    [SerializeField] private PlayerAnimationAssetMappingContainer playerAnimationAssetMappingContainer;
+    [SerializeField] private GameObject pauseView;
 
     private static CutsceneTimelinePlayer[] cutscenePlayers;
     private static CutsceneTimelinePlayer currentCutscenePlayer;
+    public static bool IsPlaying { get; private set; }
+    private static bool isPaused;
 
     private void Awake()
     {
@@ -29,6 +28,7 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        pauseView.SetActive(false);
     }
 
     private void RegisterEvents()
@@ -48,12 +48,15 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
 
     private void OnTimelineStartedHandler()
     {
+        IsPlaying = true;
         PlayerManager.EnterPausedState(false);
+        UIManager.AddOverriddenKey(KeyCode.Escape);
         SingletonManager.EventService.Dispatch(new OnCutsceneStartedEvent(currentCutscenePlayer.Cutscene));
     }
 
     private void OnTimelineFinishedHandler()
     {
+        IsPlaying = false;
         var cutscene = currentCutscenePlayer.Cutscene;
         var animatorSettings = currentCutscenePlayer.AnimatorSettings;
 
@@ -61,6 +64,10 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
         {
             animatorSettings.Animator.Play(animatorSettings.StateOnEnd);
         }
+        UIManager.RemoveOverriddenKey(KeyCode.Escape);
+        pauseView.SetActive(false);
+        ResumeTimeline();
+
         SingletonManager.EventService.Dispatch(new OnCutsceneFinishedEvent(cutscene));
         currentCutscenePlayer = null;
 
@@ -211,6 +218,25 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
             currentCutscenePlayer.PlayableDirector.time = 100000;
     }
 
+    public void PauseTimeline()
+    {
+        if (currentCutscenePlayer == null)
+            return;
+
+        Debug.Log("Timeline paused at: " + currentCutscenePlayer.PlayableDirector.time);
+        isPaused = true;
+        Time.timeScale = 0f;
+    }
+
+    public void ResumeTimeline()
+    {
+        if (currentCutscenePlayer == null)
+            return;
+
+        isPaused = false;
+        Time.timeScale = 1f;
+    }
+
     public void RegisterLuaFunctions()
     {
         Lua.RegisterFunction(
@@ -222,5 +248,21 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
     public void UnregisterLuaFunctions()
     {
         Lua.UnregisterFunction(DialogueConstants.PlayCutsceneFunctionName);
+    }
+
+    private void Update()
+    {
+        if (!IsPlaying || !Input.GetKeyDown(PlayerConstants.PauseKey))
+            return;
+
+        if (isPaused)
+        {
+            ResumeTimeline();
+        }
+        else
+        {
+            PauseTimeline();
+        }
+        pauseView.SetActive(isPaused);
     }
 }

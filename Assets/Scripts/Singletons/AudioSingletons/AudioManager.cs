@@ -13,6 +13,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private float crossfadeDuration = 2f;
     [field: SerializeField] public AudioClip[] AudioClips { get; private set; }
 
+    protected bool hasPlayed;
     protected AudioState currentState;
     public bool IsPlaying => currentState.Equals(AudioState.Playing);
     public bool IsPaused => currentState.Equals(AudioState.Paused);
@@ -38,12 +39,13 @@ public class AudioManager : MonoBehaviour
             PlayAudioClip(audioClip, source);
         }
         currentState = AudioState.Playing;
+        hasPlayed = true;
     }
 
     private void PlayAudioClip(AudioClip audioClip, AudioSource audioSource)
     {
         audioSource.clip = audioClip;
-        audioSource.pitch = 1;
+        //audioSource.pitch = 1;
         audioSource.Play();
     }
 

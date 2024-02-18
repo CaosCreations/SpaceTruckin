@@ -29,7 +29,6 @@ public class StationSetupManager : MonoBehaviour
             // When changing to main station scene 
             if (SceneLoadingManager.GetSceneNameByType(SceneType.MainStation) == next.name)
             {
-                Debug.Log("Setting up station...");
                 SetUpStation();
             }
         };
@@ -37,6 +36,7 @@ public class StationSetupManager : MonoBehaviour
 
     public static void SetUpStation()
     {
+        Debug.Log("Setting up station...");
         CalendarManager.ResetCalendar();
         ClockManager.SetCurrentTime(CalendarManager.StationEntryTimeOfDay.ToSeconds(), overrideTransition: true);
         SingletonManager.Init();
@@ -44,6 +44,6 @@ public class StationSetupManager : MonoBehaviour
         TimelineManager.Instance.SetUp();
         SingletonManager.EventService.Dispatch<OnStationSetUpEvent>();
         MissionsManager.Instance.SetUp();
-        MusicManager.Instance.PlayMainStationMusic();
+        MusicManager.Instance.SetUp();
     }
 }

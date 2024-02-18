@@ -390,16 +390,19 @@ public class UIManager : MonoBehaviour
 
     private void OnCutsceneFinishedHandler(OnCutsceneFinishedEvent finishedEvent)
     {
-        if (finishedEvent.Cutscene.ConversationSettings.OpenDialogueUIOnEnd)
+        if (DialogueManager.Instance != null)
         {
-            Debug.Log("Opening dialogue UI on cutscene end...");
-            DialogueManager.DialogueUI.Open();
-        }
+            if (finishedEvent.Cutscene.ConversationSettings.OpenDialogueUIOnEnd)
+            {
+                Debug.Log("Opening dialogue UI on cutscene end...");
+                DialogueManager.DialogueUI.Open();
+            }
 
-        if (!finishedEvent.Cutscene.ConversationSettings.DontUnpauseDialogueOnEnd && DialogueManager.Instance != null)
-        {
-            Debug.Log("Unpausing Dialogue System...");
-            DialogueManager.Instance.Unpause();
+            if (!finishedEvent.Cutscene.ConversationSettings.DontUnpauseDialogueOnEnd)
+            {
+                Debug.Log("Unpausing Dialogue System...");
+                DialogueManager.Instance.Unpause();
+            }
         }
 
         if (finishedEvent.Cutscene.ConversationSettings.ContinueOnEnd)
