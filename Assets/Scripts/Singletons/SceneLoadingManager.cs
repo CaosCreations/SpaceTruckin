@@ -70,19 +70,6 @@ public class SceneLoadingManager : MonoBehaviour
         SingletonManager.EventService.Dispatch(new OnSceneUnloadedEvent(scene));
     }
 
-    public void LoadScene(SceneType sceneType, LoadSceneMode loadSceneMode = LoadSceneMode.Single)
-    {
-        var sceneName = GetSceneNameByType(sceneType);
-        try
-        {
-            SceneManager.LoadScene(sceneName, loadSceneMode);
-        }
-        catch (System.Exception ex)
-        {
-            Debug.LogError($"Unable to load scene with name '{sceneName}'.\n{ex.Message}\n{ex.StackTrace}");
-        }
-    }
-
     public void LoadSceneAsync(
         SceneType sceneType,
         Slider loadingBarSlider = null,

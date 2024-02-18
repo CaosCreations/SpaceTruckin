@@ -3,13 +3,10 @@
 public class MusicManager : AudioManager
 {
     public static MusicManager Instance { get; private set; }
-
-    /// <summary>
-    /// Track cycling just used by the cassette player currently.
-    /// </summary>
     private AudioClip CurrentTrack => Instance.AudioClips[currentTrackIndex];
     private int currentTrackIndex;
 
+    [SerializeField] private bool trackIndexLoop;
     [SerializeField] private AudioClip titleScreenMusic;
     [SerializeField] private AudioClip mainStationMusic;
 
@@ -35,11 +32,6 @@ public class MusicManager : AudioManager
     public void PlayTitleScreenMusic()
     {
         PlayAudioClip(titleScreenMusic, fade: true);
-    }
-
-    public void PlayMainStationMusic()
-    {
-        PlayAudioClip(mainStationMusic, fade: true);
     }
 
     private void PlayRandomTrack()
@@ -84,8 +76,25 @@ public class MusicManager : AudioManager
         }
     }
 
+    public void SetUp()
+    {
+        if (trackIndexLoop)
+        {
+            // Override default looping 
+            audioSource.loop = false;
+        }
+
+        currentTrackIndex = 0;
+        PlayAudioClip(CurrentTrack, fade: true);
+    }
+
     private void Update()
     {
-        
+        // AudioSource no longer playing so play next track
+        if (hasPlayed && trackIndexLoop && !audioSource.isPlaying)
+        {
+            ChangeTrack(true);
+            PlayAudioClip(CurrentTrack, fade: true);
+        }
     }
 }
