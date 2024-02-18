@@ -5,33 +5,24 @@ using UnityEngine;
 
 public class StationCameraManager : MonoBehaviour
 {
-    public static StationCameraManager Instance { get; private set; }
-
-    private StationCamera[] stationCameras;
-    private CinemachineBrain cinemachineBrain;
-    private CinemachineLiveCameraZoom liveCameraZoom;
-    private CinemachineLiveCameraShake liveCameraShake;
-    [SerializeField] private CamAnimStateChange animStateChange;
+    private static StationCamera[] stationCameras;
+    private static CinemachineBrain cinemachineBrain;
+    private static CinemachineLiveCameraZoom liveCameraZoom;
+    private static CinemachineLiveCameraShake liveCameraShake;
+    private static CamAnimStateChange animStateChange;
 
     public static bool IsLiveCameraZooming;
 
     private void Awake()
     {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-
         stationCameras = FindObjectsOfType<StationCamera>(true);
         cinemachineBrain = FindObjectOfType<CinemachineBrain>(true);
         liveCameraZoom = GetComponent<CinemachineLiveCameraZoom>();
         liveCameraShake = GetComponent<CinemachineLiveCameraShake>();
+        animStateChange = GetComponent<CamAnimStateChange>();
     }
 
-    public void ShakeCamera(StationCamera.Identifier cameraIdentifier)
+    public static void ShakeCamera(StationCamera.Identifier cameraIdentifier)
     {
         var camera = GetCameraByIdentifier(cameraIdentifier);
         if (camera == null)
@@ -43,52 +34,52 @@ public class StationCameraManager : MonoBehaviour
         camera.ShakeCamera();
     }
 
-    public void ZoomInLiveCamera(float targetDistance, float speed)
+    public static void ZoomInLiveCamera(float targetDistance, float speed)
     {
         liveCameraZoom.ZoomInCamera(targetDistance, speed);
     }
 
-    public void ZoomInLiveCamera(float targetDistance, float speed, Action action)
+    public static void ZoomInLiveCamera(float targetDistance, float speed, Action action)
     {
         liveCameraZoom.ZoomInCamera(targetDistance, speed, action);
     }
 
-    public void ZoomInLiveCamera(CameraZoomSettings settings)
+    public static void ZoomInLiveCamera(CameraZoomSettings settings)
     {
         liveCameraZoom.ZoomInCamera(settings.TargetDistance, settings.Speed);
     }
 
-    public void ZoomInLiveCamera(CameraZoomSettings settings, Action action)
+    public static void ZoomInLiveCamera(CameraZoomSettings settings, Action action)
     {
         liveCameraZoom.ZoomInCamera(settings.TargetDistance, settings.Speed, action, settings.ResetAfter, settings.HidePlayer, settings.LockPlayer);
     }
 
-    public void ResetLiveCameraZoom()
+    public static void ResetLiveCameraZoom()
     {
         liveCameraZoom.ResetZoom();
     }
 
-    public void ShakeLiveCamera(CameraShakeSettings settings)
+    public static void ShakeLiveCamera(CameraShakeSettings settings)
     {
         liveCameraShake.Shake(settings);
     }
 
-    public void ShakeLiveCamera(float amplitude)
+    public static void ShakeLiveCamera(float amplitude)
     {
         liveCameraShake.Shake(amplitude);
     }
 
-    public void PlayCamAnimState(string stateName)
+    public static void PlayCamAnimState(string stateName)
     {
         animStateChange.PlayState(stateName);
     }
 
-    public void SetBlend(CinemachineBlendDefinition.Style style, float time)
+    public static void SetBlend(CinemachineBlendDefinition.Style style, float time)
     {
         cinemachineBrain.m_DefaultBlend = new CinemachineBlendDefinition(style, time);
     }
 
-    private StationCamera GetCameraByIdentifier(StationCamera.Identifier cameraIdentifier)
+    private static StationCamera GetCameraByIdentifier(StationCamera.Identifier cameraIdentifier)
     {
         return stationCameras.FirstOrDefault(cam => cam.CameraIdentifier == cameraIdentifier);
     }

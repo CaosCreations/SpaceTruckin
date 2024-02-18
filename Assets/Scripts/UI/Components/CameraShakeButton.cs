@@ -19,7 +19,7 @@ public class CameraShakeButton : MonoBehaviour
 
     private void ShakeCameraHandler()
     {
-        StationCameraManager.Instance.ShakeLiveCamera(shakeSettings);
+        StationCameraManager.ShakeLiveCamera(shakeSettings);
     }
 
     //public void OnPointerDown(PointerEventData eventData)

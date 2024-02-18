@@ -117,7 +117,7 @@ public class UIManager : MonoBehaviour
 
             if (canvas.ZoomInBeforeOpening && canvas.CameraZoomSettings != null)
             {
-                StationCameraManager.Instance.ZoomInLiveCamera(canvas.CameraZoomSettings, () => ShowCanvas(canvas));
+                StationCameraManager.ZoomInLiveCamera(canvas.CameraZoomSettings, () => ShowCanvas(canvas));
             }
             else
             {
