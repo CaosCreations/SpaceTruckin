@@ -66,7 +66,7 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
         }
         UIManager.RemoveOverriddenKey(KeyCode.Escape);
         pauseView.SetActive(false);
-        isPaused = false;
+        ResumeTimeline();
 
         SingletonManager.EventService.Dispatch(new OnCutsceneFinishedEvent(cutscene));
         currentCutscenePlayer = null;
