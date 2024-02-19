@@ -54,6 +54,7 @@ public static class DialogueEditor
         }
 
         MissionsEditor.StartMission("Alcohol for adults", "B. Lrorllyl");
+        // TODO: May have to complete the convos corresponding to these jobs?
         MissionsEditor.AcceptMission("Vukra Aid");
         MissionsEditor.AcceptMission("Towels");
 

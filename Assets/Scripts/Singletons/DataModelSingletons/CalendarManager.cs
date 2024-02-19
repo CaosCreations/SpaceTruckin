@@ -139,6 +139,12 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         Debug.Log("Current year: " + CurrentYear);
     }
 
+    public static void SetDate(Date date)
+    {
+        Instance.calendarData.CurrentDate = date;
+        Debug.Log("Current date set to: " + Instance.calendarData.CurrentDate.ToString());
+    }
+
     #region Dialogue Integration
     // Parameters must be doubles as that's the numeric type Lua tables use.
     public bool HasDateBeenReached(double day, double month, double year = 1)
