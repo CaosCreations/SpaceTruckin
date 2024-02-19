@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using UnityEngine;
 
 public class PilotUtils
 {
@@ -19,5 +21,15 @@ public class PilotUtils
         T randomElement = possibleValues.GetRandomElement();
 
         return randomElement;
+    }
+
+    public static Pilot GetPilotByName(string name)
+    {
+        var pilot = PilotsManager.Instance.Pilots.FirstOrDefault(pilot => pilot.Name == name);
+        if (pilot == null)
+        {
+            Debug.LogError("Pilot doesn't exist with name: " + name);
+        }
+        return pilot;
     }
 }

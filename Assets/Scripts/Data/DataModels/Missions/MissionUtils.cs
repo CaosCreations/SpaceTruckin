@@ -81,6 +81,21 @@ public static class MissionUtils
         return mission;
     }
 
+    public static void StartMissionByName(string missionName, string pilotName)
+    {
+        var mission = GetMissionByName(missionName);
+        var pilot = PilotUtils.GetPilotByName(pilotName);
+
+        MissionsManager.AddOrUpdateScheduledMission(pilot, mission);
+        mission.StartMission();
+    }
+
+    public static void AcceptMissionByName(string missionName)
+    {
+        var mission = GetMissionByName(missionName);
+        mission.AcceptMission();
+    }
+
     public static void LogMissionOutcomeBreakdown(params object[] outcomeElements)
     {
         foreach (var element in outcomeElements)
