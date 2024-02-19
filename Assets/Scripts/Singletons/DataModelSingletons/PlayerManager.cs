@@ -65,12 +65,21 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
             return;
         }
 
-        RegisterEvents();
+        // Set up player when station scene loads 
+        SceneManager.activeSceneChanged += (Scene previous, Scene next) =>
+        {
+            if (SceneLoadingManager.GetSceneNameByType(SceneType.MainStation) == next.name)
+            {
+                SetUpPlayer();
+            }
+        };
     }
 
     public void Init()
     {
-        RegisterDialogueEvents();
+        SingletonManager.EventService.Add<OnConversationStartedEvent>(OnConversationStartedHandler);
+        SingletonManager.EventService.Add<OnConversationEndedEvent>(OnConversationEndedHandler);
+        SingletonManager.EventService.Add<OnMorningStartEvent>(OnMorningStartHandler);
 
 #if UNITY_EDITOR
         // If starting from MainStation scene in the editor, then perform the setup here
@@ -79,12 +88,6 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
             SetUpPlayer();
         }
 #endif
-    }
-
-    private void RegisterDialogueEvents()
-    {
-        SingletonManager.EventService.Add<OnConversationStartedEvent>(OnConversationStartedHandler);
-        SingletonManager.EventService.Add<OnConversationEndedEvent>(OnConversationEndedHandler);
     }
 
     private void OnConversationStartedHandler(OnConversationStartedEvent evt)
@@ -108,19 +111,6 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         {
             AcquireLicence(licence, true);
         }
-    }
-
-    private void RegisterEvents()
-    {
-        // Set up player when station scene loads 
-        SceneManager.activeSceneChanged += (Scene previous, Scene next) =>
-        {
-            if (SceneLoadingManager.GetSceneNameByType(SceneType.MainStation) == next.name)
-            {
-                SetUpPlayer();
-            }
-        };
-        SingletonManager.EventService.Add<OnMorningStartEvent>(OnMorningStartHandler);
     }
 
     public void SetUpPlayer()
