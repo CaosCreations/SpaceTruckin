@@ -104,6 +104,7 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
     protected override void EndTutorial()
     {
         UIManager.TerminalManager.SetTabButtonsInteractable(true);
+        SingletonManager.EventService.Remove<OnPilotSlottedWithMissionEvent>(OnPilotSlottedWithMissionEventHandler);
         base.EndTutorial();
     }
 }
