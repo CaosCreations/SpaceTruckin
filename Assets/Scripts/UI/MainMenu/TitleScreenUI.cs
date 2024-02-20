@@ -41,7 +41,7 @@ public class TitleScreenUI : MonoBehaviour
         optionsButton.AddOnClick(OnOptionsButton);
         creditsButton.AddOnClick(OnCreditsButton);
         backButton.AddOnClick(OnBackButton);
-        confirmCharacterButton.AddOnClick(OnConfirmButton);
+        confirmCharacterButton.AddOnClick(OnConfirmButton, removeListeners: false);
     }
 
     private void OnPlayButton()

@@ -19,7 +19,7 @@ public class CharacterCreationUI : MonoBehaviour
         CharacterName = string.Empty;
 
         characterNameInput.onValueChanged.RemoveAllListeners();
-        okButton.AddOnClick(ChooseName);
+        okButton.AddOnClick(ChooseName, removeListeners: false);
 
         characterNameInput.AddOnValueChanged(OnValueChanged);
         characterNameInput.onValidateInput += (string input, int charIndex, char addedChar) =>
