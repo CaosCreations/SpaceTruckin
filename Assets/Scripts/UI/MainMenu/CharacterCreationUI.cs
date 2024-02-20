@@ -6,53 +6,41 @@ public class CharacterCreationUI : MonoBehaviour
     [SerializeField] protected InputField characterNameInput;
     [SerializeField] protected Text invalidInputText;
     [SerializeField] protected Button okButton;
+    protected bool isNameValid;
 
     protected string CharacterName
     {
         get => characterNameInput.text; set => characterNameInput.text = value;
     }
 
-    private void Start()
+    protected virtual void Start()
     {
-        Init();
-    }
-
-    private void Init()
-    {
-        AddListeners();
         invalidInputText.SetActive(false);
-    }
+        CharacterName = string.Empty;
 
-    protected virtual void AddListeners()
-    {
+        characterNameInput.onValueChanged.RemoveAllListeners();
         okButton.AddOnClick(ChooseName);
 
-        AddValidationListener();
-        AddFormattingListener();
-    }
-
-    protected void AddValidationListener()
-    {
+        characterNameInput.AddOnValueChanged(OnValueChanged);
         characterNameInput.onValidateInput += (string input, int charIndex, char addedChar) =>
         {
             return UIUtils.ValidateCharInput(addedChar, UIConstants.AlphabeticalIncludingAccentsPattern);
         };
     }
 
-    protected void AddFormattingListener()
+    protected virtual void OnValueChanged()
     {
-        characterNameInput.AddOnValueChanged(() =>
-        {
-            CharacterName = CharacterName
-                .TrimStart()
-                .RemoveConsecutiveSpaces()
-                .EnforceCharacterLimit(PlayerConstants.MaxPlayerNameLength);
-        });
+        CharacterName = CharacterName
+        .TrimStart()
+        .RemoveConsecutiveSpaces()
+        .EnforceCharacterLimit(PlayerConstants.MaxPlayerNameLength);
+
+        isNameValid = IsNameValid(CharacterName);
     }
 
     protected void ChooseName()
     {
-        if (NameIsValid(CharacterName))
+        if (IsNameValid(CharacterName))
         {
             PlayerManager.SetPlayerName(CharacterName);
             invalidInputText.SetActive(false);
@@ -69,7 +57,7 @@ public class CharacterCreationUI : MonoBehaviour
         }
     }
 
-    protected bool NameIsValid(string name)
+    protected bool IsNameValid(string name)
     {
         return !string.IsNullOrWhiteSpace(name) && name.IsAlphabetical(includeAccents: true);
     }

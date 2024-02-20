@@ -1,30 +1,15 @@
-﻿// This inheritance is bad but temporary 
-using System.Collections;
-using UnityEngine;
-
-public class DemoCharacterCreationNameInputUI : CharacterCreationUI
+﻿public class DemoCharacterCreationNameInputUI : CharacterCreationUI
 {
-    protected override void AddListeners()
+    protected override void Start()
     {
-        characterNameInput.onValueChanged.RemoveAllListeners();
-
-        AddValidationListener();
-        AddFormattingListener();
-        AddNameSettingListener();
+        base.Start();
+        okButton.interactable = false;
     }
 
-    private void AddNameSettingListener()
+    protected override void OnValueChanged()
     {
-        characterNameInput.AddOnValueChanged(() =>
-        {
-            StartCoroutine(WaitAndSetName());
-        });
-
-        IEnumerator WaitAndSetName()
-        {
-            yield return new WaitForSeconds(UIConstants.PlayerNameSettingsDelayInSeconds);
-            ChooseName();
-        }
+        base.OnValueChanged();
+        okButton.interactable = isNameValid;
     }
 
     // Temporary demo limitation as we do not have confirmation button when setting name 
