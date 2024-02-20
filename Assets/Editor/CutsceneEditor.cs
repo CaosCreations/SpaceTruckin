@@ -18,19 +18,4 @@ public class CutsceneEditor : MonoBehaviour
             Debug.LogException(ex);
         }
     }
-
-    //[MenuItem("Space Truckin/Cutscenes/")]
-    //public static void PlayCutscene()
-    //{
-    //    try
-    //    {
-    //        DialogueEditor.LiftUIAccess();
-    //        DialogueEditor.LoriDay1PreTerminal();
-    //        TimelineManager.PlayCutscene("Lori Tut Part 1");
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        Debug.LogException(ex);
-    //    }
-    //}
 }

@@ -45,22 +45,22 @@ public class PositionConstrainer : MonoBehaviour
         {
             if (offsetZ > 0)
             {
-                return new Vector3(centralPoint.x, centralPoint.y, centralPoint.z + offsetDistance);
+                return new Vector3(centralPoint.x, playerPosition.y /*centralPoint.y*/, centralPoint.z + offsetDistance);
             }
             else
             {
-                return new Vector3(centralPoint.x, centralPoint.y, centralPoint.z - offsetDistance);
+                return new Vector3(centralPoint.x, playerPosition.y /*centralPoint.y*/, centralPoint.z - offsetDistance);
             }
         }
         else
         {
             if (offsetX > 0)
             {
-                return new Vector3(centralPoint.x + offsetDistance, centralPoint.y, centralPoint.z);
+                return new Vector3(centralPoint.x + offsetDistance, playerPosition.y /*centralPoint.y*/, centralPoint.z);
             }
             else
             {
-                return new Vector3(centralPoint.x - offsetDistance, centralPoint.y, centralPoint.z);
+                return new Vector3(centralPoint.x - offsetDistance, playerPosition.y /*centralPoint.y*/, centralPoint.z);
             }
         }
     }
