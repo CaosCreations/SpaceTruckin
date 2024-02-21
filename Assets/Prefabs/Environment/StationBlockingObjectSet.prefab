@@ -24,6 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7038660896567996264}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -37,7 +38,6 @@ Transform:
   - {fileID: 7360255863123569658}
   - {fileID: 5595099089232136551}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7038660896833267017
 MonoBehaviour:
@@ -68,6 +68,7 @@ GameObject:
   - component: {fileID: 7038660897214174133}
   - component: {fileID: 7038660897214174134}
   - component: {fileID: 7038660897214174135}
+  - component: {fileID: 4338734760377265070}
   m_Layer: 0
   m_Name: liftOshuBoyA3_3
   m_TagString: Untagged
@@ -82,13 +83,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7038660897214174120}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 238.16, y: 379.953, z: -267.628}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7038660896567996279}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7038660897214174134
 SpriteRenderer:
@@ -162,11 +163,34 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!65 &4338734760377265070
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7038660897214174120}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.61, y: 0.9142857, z: 0.56}
+  m_Center: {x: -0.21, y: 0, z: 0}
 --- !u!1001 &5345616108394540684
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 7038660896567996279}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: d4f035c3432dd0b4daf1bcda3ac94136,
@@ -245,6 +269,9 @@ PrefabInstance:
       value: crater006 (2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4f035c3432dd0b4daf1bcda3ac94136, type: 3}
 --- !u!4 &5595099089232136551 stripped
 Transform:
@@ -257,6 +284,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 7038660896567996279}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 99becadb2f35f63479d4b9c51b0dcf3f,
@@ -320,6 +348,9 @@ PrefabInstance:
       value: Container001 (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99becadb2f35f63479d4b9c51b0dcf3f, type: 3}
 --- !u!4 &7360255864779905610 stripped
 Transform:
@@ -332,6 +363,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 7038660896567996279}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 296b924a6c992fc48aa9ed6e62ca4ed0,
@@ -410,6 +442,9 @@ PrefabInstance:
       value: mechFloppywut (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 296b924a6c992fc48aa9ed6e62ca4ed0, type: 3}
 --- !u!4 &7360255864112270256 stripped
 Transform:
@@ -422,6 +457,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 7038660896567996279}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0759e49b2a8fd4840a36cd5d66908c35,
@@ -500,6 +536,9 @@ PrefabInstance:
       value: Outside Lavy (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0759e49b2a8fd4840a36cd5d66908c35, type: 3}
 --- !u!4 &7360255863442867419 stripped
 Transform:
@@ -512,6 +551,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 7038660896567996279}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 900008ac5757dd842b78ef85fa6931fe,
@@ -660,6 +700,9 @@ PrefabInstance:
       value: StationRestriction
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 900008ac5757dd842b78ef85fa6931fe, type: 3}
 --- !u!4 &7360255863123569658 stripped
 Transform:
@@ -672,6 +715,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 7038660896567996279}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: d4f035c3432dd0b4daf1bcda3ac94136,
@@ -740,6 +784,9 @@ PrefabInstance:
       value: crater006 (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4f035c3432dd0b4daf1bcda3ac94136, type: 3}
 --- !u!4 &7360255862954890685 stripped
 Transform:
