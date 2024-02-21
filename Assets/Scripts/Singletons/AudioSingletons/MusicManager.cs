@@ -8,7 +8,6 @@ public class MusicManager : AudioManager
 
     [SerializeField] private bool trackIndexLoop;
     [SerializeField] private AudioClip titleScreenMusic;
-    [SerializeField] private AudioClip mainStationMusic;
 
     private void Awake()
     {
