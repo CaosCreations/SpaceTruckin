@@ -150,4 +150,12 @@ public abstract class InteractiveCanvasTutorial : SubMenu
         cardShown = true;
         button.onClick.RemoveListener(buttonHandler);
     }
+
+    protected virtual void Update()
+    {
+        if (Input.GetKeyDown(PlayerConstants.ExitKey) && lockCanvas && cantExitCard != null)
+        {
+            CloseWindowButtonHandler();
+        }
+    }
 }

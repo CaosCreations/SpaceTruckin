@@ -23,8 +23,10 @@ public class MissionTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
         base.OnEnable();
     }
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
+
         if (openingCard.gameObject.activeSelf && Input.GetMouseButtonDown(0) && UIUtils.IsPointerOverTag(MissionConstants.MissionsListRaycastTag))
         {
             ShowCard(cardAfterMissionsListClicked);
