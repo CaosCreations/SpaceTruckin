@@ -28,7 +28,6 @@ public class TransitionUI : MonoBehaviour
     {
         var transitionCanvas = transitionCanvases.FirstOrDefault(canvas => canvas.TransitionType == type);
         transitionCanvas.BeginTransition(textContent);
-        PlayerManager.EnterPausedState();
     }
 
     private void OnEveningStartHandler()
