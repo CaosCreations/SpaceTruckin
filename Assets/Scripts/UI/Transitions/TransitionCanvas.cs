@@ -30,7 +30,10 @@ public class TransitionCanvas : MonoBehaviour
         imageOpacityTransition.SetActive(true);
         imageOpacityTransition.enabled = true;
         text.SetText(textContent);
+
+        // Currently assumes transitions are not concurrent 
         PlayerManager.EnterPausedState();
+        UIManager.AddOverriddenKey(KeyCode.Escape);
         SingletonManager.EventService.Dispatch(new OnUITransitionStartedEvent(TransitionType));
     }
 
@@ -39,6 +42,7 @@ public class TransitionCanvas : MonoBehaviour
         canvas.gameObject.SetActive(false);
         imageOpacityTransition.SetActive(false);
         PlayerManager.ExitPausedState();
+        UIManager.RemoveOverriddenKey(KeyCode.Escape);
         SingletonManager.EventService.Dispatch(new OnUITransitionEndedEvent(TransitionType));
         IsTransitioning = false;
     }
