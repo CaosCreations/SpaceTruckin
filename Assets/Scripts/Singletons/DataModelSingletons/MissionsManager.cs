@@ -1,8 +1,10 @@
 ﻿using Events;
 using PixelCrushers.DialogueSystem;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegistrar
 {
@@ -16,7 +18,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     public MissionOutcome[] Outcomes => missionOutcomeContainer.MissionOutcomes;
     public MissionBonus[] Bonuses => missionBonusContainer.Elements;
 
-    public static List<ScheduledMission> ScheduledMissions;
+    public static List<ScheduledMission> ScheduledMissions { get; private set; }
 
     private void Awake()
     {
@@ -197,6 +199,27 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     {
         UpdateMissionSchedule();
         ApplyOfferExpiryConsequences();
+
+        // Date-dependent unlocking/locking. Hard-coded for now. 
+        foreach (var mission in Missions)
+        {
+            if (missionContainer.Day2Missions.Contains(mission))
+            {
+                if (CalendarManager.CurrentDate == new Date(2, 1, 1))
+                {
+                    Debug.Log($"Unlocking and accepting mission '{mission.Name}' because it's day 2.");
+                    mission.UnlockMission();
+                    mission.AcceptMission();
+                }
+                // Day 2 missions only last 1 day 
+                else if (CalendarManager.CurrentDate == new Date(3, 1, 1))
+                {
+                    Debug.Log($"Locking and unaccepting mission '{mission.Name}' because it's day 3.");
+                    mission.HasBeenUnlocked = false;
+                    mission.HasBeenAccepted = false;
+                }
+            }
+        }
     }
 
     public void SetUp()

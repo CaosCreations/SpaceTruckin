@@ -107,7 +107,7 @@ public partial class Mission : ScriptableObject, IDataModel, IEditableDataModel
         }
     }
 
-    private void UnlockMission()
+    public void UnlockMission()
     {
         if (HasBeenUnlocked)
         {
@@ -121,6 +121,11 @@ public partial class Mission : ScriptableObject, IDataModel, IEditableDataModel
 
     public void AcceptMission()
     {
+        if (HasBeenAccepted)
+        {
+            return;
+        }
+
         HasBeenAccepted = true;
         DateAccepted = CalendarManager.CurrentDate;
     }
