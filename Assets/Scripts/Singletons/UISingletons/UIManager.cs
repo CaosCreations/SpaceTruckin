@@ -57,7 +57,7 @@ public class UIManager : MonoBehaviour
         var pointerUnderTypes = TypesUnderPointer != null && TypesUnderPointer.Any(t => SuccessInputTypes.Contains(t));
         var pointerUnderTags = TagsUnderPointer != null && TagsUnderPointer.Any(t => SuccessInputTags.Contains(t));
 
-        return Input.GetMouseButtonDown(0)
+        return Input.GetMouseButtonUp(0)
             && CurrentCanvasType != UICanvasType.Bed
             && !DialogueUtils.IsConversationActive
             && !(pointerUnderTypes || pointerUnderTags);
