@@ -18,7 +18,7 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     public MissionOutcome[] Outcomes => missionOutcomeContainer.MissionOutcomes;
     public MissionBonus[] Bonuses => missionBonusContainer.Elements;
 
-    public static List<ScheduledMission> ScheduledMissions;
+    public static List<ScheduledMission> ScheduledMissions { get; private set; }
 
     private void Awake()
     {
@@ -200,13 +200,25 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         UpdateMissionSchedule();
         ApplyOfferExpiryConsequences();
 
-        if (CalendarManager.CurrentDate == new Date(2, 1, 1))
+        // Date-dependent unlocking/locking. Hard-coded for now. 
+        foreach (var mission in Missions)
         {
-            Array.ForEach(missionContainer.Day2Missions, m =>
+            if (missionContainer.Day2Missions.Contains(mission))
             {
-                m.UnlockMission();
-                m.AcceptMission();
-            });
+                if (CalendarManager.CurrentDate == new Date(2, 1, 1))
+                {
+                    Debug.Log($"Unlocking and accepting mission '{mission.Name}' because it's day 2.");
+                    mission.UnlockMission();
+                    mission.AcceptMission();
+                }
+                // Day 2 missions only last 1 day 
+                else if (CalendarManager.CurrentDate == new Date(3, 1, 1))
+                {
+                    Debug.Log($"Locking and unaccepting mission '{mission.Name}' because it's day 3.");
+                    mission.HasBeenUnlocked = false;
+                    mission.HasBeenAccepted = false;
+                }
+            }
         }
     }
 
