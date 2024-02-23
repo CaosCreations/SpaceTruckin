@@ -86,7 +86,7 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
         if (HangarManager.AreAllSlotsOccupied())
         {
             ShowCard(afterScheduledMissionsCard);
-            UnlockCanvas();
+            //UnlockCanvas();
         }
     }
 

@@ -108,7 +108,7 @@ public class UniversalHangarNodeUI : UICanvasBase
             shipPreview.transform.Rotate(UIConstants.ShipPreviewRotationSpeed);
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape) && SceneRepairsMinigamesManager.Instance.IsRepairsMinigameRunning())
+        if (Input.GetKeyDown(PlayerConstants.ExitKey) && SceneRepairsMinigamesManager.Instance.IsRepairsMinigameRunning())
         {
             StopMinigame();
         }
