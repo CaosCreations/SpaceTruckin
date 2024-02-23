@@ -29,6 +29,8 @@ public class DialogueLineSkip : MonoBehaviour
             dialogueUI.OnContinueConversation();
         }
 
+        // Probably best to disable this in the build even for testing purposes as it skips a bunch of script interactions. 
+#if UNITY_EDITOR
         if (IsSkipConvoInput())
         {
             var entry = DialogueUtils.GetCurrentEntry();
@@ -49,6 +51,7 @@ public class DialogueLineSkip : MonoBehaviour
             }
             DialogueManager.StopAllConversations();
         }
+#endif
     }
 
     private bool IsSkipLineInput()
