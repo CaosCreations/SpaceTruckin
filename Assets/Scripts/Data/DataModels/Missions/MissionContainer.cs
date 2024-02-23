@@ -8,4 +8,10 @@ public class MissionContainer : ScriptableObject, IScriptableObjectContainer<Mis
 
     [field: SerializeField]
     public Mission[] StartingMissions { get; private set; }
+
+    /// <summary>
+    /// TODO: Eventually we may want to configure missions by arbitrary date.
+    /// </summary>
+    [field: SerializeField]
+    public Mission[] Day2Missions { get; private set; }
 }

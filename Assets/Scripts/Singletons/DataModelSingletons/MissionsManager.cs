@@ -1,8 +1,10 @@
 ﻿using Events;
 using PixelCrushers.DialogueSystem;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegistrar
 {
@@ -197,6 +199,15 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     {
         UpdateMissionSchedule();
         ApplyOfferExpiryConsequences();
+
+        if (CalendarManager.CurrentDate == new Date(2, 1, 1))
+        {
+            Array.ForEach(missionContainer.Day2Missions, m =>
+            {
+                m.UnlockMission();
+                m.AcceptMission();
+            });
+        }
     }
 
     public void SetUp()
