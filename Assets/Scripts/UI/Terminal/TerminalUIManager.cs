@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,7 +20,16 @@ public class TerminalUIManager : UICanvasBase
     [SerializeField] private GameObject fleetPanel;
     [SerializeField] private GameObject licencesPanel;
     [SerializeField] private GameObject newDayReportPanel;
+
+    // Tab colours
     [SerializeField] private Color missionsTabColour;
+    [SerializeField] private Color messagesTabColour;
+    [SerializeField] private Color analyticsTabColour;
+    [SerializeField] private Color fleetTabColour;
+    [SerializeField] private Color licencesTabColour;
+    private Dictionary<Tab, Color> tabColourMap;
+    //private Color unclickedButtonText = new(50, 50, 50);
+    //private Color clickedButtonText = new(242, 240, 229);
 
     private NewDayReportUI newDayReportUI;
 
@@ -36,17 +46,29 @@ public class TerminalUIManager : UICanvasBase
         SetupButtonListeners();
         TabButtonClicked(Tab.Missions);
         newDayReportUI = newDayReportPanel.GetComponent<NewDayReportUI>();
+
+        tabColourMap = new()
+        {
+            { Tab.Missions, missionsTabColour },
+            { Tab.Messages, messagesTabColour },
+            { Tab.Analytics, analyticsTabColour },
+            { Tab.Fleet, fleetTabColour },
+            { Tab.Licences, licencesTabColour },
+        };
     }
 
     private void OnEnable()
     {
-        if (ArchivedMissionsManager.ThereAreMissionsToReport()
-            && !newDayReportUI.HasBeenViewedToday)
+        if (ArchivedMissionsManager.ThereAreMissionsToReport() && !newDayReportUI.HasBeenViewedToday)
         {
             ClearPanels();
             ResetTabButtonColours();
             newDayReportPanel.SetActive(true);
             newDayReportUI.Init();
+        }
+        else
+        {
+            SwitchPanel(Tab.Missions, true);
         }
     }
 
@@ -107,19 +129,10 @@ public class TerminalUIManager : UICanvasBase
     private void SetTabButtonColours(Tab tab)
     {
         ResetTabButtonColours();
-        Color tabButtonColour;
-
-        // Historically they were all coloured Unity panels, but now the missions view is a pictorial image with colour built in.
-        // Eventually we'll probably want to make the tab colours a shared property on the base class.
-        if (tab == Tab.Missions)
-        {
-            tabButtonColour = missionsTabColour;
-        }
-        else
-        {
-            tabButtonColour = GetPanelByTab(tab).GetImageColour();
-        }
-        GetTabButtonByTab(tab).SetColour(tabButtonColour);
+        var tabButtonColour = tabColourMap[tab];
+        var button = GetTabButtonByTab(tab);
+        //button.SetTextColour(clickedButtonText);
+        button.SetColour(tabButtonColour);
     }
 
     public void ResetTabButtonColours()
@@ -129,6 +142,12 @@ public class TerminalUIManager : UICanvasBase
         analyticsButton.SetColour(UIConstants.InactiveTabButtonColour);
         fleetButton.SetColour(UIConstants.InactiveTabButtonColour);
         licencesButton.SetColour(UIConstants.InactiveTabButtonColour);
+
+        //missionsButton.SetTextColour(unclickedButtonText);
+        //messagesButton.SetTextColour(unclickedButtonText);
+        //analyticsButton.SetTextColour(unclickedButtonText);
+        //fleetButton.SetTextColour(unclickedButtonText);
+        //licencesButton.SetTextColour(unclickedButtonText);
     }
 
     private Button GetTabButtonByTab(Tab tab)
