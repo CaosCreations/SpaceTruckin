@@ -4,6 +4,20 @@ using UnityEngine;
 
 public class TutorialEditor : MonoBehaviour
 {
+    [MenuItem("Space Truckin/Tutorial/Complete All")]
+    public static void CompleteAll()
+    {
+        try
+        {
+            DialogueEditor.LiftUIAccess();
+            SetAllTutorialPlayerPrefs(true);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogException(ex);
+        }
+    }
+
     [MenuItem("Space Truckin/Tutorial/Enable Mission Terminal Tutorial")]
     public static void EnableMissionTerminalTutorial()
     {
