@@ -52,6 +52,16 @@ public static class ButtonExtensions
         }
     }
 
+    public static void SetTextColour(this Button self, Color newColor)
+    {
+        Text buttonText = self.GetComponentInChildren<Text>();
+
+        if (buttonText != null)
+        {
+            buttonText.color = newColor;
+        }
+    }
+
     public static Button SetInteractable(this Button self, bool value)
     {
         self.interactable = value;

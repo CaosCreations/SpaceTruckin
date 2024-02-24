@@ -16,6 +16,8 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     private CanvasGroup canvasGroup;
     private RectTransform myRectTransform;
 
+    public bool DragDisabled { get; set; }
+
     private void Awake()
     {
         missionsUI = GetComponentInParent<MissionsUI>();
@@ -47,6 +49,11 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (DragDisabled)
+        {
+            return;
+        }
+
         HideDetails();
 
         if (!Mission.IsInProgress())
@@ -59,6 +66,11 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (DragDisabled)
+        {
+            return;
+        }
+
         // Delta is the distance that the mouse moved since previous frame
         // Divide by canvas scale factor to prevent object from not following the mouse properly on a scaled canvas
         if (!Mission.IsInProgress())
@@ -69,6 +81,11 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (DragDisabled)
+        {
+            return;
+        }
+
         if (!Mission.IsInProgress())
         {
             // Raycast will pass through and hit the schedule
@@ -153,7 +170,7 @@ public class MissionUIItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (UIManager.IsTutorialActive(UICanvasType.Terminal))
+        if (UIManager.IsTutorialActive())
         {
             return;
         }

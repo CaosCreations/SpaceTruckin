@@ -68,14 +68,13 @@ public class TimelineManager : MonoBehaviour, ILuaFunctionRegistrar
         pauseView.SetActive(false);
         ResumeTimeline();
 
-        SingletonManager.EventService.Dispatch(new OnCutsceneFinishedEvent(cutscene));
-        currentCutscenePlayer = null;
-
-        // TODO: Maybe put this before notifying subscribers 
         if (!cutscene.ConversationSettings.DontUnpausePlayerOnEnd)
         {
             PlayerManager.ExitPausedState();
         }
+
+        SingletonManager.EventService.Dispatch(new OnCutsceneFinishedEvent(cutscene));
+        currentCutscenePlayer = null;
 
         if (cutscene.CutsceneOnEnd != null)
         {
