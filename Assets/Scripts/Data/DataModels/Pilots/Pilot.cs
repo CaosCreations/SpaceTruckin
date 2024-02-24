@@ -51,6 +51,27 @@ public partial class Pilot : ScriptableObject, IDataModel
         public int MissionsCompleted;
         public bool IsHired;
         public PilotAttributes Attributes;
+
+        public PilotSaveData()
+        {
+            OnValidate();
+        }
+
+        public void OnValidate()
+        {
+            // Cannot be below 1
+            Level = Math.Max(Level, 1);
+            Attributes.Navigation = Math.Max(Attributes.Navigation, 1);
+            Attributes.Savviness = Math.Max(Attributes.Savviness, 1);
+
+            // Cannot be below 0 
+            RequiredXp = Math.Max(RequiredXp, 0);
+            CurrentXp = Math.Max(CurrentXp, 0);
+            MissionsCompleted = Math.Max(MissionsCompleted, 0);
+
+            // Cannot be below custom threshold 
+            RequiredXp = Math.Max(RequiredXp, PilotsConstants.MinimumRequiredXp);
+        }
     }
 
     public const string FolderName = "PilotSaveData";
@@ -72,18 +93,7 @@ public partial class Pilot : ScriptableObject, IDataModel
 
     private void OnValidate()
     {
-        // Cannot be below 1
-        saveData.Level = Math.Max(saveData.Level, 1);
-        saveData.Attributes.Navigation = Math.Max(saveData.Attributes.Navigation, 1);
-        saveData.Attributes.Savviness = Math.Max(saveData.Attributes.Savviness, 1);
-
-        // Cannot be below 0 
-        saveData.RequiredXp = Math.Max(saveData.RequiredXp, 0);
-        saveData.CurrentXp = Math.Max(saveData.CurrentXp, 0);
-        saveData.MissionsCompleted = Math.Max(saveData.MissionsCompleted, 0);
-
-        // Cannot be below custom threshold 
-        saveData.RequiredXp = Math.Max(saveData.RequiredXp, PilotsConstants.MinimumRequiredXp);
+        saveData.OnValidate();
 
         if (isRandom)
         {
