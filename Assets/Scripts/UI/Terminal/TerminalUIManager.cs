@@ -19,6 +19,7 @@ public class TerminalUIManager : UICanvasBase
     [SerializeField] private GameObject fleetPanel;
     [SerializeField] private GameObject licencesPanel;
     [SerializeField] private GameObject newDayReportPanel;
+    [SerializeField] private Color missionsTabColour;
 
     private NewDayReportUI newDayReportUI;
 
@@ -106,7 +107,18 @@ public class TerminalUIManager : UICanvasBase
     private void SetTabButtonColours(Tab tab)
     {
         ResetTabButtonColours();
-        Color tabButtonColour = GetPanelByTab(tab).GetImageColour();
+        Color tabButtonColour;
+
+        // Historically they were all coloured Unity panels, but now the missions view is a pictorial image with colour built in.
+        // Eventually we'll probably want to make the tab colours a shared property on the base class.
+        if (tab == Tab.Missions)
+        {
+            tabButtonColour = missionsTabColour;
+        }
+        else
+        {
+            tabButtonColour = GetPanelByTab(tab).GetImageColour();
+        }
         GetTabButtonByTab(tab).SetColour(tabButtonColour);
     }
 
