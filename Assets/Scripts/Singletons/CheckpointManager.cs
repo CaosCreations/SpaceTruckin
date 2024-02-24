@@ -30,6 +30,11 @@ public class CheckpointManager : MonoBehaviour
         CalendarManager.SetDate(new Date(1, 1, 1));
         UIManager.LiftAccessSettings();
 
+        if (PlayerManager.PlayerMovementAnimation.IsHoldingBaby)
+        {
+            PlayerManager.PlayerMovementAnimation.ToggleBabyHolding();
+        }
+
         // TODO: If we want to support going back to day 2 from a later day, we'll need to reset the dialogue db etc.
         Bed.Sleep();
     }
