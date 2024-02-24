@@ -25,6 +25,8 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
     [SerializeField] private Button licencesButton;
     [SerializeField] private Button analyticsButton;
 
+    private MissionUIItem[] missionUIItems;
+
     protected override void Start()
     {
         base.Start();
@@ -33,6 +35,10 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
         fleetButton.AddOnClick(FleetButtonHandler, removeListeners: false);
         licencesButton.AddOnClick(LicencesButtonHandler, removeListeners: false);
         analyticsButton.AddOnClick(AnalyticsButtonHandler, removeListeners: false);
+
+        // Disable scheduling missions until later in the flow 
+        missionUIItems = FindObjectsOfType<MissionUIItem>();
+        SetMissionUIItemsDragDisabled(true);
 
         UIManager.TerminalManager.SetSingleTabButtonInteractable(Tab.Messages);
         SingletonManager.EventService.Add<OnPilotSlottedWithMissionEvent>(OnPilotSlottedWithMissionEventHandler);
@@ -79,6 +85,7 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
     {
         ShowCard(licencesCard, ref licencesCardShown, licencesButton, LicencesButtonHandler);
         UIManager.TerminalManager.SetSingleTabButtonInteractable(Tab.Missions);
+        SetMissionUIItemsDragDisabled(false);
     }
 
     private void OnPilotSlottedWithMissionEventHandler()
@@ -106,5 +113,13 @@ public class GeneralTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
         UIManager.TerminalManager.SetTabButtonsInteractable(true);
         SingletonManager.EventService.Remove<OnPilotSlottedWithMissionEvent>(OnPilotSlottedWithMissionEventHandler);
         base.EndTutorial();
+    }
+
+    private void SetMissionUIItemsDragDisabled(bool value)
+    {
+        foreach (var item in missionUIItems)
+        {
+            item.DragDisabled = value;
+        }
     }
 }

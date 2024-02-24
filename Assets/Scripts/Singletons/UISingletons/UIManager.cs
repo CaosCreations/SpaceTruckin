@@ -265,10 +265,9 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public static bool IsTutorialActive(UICanvasType type)
+    public static bool IsTutorialActive()
     {
-        var canvas = GetCanvasByType(type);
-        return canvas.IsTutorialActive;
+        return activeCanvas != null && activeCanvas.IsTutorialActive;
     }
 
     public static void BeginTransition(TransitionUI.TransitionType transitionType, string textContent)
