@@ -20,6 +20,7 @@ public class HangarNodeInteractiveCanvasTutorial : InteractiveCanvasTutorial
     [SerializeField] private Button repairsButton;
     [SerializeField] private Button mainPanelButton;
     [SerializeField] private Button startMissionButton;
+    [SerializeField] private Button returnToQueueButton;
 
     private bool repairsCardShown;
     //private bool minigameCard1Shown;
@@ -41,6 +42,7 @@ public class HangarNodeInteractiveCanvasTutorial : InteractiveCanvasTutorial
         repairsButton.AddOnClick(RepairsButtonHandler, removeListeners: false);
         mainPanelButton.AddOnClick(MainPanelButtonHandler, removeListeners: false);
         startMissionButton.AddOnClick(EndTutorial, removeListeners: false);
+        returnToQueueButton.interactable = false;
 
         SingletonManager.EventService.Add<OnFuelingEndedEvent>(OnFuelingEndedEventHandler);
         //SingletonManager.EventService.Add<OnRepairsMinigameWonEvent>(OnRepairsMinigameWonEventHandler);
@@ -87,5 +89,11 @@ public class HangarNodeInteractiveCanvasTutorial : InteractiveCanvasTutorial
         //minigameCard4.SetActive(false);
         //backToMainPanelCard.SetActive(false);
         customisationsCard.SetActive(false);
+    }
+
+    protected override void EndTutorial()
+    {
+        returnToQueueButton.interactable = true;
+        base.EndTutorial();
     }
 }
