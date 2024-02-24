@@ -49,8 +49,11 @@ public class PopupManager : MonoBehaviour
 
     private void OnHide()
     {
-        UIManager.RemoveOverriddenKey(KeyCode.Escape);
-        PlayerManager.ExitPausedState();
+        if (!UIManager.IsCanvasActive())
+        {
+            UIManager.RemoveOverriddenKey(KeyCode.Escape);
+            PlayerManager.ExitPausedState();
+        }
         canvas.gameObject.SetActive(false);
         defaultPopup.SetActive(false);
         demoFeaturePopup.SetActive(false);
@@ -59,7 +62,7 @@ public class PopupManager : MonoBehaviour
 
     private void Update()
     {
-        if (canvas.gameObject.activeSelf && Input.GetKeyDown(KeyCode.Escape))
+        if (canvas.gameObject.activeSelf && Input.GetKeyDown(PlayerConstants.ExitKey))
         {
             //HidePopup();
         }

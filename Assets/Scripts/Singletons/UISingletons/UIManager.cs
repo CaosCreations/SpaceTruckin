@@ -45,6 +45,7 @@ public class UIManager : MonoBehaviour
 
     private TextMeshPro interactionTextMesh;
     public static UICanvasType CurrentCanvasType { get; private set; }
+    private static UICanvasBase activeCanvas;
 
     private static Type[] SuccessInputTypes => new[]
     {
@@ -176,6 +177,7 @@ public class UIManager : MonoBehaviour
         Instance.mainMenuCanvas.SetActive(false);
         Instance.pauseMenuCanvas.SetActive(false);
         Instance.universalUI.gameObject.SetActive(false);
+        activeCanvas = null;
     }
 
     /// <param name="canvas">The canvas to display, which is set by collision or a shortcut
@@ -194,13 +196,14 @@ public class UIManager : MonoBehaviour
         }
 
         canvas.SetActive(true);
+        activeCanvas = canvas;
 
         if (!viaShortcut && canvas.TryGetTutorial(CalendarManager.CurrentDate, out var tutorial) && !tutorial.DoNotAutomaticallyOpen)
         {
-            canvas.ShowTutorialIfExistsAndUnseen();
+            activeCanvas.ShowTutorialIfExistsAndUnseen();
         }
 
-        if (canvas.ShowUniversalCanvas)
+        if (activeCanvas.ShowUniversalCanvas)
         {
             Instance.universalUI.gameObject.SetActive(true);
         }
@@ -238,10 +241,9 @@ public class UIManager : MonoBehaviour
         };
     }
 
-    public static bool IsCanvasActive(UICanvasType canvasType)
+    public static bool IsCanvasActive()
     {
-        UICanvasBase canvas = GetCanvasByType(canvasType);
-        return canvas != null && canvas.IsActive();
+        return activeCanvas != null;
     }
 
     public static void ToggleCanvas(UICanvasType canvasType)

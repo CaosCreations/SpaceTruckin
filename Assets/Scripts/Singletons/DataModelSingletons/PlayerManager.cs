@@ -201,6 +201,10 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
     public static void EnterPausedState(bool stopClock = true)
     {
+        if (IsPaused)
+        {
+            return;
+        }
         Debug.Log("Entering player paused state");
         PlayerMovement.MovementAnimation.ResetParams();
         PlayerMovement.StopPlayer();
@@ -210,6 +214,10 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
     public static void ExitPausedState()
     {
+        if (!IsPaused)
+        {
+            return;
+        }
         Debug.Log("Exiting player paused state");
         IsPaused = false;
         SingletonManager.EventService.Dispatch<OnPlayerUnpausedEvent>();
