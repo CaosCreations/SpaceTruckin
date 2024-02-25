@@ -68,6 +68,7 @@ public class UIManager : MonoBehaviour
     public static HashSet<string> TagsUnderPointer { get; private set; }
 
     public static TerminalUIManager TerminalManager => Instance.terminalCanvas as TerminalUIManager;
+    public static UniversalUI UniversalUI => Instance.universalUI;
     public static int HangarNode;
 
     private void Awake()
