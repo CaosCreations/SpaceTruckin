@@ -89,11 +89,11 @@ public class NewDayReportUI : SubMenu
         }
     }
 
-    private void Update()
-    {
-        if (reportCard != null && reportCard.gameObject != null && Input.GetKeyDown(PlayerConstants.ExitKey))
-        {
-            CloseReport();
-        }
-    }
+    //private void Update()
+    //{
+    //    if (reportCard != null && reportCard.gameObject != null && Input.GetKeyDown(PlayerConstants.ExitKey))
+    //    {
+    //        CloseReport();
+    //    }
+    //}
 }
