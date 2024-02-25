@@ -14,7 +14,7 @@ public class SubMenu : MonoBehaviour
         SetUniqueOverrides();
     }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         SetUniqueOverrides();
     }

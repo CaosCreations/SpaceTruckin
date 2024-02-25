@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NewDayReportUI : MonoBehaviour
+public class NewDayReportUI : SubMenu
 {
     [SerializeField] private NewDayReportCard reportCard;
     [SerializeField] private Text welcomeMessageText;
@@ -13,21 +13,21 @@ public class NewDayReportUI : MonoBehaviour
     private List<ArchivedMission> MissionsToAppearInReport { get; set; }
     public ArchivedMission CurrentMissionToReport => MissionsToAppearInReport[currentReportIndex];
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         SingletonManager.EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         MissionsToAppearInReport = ArchivedMissionsManager.GetMissionsToAppearInReport();
-
-        // Don't let them exit the report until all missions have been shown.
-        UIManager.AddOverriddenKey(PlayerConstants.ExitKey);
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         HasBeenViewedToday = true;
         MissionsToAppearInReport.Clear();
         UIManager.RemoveOverriddenKey(PlayerConstants.ExitKey);
@@ -89,11 +89,11 @@ public class NewDayReportUI : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (reportCard != null && reportCard.gameObject != null && Input.GetKeyDown(PlayerConstants.ExitKey))
-        {
-            CloseReport();
-        }
-    }
+    //private void Update()
+    //{
+    //    if (reportCard != null && reportCard.gameObject != null && Input.GetKeyDown(PlayerConstants.ExitKey))
+    //    {
+    //        CloseReport();
+    //    }
+    //}
 }

@@ -53,15 +53,26 @@ public class UIManager : MonoBehaviour
     };
     private static readonly string[] SuccessInputTags = new[] { MissionConstants.MissionsListRaycastTag, UIConstants.AudioVolumeSliderTag, };
 
-    private static bool IsErrorInput()
+    private static bool IsErrorClickInput()
     {
-        var pointerUnderTypes = TypesUnderPointer != null && TypesUnderPointer.Any(t => SuccessInputTypes.Contains(t));
-        var pointerUnderTags = TagsUnderPointer != null && TagsUnderPointer.Any(t => SuccessInputTags.Contains(t));
+        // Contexts that aren't even relevant to UI mouse input 
+        if (!Input.GetMouseButtonUp(0)
+            || CurrentCanvasType == UICanvasType.Bed
+            || DialogueUtils.IsConversationActive
+            || Instance.transitionUI.IsTransitioning)
+        {
+            return false;
+        }
 
-        return Input.GetMouseButtonUp(0)
-            && CurrentCanvasType != UICanvasType.Bed
-            && !DialogueUtils.IsConversationActive
-            && !(pointerUnderTypes || pointerUnderTags);
+        // Now gradually check what's under the mouse...
+        var pointerUnderTypes = TypesUnderPointer != null && TypesUnderPointer.Any(t => SuccessInputTypes.Contains(t));
+        if (pointerUnderTypes)
+        {
+            return false;
+        }
+
+        var pointerUnderTags = TagsUnderPointer != null && TagsUnderPointer.Any(t => SuccessInputTags.Contains(t));
+        return !pointerUnderTags;
     }
 
     public static HashSet<Type> TypesUnderPointer { get; private set; }
@@ -149,7 +160,7 @@ public class UIManager : MonoBehaviour
         TagsUnderPointer = tagsUnderPointer;
 
         // Play an Error sound effect if a non-interactable region is clicked. For now ignore if we're showing a popup.
-        if (!PopupManager.IsPopupActive && IsErrorInput())
+        if (!PopupManager.IsPopupActive && IsErrorClickInput())
         {
             UISoundEffectsManager.Instance.PlaySoundEffect(UISoundEffect.Error);
             return;
