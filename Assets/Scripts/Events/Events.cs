@@ -94,7 +94,7 @@ namespace Events
     public class OnConversationStartedEvent : OnConversationEvent
     {
         public OnConversationStartedEvent(Conversation conversation) : base(conversation)
-        {   
+        {
         }
     }
 
@@ -301,6 +301,12 @@ namespace Events
 
     public class OnFuelingEndedEvent : IEvent
     {
+        public int CurrentFuel { get; }
+
+        public OnFuelingEndedEvent(int currentFuel)
+        {
+            CurrentFuel = currentFuel;
+        }
     }
 
     public class OnStationSetUpEvent : IEvent

@@ -16,7 +16,7 @@ public class NPC : MonoBehaviour
     {
         if (Data == null)
         {
-            Debug.LogWarning($"{gameObject.name} NPC has no {nameof(NPCData)} ScriptableObject reference assigned");
+            //Debug.LogWarning($"{gameObject.name} NPC has no {nameof(NPCData)} ScriptableObject reference assigned");
             return;
         }
         Data.LocationByDateContainer.InitLookup();
