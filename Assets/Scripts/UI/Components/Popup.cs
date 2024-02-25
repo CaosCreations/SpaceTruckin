@@ -19,12 +19,12 @@ public class Popup : MonoBehaviour
         }
     }
 
-    public void Init(UnityAction onOk, string bodyText = null, string okText = null, string cancelText = null, UnityAction onCancel = null)
+    public void Init(UnityAction onOk, string bodyText = null, string okText = null, string cancelText = null, UnityAction onCancel = null, bool showCancel = false)
     {
         okButton.AddOnClick(() => Hide(onOk));
 
         // Some popups only have ok button 
-        if (cancelButton != null && onCancel != null)
+        if (cancelButton != null && onCancel != null && showCancel)
         {
             cancelButton.gameObject.SetActive(true);
             cancelButton.SetText(cancelText ?? defaultCancelText);

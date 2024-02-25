@@ -23,7 +23,7 @@ public partial class Ship : ScriptableObject, IDataModel
         public float currentHullIntegrity;
         public bool canWarp;
     }
-    
+
     public float GetHullPercentage()
     {
         return saveData.currentHullIntegrity / maxHullIntegrity;
@@ -59,5 +59,10 @@ public partial class Ship : ScriptableObject, IDataModel
     public void ResetData()
     {
         saveData = new();
+    }
+
+    public override string ToString()
+    {
+        return $"{nameof(Ship)} with name {Name}";
     }
 }

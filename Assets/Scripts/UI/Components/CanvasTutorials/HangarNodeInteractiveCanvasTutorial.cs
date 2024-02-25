@@ -59,9 +59,10 @@ public class HangarNodeInteractiveCanvasTutorial : InteractiveCanvasTutorial
         ShowCard(customisationsCard, ref customisationsCardShown, mainPanelButton, MainPanelButtonHandler);
     }
 
-    private void OnFuelingEndedEventHandler()
+    private void OnFuelingEndedEventHandler(OnFuelingEndedEvent evt)
     {
-        if (repairsCardShown)
+        // For now just hard-code some number that's above the fuel cost for all missions 
+        if (repairsCardShown || evt.CurrentFuel < 70)
             return;
 
         ShowCard(repairsCard);

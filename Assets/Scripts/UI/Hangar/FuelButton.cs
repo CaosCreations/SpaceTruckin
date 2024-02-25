@@ -52,7 +52,8 @@ public class FuelButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             screenShake.StopShake();
         }
-        SingletonManager.EventService.Dispatch<OnFuelingEndedEvent>();
+        Debug.Log($"OnFuelingEnded for {shipToFuel} at {shipToFuel.CurrentFuel} fuel");
+        SingletonManager.EventService.Dispatch(new OnFuelingEndedEvent(shipToFuel.CurrentFuel));
     }
 
     public void OnPointerDown(PointerEventData eventData)

@@ -9,7 +9,6 @@ public abstract class InteractiveCanvasTutorial : SubMenu
     [SerializeField] protected InteractiveCanvasTutorialCard endingCard;
     [SerializeField] protected bool lockCanvas;
     [SerializeField] protected InteractiveCanvasTutorialCard cantExitCard;
-    [SerializeField] protected UniversalUI universalUI;
     [SerializeField] protected string dialogueBoolOnComplete;
     [SerializeField] protected Cutscene cutsceneOnComplete;
     [SerializeField] protected int conversationIdOnComplete;
@@ -60,10 +59,11 @@ public abstract class InteractiveCanvasTutorial : SubMenu
 
     protected void LockCanvas()
     {
-        universalUI.DisableCloseWindowButton();
+        UIManager.UniversalUI.DisableCloseWindowButton();
+
         if (cantExitCard != null)
         {
-            universalUI.AddCloseWindowButtonListener(CloseWindowButtonHandler);
+            UIManager.UniversalUI.AddCloseWindowButtonListener(CloseWindowButtonHandler);
         }
         else
         {
@@ -73,8 +73,8 @@ public abstract class InteractiveCanvasTutorial : SubMenu
 
     protected void UnlockCanvas()
     {
-        universalUI.RemoveCloseWindowButtonListener(CloseWindowButtonHandler);
-        universalUI.EnableCloseWindowButton();
+        UIManager.UniversalUI.RemoveCloseWindowButtonListener(CloseWindowButtonHandler);
+        UIManager.UniversalUI.EnableCloseWindowButton();
         RemoveOverriddenKeys();
         lockCanvas = false;
     }
