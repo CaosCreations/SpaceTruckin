@@ -19,7 +19,11 @@ public class MissionTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
     protected override void OnEnable()
     {
         UIManager.TerminalManager.SetSingleTabButtonInteractable(TerminalUIManager.Tab.Missions);
-        missionsListTarget.SetActive(true);
+
+        if (missionsListTarget != null)
+        {
+            missionsListTarget.SetActive(true);
+        }
         base.OnEnable();
     }
 
