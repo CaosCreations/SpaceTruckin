@@ -256,9 +256,10 @@ public class UIManager : MonoBehaviour
         };
     }
 
-    public static bool IsCanvasActive()
+    public static bool IsCanvasActive(bool includeBed = true)
     {
-        return activeCanvas != null;
+        // Kind of hacky, but some things ought not consider the bed a first-class UI canvas. For now, option to treat it differently.
+        return includeBed ? activeCanvas != null : activeCanvas != null && activeCanvas != Instance.bedCanvas;
     }
 
     public static void ToggleCanvas(UICanvasType canvasType)

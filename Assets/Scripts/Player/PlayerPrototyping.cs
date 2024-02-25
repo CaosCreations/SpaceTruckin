@@ -8,7 +8,7 @@ public class PlayerPrototyping : MonoBehaviour
 
     private void Update()
     {
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         if (Input.GetKey(PlayerConstants.PrototypingModifier))
         {
             // Access menus remotely 
@@ -55,6 +55,6 @@ public class PlayerPrototyping : MonoBehaviour
                 PlayerManager.PlayerMovement.SetPosition(PlayerConstants.PlayerSpaceportPosition, AnimationConstants.SpaceportStateName);
             }
         }
-#endif
+//#endif
     }
 }
