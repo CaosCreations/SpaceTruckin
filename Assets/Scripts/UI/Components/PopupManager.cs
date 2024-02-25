@@ -40,11 +40,11 @@ public class PopupManager : MonoBehaviour
         {
             Instance.OnHide();
             onOk?.Invoke();
-        }, bodyText, okText, cancelText, onCancel == null ? null : () =>
+        }, bodyText, okText, cancelText, () =>
         {
             Instance.OnHide();
             onCancel?.Invoke();
-        });
+        }, onCancel != null);
     }
 
     private void OnHide()
