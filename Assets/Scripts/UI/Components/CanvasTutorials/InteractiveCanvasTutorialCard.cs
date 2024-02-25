@@ -42,7 +42,8 @@ public class InteractiveCanvasTutorialCard : MonoBehaviour
         {
             return;
         }
-        SpotlightObjectsContainer.SetActive(value);
-        SpotlightObjectsContainer.transform.SetDirectChildrenActive(value);
+        // TODO: Sort out the mask. 
+        //SpotlightObjectsContainer.SetActive(value);
+        //SpotlightObjectsContainer.transform.SetDirectChildrenActive(value);
     }
 }
