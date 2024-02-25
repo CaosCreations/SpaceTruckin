@@ -41,6 +41,9 @@ public class MissionTerminalInteractiveCanvasTutorial : InteractiveCanvasTutoria
     protected override void EndTutorial()
     {
         UIManager.TerminalManager.SetTabButtonsInteractable(true);
+        SingletonManager.EventService.Remove<OnMissionSlottedEvent>(OnMissionSlottedHandler);
+        SingletonManager.EventService.Remove<OnPilotSlottedWithMissionEvent>(OnPilotSlottedWithMissionHandler);
+        SingletonManager.EventService.Remove<OnPilotSelectClosedEvent>(OnPilotSelectClosedHandler);
         base.EndTutorial();
     }
 

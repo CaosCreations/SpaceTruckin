@@ -95,6 +95,8 @@ public class HangarNodeInteractiveCanvasTutorial : InteractiveCanvasTutorial
     protected override void EndTutorial()
     {
         returnToQueueButton.interactable = true;
+        SingletonManager.EventService.Remove<OnFuelingEndedEvent>(OnFuelingEndedEventHandler);
+        //SingletonManager.EventService.Remove<OnRepairsMinigameWonEvent>(OnRepairsMinigameWonEventHandler);
         base.EndTutorial();
     }
 }
