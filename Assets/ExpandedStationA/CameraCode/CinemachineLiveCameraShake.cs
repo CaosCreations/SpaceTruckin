@@ -12,6 +12,12 @@ public class CinemachineLiveCameraShake : CinemachineLiveCameraBehaviour
         if (virtualCamera != null)
         {
             perlinNoise = virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+
+            // For some reason getting errors here only in the built game 
+            if (perlinNoise == null)
+            {
+                Debug.LogWarning(nameof(CinemachineBasicMultiChannelPerlin) + " component not found on " + nameof(CinemachineLiveCameraShake));
+            }
         }
     }
 

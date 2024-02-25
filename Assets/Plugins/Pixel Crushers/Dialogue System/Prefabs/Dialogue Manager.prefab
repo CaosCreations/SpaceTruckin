@@ -35,7 +35,6 @@ RectTransform:
   m_Children:
   - {fileID: 941236805}
   m_Father: {fileID: 425660}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -170,6 +169,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 125852}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -177,7 +177,6 @@ Transform:
   m_Children:
   - {fileID: 22425850}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &11426072
 MonoBehaviour:
@@ -262,7 +261,7 @@ MonoBehaviour:
         key: 0
         buttonName: 
       cancelConversation:
-        key: 27
+        key: 0
         buttonName: 
     barkSettings:
       allowBarksDuringConversations: 1
@@ -342,9 +341,8 @@ MonoBehaviour:
   controlCursorState: 1
   enforceCursorOnPause: 0
   controlGraphicRaycasters: 0
-  backKeyCodes: 4b010000
-  backButtons:
-  - Cancel
+  backKeyCodes: 
+  backButtons: []
   submitButton: Submit
   singleton: 1
   onUseKeyboard:
@@ -436,6 +434,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2487104510510689879, guid: 092a60aad0ba92f42b54192eefc53a9e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 59.000122
+      objectReference: {fileID: 0}
     - target: {fileID: 2487104510516365576, guid: 092a60aad0ba92f42b54192eefc53a9e,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -515,6 +518,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2487104511139988178, guid: 092a60aad0ba92f42b54192eefc53a9e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 606
       objectReference: {fileID: 0}
     - target: {fileID: 2487104511251963798, guid: 092a60aad0ba92f42b54192eefc53a9e,
         type: 3}
@@ -581,6 +589,11 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2487104511564768483, guid: 092a60aad0ba92f42b54192eefc53a9e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.000018347457
+      objectReference: {fileID: 0}
     - target: {fileID: 2487104511586300773, guid: 092a60aad0ba92f42b54192eefc53a9e,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -720,6 +733,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2487104512091486140, guid: 092a60aad0ba92f42b54192eefc53a9e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 69.5
       objectReference: {fileID: 0}
     - target: {fileID: 2487104512176737466, guid: 092a60aad0ba92f42b54192eefc53a9e,
         type: 3}
@@ -920,6 +938,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4623940482416926839, guid: 092a60aad0ba92f42b54192eefc53a9e,
+        type: 3}
+      propertyPath: m_Material
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

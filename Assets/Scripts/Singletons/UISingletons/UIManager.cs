@@ -53,7 +53,9 @@ public class UIManager : MonoBehaviour
     };
     private static readonly string[] SuccessInputTags = new[] { MissionConstants.MissionsListRaycastTag, UIConstants.AudioVolumeSliderTag, };
 
+#pragma warning disable IDE0051 // Remove unused private members
     private static bool IsErrorClickInput()
+#pragma warning restore IDE0051 // Remove unused private members
     {
         // Contexts that aren't even relevant to UI mouse input 
         if (!Input.GetMouseButtonUp(0)
@@ -142,7 +144,7 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        if (GetNonOverriddenKeyDown(PlayerConstants.PauseKey) && !StationCameraManager.IsLiveCameraZooming)
+        if (GetNonOverriddenKeyDown(PlayerConstants.PauseKey) && CanOpenPauseMenu())
         {
             CurrentCanvasType = UICanvasType.PauseMenu;
             ShowCanvas(CurrentCanvasType);
@@ -159,12 +161,13 @@ public class UIManager : MonoBehaviour
         TypesUnderPointer = UIUtils.GetAllUnderPointer(out var tagsUnderPointer);
         TagsUnderPointer = tagsUnderPointer;
 
-        // Play an Error sound effect if a non-interactable region is clicked. For now ignore if we're showing a popup.
-        if (!PopupManager.IsPopupActive && IsErrorClickInput())
-        {
-            UISoundEffectsManager.Instance.PlaySoundEffect(UISoundEffect.Error);
-            return;
-        }
+        // This was causing a headache so just don't have error click feedback for now. 
+        //// Play an Error sound effect if a non-interactable region is clicked. For now ignore if we're showing a popup.
+        //if (!PopupManager.IsPopupActive && IsErrorClickInput())
+        //{
+        //    UISoundEffectsManager.Instance.PlaySoundEffect(UISoundEffect.Error);
+        //    return;
+        //}
 
         // Don't clear canvases if there is KeyCode override in place, e.g. in Submenus
         if (GetNonOverriddenKeyDown(PlayerConstants.ExitKey) && !StationCameraManager.IsLiveCameraZooming)
@@ -253,9 +256,10 @@ public class UIManager : MonoBehaviour
         };
     }
 
-    public static bool IsCanvasActive()
+    public static bool IsCanvasActive(bool includeBed = true)
     {
-        return activeCanvas != null;
+        // Kind of hacky, but some things ought not consider the bed a first-class UI canvas. For now, option to treat it differently.
+        return includeBed ? activeCanvas != null : activeCanvas != null && activeCanvas != Instance.bedCanvas;
     }
 
     public static void ToggleCanvas(UICanvasType canvasType)
@@ -373,6 +377,14 @@ public class UIManager : MonoBehaviour
     public static void ResetOverriddenKeys()
     {
         currentlyOverriddenKeys.Clear();
+    }
+
+    private bool CanOpenPauseMenu()
+    {
+        return !DialogueUtils.IsConversationActive
+            && !StationCameraManager.IsLiveCameraZooming
+            && !IsTutorialActive()
+            && !Instance.transitionUI.IsTransitioning;
     }
     #endregion
 

@@ -49,7 +49,7 @@ public class PopupManager : MonoBehaviour
 
     private void OnHide()
     {
-        if (!UIManager.IsCanvasActive())
+        if (!UIManager.IsCanvasActive(false))
         {
             UIManager.RemoveOverriddenKey(KeyCode.Escape);
             PlayerManager.ExitPausedState();

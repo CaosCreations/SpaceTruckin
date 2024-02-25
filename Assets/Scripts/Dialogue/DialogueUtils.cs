@@ -43,7 +43,7 @@ public static class DialogueUtils
         return DialogueDatabaseManager.GetConversationFieldAsString(conversation, DialogueConstants.AccessVariableName);
     }
 
-    public static bool IsConversationActive => DialogueManager.IsConversationActive;
+    public static bool IsConversationActive => DialogueManager.Instance != null && DialogueManager.IsConversationActive;
 
     /// <summary>
     /// Because PixelCrushers didn't include this...
