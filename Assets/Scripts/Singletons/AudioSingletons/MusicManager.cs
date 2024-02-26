@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public class MusicManager : AudioManager
 {
@@ -8,6 +9,8 @@ public class MusicManager : AudioManager
 
     [SerializeField] private bool trackIndexLoop;
     [SerializeField] private AudioClip titleScreenMusic;
+    [SerializeField] private AudioClip creditsMusic;
+    [SerializeField] private AudioClip[] musicWithAmbience;
 
     private void Awake()
     {
@@ -28,9 +31,33 @@ public class MusicManager : AudioManager
         }
     }
 
+    protected override void PlayAudioClip(AudioClip audioClip, AudioSource customSource = null, bool fade = false, bool restartSameClip = true)
+    {
+        base.PlayAudioClip(audioClip, customSource, fade, restartSameClip);
+
+        if (AmbientSoundEffectsManager.Instance == null)
+        {
+            return;
+        }
+
+        if (musicWithAmbience.Contains(audioClip))
+        {
+            AmbientSoundEffectsManager.Instance.PlaySoundEffect(AmbientSoundEffect.AsteroidAir);
+        }
+        else
+        {
+            AmbientSoundEffectsManager.Instance.PauseAudioClip();
+        }
+    }
+
     public void PlayTitleScreenMusic()
     {
         PlayAudioClip(titleScreenMusic, fade: true);
+    }
+
+    public void PlayCreditsMusic()
+    {
+        PlayAudioClip(creditsMusic, fade: true, restartSameClip: false);
     }
 
     private void PlayRandomTrack()

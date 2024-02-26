@@ -34,6 +34,8 @@ public class CreditsUI : MonoBehaviour
             mainMenuButton.AddOnClick(MainMenuButtonHandler);
             quitButton.SetActive(false);
         }
+
+        MusicManager.Instance.PlayCreditsMusic();
     }
 
     private void MainMenuButtonHandler()
