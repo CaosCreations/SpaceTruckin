@@ -19,7 +19,7 @@ public class AudioManager : MonoBehaviour
     public bool IsPaused => currentState.Equals(AudioState.Paused);
     public bool IsStopped => currentState.Equals(AudioState.Stopped);
 
-    protected void PlayAudioClip(AudioClip audioClip, AudioSource customSource = null, bool fade = false)
+    protected virtual void PlayAudioClip(AudioClip audioClip, AudioSource customSource = null, bool fade = false, bool restartSameClip = true)
     {
         if (audioClip == null)
         {
@@ -29,6 +29,11 @@ public class AudioManager : MonoBehaviour
         //Debug.Log($"Playing audio clip '{audioClip.name}'");
 
         var source = customSource != null ? customSource : audioSource;
+
+        if (source.clip == audioClip && !restartSameClip)
+        {
+            return;
+        }
 
         if (fade)
         {
@@ -46,10 +51,14 @@ public class AudioManager : MonoBehaviour
     {
         audioSource.clip = audioClip;
         //audioSource.pitch = 1;
+        if (audioSource.isPlaying)
+        {
+            audioSource.Stop();
+        }
         audioSource.Play();
     }
 
-    protected void PauseAudioClip()
+    public void PauseAudioClip()
     {
         audioSource.Pause();
         currentState = AudioState.Paused;

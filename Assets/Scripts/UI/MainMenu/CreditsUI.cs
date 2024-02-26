@@ -7,6 +7,9 @@ public class CreditsUI : MonoBehaviour
     private Button mainMenuButton;
 
     [SerializeField]
+    private QuitGameButton quitButton;
+
+    [SerializeField]
     private GameObject creditsCanvas;
 
     [SerializeField]
@@ -23,12 +26,16 @@ public class CreditsUI : MonoBehaviour
         if (CalendarManager.Instance != null && CalendarManager.IsEndOfCalendar)
         {
             mainMenuButton.SetActive(false);
+            quitButton.SetActive(true);
         }
         else
         {
             mainMenuButton.SetActive(true);
             mainMenuButton.AddOnClick(MainMenuButtonHandler);
+            quitButton.SetActive(false);
         }
+
+        MusicManager.Instance.PlayCreditsMusic();
     }
 
     private void MainMenuButtonHandler()
