@@ -9,7 +9,7 @@ public class CreditsUI : MonoBehaviour
     [SerializeField]
     private GameObject creditsCanvas;
 
-    [SerializeField] 
+    [SerializeField]
     private GameObject loadingScreenCanvas;
 
     private Slider loadingBarSlider;
@@ -18,7 +18,17 @@ public class CreditsUI : MonoBehaviour
     {
         loadingScreenCanvas.SetActive(false);
         loadingBarSlider = loadingScreenCanvas.GetComponentInChildren<Slider>();
-        mainMenuButton.AddOnClick(MainMenuButtonHandler);
+
+        // If it's end of game, then don't let them return to main menu 
+        if (CalendarManager.Instance != null && CalendarManager.IsEndOfCalendar)
+        {
+            mainMenuButton.SetActive(false);
+        }
+        else
+        {
+            mainMenuButton.SetActive(true);
+            mainMenuButton.AddOnClick(MainMenuButtonHandler);
+        }
     }
 
     private void MainMenuButtonHandler()

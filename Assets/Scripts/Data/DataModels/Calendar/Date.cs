@@ -13,7 +13,7 @@ public struct Date : IComparable<Date>
     public Date(int day, int month, int year)
     {
         Day = day;
-        Month = month; 
+        Month = month;
         Year = year;
     }
 
@@ -24,7 +24,7 @@ public struct Date : IComparable<Date>
         Year = (int)year;
     }
 
-    public int CompareTo(Date otherDate)
+    public readonly int CompareTo(Date otherDate)
     {
         int thisDateInDays = this.ToDays();
         int otherDateInDays = otherDate.ToDays();
@@ -62,17 +62,17 @@ public struct Date : IComparable<Date>
         return dateA.CompareTo(dateB) < 0 || dateA.Equals(dateB);
     }
 
-    public override bool Equals(object obj)
+    public override readonly bool Equals(object obj)
     {
         return base.Equals(obj);
     }
 
-    public override int GetHashCode()
+    public override readonly int GetHashCode()
     {
         return base.GetHashCode();
     }
 
-    public override string ToString()
+    public override readonly string ToString()
     {
         return $"{Day}-{Month}-{Year}";
     }
