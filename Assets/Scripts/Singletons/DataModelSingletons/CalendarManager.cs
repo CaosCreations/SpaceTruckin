@@ -82,7 +82,7 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     public static void OnEndOfDayClockHandler(OnEndOfDayClockEvent evt)
     {
         UpdateCalendarData();
-        LogCalendarData();
+        Debug.Log("New day: " + CurrentDate);
         SingletonManager.EventService.Dispatch(new OnEndOfDayEvent());
     }
 
@@ -130,13 +130,6 @@ public class CalendarManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
     public static void ResetCalendar()
     {
         Instance.calendarData.ResetDate();
-    }
-
-    private static void LogCalendarData()
-    {
-        Debug.Log("Current day: " + CurrentDay);
-        Debug.Log("Current month: " + CurrentMonth);
-        Debug.Log("Current year: " + CurrentYear);
     }
 
     public static void SetDate(Date date)
