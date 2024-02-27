@@ -39,4 +39,18 @@ public class AudioMixerManager : Singleton<AudioMixerManager>
             audioMixer.SetFloat(VolumeParameterMap[mixerGroup], value);
         }
     }
+
+    public float GetMixerGroupVolume(MixerGroup mixerGroup)
+    {
+        if (!VolumeParameterMap.ContainsKey(mixerGroup))
+        {
+            Debug.LogError($"MixerGroup parameter {nameof(mixerGroup)} is not mapped");
+            return default;
+        }
+        else
+        {
+            audioMixer.GetFloat(VolumeParameterMap[mixerGroup], out var value);
+            return value.FromDecibels();
+        }
+    }
 }
