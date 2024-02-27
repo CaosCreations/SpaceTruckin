@@ -15,7 +15,7 @@ public class UniversalHangarNodeUI : UICanvasBase
     [SerializeField] private Button startMissionButton;
     [SerializeField] private Button returnToQueueButton;
     [SerializeField] private Button customizationButton;
-    [SerializeField] private Button overviewButton;
+    //[SerializeField] private Button overviewButton;
 
     [SerializeField] private ImageAnimator batteryChargeAnimator;
 
@@ -34,7 +34,7 @@ public class UniversalHangarNodeUI : UICanvasBase
     private void Awake()
     {
         repairsButton.AddOnClick(RepairsButtonHandler);
-        overviewButton.AddOnClick(OverviewButtonHandler);
+        //overviewButton.AddOnClick(OverviewButtonHandler);
         SingletonManager.EventService.Add<OnShipHealthChangedEvent>(OnShipHealthChangedHandler);
     }
 
@@ -47,16 +47,16 @@ public class UniversalHangarNodeUI : UICanvasBase
         SetButtonInteractability();
     }
 
-    private void OverviewButtonHandler()
-    {
-        //StopMinigame();
-    }
+    //private void OverviewButtonHandler()
+    //{
+    //    StopMinigame();
+    //}
 
-    private void StopMinigame()
-    {
-        shipPreview.SetActive(true);
-        SceneRepairsMinigamesManager.Instance.StopMinigame();
-    }
+    //private void StopMinigame()
+    //{
+    //    shipPreview.SetActive(true);
+    //    SceneRepairsMinigamesManager.Instance.StopMinigame();
+    //}
 
     private void OnEnable()
     {
