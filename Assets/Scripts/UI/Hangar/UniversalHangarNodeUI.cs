@@ -15,7 +15,12 @@ public class UniversalHangarNodeUI : UICanvasBase
     [SerializeField] private Button startMissionButton;
     [SerializeField] private Button returnToQueueButton;
     [SerializeField] private Button customizationButton;
-    [SerializeField] private Button overviewButton;
+    //[SerializeField] private Button overviewButton;
+
+    [SerializeField] private Vector3 shipPreviewOffset = new(-1.5f, 0f, 0f);
+    [SerializeField] private Vector3 shipPreviewRotationSpeed = new(0f, 0.15f, 0f);
+    [SerializeField] private float shipPreviewScaleFactor = 1.25f;
+    private Vector3 shipPreviewStartPosition;
 
     [SerializeField] private ImageAnimator batteryChargeAnimator;
 
@@ -34,7 +39,7 @@ public class UniversalHangarNodeUI : UICanvasBase
     private void Awake()
     {
         repairsButton.AddOnClick(RepairsButtonHandler);
-        overviewButton.AddOnClick(OverviewButtonHandler);
+        //overviewButton.AddOnClick(OverviewButtonHandler);
         SingletonManager.EventService.Add<OnShipHealthChangedEvent>(OnShipHealthChangedHandler);
     }
 
@@ -47,16 +52,16 @@ public class UniversalHangarNodeUI : UICanvasBase
         SetButtonInteractability();
     }
 
-    private void OverviewButtonHandler()
-    {
-        //StopMinigame();
-    }
+    //private void OverviewButtonHandler()
+    //{
+    //    StopMinigame();
+    //}
 
-    private void StopMinigame()
-    {
-        shipPreview.SetActive(true);
-        SceneRepairsMinigamesManager.Instance.StopMinigame();
-    }
+    //private void StopMinigame()
+    //{
+    //    shipPreview.SetActive(true);
+    //    SceneRepairsMinigamesManager.Instance.StopMinigame();
+    //}
 
     private void OnEnable()
     {
@@ -105,7 +110,8 @@ public class UniversalHangarNodeUI : UICanvasBase
     {
         if (shipPreview != null)
         {
-            shipPreview.transform.Rotate(UIConstants.ShipPreviewRotationSpeed);
+            shipPreview.transform.Rotate(shipPreviewRotationSpeed);
+            //shipPreview.transform.position = shipPreviewStartPosition + shipPreviewOffset;
         }
 
         //if (Input.GetKeyDown(PlayerConstants.ExitKey) && SceneRepairsMinigamesManager.Instance.IsRepairsMinigameRunning())
@@ -135,8 +141,8 @@ public class UniversalHangarNodeUI : UICanvasBase
     private void SetupShipPreview()
     {
         shipPreview = Instantiate(ShipToInspect.ShipPrefab, transform);
-        shipPreview.transform.localScale *= UIConstants.ShipPreviewScaleFactor;
-        shipPreview.transform.position += UIConstants.ShipPreviewOffset;
+        shipPreview.transform.localScale *= shipPreviewScaleFactor;
+        //shipPreview.transform.position += shipPreviewOffset;
         shipPreview.SetLayerRecursively(UIConstants.ShipPreviewLayer);
     }
 
@@ -209,7 +215,7 @@ public class UniversalHangarNodeUI : UICanvasBase
         {
             return ShipToInspect.CurrentFuel >= ShipToInspect.CurrentMission.FuelCost
                 && ShipToInspect.CurrentHullIntegrity > 0;
-                //&& ShipToInspect.CanWarp;
+            //&& ShipToInspect.CanWarp;
         }
         return false;
     }

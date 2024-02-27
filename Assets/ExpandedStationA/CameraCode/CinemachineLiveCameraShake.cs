@@ -64,6 +64,10 @@ public class CinemachineLiveCameraShake : CinemachineLiveCameraBehaviour
 
     private IEnumerator ShakeRoutine(float amplitude, float duration)
     {
+        if (perlinNoise == null)
+        {
+            yield break;
+        }
         perlinNoise.m_AmplitudeGain = amplitude;
 
         var elapsedTime = 0f;

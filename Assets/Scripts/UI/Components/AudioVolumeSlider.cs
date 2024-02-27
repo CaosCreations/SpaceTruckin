@@ -23,7 +23,15 @@ public class AudioVolumeSlider : MonoBehaviour
     private void InitSlider()
     {
         volumeSlider = GetComponentInChildren<Slider>();
-        volumeSlider.value = UIConstants.DefaultVolumeSliderValue;
+
+        if (AudioMixerManager.Instance != null)
+        {
+            volumeSlider.value = AudioMixerManager.Instance.GetMixerGroupVolume(mixerGroup);
+        }
+        else
+        {
+            volumeSlider.value = UIConstants.DefaultVolumeSliderValue;
+        }
         volumeSlider.AddOnValueChanged(SlideVolume);
     }
 
