@@ -32,12 +32,11 @@ RectTransform:
   m_Children:
   - {fileID: 5534687306915295648}
   m_Father: {fileID: 2279445269760763300}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 811.81305, y: 391.79312}
-  m_SizeDelta: {x: 176.878, y: 76.414}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -128, y: -56}
+  m_SizeDelta: {x: 176.87805, y: 76.414}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1637581844213538265
 CanvasRenderer:
@@ -91,6 +90,7 @@ GameObject:
   - component: {fileID: 7002833641114558938}
   - component: {fileID: 3834869053926416721}
   - component: {fileID: 2204446779040840236}
+  - component: {fileID: 4418712633238964508}
   m_Layer: 5
   m_Name: HUDCanvas
   m_TagString: Untagged
@@ -112,7 +112,6 @@ RectTransform:
   m_Children:
   - {fileID: 7366757369773944161}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -136,7 +135,9 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -157,7 +158,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -218,6 +219,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dateTimeText: {fileID: 7402260729893628819}
+--- !u!114 &4418712633238964508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2457130238325193906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88e8475cc21343642866473b46f8dc85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hudCanvas: {fileID: 2457130238325193906}
+  dateTimeText: {fileID: 2204446779040840236}
+  dateTimeUIActivateCutscene: {fileID: 0}
 --- !u!1 &8836713824380781974
 GameObject:
   m_ObjectHideFlags: 0
@@ -249,12 +265,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7366757369773944161}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.000030518}
-  m_SizeDelta: {x: 138.792, y: 55.13}
+  m_AnchoredPosition: {x: 0, y: 2.9502}
+  m_SizeDelta: {x: 130.96, y: 46.28}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6847833736269753853
 CanvasRenderer:
