@@ -1,13 +1,19 @@
 ﻿using Events;
+using System.Linq;
 using UnityEngine;
 
 public class TemporaryConditionalObject : MonoBehaviour
 {
+    [Header("Simple conditions")]
     [SerializeField]
     private Condition[] conditions;
 
     [SerializeField]
     private Operator op;
+
+    [Header("Compound conditions")]
+    [SerializeField]
+    private ConditionMetaGroup conditionMetaGroup;
 
     private void Start()
     {
@@ -22,7 +28,16 @@ public class TemporaryConditionalObject : MonoBehaviour
 
     private bool IsActive()
     {
-        return op == Operator.And ? conditions.AreAllMet() : conditions.AreAnyMet();
+        // Compound 
+        if (conditionMetaGroup != null && conditionMetaGroup.ConditionGroups.Any())
+        {
+            return conditionMetaGroup.IsMet;
+        }
+        // Simple (to keep supporting the old ones) 
+        else
+        {
+            return op == Operator.And ? conditions.AreAllMet() : conditions.AreAnyMet();
+        }
     }
 
     public void ConditionallySetActive()
