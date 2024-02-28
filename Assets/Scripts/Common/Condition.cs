@@ -44,6 +44,11 @@ public class ConditionMetaGroup
 {
     public Operator Operator;
     public ConditionGroup[] ConditionGroups;
+    public bool Invert;
 
-    public bool IsMet => Operator == Operator.And ? ConditionGroups.All(g => g.IsMet) : ConditionGroups.Any(g => g.IsMet);
+    public bool IsMet()
+    {
+        var isMet = Operator == Operator.And ? ConditionGroups.All(g => g.IsMet) : ConditionGroups.Any(g => g.IsMet);
+        return Invert ? !isMet : isMet;
+    }
 }

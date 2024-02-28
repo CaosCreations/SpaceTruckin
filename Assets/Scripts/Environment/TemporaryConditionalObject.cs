@@ -31,7 +31,7 @@ public class TemporaryConditionalObject : MonoBehaviour
         // Compound 
         if (conditionMetaGroup != null && conditionMetaGroup.ConditionGroups.Any())
         {
-            return conditionMetaGroup.IsMet;
+            return conditionMetaGroup.IsMet();
         }
         // Simple (to keep supporting the old ones) 
         else
