@@ -5,17 +5,21 @@ using UnityEngine;
 public class TemporaryConditionalObjectEditor : Editor
 {
     private SerializedProperty conditionsProperty;
+    private SerializedProperty opProperty;
 
     private void OnEnable()
     {
         conditionsProperty = serializedObject.FindProperty("conditions");
+        opProperty = serializedObject.FindProperty("op");
     }
 
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
 
+        EditorGUILayout.PropertyField(opProperty);
         EditorGUILayout.LabelField("Conditions");
+
         for (int i = 0; i < conditionsProperty.arraySize; i++)
         {
             SerializedProperty conditionProperty = conditionsProperty.GetArrayElementAtIndex(i);

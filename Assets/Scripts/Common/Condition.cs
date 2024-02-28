@@ -6,6 +6,11 @@ public enum ConditionType
     Date, Message, Mission, DialogueVariable,
 }
 
+public enum Operator
+{
+    And, Or,
+}
+
 [Serializable]
 public class Condition
 {

@@ -6,6 +6,9 @@ public class TemporaryConditionalObject : MonoBehaviour
     [SerializeField]
     private Condition[] conditions;
 
+    [SerializeField]
+    private Operator op;
+
     private void Start()
     {
         SingletonManager.EventService.Add<OnEndOfDayEvent>(EndOfDayHandler);
@@ -14,46 +17,48 @@ public class TemporaryConditionalObject : MonoBehaviour
         SingletonManager.EventService.Add<OnMissionCompletedEvent>(MissionCompletedHandler);
         SingletonManager.EventService.Add<OnConversationEndedEvent>(ConversationEndedHandler);
         SingletonManager.EventService.Add<OnDialogueVariableUpdatedEvent>(DialogueVariableUpdatedHandler);
-        SetActive();
+        ConditionallySetActive();
     }
 
     private bool IsActive()
     {
-        return conditions.AreAllMet();
+        return op == Operator.And ? conditions.AreAllMet() : conditions.AreAnyMet();
     }
 
-    private void SetActive()
+    public void ConditionallySetActive()
     {
-        gameObject.SetActive(IsActive());
+        var isActive = IsActive();
+        Debug.Log($"ConditionallySetActive - {name} to {isActive}");
+        gameObject.SetActive(isActive);
     }
 
     private void EndOfDayHandler(OnEndOfDayEvent evt)
     {
-        SetActive();
+        ConditionallySetActive();
     }
 
     private void EveningStartHandler()
     {
-        SetActive();
+        ConditionallySetActive();
     }
 
     private void MessageReadHandler()
     {
-        SetActive();
+        ConditionallySetActive();
     }
 
     private void MissionCompletedHandler()
     {
-        SetActive();
+        ConditionallySetActive();
     }
 
     private void ConversationEndedHandler(OnConversationEndedEvent evt)
     {
-        SetActive();
+        ConditionallySetActive();
     }
 
     private void DialogueVariableUpdatedHandler()
     {
-        SetActive();
+        ConditionallySetActive();
     }
 }

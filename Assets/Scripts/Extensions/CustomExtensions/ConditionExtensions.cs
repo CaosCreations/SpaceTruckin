@@ -7,4 +7,9 @@ public static class ConditionExtensions
     {
         return self == null || !self.Any() || self.All(c => c != null && c.IsMet);
     }
+
+    public static bool AreAnyMet(this IEnumerable<Condition> self)
+    {
+        return self == null || !self.Any() || self.Any(c => c != null && c.IsMet);
+    }
 }
