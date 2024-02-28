@@ -1,5 +1,4 @@
 using Events;
-using UnityEngine;
 
 public class NPCAnimationManager : AnimationManager<NPCAnimationParameterType>
 {
@@ -21,7 +20,7 @@ public class NPCAnimationManager : AnimationManager<NPCAnimationParameterType>
         SingletonManager.EventService.Add<OnEveningStartEvent>(OnEveningStartHandler);
         SingletonManager.EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
 
-        SetMorningParameters();
+        UpdateAnimatorForMorning();
     }
 
     public void PlayAnimation(NPCAnimated npcAnimated, string parameterName, bool isOn)
@@ -29,7 +28,12 @@ public class NPCAnimationManager : AnimationManager<NPCAnimationParameterType>
         npcAnimated.SetBoolAfterReset(parameterName, isOn);
     }
 
-    private void SetAnimationParameterByDateAndPhase(NPC npc, TimeOfDay.Phase phase)
+    public void PlayAnimation(NPCAnimated npcAnimated, string stateName)
+    {
+        npcAnimated.Animator.Play(stateName);
+    }
+
+    private void UpdateAnimationByDateAndPhase(NPC npc, TimeOfDay.Phase phase)
     {
         if (npc.Animated == null)
             return;
@@ -37,38 +41,42 @@ public class NPCAnimationManager : AnimationManager<NPCAnimationParameterType>
         var animationContext = npc.Data.GetAnimationContextByDate(CalendarManager.CurrentDate);
         var parameterName = animationContext.GetParameterNameByPhase(phase);
 
-        if (string.IsNullOrWhiteSpace(parameterName))
+        if (!string.IsNullOrWhiteSpace(parameterName))
         {
-            Debug.LogWarning(npc + " has no animation context parameter (default nor date/phase-specific)");
-            return;
+            PlayAnimation(npc.Animated, parameterName, true);
         }
 
-        PlayAnimation(npc.Animated, parameterName, true);
-    }
+        var stateName = animationContext.GetStateNameByPhase(phase);
 
-    private void SetMorningParameters()
-    {
-        foreach (var npc in NPCManager.Npcs)
+        if (!string.IsNullOrWhiteSpace(stateName))
         {
-            SetAnimationParameterByDateAndPhase(npc, TimeOfDay.Phase.Morning);
+            PlayAnimation(npc.Animated, stateName);
         }
     }
 
-    private void SetEveningParameters()
+    private void UpdateAnimatorForMorning()
     {
         foreach (var npc in NPCManager.Npcs)
         {
-            SetAnimationParameterByDateAndPhase(npc, TimeOfDay.Phase.Evening);
+            UpdateAnimationByDateAndPhase(npc, TimeOfDay.Phase.Morning);
+        }
+    }
+
+    private void UpdateAnimatorForEvening()
+    {
+        foreach (var npc in NPCManager.Npcs)
+        {
+            UpdateAnimationByDateAndPhase(npc, TimeOfDay.Phase.Evening);
         }
     }
 
     private void OnEndOfDayHandler(OnEndOfDayEvent evt)
     {
-        SetMorningParameters();
+        UpdateAnimatorForMorning();
     }
 
     private void OnEveningStartHandler()
     {
-        SetEveningParameters();
+        UpdateAnimatorForEvening();
     }
 }
