@@ -1,10 +1,19 @@
 ﻿using Events;
+using System.Linq;
 using UnityEngine;
 
 public class TemporaryConditionalObject : MonoBehaviour
 {
+    [Header("Simple conditions")]
     [SerializeField]
     private Condition[] conditions;
+
+    [SerializeField]
+    private Operator op;
+
+    [Header("Compound conditions")]
+    [SerializeField]
+    private ConditionMetaGroup conditionMetaGroup;
 
     private void Start()
     {
@@ -14,46 +23,57 @@ public class TemporaryConditionalObject : MonoBehaviour
         SingletonManager.EventService.Add<OnMissionCompletedEvent>(MissionCompletedHandler);
         SingletonManager.EventService.Add<OnConversationEndedEvent>(ConversationEndedHandler);
         SingletonManager.EventService.Add<OnDialogueVariableUpdatedEvent>(DialogueVariableUpdatedHandler);
-        SetActive();
+        ConditionallySetActive();
     }
 
     private bool IsActive()
     {
-        return conditions.AreAllMet();
+        // Compound 
+        if (conditionMetaGroup != null && conditionMetaGroup.ConditionGroups.Any())
+        {
+            return conditionMetaGroup.IsMet();
+        }
+        // Simple (to keep supporting the old ones) 
+        else
+        {
+            return op == Operator.And ? conditions.AreAllMet() : conditions.AreAnyMet();
+        }
     }
 
-    private void SetActive()
+    public void ConditionallySetActive()
     {
-        gameObject.SetActive(IsActive());
+        var isActive = IsActive();
+        Debug.Log($"ConditionallySetActive - {name} to {isActive}");
+        gameObject.SetActive(isActive);
     }
 
     private void EndOfDayHandler(OnEndOfDayEvent evt)
     {
-        SetActive();
+        ConditionallySetActive();
     }
 
     private void EveningStartHandler()
     {
-        SetActive();
+        ConditionallySetActive();
     }
 
     private void MessageReadHandler()
     {
-        SetActive();
+        ConditionallySetActive();
     }
 
     private void MissionCompletedHandler()
     {
-        SetActive();
+        ConditionallySetActive();
     }
 
     private void ConversationEndedHandler(OnConversationEndedEvent evt)
     {
-        SetActive();
+        ConditionallySetActive();
     }
 
     private void DialogueVariableUpdatedHandler()
     {
-        SetActive();
+        ConditionallySetActive();
     }
 }

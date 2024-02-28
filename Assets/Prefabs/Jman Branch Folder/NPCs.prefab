@@ -13631,7 +13631,7 @@ PrefabInstance:
     - target: {fileID: 696095477, guid: d86c9053994b5404aa21954f055886f6, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 469e9d4c5a4318a48a9eeaf70a269b43, type: 2}
+      objectReference: {fileID: 9100000, guid: 48af792303bab7c4db61382dc0d8cad6, type: 2}
     - target: {fileID: 1380008505, guid: d86c9053994b5404aa21954f055886f6, type: 3}
       propertyPath: actor
       value: Klapaucius
@@ -13893,17 +13893,17 @@ PrefabInstance:
     - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 210.93
+      value: 202.84
       objectReference: {fileID: 0}
     - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 380.069
+      value: 371.17
       objectReference: {fileID: 0}
     - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -278.28
+      value: -300.36
       objectReference: {fileID: 0}
     - target: {fileID: 1019127046796887116, guid: d86c9053994b5404aa21954f055886f6,
         type: 3}
@@ -14003,7 +14003,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2119071631294501022}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6fc4f673593f29f4dbdcb4be74953a69, type: 3}
   m_Name: 
@@ -14084,6 +14084,11 @@ MonoBehaviour:
     Message: {fileID: 11400000, guid: b5f770b13feb98c47aeef730adb6221d, type: 2}
     Mission: {fileID: 0}
     DialogueVariableName: 
+  op: 0
+  conditionMetaGroup:
+    Operator: 0
+    ConditionGroups: []
+    Invert: 0
 --- !u!1001 &1390731359586106187
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18067,7 +18072,7 @@ PrefabInstance:
     - target: {fileID: 696095477, guid: d86c9053994b5404aa21954f055886f6, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: ec58ef32b71b96e4aa3e686fb5ce5849, type: 2}
+      objectReference: {fileID: 9100000, guid: f57550c3a1c167147b91bd53ef9fa486, type: 2}
     - target: {fileID: 1380008505, guid: d86c9053994b5404aa21954f055886f6, type: 3}
       propertyPath: actor
       value: Lrurl
@@ -23391,7 +23396,7 @@ PrefabInstance:
     - target: {fileID: 7198816892603994026, guid: 64f16904f9c963848bc3e52e6f5bc9d5,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7198816892753586202, guid: 64f16904f9c963848bc3e52e6f5bc9d5,
         type: 3}
@@ -23401,7 +23406,7 @@ PrefabInstance:
     - target: {fileID: 7198816892886783092, guid: 64f16904f9c963848bc3e52e6f5bc9d5,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7198816892939828028, guid: 64f16904f9c963848bc3e52e6f5bc9d5,
         type: 3}
@@ -23585,8 +23590,62 @@ MonoBehaviour:
         Year: 1
       <Phase>k__BackingField: 1
     Message: {fileID: 0}
-    Mission: {fileID: 11400000, guid: f7baa0589d0e0468c865bb81ab00eda4, type: 2}
+    Mission: {fileID: 0}
     DialogueVariableName: Date_Night_active
+  op: 0
+  conditionMetaGroup:
+    Operator: 0
+    ConditionGroups:
+    - Operator: 0
+      Conditions:
+      - Type: 2
+        ActiveDates: []
+        Message: {fileID: 0}
+        Mission: {fileID: 11400000, guid: f7baa0589d0e0468c865bb81ab00eda4, type: 2}
+        DialogueVariableName: 
+      - Type: 3
+        ActiveDates:
+        - <Date>k__BackingField:
+            Day: 5
+            Month: 1
+            Year: 1
+          <Phase>k__BackingField: 1
+        Message: {fileID: 0}
+        Mission: {fileID: 0}
+        DialogueVariableName: Date_Night_active
+    - Operator: 1
+      Conditions:
+      - Type: 0
+        ActiveDates:
+        - <Date>k__BackingField:
+            Day: 3
+            Month: 1
+            Year: 1
+          <Phase>k__BackingField: 1
+        Message: {fileID: 0}
+        Mission: {fileID: 0}
+        DialogueVariableName: 
+      - Type: 0
+        ActiveDates:
+        - <Date>k__BackingField:
+            Day: 4
+            Month: 1
+            Year: 1
+          <Phase>k__BackingField: 1
+        Message: {fileID: 0}
+        Mission: {fileID: 0}
+        DialogueVariableName: 
+      - Type: 0
+        ActiveDates:
+        - <Date>k__BackingField:
+            Day: 5
+            Month: 1
+            Year: 1
+          <Phase>k__BackingField: 1
+        Message: {fileID: 0}
+        Mission: {fileID: 0}
+        DialogueVariableName: 
+    Invert: 0
 --- !u!1001 &6475275762492293338
 PrefabInstance:
   m_ObjectHideFlags: 0
