@@ -5,6 +5,8 @@ public abstract class CollisionTriggerBehaviour : MonoBehaviour
     [Header("Leave all blank that aren't used in the condition")]
     [SerializeField] protected Condition[] conditions;
 
+    [SerializeField] private Operator op;
+
     private BoxCollider boxCollider;
 
     protected virtual void Awake()
@@ -14,7 +16,7 @@ public abstract class CollisionTriggerBehaviour : MonoBehaviour
 
     protected virtual bool IsTriggerable(Collider other)
     {
-        return other.CompareTag(PlayerConstants.PlayerTag) && conditions.AreAllMet();
+        return other.CompareTag(PlayerConstants.PlayerTag) && (op == Operator.And ? conditions.AreAllMet() : conditions.AreAnyMet());
     }
 
     protected virtual void OnTriggerEnter(Collider other)
