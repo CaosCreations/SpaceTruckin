@@ -1,39 +1,21 @@
 ﻿using System;
 using UnityEngine;
 
-public class CutsceneCollisionTrigger : MonoBehaviour
+public class CutsceneCollisionTrigger : CollisionTriggerBehaviour
 {
     [SerializeField] private Cutscene cutscene;
-    [Header("Leave all blank that aren't used in the condition")]
-    [SerializeField] private Condition[] conditions;
 
-    private BoxCollider boxCollider;
-
-    protected virtual bool CutsceneTriggerable(Collider other)
+    protected override void Awake()
     {
-        return other.CompareTag(PlayerConstants.PlayerTag) && conditions.AreAllMet();
-    }
+        base.Awake();
 
-    private void Awake()
-    {
         if (cutscene == null)
-            throw new NullReferenceException("Cutscene reference missing on CutsceneCollisionTrigger " + name);
-
-        boxCollider = GetComponent<BoxCollider>();
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (CutsceneTriggerable(other))
         {
-            Debug.Log("Player collided with CutsceneCollisionTrigger: " + name);
-            TimelineManager.PlayCutscene(cutscene);
-            DestroyLinkedTriggers();
-            gameObject.DestroyIfExists();
+            throw new NullReferenceException("Cutscene reference missing on CutsceneCollisionTrigger " + name);
         }
     }
 
-    private void DestroyLinkedTriggers()
+    protected void DestroyLinkedTriggers()
     {
         var triggers = FindObjectsOfType<CutsceneCollisionTrigger>();
 
@@ -50,12 +32,9 @@ public class CutsceneCollisionTrigger : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
+    protected override void TriggerBehaviour()
     {
-        if (boxCollider != null)
-        {
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawWireCube(boxCollider.center, boxCollider.size);
-        }
+        TimelineManager.PlayCutscene(cutscene);
+        DestroyLinkedTriggers();
     }
 }

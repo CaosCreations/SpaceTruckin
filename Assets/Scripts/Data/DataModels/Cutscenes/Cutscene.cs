@@ -29,4 +29,13 @@ public class Cutscene : ScriptableObject
     {
         return $"Cutscene with name '{Name}'";
     }
+
+    private void OnValidate()
+    {
+        if (CutsceneOnEnd == this)
+        {
+            CutsceneOnEnd = null;
+            Debug.LogError($"{ToString()}'s {nameof(CutsceneOnEnd)} value is itself. This would lead to an infinite loop.");
+        }
+    }
 }
