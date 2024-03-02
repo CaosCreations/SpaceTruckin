@@ -13,9 +13,15 @@ MonoBehaviour:
   m_Name: Kmi's Locations 1
   m_EditorClassIdentifier: 
   <DefaultLocation>k__BackingField:
-    <MorningStationPosition>k__BackingField: {x: 221.55, y: 375.25, z: -271.74}
-    <EveningStationPosition>k__BackingField: {x: 221.55, y: 375.25, z: -271.74}
+    <MorningStationPosition>k__BackingField: {x: 224.423, y: 375.288, z: -272.379}
+    <EveningStationPosition>k__BackingField: {x: 224.423, y: 375.288, z: -272.379}
     <Conditions>k__BackingField: []
+    <MorningConditions>k__BackingField:
+      Operator: 0
+      Conditions: []
+    <EveningConditions>k__BackingField:
+      Operator: 0
+      Conditions: []
   <LocationByDateContainer>k__BackingField:
     <LocationsByDate>k__BackingField:
     - <Date>k__BackingField:
@@ -26,6 +32,12 @@ MonoBehaviour:
         <MorningStationPosition>k__BackingField: {x: 224.423, y: 375.288, z: -272.379}
         <EveningStationPosition>k__BackingField: {x: 224.423, y: 375.288, z: -272.379}
         <Conditions>k__BackingField: []
+        <MorningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
+        <EveningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
     - <Date>k__BackingField:
         Day: 2
         Month: 1
@@ -34,22 +46,50 @@ MonoBehaviour:
         <MorningStationPosition>k__BackingField: {x: 224.423, y: 375.288, z: -272.379}
         <EveningStationPosition>k__BackingField: {x: 224.423, y: 375.288, z: -272.379}
         <Conditions>k__BackingField: []
+        <MorningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
+        <EveningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
     - <Date>k__BackingField:
         Day: 3
         Month: 1
         Year: 1
       <Location>k__BackingField:
-        <MorningStationPosition>k__BackingField: {x: 224.423, y: 375.288, z: -272.379}
+        <MorningStationPosition>k__BackingField: {x: 213.923, y: 375.312, z: -272.793}
         <EveningStationPosition>k__BackingField: {x: 224.423, y: 375.288, z: -272.379}
         <Conditions>k__BackingField: []
+        <MorningConditions>k__BackingField:
+          Operator: 0
+          Conditions:
+          - Type: 2
+            ActiveDates: []
+            Message: {fileID: 0}
+            Mission: {fileID: 11400000, guid: f4e821d63b4154f5685223c4cfa128b3, type: 2}
+            DialogueVariableName: 
+        <EveningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
     - <Date>k__BackingField:
         Day: 4
         Month: 1
         Year: 1
       <Location>k__BackingField:
-        <MorningStationPosition>k__BackingField: {x: 224.423, y: 375.288, z: -272.379}
+        <MorningStationPosition>k__BackingField: {x: 213.923, y: 375.312, z: -272.793}
         <EveningStationPosition>k__BackingField: {x: 224.423, y: 375.288, z: -272.379}
         <Conditions>k__BackingField: []
+        <MorningConditions>k__BackingField:
+          Operator: 0
+          Conditions:
+          - Type: 2
+            ActiveDates: []
+            Message: {fileID: 0}
+            Mission: {fileID: 11400000, guid: f4e821d63b4154f5685223c4cfa128b3, type: 2}
+            DialogueVariableName: 
+        <EveningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
     - <Date>k__BackingField:
         Day: 5
         Month: 1
@@ -58,6 +98,12 @@ MonoBehaviour:
         <MorningStationPosition>k__BackingField: {x: 224.423, y: 375.288, z: -272.379}
         <EveningStationPosition>k__BackingField: {x: 224.423, y: 375.288, z: -272.379}
         <Conditions>k__BackingField: []
+        <MorningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
+        <EveningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
   <DefaultAnimationContext>k__BackingField:
     <MorningParameterName>k__BackingField: 
     <EveningParameterName>k__BackingField: 
