@@ -10,6 +10,12 @@ public static class AnimatorExtensions
         self.SetAllBools(false);
     }
 
+    public static void SetBoolAfterReset(this Animator self, string parameterName, bool value)
+    {
+        self.ResetBools();
+        self.SetBool(parameterName, value);
+    }
+
     public static void SetAllBools(this Animator self, bool value)
     {
         foreach (var parameter in self.parameters)

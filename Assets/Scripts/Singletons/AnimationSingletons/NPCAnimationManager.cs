@@ -23,34 +23,29 @@ public class NPCAnimationManager : AnimationManager<NPCAnimationParameterType>
         UpdateAnimatorForMorning();
     }
 
-    public void PlayAnimation(NPCAnimated npcAnimated, string parameterName, bool isOn)
-    {
-        npcAnimated.SetBoolAfterReset(parameterName, isOn);
-    }
-
-    public void PlayAnimation(NPCAnimated npcAnimated, string stateName)
-    {
-        npcAnimated.Animator.Play(stateName);
-    }
-
     private void UpdateAnimationByDateAndPhase(NPC npc, TimeOfDay.Phase phase)
     {
-        if (npc.Animated == null)
+        if (npc.Animator == null
+            || npc.Data == null
+            || npc.Data.AnimationContextByDateContainer == null
+            || npc.Data.AnimationContextByDateContainer.Lookup == null)
+        {
             return;
+        }
 
         var animationContext = npc.Data.GetAnimationContextByDate(CalendarManager.CurrentDate);
         var parameterName = animationContext.GetParameterNameByPhase(phase);
 
         if (!string.IsNullOrWhiteSpace(parameterName))
         {
-            PlayAnimation(npc.Animated, parameterName, true);
+            npc.Animator.SetBoolAfterReset(parameterName, true);
         }
 
         var stateName = animationContext.GetStateNameByPhase(phase);
 
         if (!string.IsNullOrWhiteSpace(stateName))
         {
-            PlayAnimation(npc.Animated, stateName);
+            npc.Animator.Play(stateName);
         }
     }
 
