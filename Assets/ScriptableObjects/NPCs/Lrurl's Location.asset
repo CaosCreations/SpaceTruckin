@@ -16,6 +16,12 @@ MonoBehaviour:
     <MorningStationPosition>k__BackingField: {x: 235.05, y: 380.188, z: -251.77}
     <EveningStationPosition>k__BackingField: {x: 236.08, y: 380.188, z: -251.66}
     <Conditions>k__BackingField: []
+    <MorningConditions>k__BackingField:
+      Operator: 0
+      Conditions: []
+    <EveningConditions>k__BackingField:
+      Operator: 0
+      Conditions: []
   <LocationByDateContainer>k__BackingField:
     <LocationsByDate>k__BackingField:
     - <Date>k__BackingField:
@@ -26,6 +32,12 @@ MonoBehaviour:
         <MorningStationPosition>k__BackingField: {x: 235.05, y: 380.188, z: -251.77}
         <EveningStationPosition>k__BackingField: {x: 236.08, y: 380.188, z: -251.66}
         <Conditions>k__BackingField: []
+        <MorningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
+        <EveningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
     - <Date>k__BackingField:
         Day: 2
         Month: 1
@@ -34,22 +46,40 @@ MonoBehaviour:
         <MorningStationPosition>k__BackingField: {x: 235.05, y: 380.188, z: -251.77}
         <EveningStationPosition>k__BackingField: {x: 236.08, y: 380.188, z: -251.66}
         <Conditions>k__BackingField: []
+        <MorningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
+        <EveningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
     - <Date>k__BackingField:
         Day: 3
         Month: 1
         Year: 1
       <Location>k__BackingField:
         <MorningStationPosition>k__BackingField: {x: 235.05, y: 380.188, z: -251.77}
-        <EveningStationPosition>k__BackingField: {x: 236.08, y: 380.188, z: -251.66}
+        <EveningStationPosition>k__BackingField: {x: 235.148, y: 380.205, z: -252.95}
         <Conditions>k__BackingField: []
+        <MorningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
+        <EveningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
     - <Date>k__BackingField:
         Day: 4
         Month: 1
         Year: 1
       <Location>k__BackingField:
         <MorningStationPosition>k__BackingField: {x: 235.05, y: 380.188, z: -251.77}
-        <EveningStationPosition>k__BackingField: {x: 236.08, y: 380.188, z: -251.66}
+        <EveningStationPosition>k__BackingField: {x: 235.148, y: 380.205, z: -252.95}
         <Conditions>k__BackingField: []
+        <MorningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
+        <EveningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
     - <Date>k__BackingField:
         Day: 5
         Month: 1
@@ -58,6 +88,12 @@ MonoBehaviour:
         <MorningStationPosition>k__BackingField: {x: 235.05, y: 380.188, z: -251.77}
         <EveningStationPosition>k__BackingField: {x: 236.08, y: 380.188, z: -251.66}
         <Conditions>k__BackingField: []
+        <MorningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
+        <EveningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
   <DefaultAnimationContext>k__BackingField:
     <MorningParameterName>k__BackingField: 
     <EveningParameterName>k__BackingField: 
@@ -81,14 +117,5 @@ MonoBehaviour:
         <EveningStateName>k__BackingField: trurlrlPICNIC01
       <Date>k__BackingField:
         Day: 4
-        Month: 1
-        Year: 1
-    - <AnimationContext>k__BackingField:
-        <MorningParameterName>k__BackingField: 
-        <EveningParameterName>k__BackingField: 
-        <MorningStateName>k__BackingField: 
-        <EveningStateName>k__BackingField: trurlrlPICNIC01
-      <Date>k__BackingField:
-        Day: 5
         Month: 1
         Year: 1

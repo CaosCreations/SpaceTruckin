@@ -25,12 +25,18 @@ public class NPC : MonoBehaviour
 
         if (!Data.LocationByDateContainer.LocationsByDate.IsNullOrEmpty())
         {
-            Data.LocationByDateContainer.InitLookup();
+            if (!Data.LocationByDateContainer.InitLookup())
+            {
+                Debug.LogError($"{name} failed to init lookup for LocationByDateContainer");
+            }
         }
 
         if (!Data.AnimationContextByDateContainer.AnimationContextsByDate.IsNullOrEmpty())
         {
-            Data.AnimationContextByDateContainer.InitLookup();
+            if (!Data.AnimationContextByDateContainer.InitLookup())
+            {
+                Debug.LogError($"{name} failed to init lookup for AnimationContextByDateContainer");
+            }
         }
     }
 
