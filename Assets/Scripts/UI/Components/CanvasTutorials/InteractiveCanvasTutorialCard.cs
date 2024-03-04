@@ -26,6 +26,7 @@ public class InteractiveCanvasTutorialCard : MonoBehaviour
             closeButton.onClick.AddListener(CloseButtonHandler);
         }
         tutorialText.SetText(tutorialText.text);
+        SetSpotlightOjectsActive(false);
     }
 
     // TODO: May need to be OnDisable? (If over tab buttons disable it indirectly)
@@ -42,8 +43,7 @@ public class InteractiveCanvasTutorialCard : MonoBehaviour
         {
             return;
         }
-        // TODO: Sort out the mask. 
-        //SpotlightObjectsContainer.SetActive(value);
-        //SpotlightObjectsContainer.transform.SetDirectChildrenActive(value);
+        SpotlightObjectsContainer.SetActive(value);
+        SpotlightObjectsContainer.transform.SetDirectChildrenActive(value);
     }
 }

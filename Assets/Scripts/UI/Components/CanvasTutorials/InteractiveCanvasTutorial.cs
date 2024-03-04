@@ -132,7 +132,8 @@ public abstract class InteractiveCanvasTutorial : SubMenu
         {
             UnlockCanvas();
         }
-        card.SetSpotlightOjectsActive(true);
+        // TODO: Sort out the mask. 
+        //card.SetSpotlightOjectsActive(true);
     }
 
     protected virtual void ToPreviousCard()
