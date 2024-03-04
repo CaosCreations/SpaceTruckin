@@ -2306,63 +2306,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!1 &1367746906615034124
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7283524239677927822}
-  - component: {fileID: 105783974841869573}
-  m_Layer: 0
-  m_Name: MckenaKickPlayer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7283524239677927822
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1367746906615034124}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5089864893605932933}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!320 &105783974841869573
-PlayableDirector:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1367746906615034124}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 7a6094a4c4e5941459d1abe23e74a1d0, type: 2}
-  m_InitialState: 0
-  m_WrapMode: 2
-  m_DirectorUpdateMode: 1
-  m_InitialTime: 0
-  m_SceneBindings:
-  - key: {fileID: 366419812581359350, guid: 7a6094a4c4e5941459d1abe23e74a1d0, type: 2}
-    value: {fileID: 0}
-  - key: {fileID: -777175689897483151, guid: 7a6094a4c4e5941459d1abe23e74a1d0, type: 2}
-    value: {fileID: 0}
-  - key: {fileID: 7852042851125703287, guid: 7a6094a4c4e5941459d1abe23e74a1d0, type: 2}
-    value: {fileID: 0}
-  - key: {fileID: 4307118345468304400, guid: 7a6094a4c4e5941459d1abe23e74a1d0, type: 2}
-    value: {fileID: 0}
-  m_ExposedReferences:
-    m_References: []
 --- !u!1 &1817037905481875947
 GameObject:
   m_ObjectHideFlags: 0
@@ -13078,10 +13021,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 33463243}
-    - targetCorrespondingSourceObject: {fileID: 3881816079881395571, guid: 288f6e14b539394418ab01982b6a2240,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7283524239677927822}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3881816079881395570, guid: 288f6e14b539394418ab01982b6a2240,
         type: 3}
