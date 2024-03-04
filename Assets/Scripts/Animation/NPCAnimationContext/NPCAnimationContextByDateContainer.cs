@@ -10,8 +10,9 @@ public class NPCAnimationContextByDateContainer : ContainerWithLookup<Date, NPCA
     [field: SerializeField]
     public NPCAnimationContextByDate[] AnimationContextsByDate { get; private set; }
 
-    public override void InitLookup()
+    public override bool InitLookup()
     {
+        var success = true;
         Lookup = new();
 
         foreach (var animationContextByDate in AnimationContextsByDate)
@@ -19,7 +20,9 @@ public class NPCAnimationContextByDateContainer : ContainerWithLookup<Date, NPCA
             if (!Lookup.TryAdd(animationContextByDate.Date, animationContextByDate.AnimationContext))
             {
                 Debug.LogError("Error adding animation context by date to item lookup. Key: " + animationContextByDate.Date);
+                success = false;
             }
         }
+        return success;
     }
 }
