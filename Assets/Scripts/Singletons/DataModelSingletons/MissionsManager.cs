@@ -418,6 +418,16 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
         return false;
     }
 
+    public void GiveMission(string missionName)
+    {
+        var mission = MissionUtils.GetMissionByName(missionName);
+        if (mission != null)
+        {
+            mission.HasBeenUnlocked = true;
+            mission.HasBeenAccepted = true;
+        }
+    }
+
     private static void ApplyOfferExpiryConsequences()
     {
         foreach (Mission mission in Instance.Missions)
@@ -450,6 +460,11 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
             DialogueConstants.MissionOfferExpiredFunctionName,
             this,
             SymbolExtensions.GetMethodInfo(() => HasMissionOfferExpired(string.Empty, string.Empty)));
+
+        Lua.RegisterFunction(
+            DialogueConstants.GiveMissionFunctionName,
+            this,
+            SymbolExtensions.GetMethodInfo(() => GiveMission(string.Empty)));
     }
 
     public void UnregisterLuaFunctions()
