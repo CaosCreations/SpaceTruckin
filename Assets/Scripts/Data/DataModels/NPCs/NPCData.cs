@@ -28,8 +28,8 @@ public class NPCData : ScriptableObject
             return DefaultLocation;
         }
 
-        // If the location needs to be overridden for this date, then return the one from the date map
-        // Having generic Conditions is janky when we're already indexed by Date, but leave here for now for backwards 
+        // If the location needs to be overridden for this date, then return the one from the date map.
+        // Having generic Conditions is janky when we're already indexed by Date, but leave here for now for backwards compatibility.
         if (ClockManager.CurrentTimeOfDayPhase == TimeOfDay.Phase.Morning && !overriddenLocation.MorningConditions.Conditions.IsNullOrEmpty())
         {
             return overriddenLocation.MorningConditions.IsMet ? overriddenLocation : DefaultLocation;
