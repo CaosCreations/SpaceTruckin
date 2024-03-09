@@ -13,8 +13,15 @@ MonoBehaviour:
   m_Name: Yally's Location
   m_EditorClassIdentifier: 
   <DefaultLocation>k__BackingField:
-    <MorningStationPosition>k__BackingField: {x: 187.848, y: 384.745, z: -258.202}
-    <EveningStationPosition>k__BackingField: {x: 187.848, y: 384.745, z: -258.202}
+    <MorningStationPosition>k__BackingField: {x: 190.14, y: 380.007, z: -254.74}
+    <EveningStationPosition>k__BackingField: {x: 190.14, y: 380.007, z: -254.74}
+    <Conditions>k__BackingField: []
+    <MorningConditions>k__BackingField:
+      Operator: 0
+      Conditions: []
+    <EveningConditions>k__BackingField:
+      Operator: 0
+      Conditions: []
   <LocationByDateContainer>k__BackingField:
     <LocationsByDate>k__BackingField:
     - <Date>k__BackingField:
@@ -23,28 +30,61 @@ MonoBehaviour:
         Year: 1
       <Location>k__BackingField:
         <MorningStationPosition>k__BackingField: {x: 190.14, y: 380.007, z: -254.74}
-        <EveningStationPosition>k__BackingField: {x: 187.848, y: 384.745, z: -258.202}
+        <EveningStationPosition>k__BackingField: {x: 190.14, y: 380.007, z: -254.74}
+        <Conditions>k__BackingField: []
+        <MorningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
+        <EveningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
     - <Date>k__BackingField:
         Day: 2
         Month: 1
         Year: 1
       <Location>k__BackingField:
         <MorningStationPosition>k__BackingField: {x: 190.14, y: 380.007, z: -254.74}
-        <EveningStationPosition>k__BackingField: {x: 187.848, y: 384.745, z: -258.202}
+        <EveningStationPosition>k__BackingField: {x: 190.14, y: 380.007, z: -254.74}
+        <Conditions>k__BackingField: []
+        <MorningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
+        <EveningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
+    - <Date>k__BackingField:
+        Day: 4
+        Month: 1
+        Year: 1
+      <Location>k__BackingField:
+        <MorningStationPosition>k__BackingField: {x: 181.148, y: 384.723, z: -257.221}
+        <EveningStationPosition>k__BackingField: {x: 181.148, y: 384.723, z: -257.221}
+        <Conditions>k__BackingField:
+        - Type: 2
+          ActiveDates: []
+          Message: {fileID: 0}
+          Mission: {fileID: 11400000, guid: 7407f1beb48634243b732e20fb194506, type: 2}
+          DialogueVariableName: 
+        <MorningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
+        <EveningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
     - <Date>k__BackingField:
         Day: 3
         Month: 1
         Year: 1
       <Location>k__BackingField:
         <MorningStationPosition>k__BackingField: {x: 190.14, y: 380.007, z: -254.74}
-        <EveningStationPosition>k__BackingField: {x: 187.848, y: 384.745, z: -258.202}
-    - <Date>k__BackingField:
-        Day: 4
-        Month: 1
-        Year: 1
-      <Location>k__BackingField:
-        <MorningStationPosition>k__BackingField: {x: 190.14, y: 380.007, z: -254.74}
-        <EveningStationPosition>k__BackingField: {x: 187.848, y: 384.745, z: -258.202}
+        <EveningStationPosition>k__BackingField: {x: 190.14, y: 380.007, z: -254.74}
+        <Conditions>k__BackingField: []
+        <MorningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
+        <EveningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
     - <Date>k__BackingField:
         Day: 5
         Month: 1
@@ -52,8 +92,26 @@ MonoBehaviour:
       <Location>k__BackingField:
         <MorningStationPosition>k__BackingField: {x: 190.14, y: 380.007, z: -254.74}
         <EveningStationPosition>k__BackingField: {x: 187.848, y: 384.745, z: -258.202}
+        <Conditions>k__BackingField: []
+        <MorningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
+        <EveningConditions>k__BackingField:
+          Operator: 0
+          Conditions: []
   <DefaultAnimationContext>k__BackingField:
     <MorningParameterName>k__BackingField: 
     <EveningParameterName>k__BackingField: 
+    <MorningStateName>k__BackingField: 
+    <EveningStateName>k__BackingField: 
   <AnimationContextByDateContainer>k__BackingField:
-    <AnimationContextsByDate>k__BackingField: []
+    <AnimationContextsByDate>k__BackingField:
+    - <AnimationContext>k__BackingField:
+        <MorningParameterName>k__BackingField: 
+        <EveningParameterName>k__BackingField: 
+        <MorningStateName>k__BackingField: yaleFaceDownPlaying
+        <EveningStateName>k__BackingField: yaleFaceDownPlaying
+      <Date>k__BackingField:
+        Day: 4
+        Month: 0
+        Year: 0
