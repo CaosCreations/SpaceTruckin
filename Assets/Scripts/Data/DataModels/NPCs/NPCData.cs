@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Phase = TimeOfDay.Phase;
 
 [CreateAssetMenu(fileName = "NPCData", menuName = "ScriptableObjects/NPCData", order = 1)]
 public class NPCData : ScriptableObject
@@ -28,13 +29,15 @@ public class NPCData : ScriptableObject
             return DefaultLocation;
         }
 
+        var phase = ClockManager.CurrentTimeOfDayPhase;
+
         // If the location needs to be overridden for this date, then return the one from the date map.
         // Having generic Conditions is janky when we're already indexed by Date, but leave here for now for backwards compatibility.
-        if (ClockManager.CurrentTimeOfDayPhase == TimeOfDay.Phase.Morning && !overriddenLocation.MorningConditions.Conditions.IsNullOrEmpty())
+        if (phase == Phase.Morning && !overriddenLocation.MorningConditions.Conditions.IsNullOrEmpty())
         {
             return overriddenLocation.MorningConditions.IsMet ? overriddenLocation : DefaultLocation;
         }
-        if (ClockManager.CurrentTimeOfDayPhase == TimeOfDay.Phase.Evening && !overriddenLocation.EveningConditions.Conditions.IsNullOrEmpty())
+        if (phase == Phase.Evening && !overriddenLocation.EveningConditions.Conditions.IsNullOrEmpty())
         {
             return overriddenLocation.EveningConditions.IsMet ? overriddenLocation : DefaultLocation;
         }
