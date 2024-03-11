@@ -10,7 +10,7 @@ public class InteractablePopupObject : InteractableObject
     {
         base.Update();
 
-        if (Input.GetKeyDown(PlayerConstants.ActionKey) && IsPlayerInteractable)
+        if (Input.GetKeyDown(PlayerConstants.ActionKey) && !PopupManager.IsPopupActive && IsPlayerInteractable)
         {
             PopupManager.ShowPopup(bodyText: text, type: popupType);
 
