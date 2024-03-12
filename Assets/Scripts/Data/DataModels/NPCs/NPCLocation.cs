@@ -11,6 +11,12 @@ public class NPCLocation
     public Vector3 EveningStationPosition { get; private set; }
 
     [field: SerializeField]
+    public string MorningStateName { get; private set; }
+
+    [field: SerializeField]
+    public string EveningStateName { get; private set; }
+
+    [field: SerializeField]
     public Condition[] Conditions { get; private set; }
 
     [field: SerializeField]
@@ -22,5 +28,10 @@ public class NPCLocation
     public Vector3 GetPositionByPhase(TimeOfDay.Phase phase)
     {
         return phase == TimeOfDay.Phase.Morning ? MorningStationPosition : EveningStationPosition;
+    }
+
+    public string GetStateByPhase(TimeOfDay.Phase phase)
+    {
+        return phase == TimeOfDay.Phase.Morning ? MorningStateName : EveningStateName;
     }
 }
