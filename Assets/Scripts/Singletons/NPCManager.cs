@@ -39,12 +39,21 @@ public class NPCManager : MonoBehaviour
         var location = npc.Data.GetLocationByDate(CalendarManager.CurrentDate);
         var position = location.GetPositionByPhase(phase);
 
-        // Don't set position if it's not configured
-        if (position == Vector3.zero)
-            return;
+        // Set position if configured
+        if (position != Vector3.zero)
+        {
+            Debug.Log($"Setting NPC '{npc.name}' {phase} position to '{position}'");
+            npc.transform.position = position;
+        }
 
-        Debug.Log($"Setting NPC '{npc.name}' {phase} position to '{position}'");
-        npc.transform.position = position;
+        var stateName = location.GetStateByPhase(phase);
+
+        // Set animation state if configured
+        if (!string.IsNullOrWhiteSpace(stateName))
+        {
+            Debug.Log($"Playing NPC '{npc.name}' {phase} animation state '{stateName}'");
+            npc.Animator.Play(stateName);
+        }
     }
 
     private void SetMorningPositions()
