@@ -185,6 +185,11 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
 
     public void AcquireLicence(Licence licence, bool startingValue = false)
     {
+        if (licence.IsUnlocked && licence.IsOwned)
+        {
+            return;
+        }
+
         if (startingValue || playerData.PlayerLicencePoints >= licence.PointsCost)
         {
             playerData.PlayerLicencePoints -= licence.PointsCost;
