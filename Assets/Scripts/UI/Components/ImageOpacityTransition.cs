@@ -11,8 +11,10 @@ public class ImageOpacityTransition : MonoBehaviour
 
     [SerializeField]
     private float transitionTime = 4f;
+    private bool onTransitionMidpointReached;
 
     public UnityAction OnTransitionStart;
+    public UnityAction OnTransitionMidpointReached;
     public UnityAction OnTransitionEnd;
 
     private void Awake()
@@ -24,6 +26,7 @@ public class ImageOpacityTransition : MonoBehaviour
     {
         timer = 0;
         opacity = 0;
+        onTransitionMidpointReached = false;
         OnTransitionStart?.Invoke();
     }
 
@@ -37,6 +40,12 @@ public class ImageOpacityTransition : MonoBehaviour
         }
         else
         {
+            if (!onTransitionMidpointReached)
+            {
+                OnTransitionMidpointReached?.Invoke();
+                onTransitionMidpointReached = true;
+            }
+
             opacity -= Time.deltaTime / (transitionTime / 2);
         }
 
