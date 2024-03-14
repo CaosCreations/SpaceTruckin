@@ -218,13 +218,20 @@ public class ClockManager : MonoBehaviour, ILuaFunctionRegistrar
         currentTimeInSeconds += (int)Math.Floor(minutes * 60);
     }
 
+    public bool IsMorning()
+    {
+        return CurrentTimeOfDayPhase == TimeOfDay.Phase.Morning;
+    }
+
     public void RegisterLuaFunctions()
     {
         Lua.RegisterFunction(DialogueConstants.PassMinutesFunctionName, this, SymbolExtensions.GetMethodInfo(() => PassMinutes(0D)));
+        Lua.RegisterFunction(DialogueConstants.IsMorningFunctionName, this, SymbolExtensions.GetMethodInfo(() => IsMorning()));
     }
 
     public void UnregisterLuaFunctions()
     {
         Lua.UnregisterFunction(DialogueConstants.PassMinutesFunctionName);
+        Lua.UnregisterFunction(DialogueConstants.IsMorningFunctionName);
     }
 }
