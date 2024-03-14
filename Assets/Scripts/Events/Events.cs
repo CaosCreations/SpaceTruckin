@@ -288,6 +288,13 @@ namespace Events
         }
     }
 
+    public class OnUITransitionMidpointReachedEvent : OnUITransitionEvent
+    {
+        public OnUITransitionMidpointReachedEvent(TransitionUI.TransitionType transitionType) : base(transitionType)
+        {
+        }
+    }
+
     public class OnUITransitionEndedEvent : OnUITransitionEvent
     {
         public OnUITransitionEndedEvent(TransitionUI.TransitionType transitionType) : base(transitionType)

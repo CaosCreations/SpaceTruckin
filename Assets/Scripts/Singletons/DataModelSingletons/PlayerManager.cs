@@ -80,6 +80,7 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         SingletonManager.EventService.Add<OnConversationStartedEvent>(OnConversationStartedHandler);
         SingletonManager.EventService.Add<OnConversationEndedEvent>(OnConversationEndedHandler);
         SingletonManager.EventService.Add<OnMorningStartEvent>(OnMorningStartHandler);
+        SingletonManager.EventService.Add<OnUITransitionMidpointReachedEvent>(OnUITransitionMidpointReachedHandler);
 
 #if UNITY_EDITOR
         // If starting from MainStation scene in the editor, then perform the setup here
@@ -110,6 +111,14 @@ public class PlayerManager : MonoBehaviour, IDataModelManager, ILuaFunctionRegis
         foreach (var licence in day2Licences)
         {
             AcquireLicence(licence, true);
+        }
+    }
+
+    private void OnUITransitionMidpointReachedHandler(OnUITransitionMidpointReachedEvent evt)
+    {
+        if (evt.TransitionType == TransitionUI.TransitionType.TimeOfDay && ClockManager.CurrentTimeOfDayPhase == TimeOfDay.Phase.Morning)
+        {
+            PlayerMovement.RespawnPlayer(PlayerConstants.PlayerSleepRespawnPosition);
         }
     }
 

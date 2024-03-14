@@ -40,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (IsPlayerBelowKillFloor() || Input.GetKeyDown(PlayerConstants.RespawnKey))
         {
-            SetPosition(PlayerConstants.PlayerRespawnPosition, AnimationConstants.OfficeCameraStateName);
+            RespawnPlayer(PlayerConstants.PlayerRespawnPosition);
             return;
         }
 
@@ -141,6 +141,11 @@ public class PlayerMovement : MonoBehaviour
             break;
         }
         return false;
+    }
+
+    public void RespawnPlayer(Vector3 position)
+    {
+        SetPosition(position, AnimationConstants.OfficeCameraStateName);
     }
 
     public void SetPosition(Vector3 position, string cameraStateName = null)

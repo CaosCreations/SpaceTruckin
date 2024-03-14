@@ -21,6 +21,7 @@ public class TransitionCanvas : MonoBehaviour
     private void Awake()
     {
         imageOpacityTransition.OnTransitionEnd += EndTransition;
+        imageOpacityTransition.OnTransitionMidpointReached += ReachTransitionMidpoint;
     }
 
     public void BeginTransition(string textContent)
@@ -35,6 +36,11 @@ public class TransitionCanvas : MonoBehaviour
         PlayerManager.EnterPausedState();
         UIManager.AddOverriddenKey(KeyCode.Escape);
         SingletonManager.EventService.Dispatch(new OnUITransitionStartedEvent(TransitionType));
+    }
+
+    public void ReachTransitionMidpoint()
+    {
+        SingletonManager.EventService.Dispatch(new OnUITransitionMidpointReachedEvent(TransitionType));
     }
 
     public void EndTransition()
