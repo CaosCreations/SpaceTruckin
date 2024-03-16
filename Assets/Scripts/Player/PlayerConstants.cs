@@ -25,6 +25,7 @@ public class PlayerConstants : MonoBehaviour
     public static readonly Vector3 PlayerSleepRespawnPosition = new(210.884995f, 380f, -255.25f);
     public static readonly Vector3 PlayerRefugeeCampPosition = new(151.312759f, 380.410004f, -282.76001f);
     public static readonly Vector3 PlayerSpaceportPosition = new(303.287994f, 379.882996f, -283f);
+    public static readonly Vector3 PlayerMaintenancePosition = new(202.492996f, 269.5f, -307.501007f);
     public static readonly Vector3 PlayerUlssPosition = new(175.399994f, 380.287292f, -264.440002f);
     public const int EditorTargetFrameRate = 60;
 
