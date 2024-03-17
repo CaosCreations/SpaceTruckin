@@ -56,7 +56,7 @@ public class PlayerPrototyping : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Alpha4))
             {
-                PlayerManager.PlayerMovement.SetPosition(PlayerConstants.PlayerMaintenancePosition/*, AnimationConstants.SpaceportStateName*/);
+                PlayerManager.PlayerMovement.SetPosition(PlayerConstants.PlayerMaintenancePosition, AnimationConstants.NormalAngleStateName);
             }
         }
 //#endif
