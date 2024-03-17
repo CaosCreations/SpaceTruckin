@@ -27,24 +27,25 @@ public class DialogueZoneLockManager : MonoBehaviour, ILuaFunctionRegistrar
 
     public void LockZone(string zoneName)
     {
-        var activator = GetActivatorByName(zoneName);
-        activator.Activate();
+        var activators = GetActivatorsByName(zoneName);
+        Array.ForEach(activators, a => a.Activate());
     }
 
     public void UnlockZone(string zoneName)
     {
-        var activator = GetActivatorByName(zoneName);
-        activator.Deactivate();
+        var activators = GetActivatorsByName(zoneName);
+        Array.ForEach(activators, a => a.Deactivate());
     }
 
-    private DialoguePositionConstrainerActivator GetActivatorByName(string zoneName)
+    private DialoguePositionConstrainerActivator[] GetActivatorsByName(string zoneName)
     {
-        var activator = activators.FirstOrDefault(a => a.ZoneName == zoneName);
-        if (activator == null)
+        // There can be multiple instances per zone 
+        var activator = activators.Where(a => a.ZoneName == zoneName);
+        if (activator.IsNullOrEmpty())
         {
-            throw new Exception("Zone lock - zone name does not exist: " + zoneName);
+            Debug.LogError("Zone lock - zone name does not exist: " + zoneName);
         }
-        return activator;
+        return activators;
     }
 
     public void RegisterLuaFunctions()

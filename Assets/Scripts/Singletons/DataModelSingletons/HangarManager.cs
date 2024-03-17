@@ -157,14 +157,14 @@ public class HangarManager : MonoBehaviour
         return slot != null && slot.Ship != null;
     }
 
-    public static IEnumerable<HangarSlot> GetOccupiedSlots()
-    {
-        return HangarSlots.Where(slot => slot.Ship != null);
-    }
-
     public static bool AreAllSlotsOccupied()
     {
         return HangarSlots.Where(slot => slot.IsUnlocked).All(slot => slot.IsOccupied);
+    }
+
+    public static bool AreAllSlotsUnoccupied()
+    {
+        return HangarSlots.Where(slot => slot.IsUnlocked).All(slot => !slot.IsOccupied);
     }
 
     // Call this at the end of the day to get the total queue for the next day
