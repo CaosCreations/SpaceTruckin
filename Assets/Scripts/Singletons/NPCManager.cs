@@ -23,7 +23,7 @@ public class NPCManager : MonoBehaviour
     private void Start()
     {
         SingletonManager.EventService.Add<OnEveningStartEvent>(OnEveningStartHandler);
-        SingletonManager.EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
+        SingletonManager.EventService.Add<OnMorningStartEvent>(OnMorningStartHandler);
 
         SetMorningPositions();
     }
@@ -72,7 +72,7 @@ public class NPCManager : MonoBehaviour
         }
     }
 
-    private void OnEndOfDayHandler(OnEndOfDayEvent evt)
+    private void OnMorningStartHandler()
     {
         SetMorningPositions();
     }
