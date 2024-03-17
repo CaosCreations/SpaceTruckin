@@ -153,6 +153,9 @@ public class PlayerMovement : MonoBehaviour
         if (cameraStateName != null)
         {
             StationCameraManager.SetBlend(CinemachineBlendDefinition.Style.Cut, 0f);
+            
+            // Hack for changing current cinemachine camera 
+            CamSwitchCol.myCurrentCam = 0;
         }
 
         characterController.enabled = false;

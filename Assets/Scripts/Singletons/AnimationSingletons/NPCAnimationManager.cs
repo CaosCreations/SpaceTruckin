@@ -18,7 +18,7 @@ public class NPCAnimationManager : AnimationManager<NPCAnimationParameterType>
     private void Start()
     {
         SingletonManager.EventService.Add<OnEveningStartEvent>(OnEveningStartHandler);
-        SingletonManager.EventService.Add<OnEndOfDayEvent>(OnEndOfDayHandler);
+        SingletonManager.EventService.Add<OnMorningStartEvent>(OnMorningStartHandler);
 
         UpdateAnimatorForMorning();
     }
@@ -65,7 +65,7 @@ public class NPCAnimationManager : AnimationManager<NPCAnimationParameterType>
         }
     }
 
-    private void OnEndOfDayHandler(OnEndOfDayEvent evt)
+    private void OnMorningStartHandler()
     {
         UpdateAnimatorForMorning();
     }
