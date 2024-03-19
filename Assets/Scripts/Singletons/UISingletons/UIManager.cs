@@ -193,6 +193,7 @@ public class UIManager : MonoBehaviour
         Instance.pauseMenuCanvas.SetActive(false);
         Instance.universalUI.gameObject.SetActive(false);
         activeCanvas = null;
+        RemoveOverriddenKey(KeyCode.Escape);
     }
 
     /// <param name="canvas">The canvas to display, which is set by collision or a shortcut
