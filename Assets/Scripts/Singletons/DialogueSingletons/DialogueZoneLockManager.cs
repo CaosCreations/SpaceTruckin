@@ -40,12 +40,12 @@ public class DialogueZoneLockManager : MonoBehaviour, ILuaFunctionRegistrar
     private DialoguePositionConstrainerActivator[] GetActivatorsByName(string zoneName)
     {
         // There can be multiple instances per zone 
-        var activator = activators.Where(a => a.ZoneName == zoneName);
-        if (activator.IsNullOrEmpty())
+        var activatorsByName = activators.Where(a => a.ZoneName == zoneName);
+        if (!activatorsByName.Any())
         {
             Debug.LogError("Zone lock - zone name does not exist: " + zoneName);
         }
-        return activators;
+        return activatorsByName.ToArray();
     }
 
     public void RegisterLuaFunctions()
