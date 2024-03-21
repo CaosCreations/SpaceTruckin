@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class CheckpointManager : MonoBehaviour
@@ -29,6 +30,17 @@ public class CheckpointManager : MonoBehaviour
         PlayerPrefsManager.SetCanvasTutorialPrefValue(UICanvasType.Terminal, new Date(1, 1, 1), true);
         CalendarManager.SetDate(new Date(1, 1, 1));
         UIManager.LiftAccessSettings();
+
+        // Destroy triggers that are for convos that we've auto-completed
+        var cutsceneTriggers = FindObjectsOfType<CutsceneCollisionTrigger>();
+        var triggerNames = new[] { "VestaBabyReceivingTrigger", "MeetVestaCleaningTrigger", "MeetPiratesTrigger", };
+        foreach (var trigger in cutsceneTriggers)
+        {
+            if (triggerNames.Contains(trigger.name))
+            {
+                Destroy(trigger.gameObject);
+            }
+        }
 
         if (PlayerManager.PlayerMovementAnimation.IsHoldingBaby)
         {
