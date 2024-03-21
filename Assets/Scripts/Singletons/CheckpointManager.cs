@@ -18,10 +18,7 @@ public class CheckpointManager : MonoBehaviour
 
     public static void Day2()
     {
-        // TODO: Load station scene if not already
-
         MissionUtils.StartMissionByName("Alcohol for adults", "B. Lrorllyl");
-        // TODO: May have to complete the convos corresponding to these jobs?
         MissionUtils.AcceptMissionByName("Vukra Aid");
         MissionUtils.AcceptMissionByName("Towels");
 
