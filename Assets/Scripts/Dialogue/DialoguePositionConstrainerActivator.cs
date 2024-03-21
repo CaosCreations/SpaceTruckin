@@ -102,13 +102,13 @@ public class DialoguePositionConstrainerActivator : MonoBehaviour
 
     public void Activate()
     {
-        Debug.Log("DialoguePositionConstrainer activating...");
+        Debug.Log("DialoguePositionConstrainer activating: " + name);
         IsActive = true;
     }
 
     public void Deactivate()
     {
-        Debug.Log("DialoguePositionConstrainer deactivating...");
+        Debug.Log("DialoguePositionConstrainer deactivating: " + name);
         IsActive = false;
     }
 }
