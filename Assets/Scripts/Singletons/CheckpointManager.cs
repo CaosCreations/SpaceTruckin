@@ -21,6 +21,8 @@ public class CheckpointManager : MonoBehaviour
         MissionUtils.StartMissionByName("Alcohol for adults", "B. Lrorllyl");
         MissionUtils.AcceptMissionByName("Vukra Aid");
         MissionUtils.AcceptMissionByName("Towels");
+        MissionUtils.AcceptMissionByName("Replacement Shipment");
+        MissionUtils.AcceptMissionByName("ULSS Samples");
 
         var convoIds = new int[] { 45, 51, 58, 73, 74, 75, 76, 77, 78, 79, 80, 163, 166, 167, 168, 171, 172, 175, 205 };
         DialogueDatabaseManager.Instance.SetConversationsSeen(convoIds);
