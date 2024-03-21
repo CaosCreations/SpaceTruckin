@@ -215,6 +215,7 @@ public class UniversalHangarNodeUI : UICanvasBase
         {
             return ShipToInspect.CurrentFuel >= ShipToInspect.CurrentMission.FuelCost
                 && ShipToInspect.CurrentHullIntegrity > 0;
+            // TODO: Turn this back on later when we finish the ship battery system.
             //&& ShipToInspect.CanWarp;
         }
         return false;
