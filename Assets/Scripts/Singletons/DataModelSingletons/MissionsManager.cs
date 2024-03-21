@@ -97,9 +97,13 @@ public class MissionsManager : MonoBehaviour, IDataModelManager, ILuaFunctionReg
 
             // TODO: Success/failure of mission affects client relationship change?*
 
-            // Improve relationship with the client of the mission.
-            DialogueDatabaseManager.AddToActorFondness(scheduled.Mission.Customer, scheduled.Mission.FondnessGranted);
+            // TODO: Enable this later when we do the fondness system properly.
+            //// Improve relationship with the client of the mission.
+            //DialogueDatabaseManager.AddToActorFondness(scheduled.Mission.Customer, scheduled.Mission.FondnessGranted);
         }
+
+        // TODO: Maybe deducting fuel should be its own MissionOutcome that we could audit and add randomness to?*
+        scheduled.Pilot.Ship.DeductFuel(scheduled.Mission.FuelCost);
 
         // Success of the mission depends on factors such as Pilot traits
         scheduled.Mission.WasSuccessful = DetermineIfMissionWasSuccessful(scheduled);
