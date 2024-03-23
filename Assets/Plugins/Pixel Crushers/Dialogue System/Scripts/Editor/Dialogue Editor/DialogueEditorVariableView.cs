@@ -185,8 +185,8 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             }
 
             EditorGUI.BeginChangeCheck();
-            variableFilter = EditorGUILayout.TextField(GUIContent.none, variableFilter, "ToolbarSeachTextField");
-            GUILayout.Label(string.Empty, "ToolbarSeachCancelButtonEmpty");
+            variableFilter = EditorGUILayout.TextField(GUIContent.none, variableFilter, MoreEditorGuiUtility.ToolbarSearchTextFieldName);
+            GUILayout.Label(string.Empty, MoreEditorGuiUtility.ToolbarSearchCancelButtonEmpty);
             if (EditorGUI.EndChangeCheck()) RefreshView();
 
             DrawVariableMenu();
@@ -478,6 +478,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 if (!(reorderableList != null && 0 <= index && index < reorderableList.count)) return;
                 var variable = reorderableList.list[index] as Variable;
                 if (variable == null) return;
+                if (variable.fields == null) variable.fields = new List<Field>();
 
                 EditorGUI.BeginDisabledGroup(syncedVariableIDs != null && syncedVariableIDs.Contains(variable.id));
                 if (!variable.FieldExists("Initial Value")) variable.fields.Add(new Field("Initial Value", string.Empty, FieldType.Text));

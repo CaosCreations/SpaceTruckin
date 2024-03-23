@@ -180,7 +180,7 @@ namespace PixelCrushers.DialogueSystem
                 hasEverBarked = true;
                 SetUIElementsActive(false);
                 string subtitleText = subtitle.formattedText.text;
-                if (includeName)
+                if (includeName && !string.IsNullOrEmpty(Tools.StripTextMeshProTags(subtitle.speakerInfo.Name)))
                 {
                     if (nameText != null)
                     {
@@ -188,7 +188,7 @@ namespace PixelCrushers.DialogueSystem
                     }
                     else
                     {
-                        subtitleText = string.Format("{0}: {1}", subtitleText, subtitle.formattedText.text);
+                        subtitleText = string.Format("{0}: {1}", subtitle.speakerInfo.Name, subtitle.formattedText.text);
                     }
                 }
                 else

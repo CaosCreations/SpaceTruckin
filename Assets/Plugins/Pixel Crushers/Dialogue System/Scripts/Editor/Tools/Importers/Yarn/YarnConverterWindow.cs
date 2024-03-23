@@ -58,6 +58,8 @@ namespace PixelCrushers.DialogueSystem.Yarn
         // public string customCommandsSourceFile;
         public string customCommandsSourceFile = DefaultCustomCommandsSourceFile;
 
+        public string prefsPath;
+
         /// <summary>
         /// The name of the player's actor.
         /// </summary>
@@ -165,6 +167,9 @@ namespace PixelCrushers.DialogueSystem.Yarn
         private ReorderableList uiLocalizedFileList;
         private string lastVisitedYarnSourceDirectory;
         private string lastVisitedLocalizedFileDirectory;
+
+        protected static GUIContent SavePrefsLabel = new GUIContent("Save Prefs...", "Save import settings to JSON file.");
+        protected static GUIContent LoadPrefsLabel = new GUIContent("Load Prefs...", "Load import settings from JSON file.");
 
         public void PopulateDefaultPrefs()
         {
@@ -320,6 +325,49 @@ namespace PixelCrushers.DialogueSystem.Yarn
             {
                 prefs.merge = EditorGUILayout.Toggle(new GUIContent("Merge Variables", "Merge variables into existing database instead of overwriting"),
                                                      prefs.merge);
+            }
+        }
+
+        protected override void DrawConversionButtons()
+        {
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            DrawSaveLoadPrefsButtons();
+            DrawClearButton();
+            DrawConvertButton();
+            EditorGUILayout.EndHorizontal();
+        }
+
+        protected void DrawSaveLoadPrefsButtons()
+        {
+            if (GUILayout.Button(SavePrefsLabel, GUILayout.Width(100)))
+            {
+                var path = EditorUtility.SaveFilePanel("Save Import Settings",
+                    System.IO.Path.GetDirectoryName(prefs.prefsPath), System.IO.Path.GetFileName(prefs.prefsPath), "json");
+                if (!string.IsNullOrEmpty(path))
+                {
+                    prefs.prefsPath = path;
+                    System.IO.File.WriteAllText(path, JsonUtility.ToJson(prefs));
+                }
+            }
+            if (GUILayout.Button(LoadPrefsLabel, GUILayout.Width(100)))
+            {
+                var path = EditorUtility.OpenFilePanel("Load Import Settings",
+                    System.IO.Path.GetDirectoryName(prefs.prefsPath), "json");
+                if (!string.IsNullOrEmpty(path))
+                {
+                    var newPrefs = JsonUtility.FromJson<YarnConverterPrefs>(System.IO.File.ReadAllText(path));
+                    if (newPrefs == null)
+                    {
+                        EditorUtility.DisplayDialog("Load Failed", $"Could not load Yarn import settings from {path}.", "OK");
+                    }
+                    else
+                    {
+                        prefs = newPrefs;
+                        prefs.prefsPath = path;
+                        InitializeReorderableLists();
+                    }
+                }
             }
         }
 

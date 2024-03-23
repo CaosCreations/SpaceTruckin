@@ -22,6 +22,10 @@ namespace PixelCrushers.DialogueSystem
             [Tooltip("Value to replace shortcut with.")]
             [TextArea]
             public string value;
+
+            [Tooltip("Menu of the shortcut.")]
+            [TextArea]
+            public string subMenu;
         }
 
         public Shortcut[] shortcuts = new Shortcut[0];

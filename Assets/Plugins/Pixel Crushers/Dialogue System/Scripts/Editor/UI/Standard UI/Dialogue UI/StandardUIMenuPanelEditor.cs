@@ -25,6 +25,7 @@ namespace PixelCrushers.DialogueSystem
             EditorGUILayout.PropertyField(serializedObject.FindProperty("buttons"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("buttonAlignment"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("showUnusedButtons"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("warnOnEmptyResponseText"), true);
 
             EditorGUILayout.LabelField("Auto-Created Buttons", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("buttonTemplate"), true);
@@ -43,6 +44,7 @@ namespace PixelCrushers.DialogueSystem
             EditorGUILayout.PropertyField(serializedObject.FindProperty("loopExplicitNavigation"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("autonumber"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("blockInputDuration"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("showSelectionWhileInputBlocked"), true);
 
             EditorGUILayout.LabelField("Visibility", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("startState"), true);

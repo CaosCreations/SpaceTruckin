@@ -133,7 +133,10 @@ namespace PixelCrushers.DialogueSystem
             this.charactersPerSecond = charactersPerSecond;
         }
 
-        public abstract void Awake();
+        public virtual void Awake()
+        {
+            PreprocessPauseCharacters();
+        }
 
         public abstract void Start();
 
@@ -170,17 +173,26 @@ namespace PixelCrushers.DialogueSystem
             return UITools.StripRPGMakerCodes(s);
         }
 
-        protected bool IsFullPauseCharacter(char c)
+        /// <summary>
+        /// Process anything special in full/quarterPauseCharacters, such as \n to newlines.
+        /// </summary>
+        protected virtual void PreprocessPauseCharacters()
+        {
+            fullPauseCharacters = fullPauseCharacters.Replace("\\n", "\n");
+            quarterPauseCharacters = quarterPauseCharacters.Replace("\\n", "\n");
+        }
+
+        protected virtual bool IsFullPauseCharacter(char c)
         {
             return IsCharacterInString(c, fullPauseCharacters);
         }
 
-        protected bool IsQuarterPauseCharacter(char c)
+        protected virtual bool IsQuarterPauseCharacter(char c)
         {
             return IsCharacterInString(c, quarterPauseCharacters);
         }
 
-        protected bool IsSilentCharacter(char c)
+        protected virtual bool IsSilentCharacter(char c)
         {
             return IsCharacterInString(c, silentCharacters);
         }

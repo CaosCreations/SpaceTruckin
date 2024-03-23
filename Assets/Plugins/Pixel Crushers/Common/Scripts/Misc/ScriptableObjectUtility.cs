@@ -57,21 +57,32 @@ namespace PixelCrushers
         /// list elements.
         /// </summary>
         /// <param name="original">List to clone.</param>
+        /// <param name="source">Optional reference to source object to report in log if operation fails.</param>
         /// <returns>A second list containing new instances of the list elements.</returns>
-        public static List<T> CloneList<T>(List<T> original) where T : ScriptableObject
+        public static List<T> CloneList<T>(List<T> original, UnityEngine.Object source = null) where T : ScriptableObject
         {
             var copy = new List<T>();
             if (original != null)
             {
                 for (int i = 0; i < original.Count; i++)
                 {
-                    if (original[i] is T)
+                    if (original[i] != null && original[i] is T)
                     {
                         copy.Add(ScriptableObject.Instantiate(original[i]) as T);
                     }
                     else
                     {
-                        if (Debug.isDebugBuild) Debug.LogWarning("CloneList<" + typeof(T).Name + ">: Element " + i + " is null.");
+                        if (Debug.isDebugBuild)
+                        {
+                            if (source != null)
+                            {
+                                Debug.LogWarning("CloneList<" + typeof(T).Name + ">: Element " + i + " is null in a list in " + source + ".", source);
+                            }
+                            else
+                            {
+                                Debug.LogWarning("CloneList<" + typeof(T).Name + ">: Element " + i + " is null.");
+                            }
+                        }
                         copy.Add(null);
                     }
                 }

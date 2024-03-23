@@ -14,7 +14,7 @@ namespace PixelCrushers.DialogueSystem
     /// would break serialization in existing projects).
     /// </summary>
     [CustomPropertyDrawer(typeof(DialogueSystemTriggerEventAttribute))]
-    public class DialoguesystemTriggerEventDrawer : PropertyDrawer
+    public class DialogueSystemTriggerEventDrawer : PropertyDrawer
     {
 
         private static string[] triggerNames = {

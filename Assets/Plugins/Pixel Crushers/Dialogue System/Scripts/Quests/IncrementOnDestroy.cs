@@ -24,7 +24,7 @@ namespace PixelCrushers.DialogueSystem
         /// The variable to increment.
         /// </summary>
         [Tooltip("Increment this Dialogue System variable.")]
-        [VariablePopup]
+        [VariablePopup(true)]
         public string variable = string.Empty;
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace PixelCrushers.DialogueSystem
             var destructibleSaver = GetComponent<DestructibleSaver>();
             if (destructibleSaver != null)
             {
-                var saveSystem = FindObjectOfType<SaveSystem>();
+                var saveSystem = GameObjectUtility.FindFirstObjectByType<SaveSystem>();
                 if (saveSystem != null)
                 {
                     if (SaveSystem.currentSavedGameData != null)
@@ -165,7 +165,7 @@ namespace PixelCrushers.DialogueSystem
         /// Increments variable. Assumes conditions to increment have already been checked and passed.
         /// </summary>
         protected virtual void IncrementNow()
-        { 
+        {
             int oldValue = DialogueLua.GetVariable(actualVariableName).asInt;
             int newValue = Mathf.Clamp(oldValue + increment, min, max);
             DialogueLua.SetVariable(actualVariableName, newValue);

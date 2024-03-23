@@ -101,7 +101,7 @@ namespace PixelCrushers.DialogueSystem
             if (portraitName != null) portraitName.text = string.Empty;
             if (portraitImage != null) portraitImage.sprite = null;
             if (line != null) line.text = string.Empty;
-            yield return new WaitForEndOfFrame();
+            yield return CoroutineUtility.endOfFrame;
             var characterInfo = (characterType == CharacterType.NPC) ? DialogueManager.conversationModel.conversantInfo : DialogueManager.conversationModel.actorInfo;
             if (characterInfo != null)
             {
@@ -112,7 +112,7 @@ namespace PixelCrushers.DialogueSystem
 
         public override void SetActive(bool value)
         {
-            if (value == true || uiVisibility == UIVisibility.AlwaysFromStart || ((uiVisibility == UIVisibility.AlwaysOnceShown || uiVisibility == UIVisibility.UntilSuperceded) && isVisible))
+            if (value == true || uiVisibility == UIVisibility.AlwaysFromStart || ((uiVisibility == UIVisibility.AlwaysOnceShown || UITools.CanBeSuperceded(uiVisibility)) && isVisible))
             {
                 ShowPanel();
             }

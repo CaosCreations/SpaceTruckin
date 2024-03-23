@@ -241,7 +241,7 @@ namespace PixelCrushers.DialogueSystem
 
         private static void SetupCanvas(CanvasDialogueUI ui, DialogueSystemController dialogueManager)
         {
-            if (FindObjectOfType<UnityEngine.EventSystems.EventSystem>() == null)
+            if (GameObjectUtility.FindFirstObjectByType<UnityEngine.EventSystems.EventSystem>() == null)
             {
                 new GameObject("EventSystem", typeof(UnityEngine.EventSystems.EventSystem),
                     typeof(UnityEngine.EventSystems.StandaloneInputModule));
@@ -300,7 +300,7 @@ namespace PixelCrushers.DialogueSystem
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
-            DialogueManager.instance.displaySettings.localizationSettings.textTable = (TextTable) EditorGUILayout.ObjectField("Text Table", DialogueManager.instance.displaySettings.localizationSettings.textTable, typeof(TextTable), false, GUILayout.Width(360));
+            DialogueManager.instance.displaySettings.localizationSettings.textTable = (TextTable)EditorGUILayout.ObjectField("Text Table", DialogueManager.instance.displaySettings.localizationSettings.textTable, typeof(TextTable), false, GUILayout.Width(360));
             EditorGUILayout.HelpBox("Assign an optional Text Table asset containing translations to use for UI elements outside of your dialogue database content.", MessageType.None);
             EditorGUILayout.EndHorizontal();
 
@@ -440,7 +440,7 @@ namespace PixelCrushers.DialogueSystem
 
         private bool HasMainCamera()
         {
-            foreach (var camera in FindObjectsOfType<UnityEngine.Camera>())
+            foreach (var camera in GameObjectUtility.FindObjectsByType<UnityEngine.Camera>())
             {
                 if (camera.CompareTag("MainCamera")) return true;
             }

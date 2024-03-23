@@ -268,7 +268,7 @@ namespace PixelCrushers.DialogueSystem
         protected void CheckForSupercededSubtitle(CharacterType characterType)
         {
             var otherSubtitle = (characterType == CharacterType.NPC) ? dialogue.pcSubtitle : dialogue.npcSubtitle;
-            if (otherSubtitle.uiVisibility == UIVisibility.UntilSuperceded && otherSubtitle.isVisible)
+            if (UITools.CanBeSuperceded(otherSubtitle.uiVisibility) && otherSubtitle.isVisible)
             {
                 otherSubtitle.ForceHide();
             }

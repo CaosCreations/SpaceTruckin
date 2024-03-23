@@ -28,6 +28,7 @@ namespace PixelCrushers.DialogueSystem
         public IDialogueUI originalDialogueUI;
         public DisplaySettings originalDisplaySettings;
         public bool isOverrideUIPrefab;
+        public bool dontDestroyPrefabInstance;
 
         /// @cond FOR_V1_COMPATIBILITY
         public Transform Actor { get { return actor; } set { actor = value; } }

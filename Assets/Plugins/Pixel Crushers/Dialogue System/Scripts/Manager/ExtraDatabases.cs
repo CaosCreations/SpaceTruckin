@@ -58,7 +58,16 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public static event System.Action removedDatabases = delegate { };
 
-        protected bool m_trying = false;
+#if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void InitStaticVariables()
+        {
+            addedDatabases = delegate { };
+            removedDatabases = delegate { };
+        }
+#endif
+
+    protected bool m_trying = false;
         protected Coroutine m_destroyCoroutine = null;
         protected int m_numActiveCoroutines = 0;
 
@@ -209,7 +218,7 @@ namespace PixelCrushers.DialogueSystem
 
         protected virtual IEnumerator StartEndOfFrame()
         {
-            yield return new WaitForEndOfFrame();
+            yield return CoroutineUtility.endOfFrame;
             if (addTrigger == DialogueTriggerEvent.OnStart) TryAddDatabases(null, onePerFrame);
             if (removeTrigger == DialogueTriggerEvent.OnStart) TryRemoveDatabases(null, onePerFrame);
         }

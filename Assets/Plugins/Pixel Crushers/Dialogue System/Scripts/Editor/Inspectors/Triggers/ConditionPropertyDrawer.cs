@@ -205,9 +205,15 @@ namespace PixelCrushers.DialogueSystem
 
         private float GetArrayHeight(SerializedProperty property)
         {
+#if UNITY_2020_1_OR_NEWER
+            return property.isExpanded
+                ? ((3 + Mathf.Max(1, property.arraySize)) * (EditorGUIUtility.singleLineHeight + 2f))
+                : EditorGUIUtility.singleLineHeight;
+#else
             return property.isExpanded
                 ? ((2 + property.arraySize) * (EditorGUIUtility.singleLineHeight + 2f))
                     : EditorGUIUtility.singleLineHeight;
+#endif
         }
 
         private float GetTextAreaArrayHeight(SerializedProperty property)

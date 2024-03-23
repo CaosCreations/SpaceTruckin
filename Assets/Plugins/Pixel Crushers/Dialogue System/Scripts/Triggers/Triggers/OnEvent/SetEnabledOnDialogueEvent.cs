@@ -72,7 +72,7 @@ namespace PixelCrushers.DialogueSystem
         private IEnumerator TryActionsAfterOneFrameCoroutine(SetEnabledAction[] actions, Transform actor)
         {
             Debug.Log("Waiting 1 frame");
-            yield return new WaitForEndOfFrame();
+            yield return CoroutineUtility.endOfFrame;
             yield return null;
             yield return new WaitForSeconds(2);
             TryActionsNow(actions, actor);

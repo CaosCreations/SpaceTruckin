@@ -30,8 +30,8 @@ public class TemplateCustomLua : MonoBehaviour // Rename this class.
     void OnEnable()
     {
         // Make the functions available to Lua: (Replace these lines with your own.)
-        Lua.RegisterFunction("DebugLog", this, SymbolExtensions.GetMethodInfo(() => DebugLog(string.Empty)));
-        Lua.RegisterFunction("AddOne", this, SymbolExtensions.GetMethodInfo(() => AddOne((double)0)));
+        Lua.RegisterFunction(nameof(DebugLog), this, SymbolExtensions.GetMethodInfo(() => DebugLog(string.Empty)));
+        Lua.RegisterFunction(nameof(AddOne), this, SymbolExtensions.GetMethodInfo(() => AddOne((double)0)));
     }
 
     void OnDisable()
@@ -39,8 +39,8 @@ public class TemplateCustomLua : MonoBehaviour // Rename this class.
         if (unregisterOnDisable)
         {
             // Remove the functions from Lua: (Replace these lines with your own.)
-            Lua.UnregisterFunction("DebugLog");
-            Lua.UnregisterFunction("AddOne");
+            Lua.UnregisterFunction(nameof(DebugLog));
+            Lua.UnregisterFunction(nameof(AddOne));
         }
     }
 

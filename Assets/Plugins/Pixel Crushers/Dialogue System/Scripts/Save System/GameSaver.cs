@@ -253,7 +253,7 @@ namespace PixelCrushers.DialogueSystem
         private LevelManager FindLevelManager()
         {
             var levelManager = GetComponentInChildren<LevelManager>();
-            if (levelManager == null) levelManager = FindObjectOfType<LevelManager>();
+            if (levelManager == null) levelManager = GameObjectUtility.FindFirstObjectByType<LevelManager>();
             return levelManager;
         }
 

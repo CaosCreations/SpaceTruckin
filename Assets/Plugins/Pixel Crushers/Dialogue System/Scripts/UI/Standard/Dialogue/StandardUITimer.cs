@@ -1,7 +1,6 @@
 // Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine;
-using System.Collections;
 
 namespace PixelCrushers.DialogueSystem
 {
@@ -15,7 +14,10 @@ namespace PixelCrushers.DialogueSystem
 
         private UnityEngine.UI.Slider slider = null;
 
+        private bool m_isCountingDown = false;
         private float m_startTime; // When the timer started.
+        private float m_duration;
+        private System.Action m_timeoutHandler;
 
         public virtual void Awake()
         {
@@ -30,25 +32,30 @@ namespace PixelCrushers.DialogueSystem
         /// <param name="timeoutHandler">Handler to invoke if the timer reaches zero.</param>
         public virtual void StartCountdown(float duration, System.Action timeoutHandler)
         {
-            StartCoroutine(Countdown(duration, timeoutHandler));
+            m_isCountingDown = true;
+            m_startTime = DialogueTime.time;
+            m_duration = duration;
+            m_timeoutHandler = timeoutHandler;
         }
 
-        private IEnumerator Countdown(float duration, System.Action timeoutHandler)
+        protected virtual void Update()
         {
-            m_startTime = DialogueTime.time;
-            float endTime = m_startTime + duration;
-            while (DialogueTime.time < endTime)
+            if (m_isCountingDown)
             {
                 float elapsed = DialogueTime.time - m_startTime;
-                UpdateTimeLeft(Mathf.Clamp(1 - (elapsed / duration), 0, 1));
-                yield return null;
+                UpdateTimeLeft(Mathf.Clamp01(1 - (elapsed / m_duration)));
+                if (elapsed >= m_duration)
+                {
+                    m_isCountingDown = false;
+                    if (m_timeoutHandler != null) m_timeoutHandler();
+                }
             }
-            if (timeoutHandler != null) timeoutHandler();
         }
 
         public virtual void StopCountdown()
         {
-            StopAllCoroutines();
+            m_isCountingDown = false;
+            m_timeoutHandler = null;
         }
 
         /// <summary>

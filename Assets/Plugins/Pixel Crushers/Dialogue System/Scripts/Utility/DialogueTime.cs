@@ -111,7 +111,7 @@ namespace PixelCrushers.DialogueSystem
                     case TimeMode.Gameplay:
                         return Time.deltaTime;
                     case TimeMode.Custom:
-                        return m_customDeltaTime;
+                        return m_isPaused ? 0 : m_customDeltaTime;
                 }
             }
             set

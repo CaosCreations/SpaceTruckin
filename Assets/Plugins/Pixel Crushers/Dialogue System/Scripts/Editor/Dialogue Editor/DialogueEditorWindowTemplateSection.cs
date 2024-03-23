@@ -68,6 +68,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             EditorGUI.BeginChangeCheck();
             EditorWindowTools.StartIndentedSection();
             DrawTemplate("Actors", template.actorFields, template.actorPrimaryFieldTitles, ref templateFoldouts.actors);
+            DrawActorTemplateAIButton();
             DrawTemplate("Items", template.itemFields, null, ref templateFoldouts.items);
             DrawTemplate("Quests", template.questFields, template.questPrimaryFieldTitles, ref templateFoldouts.quests);
             DrawTemplate("Locations", template.locationFields, null, ref templateFoldouts.locations);
@@ -77,6 +78,42 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             DrawDialogueLineColors();
             EditorWindowTools.EndIndentedSection();
             if (EditorGUI.EndChangeCheck()) SaveTemplate();
+        }
+
+        private void DrawActorTemplateAIButton()
+        {
+
+#if USE_OPENAI
+            if (templateFoldouts.actors)
+            {
+                var hasKnowledgeField = template.actorFields.Find(f => f.title == DialogueSystemFields.Knowledge) != null;
+                var hasGoalsField = template.actorFields.Find(f => f.title == DialogueSystemFields.Goals) != null;
+                if (!(hasKnowledgeField && hasGoalsField))
+                {
+                    if (GUILayout.Button(new GUIContent("Add Knowledge & Goals for AI", "Add Knowledge and Goals fields that Addon for OpenAI can use for background context.")))
+                    {
+                        template.actorFields.Add(new Field(DialogueSystemFields.Knowledge, "", FieldType.Text));
+                        template.actorFields.Add(new Field(DialogueSystemFields.Goals, "", FieldType.Text));
+                        template.actorPrimaryFieldTitles.Add(DialogueSystemFields.Knowledge);
+                        template.actorPrimaryFieldTitles.Add(DialogueSystemFields.Goals);
+                        if (database != null)
+                        {
+                            foreach (var actor in database.actors)
+                            {
+                                if (!actor.FieldExists(DialogueSystemFields.Knowledge))
+                                {
+                                    actor.fields.Add(new Field(DialogueSystemFields.Knowledge, "", FieldType.Text));
+                                }
+                                if (!actor.FieldExists(DialogueSystemFields.Goals))
+                                {
+                                    actor.fields.Add(new Field(DialogueSystemFields.Goals, "", FieldType.Text));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+#endif
         }
 
         private void DrawTemplate(string foldoutName, List<Field> fields, List<string> primaryFieldTitles, ref bool foldout)

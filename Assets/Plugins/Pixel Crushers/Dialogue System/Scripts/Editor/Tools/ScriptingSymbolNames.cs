@@ -7,6 +7,7 @@ namespace PixelCrushers.DialogueSystem
 
     public class ScriptingSymbolNames
     {
+
         public const string USE_PHYSICS2D = "USE_PHYSICS2D";
         public const string USE_NEW_INPUT = "USE_NEW_INPUT";
         public const string USE_ADDRESSABLES = "USE_ADDRESSABLES";
@@ -19,7 +20,10 @@ namespace PixelCrushers.DialogueSystem
         public const string USE_CELTX3 = "USE_CELTX3";
         public const string USE_TWINE = "USE_TWINE";
         public const string USE_YARN = "USE_YARN";
+        public const string USE_YARN2 = "USE_YARN2";
         public const string TMP_PRESENT = "TMP_PRESENT";
         public const string USE_STM = "USE_STM";
+        public const string USE_NAVMESH = "USE_NAVMESH";
+
     }
 }

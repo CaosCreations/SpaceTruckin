@@ -92,7 +92,7 @@ namespace PixelCrushers.DialogueSystem
         {
             this.ui = ui;
             this.m_sequencer = sequencer;
-            this.settings = displaySettings;
+            this.settings = DialogueManager.allowSimultaneousConversations ? new DisplaySettings(displaySettings) : displaySettings;
             this.dialogueEntrySpokenHandler = dialogueEntrySpokenHandler;
             this.initialFrameCount = Time.frameCount;
             ui.Open();
@@ -154,6 +154,12 @@ namespace PixelCrushers.DialogueSystem
             if (subtitle != null)
             {
                 if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: {1} says '{2}'", new System.Object[] { DialogueDebug.Prefix, Tools.GetGameObjectName(subtitle.speakerInfo.transform), subtitle.formattedText.text }));
+
+                if (DialogueManager.instance.allowSimultaneousConversations)
+                {
+                    DialogueManager.instance.displaySettings = settings;
+                }
+
                 NotifyParticipantsOnConversationLine(subtitle);
 
                 m_sequencer.SetParticipants(subtitle.speakerInfo.transform, subtitle.listenerInfo.transform);
@@ -355,8 +361,11 @@ namespace PixelCrushers.DialogueSystem
             if ((subtitle != null) && (settings != null) && (settings.subtitleSettings != null))
             {
                 if (subtitle.formattedText.noSubtitle || 
-                    string.Equals(subtitle.sequence, "None()") || string.Equals(subtitle.sequence, "None();") ||
-                    string.Equals(subtitle.sequence, "Continue()") || string.Equals(subtitle.sequence, "Continue();"))
+                    string.Equals(subtitle.sequence, "None()") || 
+                    string.Equals(subtitle.sequence, "None();") ||
+                    (!settings.cameraSettings.showSubtitleOnEmptyContinue && 
+                        (string.Equals(subtitle.sequence, "Continue()") || 
+                        string.Equals(subtitle.sequence, "Continue();"))))
                 {
                     return false;
                 }
@@ -392,7 +401,7 @@ namespace PixelCrushers.DialogueSystem
             HandleContinueButtonClick();
         }
 
-        private void HandleContinueButtonClick()
+        public void HandleContinueButtonClick()
         {
             // If we just started and another conversation just ended, ignore the continue:
             if (Time.frameCount == initialFrameCount && initialFrameCount == ConversationController.frameLastConversationEnded) return;
@@ -424,7 +433,7 @@ namespace PixelCrushers.DialogueSystem
                 if (notifyOnFinishSubtitle)
                 {
                     notifyOnFinishSubtitle = false;
-                    if (_subtitle != null) NotifyParticipantsOnConversationLineEnd(lastSubtitle);
+                    if (lastSubtitle != null) NotifyParticipantsOnConversationLineEnd(lastSubtitle);
                     if (FinishedSubtitleHandler != null) FinishedSubtitleHandler(this, EventArgs.Empty);
                 }
             }

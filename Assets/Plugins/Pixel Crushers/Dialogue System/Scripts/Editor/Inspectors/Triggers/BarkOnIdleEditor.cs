@@ -19,6 +19,8 @@ namespace PixelCrushers.DialogueSystem
             EditorGUILayout.PropertyField(serializedObject.FindProperty("barkOrder"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("conversant"), new GUIContent("Barker", "The actor speaking the bark. If unassigned, this GameObject."), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("target"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("barkOnStart"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("barkOnEnable"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("minSeconds"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("maxSeconds"), true);
             //--- Removed: EditorGUILayout.PropertyField(serializedObject.FindProperty("once"), true);

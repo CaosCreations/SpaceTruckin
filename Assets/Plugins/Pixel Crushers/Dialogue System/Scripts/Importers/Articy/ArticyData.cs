@@ -18,7 +18,20 @@ namespace PixelCrushers.DialogueSystem.Articy
         public class LocalizableText
         {
             public Dictionary<string, string> localizedString = new Dictionary<string, string>();
-            public string DefaultText { get { return localizedString.ContainsKey(string.Empty) ? localizedString[string.Empty] : string.Empty; } }
+            public string DefaultText 
+            { 
+                get 
+                {
+                    string text;
+                    if (localizedString.TryGetValue(string.Empty, out text) && !string.IsNullOrEmpty(text)) return text;
+                    if (localizedString.TryGetValue("en", out text) && !string.IsNullOrEmpty(text)) return text;
+                    foreach (var kvp in localizedString)
+                    {
+                        if (!string.IsNullOrEmpty(kvp.Value)) return kvp.Value;
+                    }
+                    return string.Empty;
+                } 
+            }
         }
 
         public class Element
@@ -406,6 +419,8 @@ namespace PixelCrushers.DialogueSystem.Articy
 
         public class Feature
         {
+            public string name;
+
             public List<Property> properties;
 
             public Feature()

@@ -15,10 +15,14 @@ namespace PixelCrushers.DialogueSystem
         private string[] titles = null;
         private bool showReferenceDatabase = false;
         private bool usePicker = true;
+        private bool showFilter = false;
+        private string filter = string.Empty;
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return base.GetPropertyHeight(property, label) + (showReferenceDatabase ? EditorGUIUtility.singleLineHeight : 0);
+            return base.GetPropertyHeight(property, label) +
+                (showReferenceDatabase ? EditorGUIUtility.singleLineHeight : 0) +
+                (showFilter ? EditorGUIUtility.singleLineHeight : 0);
         }
 
         public override void OnGUI(Rect position, SerializedProperty prop, GUIContent label)
@@ -29,6 +33,7 @@ namespace PixelCrushers.DialogueSystem
             
             // Show database field if specified:
             showReferenceDatabase = (attribute as ConversationPopupAttribute).showReferenceDatabase;
+            showFilter = (attribute as ConversationPopupAttribute).showFilter;
             if (EditorTools.selectedDatabase == null) EditorTools.SetInitialDatabaseIfNull();
             if (showReferenceDatabase)
             {
@@ -44,8 +49,23 @@ namespace PixelCrushers.DialogueSystem
             }
             if (EditorTools.selectedDatabase == null) usePicker = false;
 
+            // Filter:
+            if (showFilter)
+            {
+                var filterLabelWidth = 48;
+                EditorGUI.LabelField(new Rect(position.x, position.y, position.width - filterLabelWidth, EditorGUIUtility.singleLineHeight), "Filter:");
+                EditorGUI.BeginChangeCheck();
+                filter = EditorGUI.TextField(new Rect(position.x + filterLabelWidth, position.y, position.width - filterLabelWidth, EditorGUIUtility.singleLineHeight), filter);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    titles = null; // Need to update filtered title list.
+                }
+                position.y += EditorGUIUtility.singleLineHeight;
+                position.height -= EditorGUIUtility.singleLineHeight;
+            }
+
             // Set up titles array:
-            if (titles == null || titlesDatabase != EditorTools.selectedDatabase) UpdateTitles(prop.stringValue);
+            if (titles == null || titlesDatabase != EditorTools.selectedDatabase) UpdateTitles(prop.stringValue, filter);
 
             // Update current index:
             var currentIndex = GetIndex(prop.stringValue);
@@ -90,16 +110,18 @@ namespace PixelCrushers.DialogueSystem
             EditorGUI.EndProperty();
         }
 
-        public void UpdateTitles(string currentConversation)
+        public void UpdateTitles(string currentConversation, string filter)
         {
             titlesDatabase = EditorTools.selectedDatabase;
             var foundCurrent = false;
             var list = new List<string>();
+            var lowercaseFilter = string.IsNullOrEmpty(filter) ? string.Empty : filter.ToLower();
             if (titlesDatabase != null && titlesDatabase.conversations != null)
             {
                 for (int i = 0; i < titlesDatabase.conversations.Count; i++)
                 {
                     var title = titlesDatabase.conversations[i].Title;
+                    if (!string.IsNullOrEmpty(filter) && !title.ToLower().Contains(filter)) continue;
                     list.Add(title);
                     if (string.Equals(currentConversation, title))
                     {

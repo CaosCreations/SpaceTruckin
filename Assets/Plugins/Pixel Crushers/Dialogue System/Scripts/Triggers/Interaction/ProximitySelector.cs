@@ -161,7 +161,7 @@ namespace PixelCrushers.DialogueSystem
         /// <summary>
         /// Keeps track of which usable objects' triggers the selector is currently inside.
         /// </summary>
-        protected List<Usable> usablesInRange = new List<Usable>();
+        public List<Usable> usablesInRange = new List<Usable>();
 
         /// <summary>
         /// The current usable that will receive an OnUse message if the player hits the use button.

@@ -27,6 +27,8 @@ namespace PixelCrushers.DialogueSystem
         private int column; // Helps pinpoint location of syntax errors.
         private int row;
 
+        private bool isNextCharEscaped = false; // Next character was preceded by \
+
         /// <summary>
         /// Parses a sequence string into a list of sequencer command records.
         /// </summary>
@@ -126,24 +128,40 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
+        private bool HasNextChar(StringReader reader)
+        {
+            return reader != null && reader.Peek() != -1;
+        }
+
+        private char PeekNextChar(StringReader reader)
+        {
+            if (reader == null) return '\0';
+            if (reader.Peek() == '\\')
+            {
+                isNextCharEscaped = true;
+                reader.Read(); // Read past escape char.
+                column++;
+                return (char)reader.Peek();
+            }
+            else
+            {
+                return (char)reader.Peek();
+            }
+        }
+
         private bool IsNextCharWhiteSpace(StringReader reader)
         {
-            return HasNextChar(reader) && char.IsWhiteSpace((char)reader.Peek());
+            return HasNextChar(reader) && char.IsWhiteSpace(PeekNextChar(reader));
         }
 
         private bool IsNextChar(StringReader reader, char requiredChar)
         {
-            return HasNextChar(reader) && (char)reader.Peek() == requiredChar;
+            return HasNextChar(reader) && PeekNextChar(reader) == requiredChar;
         }
 
         private bool IsNextCharNot(StringReader reader, char requiredChar)
         {
-            return HasNextChar(reader) && (char)reader.Peek() != requiredChar;
-        }
-
-        private bool HasNextChar(StringReader reader)
-        {
-            return reader != null && reader.Peek() != -1;
+            return HasNextChar(reader) && PeekNextChar(reader) != requiredChar;
         }
 
         private char ReadNextChar(StringReader reader)
@@ -158,6 +176,7 @@ namespace PixelCrushers.DialogueSystem
             {
                 column++;
             }
+            isNextCharEscaped = false;
             return c;
         }
 
@@ -205,8 +224,8 @@ namespace PixelCrushers.DialogueSystem
             while (HasNextChar(reader) && safeguard < MaxSafeguard)
             {
                 safeguard++;
-                var c = (char)reader.Peek();
-                if (parenDepth <= 0 && (c == ',' || c == ')'))
+                var c = PeekNextChar(reader);
+                if (parenDepth <= 0 && (c == ',' || c == ')') && !isNextCharEscaped)
                 {
                     break;
                 }
@@ -233,6 +252,7 @@ namespace PixelCrushers.DialogueSystem
             atTime = 0;
             atMessage = string.Empty;
             sendMessage = string.Empty;
+            ParseOptionalWhitespace(reader);
             if (IsNextChar(reader, '@'))
             {
                 ParseAtSignModifier(reader, out atTime, out atMessage);

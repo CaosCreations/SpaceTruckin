@@ -1,14 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Language.Lua
 {
     public partial class Assignment : Statement
     {
+
+        // [PixelCrushers] Supports monitoring of variable changes:
+        // Local variable assignments take the form: x = 3
+        public static HashSet<string> MonitoredLocalVariables = new HashSet<string>();
+        public static System.Action<string, object> LocalVariableChanged = null;
+        // Variable assignments are in the Variable[] table: Variable["x"] = 3
+        public static HashSet<string> MonitoredVariables = new HashSet<string>();
+        public static System.Action<string, object> VariableChanged = null;
+        private static LuaValue VariableTableToMonitor = null;
+
+        public static void InitializeVariableMonitoring()
+        {
+            MonitoredLocalVariables = new HashSet<string>();
+            LocalVariableChanged = null;
+            MonitoredVariables = new HashSet<string>();
+            VariableChanged = null;
+            VariableTableToMonitor = null;
+        }
+
         public override LuaValue Execute(LuaTable enviroment, out bool isBreak)
         {
-            //[PixelCrushers]LuaValue[] values = this.ExprList.ConvertAll(expr => expr.Evaluate(enviroment)).ToArray();
+            //[PixelCrushers] LuaValue[] values = this.ExprList.ConvertAll(expr => expr.Evaluate(enviroment)).ToArray();
 			LuaValue[] values = LuaInterpreterExtensions.EvaluateAll(this.ExprList, enviroment).ToArray();
 
             LuaValue[] neatValues = LuaMultiValue.UnWrapLuaValues(values);
@@ -23,6 +41,21 @@ namespace Language.Lua
 
                     if (varName != null)
                     {
+                        if (varName.Name == "Variable")
+                        {
+                            VariableTableToMonitor = values[0];
+                        }
+                        if (MonitoredLocalVariables.Contains(varName.Name) && values.Length >= 1) //[PixelCrushers]
+                        {
+                            try
+                            {
+                                LocalVariableChanged?.Invoke(varName.Name, values[0].Value);
+                            }
+                            catch (Exception e)
+                            {
+                                UnityEngine.Debug.LogException(e);
+                            }
+                        }
                         SetKeyValue(enviroment, new LuaString(varName.Name), values[i]);
                         continue;
                     }
@@ -64,6 +97,21 @@ namespace Language.Lua
 
         private static void SetKeyValue(LuaValue baseValue, LuaValue key, LuaValue value)
         {
+            if (baseValue == VariableTableToMonitor && key != null && value != null) //[PixelCrushers]
+            {
+                if (MonitoredVariables.Contains(key.ToString()))
+                {
+                    try
+                    {
+                        VariableChanged?.Invoke(key.ToString(), value.Value);
+                    }
+                    catch (Exception e)
+                    {
+                        UnityEngine.Debug.LogException(e);
+                    }
+                }
+            }
+
             LuaValue newIndex = LuaNil.Nil;
             LuaTable table = baseValue as LuaTable;
             if (table != null)

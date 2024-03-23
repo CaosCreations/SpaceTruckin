@@ -53,7 +53,7 @@ namespace PixelCrushers
 
         [Tooltip("When restoring this Spawned Object Manager, tell respawned objects to restore their saved data also.")]
         [SerializeField]
-        private bool m_applySaveDataToSpawnedObjectsOnRestore = false;
+        private bool m_applySaveDataToSpawnedObjectsOnRestore = true;
 
         private static SpawnedObjectManager m_instance;
 
@@ -132,15 +132,18 @@ namespace PixelCrushers
             }
             if (m_applySaveDataToSpawnedObjectsOnRestore)
             {
-                if (SaveSystem.framesToWaitBeforeApplyData == 0)
-                {
-                    ApplyDataToRespawnedObjects();
-                }
-                else
-                {
-                    StartCoroutine(ApplyDataToRespawnedObjectsAfterFrames(SaveSystem.framesToWaitBeforeApplyData));
-                }
+                StartCoroutine(ApplyDataToRespawnedObjectsAfterFrames(SaveSystem.framesToWaitBeforeApplyData));
             }
+        }
+
+        protected IEnumerator ApplyDataToRespawnedObjectsAfterFrames(int numFrames)
+        {
+            for (int i = 0; i < numFrames; i++)
+            {
+                yield return null;
+            }
+            yield return new WaitForEndOfFrame();
+            ApplyDataToRespawnedObjects();
         }
 
         protected virtual void ApplyDataToRespawnedObjects()
@@ -152,15 +155,6 @@ namespace PixelCrushers
                     saver.ApplyData(SaveSystem.currentSavedGameData.GetData(saver.key));
                 }
             }
-        }
-
-        protected IEnumerator ApplyDataToRespawnedObjectsAfterFrames(int numFrames)
-        {
-            for (int i = 0; i < numFrames; i++)
-            {
-                yield return null;
-            }
-            ApplyDataToRespawnedObjects();
         }
 
         protected virtual SpawnedObject GetSpawnedObjectPrefab(string prefabName)

@@ -381,16 +381,17 @@ namespace PixelCrushers.DialogueSystem
             try { 
                 if (actor == null) return;
                 string textureName = actor.textureName;
+                if (string.IsNullOrEmpty(actor.textureName)) textureName = actor.Name;
                 if (!string.IsNullOrEmpty(textureName))
                 {
                     string filename = Path.GetFileName(textureName).Replace('\\', '/');
                     string assetPath = string.Format("{0}/{1}", prefs.portraitFolder, filename);
-                    Texture2D texture = AssetDatabase.LoadAssetAtPath(assetPath, typeof(Texture2D)) as Texture2D;
-                    if (texture == null)
+                    Sprite sprite = EditorTools.TryLoadSprite(assetPath);
+                    if (sprite == null)
                     {
-                        Debug.LogWarning(string.Format("{0}: Can't find portrait texture {1} for {2}.", DialogueDebug.Prefix, assetPath, actor.Name));
+                        Debug.LogWarning(string.Format("{0}: Can't find portrait sprite {1} for {2}.", DialogueDebug.Prefix, assetPath, actor.Name));
                     }
-                    actor.portrait = texture;
+                    actor.spritePortrait = sprite;
                 }
             }
             catch (System.Exception e)

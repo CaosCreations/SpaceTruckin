@@ -12,10 +12,12 @@ namespace PixelCrushers.DialogueSystem
     {
 
         public bool showReferenceDatabase = false;
+        public bool showFilter = false;
 
-        public ConversationPopupAttribute(bool showReferenceDatabase = false)
+        public ConversationPopupAttribute(bool showReferenceDatabase = false, bool showFilter = false)
         {
             this.showReferenceDatabase = showReferenceDatabase;
+            this.showFilter = showFilter;
         }
     }
 }

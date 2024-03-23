@@ -21,6 +21,9 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         [SerializeField]
         private string locationFilter = string.Empty;
 
+        [SerializeField]
+        private bool hideFilteredOutLocations = false;
+
         private ReorderableList locationReorderableList = null;
 
         [SerializeField]
@@ -40,7 +43,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private void DrawLocationSection()
         {
             if (locationReorderableList == null) InitializeLocationReorderableList();
-            DrawFilterMenuBar("Location", DrawLocationMenu, ref locationFilter);
+            DrawFilterMenuBar("Location", DrawLocationMenu, ref locationFilter, ref hideFilteredOutLocations);
             if (database.syncInfo.syncLocations)
             {
                 DrawLocationSyncDatabase();
