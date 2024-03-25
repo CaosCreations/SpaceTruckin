@@ -14,7 +14,7 @@ namespace PixelCrushers.DialogueSystem
 
         void SetActorSubtitlePanelNumber(DialogueActor dialogueActor, SubtitlePanelNumber subtitlePanelNumber);
         void SetActorMenuPanelNumber(DialogueActor dialogueActor, MenuPanelNumber menuPanelNumber);
-        void OverrideActorPanel(Actor actor, SubtitlePanelNumber subtitlePanelNumber);
+        void OverrideActorPanel(Actor actor, SubtitlePanelNumber subtitlePanelNumber, bool immediate = false);
         void OverrideActorMenuPanel(Transform actorTransform, MenuPanelNumber menuPanelNumber, StandardUIMenuPanel customPanel);
 
     }

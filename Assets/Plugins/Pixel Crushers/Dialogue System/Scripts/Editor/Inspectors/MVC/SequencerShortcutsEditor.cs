@@ -18,7 +18,7 @@ namespace PixelCrushers.DialogueSystem
             shortcutsList = new ReorderableList(serializedObject, serializedObject.FindProperty("shortcuts"), true, true, true, true);
             shortcutsList.drawHeaderCallback = OnDrawListHeader;
             shortcutsList.drawElementCallback = OnDrawListElement;
-            shortcutsList.elementHeight = 6 + 6 * EditorGUIUtility.singleLineHeight;
+            shortcutsList.elementHeight = 6 + 7 * EditorGUIUtility.singleLineHeight;
         }
 
         public override void OnInspectorGUI()
@@ -42,13 +42,17 @@ namespace PixelCrushers.DialogueSystem
         {
             if (!(0 <= index && index < shortcutsList.count)) return;
             var element = shortcutsList.serializedProperty.GetArrayElementAtIndex(index);
+            var subMenuProperty = element.FindPropertyRelative("subMenu");
             var shortcutProperty = element.FindPropertyRelative("shortcut");
             var valueProperty = element.FindPropertyRelative("value");
-            EditorGUI.LabelField(new Rect(rect.x, rect.y, LabelWidth, EditorGUIUtility.singleLineHeight), new GUIContent("Shortcut", "Shortcut keyword to use in sequences. Omit braces."));
-            shortcutProperty.stringValue = EditorGUI.TextField(new Rect(rect.x + LabelWidth, rect.y, rect.width - LabelWidth, EditorGUIUtility.singleLineHeight), 
+            EditorGUI.LabelField(new Rect(rect.x, rect.y, LabelWidth, EditorGUIUtility.singleLineHeight), new GUIContent("Submenu", "Optional submenu in Sequence field's '+' menu to place this shortcut. Leave blank for no submenu."));
+            subMenuProperty.stringValue = EditorGUI.TextField(new Rect(rect.x + LabelWidth, rect.y, rect.width - LabelWidth, EditorGUIUtility.singleLineHeight), 
+                GUIContent.none, subMenuProperty.stringValue);
+            EditorGUI.LabelField(new Rect(rect.x, rect.y + EditorGUIUtility.singleLineHeight, LabelWidth, EditorGUIUtility.singleLineHeight), new GUIContent("Shortcut", "Shortcut keyword to use in sequences. Omit braces."));
+            shortcutProperty.stringValue = EditorGUI.TextField(new Rect(rect.x + LabelWidth, rect.y + EditorGUIUtility.singleLineHeight, rect.width - LabelWidth, EditorGUIUtility.singleLineHeight),
                 GUIContent.none, shortcutProperty.stringValue);
-            EditorGUI.LabelField(new Rect(rect.x, rect.y + EditorGUIUtility.singleLineHeight + 2,LabelWidth, EditorGUIUtility.singleLineHeight), new GUIContent("Value", "In sequences, replace keyword (wrapped in braces) with this."));
-            valueProperty.stringValue = EditorGUI.TextArea(new Rect(rect.x + LabelWidth, rect.y + EditorGUIUtility.singleLineHeight + 2, rect.width - LabelWidth, 5 * EditorGUIUtility.singleLineHeight), valueProperty.stringValue);
+            EditorGUI.LabelField(new Rect(rect.x, rect.y + 2 * EditorGUIUtility.singleLineHeight + 2,LabelWidth, EditorGUIUtility.singleLineHeight), new GUIContent("Value", "In sequences, replace keyword (wrapped in braces) with this."));
+            valueProperty.stringValue = EditorGUI.TextArea(new Rect(rect.x + LabelWidth, rect.y + 2 * EditorGUIUtility.singleLineHeight + 2, rect.width - LabelWidth, 5 * EditorGUIUtility.singleLineHeight), valueProperty.stringValue);
         }
 
     }

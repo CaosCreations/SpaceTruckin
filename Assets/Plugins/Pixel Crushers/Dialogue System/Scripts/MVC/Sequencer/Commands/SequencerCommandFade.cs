@@ -44,29 +44,31 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
             unstay = string.Equals(direction, "unstay", System.StringComparison.OrdinalIgnoreCase);
             fadeIn = unstay || string.Equals(direction, "in", System.StringComparison.OrdinalIgnoreCase);
 
+            // Create fader canvas and image:
+            if (faderCanvas == null)
+            {
+                faderCanvas = new GameObject("Canvas (Fader)", typeof(Canvas)).GetComponent<Canvas>();
+                faderCanvas.transform.SetParent(DialogueManager.instance.transform);
+                faderCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
+                faderCanvas.sortingOrder = FaderCanvasSortOrder;
+            }
+            if (faderImage == null)
+            {
+                faderImage = new GameObject("Fader Image", typeof(UnityEngine.UI.Image)).GetComponent<UnityEngine.UI.Image>();
+                faderImage.transform.SetParent(faderCanvas.transform, false);
+                faderImage.rectTransform.anchorMin = Vector2.zero;
+                faderImage.rectTransform.anchorMax = Vector2.one;
+                faderImage.sprite = null;
+                var initializeAlpha = (fadeIn || unstay) ? 1 : 0;
+                faderImage.color = new Color(color.r, color.g, color.b, initializeAlpha);
+            }
+
             if (unstay && faderImage != null && Mathf.Approximately(0, faderImage.color.a))
             {
                 Stop(); // Image is already invisible, so no need to fade in.
             }
             else if (duration > SmoothMoveCutoff)
             {
-
-                // Create fader canvas and image:
-                if (faderCanvas == null)
-                {
-                    faderCanvas = new GameObject("Canvas (Fader)", typeof(Canvas)).GetComponent<Canvas>();
-                    faderCanvas.transform.SetParent(DialogueManager.instance.transform);
-                    faderCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
-                    faderCanvas.sortingOrder = FaderCanvasSortOrder;
-                }
-                if (faderImage == null)
-                {
-                    faderImage = new GameObject("Fader Image", typeof(UnityEngine.UI.Image)).GetComponent<UnityEngine.UI.Image>();
-                    faderImage.transform.SetParent(faderCanvas.transform, false);
-                    faderImage.rectTransform.anchorMin = Vector2.zero;
-                    faderImage.rectTransform.anchorMax = Vector2.one;
-                    faderImage.sprite = null;
-                }
                 faderCanvas.gameObject.SetActive(true);
                 faderImage.gameObject.SetActive(true);
 

@@ -55,6 +55,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private void ReorderIDsInConversation(Conversation conversation)
         {
+            if (!CheckAllEntryIDsUnique(conversation)) return;
             if (reorderIDsDepthFirst)
             {
                 ReorderIDsInConversationDepthFirst(conversation);
@@ -63,6 +64,32 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             {
                 ReorderIDsInConversationAlternateMethod(conversation);
             }
+        }
+
+        private bool CheckAllEntryIDsUnique(Conversation conversation)
+        {
+            var processedIDs = new HashSet<int>();
+            var conflictedIDs = new List<int>();
+            foreach (var entry in conversation.dialogueEntries)
+            {
+                if (processedIDs.Contains(entry.id) && !conflictedIDs.Contains(entry.id)) conflictedIDs.Add(entry.id);
+                processedIDs.Add(entry.id);
+            }
+            if (conflictedIDs.Count == 1)
+            {
+                Debug.LogWarning($"Dialogue System: Can't reorder '{conversation.Title}'. This internal ID is used by more than one entry: {conflictedIDs[0]}. Resolve this conflict first. Menu > Show > Show Node IDs may help.");
+            }
+            else if (conflictedIDs.Count > 1)
+            {
+                string s = $"Dialogue System: Can't reorder '{conversation.Title}'. These internal IDs are used by more than one entry:";
+                foreach (var id in conflictedIDs)
+                {
+                    s += $" {id}";
+                }
+                s += ". Resolve this conflict first. Menu > Show > Show Node IDs may help.";
+                Debug.LogWarning(s);
+            }
+            return conflictedIDs.Count == 0;
         }
 
         #region Reorder IDs Depth First

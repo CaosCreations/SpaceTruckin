@@ -71,11 +71,13 @@ namespace PixelCrushers.DialogueSystem.Articy
         public ConvertDropdownsModes ConvertDropdownsAs { get; set; }
         public ConvertSlotsModes ConvertSlotsAs { get; set; }
         public bool UseTechnicalNames { get; set; }
+        public bool IncludeFeatureNameInFields { get; set; }
         public bool SetDisplayName { get; set; }
         public bool CustomDisplayName { get; set; }
         public bool DirectConversationLinksToEntry1 { get; set; }
         public bool ConvertMarkupToRichText { get; set; }
         public bool SplitTextOnPipes { get; set; }
+        public bool TrimWhitespace { get; set; } = true;
         public string FlowFragmentScript { get; set; }
         public string VoiceOverProperty { get; set; }
         public string LocalizationXlsx { get; set; }
@@ -107,11 +109,13 @@ namespace PixelCrushers.DialogueSystem.Articy
             ConvertDropdownsAs = ConvertDropdownsModes.Int;
             ConvertSlotsAs = ConvertSlotsModes.DisplayName;
             UseTechnicalNames = false;
+            IncludeFeatureNameInFields = false;
             SetDisplayName = false;
             CustomDisplayName = false;
             DirectConversationLinksToEntry1 = false;
             ConvertMarkupToRichText = true;
             SplitTextOnPipes = true;
+            TrimWhitespace = true;
             FlowFragmentScript = DefaultFlowFragmentScript;
             VoiceOverProperty = DefaultVoiceOverProperty;
             LocalizationXlsx = string.Empty;

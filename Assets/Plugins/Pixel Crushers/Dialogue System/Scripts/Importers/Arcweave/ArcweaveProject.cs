@@ -59,6 +59,7 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
         public string content;
         public List<string> outputs;
         public List<string> components;
+        public List<string> attributes;
         public string linkedBoard;
     }
 
@@ -131,6 +132,7 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
     {
         public Newtonsoft.Json.Linq.JToken data;
         public string type;
+        public bool plain;
     }
 
     [Serializable]

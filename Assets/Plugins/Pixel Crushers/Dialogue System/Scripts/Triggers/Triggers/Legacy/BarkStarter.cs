@@ -43,15 +43,15 @@ namespace PixelCrushers.DialogueSystem
         /// playing, check the bark UI's IsPlaying property.
         /// </summary>
         /// <value>The sequencer.</value>
-        public Sequencer sequencer { get; private set; }
+        public Sequencer sequencer { get; protected set; }
 
-        private BarkHistory barkHistory;
+        protected BarkHistory barkHistory;
 
-        private bool tryingToBark = false;
+        protected bool tryingToBark = false;
 
-        private ConversationState cachedState = null;
+        protected ConversationState cachedState = null;
 
-        private IBarkUI barkUI = null;
+        protected IBarkUI barkUI = null;
 
         /// <summary>
         /// Gets or sets the bark index for sequential barks.
@@ -101,7 +101,7 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         /// <param name="target">Target.</param>
         /// <param name="interactor">Interactor to test the condition against.</param>
-        public void TryBark(Transform target, Transform interactor)
+        public virtual void TryBark(Transform target, Transform interactor)
         {
             if (!tryingToBark)
             {
@@ -144,24 +144,24 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        private Transform GetBarker()
+        protected Transform GetBarker()
         {
             return Tools.Select(conversant, this.transform);
         }
 
-        private string GetBarkerName()
+        protected string GetBarkerName()
         {
             return DialogueActor.GetActorName(GetBarker());
         }
 
-        private void BarkCachedLine(Transform speaker, Transform listener)
+        protected void BarkCachedLine(Transform speaker, Transform listener)
         {
             if (barkUI == null) barkUI = speaker.GetComponentInChildren(typeof(IBarkUI)) as IBarkUI;
             if (cachedState == null) PopulateCache(speaker, listener);
             BarkNextCachedLine(speaker, listener);
         }
 
-        private void PopulateCache(Transform speaker, Transform listener)
+        protected void PopulateCache(Transform speaker, Transform listener)
         {
             if (string.IsNullOrEmpty(conversation) && DialogueDebug.logWarnings) Debug.Log(string.Format("{0}: Bark (speaker={1}, listener={2}): conversation title is blank", new System.Object[] { DialogueDebug.Prefix, speaker, listener }), speaker);
             ConversationModel conversationModel = new ConversationModel(DialogueManager.masterDatabase, conversation, speaker, listener, DialogueManager.allowLuaExceptions, DialogueManager.isDialogueEntryValid);
@@ -170,7 +170,7 @@ namespace PixelCrushers.DialogueSystem
             if (!cachedState.hasAnyResponses && DialogueDebug.logWarnings) Debug.Log(string.Format("{0}: Bark (speaker={1}, listener={2}): '{3}' has no valid bark lines", new System.Object[] { DialogueDebug.Prefix, speaker, listener, conversation }), speaker);
         }
 
-        private void BarkNextCachedLine(Transform speaker, Transform listener)
+        protected void BarkNextCachedLine(Transform speaker, Transform listener)
         {
             if ((barkUI != null) && (cachedState != null) && cachedState.hasAnyResponses)
             {
@@ -180,7 +180,7 @@ namespace PixelCrushers.DialogueSystem
                 if ((barkEntry == null) && DialogueDebug.logWarnings) Debug.Log(string.Format("{0}: Bark (speaker={1}, listener={2}): '{3}' bark entry is null", new System.Object[] { DialogueDebug.Prefix, speaker, listener, conversation }), speaker);
                 if (barkEntry != null)
                 {
-                    Subtitle subtitle = new Subtitle(cachedState.subtitle.listenerInfo, cachedState.subtitle.speakerInfo, new FormattedText(barkEntry.currentDialogueText), string.Empty, string.Empty, barkEntry);
+                    Subtitle subtitle = new Subtitle(cachedState.subtitle.listenerInfo, cachedState.subtitle.speakerInfo, FormattedText.Parse(barkEntry.currentDialogueText), string.Empty, string.Empty, barkEntry);
                     if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: Bark (speaker={1}, listener={2}): '{3}'", new System.Object[] { DialogueDebug.Prefix, speaker, listener, subtitle.formattedText.text }), speaker);
                     if (barkGroupMember != null)
                     {

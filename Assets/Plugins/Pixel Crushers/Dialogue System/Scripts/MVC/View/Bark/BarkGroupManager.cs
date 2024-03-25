@@ -6,6 +6,8 @@ using UnityEngine;
 namespace PixelCrushers.DialogueSystem
 {
 
+    public enum BarkGroupQueueLimitMode { NoLimit, StopAtLimit, DropOldestAtLimit }
+
     /// <summary>
     /// Manages bark groups specified by BarkGroupMember.
     /// Adds itself to the Dialogue Manager.
@@ -13,6 +15,11 @@ namespace PixelCrushers.DialogueSystem
     [AddComponentMenu("")] // Added automatically at runtime.
     public class BarkGroupManager : MonoBehaviour
     {
+
+        public BarkGroupQueueLimitMode queueLimitMode = BarkGroupQueueLimitMode.NoLimit;
+
+        [Tooltip("Only used if mode is Stop At Limit or Drop Oldest At Limit")]
+        public int queueLimit = 256;
 
         private static bool s_applicationIsQuitting = false;
         private static BarkGroupManager s_instance = null;
@@ -38,6 +45,7 @@ namespace PixelCrushers.DialogueSystem
         static void InitStaticVariables()
         {
             s_applicationIsQuitting = false;
+            s_instance = null;
         }
 #endif
 
@@ -49,18 +57,20 @@ namespace PixelCrushers.DialogueSystem
             public Transform listener;
             public string conversation;
             public BarkHistory barkHistory;
+            public int entryID;
             public string barkText;
             public string sequence;
             public AbstractBarkUI barkUI;
             public float delayTime;
             public bool isPlaying = false;
 
-            public BarkRequest(string conversation, BarkGroupMember member, Transform listener, BarkHistory barkHistory, float delayTime = -1)
+            public BarkRequest(string conversation, BarkGroupMember member, Transform listener, BarkHistory barkHistory, int entryID = -1, float delayTime = -1)
             {
                 this.member = member;
                 this.listener = listener;
                 this.conversation = conversation;
                 this.barkHistory = barkHistory;
+                this.entryID = entryID;
                 this.barkText = null;
                 this.sequence = null;
                 this.barkUI = GetBarkUI(member);
@@ -73,6 +83,7 @@ namespace PixelCrushers.DialogueSystem
                 this.listener = listener;
                 this.conversation = null;
                 this.barkHistory = null;
+                this.entryID = -1;
                 this.barkText = barkText;
                 this.sequence = sequence;
                 this.barkUI = GetBarkUI(member);
@@ -124,11 +135,30 @@ namespace PixelCrushers.DialogueSystem
         }
 
         /// <summary>
+        /// Hides all bark members' bark UIs and clears any queued barks.
+        /// </summary>
+        public void CancelAllBarks()
+        {
+            foreach (var queue in queues.Values)
+            {
+                queue.Clear();
+            }
+            foreach (var group in groups.Values)
+            {
+                foreach (var member in group)
+                {
+                    if (member != null) member.CancelBark();
+                }
+            }
+        }
+
+        /// <summary>
         /// Hides other members' barks if they're playing.
+        /// Pass null to hide all members' barks.
         /// </summary>
         public void MutexBark(string groupId, BarkGroupMember member)
         {
-            if (string.IsNullOrEmpty(groupId) || member == null) return;
+            if (string.IsNullOrEmpty(groupId)) return;
             if (!groups.ContainsKey(groupId)) return;
             foreach (var other in groups[groupId])
             {
@@ -153,7 +183,27 @@ namespace PixelCrushers.DialogueSystem
             }
             else
             {
-                Enqueue(new BarkRequest(conversation, member, listener, barkHistory, delayTime));
+                Enqueue(new BarkRequest(conversation, member, listener, barkHistory, -1, delayTime));
+            }
+        }
+
+        /// <summary>
+        /// Barks with group awareness.
+        /// </summary>
+        /// <param name="conversation">Conversation to bark from.</param>
+        /// <param name="member">Barker.</param>
+        /// <param name="listener">Bark target.</param>
+        /// <param name="barkHistory">Bark history.</param>
+        /// <param name="delayTime">Omit/zero to use the member's random delay settings; if nonzero, use this delay time.</param>
+        public void GroupBark(string conversation, BarkGroupMember member, Transform listener, int entryID, float delayTime = 0)
+        {
+            if (member == null || !member.queueBarks)
+            {
+                DialogueManager.Bark(conversation, (member != null) ? member.transform : null, listener, entryID);
+            }
+            else
+            {
+                Enqueue(new BarkRequest(conversation, member, listener, null, entryID, delayTime));
             }
         }
 
@@ -184,6 +234,17 @@ namespace PixelCrushers.DialogueSystem
             var groupId = member.currentIdValue;
             if (!queues.ContainsKey(groupId)) queues.Add(groupId, new Queue<BarkRequest>());
             var queue = queues[groupId];
+            if (queueLimitMode != BarkGroupQueueLimitMode.NoLimit && queue.Count > queueLimit)
+            {
+                switch (queueLimitMode)
+                {
+                    case BarkGroupQueueLimitMode.StopAtLimit:
+                        return;
+                    case BarkGroupQueueLimitMode.DropOldestAtLimit:
+                        queue.Dequeue();
+                        break;
+                }
+            }
             queue.Enqueue(barkRequest);
             if (queue.Count == 1) barkRequest.delayTime = 0; // Play immediately.
         }
@@ -210,7 +271,14 @@ namespace PixelCrushers.DialogueSystem
                         }
                         else if (!string.IsNullOrEmpty(barkRequest.conversation))
                         {
-                            DialogueManager.Bark(barkRequest.conversation, barkRequest.member.transform, barkRequest.listener, barkRequest.barkHistory);
+                            if (barkRequest.entryID == -1)
+                            {
+                                DialogueManager.Bark(barkRequest.conversation, barkRequest.member.transform, barkRequest.listener, barkRequest.barkHistory);
+                            }
+                            else
+                            {
+                                DialogueManager.Bark(barkRequest.conversation, barkRequest.member.transform, barkRequest.listener, barkRequest.entryID);
+                            }
                         }
                         else
                         {

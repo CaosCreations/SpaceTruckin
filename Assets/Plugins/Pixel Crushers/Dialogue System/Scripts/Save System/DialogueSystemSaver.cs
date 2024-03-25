@@ -34,6 +34,23 @@ namespace PixelCrushers.DialogueSystem
             saveAcrossSceneChanges = true;
         }
 
+        public override void Start()
+        {
+            base.Start();
+            SaveSystem.loadStarted += OnLoadGameStarted;
+        }
+
+        public override void OnDestroy()
+        {
+            SaveSystem.loadStarted -= OnLoadGameStarted;
+            base.OnDestroy();
+        }
+
+        private void OnLoadGameStarted()
+        {
+            DialogueManager.StopAllConversations();
+        }
+
         public override string RecordData()
         {
             if (saveRawData)
@@ -95,7 +112,9 @@ namespace PixelCrushers.DialogueSystem
 
         public override void OnRestartGame()
         {
+            DialogueManager.StopAllConversations();
             DialogueManager.ResetDatabase();
+            DialogueManager.SendUpdateTracker();
         }
 
     }

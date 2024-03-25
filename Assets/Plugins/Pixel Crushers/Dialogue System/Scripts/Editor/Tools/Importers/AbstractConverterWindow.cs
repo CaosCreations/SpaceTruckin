@@ -118,11 +118,24 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         protected T prefs = null;
 
+        private Template m_template = null;
+
         /// <summary>
         /// A reference to the Dialogue System template, used to create new dialogue database
         /// assets such as Actors, Items, and Conversations.
         /// </summary>
-        protected Template template = null;
+        protected Template template
+        {
+            get
+            {
+                if (m_template == null) m_template = TemplateTools.LoadFromEditorPrefs();
+                return m_template;
+            }
+            set
+            {
+                m_template = value;
+            }
+        }
 
         /// <summary>
         /// The current scroll position of the converter window. If the contents of the window
@@ -389,7 +402,14 @@ namespace PixelCrushers.DialogueSystem
             if (prefs.overwrite)
             {
                 database = AssetDatabase.LoadAssetAtPath(assetPath, typeof(DialogueDatabase)) as DialogueDatabase;
-                if ((database != null) && !prefs.merge) database.Clear();
+                if (database != null)
+                {
+                    if (!prefs.merge)
+                    {
+                        database.Clear();
+                    }
+                    database.SyncAll();
+                }
             }
             if (database == null)
             {

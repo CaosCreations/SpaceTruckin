@@ -160,6 +160,15 @@ namespace PixelCrushers.DialogueSystem
         }
 
         /// <summary>
+        /// Hides the alert if it's showing.
+        /// Virtual so StandardDialogueUI can override to clear alert queue, too.
+        /// </summary>
+        public virtual void HideAllAlerts()
+        {
+            HideAlert();
+        }
+
+        /// <summary>
         /// Updates this instance by hiding the alert message when it's done.
         /// </summary>
         public virtual void Update()

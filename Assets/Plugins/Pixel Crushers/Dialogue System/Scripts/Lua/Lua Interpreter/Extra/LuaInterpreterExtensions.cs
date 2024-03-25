@@ -7,6 +7,11 @@ using System.Collections.Generic;
 namespace Language.Lua
 {
 
+    public class LuaFunctionCallException : Exception 
+    {
+        public LuaFunctionCallException(string message) : base(message) { }
+    }
+
     public static class LuaInterpreterExtensions
     {
 
@@ -19,9 +24,26 @@ namespace Language.Lua
         public static List<LuaValue> EvaluateAll(List<Expr> exprList, LuaTable environment)
         {
             List<LuaValue> values = new List<LuaValue>();
+            int i = 0;
             foreach (var expr in exprList)
             {
-                values.Add(expr.Evaluate(environment));
+                try
+                {
+                    values.Add(expr.Evaluate(environment));
+                    i++;
+                }
+                catch (LuaFunctionCallException e)
+                {
+                    var primaryExpr = exprList[i] as PrimaryExpr;
+                    if (primaryExpr != null)
+                    {
+                        if (primaryExpr.Base is VarName)
+                        { 
+                            throw new Exception($"Tried to call {(primaryExpr.Base as VarName).Name}() as a function but failed. Is it a registered Lua function?"); 
+                        }
+                    }
+                    throw e;                    
+                }
             }
             return values;
         }

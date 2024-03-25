@@ -167,8 +167,8 @@ namespace PixelCrushers.DialogueSystem
         }
 
         /// <summary>
-        /// Gets the name to use for this DialogueActor, including parsing if it contains a [lua]
-        /// or [var] tag.
+        /// Gets the name to use for this DialogueActor, including parsing if it contains a [lua],
+        /// [var], or [em#] tag.
         /// </summary>
         /// <returns>The name to use, or <c>null</c> if not set.</returns>
         public virtual string GetActorName()
@@ -176,7 +176,7 @@ namespace PixelCrushers.DialogueSystem
             var actorName = string.IsNullOrEmpty(actor) ? name : actor;
             var result = CharacterInfo.GetLocalizedDisplayNameInDatabase(DialogueLua.GetActorField(actorName, "Name").asString);
             if (!string.IsNullOrEmpty(result)) actorName = result;
-            if (actorName.Contains("[lua") || actorName.Contains("[var"))
+            if (actorName.Contains("[lua") || actorName.Contains("[var") || actorName.Contains("[em"))
             {
                 return FormattedText.Parse(actorName, DialogueManager.masterDatabase.emphasisSettings).text;
             }

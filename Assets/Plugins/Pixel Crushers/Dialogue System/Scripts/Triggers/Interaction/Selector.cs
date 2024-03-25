@@ -27,7 +27,7 @@ namespace PixelCrushers.DialogueSystem
     /// enabled or disabled.
     /// </summary>
     [AddComponentMenu("")] // Use wrapper.
-    public class Selector : MonoBehaviour
+    public class Selector : MonoBehaviour, IEventSystemUser
     {
 
         /// <summary>
@@ -213,9 +213,9 @@ namespace PixelCrushers.DialogueSystem
         /// Gets the current selection.
         /// </summary>
         /// <value>The selection.</value>
-        public Usable CurrentUsable 
-        { 
-            get { return usable; } 
+        public Usable CurrentUsable
+        {
+            get { return usable; }
             set { SetCurrentUsable(value); }
         }
 
@@ -230,6 +230,17 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         /// <value>The GUI style.</value>
         public GUIStyle GuiStyle { get { SetGuiStyle(); return guiStyle; } }
+
+        private UnityEngine.EventSystems.EventSystem m_eventSystem = null;
+        public UnityEngine.EventSystems.EventSystem eventSystem
+        {
+            get
+            {
+                if (m_eventSystem != null) return m_eventSystem;
+                return UnityEngine.EventSystems.EventSystem.current;
+            }
+            set { m_eventSystem = value; }
+        }
 
         /// <summary>
         /// Occurs when the selector has targeted a usable object.
@@ -310,7 +321,7 @@ namespace PixelCrushers.DialogueSystem
 
 #if !USE_NEW_INPUT // (In new Input System, IsPointerOverGameObject returns true for all GameObjects, not just UI objects, so skip this check until Input System is fixed.)
             // Exit if using mouse selection and is over a UI element:
-            if ((selectAt == SelectAt.MousePosition) && (UnityEngine.EventSystems.EventSystem.current != null) && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
+            if ((selectAt == SelectAt.MousePosition) && (eventSystem != null) && eventSystem.IsPointerOverGameObject()) return;
 #endif
 
             // Raycast 2D or 3D:
@@ -596,7 +607,7 @@ namespace PixelCrushers.DialogueSystem
             if ((useKey != KeyCode.None) && InputDeviceManager.IsKeyDown(useKey)) return true;
             if (!string.IsNullOrEmpty(useButton))
             {
-                if (DialogueManager.instance != null && 
+                if (DialogueManager.instance != null &&
                     DialogueManager.getInputButtonDown == DialogueManager.instance.StandardGetInputButtonDown && IsUsingDefaultInputManager())
                 {
                     return InputDeviceManager.IsButtonUp(useButton) && (selection == clickedDownOn);
@@ -616,7 +627,7 @@ namespace PixelCrushers.DialogueSystem
             {
                 hasCheckedDefaultInputManager = true;
                 var inputDeviceManagerRewiredType = RuntimeTypeUtility.GetTypeFromName("PixelCrushers.RewiredSupport.InputDeviceManagerRewired");
-                var isRewiredPresent = (inputDeviceManagerRewiredType != null) && (FindObjectOfType(inputDeviceManagerRewiredType) != null);
+                var isRewiredPresent = (inputDeviceManagerRewiredType != null) && (GameObjectUtility.FindFirstObjectByType(inputDeviceManagerRewiredType) != null);
                 isUsingDefaultInputManager = !isRewiredPresent;
             }
             return isUsingDefaultInputManager;

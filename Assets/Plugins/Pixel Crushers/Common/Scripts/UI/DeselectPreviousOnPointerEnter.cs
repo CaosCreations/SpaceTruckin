@@ -12,13 +12,25 @@ namespace PixelCrushers
     /// </summary>
     [AddComponentMenu("")] // Use wrapper.
     [RequireComponent(typeof(Selectable))]
-    public class DeselectPreviousOnPointerEnter : MonoBehaviour, IPointerEnterHandler, IDeselectHandler
+    public class DeselectPreviousOnPointerEnter : MonoBehaviour, IPointerEnterHandler, IDeselectHandler, IEventSystemUser
     {
+
+        private UnityEngine.EventSystems.EventSystem m_eventSystem = null;
+        public UnityEngine.EventSystems.EventSystem eventSystem
+        {
+            get
+            {
+                if (m_eventSystem != null) return m_eventSystem;
+                return UnityEngine.EventSystems.EventSystem.current;
+            }
+            set { m_eventSystem = value; }
+        }
+
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (!EventSystem.current.alreadySelecting)
+            if (!eventSystem.alreadySelecting)
             {
-                EventSystem.current.SetSelectedGameObject(this.gameObject);
+                eventSystem.SetSelectedGameObject(this.gameObject);
             }
         }
 

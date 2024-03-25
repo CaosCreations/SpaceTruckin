@@ -50,6 +50,8 @@ namespace PixelCrushers
         [Tooltip("Transition to play after entering the new scene.")]
         public TransitionInfo enterSceneTransition = new TransitionInfo();
 
+        protected WaitForEndOfFrame endOfFrame = new WaitForEndOfFrame();
+
         public override IEnumerator LeaveScene()
         {
             leaveSceneTransition.onTransitionStart.Invoke();
@@ -78,6 +80,7 @@ namespace PixelCrushers
 
         public override IEnumerator EnterScene()
         {
+            yield return endOfFrame; 
             enterSceneTransition.onTransitionStart.Invoke();
             var startTime = Time.realtimeSinceStartup;
             var minAnimationTime = startTime + enterSceneTransition.animationDuration;

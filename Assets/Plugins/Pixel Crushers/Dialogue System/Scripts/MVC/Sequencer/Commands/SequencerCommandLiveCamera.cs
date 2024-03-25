@@ -35,15 +35,13 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
         private float endTime;
         private Quaternion originalRotation;
         private Vector3 originalPosition;
-        //private float localTime = 0f;
-        //private float targetLocalTime = 5f;
         private bool isOriginal;
 
         public void Start()
         {
             // Get the values of the parameters:
             string angle = GetParameter(0, "Closeup");
-            subject = GetSubject(1);
+            subject = GetSubject(1, speaker);
             duration = GetParameterAsFloat(2, 0);
 
             // Get angle:

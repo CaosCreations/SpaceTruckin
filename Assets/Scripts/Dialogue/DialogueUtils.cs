@@ -65,9 +65,9 @@ public static class DialogueUtils
 
     public static Conversation GetConversationById(int conversationId)
     {
-        if (DialogueManager.DatabaseManager == null || DialogueManager.DatabaseManager.loadedDatabases == null)
+        if (DialogueManager.DatabaseManager == null || DialogueManager.DatabaseManager.loadedDatabases.IsNullOrEmpty())
         {
-            Debug.LogWarning("DatabaseManager was null or no databases were loaded. Can't get conversation by ID " + conversationId);
+            Debug.LogError("DatabaseManager was null or no databases were loaded. Can't get conversation by ID " + conversationId);
             return null;
         }
         return DialogueManager.DatabaseManager.loadedDatabases.First().GetConversation(conversationId);

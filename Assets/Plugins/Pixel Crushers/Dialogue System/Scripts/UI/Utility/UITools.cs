@@ -116,6 +116,7 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public static void SendTextChangeMessage(UnityEngine.UI.Text text)
         {
+            if (!Application.isPlaying) return;
             if (text == null) return;
             if (dialogueUI == null) dialogueUI = text.GetComponentInParent<AbstractDialogueUI>();
             if (dialogueUI == null) return;
@@ -127,6 +128,7 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public static void SendTextChangeMessage(UITextField textField)
         {
+            if (!Application.isPlaying) return;
             if (textField.gameObject == null) return;
             textField.gameObject.SendMessage(DialogueSystemMessages.OnTextChange, textField, SendMessageOptions.DontRequireReceiver);
         }
@@ -136,9 +138,10 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         /// <param name="selectable"></param>
         /// <param name="allowStealFocus"></param>
-        public static void Select(UnityEngine.UI.Selectable selectable, bool allowStealFocus = true)
+        public static void Select(UnityEngine.UI.Selectable selectable, bool allowStealFocus = true,
+            UnityEngine.EventSystems.EventSystem eventSystem = null)
         {
-            UIUtility.Select(selectable, allowStealFocus);
+            UIUtility.Select(selectable, allowStealFocus, eventSystem);
         }
 
         public const string RPGMakerCodeQuarterPause = @"\,";
@@ -211,6 +214,16 @@ namespace PixelCrushers.DialogueSystem
                 if (graphicRaycaster != null) graphicRaycaster.enabled = true;
             }
         }
+
+        public static bool CanBeSuperceded(UIVisibility visibility)
+        {
+            return
+                visibility == UIVisibility.UntilSuperceded ||
+                visibility == UIVisibility.UntilSupercededOrActorChange ||
+                visibility == UIVisibility.UntilSupercededOrActorChangeOrMenu;
+        }
+
+
 
     }
 

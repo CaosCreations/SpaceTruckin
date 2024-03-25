@@ -13,6 +13,7 @@ namespace PixelCrushers.DialogueSystem
         private LuaScriptWizard luaWizard = new LuaScriptWizard(EditorTools.selectedDatabase);
         private string lastValue = null;
         private float lastComputedHeight = 16f;
+        private float propertyWidth = 0;
 
         private bool ShowReferenceDatabase()
         {
@@ -56,7 +57,9 @@ namespace PixelCrushers.DialogueSystem
                         {
                             luaWizard.OpenWizard(property.stringValue);
                         }
-                        lastComputedHeight = luaWizard.GetHeight() + GUI.skin.textArea.CalcHeight(new GUIContent(property.stringValue), position.width);
+                        if (position.width > 16) propertyWidth = position.width - 16;
+                        lastComputedHeight = luaWizard.GetHeight() + 
+                            GUI.skin.textArea.CalcHeight(new GUIContent(property.stringValue), propertyWidth) + 2f;
                         property.stringValue = luaWizard.Draw(position, label, property.stringValue);
                         lastValue = property.stringValue;
                     }

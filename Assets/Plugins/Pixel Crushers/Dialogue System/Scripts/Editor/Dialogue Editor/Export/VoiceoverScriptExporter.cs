@@ -20,14 +20,19 @@ namespace PixelCrushers.DialogueSystem
         /// <param name="database">Source database.</param>
         /// <param name="filename">Target CSV filename.</param>
         /// <param name="exportActors">If set to <c>true</c> export actors.</param>
-        public static void Export(DialogueDatabase database, string filename, bool exportActors, EntrytagFormat entrytagFormat, EncodingType encodingType)
+        /// <param name="entrytagFormat">Entrytag format, which should match Dialogue Manager config.</param>
+        /// <param name="encodingType">Encoding type.</param>
+        /// <param name="exportConversationTitleSeparateColumn">Add column for conversation ID.</param>
+        public static void Export(DialogueDatabase database, string filename, bool exportActors,
+            bool exportConversationTitleSeparateColumn,
+            EntrytagFormat entrytagFormat, EncodingType encodingType)
         {
             if (database == null || string.IsNullOrEmpty(filename)) return;
             var otherLanguages = FindOtherLanguages(database);
-            ExportFile(database, string.Empty, filename, exportActors, entrytagFormat, encodingType);
+            ExportFile(database, string.Empty, filename, exportActors, exportConversationTitleSeparateColumn, entrytagFormat, encodingType);
             foreach (var language in otherLanguages)
             {
-                ExportFile(database, language, filename, exportActors, entrytagFormat, encodingType);
+                ExportFile(database, language, filename, exportActors, exportConversationTitleSeparateColumn, entrytagFormat, encodingType);
             }
         }
 
@@ -52,7 +57,8 @@ namespace PixelCrushers.DialogueSystem
             return otherLanguages;
         }
 
-        private static void ExportFile(DialogueDatabase database, string language, string baseFilename, bool exportActors, EntrytagFormat entrytagFormat, EncodingType encodingType)
+        private static void ExportFile(DialogueDatabase database, string language, string baseFilename, bool exportActors, 
+            bool exportConversationTitleSeparateColumn, EntrytagFormat entrytagFormat, EncodingType encodingType)
         {
             var filename = string.IsNullOrEmpty(language) ? baseFilename
                 : Path.GetDirectoryName(baseFilename) + "/" + Path.GetFileNameWithoutExtension(baseFilename) + "_" + language + ".csv";
@@ -60,7 +66,7 @@ namespace PixelCrushers.DialogueSystem
             {
                 ExportDatabaseProperties(database, file);
                 if (exportActors) ExportActors(database, file);
-                ExportConversations(database, language, entrytagFormat, file);
+                ExportConversations(database, exportConversationTitleSeparateColumn, language, entrytagFormat, file);
             }
         }
 
@@ -83,7 +89,8 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        private static void ExportConversations(DialogueDatabase database, string language, EntrytagFormat entrytagFormat, StreamWriter file)
+        private static void ExportConversations(DialogueDatabase database, bool exportConversationTitleSeparateColumn,
+            string language, EntrytagFormat entrytagFormat, StreamWriter file)
         {
             file.WriteLine(string.Empty);
             file.WriteLine("---Conversations---");
@@ -94,10 +101,13 @@ namespace PixelCrushers.DialogueSystem
             // Export all conversations:
             foreach (var conversation in database.conversations)
             {
+                var conversationTitle = CleanField(conversation.Title);
                 file.WriteLine(string.Empty);
-                file.WriteLine(string.Format("Conversation {0},{1}", conversation.id, CleanField(conversation.Title)));
+                file.WriteLine(string.Format("Conversation {0},{1}", conversation.id, conversationTitle));
                 file.WriteLine(string.Format("Description,{0}", CleanField(conversation.Description)));
-                StringBuilder sb = new StringBuilder("entrytag,Actor,Description,");
+                StringBuilder sb = new StringBuilder(
+                    exportConversationTitleSeparateColumn ? "entrytag,Actor,Conversation,Description,"
+                    : "entrytag,Actor,Description,");
                 sb.Append(string.IsNullOrEmpty(language) ? "Dialogue Text" : CleanField(language));
                 file.WriteLine(sb.ToString());
                 foreach (var entry in conversation.dialogueEntries)
@@ -114,7 +124,14 @@ namespace PixelCrushers.DialogueSystem
                         string description = Field.LookupValue(entry.fields, "Description");
                         string entrytag = database.GetEntrytag(conversation, entry, entrytagFormat);
                         var lineText = string.IsNullOrEmpty(language) ? entry.subtitleText : Field.LookupValue(entry.fields, language);
-                        sb.AppendFormat("{0},{1},{2},{3}", CleanField(entrytag), CleanField(actorName), CleanField(description), CleanField(lineText));
+                        if (exportConversationTitleSeparateColumn)
+                        {
+                            sb.AppendFormat("{0},{1},{2},{3},{4}", CleanField(entrytag), CleanField(actorName), conversationTitle, CleanField(description), CleanField(lineText));
+                        }
+                        else
+                        {
+                            sb.AppendFormat("{0},{1},{2},{3}", CleanField(entrytag), CleanField(actorName), CleanField(description), CleanField(lineText));
+                        }
                         file.WriteLine(sb.ToString());
                     }
                 }

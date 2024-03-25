@@ -59,7 +59,11 @@ namespace PixelCrushers
                     m_animator.SetTrigger(triggerName);
                     currentTrigger = triggerName;
                     float timeout = Time.realtimeSinceStartup + MaxWaitDuration;
+#if UNITY_2019_1_OR_NEWER
+                    var goalHashID = Animator.StringToHash($"{m_animator.GetLayerName(0)}.{triggerName}");
+#else
                     var goalHashID = Animator.StringToHash(triggerName);
+#endif
                     var oldHashId = UIUtility.GetAnimatorNameHash(m_animator.GetCurrentAnimatorStateInfo(0));
                     var currentHashID = oldHashId;
                     if (wait)
@@ -69,7 +73,7 @@ namespace PixelCrushers
                             yield return null;
                             currentHashID = IsAnimatorValid() ? UIUtility.GetAnimatorNameHash(m_animator.GetCurrentAnimatorStateInfo(0)) : 0;
                         }
-                        if (Time.realtimeSinceStartup < timeout && IsAnimatorValid())
+                        if (m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1 && Time.realtimeSinceStartup < timeout && IsAnimatorValid())
                         {
                             var clipLength = m_animator.GetCurrentAnimatorStateInfo(0).length;
                             if (Mathf.Approximately(0, Time.timeScale))

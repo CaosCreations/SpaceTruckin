@@ -41,9 +41,9 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(string.Empty, GUILayout.Width(8));
             GUI.SetNextControlName("SearchTextField");
-            searchString = EditorGUILayout.TextField("Search", searchString, "ToolbarSeachTextField");
+            searchString = EditorGUILayout.TextField("Search", searchString, MoreEditorGuiUtility.ToolbarSearchTextFieldName);
             GUI.SetNextControlName("SearchClearButton");
-            if (GUILayout.Button("Clear", "ToolbarSeachCancelButton"))
+            if (GUILayout.Button("Clear", MoreEditorGuiUtility.ToolbarSearchCancelButtonName))
             {
                 searchString = string.Empty;
                 GUI.FocusControl("SearchClearButton"); // Need to deselect search field to clear text field's display.

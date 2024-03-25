@@ -12,7 +12,12 @@ namespace PixelCrushers.DialogueSystem
 
         private LuaConditionWizard luaConditionWizard = new LuaConditionWizard(EditorTools.selectedDatabase);
         private string lastValue = null;
-        private float luaFieldWidth = 0;
+        private float _luaFieldWidth = 0;
+        private float luaFieldWidth
+        {
+            get { return _luaFieldWidth; }
+            set { if (value > 0) _luaFieldWidth = value; }
+        }
 
         private bool ShowReferenceDatabase()
         {

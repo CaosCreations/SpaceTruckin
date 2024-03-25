@@ -22,7 +22,7 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         /// <param name="_showName">Name will be shown in Dialogue Editor Window </param>
         [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-        public sealed class Name : Attribute
+        public sealed class Name : System.Attribute
         {
             public string showingName;
             public Name(string _showName)
