@@ -15,7 +15,8 @@ public class StefanoDialogueUI : SMSDialogueUI
         // Set portrait name/image:
         template.SetContent(subtitle);
         var actor = DialogueManager.masterDatabase.GetActor(subtitle.speakerInfo.id);
-        var nodeColor = Tools.WebColor(actor.LookupValue("NodeColor"));
+        var colorCode = actor.LookupValue("NodeColor");
+        var nodeColor = !string.IsNullOrWhiteSpace(colorCode) ? Tools.WebColor(colorCode) : Color.white;
 
         if (template.portraitName.gameObject != null)
         {
