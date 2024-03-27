@@ -29,7 +29,7 @@ public class StefanoDialogueUI : SMSDialogueUI
         // If text is blank, that's all we do:
         if (string.IsNullOrWhiteSpace(subtitle.formattedText.text)) return;
 
-        if (!actor.IsPlayer)
+        if (!actor.IsPlayer && InteractionSoundEffectsManager.Instance != null)
         {
             InteractionSoundEffectsManager.Instance.PlaySoundEffect(InteractionSoundEffect.DialogueMessageReceived);
         }

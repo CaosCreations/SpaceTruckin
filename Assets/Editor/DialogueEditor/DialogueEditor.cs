@@ -45,24 +45,15 @@ public static class DialogueEditor
         PlayerPrefsManager.SetCanvasTutorialPrefValue(UICanvasType.Terminal, CalendarManager.CurrentDate, false);
     }
 
+    [MenuItem("Space Truckin/Dialogue/Pirates Convo 1")]
+    public static void PiratesConvo1()
+    {
+        CheckpointManager.PiratesConvo1();
+    }
+
     [MenuItem("Space Truckin/Dialogue/Day 2")]
     public static void Day2()
     {
-        if (DialogueDatabaseManager.Instance == null)
-        {
-            return;
-        }
-
-        MissionsEditor.StartMission("Alcohol for adults", "B. Lrorllyl");
-        // TODO: May have to complete the convos corresponding to these jobs?
-        MissionsEditor.AcceptMission("Vukra Aid");
-        MissionsEditor.AcceptMission("Towels");
-
-        var ids = new int[] { 166, 167, 171, 172, 163, 168, 205, 175, 51, 58, 45, };
-        DialogueDatabaseManager.Instance.SetConversationsSeen(ids);
-        PlayerPrefsManager.SetCanvasTutorialPrefValue(UICanvasType.Terminal, new Date(1, 1, 1), true);
-        LiftUIAccess();
-
-        Bed.Sleep();
+        CheckpointManager.Day2();
     }
 }
