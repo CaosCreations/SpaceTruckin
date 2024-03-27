@@ -60,28 +60,28 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("While open, set Time.timeScale to 0.")]
         public bool pauseGameWhileOpen = false;
 
-        private List<string> m_history = new List<string>();
+        protected List<string> m_history = new List<string>();
 
-        private int m_historyPosition = 0;
+        protected int m_historyPosition = 0;
 
-        private string m_input = string.Empty;
+        protected string m_input = string.Empty;
 
-        private string m_output = string.Empty;
+        protected string m_output = string.Empty;
 
-        private Rect m_windowRect = new Rect(0, 0, 0, 0);
+        protected Rect m_windowRect = new Rect(0, 0, 0, 0);
 
-        private Rect m_closeButtonRect = new Rect(0, 0, 0, 0);
+        protected Rect m_closeButtonRect = new Rect(0, 0, 0, 0);
 
-        private Vector2 m_scrollPosition = new Vector2(0, 0);
+        protected Vector2 m_scrollPosition = new Vector2(0, 0);
 
-        private bool m_isFirstKeyDown = false;
+        protected bool m_isFirstKeyDown = false;
 
-        private void Start()
+        protected virtual void Start()
         {
             SetVisible(visible);
         }
 
-        private void SetVisible(bool newValue)
+        protected virtual void SetVisible(bool newValue)
         {
             visible = newValue;
             if (pauseGameWhileOpen) Time.timeScale = visible ? 0 : 1;
@@ -91,7 +91,7 @@ namespace PixelCrushers.DialogueSystem
         /// OnGUI draws the console if it's visible, and toggles visibility based on the key 
         /// trigger.
         /// </summary>
-        private void OnGUI()
+        protected virtual void OnGUI()
         {
             // Check for key combo to open console:
             if (Event.current.type == EventType.KeyDown && Event.current.keyCode == firstKey) m_isFirstKeyDown = true;
@@ -111,7 +111,7 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        private void DrawConsole()
+        protected virtual void DrawConsole()
         {
             if (m_windowRect.width <= 0)
             {
@@ -121,14 +121,14 @@ namespace PixelCrushers.DialogueSystem
             m_windowRect = GUI.Window(0, m_windowRect, DrawConsoleWindow, "Lua Console");
         }
 
-        private Rect DefineWindowRect()
+        protected Rect DefineWindowRect()
         {
             float width = Mathf.Max(minSize.x, Screen.width / 4f);
             float height = Mathf.Max(minSize.y, Screen.height / 4f);
             return new Rect(Screen.width - width, 0, width, height);
         }
 
-        private void DrawConsoleWindow(int id)
+        protected virtual void DrawConsoleWindow(int id)
         {
             if (IsKeyEvent(KeyCode.Return))
             {
@@ -156,7 +156,7 @@ namespace PixelCrushers.DialogueSystem
             GUILayout.EndScrollView();
         }
 
-        private bool IsKeyEvent(KeyCode keyCode)
+        protected virtual bool IsKeyEvent(KeyCode keyCode)
         {
             if ((Event.current.type == EventType.KeyDown) && (Event.current.keyCode == keyCode))
             {
@@ -169,7 +169,7 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        private void RunLuaCommand()
+        protected virtual void RunLuaCommand()
         {
             if (string.IsNullOrEmpty(m_input)) return;
             try
@@ -187,13 +187,13 @@ namespace PixelCrushers.DialogueSystem
             m_input = string.Empty;
         }
 
-        private string GetLuaResultString(Lua.Result result)
+        protected virtual string GetLuaResultString(Lua.Result result)
         {
             if (!result.hasReturnValue) return "(no return value)";
             return result.isTable ? FormatTableResult(result) : result.asString;
         }
 
-        private string FormatTableResult(Lua.Result result)
+        protected virtual string FormatTableResult(Lua.Result result)
         {
             if (!result.isTable) return result.asString;
             LuaTableWrapper table = result.asTable;
@@ -206,7 +206,7 @@ namespace PixelCrushers.DialogueSystem
             return sb.ToString();
         }
 
-        private void UseHistory(int direction)
+        protected virtual void UseHistory(int direction)
         {
             m_historyPosition = Mathf.Clamp(m_historyPosition + direction, 0, m_history.Count);
             m_input = ((m_history.Count > 0) && (m_historyPosition < m_history.Count)) ? m_history[m_historyPosition] : string.Empty;

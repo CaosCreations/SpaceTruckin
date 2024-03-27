@@ -12,21 +12,24 @@ namespace PixelCrushers
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            var uiTextProperty = property.FindPropertyRelative("m_uiText");
-            var textMeshProUGUIProperty = property.FindPropertyRelative("m_textMeshProUGUI");
-            var superTextMeshProperty = property.FindPropertyRelative("m_superTextMesh");
-            var isUiTextAssigned = (uiTextProperty != null) && (uiTextProperty.objectReferenceValue != null);
-            var isTextMeshProUGUIAssigned = (textMeshProUGUIProperty != null) && (textMeshProUGUIProperty.objectReferenceValue != null);
-            var isSuperTextMeshAssigned = (superTextMeshProperty != null) && (superTextMeshProperty.objectReferenceValue != null);
-            //var isContentAssigned = (isUiTextAssigned && !isTextMeshProUGUIAssigned && !isSuperTextMeshAssigned) || 
-            //    (!isUiTextAssigned && isTextMeshProUGUIAssigned && !isSuperTextMeshAssigned) ||
-            //    (!isUiTextAssigned && !isTextMeshProUGUIAssigned && isSuperTextMeshAssigned) ||
-            //    (textMeshProUGUIProperty == null && superTextMeshProperty == null);
-            var isContentAssigned = isUiTextAssigned || isTextMeshProUGUIAssigned || isSuperTextMeshAssigned;
-            int numUnassignedLines = 1;
-            if (textMeshProUGUIProperty != null) numUnassignedLines++;
-            if (superTextMeshProperty != null) numUnassignedLines++;
-            return (isContentAssigned ? 1 : numUnassignedLines) * EditorGUIUtility.singleLineHeight;
+            try
+            {
+                var uiTextProperty = property.FindPropertyRelative("m_uiText");
+                var textMeshProUGUIProperty = property.FindPropertyRelative("m_textMeshProUGUI");
+                var superTextMeshProperty = property.FindPropertyRelative("m_superTextMesh");
+                var isUiTextAssigned = (uiTextProperty != null) && (uiTextProperty.objectReferenceValue != null);
+                var isTextMeshProUGUIAssigned = (textMeshProUGUIProperty != null) && (textMeshProUGUIProperty.objectReferenceValue != null);
+                var isSuperTextMeshAssigned = (superTextMeshProperty != null) && (superTextMeshProperty.objectReferenceValue != null);
+                var isContentAssigned = isUiTextAssigned || isTextMeshProUGUIAssigned || isSuperTextMeshAssigned;
+                int numUnassignedLines = 1;
+                if (textMeshProUGUIProperty != null) numUnassignedLines++;
+                if (superTextMeshProperty != null) numUnassignedLines++;
+                return (isContentAssigned ? 1 : numUnassignedLines) * EditorGUIUtility.singleLineHeight;
+            }
+            catch (System.ArgumentException) // Handles IMGUI->UITK bug in Unity 2022.2.
+            {
+                return 2 * EditorGUIUtility.singleLineHeight;
+            }
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -48,10 +51,6 @@ namespace PixelCrushers
                 var isUiTextAssigned = (uiTextProperty != null) && (uiTextProperty.objectReferenceValue != null);
                 var isTextMeshProUGUIAssigned = (textMeshProUGUIProperty != null) && (textMeshProUGUIProperty.objectReferenceValue != null);
                 var isSuperTextMeshAssigned = (superTextMeshProperty != null) && (superTextMeshProperty.objectReferenceValue != null);
-                //var isContentAssigned = (isUiTextAssigned && !isTextMeshProUGUIAssigned && !isSuperTextMeshAssigned) ||
-                //    (!isUiTextAssigned && isTextMeshProUGUIAssigned && !isSuperTextMeshAssigned) ||
-                //    (!isUiTextAssigned && !isTextMeshProUGUIAssigned && isSuperTextMeshAssigned) ||
-                //    (textMeshProUGUIProperty == null && superTextMeshProperty == null);
                 var isContentAssigned = isUiTextAssigned || isTextMeshProUGUIAssigned || isSuperTextMeshAssigned;
 
                 float yOffset = 0;

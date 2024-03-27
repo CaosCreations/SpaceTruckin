@@ -154,7 +154,10 @@ namespace PixelCrushers
                 savedGameInfo.Add(new SavedGameInfo(string.Empty));
             }
 
-            savedGameInfo[slotIndex].sceneName = (savedGameData != null) ? savedGameData.sceneName : string.Empty;
+            if (0 <= slotIndex && slotIndex < savedGameInfo.Count)
+            {
+                savedGameInfo[slotIndex].sceneName = (savedGameData != null) ? savedGameData.sceneName : string.Empty;
+            }
             WriteSavedGameInfoToDisk();
         }
 

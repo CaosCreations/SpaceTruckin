@@ -17,7 +17,7 @@ namespace PixelCrushers.DialogueSystem
     public class StandardUIQuestTracker : MonoBehaviour
     {
 
-        [Tooltip("Record the quest tracker display toggle in this PlayerPrefs key.")]
+        [Tooltip("Record the quest tracker display toggle in this PlayerPrefs key. Leave blank to not record tracker visible/invisible state.")]
         public string playerPrefsToggleKey = "QuestTracker";
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace PixelCrushers.DialogueSystem
         {
             m_started = true;
             RegisterForUpdateTrackerEvents();
-            isVisible = PlayerPrefs.GetInt(playerPrefsToggleKey, visibleOnStart ? 1 : 0) == 1;
+            isVisible = string.IsNullOrEmpty(playerPrefsToggleKey) || PlayerPrefs.GetInt(playerPrefsToggleKey, visibleOnStart ? 1 : 0) == 1;
             if (container == null) Debug.LogWarning(string.Format("{0}: {1} Container is unassigned", new object[] { DialogueDebug.Prefix, name }));
             if (questTrackTemplate == null)
             {
@@ -136,7 +136,7 @@ namespace PixelCrushers.DialogueSystem
         public virtual void ShowTracker()
         {
             isVisible = true;
-            PlayerPrefs.SetInt(playerPrefsToggleKey, 1);
+            if (!string.IsNullOrEmpty(playerPrefsToggleKey)) PlayerPrefs.SetInt(playerPrefsToggleKey, 1);
             if (container != null) container.gameObject.SetActive(true);
             UpdateTracker();
         }
@@ -147,7 +147,7 @@ namespace PixelCrushers.DialogueSystem
         public virtual void HideTracker()
         {
             isVisible = false;
-            PlayerPrefs.SetInt(playerPrefsToggleKey, 0);
+            if (!string.IsNullOrEmpty(playerPrefsToggleKey)) PlayerPrefs.SetInt(playerPrefsToggleKey, 0);
             if (container != null) container.gameObject.SetActive(false);
         }
 
@@ -198,7 +198,7 @@ namespace PixelCrushers.DialogueSystem
         
         protected virtual IEnumerator RefreshAtEndOfFrame()
         {
-            yield return new WaitForEndOfFrame();
+            yield return CoroutineUtility.endOfFrame;
 
             // Move instances to the unused list:
             unusedInstances.AddRange(instantiatedItems);

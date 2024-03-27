@@ -73,7 +73,19 @@ namespace PixelCrushers.DialogueSystem
                 prop.serializedObject.FindProperty("questTitle") ??
                 prop.serializedObject.FindProperty("Quest") ??
                 prop.serializedObject.FindProperty("QuestName") ??
-                prop.serializedObject.FindProperty("QuestTitle");
+                prop.serializedObject.FindProperty("QuestTitle") ??
+                prop.serializedObject.FindProperty("m_quest") ??
+                prop.serializedObject.FindProperty("m_questName") ??
+                prop.serializedObject.FindProperty("m_questTitle") ??
+                prop.serializedObject.FindProperty("m_Quest") ??
+                prop.serializedObject.FindProperty("m_QuestName") ??
+                prop.serializedObject.FindProperty("m_QuestTitle") ??
+                prop.serializedObject.FindProperty("_quest") ??
+                prop.serializedObject.FindProperty("_questName") ??
+                prop.serializedObject.FindProperty("_questTitle") ??
+                prop.serializedObject.FindProperty("_Quest") ??
+                prop.serializedObject.FindProperty("_QuestName") ??
+                prop.serializedObject.FindProperty("_QuestTitle");
         }
 
         public void UpdateNames(SerializedProperty questProp, SerializedProperty prop)

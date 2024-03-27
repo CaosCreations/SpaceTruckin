@@ -2268,8 +2268,25 @@ namespace Language.Lua
 
                     ParseSpOpt(out success);
 
+                    //[PixelCrushers] Parse unary operator in front of next term.
+                    string unaryOper = ParseUnaryOperator(out success);
+                    if (success)
+                    {
+                        seq_start_position2 = position;
+                        ParseSpOpt(out success);
+                    }
+                    else { unaryOper = null; }
+
                     Term nextTerm = ParseTerm(out success);
-                    if (success) { operatorExpr.Add(nextTerm); }
+                    if (success) //--- { operatorExpr.Add(nextTerm); }
+                    {
+                        if (unaryOper != null)
+                        { // If there's a unary operator in front, make this a unary operation.
+                            var unaryOperation = new Operation(unaryOper, null, nextTerm);
+                            operatorExpr.Add(unaryOperation);
+                        }
+                        else { operatorExpr.Add(nextTerm); }
+                    }
                     else
                     {
                         Error("Failed to parse nextTerm of OperatorExpr.");

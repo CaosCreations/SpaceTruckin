@@ -21,6 +21,8 @@ namespace PixelCrushers.DialogueSystem.Twine
         protected DialogueDatabase database { get; set; }
         protected Template template { get; set; }
 
+        protected HashSet<int> playerActorIDs = new HashSet<int>();
+
         public virtual void ConvertStoryToConversation(DialogueDatabase database, Template template, TwineStory story, int actorID, int conversantID, bool splitPipesIntoEntries, bool useTwineNodePositions = false)
         {
             this.database = database;
@@ -35,6 +37,14 @@ namespace PixelCrushers.DialogueSystem.Twine
             }
             conversation.ActorID = actorID;
             conversation.ConversantID = conversantID;
+
+            // Record player actorIDs:
+            playerActorIDs.Clear();
+            playerActorIDs.Add(actorID); // Assume actor is Player.
+            database.actors.ForEach(actor =>
+            {
+                if (actor.IsPlayer) playerActorIDs.Add(actor.id);
+            });
 
             // Reset to just <START> node:
             conversation.dialogueEntries.Clear();
@@ -116,9 +126,9 @@ namespace PixelCrushers.DialogueSystem.Twine
                     }
                     else
                     {
-                        // Check if there's a node that's a repeat of the link (and, if so, don't add a link entry):
+                        // Check if there's a node that's a repeat of the link and is assigned to a player actor (if so, don't add a link entry):
                         var linkRepeatEntry = conversation.GetDialogueEntry(link.name);
-                        if (linkRepeatEntry != null && linkRepeatEntry.ActorID == conversation.ActorID)
+                        if (linkRepeatEntry != null && playerActorIDs.Contains(linkRepeatEntry.ActorID))
                         {
                             // Link links to node for that link (to allow Script: etc in link), so do nothing.
                             var linkEntry = linkRepeatEntry;
@@ -375,10 +385,11 @@ namespace PixelCrushers.DialogueSystem.Twine
                 string replacement = string.Empty;
                 if (!(isLink || string.IsNullOrEmpty(hookText)))
                 {
-                    var condition = ConvertIfMacro(prefix).Replace("\"", "\\\"");
+                    // Note: Conditiona() changed -- now expects a bool for first parameter.
+                    var condition = ConvertIfMacro(prefix);
                     var cleanHookText = hookText.Replace("\"", "\\\"");
                     if (hasNewline) cleanHookText += "\\n";
-                    replacement = "[lua(Conditional(\"" + condition + "\", \"" + cleanHookText + "\"))]";
+                    replacement = "[lua(Conditional(" + condition + ", \"" + cleanHookText + "\"))]";
                 }
 
                 text = Replace(text, match.Index, match.Length + (hasNewline ? 1 : 0), replacement);
@@ -413,6 +424,7 @@ namespace PixelCrushers.DialogueSystem.Twine
 
         protected bool IsLinkImplicit(TwineLink link)
         {
+            if (link.name == null) return true;
             return (link.name.Length > 2) && (link.name[0] == '(') && (link.name[link.name.Length - 1] == ')');
         }
 

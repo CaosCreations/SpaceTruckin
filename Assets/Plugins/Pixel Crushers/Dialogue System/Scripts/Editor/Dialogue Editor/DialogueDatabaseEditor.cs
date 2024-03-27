@@ -244,7 +244,11 @@ namespace PixelCrushers.DialogueSystem
                 }
                 else if (selectionType == typeof(Conversation))
                 {
+                    EditorGUILayout.BeginHorizontal();
                     DrawInspectorSelectionTitle("Conversation");
+                    GUILayout.FlexibleSpace();
+                    DialogueEditor.DialogueEditorWindow.instance.DrawAIBranchingConversationButton(selection as Conversation);
+                    EditorGUILayout.EndHorizontal();
                     if (DialogueEditor.DialogueEditorWindow.instance.showNodeEditor)
                     {
                         if (DialogueEditor.DialogueEditorWindow.instance.DrawConversationProperties())

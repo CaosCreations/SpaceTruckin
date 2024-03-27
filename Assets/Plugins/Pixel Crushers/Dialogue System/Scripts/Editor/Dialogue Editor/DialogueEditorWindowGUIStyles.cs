@@ -27,6 +27,10 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private GUIStyle pcLineLeafGUIStyle = null;
         private GUIStyle pcLinkButtonGUIStyle = null;
         private GUIStyle npcLinkButtonGUIStyle = null;
+        private GUIStyle entryGroupHeadingStyle = null;
+        private GUIStyle entryGroupLabelStyle = null;
+        private float entryGroupHeadingBaseFontSize;
+        private float currentEntryGroupHeadingZoom;
 
         private void ResetDialogueTreeGUIStyles()
         {
@@ -51,6 +55,21 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             grayGUIStyle.padding.left = FoldoutIndentWidth;
             pcLinkButtonGUIStyle = NewDialogueGUIStyle(template.pcLineColor, EditorStyles.miniButton);
             npcLinkButtonGUIStyle = NewDialogueGUIStyle(template.npcLineColor, EditorStyles.miniButton);
+            InitEntryGroupHeadingStyle();
+            InitEntryGroupLabelStyle();
+        }
+
+        private void InitEntryGroupHeadingStyle()
+        {
+            entryGroupHeadingStyle = new GUIStyle(GUI.skin.button);
+            entryGroupHeadingBaseFontSize = entryGroupHeadingStyle.fontSize;
+            currentEntryGroupHeadingZoom = _zoom;
+        }
+
+        private void InitEntryGroupLabelStyle()
+        {
+            entryGroupLabelStyle = new GUIStyle(GUI.skin.label);
+            entryGroupLabelStyle.alignment = TextAnchor.MiddleCenter;
         }
 
         private GUIStyle NewDialogueGUIStyle(Color color, GUIStyle baseStyle)

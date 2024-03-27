@@ -120,7 +120,7 @@ namespace PixelCrushers.DialogueSystem
 
         public PauseEvents pauseEvents = new PauseEvents();
 
-        private WaitForEndOfFrame endOfFrame = new WaitForEndOfFrame();
+        private WaitForEndOfFrame endOfFrame = CoroutineUtility.endOfFrame;
 
         #region Conversation Events
 

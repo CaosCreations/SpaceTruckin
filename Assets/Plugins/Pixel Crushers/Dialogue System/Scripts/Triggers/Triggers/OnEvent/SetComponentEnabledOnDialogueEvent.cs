@@ -73,7 +73,7 @@ namespace PixelCrushers.DialogueSystem
 
         private IEnumerator TryActionsAfterOneFrameCoroutine(SetComponentEnabledAction[] actions, Transform actor)
         {
-            yield return new WaitForEndOfFrame();
+            yield return CoroutineUtility.endOfFrame;
             yield return null;
             TryActionsNow(actions, actor);
         }

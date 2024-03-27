@@ -169,7 +169,7 @@ namespace PixelCrushers.DialogueSystem
         
         protected virtual IEnumerator RefreshAtEndOfFrame()
         {
-            yield return new WaitForEndOfFrame();
+            yield return CoroutineUtility.endOfFrame;
 
             // Move instances to the unused list:
             unusedInstances.AddRange(instantiatedItems);

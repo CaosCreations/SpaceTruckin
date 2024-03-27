@@ -154,6 +154,55 @@ namespace PixelCrushers.DialogueSystem
                 : portrait;
         }
 
+        /// <summary>
+        /// Returns a field in the actor's fields list.
+        /// </summary>
+        public Field GetField(string title)
+        {
+            var actor = DialogueManager.masterDatabase.GetActor(id);
+            return (actor != null) ? actor.fields.Find(field => field.title == title) : null;
+        }
+
+        /// <summary>
+        /// Returns the text value of a field in the actor's fields list, or empty string if
+        /// the actor or field doesn't exist.
+        /// </summary>
+        public string GetFieldText(string title)
+        {
+            var field = GetField(title);
+            return (field != null) ? field.value : string.Empty;
+        }
+
+        /// <summary>
+        /// Returns the bool value of a field in the actor's fields list, or false if
+        /// the actor or field doesn't exist.
+        /// </summary>
+        public bool GetFieldBool(string title)
+        {
+            var field = GetField(title);
+            return (field != null) ? string.Equals(field.value, "true", System.StringComparison.OrdinalIgnoreCase) : false;
+        }
+
+        /// <summary>
+        /// Returns the int value of a field in the actor's fields list, or 0 if
+        /// the actor or field doesn't exist.
+        /// </summary>
+        public int GetFieldInt(string title)
+        {
+            var field = GetField(title);
+            return (field != null) ? SafeConvert.ToInt(field.value) : 0;
+        }
+
+        /// <summary>
+        /// Returns the float value of a field in the actor's fields list, or 0 if
+        /// the actor or field doesn't exist.
+        /// </summary>
+        public float GetFieldFloat(string title)
+        {
+            var field = GetField(title);
+            return (field != null) ? SafeConvert.ToFloat(field.value) : 0;
+        }
+
         #region Static Transform to Actor Mapping Code
 
         private static Dictionary<string, Transform> registeredActorTransforms = new Dictionary<string, Transform>();

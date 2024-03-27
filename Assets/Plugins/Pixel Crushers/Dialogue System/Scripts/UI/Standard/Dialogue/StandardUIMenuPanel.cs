@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
-using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using UnityEngine;
+using UnityEngine.Events;
 
 namespace PixelCrushers.DialogueSystem
 {
@@ -65,6 +65,12 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("If non-zero, prevent input for this duration in seconds when opening menu.")]
         public float blockInputDuration = 0;
 
+        [Tooltip("During block input duration, keep selected response button in selected visual state.")]
+        public bool showSelectionWhileInputBlocked = false;
+
+        [Tooltip("Log a warning if a response button text is blank.")]
+        public bool warnOnEmptyResponseText = false;
+
         public UnityEvent onContentChanged = new UnityEvent();
 
         [Tooltip("When focusing panel, set this animator trigger.")]
@@ -115,6 +121,7 @@ namespace PixelCrushers.DialogueSystem
         protected List<GameObject> instantiatedButtonPool { get { return m_instantiatedButtonPool; } }
         private List<GameObject> m_instantiatedButtonPool = new List<GameObject>();
         private string m_processedAutonumberFormat = string.Empty;
+        private Coroutine m_scrollbarCoroutine = null;
         protected const float WaitForCloseTimeoutDuration = 8f;
 
         protected StandardUITimer m_timer = null;
@@ -143,6 +150,24 @@ namespace PixelCrushers.DialogueSystem
         #endregion
 
         #region Show & Hide
+
+        protected override void Update()
+        {
+            if (s_isInputDisabled)
+            {
+                if (eventSystem != null) eventSystem.SetSelectedGameObject(null);
+            }
+            else
+            {
+                base.Update();
+            }
+        }
+
+        public override void CheckFocus()
+        {
+            if (s_isInputDisabled) return;
+            base.CheckFocus();
+        }
 
         public virtual void SetPCPortrait(Sprite portraitSprite, string portraitName)
         {
@@ -176,7 +201,21 @@ namespace PixelCrushers.DialogueSystem
                     return;
                 }
             }
+            CheckForBlankResponses(responses);
             ShowResponsesNow(subtitle, responses, target);
+        }
+
+        private void CheckForBlankResponses(Response[] responses)
+        {
+            if (!DialogueDebug.logWarnings) return;
+            if (responses == null) return;
+            foreach (Response response in responses)
+            {
+                if (string.IsNullOrEmpty(response.formattedText.text))
+                {
+                    Debug.LogWarning($"Dialogue System: Response [{response.destinationEntry.conversationID}:{response.destinationEntry.id}] has no text for a response button.");
+                }
+            }
         }
 
         protected virtual void ShowResponsesNow(Subtitle subtitle, Response[] responses, Transform target)
@@ -192,18 +231,19 @@ namespace PixelCrushers.DialogueSystem
             Open();
             Focus();
             RefreshSelectablesList();
-            if (InputDeviceManager.autoFocus) SetFocus(firstSelected);
             if (blockInputDuration > 0)
             {
                 DisableInput();
-                Invoke("EnableInput", blockInputDuration);
+                if (InputDeviceManager.autoFocus) SetFocus(firstSelected);
+                Invoke(nameof(EnableInput), blockInputDuration);
             }
             else
             {
+                if (InputDeviceManager.autoFocus) SetFocus(firstSelected);
                 if (s_isInputDisabled) EnableInput();
             }
 #if TMP_PRESENT
-            StartCoroutine(CheckTMProAutoScroll());
+            DialogueManager.instance.StartCoroutine(CheckTMProAutoScroll());
 #endif
         }
 
@@ -326,7 +366,7 @@ namespace PixelCrushers.DialogueSystem
 
         public virtual void HideImmediate()
         {
-            DeactivateUIElements();
+            OnHidden();
         }
 
         protected virtual void ClearResponseButtons()
@@ -383,22 +423,7 @@ namespace PixelCrushers.DialogueSystem
 
                 if ((buttonTemplate != null) && (buttonTemplateHolder != null))
                 {
-                    // Reset scrollbar to top:
-                    //--- Scroll even if no scrollbar: if (buttonTemplateScrollbar != null)
-                    {
-                        if (buttonTemplateScrollbarResetValue >= 0)
-                        {
-                            if (buttonTemplateScrollbar != null) buttonTemplateScrollbar.value = buttonTemplateScrollbarResetValue;
-                            if (scrollbarEnabler != null)
-                            {
-                                scrollbarEnabler.CheckScrollbarWithResetValue(buttonTemplateScrollbarResetValue);
-                            }
-                        }
-                        else if (scrollbarEnabler != null)
-                        {
-                            scrollbarEnabler.CheckScrollbar();
-                        }
-                    }
+                    if (scrollbarEnabler != null) CheckScrollbar();
 
                     // Instantiate buttons from template:
                     for (int i = 0; i < responses.Length; i++)
@@ -464,31 +489,77 @@ namespace PixelCrushers.DialogueSystem
             NotifyContentChanged();
         }
 
+        protected virtual void CheckScrollbar()
+        {
+            if (scrollbarEnabler == null) return;
+            if (m_scrollbarCoroutine != null) StopCoroutine(m_scrollbarCoroutine);
+            m_scrollbarCoroutine = dialogueUI.StartCoroutine(CheckScrollbarCoroutine());
+        }
+
+        protected IEnumerator CheckScrollbarCoroutine()
+        {
+            var timeout = Time.realtimeSinceStartup + UIAnimatorMonitor.MaxWaitDuration;
+            while (!isOpen && Time.realtimeSinceStartup < timeout)
+            {
+                yield return null;
+            }
+            if (buttonTemplateScrollbarResetValue >= 0)
+            {
+                if (buttonTemplateScrollbar != null) buttonTemplateScrollbar.value = buttonTemplateScrollbarResetValue;
+                if (scrollbarEnabler != null)
+                {
+                    scrollbarEnabler.CheckScrollbarWithResetValue(buttonTemplateScrollbarResetValue);
+                }
+            }
+            else if (scrollbarEnabler != null)
+            {
+                scrollbarEnabler.CheckScrollbar();
+            }
+        }
+
         protected virtual void SetResponseButton(StandardUIResponseButton button, Response response, Transform target, int buttonNumber)
         {
             if (button != null)
             {
+                button.response = response;
                 button.gameObject.SetActive(true);
                 button.isVisible = true;
                 button.isClickable = response.enabled;
                 button.target = target;
-                if (response != null) button.SetFormattedText(response.formattedText);
-                button.response = response;
+                if (response != null)
+                {
+                    if (warnOnEmptyResponseText && DialogueDebug.logWarnings && string.IsNullOrEmpty(response.formattedText.text))
+                    {
+                        Debug.LogWarning($"Dialogue System: Response entry [{response.destinationEntry.id}] menu text is blank.", button);
+                    }
+                    button.SetFormattedText(response.formattedText);
+                }
 
                 // Auto-number:
                 if (autonumber.enabled)
                 {
                     button.text = string.Format(m_processedAutonumberFormat, buttonNumber + 1, button.text);
-                    var keyTrigger = button.GetComponent<UIButtonKeyTrigger>();
+                    // Add UIButtonKeyTrigger(s) if needed:
+                    var numKeyTriggersNeeded = 0;
+                    if (autonumber.regularNumberHotkeys) numKeyTriggersNeeded++;
+                    if (autonumber.numpadHotkeys) numKeyTriggersNeeded++;
+                    var keyTriggers = button.GetComponents<UIButtonKeyTrigger>();
+                    if (keyTriggers.Length < numKeyTriggersNeeded)
+                    {
+                        for (int i = keyTriggers.Length; i < numKeyTriggersNeeded; i++)
+                        {
+                            button.gameObject.AddComponent<UIButtonKeyTrigger>();
+                        }
+                        keyTriggers = button.GetComponents<UIButtonKeyTrigger>();
+                    }
+                    int index = 0;
                     if (autonumber.regularNumberHotkeys)
                     {
-                        if (keyTrigger == null) keyTrigger = button.gameObject.AddComponent<UIButtonKeyTrigger>();
-                        keyTrigger.key = (KeyCode)((int)KeyCode.Alpha1 + buttonNumber);
+                        keyTriggers[index++].key = (KeyCode)((int)KeyCode.Alpha1 + buttonNumber);
                     }
                     if (autonumber.numpadHotkeys)
                     {
-                        if (autonumber.regularNumberHotkeys || keyTrigger == null) keyTrigger = button.gameObject.AddComponent<UIButtonKeyTrigger>();
-                        keyTrigger.key = (KeyCode)((int)KeyCode.Keypad1 + buttonNumber);
+                        keyTriggers[index].key = (KeyCode)((int)KeyCode.Keypad1 + buttonNumber);
                     }
                 }
             }
@@ -634,9 +705,19 @@ namespace PixelCrushers.DialogueSystem
                 }
             }
             if (m_mainCanvasGroup != null) m_mainCanvasGroup.interactable = value;
-            if (EventSystem.current != null)
+            if (value == false)
             {
-                var inputModule = EventSystem.current.GetComponent<PointerInputModule>();
+                // If auto focus, show firstSelected in selected state:
+                if (InputDeviceManager.autoFocus && firstSelected != null)
+                {
+                    var button = firstSelected.GetComponent<UnityEngine.UI.Button>();
+                    MethodInfo methodInfo = typeof(UnityEngine.UI.Button).GetMethod("DoStateTransition", BindingFlags.Instance | BindingFlags.NonPublic);
+                    methodInfo.Invoke(button, new object[] { 3, true }); // 3 = SelectionState.Selected
+                }
+            }
+            if (eventSystem != null)
+            {
+                var inputModule = eventSystem.GetComponent<UnityEngine.EventSystems.PointerInputModule>();
                 if (inputModule != null) inputModule.enabled = value;
             }
             UIButtonKeyTrigger.monitorInput = value;
@@ -644,6 +725,10 @@ namespace PixelCrushers.DialogueSystem
             {
                 RefreshSelectablesList();
                 CheckFocus();
+                if (eventSystem != null && eventSystem.currentSelectedGameObject != null)
+                { // Also show in focused/selected state:
+                    UIUtility.Select(eventSystem.currentSelectedGameObject.GetComponent<UnityEngine.UI.Selectable>());
+                }
             }
         }
         #endregion

@@ -16,12 +16,12 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private string[] conversationTitles = null;
 
         [SerializeField]
+        private string[] conversationTitlesForMenu = null;
+
+        [SerializeField]
         private int conversationIndex = -1;
 
         private DialogueEntry nodeToDrag = null;
-
-        [SerializeField]
-        private float snapToGridAmount = 0;
 
         private bool hasStartedSnapToGrid = false;
 
@@ -50,6 +50,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private void ResetConversationNodeEditor()
         {
             conversationTitles = null;
+            conversationTitlesForMenu = null;
             conversationIndex = -1;
             ResetConversationNodeSection();
         }
@@ -102,7 +103,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private void ResetNodeEditorConversationList()
         {
-            conversationTitles = GetConversationTitles();
+            RecordConversationTitles();
             SetConversationDropdownIndex(GetCurrentConversationIndex());
         }
 
@@ -115,6 +116,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             {
                 AddNewConversationToNodeEditor();
             }
+            DrawAIGenerateConversationButton();
             DrawNextConversationButton();
             DrawConversationFilter();
             DrawZoomSlider();
@@ -146,9 +148,9 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         {
             EditorGUI.BeginChangeCheck();
             GUI.SetNextControlName("ConversationFilterTextField");
-            conversationTitleFilter = EditorGUILayout.TextField(GUIContent.none, conversationTitleFilter, "ToolbarSeachTextField");
+            conversationTitleFilter = EditorGUILayout.TextField(GUIContent.none, conversationTitleFilter, MoreEditorGuiUtility.ToolbarSearchTextFieldName);
             GUI.SetNextControlName("ConversationClearClearButton");
-            if (GUILayout.Button("Clear", "ToolbarSeachCancelButton"))
+            if (GUILayout.Button("Clear", MoreEditorGuiUtility.ToolbarSearchCancelButtonName))
             {
                 conversationTitleFilter = string.Empty;
                 GUI.FocusControl("ConversationClearClearButton"); // Need to deselect text field to clear text field's display.
@@ -156,6 +158,24 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             if (EditorGUI.EndChangeCheck())
             {
                 ResetNodeEditorConversationList();
+            }
+            // [Contributed by Vladimir Beletsky: Pressing Return jumps to first conversation matching filter.
+            if (Event.current.keyCode == KeyCode.Return &&
+                !string.IsNullOrEmpty(conversationTitleFilter) &&
+                GUI.GetNameOfFocusedControl() == "ConversationFilterTextField" &&
+                database != null)
+            {
+                var filter = conversationTitleFilter.ToLower();
+                foreach (var conversation in database.conversations)
+                {
+                    if (conversation == null) continue;
+                    var title = conversation.Title.ToLower();
+                    if (title.Contains(filter))
+                    {
+                        OpenConversation(conversation);
+                        break;
+                    }
+                }
             }
         }
 
@@ -176,6 +196,14 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             if (GUILayout.Button("Menu", "MiniPullDown", GUILayout.Width(56)))
             {
                 GenericMenu menu = new GenericMenu();
+                if (database != null && currentConversation != null)
+                {
+                    menu.AddItem(new GUIContent("Play..."), false, PlayConversationFromEntry, 0);
+                }
+                else
+                {
+                    menu.AddDisabledItem(new GUIContent("Play..."));
+                }
                 menu.AddItem(new GUIContent("Home Position"), false, GotoCanvasHomePosition);
                 if (currentConversation != null)
                 {
@@ -196,13 +224,35 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 {
                     menu.AddItem(new GUIContent("Duplicate Conversation"), false, CopyConversationCallback, null);
                     menu.AddItem(new GUIContent("Delete Conversation"), false, DeleteConversationCallback, null);
+                }
+                else
+                {
+                    menu.AddDisabledItem(new GUIContent("Duplicate Conversation"));
+                    menu.AddDisabledItem(new GUIContent("Delete Conversation"));
+                }
+                menu.AddItem(new GUIContent("Templates/New From Template/Built-In/Quest Conversation"), false, CreateQuestConversationFromTemplate);
+                menu.AddItem(new GUIContent("Templates/New From Template/From Template JSON..."), false, CreateConversationFromTemplate);
+                if (currentConversation != null)
+                {
+                    menu.AddItem(new GUIContent("Templates/Save Template JSON..."), false, SaveConversationTemplate);
+                }
+                else
+                {
+                    menu.AddDisabledItem(new GUIContent("Templates/Save Template JSON..."));
+                }
+                if (currentConversation != null)
+                {
+                    menu.AddItem(new GUIContent("Arrange Nodes/Vertically"), false, ArrangeNodesCallback, AutoArrangeStyle.Vertically);
+                    menu.AddItem(new GUIContent("Arrange Nodes/Vertically (alternate)"), false, ArrangeNodesCallback, AutoArrangeStyle.VerticallyOld);
+                    menu.AddItem(new GUIContent("Arrange Nodes/Horizontally"), false, ArrangeNodesCallback, AutoArrangeStyle.Horizontally);
                     menu.AddItem(new GUIContent("Split Pipes Into Nodes/Process Conversation"), false, SplitPipesIntoEntries, null);
                     menu.AddItem(new GUIContent("Split Pipes Into Nodes/Trim Whitespace Around Pipes"), trimWhitespaceAroundPipes, ToggleTrimWhitespaceAroundPipes);
                 }
                 else
                 {
-                    menu.AddDisabledItem(new GUIContent("Copy Conversation"));
-                    menu.AddDisabledItem(new GUIContent("Delete Conversation"));
+                    menu.AddDisabledItem(new GUIContent("Arrange Nodes/Vertically"));
+                    menu.AddDisabledItem(new GUIContent("Arrange Nodes/Vertically (alternate)"));
+                    menu.AddDisabledItem(new GUIContent("Arrange Nodes/Horizontally"));
                     menu.AddDisabledItem(new GUIContent("Split Pipes Into Nodes/Process Conversation"));
                     menu.AddDisabledItem(new GUIContent("Split Pipes Into Nodes/Trim Whitespace Around Pipes"));
                 }
@@ -211,30 +261,32 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 menu.AddItem(new GUIContent("Sort/Reorder IDs/This Conversation"), false, ConfirmReorderIDsThisConversation);
                 menu.AddItem(new GUIContent("Sort/Reorder IDs/All Conversations"), false, ConfirmReorderIDsAllConversations);
                 menu.AddItem(new GUIContent("Sort/Reorder IDs/Depth First Reordering"), reorderIDsDepthFirst, () => { reorderIDsDepthFirst = !reorderIDsDepthFirst; });
-                menu.AddItem(new GUIContent("Show/Show All Actor Names"), showAllActorNames, ToggleShowAllActorNames);
-                menu.AddItem(new GUIContent("Show/Show Non-Primary Actor Names"), showOtherActorNames, ToggleShowOtherActorNames);
-                menu.AddItem(new GUIContent("Show/Show Actor Portraits"), showActorPortraits, ToggleShowActorPortraits);
-                menu.AddItem(new GUIContent("Show/Show Descriptions"), showDescriptions, ToggleShowDescriptions);
-                menu.AddItem(new GUIContent("Show/Show Full Text On Hover"), showFullTextOnHover, ToggleShowFullTextOnHover);
-                menu.AddItem(new GUIContent("Show/Show End Node Markers"), showEndNodeMarkers, ToggleShowEndNodeMarkers);
-                menu.AddItem(new GUIContent("Show/Show Node IDs"), showNodeIDs, ToggleShowNodeIDs);
-                menu.AddItem(new GUIContent("Show/Show Titles Instead of Text"), showTitlesInsteadOfText, ToggleShowTitlesBeforeText);
-                menu.AddItem(new GUIContent("Show/Show Primary Actors in Lower Right"), showParticipantNames, ToggleShowParticipantNames);
+                menu.AddItem(new GUIContent("Show/Show Conversation IDs"), prefs.showConversationIDs, ToggleShowConversationIDs);
+                menu.AddItem(new GUIContent("Show/Show Node IDs"), prefs.showNodeIDs, ToggleShowNodeIDs);
+                menu.AddItem(new GUIContent("Show/Show All Actor Names"), prefs.showAllActorNames, ToggleShowAllActorNames);
+                menu.AddItem(new GUIContent("Show/Show Non-Primary Actor Names"), prefs.showOtherActorNames, ToggleShowOtherActorNames);
+                menu.AddItem(new GUIContent("Show/Show Actor Portraits"), prefs.showActorPortraits, ToggleShowActorPortraits);
+                menu.AddItem(new GUIContent("Show/Show Descriptions"), prefs.showDescriptions, ToggleShowDescriptions);
+                menu.AddItem(new GUIContent("Show/Show Full Text On Hover"), prefs.showFullTextOnHover, ToggleShowFullTextOnHover);
+                menu.AddItem(new GUIContent("Show/Show Link Order On Arrows"), prefs.showLinkOrderOnConnectors, () => { prefs.showLinkOrderOnConnectors = !prefs.showLinkOrderOnConnectors; });
+                menu.AddItem(new GUIContent("Show/Show End Node Markers"), prefs.showEndNodeMarkers, ToggleShowEndNodeMarkers);
+                menu.AddItem(new GUIContent("Show/Show Titles Instead of Text"), prefs.showTitlesInsteadOfText, ToggleShowTitlesBeforeText);
+                menu.AddItem(new GUIContent("Show/Show Primary Actors in Lower Right"), prefs.showParticipantNames, ToggleShowParticipantNames);
                 menu.AddItem(new GUIContent("Show/Prefer Titles For 'Links To' Menus"), prefs.preferTitlesForLinksTo, TogglePreferTitlesForLinksTo);
                 menu.AddItem(new GUIContent("Show/Node Width/1x"), canvasRectWidthMultiplier == 1, SetNodeWidthMultiplier, (int)1);
                 menu.AddItem(new GUIContent("Show/Node Width/2x"), canvasRectWidthMultiplier == 2, SetNodeWidthMultiplier, (int)2);
                 menu.AddItem(new GUIContent("Show/Node Width/3x"), canvasRectWidthMultiplier == 3, SetNodeWidthMultiplier, (int)3);
                 menu.AddItem(new GUIContent("Show/Node Width/4x"), canvasRectWidthMultiplier == 4, SetNodeWidthMultiplier, (int)4);
-                menu.AddItem(new GUIContent("Grid/No Snap"), snapToGridAmount < MinorGridLineWidth, SetSnapToGrid, 0f);
-                menu.AddItem(new GUIContent("Grid/12 pixels"), Mathf.Approximately(12f, snapToGridAmount), SetSnapToGrid, 12f);
-                menu.AddItem(new GUIContent("Grid/24 pixels"), Mathf.Approximately(24f, snapToGridAmount), SetSnapToGrid, 24f);
-                menu.AddItem(new GUIContent("Grid/36 pixels"), Mathf.Approximately(36f, snapToGridAmount), SetSnapToGrid, 36f);
-                menu.AddItem(new GUIContent("Grid/48 pixels"), Mathf.Approximately(48f, snapToGridAmount), SetSnapToGrid, 48f);
+                menu.AddItem(new GUIContent("Grid/No Snap"), prefs.snapToGridAmount < MinorGridLineWidth, SetSnapToGrid, 0f);
+                menu.AddItem(new GUIContent("Grid/12 pixels"), Mathf.Approximately(12f, prefs.snapToGridAmount), SetSnapToGrid, 12f);
+                menu.AddItem(new GUIContent("Grid/24 pixels"), Mathf.Approximately(24f, prefs.snapToGridAmount), SetSnapToGrid, 24f);
+                menu.AddItem(new GUIContent("Grid/36 pixels"), Mathf.Approximately(36f, prefs.snapToGridAmount), SetSnapToGrid, 36f);
+                menu.AddItem(new GUIContent("Grid/48 pixels"), Mathf.Approximately(48f, prefs.snapToGridAmount), SetSnapToGrid, 48f);
                 menu.AddItem(new GUIContent("Grid/Snap All Nodes To Grid"), false, SnapAllNodesToGrid);
                 menu.AddItem(new GUIContent("Search/Search Bar"), isSearchBarOpen, ToggleDialogueTreeSearchBar);
                 menu.AddItem(new GUIContent("Search/Global Search and Replace..."), false, OpenGlobalSearchAndReplace);
-                menu.AddItem(new GUIContent("Settings/Auto Arrange After Adding Node"), autoArrangeOnCreate, ToggleAutoArrangeOnCreate);
-                menu.AddItem(new GUIContent("Settings/Add New Nodes to Right"), addNewNodesToRight, ToggleAddNewNodesToRight);
+                menu.AddItem(new GUIContent("Settings/Auto Arrange After Adding Node"), prefs.autoArrangeOnCreate, ToggleAutoArrangeOnCreate);
+                menu.AddItem(new GUIContent("Settings/Add New Nodes to Right"), prefs.addNewNodesToRight, ToggleAddNewNodesToRight);
                 menu.AddItem(new GUIContent("Settings/Confirm Node and Link Deletion"), confirmDelete, ToggleConfirmDelete);
                 menu.AddItem(new GUIContent("Outline Mode"), false, ActivateOutlineMode);
                 if (currentConversation == null)
@@ -259,63 +311,63 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private void ToggleShowAllActorNames()
         {
-            showAllActorNames = !showAllActorNames;
+            prefs.showAllActorNames = !prefs.showAllActorNames;
             ResetDialogueEntryText();
         }
 
         private void ToggleShowOtherActorNames()
         {
-            showOtherActorNames = !showOtherActorNames;
+            prefs.showOtherActorNames = !prefs.showOtherActorNames;
             ResetDialogueEntryText();
         }
 
         private void ToggleShowParticipantNames()
         {
-            showParticipantNames = !showParticipantNames;
+            prefs.showParticipantNames = !prefs.showParticipantNames;
         }
 
         private void ToggleShowActorPortraits()
         {
-            showActorPortraits = !showActorPortraits;
+            prefs.showActorPortraits = !prefs.showActorPortraits;
             ClearActorInfoCaches();
         }
 
         private void ToggleShowDescriptions()
         {
-            showDescriptions = !showDescriptions;
+            prefs.showDescriptions = !prefs.showDescriptions;
             ClearActorInfoCaches();
         }
 
         private void ToggleShowFullTextOnHover()
         {
-            showFullTextOnHover = !showFullTextOnHover;
+            prefs.showFullTextOnHover = !prefs.showFullTextOnHover;
         }
 
         private void ToggleShowEndNodeMarkers()
         {
-            showEndNodeMarkers = !showEndNodeMarkers;
+            prefs.showEndNodeMarkers = !prefs.showEndNodeMarkers;
         }
 
         private void ToggleShowNodeIDs()
         {
-            showNodeIDs = !showNodeIDs;
+            prefs.showNodeIDs = !prefs.showNodeIDs;
             dialogueEntryNodeText.Clear();
         }
 
         private void ToggleShowTitlesBeforeText()
         {
-            showTitlesInsteadOfText = !showTitlesInsteadOfText;
+            prefs.showTitlesInsteadOfText = !prefs.showTitlesInsteadOfText;
             dialogueEntryNodeText.Clear();
         }
 
         private void ToggleAddNewNodesToRight()
         {
-            addNewNodesToRight = !addNewNodesToRight;
+            prefs.addNewNodesToRight = !prefs.addNewNodesToRight;
         }
 
         private void ToggleAutoArrangeOnCreate()
         {
-            autoArrangeOnCreate = !autoArrangeOnCreate;
+            prefs.autoArrangeOnCreate = !prefs.autoArrangeOnCreate;
         }
 
         private void ToggleConfirmDelete()
@@ -358,12 +410,12 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private void DrawNodeEditorConversationPopup()
         {
-            if (conversationTitles == null) conversationTitles = GetConversationTitles();
+            if (conversationTitles == null) RecordConversationTitles();
             if (conversationIndex == -1 && currentConversation != null)
             {
                 conversationIndex = GetCurrentConversationIndex();
             }
-            int newIndex = EditorGUILayout.Popup(conversationIndex, conversationTitles, GUILayout.Height(EditorGUIUtility.singleLineHeight));
+            int newIndex = EditorGUILayout.Popup(conversationIndex, conversationTitlesForMenu, GUILayout.Height(EditorGUIUtility.singleLineHeight));
             if (newIndex != conversationIndex)
             {
                 if (currentConversation != null)
@@ -378,7 +430,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             }
         }
 
-        private string[] GetConversationTitles()
+        private void RecordConversationTitles()
         {
             int numDuplicates = 0;
             var titles = new List<string>();
@@ -415,18 +467,26 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                         title += " " + numDuplicates;
                         conversation.Title = title;
                     }
+
+                    var titleWithoutAmpersand = title.Replace("&", "<AMPERSAND>");
+                    if (prefs != null && prefs.showConversationIDs)
+                    {
+                        titleWithoutAmpersand = $"[{conversation.id}] {titleWithoutAmpersand}";
+                    }
+
                     titles.Add(title);
-                    titlesWithoutAmpersand.Add(title.Replace("&", "<AMPERSAND>"));
+                    titlesWithoutAmpersand.Add(titleWithoutAmpersand);
                 }
             }
-            return titlesWithoutAmpersand.ToArray();
+            conversationTitles = titles.ToArray();
+            conversationTitlesForMenu = titlesWithoutAmpersand.ToArray();
         }
 
         private int GetCurrentConversationIndex()
         {
             if (currentConversation != null)
             {
-                if (conversationTitles == null) conversationTitles = GetConversationTitles();
+                if (conversationTitles == null) RecordConversationTitles();
                 for (int i = 0; i < conversationTitles.Length; i++)
                 {
                     if (string.Equals(currentConversation.Title, conversationTitles[i])) return i;
@@ -437,10 +497,16 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private Conversation GetConversationByTitleIndex(int index)
         {
-            if (conversationTitles == null) conversationTitles = GetConversationTitles();
+            if (conversationTitles == null) RecordConversationTitles();
             if (0 <= index && index < conversationTitles.Length)
             {
-                return database.GetConversation(conversationTitles[index].Replace("<AMPERSAND>", "&"));
+                var title = conversationTitles[index];
+                if (prefs.showConversationIDs)
+                {
+                    var pos = title.IndexOf("[");
+                    if (pos != -1) title = title.Substring(pos + 2); // Remove ID.
+                }
+                return database.GetConversation(title);
             }
             else
             {
@@ -448,9 +514,22 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             }
         }
 
+        private string RemoveConversationIDFromTitle(string title)
+        {
+            if (prefs.showConversationIDs)
+            {
+                var pos = title.IndexOf("[");
+                if (pos != -1)
+                {
+                    return title.Substring(pos + 2); // Remove ID.
+                }
+            }
+            return title;
+        }
+
         public void UpdateConversationTitles()
         {
-            conversationTitles = GetConversationTitles();
+            RecordConversationTitles();
         }
 
         private void GotoStartNodePosition()
@@ -463,9 +542,10 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private void GotoCurrentRuntimeEntry()
         {
             if (!(Application.isPlaying && DialogueManager.isConversationActive)) return;
-            if (currentConversation == null || !string.Equals(currentConversation.Title, DialogueManager.lastConversationStarted))
+            var activeConversationID = DialogueManager.currentConversationState.subtitle.dialogueEntry.conversationID;
+            if (currentConversation == null || currentConversation.id != activeConversationID)
             {
-                OpenConversation(database.GetConversation(DialogueManager.lastConversationStarted));
+                OpenConversation(database.GetConversation(activeConversationID));
             }
             if (currentConversation == null) return;
             var currentEntry = currentConversation.GetDialogueEntry(DialogueManager.currentConversationState.subtitle.dialogueEntry.id);
@@ -475,7 +555,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private void SetSnapToGrid(object data)
         {
-            snapToGridAmount = (data == null || data.GetType() != typeof(float)) ? 0 : (float)data;
+            prefs.snapToGridAmount = (data == null || data.GetType() != typeof(float)) ? 0 : (float)data;
         }
 
     }

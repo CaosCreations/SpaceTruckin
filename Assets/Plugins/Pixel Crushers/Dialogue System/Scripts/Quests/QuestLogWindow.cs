@@ -79,6 +79,9 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("Organize quests by the values of their Group fields.")]
         public bool useGroups = false;
 
+        [Tooltip("If not blank, show this text next to quest titles that haven't been viewed yet. Will be localized if text has entry in Dialogue Manager's Text Table.")]
+        public string newQuestText = string.Empty;
+
         [Tooltip("Allow only one quest to be tracked at a time.")]
         public bool trackOneQuestAtATime = false;
 
@@ -89,6 +92,7 @@ namespace PixelCrushers.DialogueSystem
         public class QuestInfo
         {
             public string Group { get; set; }
+            public string GroupDisplayName { get; set; }
             public string Title { get; set; }
             public FormattedText Heading { get; set; }
             public FormattedText Description { get; set; }
@@ -97,11 +101,27 @@ namespace PixelCrushers.DialogueSystem
             public bool Trackable { get; set; }
             public bool Track { get; set; }
             public bool Abandonable { get; set; }
+            public QuestInfo(string group, string groupDisplayName, string title, FormattedText heading, FormattedText description,
+                             FormattedText[] entries, QuestState[] entryStates, bool trackable,
+                             bool track, bool abandonable)
+            {
+                this.Group = group;
+                this.GroupDisplayName = groupDisplayName;
+                this.Title = title;
+                this.Heading = heading;
+                this.Description = description;
+                this.Entries = entries;
+                this.EntryStates = entryStates;
+                this.Trackable = trackable;
+                this.Track = track;
+                this.Abandonable = abandonable;
+            }
             public QuestInfo(string group, string title, FormattedText heading, FormattedText description,
                              FormattedText[] entries, QuestState[] entryStates, bool trackable,
                              bool track, bool abandonable)
             {
                 this.Group = group;
+                this.GroupDisplayName = string.Empty;
                 this.Title = title;
                 this.Heading = heading;
                 this.Description = description;
@@ -116,6 +136,7 @@ namespace PixelCrushers.DialogueSystem
                              bool track, bool abandonable)
             {
                 this.Group = string.Empty;
+                this.GroupDisplayName = string.Empty;
                 this.Title = title;
                 this.Heading = heading;
                 this.Description = description;
@@ -364,6 +385,7 @@ namespace PixelCrushers.DialogueSystem
             FormattedText localizedTitle = FormattedText.Parse(QuestLog.GetQuestTitle(title), DialogueManager.masterDatabase.emphasisSettings);
             FormattedText heading = (questHeadingSource == QuestHeadingSource.Description) ? description : localizedTitle;
             string localizedGroup = string.IsNullOrEmpty(group) ? string.Empty : QuestLog.GetQuestGroup(title);
+            string localizedGroupDisplayName = string.IsNullOrEmpty(group) ? string.Empty : QuestLog.GetQuestGroupDisplayName(title);
             bool abandonable = QuestLog.IsQuestAbandonable(title) && isShowingActiveQuests;
             bool trackable = QuestLog.IsQuestTrackingAvailable(title) && isShowingActiveQuests;
             bool track = QuestLog.IsQuestTrackingEnabled(title);
@@ -375,7 +397,17 @@ namespace PixelCrushers.DialogueSystem
                 entries[i] = FormattedText.Parse(QuestLog.GetQuestEntry(title, i + 1), DialogueManager.masterDatabase.emphasisSettings);
                 entryStates[i] = QuestLog.GetQuestEntryState(title, i + 1);
             }
-            return new QuestInfo(localizedGroup, title, heading, description, entries, entryStates, trackable, track, abandonable);
+
+            // Check if need to show [new]:
+            if (!string.IsNullOrEmpty(newQuestText))
+            {
+                if (!QuestLog.WasQuestViewed(title))
+                {
+                    heading.text += " " + FormattedText.Parse(DialogueManager.GetLocalizedText(newQuestText)).text;
+                }
+            }
+
+            return new QuestInfo(localizedGroup, localizedGroupDisplayName, title, heading, description, entries, entryStates, trackable, track, abandonable);
         }
 
         /// <summary>
@@ -454,6 +486,22 @@ namespace PixelCrushers.DialogueSystem
             if (!IsString(data)) return;
             string clickedQuest = (string)data;
             selectedQuest = (deselectQuestOnSecondClick && string.Equals(selectedQuest, clickedQuest)) ? string.Empty : clickedQuest;
+
+            // Mark viewed:
+            if (!string.IsNullOrEmpty(newQuestText) && !string.IsNullOrEmpty(selectedQuest))
+            {
+                QuestLog.MarkQuestViewed(selectedQuest);
+                foreach (var quest in quests)
+                {
+                    if (IsSelectedQuest(quest))
+                    {
+                        var newQuestInfo = GetQuestInfo(quest.Group, quest.Title);
+                        quest.Heading = newQuestInfo.Heading;
+                        break;
+                    }
+                }
+            }
+
             OnQuestListUpdated();
         }
 
@@ -535,7 +583,7 @@ namespace PixelCrushers.DialogueSystem
 
         protected IEnumerator UpdateQuestDisplayAtEndOfFrame()
         {
-            yield return new WaitForEndOfFrame();
+            yield return CoroutineUtility.endOfFrame;
             refreshCoroutine = null;
             ShowQuests(currentQuestStateMask);
         }

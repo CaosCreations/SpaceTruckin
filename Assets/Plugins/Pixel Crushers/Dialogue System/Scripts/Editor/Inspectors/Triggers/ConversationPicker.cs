@@ -99,6 +99,7 @@ namespace PixelCrushers.DialogueSystem
             EditorGUILayout.EndHorizontal();
             if (usePicker)
             {
+                EditorGUILayout.BeginHorizontal();
                 var newIndex = EditorGUILayout.Popup("Conversation", currentIndex, titles);
                 if ((newIndex != currentIndex) && (0 <= newIndex) && (newIndex < titles.Length))
                 {
@@ -115,6 +116,7 @@ namespace PixelCrushers.DialogueSystem
                                             MessageType.Info);
                 }
                 if (DrawClearButton()) changed = true;
+                EditorGUILayout.EndHorizontal();
             }
             return changed;
         }

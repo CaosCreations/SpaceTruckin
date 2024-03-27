@@ -229,6 +229,8 @@ namespace PixelCrushers.DialogueSystem
             if (text.Contains("|")) text = text.Replace("|", "\n");
         }
 
+        private static Regex LuaRegex = new Regex(@"\[lua\((?!lua).*\)\]");
+
         /// <summary>
         /// Replaces the [lua(xxx)] tags with the result of running xxx through Lua. For brevity,
         /// xxx can omit the return statement; this method will add it.
@@ -242,7 +244,6 @@ namespace PixelCrushers.DialogueSystem
             const int maxReplacements = 100;
             if (text.Contains(luaTagStart))
             {
-                Regex regex = new Regex(@"\[lua\((?!lua).*\)\]"); //---Was: new Regex(@"\[lua\(.*\)\]");
                 int endPosition = text.Length - 1;
                 int numReplacements = 0; // Sanity check to prevent infinite loops in case of bug.
                 while ((endPosition >= 0) && (numReplacements < maxReplacements))
@@ -254,7 +255,7 @@ namespace PixelCrushers.DialogueSystem
                     {
                         string firstPart = text.Substring(0, luaTagPosition);
                         string secondPart = text.Substring(luaTagPosition);
-                        string secondPartLuaReplaced = regex.Replace(secondPart, delegate (Match match)
+                        string secondPartLuaReplaced = LuaRegex.Replace(secondPart, delegate (Match match)
                         {
                             string luaCode = match.Value.Substring(5, match.Value.Length - 7).Trim(); // Remove "[lua(" and ")]"
                             if (!luaCode.StartsWith("return ")) luaCode = "return " + luaCode;
@@ -274,6 +275,8 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
+        private static Regex VarRegex = new Regex(@"\[var=[^\]]*\]");
+
         /// <summary>
         /// Replaces the [var=varName] tags with the value of the Lua variable varName.
         /// </summary>
@@ -287,7 +290,6 @@ namespace PixelCrushers.DialogueSystem
             if (text.Contains(varTagStart))
             {
                 // Match "[var=" and then anything up to "]":
-                Regex regex = new Regex(@"\[var=[^\]]*\]");
                 int endPosition = text.Length - 1;
                 int numReplacements = 0; // Sanity check to prevent infinite loops in case of bug.
                 while ((endPosition >= 0) && (numReplacements < maxReplacements))
@@ -299,7 +301,7 @@ namespace PixelCrushers.DialogueSystem
                     {
                         string firstPart = text.Substring(0, varTagPosition);
                         string secondPart = text.Substring(varTagPosition);
-                        string secondPartVarReplaced = regex.Replace(secondPart, delegate (Match match)
+                        string secondPartVarReplaced = VarRegex.Replace(secondPart, delegate (Match match)
                         {
                             string varName = match.Value.Substring(5, match.Value.Length - 6).Trim(); // Remove "[var=" and "]"
                             try
@@ -318,6 +320,8 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
+        private static Regex AutocaseRegex = new Regex(@"\[autocase=[^\]]*\]");
+
         /// <summary>
         /// Replaces the [autocase=varName] tags with the value of the Lua variable varName, 
         /// capitalized if at the beginning of the string or after end-of-sentence punctuation
@@ -333,7 +337,6 @@ namespace PixelCrushers.DialogueSystem
             if (text.Contains(autocaseTagStart))
             {
                 // Match "[autocase=" and then anything up to "]":
-                Regex regex = new Regex(@"\[autocase=[^\]]*\]");
                 int endPosition = text.Length - 1;
                 int numReplacements = 0; // Sanity check to prevent infinite loops in case of bug.
                 while ((endPosition >= 0) && (numReplacements < maxReplacements))
@@ -346,7 +349,7 @@ namespace PixelCrushers.DialogueSystem
                         string firstPart = text.Substring(0, varTagPosition);
                         bool capitalize = ShouldCapitalizeNextChar(firstPart);
                         string secondPart = text.Substring(varTagPosition);
-                        string secondPartVarReplaced = regex.Replace(secondPart, delegate (Match match)
+                        string secondPartVarReplaced = AutocaseRegex.Replace(secondPart, delegate (Match match)
                         {
                             string varName = match.Value.Substring(10, match.Value.Length - 11).Trim(); // Remove "[autocase=" and "]"
                             try
@@ -403,6 +406,8 @@ namespace PixelCrushers.DialogueSystem
             else return char.ToLower(s[0]) + s.Substring(1);
         }
 
+        private static Regex VarInputRegex = new Regex(@"\[var=\?.*\]");
+
         /// <summary>
         /// Extracts a [var=?varName] tag if it exists, and returns the varName.
         /// </summary>
@@ -416,8 +421,6 @@ namespace PixelCrushers.DialogueSystem
             string varName = string.Empty;
             if (text.Contains(varTagStart))
             {
-
-                Regex regex = new Regex(@"\[var=\?.*\]");
                 int endPosition = text.Length - 1;
                 int numReplacements = 0; // Sanity check to prevent infinite loops in case of bug.
                 while ((endPosition >= 0) && (numReplacements < maxReplacements))
@@ -429,7 +432,7 @@ namespace PixelCrushers.DialogueSystem
                     {
                         string firstPart = text.Substring(0, varTagPosition);
                         string secondPart = text.Substring(varTagPosition);
-                        string secondPartVarReplaced = regex.Replace(secondPart, delegate (Match match)
+                        string secondPartVarReplaced = VarInputRegex.Replace(secondPart, delegate (Match match)
                         {
                             varName = match.Value.Substring(6, match.Value.Length - 7).Trim(); // Remove "[var=?" and "]"
                             return string.Empty;
@@ -460,6 +463,9 @@ namespace PixelCrushers.DialogueSystem
             return found;
         }
 
+        private static Regex PositionSpaceRegex = new Regex(@"\[position\s+[0-9]+\]");
+        private static Regex PositionRegex = new Regex(@"\[position=[0-9]+\]");
+
         /// <summary>
         /// Extracts a [position #] or [position=#] tag from a string. Removes all position tags and returns the value of the last one.
         /// </summary>
@@ -474,8 +480,7 @@ namespace PixelCrushers.DialogueSystem
             int position = FormattedText.NoAssignedPosition;
             if (text.Contains("[position "))
             {
-                Regex regex = new Regex(@"\[position\s+[0-9]+\]");
-                text = regex.Replace(text, delegate (Match match)
+                text = PositionSpaceRegex.Replace(text, delegate (Match match)
                 {
                     string positionString = match.Value.Substring(10, match.Value.Length - 11); // Remove "[position " and "]"
                     int.TryParse(positionString, out position);
@@ -484,8 +489,7 @@ namespace PixelCrushers.DialogueSystem
             }
             if (text.Contains("[position="))
             {
-                Regex regex = new Regex(@"\[position=[0-9]+\]");
-                text = regex.Replace(text, delegate (Match match)
+                text = PositionRegex.Replace(text, delegate (Match match)
                 {
                     string positionString = match.Value.Substring(10, match.Value.Length - 11); // Remove "[position=" and "]"
                     int.TryParse(positionString, out position);
@@ -494,6 +498,8 @@ namespace PixelCrushers.DialogueSystem
             }
             return position;
         }
+
+        private static Regex PanelRegex = new Regex(@"\[panel=[0-9]+\]");
 
         /// <summary>
         /// Extracts a [panel=#] tag from a string. Removes all panel tags and returns the value of the last one.
@@ -509,8 +515,7 @@ namespace PixelCrushers.DialogueSystem
             int panelNumber = -1;
             if (text.Contains("[panel="))
             {
-                Regex regex = new Regex(@"\[panel=[0-9]+\]");
-                text = regex.Replace(text, delegate (Match match)
+                text = PanelRegex.Replace(text, delegate (Match match)
                 {
                     string s = match.Value.Substring(7, match.Value.Length - 8); // Remove "[panel=" and "]"
                     int.TryParse(s, out panelNumber);

@@ -6,6 +6,10 @@ using System.Collections;
 namespace PixelCrushers.DialogueSystem
 {
 
+    /// <summary>
+    /// This is a deprecated class that has been replaced by UIAnimatorMonitor in StandardDialogueUI 
+    /// and elsewhere. It's only used by the older UnityUIDialogueUI.
+    /// </summary>
     public class UIShowHideController
     {
 
@@ -140,7 +144,11 @@ namespace PixelCrushers.DialogueSystem
                     if (debug) Debug.Log("<color=green>" + panel.name + ".Animator.SetTrigger(" + triggerName + ") time=" + Time.time + "</color>");
                     CheckAnimatorModeAndTimescale(triggerName);
                     float timeout = Time.realtimeSinceStartup + maxWaitDuration;
+#if UNITY_2019_1_OR_NEWER
+                    var goalHashID = Animator.StringToHash($"{m_animator.GetLayerName(0)}.{triggerName}");
+#else
                     var goalHashID = Animator.StringToHash(triggerName);
+#endif
                     var oldHashId = UITools.GetAnimatorNameHash(m_animator.GetCurrentAnimatorStateInfo(0));
                     var currentHashID = oldHashId;
                     m_animator.SetTrigger(triggerName);
@@ -154,7 +162,7 @@ namespace PixelCrushers.DialogueSystem
                             currentHashID = isAnimatorValid ? UITools.GetAnimatorNameHash(m_animator.GetCurrentAnimatorStateInfo(0)) : currentHashID;
                         }
                         // If we're in the goal state and we haven't timed out, wait for the duration of the goal state:
-                        if (currentHashID == goalHashID && Time.realtimeSinceStartup < timeout)
+                        if (m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1 && currentHashID == goalHashID && Time.realtimeSinceStartup < timeout)
                         {
                             var clipLength = m_animator.GetCurrentAnimatorStateInfo(0).length;
                             if (Mathf.Approximately(0, Time.timeScale))

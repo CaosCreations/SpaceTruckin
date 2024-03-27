@@ -9,6 +9,62 @@ namespace PixelCrushers
     public static class MoreEditorGuiUtility
     {
 
+        //        // Evaluation version headaches. Get it at runtime instead:
+        //#if UNITY_2022_3_OR_NEWER && !UNITY_2022_3_0
+        //        public const string ToolbarSearchTextFieldName = "ToolbarSearchTextField";
+        //        public const string ToolbarSearchCancelButtonName = "ToolbarSearchCancelButton";
+        //        public const string ToolbarSearchCancelButtonEmpty = "ToolbarSearchCancelButtonEmpty";
+        //#else
+        //        public const string ToolbarSearchTextFieldName = "ToolbarSeachTextField";
+        //        public const string ToolbarSearchCancelButtonName = "ToolbarSeachCancelButton";
+        //        public const string ToolbarSearchCancelButtonEmpty = "ToolbarSeachCancelButtonEmpty";
+        //#endif
+
+        private static GUIStyle toolbarSearchTextFieldStyle = null;
+        private static GUIStyle toolbarSearchCancelButtonStyle = null;
+        private static GUIStyle toolbarSearchCancelButtonEmptyStyle = null;
+        public static string ToolbarSearchTextFieldName
+        {
+            get
+            {
+                if (toolbarSearchTextFieldStyle == null)
+                {
+                    toolbarSearchTextFieldStyle = FindCustomStyle("ToolbarSearchTextField", "ToolbarSeachTextField");
+                }
+                return toolbarSearchTextFieldStyle.name;
+            }
+        }
+        public static string ToolbarSearchCancelButtonName
+        {
+            get
+            {
+                if (toolbarSearchCancelButtonStyle == null)
+                {
+                    toolbarSearchCancelButtonStyle = FindCustomStyle("ToolbarSearchCancelButton", "ToolbarSeachCancelButton");
+                }
+                return toolbarSearchCancelButtonStyle.name;
+            }
+        }
+        public static string ToolbarSearchCancelButtonEmpty
+        {
+            get
+            {
+                if (toolbarSearchCancelButtonEmptyStyle == null)
+                {
+                    toolbarSearchCancelButtonEmptyStyle = FindCustomStyle("ToolbarSearchCancelButtonEmpty", "ToolbarSeachCancelButtonEmpty");
+                }
+                return toolbarSearchCancelButtonEmptyStyle.name;
+            }
+        }
+        private static GUIStyle FindCustomStyle(string name1, string name2)
+        {
+            foreach (var style in GUI.skin.customStyles)
+            {
+                if ((style.name == name1) || (style.name == name2)) return style;
+            }
+            return GUI.skin.label;
+        }
+
         public const float GearWidth = 15;
         public const float GearHeight = 14;
 

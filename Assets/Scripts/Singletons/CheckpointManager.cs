@@ -1,9 +1,17 @@
+using System;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CheckpointManager : MonoBehaviour
 {
     public static CheckpointManager Instance { get; private set; }
+
+    public static Checkpoint[] Checkpoints { get; private set; } = new[]
+    {
+        new Checkpoint("Go to Day 2", Day2),
+        new Checkpoint("Pirates Convo 1", PiratesConvo1)
+    };
 
     private void Awake()
     {
@@ -14,6 +22,13 @@ public class CheckpointManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    public static void PiratesConvo1()
+    {
+        var convoIds = new int[] { 166, 167 };
+        DialogueDatabaseManager.Instance.SetConversationsSeen(convoIds);
+        PlayerManager.PlayerMovement.SetPosition(PlayerConstants.PlayerSpaceportPosition, AnimationConstants.SpaceportStateName);
     }
 
     public static void Day2()
@@ -48,5 +63,17 @@ public class CheckpointManager : MonoBehaviour
 
         // TODO: If we want to support going back to day 2 from a later day, we'll need to reset the dialogue db etc.
         Bed.Sleep();
+    }
+}
+
+public class Checkpoint
+{
+    public string Name { get; private set; }
+    public UnityAction Action { get; private set; }
+
+    public Checkpoint(string name, UnityAction action)
+    {
+        Name = name;
+        Action = action;
     }
 }

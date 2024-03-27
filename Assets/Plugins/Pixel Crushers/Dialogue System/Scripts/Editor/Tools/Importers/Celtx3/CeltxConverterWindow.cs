@@ -6,7 +6,6 @@ using UnityEditor;
 using System.IO;
 using System.Xml.Serialization;
 using PixelCrushers.DialogueSystem.Celtx;
-using System.Text.RegularExpressions;
 using System.Reflection;
 
 namespace PixelCrushers.DialogueSystem
@@ -20,10 +19,10 @@ namespace PixelCrushers.DialogueSystem
     public class CeltxConverterWindow : EditorWindow
     {
 
-        [MenuItem("Tools/Pixel Crushers/Dialogue System/Import/Celtx Gem 3...", false, 1)]
+        [MenuItem("Tools/Pixel Crushers/Dialogue System/Import/Gem 3...", false, 1)]
         public static void Init()
         {
-            CeltxConverterWindow window = EditorWindow.GetWindow(typeof(CeltxConverterWindow), false, "Celtx") as CeltxConverterWindow;
+            CeltxConverterWindow window = EditorWindow.GetWindow(typeof(CeltxConverterWindow), false, "Gem Import") as CeltxConverterWindow;
             window.minSize = new Vector2(320, 166);
         }
 
@@ -42,12 +41,12 @@ namespace PixelCrushers.DialogueSystem
         {
             public string projectFilename = string.Empty;
             public string portraitFolder = string.Empty;
-            //public bool putEndSequenceOnLastSplit = true;
             public bool resetNodePositions = false;
             public string outputFolder = "Assets";
             public bool overwrite = false;
             public bool useCeltxFilename = true;
             public bool importGameplayScriptText;
+            public bool importGameplayAsEmptyNodes;
             public bool importBreakdownCatalogContent;
             public bool sortConversationTitles = false;
             public bool checkSequenceSyntax = true;
@@ -144,14 +143,14 @@ namespace PixelCrushers.DialogueSystem
             prefs.projectFilename = EditorGUILayout.TextField("Filename", prefs.projectFilename);
             if (GUILayout.Button("...", EditorStyles.miniButtonRight, GUILayout.Width(22)))
             {
-                prefs.projectFilename = EditorUtility.OpenFilePanel("Select Celtx Project", EditorWindowTools.GetDirectoryName(prefs.projectFilename), "json");
+                prefs.projectFilename = EditorUtility.OpenFilePanel("Select Gem Project", EditorWindowTools.GetDirectoryName(prefs.projectFilename), "json");
                 GUIUtility.keyboardControl = 0;
             }
             EditorGUILayout.EndHorizontal();
 
             // Portrait Folder:
             EditorGUILayout.BeginHorizontal();
-            prefs.portraitFolder = EditorGUILayout.TextField(new GUIContent("Portrait Folder", "Optional folder containing actor portrait textures. The converter will search this folder for textures matching any actor pictures defined in the Celtx project."), prefs.portraitFolder);
+            prefs.portraitFolder = EditorGUILayout.TextField(new GUIContent("Portrait Folder", "Optional folder containing actor portrait textures. The converter will search this folder for textures matching any actor pictures defined in the Gem project."), prefs.portraitFolder);
             if (GUILayout.Button("...", EditorStyles.miniButtonRight, GUILayout.Width(22)))
             {
                 prefs.portraitFolder = EditorUtility.OpenFolderPanel("Location of Portrait Textures", prefs.portraitFolder, "");
@@ -172,6 +171,9 @@ namespace PixelCrushers.DialogueSystem
             // Import Breakdown content:
             prefs.importBreakdownCatalogContent = EditorGUILayout.Toggle(new GUIContent("Import Breakdown Items", "Import breakdown and mult-tag breakdown items as custom fields."), prefs.importBreakdownCatalogContent);
 
+            // Import Gameplay content:
+            prefs.importGameplayAsEmptyNodes = EditorGUILayout.Toggle(new GUIContent("Import Gameplay As Empty Nodes", "When a Gameplay section doesn't start with [SEQ], [COND], or [SCRIPT], import it as a separate empty node instead of ignoring it."), prefs.importGameplayAsEmptyNodes);
+
             // Save To:
             if (string.IsNullOrEmpty(prefs.outputFolder))
             {
@@ -188,7 +190,7 @@ namespace PixelCrushers.DialogueSystem
             EditorGUILayout.EndHorizontal();
 
             // Project/Database Name:
-            prefs.useCeltxFilename = EditorGUILayout.Toggle(new GUIContent("Use Celtx Filename", "Tick to use Celtx export filename as Dialogue Database name, untick to specify a name."), prefs.useCeltxFilename);
+            prefs.useCeltxFilename = EditorGUILayout.Toggle(new GUIContent("Use Gem Filename", "Tick to use Gem export filename as Dialogue Database name, untick to specify a name."), prefs.useCeltxFilename);
             if (!prefs.useCeltxFilename)
             {
                 prefs.databaseName = EditorGUILayout.TextField(new GUIContent("Dialogue Database Name", "Filename to create in Save To folder."), prefs.databaseName);
@@ -268,7 +270,7 @@ namespace PixelCrushers.DialogueSystem
             }
             catch (System.Exception e)
             {
-                Debug.LogError(string.Format("Celtx Data could not be deserialized : {0}", e.Message));
+                Debug.LogError(string.Format("Gem Data could not be deserialized : {0}", e.Message));
             }
             return celtxGem3;
         }
@@ -288,17 +290,22 @@ namespace PixelCrushers.DialogueSystem
                     // Process Raw Data
                     if (celtxDataObject == null)
                     {
-                        if (DialogueDebug.logWarnings) Debug.LogWarning("Dialogue System: unable to import celtx data.");
+                        if (DialogueDebug.logWarnings) Debug.LogWarning("Dialogue System: Unable to import Gem data.");
                     }
                     else
                     {
                         CeltxGem3ToDialogueDatabase celtxProcessor = new CeltxGem3ToDialogueDatabase();
-                        celtxProcessor.ProcessCeltxGem3DataObject(celtxDataObject, database, prefs.importGameplayScriptText, prefs.importBreakdownCatalogContent, prefs.checkSequenceSyntax);
-                        database.actors.ForEach(a => FindPortraitTexture(a));
+                        celtxProcessor.ProcessCeltxGem3DataObject(celtxDataObject, database, prefs.importGameplayAsEmptyNodes, prefs.importGameplayScriptText, prefs.importBreakdownCatalogContent, prefs.checkSequenceSyntax);
+                        database.actors.ForEach(a => FindPortraitTextures(a));
                         if (prefs.sortConversationTitles) database.conversations.Sort((x, y) => x.Title.CompareTo(y.Title));
                         SaveDatabase(database, databaseAssetName);
                         Debug.Log(string.Format("{0}: Created database '{1}' containing {2} actors, {3} conversations, {4} items (quests), {5} variables, and {6} locations.",
                             DialogueDebug.Prefix, databaseAssetName, database.actors.Count, database.conversations.Count, database.items.Count, database.variables.Count, database.locations.Count), database);
+                        if (DialogueEditor.DialogueEditorWindow.instance != null)
+                        {
+                            DialogueEditor.DialogueEditorWindow.instance.Reset();
+                            DialogueEditor.DialogueEditorWindow.instance.Repaint();
+                        }
                     }
                 }
             }
@@ -337,21 +344,43 @@ namespace PixelCrushers.DialogueSystem
             AssetDatabase.SaveAssets();
         }
 
-        private void FindPortraitTexture(Actor actor)
+        private void FindPortraitTextures(Actor actor)
+        {
+            if (actor == null) return;
+            var pictures = actor.LookupValue(CeltxFields.Pictures);
+            if (string.IsNullOrEmpty(pictures) || pictures.Length <= 2) 
+            {
+                FindPortraitTexture(actor, actor.Name, false);
+            }
+            var textureNames = pictures.Substring(1, pictures.Length - 2).Split(';');
+            foreach (var textureName in textureNames)
+            {
+                FindPortraitTexture(actor, textureName, true);
+            }
+        }
+
+        private void FindPortraitTexture(Actor actor, string textureName, bool reportIfNotFound)
         {
             try { 
                 if (actor == null) return;
-                string textureName = actor.textureName;
                 if (!string.IsNullOrEmpty(textureName))
                 {
-                    string filename = Path.GetFileName(textureName).Replace('\\', '/');
+                    string filename = Path.GetFileNameWithoutExtension(textureName).Replace('\\', '/');
                     string assetPath = string.Format("{0}/{1}", prefs.portraitFolder, filename);
-                    Texture2D texture = AssetDatabase.LoadAssetAtPath(assetPath, typeof(Texture2D)) as Texture2D;
-                    if (texture == null)
+                    Sprite sprite = EditorTools.TryLoadSprite(assetPath);
+                    if (sprite == null && reportIfNotFound)
                     {
-                        Debug.LogWarning(string.Format("{0}: Can't find portrait texture {1} for {2}.", DialogueDebug.Prefix, assetPath, actor.Name));
+                        Debug.LogWarning(string.Format("{0}: Can't find portrait sprite {1} for {2}.", DialogueDebug.Prefix, assetPath, actor.Name));
                     }
-                    actor.portrait = texture;
+                    if (actor.spritePortrait == null)
+                    {
+                        actor.spritePortrait = sprite;
+                    }
+                    else
+                    {
+                        if (actor.spritePortraits == null) actor.spritePortraits = new System.Collections.Generic.List<Sprite>();
+                        actor.spritePortraits.Add(sprite);
+                    }
                 }
             }
             catch (System.Exception e)

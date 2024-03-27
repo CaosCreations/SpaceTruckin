@@ -683,7 +683,10 @@ namespace PixelCrushers.DialogueSystem
         /// </param>
         public static void SetQuestDescription(string questName, QuestState state, string description)
         {
-            DialogueLua.SetQuestField(questName, GetDefaultDescriptionFieldForState(state), description);
+            if (DialogueLua.DoesTableElementExist("Quest", questName))
+            {
+                DialogueLua.SetQuestField(questName, GetDefaultDescriptionFieldForState(state), description);
+            }
         }
 
         /// <summary>
@@ -726,13 +729,16 @@ namespace PixelCrushers.DialogueSystem
         /// <param name="description">The quest entry description.</param>
         public static void AddQuestEntry(string questName, string description)
         {
-            int entryCount = GetQuestEntryCount(questName);
-            entryCount++;
-            DialogueLua.SetQuestField(questName, "Entry_Count", entryCount);
-            string entryFieldName = GetEntryFieldName(entryCount);
-            DialogueLua.SetQuestField(questName, entryFieldName, DialogueLua.DoubleQuotesToSingle(description));
-            string entryStateFieldName = GetEntryStateFieldName(entryCount);
-            DialogueLua.SetQuestField(questName, entryStateFieldName, "unassigned");
+            if (DialogueLua.DoesTableElementExist("Quest", questName))
+            {
+                int entryCount = GetQuestEntryCount(questName);
+                entryCount++;
+                DialogueLua.SetQuestField(questName, "Entry_Count", entryCount);
+                string entryFieldName = GetEntryFieldName(entryCount);
+                DialogueLua.SetQuestField(questName, entryFieldName, DialogueLua.DoubleQuotesToSingle(description));
+                string entryStateFieldName = GetEntryStateFieldName(entryCount);
+                DialogueLua.SetQuestField(questName, entryStateFieldName, "unassigned");
+            }
         }
 
         /// <summary>
@@ -743,7 +749,16 @@ namespace PixelCrushers.DialogueSystem
         /// <param name="entryNumber">Entry number.</param>
         public static string GetQuestEntry(string questName, int entryNumber)
         {
+            var state = GetQuestEntryState(questName, entryNumber);
             string entryFieldName = GetEntryFieldName(entryNumber);
+            if (state == QuestState.Success && DialogueLua.DoesTableElementExist("Quest", entryFieldName + " Success"))
+            {
+                entryFieldName += " Success";
+            }
+            else if (state == QuestState.Failure && DialogueLua.DoesTableElementExist("Quest", entryFieldName + " Failure"))
+            {
+                entryFieldName += " Failure";
+            }
             return DialogueLua.GetLocalizedQuestField(questName, entryFieldName).asString;
         }
 
@@ -872,8 +887,11 @@ namespace PixelCrushers.DialogueSystem
         /// <param name="value">Trackable or not.</param>
         public static void SetQuestTrackingAvailable(string questName, bool value)
         {
-            DialogueLua.SetQuestField(questName, "Trackable", value);
-            SendUpdateTracker();
+            if (DialogueLua.DoesTableElementExist("Quest", questName))
+            {
+                DialogueLua.SetQuestField(questName, "Trackable", value);
+                SendUpdateTracker();
+            }
         }
 
         /// <summary>
@@ -897,32 +915,35 @@ namespace PixelCrushers.DialogueSystem
         /// <param name="value">If set to <c>true</c>, tracking is enabled.</param>
         public static void SetQuestTracking(string questName, bool value)
         {
-            if (value == true)
+            if (DialogueLua.DoesTableElementExist("Quest", questName))
             {
-                // If only one quest can be tracked at time, untrack all others:
-                if (trackOneQuestAtATime)
+                if (value == true)
                 {
-                    var quests = GetAllQuests();
-                    foreach (var otherQuestName in quests)
+                    // If only one quest can be tracked at time, untrack all others:
+                    if (trackOneQuestAtATime)
                     {
-                        if (string.Equals(otherQuestName, questName)) continue;
-                        if (IsQuestTrackingEnabled(otherQuestName))
+                        var quests = GetAllQuests();
+                        foreach (var otherQuestName in quests)
                         {
-                            DialogueLua.SetQuestField(otherQuestName, "Track", false);
-                            DialogueManager.instance.BroadcastMessage(DialogueSystemMessages.OnQuestTrackingDisabled, otherQuestName, SendMessageOptions.DontRequireReceiver);
+                            if (string.Equals(otherQuestName, questName)) continue;
+                            if (IsQuestTrackingEnabled(otherQuestName))
+                            {
+                                DialogueLua.SetQuestField(otherQuestName, "Track", false);
+                                DialogueManager.instance.BroadcastMessage(DialogueSystemMessages.OnQuestTrackingDisabled, otherQuestName, SendMessageOptions.DontRequireReceiver);
+                            }
                         }
                     }
+                    // Make sure tracking is set to be available for this quest:
+                    if (!IsQuestTrackingAvailable(questName))
+                    {
+                        SetQuestTrackingAvailable(questName, true);
+                    }
                 }
-                // Make sure tracking is set to be available for this quest:
-                if (!IsQuestTrackingAvailable(questName))
-                {
-                    SetQuestTrackingAvailable(questName, true);
-                }
+                // Track this quest:
+                DialogueLua.SetQuestField(questName, "Track", value);
+                SendUpdateTracker();
+                DialogueManager.instance.BroadcastMessage(value ? DialogueSystemMessages.OnQuestTrackingEnabled : DialogueSystemMessages.OnQuestTrackingDisabled, questName, SendMessageOptions.DontRequireReceiver);
             }
-            // Track this quest:
-            DialogueLua.SetQuestField(questName, "Track", value);
-            SendUpdateTracker();
-            DialogueManager.instance.BroadcastMessage(value ? DialogueSystemMessages.OnQuestTrackingEnabled : DialogueSystemMessages.OnQuestTrackingDisabled, questName, SendMessageOptions.DontRequireReceiver);
         }
 
         /// <summary>
@@ -936,6 +957,49 @@ namespace PixelCrushers.DialogueSystem
         }
 
         /// <summary>
+        /// Returns true if quest has a field named "Visible" that is currently true or doesn't have the field.
+        /// </summary>
+        public static bool IsQuestVisible(string questName)
+        {
+            var result = Lua.Run($"return Quest[{DialogueLua.StringToTableIndex(questName)}].Visible").asString;
+            if (string.IsNullOrEmpty(result) || string.Equals(result, "nil")) return true;
+            return string.Compare(result, "false", true) == 0;
+        }
+
+        /// <summary>
+        /// Sets a quest's Visible field true or false.
+        /// </summary>
+        public static void SetQuestVisibility(string questName)
+        {
+            if (DialogueLua.DoesTableElementExist("Quest", questName))
+            {
+                DialogueLua.SetQuestField(questName, "Visible", true);
+            }
+        }
+
+        /// <summary>
+        /// Returns true if quest has a field named "Viewed" that is currently true.
+        /// Used if QuestLogWindow.newQuestText is not blank.
+        /// </summary>
+        public static bool WasQuestViewed(string questName)
+        {
+            return DialogueLua.GetQuestField(questName, "Viewed").asBool;
+        }
+
+        /// <summary>
+        /// Marks a quest as viewed (i.e., in the quest log window).
+        /// Generally only set/used when QuestLogWindow.newQuestText is not blank.
+        /// </summary>
+        /// <param name="questName"></param>
+        public static void MarkQuestViewed(string questName)
+        {
+            if (DialogueLua.DoesTableElementExist("Quest", questName))
+            {
+                DialogueLua.SetQuestField(questName, "Viewed", true);
+            }
+        }
+
+        /// <summary>
         /// Gets the group that a quest belongs to.
         /// </summary>
         /// <returns>The quest group name, or empty string if no group.</returns>
@@ -943,6 +1007,13 @@ namespace PixelCrushers.DialogueSystem
         public static string GetQuestGroup(string questName)
         {
             return DialogueLua.GetLocalizedQuestField(questName, "Group").asString;
+        }
+
+        public static string GetQuestGroupDisplayName(string questName)
+        {
+            var result = DialogueLua.GetLocalizedQuestField(questName, "Group Display Name").asString;
+            if (string.IsNullOrEmpty(result) || result == "nil") result = GetQuestGroup(questName);
+            return result;
         }
 
         /// <summary>
@@ -1359,7 +1430,7 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public static void UpdateQuestIndicators(string questName)
         {
-            var dispatcher = GameObject.FindObjectOfType<QuestStateDispatcher>();
+            var dispatcher = GameObjectUtility.FindFirstObjectByType<QuestStateDispatcher>();
             if (dispatcher != null) dispatcher.OnQuestStateChange(questName);
         }
 

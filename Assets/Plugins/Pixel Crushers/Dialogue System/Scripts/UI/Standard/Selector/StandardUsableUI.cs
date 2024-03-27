@@ -51,6 +51,7 @@ namespace PixelCrushers.DialogueSystem
         public Canvas canvas;
 
         protected Animator animator = null;
+        protected Usable usable = null;
 
         public virtual void Awake()
         {
@@ -61,7 +62,7 @@ namespace PixelCrushers.DialogueSystem
 
         public virtual void Start()
         {
-            Usable usable = Tools.GetComponentAnywhere<Usable>(gameObject);
+            usable = Tools.GetComponentAnywhere<Usable>(gameObject);
             if ((usable != null) && (nameText != null)) nameText.text = usable.GetName();
             if (canvas != null) canvas.enabled = false;
         }
@@ -69,6 +70,7 @@ namespace PixelCrushers.DialogueSystem
         public override void Show(string useMessage)
         {
             if (canvas != null) canvas.enabled = true;
+            if (usable != null && nameText != null) nameText.text = usable.GetName();
             if (useMessageText != null) useMessageText.text = DialogueManager.GetLocalizedText(useMessage);
             if (CanTriggerAnimations() && !string.IsNullOrEmpty(animationTransitions.showTrigger))
             {

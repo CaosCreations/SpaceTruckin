@@ -23,6 +23,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
         private AudioClip _currentClip = null;
         private AudioClip _originalClip = null;
 		private bool _restoreOriginalClip = false; // Don't restore original; could stop next entry's AudioWait that runs same frame.
+        protected bool isLoadingAudio = false;
 
         public IEnumerator Start()
         {
@@ -92,9 +93,11 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
                 }
                 else
                 {
+                    isLoadingAudio = true;
                     DialogueManager.LoadAsset(audioClipName, typeof(AudioClip),
                         (asset) =>
                         {
+                            isLoadingAudio = false;
                             var audioClip = asset as AudioClip;
                             if (audioClip == null)
                             {
@@ -114,7 +117,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
                                     _audioSource.clip = audioClip;
                                     _audioSource.Play();
                                 }
-                                _stopTime = DialogueTime.time + audioClip.length;
+                                _stopTime = DialogueTime.time + SequencerCommandAudioWait.GetAudioClipLength(_audioSource, audioClip);
                             }
                         });
                 }
@@ -170,15 +173,19 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
             if (DialogueTime.time >= _stopTime)
             {
                 DialogueManager.UnloadAsset(_currentClip);
-                if (this.hasNextClip())
+                _currentClip = null;
+                if (!isLoadingAudio)
                 {
-                    TryAudioClip(GetParameter(_nextClipIndex));
-                    _nextClipIndex++;
-                }
-                else
-                {
-                    _currentClip = null;
-                    Stop();
+                    if (this.hasNextClip())
+                    {
+                        TryAudioClip(GetParameter(_nextClipIndex));
+                        _nextClipIndex++;
+                    }
+                    else
+                    {
+                        _currentClip = null;
+                        Stop();
+                    }
                 }
             }
         }

@@ -10,7 +10,7 @@ namespace PixelCrushers.DialogueSystem
     public class Celtx3ImportWindowDisabled
     {
 
-        [MenuItem("Tools/Pixel Crushers/Dialogue System/Import/Celtx Gem 3...", false, 1)]
+        [MenuItem("Tools/Pixel Crushers/Dialogue System/Import/Gem 3...", false, 1)]
         public static void AskEnableCeltxSupport()
         {
             if (EditorUtility.DisplayDialog("Enable Celtx Gem 3 Support", "Celtx Gem 3 import support isn't enabled yet. Would you like to enable it? After clicking Enable, re-open the Celtx import window.\n\nNOTE: Celtx import requires Netwonsoft Json.NET. Please follow the Json.NET setup steps in the Celtx Importer Guide before enabling Celtx import.", "Enable", "Cancel"))

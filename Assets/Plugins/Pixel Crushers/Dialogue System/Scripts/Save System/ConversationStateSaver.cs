@@ -26,6 +26,8 @@ namespace PixelCrushers.DialogueSystem
             public List<SubtitlePanelNumber> actorGOPanels = null;
             public List<int> actorIDs = null;
             public List<SubtitlePanelNumber> actorIDPanels = null;
+            public List<string> panelOpenOnActorName = null;
+            public string accumulatedText;
         }
 
         /// <summary>
@@ -67,7 +69,21 @@ namespace PixelCrushers.DialogueSystem
             var ui = DialogueManager.dialogueUI as StandardDialogueUI;
             if (ui != null)
             {
-                ui.conversationUIElements.standardSubtitleControls.RecordActorPanelCache(out data.actorGOs, out data.actorGOPanels, out data.actorIDs, out data.actorIDPanels);
+                ui.conversationUIElements.standardSubtitleControls.RecordActorPanelCache(out data.actorGOs, out data.actorGOPanels, out data.actorIDs, out data.actorIDPanels, out data.panelOpenOnActorName);
+                data.accumulatedText = string.Empty;
+                for (int i = 0; i < ui.conversationUIElements.subtitlePanels.Length; i++)
+                {
+                    var subtitlePanel = ui.conversationUIElements.subtitlePanels[i];
+                    if (!subtitlePanel.isOpen && 0 <= i && i < data.panelOpenOnActorName.Count)
+                    {
+                        data.panelOpenOnActorName[i] = null;
+                    }
+                    if (subtitlePanel.isOpen && subtitlePanel.accumulateText)
+                    {
+                        data.accumulatedText = subtitlePanel.accumulatedText;
+                        break;
+                    }
+                }
             }
             return SaveSystem.Serialize(data);
         }
@@ -108,6 +124,37 @@ namespace PixelCrushers.DialogueSystem
                 ui.conversationUIElements.standardSubtitleControls.QueueSavedActorPanelCache(data.actorGOs, data.actorGOPanels, data.actorIDs, data.actorIDPanels);
             }
             DialogueManager.StartConversation(conversation.Title, actorTransform, conversantTransform, entryID);
+            if (ui != null)
+            {
+                for (int i = 0; i < ui.conversationUIElements.subtitlePanels.Length; i++)
+                {
+                    var subtitlePanel = ui.conversationUIElements.subtitlePanels[i];
+                    if (0 <= i && i < data.panelOpenOnActorName.Count && !string.IsNullOrEmpty(data.panelOpenOnActorName[i]))
+                    {
+                        var panelActorTransform = CharacterInfo.GetRegisteredActorTransform(data.panelOpenOnActorName[i]);
+                        var dialogueActor = (panelActorTransform != null) ? panelActorTransform.GetComponent<DialogueActor>() : null;
+                        var panelActor = DialogueManager.masterDatabase.GetActor(data.panelOpenOnActorName[i]);
+                        Sprite portraitSprite = panelActor.GetPortraitSprite();
+                        string portraitName = data.panelOpenOnActorName[i];
+                        if (dialogueActor != null)
+                        {
+                            var dialogueActorSprite = dialogueActor.GetPortraitSprite();
+                            if (dialogueActorSprite != null) portraitSprite = dialogueActorSprite;
+                            portraitName = dialogueActor.GetActorName();
+                        }
+                        else if (panelActor != null)
+                        {
+                            portraitSprite = panelActor.GetPortraitSprite();
+                            portraitName = CharacterInfo.GetLocalizedDisplayNameInDatabase(portraitName);
+                        }
+                        subtitlePanel.OpenOnStartConversation(portraitSprite, portraitName, dialogueActor);
+                    }
+                    if (subtitlePanel.accumulateText)
+                    {
+                        subtitlePanel.accumulatedText = data.accumulatedText;
+                    }
+                }
+            }
         }
     }
 }

@@ -1095,7 +1095,7 @@ end
                     var dlgEntry = CreateDialogueEntry(conversation, title, desc);
                     SetDialogueEntryActors(dlgEntry, textKey);
                     SetDialogueEntryText(dlgEntry, conversation.Title, textKey);
-                    dlgEntry.Sequence = EntrySequence.ContinueDialogue;
+                    if (string.IsNullOrEmpty(dlgEntry.DialogueText)) dlgEntry.Sequence = EntrySequence.ContinueDialogue;
                     basicStmt.AddDialogueEntry(dlgEntry);
 
                     // If the runline stmt has runtime arguments, we need to create a node to calculate them

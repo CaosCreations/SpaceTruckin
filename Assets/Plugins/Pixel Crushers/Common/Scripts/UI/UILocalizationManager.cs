@@ -47,6 +47,7 @@ namespace PixelCrushers
         public LocalizedFonts localizedFonts { get { return m_localizedFonts; } set { m_localizedFonts = value; } }
 
         private static UILocalizationManager s_instance = null;
+        private static bool s_isQuitting = false;
 
         /// <summary>
         /// Current global instance of UILocalizationManager. If one doesn't exist,
@@ -56,12 +57,12 @@ namespace PixelCrushers
         {
             get
             {
-                if (s_instance == null)
+                if (s_instance == null && !s_isQuitting)
                 {
-                    s_instance = FindObjectOfType<UILocalizationManager>();
+                    s_instance = GameObjectUtility.FindFirstObjectByType<UILocalizationManager>();
                     if (s_instance == null && Application.isPlaying)
                     {
-                        var globalTextTable = FindObjectOfType<GlobalTextTable>();
+                        var globalTextTable = GameObjectUtility.FindFirstObjectByType<GlobalTextTable>();
                         s_instance = (globalTextTable != null) ? globalTextTable.gameObject.AddComponent<UILocalizationManager>()
                             : new GameObject("UILocalizationManager").AddComponent<UILocalizationManager>();
                     }
@@ -74,13 +75,21 @@ namespace PixelCrushers
             }
         }
 
+        public static event System.Action<string> languageChanged = null;
+
 #if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void InitStaticVariables()
         {
             s_instance = null;
+            s_isQuitting = false;
         }
 #endif
+
+        private void OnApplicationQuit()
+        {
+            s_isQuitting = true;
+        }
 
         /// <summary>
         /// Overrides the global text table.
@@ -150,6 +159,7 @@ namespace PixelCrushers
                 if (!string.IsNullOrEmpty(currentLanguagePlayerPrefsKey) && PlayerPrefs.HasKey(currentLanguagePlayerPrefsKey))
                 {
                     m_currentLanguage = PlayerPrefs.GetString(currentLanguagePlayerPrefsKey);
+                    languageChanged?.Invoke(currentLanguage);
                 }
             }
             TextTable.useDefaultLanguageForBlankTranslations = m_useDefaultLanguageForBlankTranslations;
@@ -157,7 +167,7 @@ namespace PixelCrushers
 
         private IEnumerator Start()
         {
-            yield return new WaitForEndOfFrame(); // Wait for Text components to start.
+            yield return CoroutineUtility.endOfFrame; // Wait for Text components to start.
             UpdateUIs(currentLanguage);
         }
 
@@ -226,6 +236,7 @@ namespace PixelCrushers
         public void UpdateUIs(string language)
         {
             m_currentLanguage = language;
+            languageChanged?.Invoke(language);
             if (saveLanguageInPlayerPrefs)
             {
                 if (!string.IsNullOrEmpty(currentLanguagePlayerPrefsKey))
@@ -236,7 +247,7 @@ namespace PixelCrushers
 
             var localizeUIs = m_alsoUpdateInactiveLocalizeUI
                 ? GameObjectUtility.FindObjectsOfTypeAlsoInactive<LocalizeUI>()
-                : FindObjectsOfType<LocalizeUI>();
+                : GameObjectUtility.FindObjectsByType<LocalizeUI>();
             for (int i = 0; i < localizeUIs.Length; i++)
             {
                 localizeUIs[i].UpdateText();

@@ -25,5 +25,10 @@ public enum UIVisibility
     /// <summary>
     /// Like UntilSuperceded, but will also hide and re-show if actor changes but wants to use same panel.
     /// </summary>
-    UntilSupercededOrActorChange
+    UntilSupercededOrActorChange,
+
+    /// <summary>
+    /// Like UntilSupercededOrActorChange, but will also hide when showing a response menu.
+    /// </summary>
+    UntilSupercededOrActorChangeOrMenu
 }

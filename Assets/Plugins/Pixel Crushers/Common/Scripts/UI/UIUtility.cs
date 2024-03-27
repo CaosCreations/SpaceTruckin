@@ -14,7 +14,7 @@ namespace PixelCrushers
         /// <param name="message">If needing to add an EventSystem, show this message.</param>
         public static void RequireEventSystem(string message = null)
         {
-            var eventSystem = GameObject.FindObjectOfType<UnityEngine.EventSystems.EventSystem>();
+            var eventSystem = GameObjectUtility.FindFirstObjectByType<UnityEngine.EventSystems.EventSystem>();
             if (eventSystem == null)
             {
                 if (message != null) Debug.LogWarning(message);
@@ -30,10 +30,24 @@ namespace PixelCrushers
             }
         }
 
+        /// <summary>
+        /// Sets the EventSystem to use for all IEventSystemUsers in a hierarchy.
+        /// </summary>
+        public static void SetEventSystemInChildren(Transform t, UnityEngine.EventSystems.EventSystem eventSystem)
+        {
+            if (t == null) return;
+            var eventSystemUser = t.GetComponent<IEventSystemUser>();
+            if (eventSystemUser != null) eventSystemUser.eventSystem = eventSystem;
+            foreach (Transform child in t)
+            {
+                SetEventSystemInChildren(child, eventSystem);
+            }
+        }
+
         public static int GetAnimatorNameHash(AnimatorStateInfo animatorStateInfo)
         {
 #if UNITY_4_3 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7
-			return animatorStateInfo.nameHash;
+            return animatorStateInfo.nameHash;
 #else
             return animatorStateInfo.fullPathHash;
 #endif
@@ -44,17 +58,26 @@ namespace PixelCrushers
         /// </summary>
         /// <param name="selectable"></param>
         /// <param name="allowStealFocus"></param>
-        public static void Select(UnityEngine.UI.Selectable selectable, bool allowStealFocus = true)
+        public static void Select(UnityEngine.UI.Selectable selectable, bool allowStealFocus = true,
+            UnityEngine.EventSystems.EventSystem eventSystem = null)
         {
-            var currentEventSystem = UnityEngine.EventSystems.EventSystem.current;
+            var currentEventSystem = (eventSystem != null) ? eventSystem : UnityEngine.EventSystems.EventSystem.current;
             if (currentEventSystem == null || selectable == null) return;
             if (currentEventSystem.alreadySelecting) return;
             if (currentEventSystem.currentSelectedGameObject == null || allowStealFocus)
             {
+                UnityEngine.EventSystems.EventSystem.current = currentEventSystem;
                 currentEventSystem.SetSelectedGameObject(selectable.gameObject);
                 selectable.Select();
                 selectable.OnSelect(null);
             }
+        }
+
+        public static Font GetDefaultFont()
+        {
+            var majorVersion = SafeConvert.ToInt(Application.unityVersion.Split('.')[0]);
+            var fontName = (majorVersion >= 2022) ? "LegacyRuntime.ttf" : "Arial.ttf";
+            return Resources.GetBuiltinResource<Font>(fontName);
         }
 
     }

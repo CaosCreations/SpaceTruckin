@@ -115,7 +115,7 @@ namespace PixelCrushers.DialogueSystem
 
         public override void Awake()
         {
-
+            base.Awake();
             if (removeDuplicateTypewriterEffects) RemoveIfDuplicate();
         }
 
@@ -237,7 +237,7 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public virtual IEnumerator Play(int fromIndex)
         {
-            if ((textComponent != null) && (charactersPerSecond > 0))
+            if ((textComponent != null) && (charactersPerSecond > 0) && !string.IsNullOrEmpty(textComponent.text))
             {
                 if (waitOneFrameBeforeStarting) yield return null;
                 textComponent.text = textComponent.text.Replace("<br>", "\n");
@@ -255,6 +255,7 @@ namespace PixelCrushers.DialogueSystem
                 textComponent.maxVisibleCharacters = fromIndex;
                 textComponent.ForceMeshUpdate();
                 TMPro.TMP_TextInfo textInfo = textComponent.textInfo;
+                if (textInfo == null) yield break;
                 var parsedText = textComponent.GetParsedText();
                 int totalVisibleCharacters = textInfo.characterCount; // Get # of Visible Character in text object
                 charactersTyped = fromIndex;
@@ -321,6 +322,7 @@ namespace PixelCrushers.DialogueSystem
                     }
                     textComponent.maxVisibleCharacters = charactersTyped;
                     HandleAutoScroll();
+                    textComponent.ForceMeshUpdate(); // Must force every time in case something is animating TMPro (e.g., scale).
                     //---Uncomment the line below to debug: 
                     //Debug.Log(textComponent.text.Substring(0, charactersTyped).Replace("<", "[").Replace(">", "]") + " (typed=" + charactersTyped + ")");
                     lastTime = DialogueTime.time;
@@ -419,13 +421,14 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public override void Stop()
         {
-            if (isPlaying)
+            var wasPlaying = isPlaying;
+            StopTypewriterCoroutine();
+            if (wasPlaying)
             {
                 onEnd.Invoke();
                 Sequencer.Message(SequencerMessages.Typed);
             }
-            StopTypewriterCoroutine();
-            if (textComponent != null) 
+            if (textComponent != null && textComponent.textInfo != null) 
             {
                 textComponent.maxVisibleCharacters = textComponent.textInfo.characterCount;
                 textComponent.ForceMeshUpdate();

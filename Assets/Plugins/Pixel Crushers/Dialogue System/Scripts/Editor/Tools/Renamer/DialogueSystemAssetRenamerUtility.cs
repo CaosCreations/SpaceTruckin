@@ -311,7 +311,7 @@ namespace PixelCrushers.DialogueSystem
         {
             var replace = !string.IsNullOrEmpty(replacementName);
             var found = false;
-            foreach (var incrementOnDestroy in GameObject.FindObjectsOfType<IncrementOnDestroy>())
+            foreach (var incrementOnDestroy in GameObjectUtility.FindObjectsByType<IncrementOnDestroy>())
             {
                 if (incrementOnDestroy.variable == originalName)
                 {
@@ -452,7 +452,7 @@ namespace PixelCrushers.DialogueSystem
         {
             var replace = !string.IsNullOrEmpty(replacementName);
             var found = false;
-            foreach (var dialogueActor in GameObject.FindObjectsOfType<DialogueActor>())
+            foreach (var dialogueActor in GameObjectUtility.FindObjectsByType<DialogueActor>())
             {
                 if (dialogueActor.actor == originalName)
                 {
@@ -616,11 +616,11 @@ namespace PixelCrushers.DialogueSystem
         {
             var replace = !string.IsNullOrEmpty(replacementName);
             var found = false;
-            foreach (var dialogueSystemTrigger in GameObject.FindObjectsOfType<DialogueSystemTrigger>())
+            foreach (var dialogueSystemTrigger in GameObjectUtility.FindObjectsByType<DialogueSystemTrigger>())
             {
                 found = FindQuestInDialogueSystemTrigger(dialogueSystemTrigger, originalName, replacementName, replace, false) || found;
             }
-            foreach (var questStateListener in GameObject.FindObjectsOfType<QuestStateListener>())
+            foreach (var questStateListener in GameObjectUtility.FindObjectsByType<QuestStateListener>())
             {
                 found = FindQuestInQuestStateListener(questStateListener, originalName, replacementName, replace, false) || found;
             }
@@ -785,11 +785,11 @@ namespace PixelCrushers.DialogueSystem
         {
             var replace = !string.IsNullOrEmpty(replacementTitle);
             var found = false;
-            foreach (var dialogueSystemTrigger in GameObject.FindObjectsOfType<DialogueSystemTrigger>())
+            foreach (var dialogueSystemTrigger in GameObjectUtility.FindObjectsByType<DialogueSystemTrigger>())
             {
                 found = FindConversationInDialogueSystemTrigger(dialogueSystemTrigger, originalTitle, replacementTitle, replace, false) || found;
             }
-            foreach (var conversationStarter in GameObject.FindObjectsOfType<ConversationStarter>())
+            foreach (var conversationStarter in GameObjectUtility.FindObjectsByType<ConversationStarter>())
             {
                 found = FindConversationInConversationStarter(conversationStarter, originalTitle, replacementTitle, replace, false) || found;
             }

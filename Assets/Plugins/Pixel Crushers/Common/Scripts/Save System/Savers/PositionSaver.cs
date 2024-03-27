@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
 using System.Collections.Generic;
+#if USE_NAVMESH
 using UnityEngine.AI;
+#endif
 
 namespace PixelCrushers
 {
@@ -58,7 +60,9 @@ namespace PixelCrushers
 
         protected PositionData m_data;
         protected MultiscenePositionData m_multisceneData;
+#if USE_NAVMESH
         protected NavMeshAgent m_navMeshAgent;
+#endif
 
         public Transform target
         {
@@ -79,7 +83,9 @@ namespace PixelCrushers
             base.Awake();
             if (m_multiscene) m_multisceneData = new MultiscenePositionData();
             else m_data = new PositionData();
+#if USE_NAVMESH
             m_navMeshAgent = target.GetComponent<NavMeshAgent>();
+#endif
         }
 
         public override string RecordData()
@@ -151,11 +157,13 @@ namespace PixelCrushers
 
         protected virtual void SetPosition(Vector3 position, Quaternion rotation)
         {
+#if USE_NAVMESH
             if (m_navMeshAgent != null)
             {
                 m_navMeshAgent.Warp(position);
             }
             else
+#endif
             {
                 target.transform.position = position;
             }

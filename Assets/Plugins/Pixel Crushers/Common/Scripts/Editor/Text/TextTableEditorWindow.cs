@@ -653,6 +653,7 @@ namespace PixelCrushers
                     menu.AddDisabledItem(new GUIContent("Export/CSV..."));
                     menu.AddDisabledItem(new GUIContent("Import/CSV..."));
                     menu.AddDisabledItem(new GUIContent("Import/Other Text Table..."));
+                    menu.AddDisabledItem(new GUIContent("Import/Fields From Localize UI..."));
                 }
                 else
                 {
@@ -662,6 +663,7 @@ namespace PixelCrushers
                     menu.AddItem(new GUIContent("Export/CSV..."), false, ExportCSVDialogs);
                     menu.AddItem(new GUIContent("Import/CSV..."), false, ImportCSVDialogs);
                     menu.AddItem(new GUIContent("Import/Other Text Table..."), false, ImportOtherTextTable);
+                    menu.AddItem(new GUIContent("Import/Fields From Localize UI..."), false, ImportFieldsFromLocalizeUI);
                 }
                 menu.AddItem(new GUIContent("Encoding/UTF8"), GetEncodingType() == EncodingType.UTF8, SetEncodingType, EncodingType.UTF8);
                 menu.AddItem(new GUIContent("Encoding/Unicode"), GetEncodingType() == EncodingType.Unicode, SetEncodingType, EncodingType.Unicode);
@@ -1003,6 +1005,40 @@ namespace PixelCrushers
         }
 
         #endregion
+
+        #region Import Fields From Localize UI
+
+        private void ImportFieldsFromLocalizeUI()
+        {
+            if (!EditorUtility.DisplayDialog("Import From Localize UI", 
+                "This will examine all Localize UI components in the current scene and create corresponding fields in the text table. Proceed?", 
+                "OK", "Cancel")) return;
+            Undo.RecordObject(m_textTable, "Import");
+            foreach (var localizeUI in GameObjectUtility.FindObjectsOfTypeAlsoInactive<LocalizeUI>())
+            {
+                localizeUI.ValidateFieldNames();
+                AddField(localizeUI.fieldName);
+                if (localizeUI.fieldNames != null) localizeUI.fieldNames.ForEach(fieldName => AddField(fieldName));
+#if TMP_PRESENT
+                if (localizeUI.tmpFieldNames != null) localizeUI.tmpFieldNames.ForEach(fieldName => AddField(fieldName));
+#endif
+            }
+            m_textTable.OnBeforeSerialize();
+            m_serializedObject.Update();
+            RebuildFieldCache();
+            EditorUtility.SetDirty(m_textTable);
+            m_needRefreshLists = true;
+            Repaint();
+        }
+
+        private void AddField(string fieldName)
+        {
+            if (string.IsNullOrEmpty(fieldName)) return;
+            if (m_textTable.HasField(fieldName)) return;
+            m_textTable.AddField(fieldName);
+        }
+
+#endregion
 
         #region Import Other Text Table
 

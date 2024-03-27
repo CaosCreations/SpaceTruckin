@@ -1,7 +1,10 @@
-﻿// Based on: http://wiki.unity3d.com/index.php/Click_To_Move_C
+// Recompile at 9/25/2023 11:33:17 AM
+// Based on: http://wiki.unity3d.com/index.php/Click_To_Move_C
 // By: Vinicius Rezendrix
 using UnityEngine;
+#if USE_NAVMESH
 using UnityEngine.AI;
+#endif
 
 namespace PixelCrushers.DialogueSystem.Demo
 {
@@ -10,7 +13,9 @@ namespace PixelCrushers.DialogueSystem.Demo
     /// Navigates to the place where the player mouse clicks.
     /// </summary>
     [AddComponentMenu("")] // Use wrapper.
+#if USE_NAVMESH
     [RequireComponent(typeof(NavMeshAgent))]
+#endif
     public class NavigateOnMouseClick : MonoBehaviour
     {
         public string animatorSpeedParameter = "Speed";
@@ -22,6 +27,7 @@ namespace PixelCrushers.DialogueSystem.Demo
 
         public bool ignoreClicksOnUI = true;
 
+#if USE_NAVMESH
         private Transform m_myTransform;
         private Animator m_animator;
         private NavMeshAgent m_navMeshAgent;
@@ -39,7 +45,7 @@ namespace PixelCrushers.DialogueSystem.Demo
 #if USE_NEW_INPUT
             Debug.LogWarning("Dialogue System: NavigateOnMouseClick doesn't support the new input system.");
             enabled = false;
-#endif
+#endif // USE_NEW_INPUT
         }
 
         void Update()
@@ -84,5 +90,6 @@ namespace PixelCrushers.DialogueSystem.Demo
                 }
             }
         }
+#endif // USE_NAVMESH
     }
 }

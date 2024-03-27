@@ -20,13 +20,16 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("Add an EventSystem if one isn't in the scene.")]
         public bool addEventSystemIfNeeded = true;
 
+        [Tooltip("Check in Awake if panels are properly assigned. Untick to suppress warnings.")]
+        public bool verifyPanelAssignments = true;
+
         #endregion
 
         #region Properties & Private Fields
 
         private Queue<QueuedUIAlert> m_alertQueue = new Queue<QueuedUIAlert>();
         private StandardUIRoot m_uiRoot = new StandardUIRoot();
-        private WaitForEndOfFrame endOfFrame = new WaitForEndOfFrame();
+        private WaitForEndOfFrame endOfFrame = CoroutineUtility.endOfFrame;
         public override AbstractUIRoot uiRootControls { get { return m_uiRoot; } }
         public override AbstractUIAlertControls alertControls { get { return alertUIElements; } }
         public override AbstractDialogueUIControls dialogueControls { get { return conversationUIElements; } }
@@ -58,7 +61,7 @@ namespace PixelCrushers.DialogueSystem
         private void VerifyAssignments()
         {
             if (addEventSystemIfNeeded) UITools.RequireEventSystem();
-            if (DialogueDebug.logWarnings)
+            if (DialogueDebug.logWarnings && verifyPanelAssignments)
             {
                 if (alertUIElements.alertText.gameObject == null) Debug.LogWarning("Dialogue System: No UI text element is assigned to Standard Dialogue UI's Alert UI Elements.", this);
                 if (conversationUIElements.subtitlePanels.Length == 0) Debug.LogWarning("Dialogue System: No subtitle panels are assigned to Standard Dialogue UI.", this);
@@ -100,6 +103,7 @@ namespace PixelCrushers.DialogueSystem
             }
             base.Open();
             conversationUIElements.OpenSubtitlePanelsOnStart(this);
+            conversationUIElements.ClearSubtitleTextOnConversationStart();
         }
 
         public override void Close()
@@ -129,7 +133,7 @@ namespace PixelCrushers.DialogueSystem
                 yield return null;
             }
             // Close main panel and wait for it to finish:
-            if (conversationUIElements.mainPanel != null)
+            if (conversationUIElements.mainPanel != null && !conversationUIElements.dontDeactivateMainPanel)
             {
                 if (DialogueSystemController.isWarmingUp)
                 {
@@ -198,6 +202,12 @@ namespace PixelCrushers.DialogueSystem
             {
                 base.ShowAlert(message, duration);
             }
+        }
+
+        public override void HideAllAlerts()
+        {
+            m_alertQueue.Clear();
+            base.HideAllAlerts();
         }
 
         private void UpdateAlertQueue()
@@ -303,9 +313,9 @@ namespace PixelCrushers.DialogueSystem
             conversationUIElements.standardMenuControls.SetActorMenuPanelNumber(dialogueActor, menuPanelNumber);
         }
 
-        public virtual void OverrideActorPanel(Actor actor, SubtitlePanelNumber subtitlePanelNumber)
+        public virtual void OverrideActorPanel(Actor actor, SubtitlePanelNumber subtitlePanelNumber, bool immediate = false)
         {
-            conversationUIElements.standardSubtitleControls.OverrideActorPanel(actor, subtitlePanelNumber);
+            conversationUIElements.standardSubtitleControls.OverrideActorPanel(actor, subtitlePanelNumber, null, immediate);
         }
 
         public virtual void ForceOverrideSubtitlePanel(StandardUISubtitlePanel customPanel)
@@ -343,6 +353,7 @@ namespace PixelCrushers.DialogueSystem
         protected virtual void ShowResponsesImmediate(Subtitle subtitle, Response[] responses, float timeout)
         { 
             conversationUIElements.standardSubtitleControls.UnfocusAll();
+            conversationUIElements.standardSubtitleControls.HideOnResponseMenu();
             base.ShowResponses(subtitle, responses, timeout);
         }
 

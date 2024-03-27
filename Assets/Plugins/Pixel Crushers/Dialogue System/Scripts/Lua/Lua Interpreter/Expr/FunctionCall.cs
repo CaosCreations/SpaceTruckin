@@ -44,7 +44,7 @@ namespace Language.Lua
             else
             {
                 //[PixelCrushers Was: throw new Exception("Invoke function call on non function value.");
-                throw new Exception("Tried to invoke a function call on a non-function value. If you're calling a function, is it registered with Lua?");
+                throw new LuaFunctionCallException("Tried to invoke a function call on a non-function value. If you're calling a function, is it registered with Lua?");
             }
         }
     }

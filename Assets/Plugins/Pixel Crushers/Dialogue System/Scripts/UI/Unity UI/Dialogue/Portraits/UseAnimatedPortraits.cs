@@ -37,7 +37,7 @@ namespace PixelCrushers.DialogueSystem
 
         private IEnumerator SetAnimatorAtEndOfFrame(Subtitle subtitle)
         {
-            yield return new WaitForEndOfFrame();
+            yield return CoroutineUtility.endOfFrame;
             var overrideControls = dialogueUI.FindActorOverride(subtitle.speakerInfo.transform);
             if (overrideControls != null)
             {

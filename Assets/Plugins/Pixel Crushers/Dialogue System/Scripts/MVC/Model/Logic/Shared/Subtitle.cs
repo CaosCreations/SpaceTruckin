@@ -118,7 +118,7 @@ namespace PixelCrushers.DialogueSystem
 
         /// <summary>
         /// Gets the speaker portrait for this line. This is normally speakerInfo.portrait, but
-        /// it could be overrided by [pic*] tags in the formatted text.
+        /// it could be overridden by [pic*] tags in the formatted text.
         /// </summary>
         /// <returns>The speaker portrait.</returns>
         public Sprite GetSpeakerPortrait()
@@ -127,8 +127,17 @@ namespace PixelCrushers.DialogueSystem
             if (formattedText == null) return speakerInfo.portrait;
             if (formattedText.pic != FormattedText.NoPicOverride) return speakerInfo.GetPicOverride(formattedText.pic);
             if (formattedText.picActor != FormattedText.NoPicOverride) return speakerInfo.GetPicOverride(formattedText.picActor);
-            if ((formattedText.picConversant != FormattedText.NoPicOverride) && (listenerInfo != null)) return listenerInfo.GetPicOverride(formattedText.picConversant);
             return speakerInfo.portrait;
+        }
+
+        /// <summary>
+        /// Gets the listener portrait override, if it was overridden by a [picc=#] tag.
+        /// If not overridden by [picc=#], returns null;
+        /// </summary>
+        /// <returns></returns>
+        public Sprite GetListenerOverridePortrait()
+        {
+            return ((formattedText.picConversant != FormattedText.NoPicOverride) && (listenerInfo != null)) ? listenerInfo.GetPicOverride(formattedText.picConversant) : null;
         }
 
     }

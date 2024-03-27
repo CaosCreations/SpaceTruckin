@@ -202,7 +202,9 @@ namespace PixelCrushers.DialogueSystem
         /// first entry, and use default delay for middle entries.
         /// </param>
         /// <param name="trimWhitespace">Trim whitespace such as newlines.</param>
-        public void SplitPipesIntoEntries(bool putEndSequenceOnLastSplit = true, bool trimWhitespace = false)
+        /// <param name="uniqueFieldTitle">If specified, add "-1", "-2", etc., to this field.</param>
+        public void SplitPipesIntoEntries(bool putEndSequenceOnLastSplit = true, 
+            bool trimWhitespace = false, string uniqueFieldTitle = null)
         {
             if (dialogueEntries != null)
             {
@@ -214,14 +216,15 @@ namespace PixelCrushers.DialogueSystem
                     {
                         if (dialogueText.Contains("|"))
                         {
-                            SplitEntryAtPipes(entryIndex, dialogueText, putEndSequenceOnLastSplit, trimWhitespace);
+                            SplitEntryAtPipes(entryIndex, dialogueText, putEndSequenceOnLastSplit, trimWhitespace, uniqueFieldTitle);
                         }
                     }
                 }
             }
         }
 
-        private void SplitEntryAtPipes(int originalEntryIndex, string dialogueText, bool putEndSequenceOnLastSplit, bool trimWhitespace)
+        private void SplitEntryAtPipes(int originalEntryIndex, string dialogueText, 
+            bool putEndSequenceOnLastSplit, bool trimWhitespace, string uniqueFieldTitle = null)
         {
             // Split by Dialogue Text:
             var substrings = dialogueText.Split(new char[] { '|' });
@@ -243,6 +246,10 @@ namespace PixelCrushers.DialogueSystem
             var audioFiles = audioFilesText.Split(new char[] { ';' });
             currentEntry.AudioFiles = string.Format("[{0}]", new System.Object[] { (audioFiles.Length > 0) ? audioFiles[0] : string.Empty });
 
+            // Prep for adding -1, -2, etc., to unique field value:
+            var updateUniqueField = !string.IsNullOrEmpty(uniqueFieldTitle);
+            var uniqueFieldValue = updateUniqueField ? Field.LookupValue(currentEntry.fields, uniqueFieldTitle) : string.Empty;
+
             // Create new dialogue entries for the split parts:
             int i = 1;
             while (i < substrings.Length)
@@ -258,6 +265,10 @@ namespace PixelCrushers.DialogueSystem
                 newEntry.canvasRect = new Rect(originalEntry.canvasRect.x + i * 20, originalEntry.canvasRect.y + i * 10, originalEntry.canvasRect.width, originalEntry.canvasRect.height);
                 newEntry.currentMenuText = newEntryMenuText;
                 newEntry.AudioFiles = string.Format("[{0}]", new System.Object[] { (i < audioFiles.Length) ? audioFiles[i] : string.Empty });
+                if (updateUniqueField)
+                {
+                    Field.SetValue(newEntry.fields, uniqueFieldTitle, $"{uniqueFieldValue}-{i}");
+                }
                 currentEntry.outgoingLinks = new List<Link>() { NewLink(currentEntry, newEntry, priority) };
                 currentEntry = newEntry;
                 entries.Add(newEntry);

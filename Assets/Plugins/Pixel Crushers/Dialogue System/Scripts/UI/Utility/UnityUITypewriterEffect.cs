@@ -110,6 +110,7 @@ namespace PixelCrushers.DialogueSystem
 
         public override void Awake()
         {
+            base.Awake();
             control = GetComponent<UnityEngine.UI.Text>();
             if (removeDuplicateTypewriterEffects) RemoveIfDuplicate();
             if (audioSource == null) audioSource = GetComponent<AudioSource>();
@@ -690,12 +691,13 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public override void Stop()
         {
-            if (isPlaying)
+            var wasPlaying = isPlaying;
+            StopTypewriterCoroutine();
+            if (wasPlaying)
             {
                 onEnd.Invoke();
                 Sequencer.Message(SequencerMessages.Typed);
             }
-            StopTypewriterCoroutine();
             if (control != null && original != null) control.text = UITools.StripRPGMakerCodes(frontSkippedText + original);
             original = null;
             if (autoScrollSettings.autoScrollEnabled)

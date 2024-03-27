@@ -341,6 +341,7 @@ namespace PixelCrushers.DialogueSystem.Articy.Articy_2_4
                 foreach (FeatureType feature in features.Feature)
                 {
                     var articyDataFeature = new ArticyData.Feature();
+                    articyDataFeature.name = feature.Name;
                     foreach (PropertiesType properties in feature.Properties)
                     {
                         if (properties != null && properties.Items != null && properties.Items.Length > 0)
