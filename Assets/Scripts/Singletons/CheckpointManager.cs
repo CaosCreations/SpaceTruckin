@@ -39,7 +39,7 @@ public class CheckpointManager : MonoBehaviour
         MissionUtils.AcceptMissionByName("Replacement Shipment");
         MissionUtils.AcceptMissionByName("ULSS Samples");
 
-        var convoIds = new int[] { 45, 51, 58, 73, 74, 75, 76, 77, 78, 79, 80, 163, 166, 167, 168, 171, 172, 175, 205 };
+        var convoIds = new int[] { 45, 51, 58, 65, 73, 74, 75, 76, 77, 78, 79, 80, 163, 166, 167, 168, 171, 172, 175, 205 };
         DialogueDatabaseManager.Instance.SetConversationsSeen(convoIds);
         PlayerPrefsManager.SetCanvasTutorialPrefValue(UICanvasType.Terminal, new Date(1, 1, 1), true);
         CalendarManager.SetDate(new Date(1, 1, 1));
