@@ -17,10 +17,10 @@ public class UniversalHangarNodeUI : UICanvasBase
     [SerializeField] private Button customizationButton;
     //[SerializeField] private Button overviewButton;
 
-    [SerializeField] private Vector3 shipPreviewOffset = new(-1.5f, 0f, 0f);
+    //[SerializeField] private Vector3 shipPreviewOffset = new(-1.5f, 0f, 0f);
     [SerializeField] private Vector3 shipPreviewRotationSpeed = new(0f, 0.15f, 0f);
     [SerializeField] private float shipPreviewScaleFactor = 1.25f;
-    private Vector3 shipPreviewStartPosition;
+    //private Vector3 shipPreviewStartPosition;
 
     [SerializeField] private ImageAnimator batteryChargeAnimator;
 
@@ -252,6 +252,7 @@ public class UniversalHangarNodeUI : UICanvasBase
         fuelButton.Button.interactable = UIUtils.IsFuelButtonInteractable(ShipToInspect, fuelCostPerUnit);
         startMissionButton.interactable = IsStartMissionButtonInteractable();
         repairsButton.interactable = !ShipToInspect.IsFullyRepaired;
+        returnToQueueButton.interactable = !CalendarManager.Instance.IsCurrentDate(2, 1, 1);
     }
 
     private void OnShipHealthChangedHandler(OnShipHealthChangedEvent healthChangedEvent)
