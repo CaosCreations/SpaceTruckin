@@ -61,6 +61,11 @@ public class CheckpointManager : MonoBehaviour
             PlayerManager.PlayerMovementAnimation.ToggleBabyHolding();
         }
 
+        // Unlock all day 1 zones 
+        DialogueZoneLockManager.Instance.UnlockZone("VestaBlock");
+        DialogueZoneLockManager.Instance.UnlockZone("Harry-John");
+        DialogueZoneLockManager.Instance.UnlockZone("HangarOffice");
+
         // TODO: If we want to support going back to day 2 from a later day, we'll need to reset the dialogue db etc.
         Bed.Sleep();
     }
