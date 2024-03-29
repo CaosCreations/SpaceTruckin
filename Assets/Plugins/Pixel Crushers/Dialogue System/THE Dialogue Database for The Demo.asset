@@ -241488,8 +241488,7 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: Variable["ULSS_Convo_2_seen"] == false and HasMissionBeenCompleted("ULSS
-        Samples")  == true and HasMissionBeenCompleted("Vukra Aid")  == true and
-        IsCurrentDate(3,1,1)
+        Samples")  == true and HasMissionBeenCompleted("Vukra Aid")  == true
       userScript: 
       onExecute:
         m_PersistentCalls:
@@ -241545,7 +241544,7 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: Variable["ULSS_Convo_3_seen"] == false and HasMissionBeenCompleted("ULSS
-        Samples")  == true and HasMissionBeenCompleted("Towels")  == true and IsCurrentDate(3,1,1)
+        Samples")  == true and HasMissionBeenCompleted("Towels")  == true
       userScript: 
       onExecute:
         m_PersistentCalls:
@@ -241602,7 +241601,7 @@ MonoBehaviour:
         priority: 2
       conditionsString: Variable["ULSS_Convo_4_seen"] == false and HasMissionBeenCompleted("ULSS
         Samples")  == true and HasMissionBeenCompleted("Replacement Shipment")  ==
-        true and IsCurrentDate(3,1,1)
+        true
       userScript: 
       onExecute:
         m_PersistentCalls:
@@ -241658,7 +241657,7 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: Variable["ULSS_Convo_5_seen"] == false and HasMissionBeenCompleted("Vukra
-        Aid")  == true and HasMissionBeenCompleted("Towels")  == true and IsCurrentDate(3,1,1)
+        Aid")  == true and HasMissionBeenCompleted("Towels")  == true
       userScript: 
       onExecute:
         m_PersistentCalls:
@@ -241715,7 +241714,6 @@ MonoBehaviour:
         priority: 2
       conditionsString: Variable["ULSS_Convo_6_seen"] == false and HasMissionBeenCompleted("Vukra
         Aid")  == true and HasMissionBeenCompleted("Replacement Shipment")  == true
-        and IsCurrentDate(3,1,1)
       userScript: 
       onExecute:
         m_PersistentCalls:
@@ -241771,8 +241769,7 @@ MonoBehaviour:
         isConnector: 0
         priority: 2
       conditionsString: Variable["ULSS_Convo_7_seen"] == false and HasMissionBeenCompleted("Towels") 
-        == true and HasMissionBeenCompleted("Replacement Shipment")  == true and
-        IsCurrentDate(3,1,1)
+        == true and HasMissionBeenCompleted("Replacement Shipment")  == true
       userScript: 
       onExecute:
         m_PersistentCalls:
