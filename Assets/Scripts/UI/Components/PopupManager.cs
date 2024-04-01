@@ -49,9 +49,14 @@ public class PopupManager : MonoBehaviour
 
     private void OnHide()
     {
-        if (!UIManager.IsCanvasActive(false))
+        // TODO: Might be easier to accept a flag for whether we want to remove the overrides rather than put all logic here.
+        if (!UIManager.IsCanvasActive(false) || UIManager.CurrentCanvasType == UICanvasType.PauseMenu)
         {
             UIManager.RemoveOverriddenKey(KeyCode.Escape);
+        }
+
+        if (!UIManager.IsCanvasActive(false))
+        {
             PlayerManager.ExitPausedState();
         }
         canvas.gameObject.SetActive(false);

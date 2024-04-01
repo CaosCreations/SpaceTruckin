@@ -28,9 +28,14 @@ public class CheckpointUI : MonoBehaviour
 
     private void Day2Handler()
     {
-        CheckpointManager.Day2();
-        UIManager.ClearCanvases();
-        day2Button.gameObject.SetActive(false);
+        PopupManager.ShowPopup(OnOk, () => { }, "This will skip the rest of day 1 and cannot be undone. Are you sure you wish to continue?");
+
+        void OnOk()
+        {
+            CheckpointManager.Day2();
+            UIManager.ClearCanvases();
+            day2Button.gameObject.SetActive(false);
+        }
     }
 
     //private void OnCheckpointClicked(Checkpoint checkpoint)
