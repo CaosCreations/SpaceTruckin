@@ -33,7 +33,7 @@ public class PlayerPrototyping : MonoBehaviour
                 {
                     Time.timeScale = 1f;
 
-                    if (!PlayerManager.IsPaused)
+                    if (!PlayerManager.IsPaused && !CalendarManager.IsTimeFrozenToday)
                     {
                         ClockManager.StartClock();
                     }
