@@ -195,7 +195,7 @@ public class UniversalHangarNodeUI : UICanvasBase
         }
         else
         {
-            Debug.Log($"{ShipToInspect} (Ship) has no fuel!");
+            Debug.Log("ShipToInspect missing when attempting to launch");
         }
     }
 
