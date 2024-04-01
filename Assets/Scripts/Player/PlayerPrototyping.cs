@@ -8,9 +8,10 @@ public class PlayerPrototyping : MonoBehaviour
 
     private void Update()
     {
-//#if UNITY_EDITOR
+        //#if UNITY_EDITOR
         if (Input.GetKey(PlayerConstants.PrototypingModifier))
         {
+#if UNITY_EDITOR
             // Access menus remotely 
             if (Input.GetKeyDown(PlayerConstants.TerminalShortcut))
             {
@@ -24,21 +25,27 @@ public class PlayerPrototyping : MonoBehaviour
             {
                 TimelineManager.Instance.FinishCurrentTimeline();
             }
+#endif
             // Speed up time 
             else if (Input.GetKeyDown(PlayerConstants.SpeedUpTimeKey))
             {
                 if (Time.timeScale == fastTime)
                 {
                     Time.timeScale = 1f;
-                    ClockManager.StartClock();
+
+                    if (!PlayerManager.IsPaused && !CalendarManager.IsTimeFrozenToday)
+                    {
+                        ClockManager.StartClock();
+                    }
                 }
                 else
                 {
-                    ClockManager.StopClock();
                     Time.timeScale = fastTime;
+                    ClockManager.StopClock();
                 }
             }
         }
+#if UNITY_EDITOR
         // Port to station locations 
         else if (Input.GetKey(KeyCode.LeftAlt))
         {
@@ -59,6 +66,7 @@ public class PlayerPrototyping : MonoBehaviour
                 PlayerManager.PlayerMovement.SetPosition(PlayerConstants.PlayerMaintenancePosition, AnimationConstants.NormalAngleStateName);
             }
         }
-//#endif
+#endif
+        //#endif
     }
 }

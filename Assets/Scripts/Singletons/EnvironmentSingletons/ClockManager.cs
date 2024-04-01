@@ -103,8 +103,9 @@ public class ClockManager : MonoBehaviour, ILuaFunctionRegistrar
         if (overrideTransition)
         {
             isEvening = CurrentTime >= CalendarManager.EveningStartTime;
-            clockStopped = false;
+            clockStopped = CalendarManager.IsTimeFrozenToday;
         }
+        UpdateDateTimeText();
     }
 
     private void Update()
