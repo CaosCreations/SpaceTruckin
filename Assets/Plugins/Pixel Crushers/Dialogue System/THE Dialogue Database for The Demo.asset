@@ -8234,7 +8234,7 @@ MonoBehaviour:
         width: 160
         height: 30
     entryGroups: []
-    canvasScrollPosition: {x: 531.4932, y: 0}
+    canvasScrollPosition: {x: 331.4934, y: 2.2471924}
     canvasZoom: 0.89000094
   - id: 3
     fields:
@@ -90991,7 +90991,7 @@ MonoBehaviour:
         destinationConversationID: 38
         destinationDialogueID: 3
         isConnector: 0
-        priority: 2
+        priority: 0
       conditionsString: 
       userScript: 
       onExecute:
@@ -91047,8 +91047,8 @@ MonoBehaviour:
         destinationDialogueID: 0
         isConnector: 0
         priority: 4
-      conditionsString: IsCurrentDate(2,1,1) and Variable["Nammi_Convo_1_seen"] ==
-        false
+      conditionsString: HasDateBeenReached(2,1,1) and Variable["Nammi_Convo_1_seen"]
+        == false
       userScript: 
       onExecute:
         m_PersistentCalls:
@@ -91112,7 +91112,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 252
-        y: 147
+        y: 146
         width: 160
         height: 30
     - id: 3
