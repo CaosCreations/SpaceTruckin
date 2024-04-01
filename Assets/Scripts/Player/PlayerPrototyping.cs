@@ -27,7 +27,7 @@ public class PlayerPrototyping : MonoBehaviour
             }
 #endif
             // Speed up time 
-            else if (Input.GetKeyDown(PlayerConstants.SpeedUpTimeKey))
+            if (Input.GetKeyDown(PlayerConstants.SpeedUpTimeKey))
             {
                 if (Time.timeScale == fastTime)
                 {
@@ -47,7 +47,7 @@ public class PlayerPrototyping : MonoBehaviour
         }
 #if UNITY_EDITOR
         // Port to station locations 
-        else if (Input.GetKey(KeyCode.LeftAlt))
+        if (Input.GetKey(KeyCode.LeftAlt))
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
