@@ -248,6 +248,14 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private void ToggleSyncVariablesFromDB()
         {
             database.syncInfo.syncVariables = !database.syncInfo.syncVariables;
+            if (!database.syncInfo.syncVariables && database.syncInfo.syncVariablesDatabase!= null)
+            {
+                if (EditorUtility.DisplayDialog("Disconnect Synced DB",
+                    "Also delete synced variables from this database?", "Yes", "No"))
+                {
+                    database.variables.RemoveAll(x => syncedVariableIDs.Contains(x.id));
+                }
+            }
             EditorUtility.SetDirty(database);
         }
 

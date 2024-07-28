@@ -37,6 +37,7 @@ namespace PixelCrushers.DialogueSystem.Articy
             }
             else
             {
+                UnityEngine.Debug.LogWarning($"No valid schema data found in {xmlFilename}. Remember to tick 'Export XML Namespace' when exporting.");
                 return null;
             }
         }

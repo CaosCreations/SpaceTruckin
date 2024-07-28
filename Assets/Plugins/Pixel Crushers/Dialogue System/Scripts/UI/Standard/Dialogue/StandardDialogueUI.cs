@@ -124,7 +124,7 @@ namespace PixelCrushers.DialogueSystem
             conversationUIElements.ClearCaches();
         }
 
-        protected IEnumerator CloseAfterPanelsAreClosed()
+        protected virtual IEnumerator CloseAfterPanelsAreClosed()
         {
             // Close subtitle/menu panels and wait for them to finish:
             conversationUIElements.ClosePanels();
@@ -321,6 +321,14 @@ namespace PixelCrushers.DialogueSystem
         public virtual void ForceOverrideSubtitlePanel(StandardUISubtitlePanel customPanel)
         {
             conversationUIElements.standardSubtitleControls.ForceOverrideSubtitlePanel(customPanel);
+        }
+
+        /// <summary>
+        /// Shows an actor immediately in a subtitle panel.
+        /// </summary>
+        public virtual void ShowActorInPanel(Actor actor, SubtitlePanelNumber subtitlePanelNumber, StandardUISubtitlePanel customPanel = null)
+        {
+            conversationUIElements.standardSubtitleControls.ShowActorInPanel(actor, subtitlePanelNumber, customPanel);
         }
 
         #endregion

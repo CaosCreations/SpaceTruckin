@@ -411,12 +411,21 @@ namespace PixelCrushers.DialogueSystem
                     }
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("preloadResources"), true);
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("warmUpConversationController"), true);
-                    if (serializedObject.FindProperty("warmUpConversationController").enumValueIndex != (int)DialogueSystemController.WarmUpMode.Off)
+                    var warmUpProp = serializedObject.FindProperty("warmUpConversationController");
+                    var instantiateDatabaseProp = serializedObject.FindProperty("instantiateDatabase");
+                    if (warmUpProp.enumValueIndex != (int)DialogueSystemController.WarmUpMode.Off)
                     {
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("dontHideImmediateDuringWarmup"), true);
+                        if (warmUpProp.enumValueIndex != (int)DialogueSystemController.WarmUpMode.Extra)
+                        { 
+                            instantiateDatabaseProp.boolValue = true;
+                        }
                     }
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("instantiateDatabase"), true);
+                    EditorGUILayout.PropertyField(instantiateDatabaseProp, true);
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("includeSimStatus"), true);
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("stopEvaluationAtFirstValid"), true);
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("reevaluateLinksAfterSubtitle"), true);
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("useLinearGroupMode"), true);
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("allowSimultaneousConversations"), true);
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("onStartTriggerWaitForSaveDataApplied"), true);
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("dialogueTimeMode"), true);

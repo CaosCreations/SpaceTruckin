@@ -31,6 +31,7 @@ namespace PixelCrushers.DialogueSystem
         private int lineOffset;
         private bool computedRect;
         private Rect rect;
+        private GUIStyle guiStyle = null;
 
         /// <summary>
         /// Returns a best guess of what the dialogue text will be.
@@ -295,17 +296,25 @@ namespace PixelCrushers.DialogueSystem
             this.lineOffset = lineOffset;
             endTime = Time.realtimeSinceStartup + (Mathf.Approximately(0, duration) ? 2 : duration);
             computedRect = false;
+            Debug.Log(message);
         }
 
         private void OnGUI()
         {
+            if (guiStyle == null)
+            {
+                guiStyle = new GUIStyle(GUI.skin.label);
+                guiStyle.fontSize = 26;
+                guiStyle.fontStyle = FontStyle.Bold;
+                guiStyle.alignment = TextAnchor.MiddleCenter;
+            }
             if (!computedRect)
             {
                 computedRect = true;
-                var size = GUI.skin.label.CalcSize(new GUIContent(message));
-                rect = new Rect((Screen.width - size.x) / 2, (Screen.height - size.y) / 2 + lineOffset * size.y, size.x, size.y);
+                var size = guiStyle.CalcSize(new GUIContent(message));
+                rect = new Rect((Screen.width - size.x) / 2, Screen.height - ((2 + -lineOffset) * size.y), size.x, size.y);
             }
-            GUI.Label(rect, message);
+            GUI.Label(rect, message, guiStyle);
         }
 
         private void Update()

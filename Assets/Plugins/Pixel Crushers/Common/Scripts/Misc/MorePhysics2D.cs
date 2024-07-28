@@ -47,6 +47,7 @@ namespace PixelCrushers
         }
 
         private static RaycastHit2D[] raycastResults = new RaycastHit2D[20];
+        private static ContactFilter2D contactFilter = new ContactFilter2D();
 
         /// <summary>
         /// Runs a nonallocating linecast, ignoring the source.
@@ -57,7 +58,8 @@ namespace PixelCrushers
             var end2D = new Vector2(destination.position.x, destination.position.y);
             var originalRaycastsStartInColliders = MorePhysics2D.queriesStartInColliders;
             MorePhysics2D.queriesStartInColliders = false;
-            var numResults = Physics2D.LinecastNonAlloc(start2D, end2D, raycastResults, layerMask);
+            contactFilter.layerMask = layerMask;
+            var numResults = Physics2D.Linecast(start2D, end2D, contactFilter, raycastResults);
             MorePhysics2D.queriesStartInColliders = originalRaycastsStartInColliders;
             for (int i = 0; i < numResults; i++)
             {

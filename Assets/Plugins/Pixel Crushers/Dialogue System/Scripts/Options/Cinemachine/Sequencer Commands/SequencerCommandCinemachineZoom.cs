@@ -1,7 +1,13 @@
 #if USE_CINEMACHINE
 using System.Collections;
 using UnityEngine;
+#if UNITY_6000_0_OR_NEWER
+using Unity.Cinemachine;
+using CinemachineCam = Unity.Cinemachine.CinemachineCamera;
+#else
 using Cinemachine;
+using CinemachineCam = Cinemachine.CinemachineVirtualCamera;
+#endif
 
 namespace PixelCrushers.DialogueSystem.SequencerCommands
 {
@@ -21,7 +27,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
         protected virtual IEnumerator Start()
         {
             var vcamGO = GetSubject(0);
-            var vcam = (vcamGO != null) ? vcamGO.GetComponent<CinemachineVirtualCamera>() : null;
+            var vcam = (vcamGO != null) ? vcamGO.GetComponent<CinemachineCam>() : null;
             var zoom = GetParameterAsFloat(1);
             var duration = GetParameterAsFloat(2, 0);
             if (vcam == null)
@@ -33,8 +39,25 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
             {
                 if (DialogueDebug.LogInfo) Debug.Log("Dialogue System: Sequencer: CinemachineZoom(" + vcam + ", " + 
                     zoom + ", " + duration + ")");
+#if UNITY_6000_0_OR_NEWER
+                if (vcam.Lens.Orthographic)
+                {
+                    if (duration > 0)
+                    {
+                        var originalSize = vcam.Lens.OrthographicSize;
+                        float elapsed = 0;
+                        while (elapsed < duration)
+                        {
+                            vcam.Lens.OrthographicSize = Mathf.Lerp(originalSize, zoom, elapsed / duration);
+                            yield return null;
+                            elapsed += DialogueTime.deltaTime;
+                        }
+                    }
+                    vcam.Lens.OrthographicSize = zoom;
+                }
+#else
                 if (vcam.m_Lens.Orthographic)
-                { 
+                {
                     if (duration > 0)
                     {
                         var originalSize = vcam.m_Lens.OrthographicSize;
@@ -48,6 +71,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
                     }
                     vcam.m_Lens.OrthographicSize = zoom;
                 }
+#endif
                 else
                 {
                     // May need to wait until Cinemachine 3 for 3D params to be exposed.

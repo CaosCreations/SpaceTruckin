@@ -1200,7 +1200,9 @@ namespace PixelCrushers.DialogueSystem
             Lua.WasInvoked = true;
             LuaTable luaTable = Lua.Environment.GetValue("Variable") as LuaTable;
             if (luaTable == null) return;
-            luaTable.SetNameValue(StringToTableIndex(variable), LuaInterpreterExtensions.ObjectToLuaValue(value));
+            var tableIndex = StringToTableIndex(variable);
+            luaTable.SetNameValue(tableIndex, LuaInterpreterExtensions.ObjectToLuaValue(value));
+            if (Assignment.MonitoredVariables.Contains(tableIndex)) Assignment.InvokeVariableChanged(tableIndex, value);
         }
 
         /// <summary>

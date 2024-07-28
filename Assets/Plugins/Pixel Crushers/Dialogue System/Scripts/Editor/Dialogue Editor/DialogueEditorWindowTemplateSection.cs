@@ -69,9 +69,9 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             EditorWindowTools.StartIndentedSection();
             DrawTemplate("Actors", template.actorFields, template.actorPrimaryFieldTitles, ref templateFoldouts.actors);
             DrawActorTemplateAIButton();
-            DrawTemplate("Items", template.itemFields, null, ref templateFoldouts.items);
+            DrawTemplate("Items", template.itemFields, template.itemPrimaryFieldTitles, ref templateFoldouts.items);
             DrawTemplate("Quests", template.questFields, template.questPrimaryFieldTitles, ref templateFoldouts.quests);
-            DrawTemplate("Locations", template.locationFields, null, ref templateFoldouts.locations);
+            DrawTemplate("Locations", template.locationFields, template.locationPrimaryFieldTitles, ref templateFoldouts.locations);
             DrawTemplate("Variables", template.variableFields, null, ref templateFoldouts.variables);
             DrawTemplate("Conversations", template.conversationFields, template.conversationPrimaryFieldTitles, ref templateFoldouts.conversations);
             DrawTemplate("Dialogue Entries", template.dialogueEntryFields, template.dialogueEntryPrimaryFieldTitles, ref templateFoldouts.dialogueEntries);

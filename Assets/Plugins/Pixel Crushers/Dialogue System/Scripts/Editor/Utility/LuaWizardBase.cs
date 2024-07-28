@@ -15,9 +15,9 @@ namespace PixelCrushers.DialogueSystem
 
         public DialogueDatabase database;
 
-        public enum ConditionWizardResourceType { Quest, QuestEntry, Variable, Actor, Item, Location, SimStatus, Custom, ManualEnter }
+        public enum ConditionWizardResourceType { Quest, QuestEntry, Variable, Actor, Item, Location, SimStatus, Misc, Custom, ManualEnter }
 
-        public enum ScriptWizardResourceType { Quest, QuestEntry, Variable, Actor, Item, Location, SimStatus, Alert, Custom, ManualEnter }
+        public enum ScriptWizardResourceType { Quest, QuestEntry, Variable, Actor, Item, Location, SimStatus, Alert, Misc, Custom, ManualEnter }
 
         public enum EqualityType { Is, IsNot }
 
@@ -372,25 +372,40 @@ namespace PixelCrushers.DialogueSystem
             return null;
         }
 
-        public void FindAllCustomLuaFuncs(bool findConditionFuncs, out CustomLuaFunctionInfoRecord[] customLuaFuncs, out string[] customLuaFuncNames)
+        public void FindAllCustomLuaFuncs(bool findConditionFuncs, 
+            out CustomLuaFunctionInfoRecord[] builtinLuaFuncs, out string[] builtinLuaFuncNames, 
+            out CustomLuaFunctionInfoRecord[] customLuaFuncs, out string[] customLuaFuncNames)
         {
-            var recordList = new List<CustomLuaFunctionInfoRecord>();
-            var nameList = new List<string>();
+            var builtinRecordList = new List<CustomLuaFunctionInfoRecord>();
+            var builtinNameList = new List<string>();
+            var customRecordList = new List<CustomLuaFunctionInfoRecord>();
+            var customNameList = new List<string>();
             var guids = AssetDatabase.FindAssets("t:CustomLuaFunctionInfo");
             foreach (var guid in guids)
             {
                 var asset = AssetDatabase.LoadAssetAtPath<CustomLuaFunctionInfo>(AssetDatabase.GUIDToAssetPath(guid));
                 if (asset == null) continue;
+                var isBuiltin = asset.name == "DialogueSystemLuaFunctionInfo";
                 var records = findConditionFuncs ? asset.conditionFunctions : asset.scriptFunctions;
                 foreach (var record in records)
                 {
                     if (record == null || string.IsNullOrEmpty(record.functionName)) continue;
-                    recordList.Add(record);
-                    nameList.Add(record.functionName);
+                    if (isBuiltin)
+                    {
+                        builtinRecordList.Add(record);
+                        builtinNameList.Add(record.functionName);
+                    }
+                    else
+                    {
+                        customRecordList.Add(record);
+                        customNameList.Add(record.functionName);
+                    }
                 }
             }
-            customLuaFuncs = recordList.ToArray();
-            customLuaFuncNames = nameList.ToArray();
+            builtinLuaFuncs = builtinRecordList.ToArray();
+            builtinLuaFuncNames = builtinNameList.ToArray();
+            customLuaFuncs = customRecordList.ToArray();
+            customLuaFuncNames = customNameList.ToArray();
         }
 
         public void InitCustomParamValues(CustomLuaFunctionInfoRecord record, out object[] customParamValues)

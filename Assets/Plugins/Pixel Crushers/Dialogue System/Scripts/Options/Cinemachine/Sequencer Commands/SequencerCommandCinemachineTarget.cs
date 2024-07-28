@@ -1,6 +1,12 @@
 #if USE_CINEMACHINE
 using UnityEngine;
+#if UNITY_6000_0_OR_NEWER
+using Unity.Cinemachine;
+using CinemachineCam = Unity.Cinemachine.CinemachineCamera;
+#else
 using Cinemachine;
+using CinemachineCam = Cinemachine.CinemachineVirtualCamera;
+#endif
 
 namespace PixelCrushers.DialogueSystem.SequencerCommands
 {
@@ -20,7 +26,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
         public void Awake()
         {
             var vcamGO = GetSubject(0);
-            var vcam = (vcamGO != null) ? vcamGO.GetComponent<CinemachineVirtualCamera>() : null;
+            var vcam = (vcamGO != null) ? vcamGO.GetComponent<CinemachineCam>() : null;
             var target = GetSubject(1, speaker);
             var mode = GetParameter(2);
             mode = string.IsNullOrEmpty(mode) ? "both" : mode.ToLower();
