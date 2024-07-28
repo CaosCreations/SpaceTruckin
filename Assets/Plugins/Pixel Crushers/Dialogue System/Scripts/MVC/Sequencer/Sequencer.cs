@@ -229,6 +229,8 @@ namespace PixelCrushers.DialogueSystem
 
         private bool m_isPlaying = false;
 
+        private WaitForEndOfFrame endOfFrame = new WaitForEndOfFrame();
+
         /// <summary>
         /// 
         /// </summary>
@@ -443,13 +445,13 @@ namespace PixelCrushers.DialogueSystem
         }
 
         /// <summary>
-        /// Restores the original camera position. Waits two frames first, to allow any
+        /// Restores the original camera position. Waits 1 frame first, to allow any
         /// active, required actions to finish.
         /// </summary>
         private IEnumerator RestoreCamera()
         {
             yield return null;
-            yield return null;
+            yield return endOfFrame;
             ReleaseCameraControl();
         }
 
@@ -1244,7 +1246,7 @@ namespace PixelCrushers.DialogueSystem
             }
             else if (string.Equals(commandName, "RandomizeNextEntry"))
             {
-                return HandleRandomizeNextEntryInternally();
+                return HandleRandomizeNextEntryInternally(args);
             }
             else if (string.Equals(commandName, "StopConversation"))
             {
@@ -2721,7 +2723,8 @@ namespace PixelCrushers.DialogueSystem
                 {
                     // Restore original mode:
                     if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: Sequencer: SetContinueMode({1}): Restoring original mode {2}", new System.Object[] { DialogueDebug.Prefix, arg, savedContinueButtonMode }));
-                    //DialogueManager.displaySettings.subtitleSettings.continueButton = savedContinueButtonMode;
+                    DialogueManager.displaySettings.subtitleSettings.continueButton = savedContinueButtonMode;
+                    UpdateActiveConversationContinueButton();
                 }
                 else
                 {
@@ -2898,10 +2901,14 @@ namespace PixelCrushers.DialogueSystem
             return true;
         }
 
-        private bool HandleRandomizeNextEntryInternally()
+        private bool HandleRandomizeNextEntryInternally(string[] args)
         {
             if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: Sequencer: RandomizeNextEntry()", new System.Object[] { DialogueDebug.Prefix }));
-            if (DialogueManager.conversationController != null) DialogueManager.conversationController.randomizeNextEntry = true;
+            if (DialogueManager.conversationController != null)
+            {
+                DialogueManager.conversationController.randomizeNextEntry = true;
+                DialogueManager.conversationController.randomizeNextEntryNoDuplicate = SequencerTools.GetParameterAsBool(args, 0);
+            }
             return true;
         }
 

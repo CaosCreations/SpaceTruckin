@@ -351,7 +351,9 @@ namespace PixelCrushers.DialogueSystem
                 @"<link=""[^""]+"">|</link>|<lowercase>|</lowercase>|<uppercase>|</uppercase>|" +
                 @"<smallcaps>|</smallcaps>|<margin=.+?>|<margin-?\w+=.+?>|</margin>|<mark=#\w+>|</mark>|" +
                 @"<nobr>|</nobr>|<size=\w+\%>|<size=\w+>|</size>|<sprite=.+?>|<[Ss]>|</[Ss]>|<[Uu]>|</[Uu]>|" +
-                @"<sup>|</sup>|<sub>|</sub>|<p>|</p>|<\\/p>");
+                @"<sup>|</sup>|<sub>|</sub>|<p>|</p>|<\\/p>|<page>|<pos=[^>]+>|<style=[^>]+>|</style>" +
+                @"<voffset=[^>]+>|</voffset>|<cspace=[^>]+>|</cspace>|<mspace=[^>]+>|</mspace>" +
+                @"<noparse>|</noparse>");
 
         public static string StripTextMeshProTags(string s)
         {
@@ -582,28 +584,22 @@ namespace PixelCrushers.DialogueSystem
 
         public static bool IsCursorVisible()
         {
-            return Cursor.visible;
+            return CursorControl.isCursorVisible;
         }
 
         public static bool IsCursorLocked()
         {
-            return Cursor.lockState != CursorLockMode.None;
+            return CursorControl.isCursorLocked;
         }
-
-        private static CursorLockMode previousLockMode = CursorLockMode.Locked;
 
         public static void ShowCursor(bool value)
         {
-            Cursor.visible = value;
+            CursorControl.ShowCursor(value);
         }
 
         public static void LockCursor(bool value)
         {
-            if (value == false && IsCursorLocked())
-            {
-                previousLockMode = Cursor.lockState;
-            }
-            Cursor.lockState = value ? previousLockMode : CursorLockMode.None;
+            CursorControl.LockCursor(value);
         }
 
 #endif

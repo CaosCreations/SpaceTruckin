@@ -158,16 +158,37 @@ namespace PixelCrushers
         protected virtual void SetPosition(Vector3 position, Quaternion rotation)
         {
 #if USE_NAVMESH
+            // If we have a NavMeshAgent, use its Warp() method:
             if (m_navMeshAgent != null)
             {
                 m_navMeshAgent.Warp(position);
+                target.transform.rotation = rotation;
+                return;
             }
-            else
 #endif
+            // Otherwise if we have a Rigidbody, set the Rigidbody's position:
+            var rb = GetComponent<Rigidbody>();
+            if (rb != null)
             {
-                target.transform.position = position;
+                var wasKinematic = rb.isKinematic;
+                rb.isKinematic = true;
+                rb.position = position;
+                rb.rotation = rotation;
+                rb.isKinematic = wasKinematic;
             }
-            target.transform.rotation = rotation;
+#if USE_PHYSICS2D
+            // If we have a Rigidbody2D, set the Rigidbody2D's position:
+            var rb2d = GetComponent<Rigidbody2D>();
+            if (rb2d != null)
+            {
+                var wasKinematic = rb2d.isKinematic;
+                rb2d.isKinematic = true;
+                rb2d.position = position;
+                rb2d.isKinematic = wasKinematic;
+            }
+#endif
+            // Set the plain old transform's position:
+            target.transform.SetPositionAndRotation(position, rotation);
         }
 
     }

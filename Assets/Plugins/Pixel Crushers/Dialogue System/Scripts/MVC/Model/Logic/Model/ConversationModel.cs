@@ -2,6 +2,7 @@
 
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 namespace PixelCrushers.DialogueSystem
 {
@@ -85,6 +86,8 @@ namespace PixelCrushers.DialogueSystem
         private bool m_includeInvalidEntries = false;
         private string pcPortraitName = null;
         private Sprite pcPortraitSprite = null;
+        private bool stopAtFirstValid = false;
+        private bool useLinearGroupMode = false;
         private DialogueEntry forceLinkEntry = null;
 
         /// <summary>
@@ -107,12 +110,15 @@ namespace PixelCrushers.DialogueSystem
         /// <param name="skipExecution">IF set to <c>true</c>, doesn't run the Lua Script or OnExecute event on the initial entry.</param>
         public ConversationModel(DialogueDatabase database, string title, Transform actor, Transform conversant,
                                  bool allowLuaExceptions, IsDialogueEntryValidDelegate isDialogueEntryValid,
-                                 int initialDialogueEntryID = -1, bool stopAtFirstValid = false, bool skipExecution = false)
+                                 int initialDialogueEntryID = -1, bool stopAtFirstValid = false,
+                                 bool skipExecution = false, bool useLinearGroupMode = false)
         {
             this.m_allowLuaExceptions = allowLuaExceptions;
             this.m_database = database;
             this.conversationTitle = title;
             this.isDialogueEntryValid = isDialogueEntryValid;
+            this.stopAtFirstValid = stopAtFirstValid;
+            this.useLinearGroupMode = useLinearGroupMode;
             Conversation conversation = database.GetConversation(title);
             if (conversation != null)
             {
@@ -253,35 +259,11 @@ namespace PixelCrushers.DialogueSystem
                 DialogueLua.MarkDialogueEntryDisplayed(entry);
                 Lua.Run("thisID = " + entry.id);
                 SetDialogTable(entry.conversationID);
-                if (!skipExecution)
-                {
-                    Lua.Run(entry.userScript, DialogueDebug.logInfo, m_allowLuaExceptions);
-                    try
-                    {
-                        entry.onExecute.Invoke();
-                    }
-                    catch (System.Exception e)
-                    {
-                        if (DialogueDebug.logWarnings) Debug.LogWarning("Non-scene OnExecute() event failed on dialogue entry " + entry.conversationID + ":" + entry.id + ": " + e.Message);
-                    }
-                }
                 CharacterInfo actorInfo = GetCharacterInfo(entry.ActorID);
                 CharacterInfo listenerInfo = GetCharacterInfo(entry.ConversantID);
                 if (!skipExecution)
                 {
-                    var sceneEvent = DialogueSystemSceneEvents.GetDialogueEntrySceneEvent(entry.sceneEventGuid);
-                    var eventGameObject = (actorInfo.transform != null) ? actorInfo.transform.gameObject : DialogueManager.instance.gameObject;
-                    if (sceneEvent != null)
-                    {
-                        try
-                        {
-                            sceneEvent.onExecute.Invoke(eventGameObject);
-                        }
-                        catch (System.Exception e)
-                        {
-                            if (DialogueDebug.logWarnings) Debug.LogWarning("Scene OnExecute() event failed on dialogue entry " + entry.conversationID + ":" + entry.id + ": " + e.Message);
-                        }
-                    }
+                    ExecuteEntry(entry, actorInfo);
                 }
                 FormattedText formattedText = FormattedText.Parse(entry.subtitleText, m_database.emphasisSettings);
                 CheckSequenceField(entry);
@@ -297,7 +279,7 @@ namespace PixelCrushers.DialogueSystem
                     }
                     else
                     {
-                        EvaluateLinks(entry, npcResponses, pcResponses, new List<DialogueEntry>(), stopAtFirstValid, skipExecution);
+                        EvaluateLinks(entry, npcResponses, pcResponses, 0, new List<DialogueEntry>(), null, stopAtFirstValid, skipExecution);
                     }
                 }
                 return new ConversationState(subtitle, npcResponses.ToArray(), pcResponses.ToArray(), entry.isGroup);
@@ -305,6 +287,33 @@ namespace PixelCrushers.DialogueSystem
             else
             {
                 return null;
+            }
+        }
+
+        private void ExecuteEntry(DialogueEntry entry, CharacterInfo actorInfo)
+        {
+            // Run Lua Script and OnExecute UnityEvents:
+            Lua.Run(entry.userScript, DialogueDebug.logInfo, m_allowLuaExceptions);
+            try
+            {
+                entry.onExecute.Invoke();
+            }
+            catch (System.Exception e)
+            {
+                if (DialogueDebug.logWarnings) Debug.LogWarning("Non-scene OnExecute() event failed on dialogue entry " + entry.conversationID + ":" + entry.id + ": " + e.Message);
+            }
+            var sceneEvent = DialogueSystemSceneEvents.GetDialogueEntrySceneEvent(entry.sceneEventGuid);
+            var eventGameObject = (actorInfo.transform != null) ? actorInfo.transform.gameObject : DialogueManager.instance.gameObject;
+            if (sceneEvent != null)
+            {
+                try
+                {
+                    sceneEvent.onExecute.Invoke(eventGameObject);
+                }
+                catch (System.Exception e)
+                {
+                    if (DialogueDebug.logWarnings) Debug.LogWarning("Scene OnExecute() event failed on dialogue entry " + entry.conversationID + ":" + entry.id + ": " + e.Message);
+                }
             }
         }
 
@@ -342,7 +351,7 @@ namespace PixelCrushers.DialogueSystem
         /// </param>
         public ConversationState GetState(DialogueEntry entry)
         {
-            return GetState(entry, true);
+            return GetState(entry, true, stopAtFirstValid);
         }
 
         /// <summary>
@@ -353,7 +362,7 @@ namespace PixelCrushers.DialogueSystem
         {
             List<Response> npcResponses = new List<Response>();
             List<Response> pcResponses = new List<Response>();
-            EvaluateLinks(state.subtitle.dialogueEntry, npcResponses, pcResponses, new List<DialogueEntry>());
+            EvaluateLinks(state.subtitle.dialogueEntry, npcResponses, pcResponses, 0, new List<DialogueEntry>());
             state.npcResponses = npcResponses.ToArray();
             state.pcResponses = pcResponses.ToArray();
         }
@@ -374,6 +383,8 @@ namespace PixelCrushers.DialogueSystem
                 if (DialogueDebug.logWarnings) Debug.LogWarning(string.Format("{0}: Dialogue entry '{1}' Video File field is assigned but Sequence is blank. Cutscenes now use Sequence field.", new System.Object[] { DialogueDebug.Prefix, entry.currentDialogueText }));
             }
         }
+
+        private const int MaxEvaluateLinksDepth = 128;
 
         /// <summary>
         /// Evaluates a dialogue entry's links. Evaluation follows the same rules as Chat Mapper:
@@ -396,30 +407,40 @@ namespace PixelCrushers.DialogueSystem
         /// and get frozen in an infinite loop.
         /// </param>
         private void EvaluateLinks(DialogueEntry entry, List<Response> npcResponses, List<Response> pcResponses,
-                                   List<DialogueEntry> visited, bool stopAtFirstValid = false, bool skipExecution = false)
+                                   int depth, List<DialogueEntry> visited, List<DialogueEntry> groupsToDisallow = null,
+                                   bool stopAtFirstValid = false, bool skipExecution = false)
         {
+            if (depth > MaxEvaluateLinksDepth) return;
             if ((entry != null) && !visited.Contains(entry))
             {
                 visited.Add(entry);
+                if (groupsToDisallow == null) groupsToDisallow = new List<DialogueEntry>();
                 for (int i = (int)ConditionPriority.High; i >= 0; i--)
                 {
-                    EvaluateLinksAtPriority((ConditionPriority)i, entry, npcResponses, pcResponses, visited, stopAtFirstValid, skipExecution);
+                    EvaluateLinksAtPriority((ConditionPriority)i, entry, npcResponses, pcResponses, depth, visited, groupsToDisallow, stopAtFirstValid, skipExecution);
                     if ((npcResponses.Count > 0) || (pcResponses.Count > 0)) return;
                 }
             }
         }
 
         private void EvaluateLinksAtPriority(ConditionPriority priority, DialogueEntry entry, List<Response> npcResponses,
-                                             List<Response> pcResponses, List<DialogueEntry> visited,
+                                             List<Response> pcResponses, int depth, List<DialogueEntry> visited,
+                                             List<DialogueEntry> groupsToDisallow,
                                              bool stopAtFirstValid = false, bool skipExecution = false)
         {
+            if (depth > MaxEvaluateLinksDepth) return;
             if (entry != null)
             {
                 for (int ol = 0; ol < entry.outgoingLinks.Count; ol++)
                 {
                     var link = entry.outgoingLinks[ol];
                     DialogueEntry destinationEntry = m_database.GetDialogueEntry(link);
-                    if ((destinationEntry != null) && (/*(destinationEntry.conditionPriority == priority) ||*/ (link.priority == priority))) // Note: Only observe link priority. Why does Chat Mapper even have conditionPriority?
+
+                    if (destinationEntry == null) continue;
+
+                    if (groupsToDisallow.Contains(destinationEntry)) continue;
+
+                    if (link.priority == priority) // Note: Only observe link priority. Why does Chat Mapper even have conditionPriority?
                     {
                         CharacterType characterType = m_database.GetCharacterType(destinationEntry.ActorID);
                         Lua.Run("thisID = " + destinationEntry.id);
@@ -431,23 +452,39 @@ namespace PixelCrushers.DialogueSystem
                             // Condition is true (or blank), so add this link:
                             if (destinationEntry.isGroup)
                             {
-
                                 // For groups, evaluate their links (after running the group node's Lua code and OnExecute() event):
                                 if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: Evaluate Group ({1}): ID={2}:{3} '{4}' ({5})", new System.Object[] { DialogueDebug.Prefix, GetActorName(m_database.GetActor(destinationEntry.ActorID)), link.destinationConversationID, link.destinationDialogueID, destinationEntry.Title, isValid }));
                                 if (!skipExecution)
                                 {
-                                    Lua.Run(destinationEntry.userScript, DialogueDebug.logInfo, m_allowLuaExceptions);
-                                    destinationEntry.onExecute.Invoke();
+                                    ExecuteEntry(destinationEntry, actorInfo);
                                 }
                                 isValid = false; // Assume invalid until at least one group's child is true.
                                 for (int i = (int)ConditionPriority.High; i >= 0; i--)
                                 {
                                     int originalResponseCount = npcResponses.Count + pcResponses.Count;
-                                    EvaluateLinksAtPriority((ConditionPriority)i, destinationEntry, npcResponses, pcResponses, visited, stopAtFirstValid, skipExecution);
+                                    EvaluateLinksAtPriority((ConditionPriority)i, destinationEntry, npcResponses, pcResponses, depth + 1, visited, groupsToDisallow, stopAtFirstValid, skipExecution);
                                     if ((npcResponses.Count + pcResponses.Count) > originalResponseCount)
                                     {
                                         isValid = true;
+                                        if (stopAtFirstValid && npcResponses.Count > 0) return;
                                         break;
+                                    }
+                                }
+
+                                // Then, if linear mode, disallow lower priority sibling group nodes and later sibling group nodes:
+                                if (useLinearGroupMode)
+                                {
+                                    for (int i = 0; i < entry.outgoingLinks.Count; i++)
+                                    {
+                                        if (i == ol) continue;
+                                        var siblingLink = entry.outgoingLinks[i];
+                                        var disallowThis = (i > ol) || ((int)siblingLink.priority < (int)priority);
+                                        if (!disallowThis) continue;
+                                        DialogueEntry aDestinationEntry = m_database.GetDialogueEntry(siblingLink);
+                                        if (aDestinationEntry != null && aDestinationEntry.isGroup)
+                                        {
+                                            groupsToDisallow.Add(aDestinationEntry);
+                                        }
                                     }
                                 }
                             }
@@ -461,6 +498,8 @@ namespace PixelCrushers.DialogueSystem
 
                                     // Add NPC response:
                                     npcResponses.Add(new Response(FormattedText.Parse(destinationEntry.subtitleText, m_database.emphasisSettings), destinationEntry, isValid));
+
+                                    if (stopAtFirstValid && !DoesEntryRandomizeNextEntry(entry)) return;
                                 }
                                 else
                                 {
@@ -495,8 +534,7 @@ namespace PixelCrushers.DialogueSystem
                                     DialogueLua.MarkDialogueEntryOffered(destinationEntry);
                                 }
                             }
-                            if (isValid && stopAtFirstValid) return;
-
+                            //--- Moved to NPC section above: if (isValid && stopAtFirstValid) return;
                         }
                         else
                         {
@@ -507,7 +545,7 @@ namespace PixelCrushers.DialogueSystem
                                 if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: Passthrough on False Link ({1}): ID={2}:{3} '{4}' Condition='{5}'", new System.Object[] { DialogueDebug.Prefix, GetActorName(m_database.GetActor(destinationEntry.ActorID)), link.destinationConversationID, link.destinationDialogueID, GetLinkText(characterType, destinationEntry), destinationEntry.conditionsString }));
                                 List<Response> linkNpcResponses = new List<Response>();
                                 List<Response> linkPcResponses = new List<Response>();
-                                EvaluateLinks(destinationEntry, linkNpcResponses, linkPcResponses, visited);
+                                EvaluateLinks(destinationEntry, linkNpcResponses, linkPcResponses, depth + 1, visited, groupsToDisallow);
                                 npcResponses.AddRange(linkNpcResponses);
                                 pcResponses.AddRange(linkPcResponses);
                             }
@@ -519,6 +557,13 @@ namespace PixelCrushers.DialogueSystem
                     }
                 }
             }
+        }
+
+        private bool DoesEntryRandomizeNextEntry(DialogueEntry entry)
+        {
+            return entry != null &&
+                ((!string.IsNullOrEmpty(entry.conditionsString) && entry.conditionsString.Contains("RandomizeNextEntry()")) ||
+                 (!string.IsNullOrEmpty(entry.Sequence) && entry.Sequence.Contains("RandomizeNextEntry()")));
         }
 
         private string GetActorName(Actor actor)

@@ -467,16 +467,31 @@ namespace PixelCrushers.DialogueSystem
             numAccumulatedLines = 0;
         }
 
+        private Coroutine m_ShowContinueButtonCoroutine;
+
         public virtual void ShowContinueButton()
         {
+            if (m_ShowContinueButtonCoroutine != null)
+            {
+                DialogueManager.instance.StopCoroutine(m_ShowContinueButtonCoroutine);
+            }
             if (blockInputDuration > 0)
             {
-                DialogueManager.instance.StartCoroutine(ShowContinueButtonAfterBlockDuration());
+                m_ShowContinueButtonCoroutine = DialogueManager.instance.StartCoroutine(ShowContinueButtonAfterBlockDuration());
             }
             else
             {
                 ShowContinueButtonNow();
             }
+        }
+
+        public virtual void HideContinueButton()
+        {
+            if (m_ShowContinueButtonCoroutine != null)
+            {
+                DialogueManager.instance.StopCoroutine(m_ShowContinueButtonCoroutine);
+            }
+            Tools.SetGameObjectActive(continueButton, false);
         }
 
         protected virtual IEnumerator ShowContinueButtonAfterBlockDuration()
@@ -494,6 +509,7 @@ namespace PixelCrushers.DialogueSystem
             yield return DialogueManager.instance.StartCoroutine(DialogueTime.WaitForSeconds(blockInputDuration));
             continueButton.interactable = true;
             ShowContinueButtonNow();
+            m_ShowContinueButtonCoroutine = null;
         }
 
         protected virtual void ShowContinueButtonNow()
@@ -514,11 +530,6 @@ namespace PixelCrushers.DialogueSystem
                 }
             }
             shouldShowContinueButton = true;
-        }
-
-        public virtual void HideContinueButton()
-        {
-            Tools.SetGameObjectActive(continueButton, false);
         }
 
         /// <summary>
@@ -596,6 +607,11 @@ namespace PixelCrushers.DialogueSystem
 
         protected virtual void SetSubtitleTextContent(Subtitle subtitle)
         {
+            if (addSpeakerName && !string.IsNullOrEmpty(subtitle.speakerInfo.Name))
+            {
+                subtitle.formattedText.text = FormattedText.Parse(string.Format(addSpeakerNameFormat, new object[] { subtitle.speakerInfo.Name, subtitle.formattedText.text })).text;
+            }
+
             TypewriterUtility.StopTyping(subtitleText);
             var previousText = accumulateText ? m_accumulatedText : string.Empty;
             if (accumulateText && !string.IsNullOrEmpty(subtitle.formattedText.text))
@@ -676,11 +692,6 @@ namespace PixelCrushers.DialogueSystem
         protected virtual void SetFormattedText(UITextField textField, string previousText, Subtitle subtitle)
         {
             var currentText = UITools.GetUIFormattedText(subtitle.formattedText);
-            if (addSpeakerName && !string.IsNullOrEmpty(subtitle.speakerInfo.Name))
-            {
-                currentText = FormattedText.Parse(string.Format(addSpeakerNameFormat, new object[] { subtitle.speakerInfo.Name, currentText })).text;
-            }
-
             textField.text = previousText + currentText;
             UITools.SendTextChangeMessage(textField);
             if (!haveSavedOriginalColor)

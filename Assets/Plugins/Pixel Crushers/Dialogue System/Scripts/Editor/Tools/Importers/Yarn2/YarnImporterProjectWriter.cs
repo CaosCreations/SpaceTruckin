@@ -515,6 +515,15 @@ $@"local {RunCommandRuntimeArgumentList} = {Lua.EvaluateYarnExpression}({{1}})
                 return seqEntry;
             }
 
+            // Special case for the append command. Grab the previous line entry and append the sequence.
+            if (IsAppendSequence(stmt.Name))
+            {
+                var previousSequence = previousEntry.Sequence;
+                var appendedSequence = previousSequence.Trim() == string.Empty ? GenerateSequence(stmt) : previousSequence + "; " + GenerateSequence(stmt);
+                previousEntry.Sequence = appendedSequence;
+                return previousEntry;
+            }
+
             // Special case for the wait command.
             if (stmt.CommandType.IsWait())
             {
@@ -528,9 +537,9 @@ $@"local {RunCommandRuntimeArgumentList} = {Lua.EvaluateYarnExpression}({{1}})
                 }
                 else
                 {
-                    // var delayAmount = stmt.StringTokens[0].Value;
+                    delayAmount = stmt.StringTokens[0].Value;
                     Assert.IsTrue(stmt.StringTokens.Count >= 1, "Must have at least a single command statement argument for <<wait>>");
-                    seq = $"Delay({stmt.StringTokens[0].Value})";
+                    seq = $"Delay({delayAmount})";
                 }
 
                 var waitEntry = CreateDialogueEntry(
@@ -552,6 +561,8 @@ $@"local {RunCommandRuntimeArgumentList} = {Lua.EvaluateYarnExpression}({{1}})
 
             return cmdEntry;
         }
+
+        private bool IsAppendSequence(string name) => name == "appSeq" || name == "appendSequence";
 
         private DialogueEntry CreateAndAddDialogueEntries(LineStatement stmt, DialogueEntry previousEntry)
         {

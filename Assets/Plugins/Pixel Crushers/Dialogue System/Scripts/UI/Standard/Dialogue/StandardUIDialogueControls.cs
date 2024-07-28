@@ -74,6 +74,7 @@ namespace PixelCrushers.DialogueSystem
             m_standardSubtitleControls.Initialize(subtitlePanels, defaultNPCSubtitlePanel, defaultPCSubtitlePanel);
             m_standardMenuControls.Initialize(menuPanels, defaultMenuPanel, useFirstResponseForMenuPortrait);
             m_standardSubtitleControls.allowDialogueActorCustomPanels = allowDialogueActorCustomPanels;
+            m_standardMenuControls.allowDialogueActorCustomPanels = allowDialogueActorCustomPanels;
         }
 
         #endregion

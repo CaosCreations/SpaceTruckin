@@ -58,6 +58,8 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         [SerializeField]
         private string[] watchableQuestNames = null;
 
+        private bool watchedConversationTitlesFoldout = false;
+
         [SerializeField]
         private string luaCommand = string.Empty;
 
@@ -91,6 +93,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 EditorWindowTools.StartIndentedSection();
                 DrawGlobalWatchControls();
                 DrawWatches();
+                DrawConversationWatches();
                 EditorWindowTools.EndIndentedSection();
             }
         }
@@ -476,6 +479,34 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 result[i] = QuestLog.GetQuestEntry(questName, i);
             }
             return result;
+        }
+
+        #endregion
+
+        #region Conversation Watches
+
+        private void DrawConversationWatches()
+        {
+            watchedConversationTitlesFoldout = EditorGUILayout.Foldout(watchedConversationTitlesFoldout, "Active Conversations");
+            if (watchedConversationTitlesFoldout)
+            {
+                EditorWindowTools.StartIndentedSection();
+                foreach (var record in DialogueManager.instance.activeConversations)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUI.BeginDisabledGroup(true);
+                    EditorGUILayout.TextField(record.conversationTitle);
+                    EditorGUI.EndDisabledGroup();
+                    if (GUILayout.Button("View", GUILayout.Width(100)))
+                    {
+                        var entry = record.conversationController.currentState.subtitle.dialogueEntry;
+                        SelectDialogueEntry(entry.conversationID, entry.id);
+                        GUIUtility.ExitGUI();
+                    }
+                    EditorGUILayout.EndHorizontal();
+                }
+                EditorWindowTools.EndIndentedSection();
+            }
         }
 
         #endregion

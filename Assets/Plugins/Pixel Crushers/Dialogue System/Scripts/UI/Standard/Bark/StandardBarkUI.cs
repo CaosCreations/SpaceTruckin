@@ -198,7 +198,7 @@ namespace PixelCrushers.DialogueSystem
                 if (showPortraitImage && subtitle.speakerInfo.portrait != null)
                 {
                     Tools.SetGameObjectActive(portraitImage, true);
-                    portraitImage.sprite = subtitle.speakerInfo.portrait;
+                    portraitImage.sprite = subtitle.GetSpeakerPortrait();
                 }
                 else
                 {

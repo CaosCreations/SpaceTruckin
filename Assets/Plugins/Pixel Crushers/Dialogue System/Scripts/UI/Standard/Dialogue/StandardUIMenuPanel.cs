@@ -235,7 +235,14 @@ namespace PixelCrushers.DialogueSystem
             {
                 DisableInput();
                 if (InputDeviceManager.autoFocus) SetFocus(firstSelected);
-                Invoke(nameof(EnableInput), blockInputDuration);
+                if (Mathf.Approximately(0, Time.timeScale))
+                { 
+                    StartCoroutine(EnableInputAfterDuration(blockInputDuration));
+                }
+                else
+                {
+                    Invoke(nameof(EnableInput), blockInputDuration);
+                }
             }
             else
             {
@@ -245,6 +252,12 @@ namespace PixelCrushers.DialogueSystem
 #if TMP_PRESENT
             DialogueManager.instance.StartCoroutine(CheckTMProAutoScroll());
 #endif
+        }
+
+        private IEnumerator EnableInputAfterDuration(float duration)
+        {
+            yield return new WaitForSecondsRealtime(duration);
+            EnableInput();
         }
 
 #if TMP_PRESENT

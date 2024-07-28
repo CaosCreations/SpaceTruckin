@@ -895,24 +895,28 @@ namespace PixelCrushers
         /// <param name="savedGameData">Saved game data.</param>
         public static void ApplySavedGameData(SavedGameData savedGameData)
         {
-            if (savedGameData == null) return;
-            m_savedGameData = savedGameData;
-            if (m_savers.Count <= 0) return;
-            m_tmpSavers.Clear();
-            m_tmpSavers.AddRange(m_savers); // Make a copy in case a saver ends up removing multiple savers.
-            for (int i = m_tmpSavers.Count - 1; i >= 0; i--) // A saver may remove itself from list during apply.
+            if (savedGameData != null)
             {
-                try
+                m_savedGameData = savedGameData;
+                if (m_savers.Count > 0)
                 {
-                    if (0 <= i && i < m_tmpSavers.Count)
+                    m_tmpSavers.Clear();
+                    m_tmpSavers.AddRange(m_savers); // Make a copy in case a saver ends up removing multiple savers.
+                    for (int i = m_tmpSavers.Count - 1; i >= 0; i--) // A saver may remove itself from list during apply.
                     {
-                        var saver = m_tmpSavers[i];
-                        if (saver != null) saver.ApplyData(savedGameData.GetData(saver.key));
+                        try
+                        {
+                            if (0 <= i && i < m_tmpSavers.Count)
+                            {
+                                var saver = m_tmpSavers[i];
+                                if (saver != null) saver.ApplyData(savedGameData.GetData(saver.key));
+                            }
+                        }
+                        catch (System.Exception e)
+                        {
+                            Debug.LogException(e);
+                        }
                     }
-                }
-                catch (System.Exception e)
-                {
-                    Debug.LogException(e);
                 }
             }
             if (framesToWaitBeforeSaveDataAppliedEvent == 0 || instance == null)
@@ -1041,22 +1045,24 @@ namespace PixelCrushers
         // Calls ApplyDataImmediate on all savers.
         private static void ApplyDataImmediate()
         {
-            if (m_savers.Count <= 0) return;
-            m_tmpSavers.Clear();
-            m_tmpSavers.AddRange(m_savers); // Make a copy in case a saver ends up removing multiple savers.
-            for (int i = m_tmpSavers.Count - 1; i >= 0; i--) // A saver may remove itself from list during apply.
+            if (m_savers.Count > 0)
             {
-                try
+                m_tmpSavers.Clear();
+                m_tmpSavers.AddRange(m_savers); // Make a copy in case a saver ends up removing multiple savers.
+                for (int i = m_tmpSavers.Count - 1; i >= 0; i--) // A saver may remove itself from list during apply.
                 {
-                    if (0 <= i && i < m_tmpSavers.Count)
+                    try
                     {
-                        var saver = m_tmpSavers[i];
-                        if (saver != null) saver.ApplyDataImmediate();
+                        if (0 <= i && i < m_tmpSavers.Count)
+                        {
+                            var saver = m_tmpSavers[i];
+                            if (saver != null) saver.ApplyDataImmediate();
+                        }
                     }
-                }
-                catch (System.Exception e)
-                {
-                    Debug.LogException(e);
+                    catch (System.Exception e)
+                    {
+                        Debug.LogException(e);
+                    }
                 }
             }
         }

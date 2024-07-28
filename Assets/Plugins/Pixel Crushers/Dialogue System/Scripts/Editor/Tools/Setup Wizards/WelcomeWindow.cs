@@ -225,10 +225,10 @@ namespace PixelCrushers.DialogueSystem
                 if (string.Equals(ScriptingSymbolNames.USE_NAVMESH, defines[i].Trim())) define_USE_NAVMESH = true;
             }
 #if EVALUATION_VERSION || ACADEMIC
-            //define_USE_PHYSICS2D = true;
+            define_USE_PHYSICS2D = true;
             define_USE_NEW_INPUT = false;
             define_USE_ADDRESSABLES = false;
-            //define_TMP_PRESENT = true;
+            define_TMP_PRESENT = true;
             define_USE_STM = false;
             define_USE_NAVMESH = true;
             define_USE_ARCWEAVE = false;

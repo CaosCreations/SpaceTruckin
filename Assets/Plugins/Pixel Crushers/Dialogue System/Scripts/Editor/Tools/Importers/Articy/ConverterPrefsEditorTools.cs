@@ -30,6 +30,7 @@ namespace PixelCrushers.DialogueSystem.Articy
         private const string ArticyConversionSettingsKey = "PixelCrushers.DialogueSystem.ArticyConversionSettings";
         private const string ArticyEncodingKey = "PixelCrushers.DialogueSystem.ArticyEncoding";
         private const string ArticyRecursionKey = "PixelCrushers.DialogueSystem.ArticyRecursion";
+        private const string ArticyInstructionsKey = "PixelCrushers.DialogueSystem.ArticyInstructions";
         private const string ArticyDropdownsKey = "PixelCrushers.DialogueSystem.ArticyDropdowns";
         private const string ArticySlotsKey = "PixelCrushers.DialogueSystem.ArticySlots";
         private const string ArticyUseTechnicalNamesKey = "PixelCrushers.DialogueSystem.UseTechnicalNames";
@@ -39,6 +40,8 @@ namespace PixelCrushers.DialogueSystem.Articy
         private const string ArticyConvertMarkupToRichTextKey = "PixelCrushers.DialogueSystem.ArticyConvertMarkupToRichText";
         private const string ArticySplitTextOnPipesKey = "PixelCrushers.DialogueSystem.SplitTextOnPipes";
         private const string ArticyTrimWhitespaceKey = "PixelCrushers.DialogueSystem.TrimWhitespace";
+        private const string ArticyReorderIDsKey = "PixelCrushers.DialogueSystem.ArticyReorderIDs";
+        private const string ArticyDelayEvaluationKey = "PixelCrushers.DialogueSystem.DelayEvaluation";
         private const string ArticyFlowFragmentScriptKey = "PixelCrushers.DialogueSystem.ArticyFlowFragmentScript";
         private const string ArticyVoiceOverPropertyKey = "PixelCrushers.DialogueSystem.ArticyVoiceOverPropertyKey";
         private const string ArticyLocalizationXlsKey = "PixelCrushers.DialogueSystem.ArticyLocalizationXlsxKey";
@@ -62,6 +65,7 @@ namespace PixelCrushers.DialogueSystem.Articy
             converterPrefs.ConversionSettings = ConversionSettings.FromXml(EditorPrefs.GetString(ArticyConversionSettingsKey));
             converterPrefs.EncodingType = EditorPrefs.HasKey(ArticyEncodingKey) ? (EncodingType)EditorPrefs.GetInt(ArticyEncodingKey) : EncodingType.Default;
             converterPrefs.RecursionMode = EditorPrefs.HasKey(ArticyRecursionKey) ? (ConverterPrefs.RecursionModes)EditorPrefs.GetInt(ArticyRecursionKey) : ConverterPrefs.RecursionModes.On;
+            converterPrefs.ConvertInstructionsAs = EditorPrefs.HasKey(ArticyInstructionsKey) ? (ConverterPrefs.CodeNodeMode)EditorPrefs.GetInt(ArticyInstructionsKey) : ConverterPrefs.CodeNodeMode.RegularEntry;
             converterPrefs.ConvertDropdownsAs = EditorPrefs.HasKey(ArticyDropdownsKey) ? (ConverterPrefs.ConvertDropdownsModes)EditorPrefs.GetInt(ArticyDropdownsKey) : ConverterPrefs.ConvertDropdownsModes.Int;
             converterPrefs.ConvertSlotsAs = EditorPrefs.HasKey(ArticySlotsKey) ? (ConverterPrefs.ConvertSlotsModes)EditorPrefs.GetInt(ArticySlotsKey) : ConverterPrefs.ConvertSlotsModes.DisplayName;
             converterPrefs.UseTechnicalNames = EditorPrefs.GetBool(ArticyUseTechnicalNamesKey, false);
@@ -71,6 +75,8 @@ namespace PixelCrushers.DialogueSystem.Articy
             converterPrefs.ConvertMarkupToRichText = EditorPrefs.GetBool(ArticyConvertMarkupToRichTextKey, true);
             converterPrefs.SplitTextOnPipes = EditorPrefs.GetBool(ArticySplitTextOnPipesKey, true);
             converterPrefs.TrimWhitespace = EditorPrefs.GetBool(ArticyTrimWhitespaceKey, true);
+            converterPrefs.ReorderIDs = EditorPrefs.GetBool(ArticyReorderIDsKey, true);
+            converterPrefs.DelayEvaluation = EditorPrefs.GetBool(ArticyDelayEvaluationKey, true);
             converterPrefs.FlowFragmentScript = EditorPrefs.GetString(ArticyFlowFragmentScriptKey, ConverterPrefs.DefaultFlowFragmentScript);
             converterPrefs.VoiceOverProperty = EditorPrefs.GetString(ArticyVoiceOverPropertyKey, ConverterPrefs.DefaultVoiceOverProperty);
             converterPrefs.LocalizationXlsx = EditorPrefs.GetString(ArticyLocalizationXlsKey);
@@ -95,6 +101,7 @@ namespace PixelCrushers.DialogueSystem.Articy
             EditorPrefs.SetString(ArticyConversionSettingsKey, converterPrefs.ConversionSettings.ToXml());
             EditorPrefs.SetInt(ArticyEncodingKey, (int)converterPrefs.EncodingType);
             EditorPrefs.SetInt(ArticyRecursionKey, (int)converterPrefs.RecursionMode);
+            EditorPrefs.SetInt(ArticyInstructionsKey, (int)converterPrefs.ConvertInstructionsAs);
             EditorPrefs.SetInt(ArticyDropdownsKey, (int)converterPrefs.ConvertDropdownsAs);
             EditorPrefs.SetInt(ArticySlotsKey, (int)converterPrefs.ConvertSlotsAs);
             EditorPrefs.SetBool(ArticyUseTechnicalNamesKey, converterPrefs.UseTechnicalNames);
@@ -104,6 +111,8 @@ namespace PixelCrushers.DialogueSystem.Articy
             EditorPrefs.SetBool(ArticyConvertMarkupToRichTextKey, converterPrefs.ConvertMarkupToRichText);
             EditorPrefs.SetBool(ArticySplitTextOnPipesKey, converterPrefs.SplitTextOnPipes);
             EditorPrefs.SetBool(ArticyTrimWhitespaceKey, converterPrefs.TrimWhitespace);
+            EditorPrefs.SetBool(ArticyReorderIDsKey, converterPrefs.ReorderIDs);
+            EditorPrefs.SetBool(ArticyDelayEvaluationKey, converterPrefs.DelayEvaluation);
             EditorPrefs.SetString(ArticyFlowFragmentScriptKey, converterPrefs.FlowFragmentScript);
             EditorPrefs.SetString(ArticyVoiceOverPropertyKey, converterPrefs.VoiceOverProperty);
             EditorPrefs.SetString(ArticyLocalizationXlsKey, converterPrefs.LocalizationXlsx);
@@ -127,6 +136,7 @@ namespace PixelCrushers.DialogueSystem.Articy
             EditorPrefs.DeleteKey(ArticyConversionSettingsKey);
             EditorPrefs.DeleteKey(ArticyEncodingKey);
             EditorPrefs.DeleteKey(ArticyRecursionKey);
+            EditorPrefs.DeleteKey(ArticyInstructionsKey);
             EditorPrefs.DeleteKey(ArticyDropdownsKey);
             EditorPrefs.DeleteKey(ArticySlotsKey);
             EditorPrefs.DeleteKey(ArticyUseTechnicalNamesKey);
@@ -136,6 +146,8 @@ namespace PixelCrushers.DialogueSystem.Articy
             EditorPrefs.DeleteKey(ArticyConvertMarkupToRichTextKey);
             EditorPrefs.DeleteKey(ArticySplitTextOnPipesKey);
             EditorPrefs.DeleteKey(ArticyTrimWhitespaceKey);
+            EditorPrefs.DeleteKey(ArticyReorderIDsKey);
+            EditorPrefs.DeleteKey(ArticyDelayEvaluationKey);
             EditorPrefs.DeleteKey(ArticyFlowFragmentScriptKey);
             EditorPrefs.DeleteKey(ArticyVoiceOverPropertyKey);
             EditorPrefs.DeleteKey(ArticyLocalizationXlsKey);

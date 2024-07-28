@@ -206,6 +206,16 @@ namespace PixelCrushers.DialogueSystem
         public static ConversationView conversationView { get { return hasInstance ? instance.conversationView : null; } }
 
         /// <summary>
+        /// Reevaluate links after showing subtitle in case subtitle Sequence or OnConversationLine changes link conditions. If you know this can't happen, you can UNtick this checkbox to improve performance.
+        /// </summary>
+        public static bool reevaluateLinksAfterSubtitle { get { return hasInstance ? instance.reevaluateLinksAfterSubtitle : true; } }
+
+        /// <summary>
+        /// If a group node's Conditions are true, don't evaluate sibling group nodes.
+        /// </summary>
+        public static bool useLinearGroupMode { get { return hasInstance ? instance.useLinearGroupMode : false; } }
+
+        /// <summary>
         /// If <c>true</c>, Dialogue System Triggers set to OnStart should wait until save data has been applied or variables initialized.
         /// </summary>
         public static bool onStartTriggerWaitForSaveDataApplied

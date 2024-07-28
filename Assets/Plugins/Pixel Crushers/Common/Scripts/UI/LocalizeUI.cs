@@ -287,9 +287,12 @@ namespace PixelCrushers
                 else
                 {
                     textMeshPro.text = GetLocalizedText(fieldName);
-                    if (localizedTextMeshProFont != null) textMeshPro.font = localizedTextMeshProFont;
-                    textMeshPro.enabled = false;
-                    textMeshPro.enabled = true;
+                    if (localizedTextMeshProFont != null) 
+                    {
+                        textMeshPro.font = localizedTextMeshProFont;
+                        textMeshPro.enabled = false;
+                        textMeshPro.enabled = true;
+                    }
                 }
             }
             if (textMeshProUGUI != null)

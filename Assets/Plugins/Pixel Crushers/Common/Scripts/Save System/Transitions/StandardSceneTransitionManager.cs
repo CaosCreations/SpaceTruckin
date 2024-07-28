@@ -80,7 +80,7 @@ namespace PixelCrushers
 
         public override IEnumerator EnterScene()
         {
-            yield return endOfFrame; 
+            if (string.IsNullOrEmpty(loadingSceneName)) yield return endOfFrame; 
             enterSceneTransition.onTransitionStart.Invoke();
             var startTime = Time.realtimeSinceStartup;
             var minAnimationTime = startTime + enterSceneTransition.animationDuration;

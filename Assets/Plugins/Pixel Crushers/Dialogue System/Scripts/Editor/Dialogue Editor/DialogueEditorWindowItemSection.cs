@@ -334,6 +334,15 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private void ToggleSyncItemsFromDB()
         {
             database.syncInfo.syncItems = !database.syncInfo.syncItems;
+            if (!database.syncInfo.syncItems && database.syncInfo.syncItemsDatabase != null)
+            {
+                if (EditorUtility.DisplayDialog("Disconnect Synced DB",
+                    "Also delete synced items/quests from this database?", "Yes", "No"))
+                {
+                    database.items.RemoveAll(x => syncedItemIDs.Contains(x.id));
+                }
+            }
+            InitializeItemReorderableList();
             SetDatabaseDirty("Toggle Sync Items");
         }
 
@@ -376,7 +385,32 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private void DrawItemPropertiesFirstPart(Item item)
         {
-            if (!item.IsItem) DrawQuestProperties(item);
+            if (item.IsItem)
+            {
+                DrawItemProperties(item);
+            }
+            else
+            {
+                DrawQuestProperties(item);
+            }
+        }
+
+        private void DrawItemProperties(Item item)
+        {
+            if (item == null || item.fields == null) return;
+            DrawOtherItemPrimaryFields(item);
+        }
+
+        private void DrawOtherItemPrimaryFields(Item item)
+        {
+            if (item == null || item.fields == null || template.itemPrimaryFieldTitles== null) return;
+            foreach (var field in item.fields)
+            {
+                var fieldTitle = field.title;
+                if (string.IsNullOrEmpty(fieldTitle)) continue;
+                if (!template.itemPrimaryFieldTitles.Contains(field.title)) continue;
+                DrawMainSectionField(field);
+            }
         }
 
         private void DrawQuestProperties(Item item)

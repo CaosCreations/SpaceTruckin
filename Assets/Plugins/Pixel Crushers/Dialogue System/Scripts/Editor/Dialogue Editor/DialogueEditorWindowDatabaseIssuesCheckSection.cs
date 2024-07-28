@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 using System;
+using System.Text.RegularExpressions;
 #if USE_ADDRESSABLES
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -36,9 +37,16 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             }
             if (GUILayout.Button(new GUIContent("Find Orphan Nodes", "Report dialogue entries that don't have links to them.")))
             {
-                if (EditorUtility.DisplayDialog("FindOrphanNodes", "Report dialogue entries that don't have links to them. Continue?", "OK", "Cancel"))
+                if (EditorUtility.DisplayDialog("Find Orphan Nodes", "Report dialogue entries that don't have links to them. Continue?", "OK", "Cancel"))
                 {
                     CheckForOrphanNodes();
+                }
+            }
+            if (GUILayout.Button(new GUIContent("Find Undefined Variables", "Report instances where a variable is referenced but it's not defined in the dialogue database's Variable section.")))
+            {
+                if (EditorUtility.DisplayDialog("Find Undefined Variables", "Report instances where a variable is referenced but it's not defined in the dialogue database's Variable section. This is generally fine because you don't need to predefine variables in Lua, but you may want to know anyway. Continue?", "OK", "Cancel"))
+                {
+                    CheckUndefinedVariables();
                 }
             }
             if (GUILayout.Button(new GUIContent("Check Entrytag Audio", "Check if each non-blank entry has a corresponding entrytag audio file in Addressables or Resources.")))
@@ -129,7 +137,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             {
                 issuesReport = "Orphaned Dialogue Entries:\n";
                 float progress = 0;
-                if (EditorUtility.DisplayCancelableProgressBar("", "", progress)) return;
+                if (EditorUtility.DisplayCancelableProgressBar("Chekc Orphaned Dialogue Entries", "Checking...", progress)) return;
 
                 // Make a list of all entries:
                 var allEntries = new Dictionary<int, List<int>>();
@@ -183,6 +191,87 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             finally
             {
                 EditorUtility.ClearProgressBar();
+            }
+        }
+
+        private void CheckUndefinedVariables()
+        {
+            try
+            {
+                issuesReport = "Undefined Variables:\n";
+                float progress = 0;
+                int count = 0;
+                if (EditorUtility.DisplayCancelableProgressBar("Check Undefined Variables", "", progress)) return;
+
+                // Make a quick lookup hash of all defined variables:
+                var definedVariables = new HashSet<string>();
+                database.variables.ForEach(variable => definedVariables.Add(DialogueLua.StringToTableIndex(variable.Name)));
+
+                // Go through all quests and dialogue entries:
+                var total = database.items.Count + database.conversations.Count;
+                var undefinedVariables = new Dictionary<string, string>();
+                foreach (var quest in database.items)
+                {
+                    if (quest.IsItem) continue;
+                    var questName = quest.Name;
+                    foreach (var field in quest.fields)
+                    {
+                        count++;
+                        progress = (float)count / (float)total;
+                        if (EditorUtility.DisplayCancelableProgressBar("Check Undefined Variables", questName, progress)) return;
+                        CheckUndefinedVariablesInField(questName, field, definedVariables, undefinedVariables);
+                    }
+                }
+                foreach (var conversation in database.conversations)
+                {
+                    var conversationTitle = conversation.Title;
+                    count++;
+                    progress = (float)count / (float)total;
+                    if (EditorUtility.DisplayCancelableProgressBar("Check Undefined Variables", conversationTitle, progress)) return;
+                    foreach (var entry in conversation.dialogueEntries)
+                    {
+                        var entryID = $"{conversationTitle}[{entry.id}]";
+                        foreach (var field in entry.fields)
+                        {
+                            CheckUndefinedVariablesInField(entryID, field, definedVariables, undefinedVariables);
+                        }
+                    }
+                }
+
+                // Report defined variables:
+                foreach (var kvp in undefinedVariables)
+                {
+                    issuesReport += $"{kvp.Value}\n";
+                }
+                issuesReport += $"{undefinedVariables.Count} undefined variables found.";
+            }
+            finally
+            {
+                EditorUtility.ClearProgressBar();
+            }
+        }
+
+        private static Regex VarTagRegex = new Regex(@"\[var=[^\]]+\]");
+
+        private void CheckUndefinedVariablesInField(string assetName, Field field, 
+            HashSet<string> definedVariables, 
+            Dictionary<string, string> undefinedVariables)
+        {
+            foreach (Match match in VarTagRegex.Matches(field.value))
+            {
+                var varName = DialogueLua.StringToTableIndex(match.Value.Substring(5, match.Value.Length - 6));
+                if (!definedVariables.Contains(varName))
+                {
+                    if (!undefinedVariables.ContainsKey(varName))
+                    {
+                        undefinedVariables.Add(varName, $"{varName}: In ");
+                    }
+                    else
+                    {
+                        undefinedVariables[varName] += ", ";
+                    }
+                    undefinedVariables[varName] += $"{assetName}.{field.title}";
+                }
             }
         }
 

@@ -67,12 +67,15 @@ namespace PixelCrushers.DialogueSystem
         }
 #endif
 
-    protected bool m_trying = false;
+        protected bool m_trying = false;
         protected Coroutine m_destroyCoroutine = null;
         protected int m_numActiveCoroutines = 0;
+        protected DialogueDatabase[] databaseInstances = null;
 
         protected virtual void TryAddDatabases(Transform interactor, bool onePerFrame)
         {
+            if (DialogueManager.instance == null) return;
+
             if (!m_trying)
             {
                 m_trying = true;
@@ -92,6 +95,26 @@ namespace PixelCrushers.DialogueSystem
 
         public virtual void AddDatabases(bool onePerFrame)
         {
+            if (DialogueManager.instance.instantiateDatabase)
+            {
+                if (databaseInstances != null && databaseInstances.Length != databases.Length)
+                {
+                    foreach (var instance in databaseInstances)
+                    {
+                        Destroy(instance);
+                    }
+                    databaseInstances = null;
+                }
+                if (databaseInstances == null)
+                {
+                    databaseInstances = new DialogueDatabase[databases.Length];
+                    for (int i = 0; i < databases.Length; i++)
+                    {
+                        databaseInstances[i] = Instantiate(databases[i]);
+                    }
+                }
+            }
+
             if (onePerFrame)
             {
                 StartCoroutine(AddDatabasesCoroutine());
@@ -104,9 +127,16 @@ namespace PixelCrushers.DialogueSystem
 
         protected virtual void AddDatabasesImmediate()
         {
-            foreach (var database in databases)
+            for (int i = 0; i < databases.Length; i++)
             {
-                AddDatabase(database);
+                if (DialogueManager.instance.instantiateDatabase)
+                {
+                    AddDatabase(databaseInstances[i]);
+                }
+                else
+                {
+                    AddDatabase(databases[i]);
+                }
             }
             addedDatabases();
             if (once) Destroy(this);
@@ -116,9 +146,16 @@ namespace PixelCrushers.DialogueSystem
         {
             m_numActiveCoroutines++;
             if (once && m_destroyCoroutine == null) m_destroyCoroutine = StartCoroutine(DestroyCoroutine());
-            foreach (var database in databases)
+            for (int i = 0; i < databases.Length; i++)
             {
-                AddDatabase(database);
+                if (DialogueManager.instance.instantiateDatabase)
+                {
+                    AddDatabase(databaseInstances[i]);
+                }
+                else
+                {
+                    AddDatabase(databases[i]);
+                }
                 yield return null;
             }
             addedDatabases();
@@ -136,6 +173,8 @@ namespace PixelCrushers.DialogueSystem
 
         protected virtual void TryRemoveDatabases(Transform interactor, bool onePerFrame)
         {
+            if (DialogueManager.instance == null) return;
+
             if (!m_trying)
             {
                 m_trying = true;
@@ -239,6 +278,13 @@ namespace PixelCrushers.DialogueSystem
         {
             if (addTrigger == DialogueTriggerEvent.OnDestroy) TryAddDatabases(null, false); // Can't run coroutine when destroyed.
             if (removeTrigger == DialogueTriggerEvent.OnDestroy) TryRemoveDatabases(null, false);
+            if (databaseInstances != null)
+            {
+                foreach (var databaseInstance in databaseInstances)
+                {
+                    Destroy(databaseInstance);
+                }
+            }
         }
 
         public virtual void OnUse(Transform actor)

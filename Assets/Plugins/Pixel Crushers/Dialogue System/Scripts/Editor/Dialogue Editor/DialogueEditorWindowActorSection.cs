@@ -223,6 +223,14 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private void ToggleSyncActorsFromDB()
         {
             database.syncInfo.syncActors = !database.syncInfo.syncActors;
+            if (!database.syncInfo.syncActors && database.syncInfo.syncActorsDatabase != null)
+            {
+                if (EditorUtility.DisplayDialog("Disconnect Synced DB", 
+                    "Also delete synced actors from this database?\n(Will not delete ID 1, typically Player.)", "Yes", "No"))
+                { 
+                    database.actors.RemoveAll(x => syncedActorIDs.Contains(x.id) && x.id != 1);
+                }
+            }
             InitializeActorReorderableList();
             SetDatabaseDirty("Toggle Sync Actors");
         }
