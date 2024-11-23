@@ -32,6 +32,7 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
         public bool importPortraits = true;
         public bool importDialogueEntryAttributes = false;
         public bool importGuids = false;
+        public DialogueEntrySortMethod dialogueEntrySortMethod = DialogueEntrySortMethod.No;
         public int numPlayers = 1;
         public string globalVariables = "day, time";
 
@@ -64,6 +65,7 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
         protected static GUIContent ImportPortraitsLabel = new GUIContent("Import Portraits", "Import portrait images from image files in Arcweave project folder.");
         protected static GUIContent ImportDialogueEntryAttributesLabel = new GUIContent("Import Dialogue Attributes", "Import dialogue element attributes as custom fields in dialogue entries.");
         protected static GUIContent ImportGuidsLabel = new GUIContent("Import Guids As Fields", "Add Guid field containing GUID for each object (element, component, etc.) imported from Arcweave project.");
+        protected static GUIContent DialogueEntrySortMethodLabel = new GUIContent("Sort Dialogue Entries?", "Sort dialogue entry IDs. Puts them in more readable order for translation spreadsheets.");
         protected static GUIContent NumPlayersLabel = new GUIContent("# Player Actors", "Set to 1 for single player games. Increase for local multiplayer games. Will create player-specific versions of variables.");
         protected static GUIContent GlobalVariablesLabel = new GUIContent("Global Variables", "Comma-separated list of global variables. Arcscript/Lua code referencing global variables that aren't player-specific. Importer won't prepend 'Player#_' to front of variable name.");
 
@@ -79,7 +81,7 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
         public static ArcweaveImporterWindow Init()
         {
             var window = EditorWindow.GetWindow<ArcweaveImporterWindow>(false, "Arcweave Import");
-            window.minSize = new Vector2(840f, 300f);
+            window.minSize = new Vector2(416f, 300f);
             return window;
         }
 
@@ -245,6 +247,11 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
         {
             if (!arcweaveImporter.IsJsonLoaded()) return;
             prefs.importDialogueEntryAttributes = EditorGUILayout.Toggle(ImportDialogueEntryAttributesLabel, prefs.importDialogueEntryAttributes);
+            // [TODO] Support breadth-first, too: prefs.dialogueEntrySortMethod = (DialogueEntrySortMethod)EditorGUILayout.EnumPopup(DialogueEntrySortMethodLabel, prefs.dialogueEntrySortMethod);
+            var sort = prefs.dialogueEntrySortMethod == DialogueEntrySortMethod.DepthFirst;
+            prefs.dialogueEntrySortMethod = EditorGUILayout.Toggle(DialogueEntrySortMethodLabel, sort) 
+                ? DialogueEntrySortMethod.DepthFirst : DialogueEntrySortMethod.No;
+            
         }
 
         protected virtual void DrawImportGuidSection()
@@ -286,9 +293,21 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
         protected override void DrawConversionButtons()
         {
             EditorGUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
+            //GUILayout.FlexibleSpace(); //--- Removed; causes width issues in narrow windows.
             DrawLoadJsonButtons();
+            if (position.width < 628)
+            {
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.BeginHorizontal();
+                //GUILayout.FlexibleSpace();
+            }
             DrawSaveLoadPrefsButtons();
+            if (position.width < 416)
+            {
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.BeginHorizontal();
+                //GUILayout.FlexibleSpace();
+            }
             DrawClearButton();
             DrawConvertButton();
             EditorGUILayout.EndHorizontal();
@@ -477,6 +496,17 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
         {
             base.TouchUpDialogueDatabase(database);
             arcweaveImporter.TouchUpDialogueDatabase(database);
+            SortDialogueEntries(database);
+        }
+
+        protected void SortDialogueEntries(DialogueDatabase database)
+        {
+            switch (prefs.dialogueEntrySortMethod)
+            {
+                case DialogueEntrySortMethod.DepthFirst:
+                    DialogueDatabaseEditorTools.ReorderIDsInConversationsDepthFirst(database);
+                    break;
+            }
         }
 
         #endregion

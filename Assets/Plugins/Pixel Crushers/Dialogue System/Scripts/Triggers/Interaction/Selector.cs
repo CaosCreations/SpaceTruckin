@@ -102,6 +102,12 @@ namespace PixelCrushers.DialogueSystem
         public bool raycastAll = false;
 
         /// <summary>
+        /// When Select At is set to Mouse Position, allow selection even when mouse is over a UI object. If unticked, don't select when mouse is blocked by a UI object.
+        /// </summary>
+        [Tooltip("When Select At is set to Mouse Position, allow selection even when mouse is over a UI object. If unticked, don't select when mouse is blocked by a UI object.")]
+        public bool selectBehindUIObjects = false;
+
+        /// <summary>
         /// If <c>true</c>, uses a default OnGUI to display a selection message and
         /// targeting reticle.
         /// </summary>
@@ -325,7 +331,13 @@ namespace PixelCrushers.DialogueSystem
 
 #if !USE_NEW_INPUT // (In new Input System, IsPointerOverGameObject returns true for all GameObjects, not just UI objects, so skip this check until Input System is fixed.)
             // Exit if using mouse selection and is over a UI element:
-            if ((selectAt == SelectAt.MousePosition) && (eventSystem != null) && eventSystem.IsPointerOverGameObject()) return;
+            if ((selectAt == SelectAt.MousePosition) &&
+                !selectBehindUIObjects &&
+                (eventSystem != null) &&
+                eventSystem.IsPointerOverGameObject())
+            {
+                return;
+            }
 #endif
 
             // Raycast 2D or 3D:

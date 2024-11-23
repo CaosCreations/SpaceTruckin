@@ -181,7 +181,14 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 SetDatabaseDirty("Add Field");
             }
             EditorGUILayout.EndHorizontal();
-            if (foldouts.fields[index]) DrawFieldsSection(asset.fields);
+            if (foldouts.fields[index])
+            {
+                DrawFieldsSection(asset.fields);
+            }
+            else
+            {
+                CheckFields(asset.fields);
+            }
             if (EditorGUI.EndChangeCheck())
             {
                 if (asset is Item) BuildLanguageListFromFields(asset.fields);

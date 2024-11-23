@@ -118,6 +118,11 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
+        public virtual void CloseImmediately()
+        {
+            CloseNow();
+        }
+
         protected virtual void CloseNow()
         {
             base.Close();
@@ -318,6 +323,11 @@ namespace PixelCrushers.DialogueSystem
             conversationUIElements.standardSubtitleControls.OverrideActorPanel(actor, subtitlePanelNumber, null, immediate);
         }
 
+        public virtual void OverrideActorPanel(Actor actor, SubtitlePanelNumber subtitlePanelNumber, StandardUISubtitlePanel customPanel, bool immediate = false)
+        {
+            conversationUIElements.standardSubtitleControls.OverrideActorPanel(actor, subtitlePanelNumber, customPanel, immediate);
+        }
+
         public virtual void ForceOverrideSubtitlePanel(StandardUISubtitlePanel customPanel)
         {
             conversationUIElements.standardSubtitleControls.ForceOverrideSubtitlePanel(customPanel);
@@ -367,8 +377,11 @@ namespace PixelCrushers.DialogueSystem
 
         public override void OnClick(object data)
         {
-            conversationUIElements.standardMenuControls.MakeButtonsNonclickable();
-            base.OnClick(data);
+            if (data is Response)
+            {
+                conversationUIElements.standardMenuControls.MakeButtonsNonclickable();
+                base.OnClick(data);
+            }
         }
 
         public virtual void OverrideActorMenuPanel(Transform actorTransform, MenuPanelNumber menuPanelNumber, StandardUIMenuPanel customPanel)

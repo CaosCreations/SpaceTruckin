@@ -433,7 +433,7 @@ namespace PixelCrushers.DialogueSystem
                 }
 
                 // Abandon button:
-                if (currentQuestStateMask == QuestState.Active && QuestLog.IsQuestAbandonable(quest.Title))
+                if (isShowingActiveQuests && QuestLog.IsQuestAbandonable(quest.Title))
                 {
                     var abandonButtonInstance = detailsPanelContentManager.Instantiate<StandardUIButtonTemplate>(abandonButtonTemplate);
                     detailsPanelContentManager.Add(abandonButtonInstance, questDetailsContentContainer);

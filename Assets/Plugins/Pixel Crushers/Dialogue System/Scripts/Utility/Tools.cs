@@ -346,7 +346,7 @@ namespace PixelCrushers.DialogueSystem
         }
 
         public static Regex TextMeshProTagsRegex = new Regex(@"<[Bb]>|</[Bb]>|<[Ii]>|</[Ii]>|<color=[#]?\w+>|<color=""\w+"">|</color>|<#\w+>|" +
-                @"<align=\w+>|</align>|<font=[^>]+>|</font>|<indent=\w+\%>|<indent=\w+>|</indent>|" +
+                @"<align=[^>]+>|</align>|<font=[^>]+>|</font>|<indent=\w+\%>|<indent=\w+>|</indent>|" +
                 @"<line-height=\w+%>|<line-height=\w+>|</line-height>|<line-indent=\w+\%>|<line-ident=\w+>|</line-ident>|" +
                 @"<link=""[^""]+"">|</link>|<lowercase>|</lowercase>|<uppercase>|</uppercase>|" +
                 @"<smallcaps>|</smallcaps>|<margin=.+?>|<margin-?\w+=.+?>|</margin>|<mark=#\w+>|</mark>|" +

@@ -42,7 +42,7 @@ namespace PixelCrushers
             onCollisionExit.Invoke(collision.gameObject);
         }
 
-#if USE_PHYSICS2D || !UNITY_2018_1_OR_NEWER
+#if USE_PHYSICS2D
 
         protected virtual void OnCollisionEnter2D(Collision2D collision)
         {

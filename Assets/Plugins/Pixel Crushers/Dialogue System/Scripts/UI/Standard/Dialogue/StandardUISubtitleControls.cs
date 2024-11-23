@@ -668,6 +668,10 @@ namespace PixelCrushers.DialogueSystem
                         panel.Unfocus();
                     }
                 }
+                else
+                {
+                    panel.StopShowSubtitleCoroutines();
+                }
             }
         }
 
@@ -825,7 +829,24 @@ namespace PixelCrushers.DialogueSystem
         public void OpenSubtitlePanelLikeStart(SubtitlePanelNumber subtitlePanelNumber)
         {
             var panel = GetPanelFromNumber(subtitlePanelNumber, null);
-            if (panel == null || panel.isOpen) return;
+            if (panel == null) return;
+
+            // If panel was already opened and is still marked open, then
+            // only the portrait image & name are hidden. Show them:
+            if (panel.isOpen)
+            {
+                if (panel.portraitImage != null && panel.portraitImage.sprite != null)
+                {
+                    panel.portraitImage.gameObject.SetActive(true);
+                }
+                if (panel.portraitName != null && !string.IsNullOrEmpty(panel.portraitName.text))
+                {
+                    panel.portraitName.gameObject.SetActive(true);
+                }
+                return;
+            }
+
+            // Otherwise open like start:
             var conversation = DialogueManager.MasterDatabase.GetConversation(DialogueManager.lastConversationStarted);
             if (conversation == null) return;
 

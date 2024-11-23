@@ -400,7 +400,6 @@ namespace PixelCrushers
             BeforeSceneChange();
         }
 
-#if UNITY_5_4_OR_NEWER
         private void OnEnable()
         {
             UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
@@ -417,14 +416,6 @@ namespace PixelCrushers
             FinishedLoadingScene(scene.name, scene.buildIndex);
         }
 
-#else
-        public void OnLevelWasLoaded(int level)
-        {
-            FinishedLoadingScene(GetCurrentSceneName(), level);
-        }
-#endif
-
-#if UNITY_5_3 || UNITY_5_3_OR_NEWER
         public static string GetCurrentSceneName()
         {
             return UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
@@ -587,9 +578,6 @@ namespace PixelCrushers
 
         public static void UnloadAdditiveSceneInternal(string sceneName)
         {
-#if UNITY_5_3 || UNITY_5_4
-            UnityEngine.SceneManagement.SceneManager.UnloadScene(sceneName);
-#else
             var scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName(sceneName);
             if (scene.IsValid())
             {
@@ -602,7 +590,6 @@ namespace PixelCrushers
                 }
             }
             UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(sceneName);
-#endif
         }
 
         /// <summary>
@@ -650,34 +637,6 @@ namespace PixelCrushers
             }
         }
 
-#else
-
-            public static string GetCurrentSceneName()
-        {
-            return Application.loadedLevelName;
-        }
-
-        public static int GetCurrentSceneIndex()
-        {
-            return Application.loadedLevel;
-        }
-
-        private static IEnumerator LoadSceneInternal(string sceneName)
-        {
-            Application.LoadLevel(sceneName);
-            yield break;
-        }
-
-        public static IEnumerator LoadAdditiveSceneInternal(string sceneName)
-        {
-            yield return Application.LoadLevelAdditiveAsync(sceneName);
-        }
-
-        public static void UnloadAdditiveSceneInternal(string sceneName)
-        {
-            Application.UnloadLevel(sceneName);
-        }
-#endif
 
         /// <summary>
         /// If slotNumber is negative and allowNegativeSlotNumbers is false, 

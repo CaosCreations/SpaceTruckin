@@ -13,6 +13,7 @@ namespace PixelCrushers.DialogueSystem
         public const string USE_ADDRESSABLES = "USE_ADDRESSABLES";
         public const string USE_TIMELINE= "USE_TIMELINE";
         public const string USE_CINEMACHINE = "USE_CINEMACHINE";
+        public const string USE_CINEMACHINE3 = "USE_CINEMACHINE_3";
         public const string USE_ARCWEAVE = "USE_ARCWEAVE";
         public const string USE_ARTICY = "USE_ARTICY";
         public const string USE_AURORA = "USE_AURORA";

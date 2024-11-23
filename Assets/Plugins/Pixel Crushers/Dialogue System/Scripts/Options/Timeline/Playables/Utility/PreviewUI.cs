@@ -45,7 +45,7 @@ namespace PixelCrushers.DialogueSystem
         {
             entry = null;
             isPlayer = false;
-            var dialogueManager = FindObjectOfType<DialogueSystemController>();
+            var dialogueManager = GameObjectUtility.FindFirstObjectByType<DialogueSystemController>();
             if (dialogueManager != null && dialogueManager.initialDatabase != null)
             {
                 var database = dialogueManager.initialDatabase;
@@ -141,14 +141,14 @@ namespace PixelCrushers.DialogueSystem
         private static string GetEntrytag(DialogueEntry entry)
         {
             if (entry == null) return string.Empty;
-            var dialogueManager = FindObjectOfType<DialogueSystemController>();
+            var dialogueManager = GameObjectUtility.FindFirstObjectByType<DialogueSystemController>();
             if (dialogueManager == null || dialogueManager.initialDatabase == null) return "entrytag";
             return dialogueManager.initialDatabase.GetEntrytag(entry.conversationID, entry.id, dialogueManager.displaySettings.cameraSettings.entrytagFormat);
         }
 
         private static string GetDefaultSequence(bool isPlayer)
         {
-            var dialogueManager = FindObjectOfType<DialogueSystemController>();
+            var dialogueManager = GameObjectUtility.FindFirstObjectByType<DialogueSystemController>();
             if (dialogueManager == null) return string.Empty;
             if (isPlayer) return dialogueManager.displaySettings.cameraSettings.defaultPlayerSequence;
             return dialogueManager.displaySettings.cameraSettings.defaultSequence;
@@ -190,7 +190,7 @@ namespace PixelCrushers.DialogueSystem
             {
                 hasLookedForTypewriter = true;
                 AbstractTypewriterEffect typewriterEffect = null;
-                var dialogueManager = FindObjectOfType<DialogueSystemController>();
+                var dialogueManager = GameObjectUtility.FindFirstObjectByType<DialogueSystemController>();
                 if (dialogueManager != null)
                 {
                     var ui = DialogueManager.dialogueUI as StandardDialogueUI;
@@ -200,7 +200,7 @@ namespace PixelCrushers.DialogueSystem
                         typewriterEffect = ui.conversationUIElements.defaultNPCSubtitlePanel.subtitleText.gameObject.GetComponent<AbstractTypewriterEffect>();
                     }
                 }
-                if (typewriterEffect == null) typewriterEffect = FindObjectOfType<AbstractTypewriterEffect>();
+                if (typewriterEffect == null) typewriterEffect = GameObjectUtility.FindFirstObjectByType<AbstractTypewriterEffect>();
                 if (typewriterEffect != null) typewriterCharsPerSecond = typewriterEffect.charactersPerSecond;
             }
 

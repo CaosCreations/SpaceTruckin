@@ -82,6 +82,12 @@ namespace PixelCrushers.DialogueSystem
         public bool waitForContinueButton = false;
 
         /// <summary>
+        /// If visible, hide this bark UI when any conversation starts.
+        /// </summary>
+        [Tooltip("If visible, hide this bark UI when any conversation starts.")]
+        public bool hideOnConversationStart = false;
+
+        /// <summary>
         /// The text display setting. Defaults to use the same subtitle setting as the Dialogue
         /// Manager, but you can also set it to always show or always hide the text.
         /// </summary>
@@ -131,6 +137,23 @@ namespace PixelCrushers.DialogueSystem
             }
             if (nameText != null) nameText.SetActive(includeName);
             Tools.SetGameObjectActive(portraitImage, false);
+            if (hideOnConversationStart && DialogueManager.instance != null)
+            {
+                DialogueManager.instance.conversationStarted += OnConversationStarted;
+            }
+        }
+
+        protected virtual void OnDestroy()
+        {
+            if (DialogueManager.instance != null)
+            {
+                DialogueManager.instance.conversationStarted -= OnConversationStarted;
+            }
+        }
+
+        private void OnConversationStarted(Transform actor)
+        {
+            if (hideOnConversationStart && isPlaying) Hide();
         }
 
         protected virtual void Update()

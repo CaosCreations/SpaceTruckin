@@ -24,30 +24,6 @@ namespace PixelCrushers
             LockCursor(!value);
         }
 
-#if UNITY_4_3 || UNITY_4_5 || UNITY_4_6
-
-        public static bool isCursorVisible
-        {
-            get { return Screen.showCursor; }
-        }
-
-        public static bool isCursorLocked
-        {
-            get { return Screen.lockCursor; }
-        }
-
-        public static void ShowCursor(bool value)
-        {
-            Screen.showCursor = value;
-        }
-
-        public static void LockCursor(bool value)
-        {
-            Screen.lockCursor = value;
-        }
-
-#else
-		
 		public static bool isCursorVisible
 		{
 			get { return Cursor.visible; }
@@ -72,8 +48,6 @@ namespace PixelCrushers
 			Cursor.lockState = value ? cursorLockMode : CursorLockMode.None;
 		}
 		
-#endif
-
     }
 
 }

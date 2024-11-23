@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
-#if UNITY_5_3_OR_NEWER
 using UnityEngine;
 
 namespace PixelCrushers.Wrappers
@@ -16,4 +15,3 @@ namespace PixelCrushers.Wrappers
     }
 
 }
-#endif

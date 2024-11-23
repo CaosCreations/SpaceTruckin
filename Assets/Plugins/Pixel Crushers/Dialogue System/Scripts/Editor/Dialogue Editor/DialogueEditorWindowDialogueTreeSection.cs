@@ -802,6 +802,10 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 {
                     DrawFieldsSection(entry.fields);
                 }
+                else
+                {
+                    CheckFields(entry.fields);
+                }
             }
             finally
             {

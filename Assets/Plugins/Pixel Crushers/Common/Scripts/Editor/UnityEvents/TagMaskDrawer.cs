@@ -59,11 +59,7 @@ namespace PixelCrushers
                     : (numSelected == allTags.Length) ? "Everything"
                     : (numSelected > 1) ? "Mixed"
                     : lastSelectedTag;
-#if UNITY_5_3 || UNITY_5_4 || UNITY_5_5
-                if (GUI.Button(position, dropdownButtonSummary))
-#else
                 if (EditorGUI.DropdownButton(position, new GUIContent(dropdownButtonSummary), FocusType.Keyboard))
-#endif
                 {
                     // If dropdown button is clicked, show a context menu that looks like EditorGUI.MaskField:
                     var menu = new GenericMenu();

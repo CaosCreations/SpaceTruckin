@@ -255,6 +255,13 @@ namespace PixelCrushers.DialogueSystem
             while (i < substrings.Length)
             {
                 var newEntryDialogueText = substrings[i];
+
+                // Don't add blank entry at end if original text ends with pipe:
+                if (string.IsNullOrEmpty(substrings[i]) && i == substrings.Length - 1)
+                {
+                    i++;
+                    continue;
+                }
                 var newEntryMenuText = (i < menuTextSubstrings.Length) ? menuTextSubstrings[i] : string.Empty;
                 if (trimWhitespace)
                 {

@@ -81,6 +81,7 @@ namespace PixelCrushers
             int numBools = 0;
             int numFloats = 0;
             int numInts = 0;
+            int numTriggers = 0;
             for (int i = 0; i < animator.parameterCount; i++)
             {
                 var parameter = animator.parameters[i];
@@ -124,7 +125,16 @@ namespace PixelCrushers
                         break;
                     case AnimatorControllerParameterType.Trigger:
                         var triggerValue = animator.GetCurrentAnimatorStateInfo(0).IsName(parameter.name);
-                        m_data.triggers.Add(new TriggerData() { isTriggered = triggerValue, name = parameter.name });
+                        if (numTriggers < m_data.triggers.Count)
+                        {
+                            m_data.triggers[numTriggers].isTriggered = triggerValue;
+                            m_data.triggers[numTriggers].name = parameter.name;
+                        }
+                        else
+                        {
+                            m_data.triggers.Add(new TriggerData() { isTriggered = triggerValue, name = parameter.name });
+                        }
+                        numTriggers++;
                         break;
                 }
             }

@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
-#if UNITY_5_3_OR_NEWER
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -103,4 +102,3 @@ namespace PixelCrushers
 
     }
 }
-#endif

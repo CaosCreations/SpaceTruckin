@@ -56,7 +56,7 @@ LightmapSettings:
   m_LightmapEditorSettings:
     serializedVersion: 12
     m_Resolution: 1
-    m_BakeResolution: 50
+    m_BakeResolution: 10
     m_AtlasSize: 1024
     m_AO: 0
     m_AOMaxDistance: 1
@@ -72,12 +72,12 @@ LightmapSettings:
     m_FinalGatherRayCount: 1024
     m_ReflectionCompression: 2
     m_MixedBakeMode: 1
-    m_BakeBackend: 0
+    m_BakeBackend: 2
     m_PVRSampling: 1
-    m_PVRDirectSampleCount: 32
-    m_PVRSampleCount: 500
-    m_PVRBounces: 2
-    m_PVREnvironmentSampleCount: 500
+    m_PVRDirectSampleCount: 2
+    m_PVRSampleCount: 32
+    m_PVRBounces: 1
+    m_PVREnvironmentSampleCount: 32
     m_PVREnvironmentReferencePointCount: 2048
     m_PVRFilteringMode: 0
     m_PVRDenoiserTypeDirect: 0
@@ -97,7 +97,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 9f3a27501d12d5b449a71408bf82d023,
+    type: 2}
   m_UseShadowmask: 0
 --- !u!196 &5
 NavMeshSettings:
@@ -258,13 +259,37 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -6.11
       objectReference: {fileID: 0}
+    - target: {fileID: 10800002, guid: 56aa82917f38f54449255fb7967f7a3a, type: 3}
+      propertyPath: m_Range
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 10800008, guid: 56aa82917f38f54449255fb7967f7a3a, type: 3}
       propertyPath: m_Intensity
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 10800010, guid: 56aa82917f38f54449255fb7967f7a3a, type: 3}
+      propertyPath: m_Range
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 10800024, guid: 56aa82917f38f54449255fb7967f7a3a, type: 3}
+      propertyPath: m_Range
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 10800028, guid: 56aa82917f38f54449255fb7967f7a3a, type: 3}
+      propertyPath: m_Range
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 10800030, guid: 56aa82917f38f54449255fb7967f7a3a, type: 3}
+      propertyPath: m_Range
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 10800040, guid: 56aa82917f38f54449255fb7967f7a3a, type: 3}
       propertyPath: m_Intensity
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 10800044, guid: 56aa82917f38f54449255fb7967f7a3a, type: 3}
+      propertyPath: m_Range
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56aa82917f38f54449255fb7967f7a3a, type: 3}
@@ -446,6 +471,8 @@ MonoBehaviour:
   sendMessages: []
   barkSource: 0
   barkConversation: 
+  barkEntryID: -1
+  barkEntryTitle: 
   barkText: 
   barkTextSequence: 
   barker: {fileID: 0}
@@ -459,11 +486,14 @@ MonoBehaviour:
   conversationActor: {fileID: 0}
   startConversationEntryID: -1
   startConversationEntryTitle: 
+  overrideDialogueUI: {fileID: 0}
   exclusive: 0
   replace: 0
+  queue: 0
   skipIfNoValidEntries: 1
   preventRestartOnSameFrameEnded: 0
   stopConversationOnTriggerExit: 0
+  marginToAllowTriggerExit: 0.2
   stopConversationIfTooFar: 0
   maxConversationDistance: 5
   monitorConversationDistanceFrequency: 1
@@ -548,8 +578,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 274b80ab5b659c646ba9338870d14625, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  overrideName: Locked Door
-  overrideUseMessage: (can't use)
+  m_overrideName: Locked Door
+  m_overrideUseMessage: (can't use)
   maxUseDistance: 3
   events:
     onSelect:
@@ -846,8 +876,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 274b80ab5b659c646ba9338870d14625, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  overrideName: To DemoScene2
-  overrideUseMessage: Spacebar to enter
+  m_overrideName: To DemoScene2
+  m_overrideUseMessage: Spacebar to enter
   maxUseDistance: 3
   events:
     onSelect:
@@ -929,6 +959,8 @@ MonoBehaviour:
   sendMessages: []
   barkSource: 0
   barkConversation: 
+  barkEntryID: -1
+  barkEntryTitle: 
   barkText: 
   barkTextSequence: 
   barker: {fileID: 0}
@@ -942,11 +974,14 @@ MonoBehaviour:
   conversationActor: {fileID: 0}
   startConversationEntryID: -1
   startConversationEntryTitle: 
+  overrideDialogueUI: {fileID: 0}
   exclusive: 0
   replace: 0
+  queue: 0
   skipIfNoValidEntries: 1
   preventRestartOnSameFrameEnded: 0
   stopConversationOnTriggerExit: 0
+  marginToAllowTriggerExit: 0.2
   stopConversationIfTooFar: 0
   maxConversationDistance: 5
   monitorConversationDistanceFrequency: 1

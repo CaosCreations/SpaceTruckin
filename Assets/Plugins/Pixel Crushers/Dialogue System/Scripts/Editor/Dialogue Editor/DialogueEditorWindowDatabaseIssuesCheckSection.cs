@@ -49,6 +49,15 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     CheckUndefinedVariables();
                 }
             }
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button(new GUIContent("Find Duplicate Fields", "Report actors, items/quests, locations, conversations, and dialogue entries that have duplicate fields.")))
+            {
+                if (EditorUtility.DisplayDialog("Find Duplicate Fields", "This will identify actors, items/quests, locations, conversations, and dialogue entries that have duplicate fields. Continue?", "OK", "Cancel"))
+                {
+                    CheckDuplicateFields();
+                }
+            }
             if (GUILayout.Button(new GUIContent("Check Entrytag Audio", "Check if each non-blank entry has a corresponding entrytag audio file in Addressables or Resources.")))
             {
                 if (EditorUtility.DisplayDialog("Check Entrytag Audio", "This will identify non-blank entries that do not have a corresponding entrytag audio file in Resources folders or local Addressables. Set the entrytag format in the Export Database foldout.\n\nSince it must check through the Asset Database, it may take some time. Continue?", "OK", "Cancel"))
@@ -244,6 +253,70 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     issuesReport += $"{kvp.Value}\n";
                 }
                 issuesReport += $"{undefinedVariables.Count} undefined variables found.";
+            }
+            finally
+            {
+                EditorUtility.ClearProgressBar();
+            }
+        }
+
+        private void CheckDuplicateFields()
+        {
+            try
+            {
+                issuesReport = "Duplicate Fields:\n";
+                if (EditorUtility.DisplayCancelableProgressBar("Find Duplicate Fields", "", 0)) return;
+
+                var report = string.Empty;
+                foreach (var actor in database.actors)
+                {
+                    if (EditorUtility.DisplayCancelableProgressBar("Find Duplicate Fields", "Actors", 0.2f)) return;
+                    ResetLastFieldsChecked();
+                    CheckFields(actor.fields);
+                    if (string.IsNullOrEmpty(duplicateFieldsReport)) continue;
+                    report += $"Actor[{actor.Name}] {duplicateFieldsReport}\n";
+                }
+                foreach (var item in database.items)
+                {
+                    if (EditorUtility.DisplayCancelableProgressBar("Find Duplicate Fields", "Items/Quests", 0.4f)) return;
+                    ResetLastFieldsChecked();
+                    CheckFields(item.fields);
+                    if (string.IsNullOrEmpty(duplicateFieldsReport)) continue;
+                    if (item.IsItem)
+                    {
+                        report += $"Item[{item.Name}] {duplicateFieldsReport}\n";
+                    }
+                    else
+                    {
+                        report += $"Quest[{item.Name}] {duplicateFieldsReport}\n"; 
+                    }
+                }
+                foreach (var location in database.locations)
+                {
+                    if (EditorUtility.DisplayCancelableProgressBar("Find Duplicate Fields", "Locations", 0.6f)) return;
+                    ResetLastFieldsChecked();
+                    CheckFields(location.fields);
+                    if (string.IsNullOrEmpty(duplicateFieldsReport)) continue;
+                    report += $"Location[{location.Name}] {duplicateFieldsReport}\n";
+                }
+                foreach (var conversation in database.conversations)
+                {
+                    if (EditorUtility.DisplayCancelableProgressBar("Find Duplicate Fields", "Conversations", 0.8f)) return;
+                    ResetLastFieldsChecked();
+                    CheckFields(conversation.fields);
+                    if (!string.IsNullOrEmpty(duplicateFieldsReport))
+                    {
+                        report += $"Conversation[{conversation.id}] '{conversation.Title}' {duplicateFieldsReport}\n";
+                    }
+                    foreach (var entry in conversation.dialogueEntries)
+                    {
+                        ResetLastFieldsChecked();
+                        CheckFields(entry.fields);
+                        if (string.IsNullOrEmpty(duplicateFieldsReport)) continue;
+                        report += $"Conversation[{conversation.id}] '{conversation.Title}' entry [{entry.id}] {duplicateFieldsReport}\n";
+                    }
+                }
+                issuesReport += report;
             }
             finally
             {

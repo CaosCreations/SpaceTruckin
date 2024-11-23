@@ -231,6 +231,16 @@ namespace PixelCrushers.DialogueSystem
                 if (DialogueDebug.logInfo) Debug.Log("Dialogue System: Registering transform " + actorTransform.name + " as actor '" + actorName + "'.", actorTransform);
                 registeredActorTransforms.Add(actorName, actorTransform);
             }
+
+            // Also update active conversations' caches:
+            var actor = DialogueManager.masterDatabase.GetActor(actorName);
+            if (actor != null)
+            {
+                foreach (var activeConversations in DialogueManager.instance.activeConversations)
+                {
+                    activeConversations.conversationModel.OverrideCharacterInfo(actor.id, actorTransform);
+                }
+            }
         }
 
         /// <summary>

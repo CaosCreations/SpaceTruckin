@@ -1,18 +1,16 @@
 ﻿using UnityEngine;
-#if USE_CINEMACHINE
-#if UNITY_6000_0_OR_NEWER
-using Unity.Cinemachine;
-using CinemachineCam = Unity.Cinemachine.CinemachineCamera;
-#else
+#if USE_CINEMACHINE //2
 using Cinemachine;
 using CinemachineCam = Cinemachine.CinemachineVirtualCamera;
-#endif
+#elif USE_CINEMACHINE_3
+using Unity.Cinemachine;
+using CinemachineCam = Unity.Cinemachine.CinemachineCamera;
 #endif
 
 namespace PixelCrushers.DialogueSystem
 {
 
-#if USE_CINEMACHINE
+#if USE_CINEMACHINE || USE_CINEMACHINE_3
 
     [AddComponentMenu("")] // Use wrapper.
     public class CinemachineCameraPriorityOnDialogueEvent : ActOnDialogueEvent

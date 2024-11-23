@@ -5,7 +5,7 @@ using UnityEngine;
 namespace PixelCrushers
 {
 
-#if USE_PHYSICS2D || !UNITY_2018_1_OR_NEWER
+#if USE_PHYSICS2D
 
     /// <summary>
     /// Provides more routines for Physics2D.

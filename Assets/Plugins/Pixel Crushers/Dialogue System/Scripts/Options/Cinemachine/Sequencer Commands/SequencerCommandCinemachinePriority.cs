@@ -1,11 +1,11 @@
-#if USE_CINEMACHINE
+#if USE_CINEMACHINE || USE_CINEMACHINE_3
 using UnityEngine;
-#if UNITY_6000_0_OR_NEWER
-using Unity.Cinemachine;
-using CinemachineCam = Unity.Cinemachine.CinemachineCamera;
-#else
+#if USE_CINEMACHINE
 using Cinemachine;
 using CinemachineCam = Cinemachine.CinemachineVirtualCamera;
+#elif USE_CINEMACHINE_3
+using Unity.Cinemachine;
+using CinemachineCam = Unity.Cinemachine.CinemachineCamera;
 #endif
 
 namespace PixelCrushers.DialogueSystem.SequencerCommands
@@ -63,7 +63,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
                 // (Could set vcam.PreviousStateIsValid false, but need to support older CM versions.)
                 var shouldIRestoreBlendMode = false;
                 var cinemachineBrain = cut ? GameObjectUtility.FindFirstObjectByType<CinemachineBrain>() : null;
-#if UNITY_6000_0_OR_NEWER
+#if USE_CINEMACHINE_3
                 var previousBlendStyle = CinemachineBlendDefinition.Styles.EaseInOut;
 #else
                 var previousBlendStyle = CinemachineBlendDefinition.Style.EaseInOut;
@@ -73,7 +73,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
                 {
                     shouldIRestoreBlendMode = !hasRecordedBlendMode;
                     hasRecordedBlendMode = true;
-#if UNITY_6000_0_OR_NEWER
+#if USE_CINEMACHINE_3
                     previousBlendStyle = cinemachineBrain.DefaultBlend.Style;
                     previousBlendTime = cinemachineBrain.DefaultBlend.Time;
                     cinemachineBrain.DefaultBlend.Style = CinemachineBlendDefinition.Styles.Cut;
@@ -118,7 +118,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
                     if (shouldIRestoreBlendMode)
                     {
                         yield return null;
-#if UNITY_6000_0_OR_NEWER
+#if USE_CINEMACHINE_3
                         cinemachineBrain.DefaultBlend.Style = previousBlendStyle;
                         cinemachineBrain.DefaultBlend.Time = previousBlendTime;
 #else

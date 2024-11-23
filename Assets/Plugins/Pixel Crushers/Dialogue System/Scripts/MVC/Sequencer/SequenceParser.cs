@@ -286,6 +286,10 @@ namespace PixelCrushers.DialogueSystem
                 else
                 {
                     float value;
+                    if (s.EndsWith("f", System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        s = s.Substring(0, s.Length - 1); // If number ends with 'f', strip 'f'.
+                    }
                     if (float.TryParse(s, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out value))
                     {
                         atTime = value;

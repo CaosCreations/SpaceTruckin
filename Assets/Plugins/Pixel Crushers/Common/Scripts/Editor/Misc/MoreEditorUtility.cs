@@ -47,16 +47,11 @@ namespace PixelCrushers
 
         public static HashSet<BuildTargetGroup> GetInstalledBuildTargetGroups()
         {
-#if UNITY_2017
-            Debug.Log("Updating all build targets. Please ignore messages about build targets not installed.");
-#endif
             var result = new HashSet<BuildTargetGroup>();
             foreach (BuildTarget target in (BuildTarget[])Enum.GetValues(typeof(BuildTarget)))
             {
                 BuildTargetGroup group = BuildPipeline.GetBuildTargetGroup(target);
-#if UNITY_2018_1_OR_NEWER
                 if (BuildPipeline.IsBuildTargetSupported(group, target))
-#endif
                 {
                     result.Add(group);
                 }
@@ -125,11 +120,7 @@ namespace PixelCrushers
         {
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-#if UNITY_2019_3_OR_NEWER
             EditorUtility.RequestScriptReload();
-#else
-            UnityEditorInternal.InternalEditorUtility.RequestScriptReload();
-#endif
         }
 
         /// <summary>
@@ -216,8 +207,6 @@ namespace PixelCrushers
 
         //=============================================================
 
-#if UNITY_2019_1_OR_NEWER
-
         [MenuItem("Tools/Pixel Crushers/Common/Misc/Use New Input System...", false, 102)]
         static public void AddUSENEWINPUT()
         {
@@ -233,8 +222,6 @@ namespace PixelCrushers
         {
             return !MoreEditorUtility.DoesScriptingDefineSymbolExist("USE_NEW_INPUT");
         }
-
-#endif
 
         //=============================================================
 

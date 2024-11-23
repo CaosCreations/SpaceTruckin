@@ -33,6 +33,10 @@ namespace PixelCrushers
         [SerializeField]
         private bool m_activateOnStart = true;
 
+        [Tooltip("Start timer when this component is enabled.")]
+        [SerializeField]
+        private bool m_activateOnEnable = true;
+
         [SerializeField]
         private UnityEvent m_onTimeReached = new UnityEvent();
 
@@ -72,6 +76,15 @@ namespace PixelCrushers
             set { m_activateOnStart = value; }
         }
 
+        /// <summary>
+        /// Start timer when this component is enabled.
+        /// </summary>
+        public bool activateOnEnable
+        {
+            get { return m_activateOnEnable; }
+            set { m_activateOnEnable = value; }
+        }
+
         private UnityEvent onTimeReached
         {
             get { return m_onTimeReached; }
@@ -81,6 +94,11 @@ namespace PixelCrushers
         protected virtual void Start()
         {
             if (activateOnStart) StartTimer(duration);
+        }
+
+        protected virtual void OnEnable()
+        {
+            if (activateOnEnable) StartTimer(duration);
         }
 
         protected virtual void OnDisable()

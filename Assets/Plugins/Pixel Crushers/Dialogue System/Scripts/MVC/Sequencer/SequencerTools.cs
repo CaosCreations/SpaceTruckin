@@ -287,9 +287,23 @@ namespace PixelCrushers.DialogueSystem
         {
             try
             {
-                return ((parameters != null) && (i < parameters.Length))
-                    ? (T)System.Convert.ChangeType(parameters[i], typeof(T), System.Globalization.CultureInfo.InvariantCulture)
-                    : defaultValue;
+                if ((parameters != null) && (0 <= i && i < parameters.Length))
+                {
+                    var parameter = parameters[i];
+
+                    // If we're getting a float whose string ends in 'f', remove 'f':
+                    var isNumberType = typeof(T) == typeof(float) || typeof(T) == typeof(int);
+                    if (isNumberType && parameter.EndsWith("f", System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        parameter = parameter.Substring(0, parameter.Length - 1);
+                    }
+
+                    return (T)System.Convert.ChangeType(parameter, typeof(T), System.Globalization.CultureInfo.InvariantCulture);
+                }
+                else
+                {
+                    return defaultValue;
+                }
             }
             catch (System.Exception)
             {
@@ -360,16 +374,19 @@ namespace PixelCrushers.DialogueSystem
         /// <summary>
         /// Gets the audio source on a subject, using the Dialogue Manager as the subject if the
         /// specified subject is <c>null</c>. If no audio source exists on the subject, this
-        /// method adds one.
+        /// method adds one. If the subject has a Dialogue Actor with an audio source assigned
+        /// to it, this method returns that audio source.
         /// </summary>
         /// <returns>The audio source.</returns>
         /// <param name="subject">Subject.</param>
         public static AudioSource GetAudioSource(Transform subject)
         {
             GameObject go = (subject != null) ? subject.gameObject : DialogueManager.instance.gameObject;
+            DialogueActor dialogueActor = go.GetComponent<DialogueActor>();
+            if (dialogueActor != null && dialogueActor.audioSource != null) return dialogueActor.audioSource;
             AudioSource audio = go.GetComponentInChildren<AudioSource>();
             if (audio == null)
-            { 
+            {
                 audio = go.AddComponent<AudioSource>();
                 audio.playOnAwake = false;
                 audio.loop = false;
