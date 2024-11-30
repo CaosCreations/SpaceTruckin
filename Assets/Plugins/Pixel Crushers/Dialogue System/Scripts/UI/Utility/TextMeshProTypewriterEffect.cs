@@ -74,7 +74,10 @@ namespace PixelCrushers.DialogueSystem
         {
             get
             {
-                if (m_textComponent == null) m_textComponent = GetComponent<TMPro.TMP_Text>();
+                if (m_textComponent == null && gameObject != null)
+                {
+                    m_textComponent = GetComponent<TMPro.TMP_Text>();
+                }
                 return m_textComponent;
             }
         }
@@ -84,7 +87,7 @@ namespace PixelCrushers.DialogueSystem
         {
             get
             {
-                if (m_layoutElement == null)
+                if (m_layoutElement == null && gameObject != null)
                 {
                     m_layoutElement = GetComponent<LayoutElement>();
                     if (m_layoutElement == null) m_layoutElement = gameObject.AddComponent<LayoutElement>();
@@ -97,7 +100,10 @@ namespace PixelCrushers.DialogueSystem
         {
             get
             {
-                if (audioSource == null) audioSource = GetComponent<AudioSource>();
+                if (audioSource == null && gameObject != null)
+                {
+                    audioSource = GetComponent<AudioSource>();
+                }
                 if (audioSource == null && (audioClip != null))
                 {
                     audioSource = gameObject.AddComponent<AudioSource>();

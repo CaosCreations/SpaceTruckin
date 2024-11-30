@@ -6,7 +6,6 @@ using UnityEditor;
 namespace PixelCrushers
 {
 
-#if UNITY_2018_1_OR_NEWER
     public static class EnablePhysics2DMenuItem
     {
 
@@ -27,5 +26,4 @@ namespace PixelCrushers
         }
 
     }
-#endif
 }

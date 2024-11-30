@@ -18,6 +18,14 @@ namespace PixelCrushers.DialogueSystem
 
         private bool didIRegister = false;
 
+#if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void InitStaticVariables()
+        {
+            s_registered = false;
+        }
+#endif
+
         void OnEnable()
         {
             if (!s_registered)

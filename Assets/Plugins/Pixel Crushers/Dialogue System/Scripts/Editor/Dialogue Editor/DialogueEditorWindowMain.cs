@@ -148,6 +148,16 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             showQuickDialogueTextEntry = false;
             LoadEditorSettings();
             if (database == null) template = TemplateTools.LoadFromEditorPrefs();
+            InitializeEntrytagFormatFromScene();
+            InitializeDialogueTree();
+            ResetDialogueEntryText();
+            if (toolbar.current == Toolbar.Tab.Conversations &&
+                currentConversationID != -1 && 
+                database != null)
+            {
+                var conversation = database.GetConversation(currentConversationID);
+                if (conversation != null) OpenConversation(conversation);
+            }
         }
 
         private void OnDisable()
@@ -163,12 +173,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 #else
             UnityEditorFocusChanged += OnFocusChanged;
 #endif
-            //--- No need to save assets after entering play mode? This was a workaround for Asset Database bugs.
-            //try
-            //{
-            //    EditorApplication.delayCall += AssetDatabase.SaveAssets;
-            //}
-            //catch (System.NullReferenceException) { } // Some Unity versions w/disabled domain reloading don't allow when entering play mode.
+            if (database != null) EditorUtility.SetDirty(database);
             SaveTemplate();
             inspectorSelection = null;
             instance = null;

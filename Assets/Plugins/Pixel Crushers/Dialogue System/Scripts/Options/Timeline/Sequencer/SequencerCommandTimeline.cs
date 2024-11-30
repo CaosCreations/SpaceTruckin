@@ -109,7 +109,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
                             if (s.Contains(":"))
                             {
                                 var colonPos = s.IndexOf(":");
-                                var trackIndex = Tools.StringToInt(s.Substring(0, colonPos)) + 1;
+                                var trackIndex = Tools.StringToInt(s.Substring(0, colonPos));
                                 var bindName = s.Substring(colonPos + 1);
                                 var track = timelineAsset.GetOutputTrack(trackIndex);
                                 if (track != null)

@@ -443,6 +443,7 @@ namespace PixelCrushers.DialogueSystem
 
         public void AddNewVariable(string newVariableName, FieldType newVariableType)
         {
+            if (string.IsNullOrWhiteSpace(newVariableName)) return;
             if (database == null) return;
             if (database.GetVariable(newVariableName) != null) return;
             var template = Template.FromDefault();

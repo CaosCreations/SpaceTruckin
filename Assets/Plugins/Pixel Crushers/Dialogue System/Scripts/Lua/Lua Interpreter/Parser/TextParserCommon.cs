@@ -129,6 +129,10 @@ namespace Language.Lua
 					return false;
 				}
 			}
+            // Make sure the string ends:
+            var afterPos = position + terminalString.Length;
+            if (Input.HasInput(afterPos) && !char.IsWhiteSpace(Input.GetInputSymbol(afterPos))) return false;
+
 			return true;
 		}
 

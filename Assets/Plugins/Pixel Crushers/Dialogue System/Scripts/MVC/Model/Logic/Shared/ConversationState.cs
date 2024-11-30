@@ -194,6 +194,7 @@ namespace PixelCrushers.DialogueSystem
                 {
                     var responses = new List<Response>(npcResponses);
                     responses.RemoveAll(x => x.destinationEntry == lastEntry);
+                    if (responses.Count == 0) return lastEntry;
                     chosenEntry = responses[UnityEngine.Random.Range(0, responses.Count)].destinationEntry;
                 }
                 else

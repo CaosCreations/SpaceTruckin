@@ -684,6 +684,7 @@ namespace PixelCrushers.DialogueSystem
                         var standardDialogueUI = abstractDialogueUI as StandardDialogueUI;
                         if (standardDialogueUI != null && !dontHideImmediateDuringWarmup) standardDialogueUI.conversationUIElements.HideImmediate();
                         controller.Close();
+                        ConversationController.frameLastConversationEnded = -1;
                     }
                     finally
                     {
@@ -770,6 +771,7 @@ namespace PixelCrushers.DialogueSystem
             warmupStandardDialogueUI = null;
             warmupController = null;
             warmupCanvasGroup = null;
+            ConversationController.frameLastConversationEnded = -1;
         }
 
         private Conversation CreateFakeConversation()

@@ -23,7 +23,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private Conversation _currentConversation = null;
         [SerializeField]
-        private int currentConversationID;
+        private int currentConversationID = -1;
         private Conversation currentConversation
         {
             get

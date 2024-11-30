@@ -7,6 +7,7 @@ namespace PixelCrushers
 {
 
     [CustomEditor(typeof(MessageEvents), true)]
+    [CanEditMultipleObjects]
     public class MessageEventsEditor : Editor
     {
 

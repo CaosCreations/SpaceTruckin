@@ -46,11 +46,7 @@ namespace PixelCrushers
 
         public static int GetAnimatorNameHash(AnimatorStateInfo animatorStateInfo)
         {
-#if UNITY_4_3 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7
-            return animatorStateInfo.nameHash;
-#else
             return animatorStateInfo.fullPathHash;
-#endif
         }
 
         /// <summary>

@@ -101,7 +101,7 @@ namespace PixelCrushers.DialogueSystem
         // Records time when last conversation ended in case a new conversation starts on the same
         // frame and needs to know.
         private static int _frameLastConversationEnded = -1;
-        public static int frameLastConversationEnded { get { return _frameLastConversationEnded; } }
+        public static int frameLastConversationEnded { get { return _frameLastConversationEnded; } set { _frameLastConversationEnded = value; } }
 
         public ConversationController()
         {
@@ -163,6 +163,7 @@ namespace PixelCrushers.DialogueSystem
             this.m_view = view;
             this.m_endConversationHandler = endConversationHandler;
             this.randomizeNextEntry = false;
+            this.reevaluateLinksAfterSubtitle = reevaluateLinksAfterSubtitle;
             DialogueManager.instance.currentConversationState = model.firstState;
             model.InformParticipants(DialogueSystemMessages.OnConversationStart);
             view.FinishedSubtitleHandler += OnFinishedSubtitle;

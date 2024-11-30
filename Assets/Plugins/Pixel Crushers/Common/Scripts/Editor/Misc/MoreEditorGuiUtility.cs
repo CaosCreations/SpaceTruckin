@@ -9,17 +9,6 @@ namespace PixelCrushers
     public static class MoreEditorGuiUtility
     {
 
-        //        // Evaluation version headaches. Get it at runtime instead:
-        //#if UNITY_2022_3_OR_NEWER && !UNITY_2022_3_0
-        //        public const string ToolbarSearchTextFieldName = "ToolbarSearchTextField";
-        //        public const string ToolbarSearchCancelButtonName = "ToolbarSearchCancelButton";
-        //        public const string ToolbarSearchCancelButtonEmpty = "ToolbarSearchCancelButtonEmpty";
-        //#else
-        //        public const string ToolbarSearchTextFieldName = "ToolbarSeachTextField";
-        //        public const string ToolbarSearchCancelButtonName = "ToolbarSeachCancelButton";
-        //        public const string ToolbarSearchCancelButtonEmpty = "ToolbarSeachCancelButtonEmpty";
-        //#endif
-
         private static GUIStyle toolbarSearchTextFieldStyle = null;
         private static GUIStyle toolbarSearchCancelButtonStyle = null;
         private static GUIStyle toolbarSearchCancelButtonEmptyStyle = null;

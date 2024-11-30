@@ -46,12 +46,14 @@ namespace PixelCrushers.DialogueSystem
         {
             if ((database != null) && (dialogueEntry != null))
             {
+                // We use Link.priority, not DialogueEntry.conditionPriority.
+                // Update linkEntry.conditionPriority anyway.
                 foreach (Link link in dialogueEntry.outgoingLinks)
                 {
                     DialogueEntry linkEntry = database.GetDialogueEntry(link);
                     if (linkEntry != null)
                     {
-                        link.priority = linkEntry.conditionPriority;
+                        linkEntry.conditionPriority = link.priority;
                     }
                 }
                 dialogueEntry.outgoingLinks.Sort(new PrioritySorter());

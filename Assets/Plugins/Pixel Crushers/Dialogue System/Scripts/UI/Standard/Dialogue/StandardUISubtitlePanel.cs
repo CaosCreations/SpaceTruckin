@@ -315,6 +315,22 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
+        protected virtual void StopFocusWhenOpenCoroutine()
+        {
+            if (m_focusWhenOpenCoroutine != null)
+            {
+                StopCoroutine(m_focusWhenOpenCoroutine);
+                m_focusWhenOpenCoroutine = null;
+            }
+        }
+
+        public virtual void StopShowSubtitleCoroutines()
+        {
+            StopShowAfterClosingCoroutine();
+            StopFocusWhenOpenCoroutine();
+
+        }
+
         /// <summary>
         /// Hides a subtitle, playing the unfocus and close animations.
         /// </summary>
@@ -367,7 +383,7 @@ namespace PixelCrushers.DialogueSystem
         {
             if (panelState == PanelState.Opening && enabled && gameObject.activeInHierarchy)
             {
-                if (m_focusWhenOpenCoroutine != null) StopCoroutine(m_focusWhenOpenCoroutine);
+                StopFocusWhenOpenCoroutine();
                 m_focusWhenOpenCoroutine = StartCoroutine(FocusWhenOpen());
             }
             else
@@ -416,11 +432,7 @@ namespace PixelCrushers.DialogueSystem
         public virtual void Unfocus()
         {
             if (m_panelAnimator != null && !string.IsNullOrEmpty(focusAnimationTrigger)) m_panelAnimator.ResetTrigger(focusAnimationTrigger);
-            if (m_focusWhenOpenCoroutine != null)
-            {
-                StopCoroutine(m_focusWhenOpenCoroutine);
-                m_focusWhenOpenCoroutine = null;
-            }
+            StopShowSubtitleCoroutines();
             if (!string.IsNullOrEmpty(focusAnimationTrigger) && animatorMonitor.currentTrigger == focusAnimationTrigger)
             {
                 animatorMonitor.CancelCurrentAnimation();

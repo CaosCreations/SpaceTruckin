@@ -67,9 +67,6 @@ namespace PixelCrushers.DialogueSystem.Yarn
         // // public string customCommandsSourceFile;
         // public string customCommandsSourceFile = DefaultCustomCommandsSourceFile;
 
-        /// <summary>
-        /// The name of the player's actor.
-        /// </summary>
         public bool debug = false;
     }
 

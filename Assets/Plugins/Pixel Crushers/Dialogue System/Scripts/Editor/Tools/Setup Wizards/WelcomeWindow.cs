@@ -41,9 +41,9 @@ namespace PixelCrushers.DialogueSystem
         {
             var window = GetWindow<WelcomeWindow>(false, "Welcome");
 #if EVALUATION_VERSION || ACADEMIC
-            window.minSize = new Vector2(370, 680);
+            window.minSize = new Vector2(370, 710);
 #else
-            window.minSize = new Vector2(370, 650);
+            window.minSize = new Vector2(370, 680);
 #endif
             window.showOnStart = true; // Can't check EditorPrefs when constructing window: showOnStartPrefs;
             return window;
@@ -193,6 +193,7 @@ namespace PixelCrushers.DialogueSystem
             var define_USE_ADDRESSABLES = false;
             var define_USE_TIMELINE = false;
             var define_USE_CINEMACHINE = false;
+            var define_USE_CINEMACHINE3 = false;
             var define_USE_ARCWEAVE = false;
             var define_USE_ARTICY = false;
             var define_USE_AURORA = false;
@@ -212,6 +213,7 @@ namespace PixelCrushers.DialogueSystem
                 if (string.Equals(ScriptingSymbolNames.USE_ADDRESSABLES, defines[i].Trim())) define_USE_ADDRESSABLES = true;
                 if (string.Equals(ScriptingSymbolNames.USE_TIMELINE, defines[i].Trim())) define_USE_TIMELINE = true;
                 if (string.Equals(ScriptingSymbolNames.USE_CINEMACHINE, defines[i].Trim())) define_USE_CINEMACHINE = true;
+                if (string.Equals(ScriptingSymbolNames.USE_CINEMACHINE3, defines[i].Trim())) define_USE_CINEMACHINE3 = true;
                 if (string.Equals(ScriptingSymbolNames.USE_ARCWEAVE, defines[i].Trim())) define_USE_ARCWEAVE = true;
                 if (string.Equals(ScriptingSymbolNames.USE_ARTICY, defines[i].Trim())) define_USE_ARTICY = true;
                 if (string.Equals(ScriptingSymbolNames.USE_AURORA, defines[i].Trim())) define_USE_AURORA = true;
@@ -253,6 +255,7 @@ namespace PixelCrushers.DialogueSystem
             EditorGUI.EndDisabledGroup();
             //var new_USE_PHYSICS2D = define_USE_PHYSICS2D;
             var new_USE_CINEMACHINE = define_USE_CINEMACHINE;
+            var new_USE_CINEMACHINE3 = define_USE_CINEMACHINE3;
             var new_USE_NEW_INPUT = define_USE_NEW_INPUT;
             var new_USE_ADDRESSABLES = define_USE_ADDRESSABLES;
 #else
@@ -260,7 +263,8 @@ namespace PixelCrushers.DialogueSystem
             var new_USE_PHYSICS2D = EditorGUILayout.ToggleLeft(define_USE_PHYSICS2D ? "2D Physics (USE_PHYSICS2D)" : "2D Physics (USE_PHYSICS2D) <- MAKING A 2D GAME?", define_USE_PHYSICS2D);
             var new_USE_NAVMESH = EditorGUILayout.ToggleLeft(new GUIContent(define_USE_NAVMESH ? "Navigation (USE_NAVMESH)" : "Navigation (USE_NAVMESH) <- USING NAVIGATION?", "Enable Dialogue System support for Unity's NavMesh Navigation system."), define_USE_NAVMESH);
             var new_USE_ADDRESSABLES = EditorGUILayout.ToggleLeft("Addressables (USE_ADDRESSABLES)", define_USE_ADDRESSABLES);
-            var new_USE_CINEMACHINE = EditorGUILayout.ToggleLeft(new GUIContent("Cinemachine (USE_CINEMACHINE)", "Enable Dialogue System support for Cinemachine. You must still enable Cinemachine in Package Manager."), define_USE_CINEMACHINE);
+            var new_USE_CINEMACHINE = EditorGUILayout.ToggleLeft(new GUIContent("Cinemachine 2 (USE_CINEMACHINE)", "Enable Dialogue System support for Cinemachine 2. You must still enable Cinemachine 2 in Package Manager."), define_USE_CINEMACHINE);
+            var new_USE_CINEMACHINE3 = EditorGUILayout.ToggleLeft(new GUIContent("Cinemachine 3 (USE_CINEMACHINE_3)", "Enable Dialogue System support for Cinemachine 3. You must still enable Cinemachine 3 in Package Manager."), define_USE_CINEMACHINE3);
             var new_USE_NEW_INPUT = EditorGUILayout.ToggleLeft("New Input System (USE_NEW_INPUT)", define_USE_NEW_INPUT);
 #endif
 
@@ -357,7 +361,7 @@ namespace PixelCrushers.DialogueSystem
             {
                 if (new_USE_CINEMACHINE)
                 {
-                    if (EditorUtility.DisplayDialog("Enable Cinemachine Support", "This will enable support for Cinemachine. You MUST have installed the Cinemachine package via the Package Manager window first.", "OK", "Cancel"))
+                    if (EditorUtility.DisplayDialog("Enable Cinemachine 2 Support", "This will enable support for Cinemachine 2. You MUST have installed the Cinemachine 2 package via the Package Manager window first.", "OK", "Cancel"))
                     {
                         MoreEditorUtility.ToggleScriptingDefineSymbol(ScriptingSymbolNames.USE_CINEMACHINE, new_USE_CINEMACHINE);
                     }
@@ -369,6 +373,24 @@ namespace PixelCrushers.DialogueSystem
                 else
                 {
                     MoreEditorUtility.ToggleScriptingDefineSymbol(ScriptingSymbolNames.USE_CINEMACHINE, new_USE_CINEMACHINE);
+                }
+            }
+            if (new_USE_CINEMACHINE3 != define_USE_CINEMACHINE3)
+            {
+                if (new_USE_CINEMACHINE3)
+                {
+                    if (EditorUtility.DisplayDialog("Enable Cinemachine 3 Support", "This will enable support for Cinemachine 3. You MUST have installed the Cinemachine 3 package via the Package Manager window first.", "OK", "Cancel"))
+                    {
+                        MoreEditorUtility.ToggleScriptingDefineSymbol(ScriptingSymbolNames.USE_CINEMACHINE3, new_USE_CINEMACHINE3);
+                    }
+                    else
+                    {
+                        changed = false;
+                    }
+                }
+                else
+                {
+                    MoreEditorUtility.ToggleScriptingDefineSymbol(ScriptingSymbolNames.USE_CINEMACHINE3, new_USE_CINEMACHINE3);
                 }
             }
             if (new_USE_STM != define_USE_STM)

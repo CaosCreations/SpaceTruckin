@@ -19,6 +19,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
     {
 
         private ITextFieldUI textFieldUI = null;
+        private StandardUIInputField standardInputField = null;
         private string variableName = string.Empty;
         private bool acceptedText = false;
 
@@ -58,6 +59,8 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
                 }
                 string variableValue = clearField ? string.Empty : DialogueLua.GetVariable(variableName).asString;
                 textFieldUI.StartTextInput(labelText, variableValue, maxLength, OnAcceptedText);
+                standardInputField = textFieldUI as StandardUIInputField;
+                if (standardInputField != null) standardInputField.onCancel.AddListener(OnCancel);
             }
         }
 
@@ -115,11 +118,17 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
             Stop();
         }
 
+        private void OnCancel()
+        {
+            Stop();
+        }
+
         /// <summary>
         /// Finishes this sequence. If we haven't accepted text yet, tell the text field UI to cancel.
         /// </summary>
         public void OnDestroy()
         {
+            if (standardInputField != null) standardInputField.onCancel.RemoveListener(OnCancel);
             if (!acceptedText && (textFieldUI != null)) textFieldUI.CancelTextInput();
         }
     }

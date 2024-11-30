@@ -18,7 +18,7 @@ namespace PixelCrushers
 
         private void Start()
         {
-#if USE_PHYSICS2D || !UNITY_2018_1_OR_NEWER
+#if USE_PHYSICS2D
             usePhysics2DDefined.Invoke();
 #else
             usePhysics2DUndefined.Invoke();

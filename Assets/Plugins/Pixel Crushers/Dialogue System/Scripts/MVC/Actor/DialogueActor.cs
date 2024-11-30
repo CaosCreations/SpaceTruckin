@@ -37,6 +37,9 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("Optional portrait. If unassigned, will use portrait of actor in database. This field allows you to assign a Sprite.")]
         public Sprite spritePortrait;
 
+        [Tooltip("Optional. Specifies which Audio Source to use with sequencer commands such as Audio() and AudioWait().")]
+        public AudioSource audioSource;
+
         [Serializable]
         public class BarkUISettings
         {
@@ -156,6 +159,19 @@ namespace PixelCrushers.DialogueSystem
         {
             if (string.IsNullOrEmpty(actor)) return;
             CharacterInfo.UnregisterActorTransform(actor, transform);
+
+            // If a conversation is active, remove this actor from its model's character cache:
+            if (DialogueManager.isConversationActive)
+            {
+                var actorAsset = DialogueManager.masterDatabase.GetActor(actor);
+                if (actorAsset != null)
+                {
+                    foreach (var activeConversation in DialogueManager.instance.activeConversations)
+                    {
+                        activeConversation.conversationModel.ClearCharacterInfo(actorAsset.id);
+                    }
+                }
+            }
         }
 
         /// <summary>

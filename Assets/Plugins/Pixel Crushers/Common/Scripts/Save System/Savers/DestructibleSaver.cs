@@ -117,7 +117,8 @@ namespace PixelCrushers
                         break;
                 }
             }
-
+            var sceneIndex = saveAcrossSceneChanges ? -1 : UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
+            SaveSystem.currentSavedGameData.SetData(key, sceneIndex, s);
         }
 
     }

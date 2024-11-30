@@ -52,6 +52,7 @@ namespace PixelCrushers.DialogueSystem
             if (order == BarkOrder.Random)
             {
                 if (numEntries == 0) return 0;
+                var isNewList = entries == null;
                 if (entries == null) entries = new List<int>();
 
                 // If the entries have changed or we've reached the end of the shuffled list, remake the list:
@@ -66,7 +67,7 @@ namespace PixelCrushers.DialogueSystem
                         entries.Add(i);
                     }
                     entries.Shuffle();
-                    if (entries[0] == lastEntry)
+                    if (entries[0] == lastEntry && !isNewList)
                     {
                         // If the first entry of new list is the same as the last entry used, move it to the end:
                         entries.RemoveAt(0);

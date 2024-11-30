@@ -468,7 +468,7 @@ namespace PixelCrushers.DialogueSystem
                         if (rb == null)
                         {
                             rb = npcObject.AddComponent<Rigidbody2D>();
-                            rb.isKinematic = true;
+                            rb.bodyType = RigidbodyType2D.Kinematic;
                         }
                     }
                     else
@@ -503,7 +503,7 @@ namespace PixelCrushers.DialogueSystem
                         if (rb == null)
                         {
                             rb = npcObject.AddComponent<Rigidbody2D>();
-                            rb.isKinematic = true;
+                            rb.bodyType = RigidbodyType2D.Kinematic;
                         }
                     }
                     else

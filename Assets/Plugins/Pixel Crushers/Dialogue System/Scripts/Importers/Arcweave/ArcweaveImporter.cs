@@ -655,7 +655,7 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
                                     Sprite sprite = null;
                                     Texture2D texture = null;
                                     foreach (var extension in ImageExtensions)
-                                    { 
+                                    {
                                         TryLoadPortrait(assetName + extension, out sprite, out texture);
                                         if (sprite != null || texture != null) break;
                                     }
@@ -853,19 +853,6 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
                         {
                             elseEntry.Title = "else";
                         }
-
-                        //if (!string.IsNullOrEmpty(currentCumulativeCondition))
-                        //{
-                        //    var fallthroughEntry = template.CreateDialogueEntry(template.GetNextDialogueEntryID(conversation), conversation.id, string.Empty);
-                        //    if (fallthroughEntry != null)
-                        //    {
-                        //        fallthroughEntry.ActorID = currentNpcID;
-                        //        fallthroughEntry.ConversantID = currentPlayerID;
-                        //        fallthroughEntry.isGroup = true;
-                        //        fallthroughEntry.conditionsString = $"not ({currentCumulativeCondition})";
-                        //        fallthroughEntry.Title = "fallthrough";
-                        //    }
-                        //}
                     }
 
                     // Connect <START> node to starting element:
@@ -1104,12 +1091,8 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
             DialogueEntry entry;
             if (!dialogueEntryLookup.TryGetValue(guid, out entry))
             {
-                entry = template.CreateDialogueEntry(template.GetNextDialogueEntryID(conversation), conversation.id, string.Empty);
-                conversation.dialogueEntries.Add(entry);
+                entry = CreateAndInitDialogueEntry(conversation, string.Empty);
                 dialogueEntryLookup[guid] = entry;
-                entry.DialogueText = string.Empty;
-                entry.MenuText = string.Empty;
-                entry.Sequence = string.Empty;
                 if (importGuids)
                 {
                     entry.fields.Add(new Field("Guid", guid, FieldType.Text));
@@ -1134,6 +1117,23 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
                 }
             }
             return entry;
+        }
+
+        protected DialogueEntry CreateAndInitDialogueEntry(Conversation conversation, string title)
+        {
+            var entry = template.CreateDialogueEntry(template.GetNextDialogueEntryID(conversation), conversation.id, title);
+            conversation.dialogueEntries.Add(entry);
+            entry.DialogueText = string.Empty;
+            entry.MenuText = string.Empty;
+            entry.Sequence = string.Empty;
+            return entry;
+        }
+
+        protected void CopyActors(DialogueEntry source, DialogueEntry destination)
+        {
+            if (source == null || destination == null) return;
+            destination.ActorID = source.ActorID;
+            destination.ConversantID = source.ConversantID;
         }
 
         protected virtual DialogueEntry CreateConditionEntry(Conversation conversation, string conditionGuid, ref string currentCumulativeCondition)
@@ -1287,7 +1287,7 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
             }
         }
 
-#endregion
+        #endregion
 
         #region Touch Up Database
 
@@ -1295,7 +1295,7 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
         {
             SetStartCutscenesToNone(database);
             ConnectJumpers();
-            AddInlineCodeNodes();
+            ProcessCodeNodes();
             ExtractSequences();
             TouchUpRichText();
             SplitPipes();
@@ -1343,7 +1343,8 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
                     if (!string.IsNullOrEmpty(entry.conditionsString)) entry.conditionsString = ConvertArcscriptToLua(entry.conditionsString);
                     if (!entry.isGroup && string.IsNullOrEmpty(entry.DialogueText) && string.IsNullOrEmpty(entry.Sequence))
                     {
-                        entry.Sequence = (entry.id == 0) ? NoneSequence : ContinueSequence;
+                        entry.Sequence = (entry.id == 0) ? NoneSequence
+                            : string.IsNullOrEmpty(entry.DialogueText) ? ContinueSequence : string.Empty;
                     }
                 }
             }
@@ -1369,7 +1370,7 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
         protected static Regex IncrementorRegex = new Regex(@"\+=|\-=");
         protected static Regex VisitsRegex = new Regex(@"visits\(<[^\)]+\)");
         protected static List<string> ReservedKeywords = new List<string>("if|elseif|else|endif|is|not|and|or|true|false|abs|sqr|sqrt|random|reset|resetAll|roll|show|visits".Split('|'));
-        protected static string[] CodeFieldPrefixes = new string[] { "_IF", "_ELSEIF", "_ELSE" };
+        //protected static string[] CodeFieldPrefixes = new string[] { "_IF", "_ELSEIF", "_ELSE" };
 
         protected enum CodeState { None, InIf, InElseIf, InElse }
 
@@ -1443,132 +1444,133 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
             {
                 entry.DialogueText = string.Empty;
             }
-            else if (!content.Contains("<code>"))
+            else if (!content.Contains("<code"))
             {
                 entry.DialogueText = TouchUpRichText(content);
             }
             else
             {
-                // Split the content into pieces: text, code, text, code, text, etc.
-                string s = content;
-                var pieces = new List<ContentPiece>();
-                var match = CodeStartRegex.Match(s);
-                while (match.Success)
-                {
-                    // Create a piece for the text before the begin code tag:
-                    var text = TouchUpRichText(s.Substring(0, match.Index));
-                    if (!string.IsNullOrEmpty(text.Trim()))
-                    {
-                        pieces.Add(new ContentPiece(ContentPieceType.Text, text));
-                    }
+                entry.DialogueText = content;
+                //// Split the content into pieces: text, code, text, code, text, etc.
+                //string s = content;
+                //var pieces = new List<ContentPiece>();
+                //var match = CodeStartRegex.Match(s);
+                //while (match.Success)
+                //{
+                //    // Create a piece for the text before the begin code tag:
+                //    var text = TouchUpRichText(s.Substring(0, match.Index));
+                //    if (!string.IsNullOrEmpty(text.Trim()))
+                //    {
+                //        pieces.Add(new ContentPiece(ContentPieceType.Text, text));
+                //    }
 
-                    // Strip the text and begin code tag:
-                    s = s.Substring(match.Index + match.Length);
+                //    // Strip the text and begin code tag:
+                //    s = s.Substring(match.Index + match.Length);
 
-                    // Locate the end code tag:
-                    match = CodeEndRegex.Match(s);
-                    if (match.Success)
-                    {
-                        // Create a piece for the code inside the code tags:
-                        var code = s.Substring(0, match.Index);
-                        pieces.Add(new ContentPiece(ContentPieceType.Code, code));
+                //    // Locate the end code tag:
+                //    match = CodeEndRegex.Match(s);
+                //    if (match.Success)
+                //    {
+                //        // Create a piece for the code inside the code tags:
+                //        var code = s.Substring(0, match.Index);
+                //        pieces.Add(new ContentPiece(ContentPieceType.Code, code));
 
-                        // Strip the code and end code tag:
-                        s = s.Substring(match.Index + match.Length);
-                    }
+                //        // Strip the code and end code tag:
+                //        s = s.Substring(match.Index + match.Length);
+                //    }
 
-                    // Look for the next begin code tag:
-                    match = CodeStartRegex.Match(s);
-                }
+                //    // Look for the next begin code tag:
+                //    match = CodeStartRegex.Match(s);
+                //}
 
-                // Create a piece for the text after all of the code tags:
-                s = TouchUpRichText(s);
-                if (!string.IsNullOrEmpty(s.Trim()))
-                {
-                    pieces.Add(new ContentPiece(ContentPieceType.Text, s));
-                }
+                //// Create a piece for the text after all of the code tags:
+                //s = TouchUpRichText(s);
+                //if (!string.IsNullOrEmpty(s.Trim()))
+                //{
+                //    pieces.Add(new ContentPiece(ContentPieceType.Text, s));
+                //}
 
-                // Process pieces:
-                entry.DialogueText = string.Empty;
-                var hasIfStatement = false;
-                var codeState = CodeState.None;
-                var codeFieldPrefix = string.Empty;
-                int numElseIf = 0;
-                foreach (ContentPiece piece in pieces)
-                {
-                    switch (piece.type)
-                    {
-                        case ContentPieceType.Text:
-                            switch (codeState)
-                            {
-                                case CodeState.None:
-                                    if (hasIfStatement)
-                                    {
-                                        entry.fields.Add(new Field($"_POST_IF_TEXT", piece.text, FieldType.Text));
-                                    }
-                                    else
-                                    {
-                                        entry.DialogueText += piece.text;
-                                    }
-                                    break;
-                                case CodeState.InIf:
-                                case CodeState.InElseIf:
-                                case CodeState.InElse:
-                                    entry.fields.Add(new Field($"{codeFieldPrefix}_TEXT", piece.text, FieldType.Text));
-                                    break;
-                            }
-                            break;
-                        case ContentPieceType.Code:
-                            var code = piece.text;
-                            if (code.StartsWith("if "))
-                            {
-                                hasIfStatement = true;
-                                codeState = CodeState.InIf;
-                                codeFieldPrefix = "_IF";
-                                code = code.Substring("if ".Length);
-                            }
-                            else if (code.StartsWith("elseif "))
-                            {
-                                codeState = CodeState.InElseIf;
-                                codeFieldPrefix = $"_ELSEIF.{numElseIf}";
-                                code = code.Substring("elseif ".Length);
-                                numElseIf++;
-                            }
-                            else if (code.StartsWith("else "))
-                            {
-                                codeState = CodeState.InElse;
-                                codeFieldPrefix = "_ELSE";
-                                code = code.Substring("else ".Length);
-                            }
-                            else if (code.StartsWith("endif"))
-                            {
-                                codeState = CodeState.None;
-                                codeFieldPrefix = string.Empty;
-                            }
-                            else
-                            {
-                                if (codeState == CodeState.None)
-                                {
-                                    if (!string.IsNullOrEmpty(entry.userScript)) entry.userScript += "\n";
-                                    entry.userScript += code;
-                                }
-                                else
-                                {
-                                    entry.fields.Add(new Field($"{codeFieldPrefix}_INNER_CODE", code, FieldType.Text));
-                                }
-                            }
-                            if (!string.IsNullOrEmpty(codeFieldPrefix))
-                            {
-                                entry.fields.Add(new Field($"{codeFieldPrefix}_CODE", code, FieldType.Text));
-                            }
-                            break;
-                    }
-                }
-                entry.fields.Add(new Field("_NUM_ELSEIF", numElseIf.ToString(), FieldType.Number));
+                //// Process pieces:
+                //entry.DialogueText = string.Empty;
+                //var hasIfStatement = false;
+                //var codeState = CodeState.None;
+                //var codeFieldPrefix = string.Empty;
+                //int numElseIf = 0;
+                //foreach (ContentPiece piece in pieces)
+                //{
+                //    switch (piece.type)
+                //    {
+                //        case ContentPieceType.Text:
+                //            switch (codeState)
+                //            {
+                //                case CodeState.None:
+                //                    if (hasIfStatement)
+                //                    {
+                //                        entry.fields.Add(new Field($"_POST_IF_TEXT", piece.text, FieldType.Text));
+                //                    }
+                //                    else
+                //                    {
+                //                        entry.DialogueText += piece.text;
+                //                    }
+                //                    break;
+                //                case CodeState.InIf:
+                //                case CodeState.InElseIf:
+                //                case CodeState.InElse:
+                //                    entry.fields.Add(new Field($"{codeFieldPrefix}_TEXT", piece.text, FieldType.Text));
+                //                    break;
+                //            }
+                //            break;
+                //        case ContentPieceType.Code:
+                //            var code = piece.text;
+                //            if (code.StartsWith("if "))
+                //            {
+                //                hasIfStatement = true;
+                //                codeState = CodeState.InIf;
+                //                codeFieldPrefix = "_IF";
+                //                code = code.Substring("if ".Length);
+                //            }
+                //            else if (code.StartsWith("elseif "))
+                //            {
+                //                codeState = CodeState.InElseIf;
+                //                codeFieldPrefix = $"_ELSEIF.{numElseIf}";
+                //                code = code.Substring("elseif ".Length);
+                //                numElseIf++;
+                //            }
+                //            else if (code.StartsWith("else"))
+                //            {
+                //                codeState = CodeState.InElse;
+                //                codeFieldPrefix = "_ELSE";
+                //                code = string.Empty;
+                //            }
+                //            else if (code.StartsWith("endif"))
+                //            {
+                //                codeState = CodeState.None;
+                //                codeFieldPrefix = string.Empty;
+                //            }
+                //            else
+                //            {
+                //                if (codeState == CodeState.None)
+                //                {
+                //                    if (!string.IsNullOrEmpty(entry.userScript)) entry.userScript += "\n";
+                //                    entry.userScript += code;
+                //                }
+                //                else
+                //                {
+                //                    entry.fields.Add(new Field($"{codeFieldPrefix}_INNER_CODE", code, FieldType.Text));
+                //                }
+                //            }
+                //            if (!string.IsNullOrEmpty(codeFieldPrefix))
+                //            {
+                //                entry.fields.Add(new Field($"{codeFieldPrefix}_CODE", code, FieldType.Text));
+                //            }
+                //            break;
+                //    }
+                //}
+                //entry.fields.Add(new Field("_NUM_ELSEIF", numElseIf.ToString(), FieldType.Number));
             }
         }
 
-        protected virtual void AddInlineCodeNodes()
+        protected virtual void ProcessCodeNodes()
         {
             foreach (var conversation in database.conversations)
             {
@@ -1576,75 +1578,309 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
                 for (int i = numEntries - 1; i >= 0; i--)
                 {
                     var entry = conversation.dialogueEntries[i];
-                    var hasCodeToProcess = Field.FieldExists(entry.fields, "_IF_CODE");
-                    if (!hasCodeToProcess) continue;
-
-                    // Add post-if node (containing text after if block):
-                    var postIfEntry = template.CreateDialogueEntry(template.GetNextDialogueEntryID(conversation), conversation.id, string.Empty);
-                    conversation.dialogueEntries.Add(postIfEntry);
-                    postIfEntry.ActorID = entry.ActorID;
-                    postIfEntry.ConversantID = entry.ConversantID;
-                    foreach (var link in entry.outgoingLinks)
-                    {
-                        postIfEntry.outgoingLinks.Add(new Link(link));
-                    }
-                    var postIfField = Field.Lookup(entry.fields, "_POST_IF_TEXT");
-                    entry.fields.Remove(postIfField);
-                    if (postIfField == null || string.IsNullOrEmpty(postIfField.value))
-                    {
-                        postIfEntry.isGroup = true;
-                    }
-                    else
-                    {
-                        postIfEntry.DialogueText = TouchUpRichText(postIfField.value);
-                    }
-
-                    // Clear entry's links (since postIfEntry now links to them instead):
-                    entry.outgoingLinks.Clear();
-
-                    // Add code nodes between entry and postIfEntry:
-                    var cumulativeConditions = string.Empty;
-                    foreach (var prefix in CodeFieldPrefixes)
-                    {
-                        if (prefix == "_ELSEIF")
-                        {
-                            var numElseIf = Field.LookupInt(entry.fields, "_NUM_ELSEIF");
-                            for (int elseIndex = 0; elseIndex < numElseIf; elseIndex++)
-                            {
-                                InsertCodeEntry(conversation, entry, postIfEntry, $"{prefix}.{elseIndex}", ref cumulativeConditions);
-                            }
-                        }
-                        else
-                        {
-                            InsertCodeEntry(conversation, entry, postIfEntry, prefix, ref cumulativeConditions);
-                        }
-                    }
-
-                    // Add fallthrough node to use if no IF/ELSEIF conditions are true:
-                    InsertCodeFallthroughEntry(conversation, entry, postIfEntry, cumulativeConditions);
+                    ProcessCodeInNode(conversation, entry);
                 }
             }
         }
 
-        protected virtual void InsertCodeEntry(Conversation conversation, DialogueEntry entry, DialogueEntry postIfEntry, string prefix, ref string cumulativeConditions)
+        protected enum NodeTokenType { Text, If, Elseif, Else, Endif, Code }
+        protected class NodeToken
+        {
+            public NodeTokenType type;
+            public string content;
+            public NodeToken(NodeTokenType type, string content)
+            {
+                this.type = type;
+                this.content = content;
+            }
+        }
+
+        protected virtual void ProcessCodeInNode(Conversation conversation, DialogueEntry entry)
+        {
+            if (entry.DialogueText == null) entry.DialogueText = string.Empty;
+            if (!entry.DialogueText.Contains("<code")) return;
+            var tokens = TokenizeCodeNode(entry);
+            var originalOutgoingLinks = PrepareNodeForTokenConversion(entry);
+            ConvertTokensToNodes(conversation, entry, tokens);
+            AddOriginalOutgoingLinksToLeafNodes(entry, originalOutgoingLinks, new List<DialogueEntry>());
+        }
+
+        private List<Link> PrepareNodeForTokenConversion(DialogueEntry entry)
+        {
+            entry.DialogueText = string.Empty;
+            var originalLinks = entry.outgoingLinks;
+            entry.outgoingLinks = new List<Link>();
+            return originalLinks;
+        }
+
+        protected virtual Queue<NodeToken> TokenizeCodeNode(DialogueEntry entry)
+        {
+            var tokens = new Queue<NodeToken>();
+            var s = entry.DialogueText.Replace("<pre>", "").Replace("</pre>", "");
+            int safeguard = 0;
+            while (!string.IsNullOrEmpty(s) && safeguard++ < 100)
+            {
+                var codePos = s.IndexOf("<code");
+                if (codePos == -1)
+                {
+                    tokens.Enqueue(new NodeToken(NodeTokenType.Text, s));
+                    s = string.Empty;
+                }
+                else
+                {
+                    if (codePos > 0)
+                    {
+                        tokens.Enqueue(new NodeToken(NodeTokenType.Text, s.Substring(0, codePos)));
+                        s = s.Substring(codePos);
+                    }
+                    var codeTagEndPos = s.IndexOf(">");
+                    if (codeTagEndPos == -1 || codeTagEndPos > s.Length - 1) break;
+                    s = s.Substring(codeTagEndPos + 1);
+                    var endCodePos = s.IndexOf("</code>");
+                    if (endCodePos == -1) endCodePos = s.Length - 1;
+                    var content = s.Substring(0, endCodePos);
+                    s = s.Substring(endCodePos + "</code>".Length);
+                    NodeTokenType type = NodeTokenType.Code;
+                    if (content.StartsWith("if "))
+                    {
+                        type = NodeTokenType.If;
+                        content = content.Substring("if ".Length);
+                    }
+                    else if (content.StartsWith("elseif "))
+                    {
+                        type = NodeTokenType.Elseif;
+                        content = content.Substring("elseif ".Length);
+                    }
+                    else if (content == "else")
+                    {
+                        type = NodeTokenType.Else;
+                        content = string.Empty;
+                    }
+                    else if (content == "endif")
+                    {
+                        type = NodeTokenType.Endif;
+                        content = string.Empty;
+                    }
+                    tokens.Enqueue(new NodeToken(type, content));
+                }
+            }
+            return tokens;
+        }
+
+        protected virtual void ConvertTokensToNodes(Conversation conversation, DialogueEntry entry, 
+            Queue<NodeToken> tokens)
+        {
+            while (tokens.Count > 0)
+            {
+                var nextTokenType = tokens.Peek().type;
+                if (nextTokenType == NodeTokenType.Elseif || 
+                    nextTokenType == NodeTokenType.Else ||
+                    nextTokenType == NodeTokenType.Endif)
+                {
+                    // We need to return control to the parent node to handle it.
+                    return;
+                }
+                var token = tokens.Dequeue();
+                switch (token.type)
+                {
+                    case NodeTokenType.Text:
+                        AddContentToLeafNodes(entry, token.content, null, new List<DialogueEntry>());
+                        break;
+                    case NodeTokenType.Code:
+                        AddContentToLeafNodes(entry, null, token.content, new List<DialogueEntry>());
+                        break;
+                    case NodeTokenType.If:
+                        HandleIfStatement(conversation, entry, token.content, tokens);
+                        break;
+                    default:
+                        Debug.LogError($"ArcweaveImporter: Internal error processing {token.type} token");
+                        break;
+                }
+            }
+        }
+
+        protected void HandleIfStatement(Conversation conversation, DialogueEntry entry, 
+            string condition, Queue<NodeToken> tokens)
+        {
+            var child = CreateAndInitDialogueEntry(conversation, $"if {condition}");
+            CopyActors(entry, child);
+            entry.outgoingLinks.Add(new Link(conversation.id, entry.id, conversation.id, child.id));
+            child.conditionsString = ConvertArcscriptToLua(condition);
+            while (tokens.Count > 0)
+            {
+                ConvertTokensToNodes(conversation, child, tokens);
+                if (tokens.Count == 0) return;
+                var token = tokens.Dequeue();
+                switch (token.type)
+                {
+                    case NodeTokenType.Elseif:
+                        HandleElseifStatement(conversation, entry, token.content, tokens);
+                        break;
+                    case NodeTokenType.Else:
+                        HandleElseStatement(conversation, entry, tokens);
+                        break;
+                    case NodeTokenType.Endif:
+                        HandleEndifStatement(conversation, entry);
+                        return;
+                    default:
+                        Debug.LogError($"ArcweaveImporter: Internal error processing {token.type} token in 'if' statement.");
+                        break;
+                }
+            }
+        }
+
+        protected void HandleElseifStatement(Conversation conversation, DialogueEntry entry, 
+            string condition, Queue<NodeToken> tokens)
+        {
+            var child = CreateAndInitDialogueEntry(conversation, $"elseif {condition}");
+            CopyActors(entry, child);
+            entry.outgoingLinks.Add(new Link(conversation.id, entry.id, conversation.id, child.id));
+            child.conditionsString = ConvertArcscriptToLua(condition);
+            ConvertTokensToNodes(conversation, child, tokens);
+        }
+
+        protected void HandleElseStatement(Conversation conversation, DialogueEntry entry,
+            Queue<NodeToken> tokens)
+        {
+            var child = CreateAndInitDialogueEntry(conversation, $"else");
+            CopyActors(entry, child);
+            entry.outgoingLinks.Add(new Link(conversation.id, entry.id, conversation.id, child.id));
+            ConvertTokensToNodes(conversation, child, tokens);
+        }
+
+        protected void HandleEndifStatement(Conversation conversation, DialogueEntry entry)
+        {
+            // Check if we need to add an else node:
+            var lastChild = conversation.GetDialogueEntry(entry.outgoingLinks[entry.outgoingLinks.Count - 1].destinationDialogueID);
+            if (lastChild.Title != "else")
+            {
+                var child = CreateAndInitDialogueEntry(conversation, $"(else)");
+                CopyActors(entry, child);
+                entry.outgoingLinks.Add(new Link(conversation.id, entry.id, conversation.id, child.id));
+            }
+
+            // Make conditions mutually exclusive:
+            var newConditions = new List<string>();
+            var allConditions = string.Empty;
+            // Make updated list of conditions: node's conditions and not otherConditions.
+            for (int i = 0; i < entry.outgoingLinks.Count - 1; i++)
+            {
+                var conditionNode = conversation.GetDialogueEntry(entry.outgoingLinks[i].destinationDialogueID);
+                if (!string.IsNullOrEmpty(allConditions)) allConditions += " or ";
+                allConditions += conditionNode.conditionsString;
+                string otherConditions = string.Empty;
+                for (int j = 0; j < entry.outgoingLinks.Count - 1; j++)
+                {
+                    if (i == j) continue;
+                    var otherNode = conversation.GetDialogueEntry(entry.outgoingLinks[j].destinationDialogueID);
+                    if (!string.IsNullOrEmpty(otherConditions)) otherConditions += " or ";
+                    otherConditions += otherNode.conditionsString;
+                }
+                if (string.IsNullOrEmpty(otherConditions))
+                {
+                    newConditions.Add(conditionNode.conditionsString);
+                }   
+                else
+                {
+                    newConditions.Add($"{conditionNode.conditionsString} and not ({otherConditions})");
+                }
+            }
+            // Assign updated list of conditions to nodes:
+            for (int i = 0; i < entry.outgoingLinks.Count - 1; i++)
+            {
+                var conditionNode = conversation.GetDialogueEntry(entry.outgoingLinks[i].destinationDialogueID);
+                conditionNode.conditionsString = newConditions[i];
+            }
+            // Assign else node: not allConditions.
+            var elseNode = conversation.GetDialogueEntry(entry.outgoingLinks[entry.outgoingLinks.Count - 1].destinationDialogueID);
+            elseNode.conditionsString = $"not ({allConditions})";
+        }
+
+        protected void AddContentToLeafNodes(DialogueEntry entry, string text, string code, 
+            List<DialogueEntry> processed)
+        {
+            if (entry == null || processed.Contains(entry)) return;
+            processed.Add(entry);
+            var isLeaf = entry.outgoingLinks.Count == 0;
+            if (isLeaf)
+            {
+                if (!string.IsNullOrEmpty(text))
+                {
+                    entry.DialogueText = AppendWithNewline(entry.DialogueText, text);
+                }
+                if (!string.IsNullOrEmpty(code))
+                {
+                    entry.userScript = AppendWithNewline(entry.userScript, ConvertArcscriptToLua(code, true));
+                }
+            }
+            else
+            {
+                foreach (var link in entry.outgoingLinks)
+                {
+                    var child = database.GetDialogueEntry(link);
+                    AddContentToLeafNodes(child, text, code, processed);
+                }
+            }
+        }
+
+        protected string AppendWithNewline(string original, string toAdd)
+        {
+            if (string.IsNullOrEmpty(original) || original.EndsWith("\n"))
+            {
+                return original + toAdd;
+            }
+            else
+            {
+                return original + "\n" + toAdd;
+            }
+        }
+
+        protected void AddOriginalOutgoingLinksToLeafNodes(DialogueEntry entry,
+            List<Link> originalOutgoingLinks, List<DialogueEntry> processed)
+        {
+            if (entry == null || processed.Contains(entry)) return;
+            processed.Add(entry);
+            var isLeaf = entry.outgoingLinks.Count == 0;
+            if (isLeaf)
+            {
+                AddOutgoingLinksToNode(entry, originalOutgoingLinks);
+            }
+            else
+            {
+                foreach (var link in entry.outgoingLinks)
+                {
+                    var child = database.GetDialogueEntry(link);
+                    AddOriginalOutgoingLinksToLeafNodes(child, originalOutgoingLinks, processed);
+                }
+            }
+        }
+
+        private void AddOutgoingLinksToNode(DialogueEntry entry, List<Link> outgoingLinks)
+        {
+            foreach (var link in outgoingLinks)
+            {
+                entry.outgoingLinks.Add(new Link(link));
+            }
+        }
+
+        // Returns code entry.
+        protected virtual DialogueEntry InsertCodeEntry(Conversation conversation, DialogueEntry entry, DialogueEntry postIfEntry, string prefix, ref string cumulativeConditions)
         {
             var codeField = Field.Lookup(entry.fields, prefix + "_CODE");
-            if (codeField == null) return;
+            if (codeField == null && !prefix.EndsWith("else")) return null;
             var textField = Field.Lookup(entry.fields, prefix + "_TEXT");
             var innerCodeField = Field.Lookup(entry.fields, prefix + "_INNER_CODE");
             entry.fields.Remove(codeField);
             entry.fields.Remove(textField);
             entry.fields.Remove(innerCodeField);
-            var codeEntry = template.CreateDialogueEntry(template.GetNextDialogueEntryID(conversation), conversation.id, string.Empty);
-            conversation.dialogueEntries.Add(codeEntry);
-            codeEntry.ActorID = entry.ActorID;
-            codeEntry.ConversantID = entry.ConversantID;
-            codeEntry.Title = codeField.value;
+            var codeEntry = CreateAndInitDialogueEntry(conversation, string.Empty);
+            CopyActors(entry, codeEntry);
+            codeEntry.Title = (codeField == null) ? "else" : codeField.value;
             codeEntry.outgoingLinks.Add(new Link(conversation.id, codeEntry.id, conversation.id, postIfEntry.id));
             codeEntry.isGroup = textField == null || string.IsNullOrEmpty(textField.value);
-            codeEntry.Sequence = codeEntry.isGroup ? string.Empty : ContinueSequence;
             codeEntry.DialogueText = (textField != null) ? TouchUpRichText(textField.value) : string.Empty;
-            codeEntry.conditionsString = ConvertArcscriptToLua(codeField.value);
+            codeEntry.Sequence = (codeEntry.isGroup || !string.IsNullOrEmpty(codeEntry.DialogueText)) ? string.Empty : ContinueSequence;
+            codeEntry.conditionsString = (codeField != null) ? ConvertArcscriptToLua(codeField.value) : string.Empty;
             if (string.IsNullOrEmpty(cumulativeConditions))
             {
                 cumulativeConditions = codeEntry.conditionsString;
@@ -1652,23 +1888,25 @@ namespace PixelCrushers.DialogueSystem.ArcweaveSupport
             else
             {
                 if (cumulativeConditions[0] != '(') cumulativeConditions = $"({cumulativeConditions})";
-                cumulativeConditions += $" and ({codeEntry.conditionsString})";
+                if (!string.IsNullOrEmpty(codeEntry.conditionsString))
+                {
+                    cumulativeConditions += $" and ({codeEntry.conditionsString})";
+                }
             }
             if (innerCodeField != null) codeEntry.userScript = ConvertArcscriptToLua(innerCodeField.value, true);
             entry.outgoingLinks.Add(new Link(conversation.id, entry.id, conversation.id, codeEntry.id));
+            return codeEntry;
         }
 
         protected virtual void InsertCodeFallthroughEntry(Conversation conversation, DialogueEntry entry, DialogueEntry postIfEntry, string cumulativePreviousConditions)
         {
-            var codeEntry = template.CreateDialogueEntry(template.GetNextDialogueEntryID(conversation), conversation.id, string.Empty);
-            conversation.dialogueEntries.Add(codeEntry);
-            codeEntry.ActorID = entry.ActorID;
-            codeEntry.ConversantID = entry.ConversantID;
+            var codeEntry = CreateAndInitDialogueEntry(conversation, string.Empty);
+            CopyActors(entry, codeEntry);
             codeEntry.Title = "fallthrough";
             codeEntry.outgoingLinks.Add(new Link(conversation.id, codeEntry.id, conversation.id, postIfEntry.id));
             codeEntry.isGroup = true;
-            codeEntry.Sequence = codeEntry.isGroup ? string.Empty : ContinueSequence;
             codeEntry.DialogueText = string.Empty;
+            codeEntry.Sequence = (codeEntry.isGroup || !string.IsNullOrEmpty(codeEntry.DialogueText)) ? string.Empty : ContinueSequence;
             codeEntry.conditionsString = $"not ({cumulativePreviousConditions})";
             entry.outgoingLinks.Add(new Link(conversation.id, entry.id, conversation.id, codeEntry.id));
         }

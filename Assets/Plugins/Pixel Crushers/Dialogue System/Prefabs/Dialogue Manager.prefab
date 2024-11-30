@@ -195,6 +195,7 @@ MonoBehaviour:
       alternateCameraObject: {fileID: 0}
       cameraAngles: {fileID: 0}
       keepCameraPositionAtConversationEnd: 0
+      showSubtitleOnEmptyContinue: 0
       defaultSequence: Delay({{end}})
       defaultPlayerSequence: 
       defaultResponseMenuSequence: 
@@ -241,8 +242,11 @@ MonoBehaviour:
     initializeNewVariables: 1
   allowSimultaneousConversations: 0
   interruptActiveConversations: 0
+  stopEvaluationAtFirstValid: 0
+  reevaluateLinksAfterSubtitle: 0
+  useLinearGroupMode: 0
   includeSimStatus: 0
-  instantiateDatabase: 0
+  instantiateDatabase: 1
   preloadResources: 1
   warmUpConversationController: 0
   dontHideImmediateDuringWarmup: 0

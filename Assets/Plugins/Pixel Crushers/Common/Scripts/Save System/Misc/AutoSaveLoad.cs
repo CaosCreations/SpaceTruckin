@@ -42,7 +42,6 @@ namespace PixelCrushers
             }
         }
 
-#if UNITY_2018_1_OR_NEWER
         private void OnEnable()
         {
             Application.wantsToQuit -= OnWantsToQuit;
@@ -59,15 +58,6 @@ namespace PixelCrushers
             CheckSaveOnQuit();
             return true;
         }
-#else
-        /// <summary>
-        /// When quitting, save the game.
-        /// </summary>
-        private void OnApplicationQuit()
-        {
-            CheckSaveOnQuit();
-        }
-#endif
 
         private void CheckSaveOnQuit()
         {
