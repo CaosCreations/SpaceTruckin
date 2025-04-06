@@ -135,7 +135,10 @@ namespace PixelCrushers.DialogueSystem
                             portraitSprite = panelActor.GetPortraitSprite();
                             portraitName = CharacterInfo.GetLocalizedDisplayNameInDatabase(portraitName);
                         }
-                        subtitlePanel.OpenOnStartConversation(portraitSprite, portraitName, dialogueActor);
+                        if (!subtitlePanel.isOpen)
+                        {
+                            subtitlePanel.OpenOnStartConversation(portraitSprite, portraitName, dialogueActor);
+                        }
                     }
                     if (subtitlePanel.accumulateText)
                     {

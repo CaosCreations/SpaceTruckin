@@ -28,6 +28,9 @@ namespace PixelCrushers
 #if USE_NEW_INPUT
         [Tooltip("Trigger the selectable when this input action is performed.")]
         public InputActionReference inputAction;
+
+        [Tooltip("Disable input action after button is clicked.")]
+        public bool disableInputActionAfterClick = false;
 #endif
 
         [Tooltip("Trigger if any key, input button, or mouse button is pressed.")]
@@ -83,7 +86,7 @@ namespace PixelCrushers
             if (inputAction != null)
             {
                 inputAction.action.performed -= OnInputActionPerformed;
-                inputAction.action.Disable();
+                if (disableInputActionAfterClick) inputAction.action.Disable();
             }
         }
 

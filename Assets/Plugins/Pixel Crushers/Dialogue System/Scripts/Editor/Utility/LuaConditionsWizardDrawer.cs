@@ -11,6 +11,8 @@ namespace PixelCrushers.DialogueSystem
     {
 
         private LuaConditionWizard luaConditionWizard = new LuaConditionWizard(EditorTools.selectedDatabase);
+        private float lastComputedHeight = 16f;
+        private float propertyWidth = 0;
         private string lastValue = null;
         private float _luaFieldWidth = 0;
         private float luaFieldWidth
@@ -28,17 +30,8 @@ namespace PixelCrushers.DialogueSystem
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             EditorTools.SetInitialDatabaseIfNull();
-            var height = (EditorTools.selectedDatabase == null) ? EditorGUIUtility.singleLineHeight : luaConditionWizard.GetHeight();
+            var height = (EditorTools.selectedDatabase == null) ? EditorGUIUtility.singleLineHeight : (lastComputedHeight - EditorGUIUtility.singleLineHeight + 2f);
             if (ShowReferenceDatabase()) height += EditorGUIUtility.singleLineHeight;
-
-            if (property != null)
-            {
-                height -= EditorGUIUtility.singleLineHeight;
-                if (luaFieldWidth == 0) luaFieldWidth = Screen.width - 34f;
-                var textAreaHeight = EditorTools.textAreaGuiStyle.CalcHeight(new GUIContent(property.stringValue), luaFieldWidth) + 2f;
-                height += textAreaHeight;
-            }
-
             return height;
         }
 
@@ -72,7 +65,10 @@ namespace PixelCrushers.DialogueSystem
                         {
                             luaConditionWizard.OpenWizard(property.stringValue);
                         }
-                        property.stringValue = luaConditionWizard.Draw(position, new GUIContent("Lua Condition Wizard", "Use to add Lua conditions below"), property.stringValue, true);
+                        if (position.width > 16) propertyWidth = position.width - 16;
+                        lastComputedHeight = luaConditionWizard.GetHeight(property.stringValue, propertyWidth, true) +
+                            EditorGUIUtility.singleLineHeight;
+                        property.stringValue = luaConditionWizard.Draw(position, label, property.stringValue);
                         lastValue = property.stringValue;
                     }
                 }

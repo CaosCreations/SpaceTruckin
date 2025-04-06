@@ -280,7 +280,7 @@ namespace PixelCrushers.DialogueSystem.Twine
 
         protected virtual void ImportStory(StoryInfo storyInfo)
         {
-            Debug.Log("Importing " + storyInfo.jsonFilename);
+            Debug.Log("Importing " + storyInfo.jsonFilename, database);
             if (string.IsNullOrEmpty(storyInfo.jsonFilename)) return;
             var json = File.ReadAllText(storyInfo.jsonFilename, EncodingTypeTools.GetEncoding(prefs.encodingType));
             if (string.IsNullOrEmpty(json)) throw new Exception("Unable to read Twine JSON from file.");

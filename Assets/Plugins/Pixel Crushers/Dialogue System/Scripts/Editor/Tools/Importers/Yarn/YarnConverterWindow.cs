@@ -440,7 +440,7 @@ namespace PixelCrushers.DialogueSystem.Yarn
             converter.Convert(prefs, yarnProject, dialogueDb);
             WriteDialogueSystemChanges(dialogueDb);
             converter.GenerateCustomCommandBaseClass();
-            Debug.Log($"Yarn project import complete - database written to: {AssetDatabase.GetAssetPath(dialogueDb)}");
+            Debug.Log($"Yarn project import complete - database written to: {AssetDatabase.GetAssetPath(dialogueDb)}", dialogueDb);
         }
     }
 }

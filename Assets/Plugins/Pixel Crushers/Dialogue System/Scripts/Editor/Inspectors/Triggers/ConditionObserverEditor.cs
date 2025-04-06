@@ -116,6 +116,7 @@ namespace PixelCrushers.DialogueSystem
                     var newUseQuestNamePicker = questPicker.usePicker;
 
                     var changed = EditorGUI.EndChangeCheck();
+                    UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(trigger.gameObject.scene);
 
                     serializedObject.Update();
 

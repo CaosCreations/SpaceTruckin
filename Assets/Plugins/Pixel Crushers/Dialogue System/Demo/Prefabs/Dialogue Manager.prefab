@@ -74,6 +74,8 @@ MonoBehaviour:
       alwaysForceResponseMenu: 1
       includeInvalidEntries: 0
       responseTimeout: 0
+      emTagForOldResponses: 0
+      emTagForInvalidResponses: 0
       cancelSubtitle:
         key: 27
         buttonName: 
@@ -95,6 +97,7 @@ MonoBehaviour:
       subtitleCharsPerSecond: 30
       minSubtitleSeconds: 2
       continueButton: 0
+      requireContinueOnLastLine: 0
       richTextEmphases: 1
       informSequenceStartAndEnd: 0
     cameraSettings:
@@ -102,10 +105,12 @@ MonoBehaviour:
       alternateCameraObject: {fileID: 0}
       cameraAngles: {fileID: 0}
       keepCameraPositionAtConversationEnd: 0
+      showSubtitleOnEmptyContinue: 0
       defaultSequence: AudioWait(entrytag); Delay({{end}})
       defaultPlayerSequence: AudioWait(entrytag)
       defaultResponseMenuSequence: 
       entrytagFormat: 0
+      reportMissingAudioFiles: 0
       disableInternalSequencerCommands: 0
     inputSettings:
       alwaysForceResponseMenu: 1
@@ -127,6 +132,7 @@ MonoBehaviour:
       allowBarksDuringConversations: 1
       barkCharsPerSecond: 0
       minBarkSeconds: 0
+      defaultBarkSequence: 
     alertSettings:
       allowAlertsDuringConversations: 0
       alertCheckFrequency: 0
@@ -146,13 +152,17 @@ MonoBehaviour:
     initializeNewVariables: 1
   allowSimultaneousConversations: 0
   interruptActiveConversations: 0
+  stopEvaluationAtFirstValid: 1
+  reevaluateLinksAfterSubtitle: 0
+  useLinearGroupMode: 0
   includeSimStatus: 0
-  instantiateDatabase: 0
+  instantiateDatabase: 1
   preloadResources: 1
   warmUpConversationController: 0
   dontHideImmediateDuringWarmup: 0
   dontDestroyOnLoad: 1
   allowOnlyOneInstance: 1
+  onStartTriggerWaitForSaveDataApplied: 0
   dialogueTimeMode: 0
   debugLevel: 2
 --- !u!114 &114041376378916948
@@ -207,23 +217,15 @@ MonoBehaviour:
   onUseKeyboard:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   onUseJoystick:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   onUseMouse:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   onUseTouch:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114889499020232316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,6 +240,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_version: 0
   m_saveCurrentScene: 1
+  m_maxSaveSlot: 99999
   m_framesToWaitBeforeApplyData: 1
   m_debug: 1
 --- !u!114 &114418064281648646
@@ -261,13 +264,9 @@ MonoBehaviour:
     onTransitionStart:
       m_PersistentCalls:
         m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
     onTransitionEnd:
       m_PersistentCalls:
         m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
   loadingSceneName: 
   enterSceneTransition:
     animator: {fileID: 95430577421052368}
@@ -277,13 +276,9 @@ MonoBehaviour:
     onTransitionStart:
       m_PersistentCalls:
         m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
     onTransitionEnd:
       m_PersistentCalls:
         m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
 --- !u!114 &114160787819640068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -325,7 +320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 689b4b1238e337d4590a91183947bcd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_key: 
+  m_key: ds
   m_appendSaverTypeToKey: 0
   m_saveAcrossSceneChanges: 1
   m_restoreStateOnStart: 0
@@ -390,7 +385,8 @@ MonoBehaviour:
   startMessage: 'Welcome to the Dialogue System for Unity!
 
 
-    WASD moves, mouse looks, space interacts
+    WASD moves, mouse
+    looks, space interacts
 
     LMB fires, Escape opens menu'
   menuKey: 27
@@ -400,13 +396,9 @@ MonoBehaviour:
   onOpen:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   onClose:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114124543433568960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -486,17 +478,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1172956102938826}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
@@ -506,6 +497,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &1326164556581496
 GameObject:
   m_ObjectHideFlags: 0
@@ -574,7 +566,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1326164556581496}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreReversedGraphics: 1
@@ -591,7 +583,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1326164556581496}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_UiScaleMode: 1
@@ -675,7 +667,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1635533227216014}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1980459831, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_UiScaleMode: 0
@@ -697,7 +689,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1635533227216014}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreReversedGraphics: 1

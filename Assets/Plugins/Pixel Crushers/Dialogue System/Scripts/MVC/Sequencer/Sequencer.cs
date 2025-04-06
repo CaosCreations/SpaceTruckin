@@ -2376,6 +2376,15 @@ namespace PixelCrushers.DialogueSystem
                     {
                         panel.Unfocus();
                     }
+                    else if (string.Equals("portrait", mode, StringComparison.OrdinalIgnoreCase))
+                    {
+                        Tools.SetGameObjectActive(panel.portraitImage, true);
+                        Tools.SetGameObjectActive(panel.portraitName.gameObject, true);
+                    }
+                    else if (string.Equals("portraitimage", mode, StringComparison.OrdinalIgnoreCase))
+                    {
+                        Tools.SetGameObjectActive(panel.portraitImage, true);
+                    }
                     else
                     {
                         if (DialogueDebug.logWarnings) Debug.LogWarning(string.Format("{0}: Sequencer: OpenPanel({1}, {2}): Unrecognized mode.", new System.Object[] { DialogueDebug.Prefix, subtitlePanelNumber, mode }));

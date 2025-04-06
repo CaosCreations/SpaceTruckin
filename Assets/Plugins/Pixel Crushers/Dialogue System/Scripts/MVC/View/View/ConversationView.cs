@@ -151,7 +151,7 @@ namespace PixelCrushers.DialogueSystem
         public void StartSubtitle(Subtitle subtitle, bool isPCResponseMenuNext, bool isPCAutoResponseNext)
         {
             notifyOnFinishSubtitle = true;
-            if (subtitle != null)
+            if (subtitle != null && !IsBlankStartNode(subtitle))
             {
                 if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: {1} says '{2}'", new System.Object[] { DialogueDebug.Prefix, Tools.GetGameObjectName(subtitle.speakerInfo.transform), subtitle.formattedText.text }));
 
@@ -212,6 +212,13 @@ namespace PixelCrushers.DialogueSystem
         private bool _isPCResponseMenuNext = false;
         private bool _isPCAutoResponseNext = false;
         private bool _lastModeWasResponseMenu = false;
+
+        private bool IsBlankStartNode(Subtitle subtitle)
+        { 
+            if (subtitle == null || subtitle.dialogueEntry == null) return false;
+            return subtitle.dialogueEntry.id == 0 &&
+                (subtitle.sequence == "None()" || subtitle.sequence == "Continue()");
+        }
 
         /// <summary>
         /// Determines whether the continue button should be shown, and shows or hides it.

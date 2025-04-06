@@ -178,6 +178,8 @@ $@"local {RunCommandRuntimeArgumentList} = {Lua.EvaluateYarnExpression}({{1}})
 
             var sortedConvoNodes = _yarnProject.Nodes.Values.OrderBy(x => x.Name).ToList();
             foreach (var convoNode in sortedConvoNodes) CreateAndAddDialogueEntries(convoNode);
+
+            _dialogueDb.actors.ForEach(a => FindPortraitImage(a));
         }
 
         private Actor GetOrCreateActor(string name, bool isPlayer = false, int id = -1)
@@ -226,6 +228,34 @@ $@"local {RunCommandRuntimeArgumentList} = {Lua.EvaluateYarnExpression}({{1}})
             entry.ActorID = _playerActor.id;
             entry.ConversantID = _defaultNpcActor.id;
         }
+
+        #region Portrait Images
+
+        public void FindPortraitImage(Actor actor)
+        {
+            if (actor == null || actor.portrait != null) return;
+            actor.spritePortrait = TryLoadSprite(_prefs.portraitFolder, actor.Name);
+        }
+
+        private static string[] imageExtensions = new string[] { ".png", ".jpg", ".tga", ".bmp" };
+
+        private static Sprite TryLoadSprite(string portraitFolder, string actorName)
+        {
+#if !UNITY_EDITOR
+            return null;
+#else
+            string filename = System.IO.Path.GetFileName(actorName).Replace('\\', '/');
+            string assetPath = string.Format("{0}/{1}", portraitFolder, filename);
+            foreach (var extension in imageExtensions)
+            {
+                Sprite sprite = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(assetPath + extension);
+                if (sprite != null) return sprite;
+            }
+            return null;
+#endif
+        }
+
+        #endregion
 
         // private void CreateLuaGlobalVariables()
         // {

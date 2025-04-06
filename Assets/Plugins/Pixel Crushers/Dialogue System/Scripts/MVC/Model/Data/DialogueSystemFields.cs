@@ -44,6 +44,7 @@ namespace PixelCrushers.DialogueSystem
         public const string Sequence = "Sequence";
         public const string ResponseMenuSequence = "Response Menu Sequence";
         public const string VoiceOverFile = "VoiceOverFile";
+        public const string SceneEventGuidFieldName = "EventGuid";
 
     }
 }

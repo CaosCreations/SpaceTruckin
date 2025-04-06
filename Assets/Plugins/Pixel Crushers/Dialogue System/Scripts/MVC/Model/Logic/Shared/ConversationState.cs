@@ -44,6 +44,14 @@ namespace PixelCrushers.DialogueSystem
         }
 
         /// <summary>
+        /// Returns true if any NPC responses are valid (i.e., enabled).
+        /// </summary>
+        public bool HasValidNPCResponse()
+        {
+            return AreAnyResponsesValid(npcResponses);
+        }
+
+        /// <summary>
         /// Gets the first NPC response.
         /// </summary>
         /// <value>
@@ -63,6 +71,14 @@ namespace PixelCrushers.DialogueSystem
         public bool hasPCResponses
         {
             get { return (pcResponses != null) && (pcResponses.Length > 0); }
+        }
+
+        /// <summary>
+        /// Returns true if any PC responses are valid (i.e., enabled).
+        /// </summary>
+        public bool HasValidPCResponses()
+        {
+            return AreAnyResponsesValid(pcResponses);
         }
 
         /// <summary>
@@ -159,7 +175,6 @@ namespace PixelCrushers.DialogueSystem
         }
 #endif
 
-
         /// <summary>
         /// Initializes a new ConversationState.
         /// </summary>
@@ -178,6 +193,16 @@ namespace PixelCrushers.DialogueSystem
             this.npcResponses = npcResponses;
             this.pcResponses = pcResponses;
             this.isGroup = isGroup;
+        }
+
+        private bool AreAnyResponsesValid(Response[] responses)
+        {
+            if (responses == null) return false;
+            foreach (var response in responses)
+            {
+                if (response != null && response.enabled) return true;
+            }
+            return false;
         }
 
         public DialogueEntry GetRandomNPCEntry(bool noDuplicate = false)

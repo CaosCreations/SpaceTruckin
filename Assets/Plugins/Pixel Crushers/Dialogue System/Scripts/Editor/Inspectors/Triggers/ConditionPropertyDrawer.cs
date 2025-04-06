@@ -24,13 +24,16 @@ namespace PixelCrushers.DialogueSystem
         private string currentLuaWizardContent = string.Empty;
         private float luaConditionWizardHeight = 0;
         private float luaFieldWidth = 0;
+        private float propertyWidth = 0;
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             var height = EditorGUIUtility.singleLineHeight;
             if (!property.isExpanded) return height;
             FindProperties(property);
-            luaConditionWizardHeight = luaConditionsProperty.isExpanded ? luaConditionWizard.GetHeight() : 0;
+            luaConditionWizardHeight = luaConditionsProperty.isExpanded 
+                ? luaConditionWizard.GetHeight("x", propertyWidth, true)
+                : 0;
             height += luaConditionWizardHeight;
             height += GetTextAreaArrayHeight(luaConditionsProperty);
             height += GetQuestConditionsHeight(questConditionsProperty);
@@ -44,6 +47,7 @@ namespace PixelCrushers.DialogueSystem
             try
             {
                 EditorGUI.BeginProperty(position, label, property);
+                propertyWidth = position.width;
 
                 var rect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
 
@@ -123,11 +127,14 @@ namespace PixelCrushers.DialogueSystem
                                 luaConditionsProperty.GetArrayElementAtIndex(i).stringValue = string.Empty;
                             }
                         }
+                        if (Event.current.type == EventType.Repaint)
+                        {
+                            luaFieldWidth = rect.width - 16f;
+                        }
                         for (int i = 0; i < luaConditionsProperty.arraySize; i++)
                         {
                             var labelGuiContent = new GUIContent("Element " + i);
                             EditorGUI.LabelField(new Rect(x + 16f, y, 80f, EditorGUIUtility.singleLineHeight), labelGuiContent);
-                            luaFieldWidth = rect.width - 16f;
                             var element = luaConditionsProperty.GetArrayElementAtIndex(i);
                             var height = EditorTools.textAreaGuiStyle.CalcHeight(new GUIContent(element.stringValue), luaFieldWidth) + 2f;
                             rect = new Rect(x + 96f, y, width - 96f, height);
@@ -225,7 +232,8 @@ namespace PixelCrushers.DialogueSystem
                 var element = property.GetArrayElementAtIndex(i);
                 if (element == null) continue;
                 if (luaFieldWidth == 0) luaFieldWidth = Screen.width - 34f;
-                height += EditorTools.textAreaGuiStyle.CalcHeight(new GUIContent(element.stringValue), luaFieldWidth) + 2f;
+                var elementHeight = EditorTools.textAreaGuiStyle.CalcHeight(new GUIContent(element.stringValue), luaFieldWidth) + 2f;
+                height += elementHeight;
 
             }
             return height;
