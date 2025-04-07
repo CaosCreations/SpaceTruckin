@@ -80,7 +80,11 @@ namespace PixelCrushers.DialogueSystem
 #endif
             else
             {
-                if (hideContinueButtonOnContinue && continueButton != null) continueButton.gameObject.SetActive(false);
+                if (hideContinueButtonOnContinue && continueButton != null)
+                {
+                    continueButton.gameObject.SetActive(false);
+                    UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
+                }
                 if (runtimeDialogueUI != null)
                 {
                     if (continueSubtitlePanel && continueAlertPanel) runtimeDialogueUI.OnContinue();

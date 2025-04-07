@@ -409,21 +409,10 @@ namespace PixelCrushers.DialogueSystem
             {
                 actorNames.Add(string.Empty);
             }
-            foreach (var kvp in m_actorPanelCache)
-            {
-                if (kvp.Key == null) continue;
-                var panelNumber = GetSubtitlePanelNumberFromPanel(kvp.Value, false);
-                if (panelNumber == SubtitlePanelNumber.Custom) continue;
-                actorGOs.Add(kvp.Key.name);
-                actorGOPanels.Add(panelNumber);
-                if (panelNumber >= SubtitlePanelNumber.Panel0)
-                {
-                    actorNames[(int)panelNumber - (int)SubtitlePanelNumber.Panel0] = kvp.Key.name;
-                }
-            }
             foreach (var kvp in m_actorIdOverridePanel)
             {
                 actorIDs.Add(kvp.Key);
+                var panel = kvp.Value;
                 var panelNumber = GetSubtitlePanelNumberFromPanel(kvp.Value, false);
                 actorIDPanels.Add(panelNumber);
                 if (panelNumber >= SubtitlePanelNumber.Panel0)
@@ -431,7 +420,39 @@ namespace PixelCrushers.DialogueSystem
                     var actor = DialogueManager.masterDatabase.GetActor(kvp.Key);
                     if (actor != null)
                     {
-                        actorNames[(int)panelNumber - (int)SubtitlePanelNumber.Panel0] = actor.Name;
+                        var index = (int)panelNumber - (int)SubtitlePanelNumber.Panel0;
+                        if (0 <= index && index < m_builtinPanels.Count)
+                        {
+                            if (actor.Name == panel.portraitActorName)
+                            {
+                                actorNames[index] = actor.Name;
+                            }
+                        }
+                    }
+                }
+            }
+            foreach (var kvp in m_actorPanelCache)
+            {
+                if (kvp.Key == null) continue;
+                var panel = kvp.Value;
+                var panelNumber = GetSubtitlePanelNumberFromPanel(kvp.Value, false);
+                if (panelNumber == SubtitlePanelNumber.Custom) continue;
+                actorGOs.Add(kvp.Key.name);
+                actorGOPanels.Add(panelNumber);
+                if (panelNumber >= SubtitlePanelNumber.Panel0)
+                {
+                    var index = (int)panelNumber - (int)SubtitlePanelNumber.Panel0;
+                    if (actorNames[index] == string.Empty)
+                    {
+                        actorNames[index] = kvp.Key.name;
+                    }
+                    else
+                    {
+                        var dialogueActor = DialogueActor.GetDialogueActorComponent(kvp.Key);
+                        if (dialogueActor != null && dialogueActor.actor == panel.portraitActorName)
+                        {
+                            actorNames[index] = kvp.Key.name;
+                        }
                     }
                 }
             }

@@ -59,6 +59,11 @@ namespace PixelCrushers.DialogueSystem.Yarn
         /// </summary>
         public List<string> localizedStringFiles = new List<string>();
 
+        /// <summary>
+        /// Location of portrait images.
+        /// </summary>
+        public string portraitFolder = "Assets";
+
         public string prefsPath;
 
         // /// <summary>
@@ -238,6 +243,7 @@ namespace PixelCrushers.DialogueSystem.Yarn
         protected static GUIContent ActorRegexLabel = new GUIContent("Actor Regex", "How to extract actors names from Yarn dialogue lines. Defaults to 'NAME: Dialogue text'.");
         protected static GUIContent LinePrefixRegexLabel = new GUIContent("Line Prefix Regex", "How to extract dialogue text from Yarn dialogue lines. Defaults to 'Ignore-this: Dialogue text'.");
         protected static GUIContent CustomCommandsFileLabel = new GUIContent("Custom Commands File", "Filename to use when auto-generating script containing custom commands referenced in your Yarn stories.");
+        protected static GUIContent PortraitFolderLabel = new GUIContent("Portrait Folder", "The importer will look here for actor entities' portrait textures.");
         protected static GUIContent DebugLabel = new GUIContent("Debug", "Log detailed debug info to the Console.");
         protected static GUIContent YarnSourceFilesLabel = new GUIContent("Yarn Source Files", "Yarn files to import.");
         protected static GUIContent LocalizedStringFilesLabel = new GUIContent("Localized String Files", "Yarn localization files.");
@@ -251,7 +257,21 @@ namespace PixelCrushers.DialogueSystem.Yarn
             // prefs.customCommandsSourceFile = EditorGUILayout.TextField(CustomCommandsFileLabel, prefs.customCommandsSourceFile)?.Trim();
             uiYarnSourceFileList.DoLayoutList();
             uiLocalizedFileList.DoLayoutList();
+            DrawPortraitFolderField();
             prefs.debug = EditorGUILayout.Toggle(DebugLabel, prefs.debug);
+        }
+
+        private void DrawPortraitFolderField()
+        {
+            EditorGUILayout.BeginHorizontal();
+            prefs.portraitFolder = EditorGUILayout.TextField(PortraitFolderLabel, prefs.portraitFolder);
+            if (GUILayout.Button("...", EditorStyles.miniButtonRight, GUILayout.Width(22)))
+            {
+                prefs.portraitFolder = EditorUtility.OpenFolderPanel("Location of Portrait Textures", prefs.portraitFolder, "");
+                prefs.portraitFolder = "Assets" + prefs.portraitFolder.Replace(Application.dataPath, string.Empty);
+                GUIUtility.keyboardControl = 0;
+            }
+            EditorGUILayout.EndHorizontal();
         }
 
         void DrawYarnSourceFileListHeader(Rect rect)
@@ -445,7 +465,7 @@ namespace PixelCrushers.DialogueSystem.Yarn
             var yarnWriter = new YarnImporterProjectWriter();
             yarnWriter.Write(prefs, yarnProject, dialogueDb);
             WriteDialogueSystemChanges(dialogueDb);
-            Debug.Log($"Yarn project import complete - database written to: {AssetDatabase.GetAssetPath(dialogueDb)}");
+            Debug.Log($"Yarn project import complete - database written to: {AssetDatabase.GetAssetPath(dialogueDb)}", dialogueDb);
         }
     }
 }

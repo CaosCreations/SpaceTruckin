@@ -58,8 +58,8 @@ namespace PixelCrushers.DialogueSystem
                             luaWizard.OpenWizard(property.stringValue);
                         }
                         if (position.width > 16) propertyWidth = position.width - 16;
-                        lastComputedHeight = luaWizard.GetHeight() + 
-                            GUI.skin.textArea.CalcHeight(new GUIContent(property.stringValue), propertyWidth) + 2f;
+                        lastComputedHeight = luaWizard.GetHeight(property.stringValue, propertyWidth) + 
+                            EditorGUIUtility.singleLineHeight;
                         property.stringValue = luaWizard.Draw(position, label, property.stringValue);
                         lastValue = property.stringValue;
                     }

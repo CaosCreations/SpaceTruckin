@@ -481,6 +481,9 @@ namespace PixelCrushers
             if (inputActionDict.ContainsKey(name)) inputActionDict.Remove(name);
         }
 
+        // Cache key to translations to avoid GC:
+        private static Dictionary<KeyCode, string> m_keyCodeStrings = new Dictionary<KeyCode, string>();
+
         // Number keys translate differently in Input System, so create a quick lookup dictionary:
         protected static Dictionary<KeyCode, KeyControl> m_specialKeyCodeDict = null;
         protected static Dictionary<KeyCode, KeyControl> specialKeyCodeDict
@@ -517,7 +520,12 @@ namespace PixelCrushers
 #if USE_NEW_INPUT
             if (Keyboard.current == null || keyCode == KeyCode.None) return false;
             if (keyCode == KeyCode.Return) return (Keyboard.current["enter"] as KeyControl).wasPressedThisFrame;
-            var s = keyCode.ToString().ToLower();
+            if (!m_keyCodeStrings.TryGetValue(keyCode, out var s))
+            {
+                s = keyCode.ToString().ToLower();
+                m_keyCodeStrings.Add(keyCode, s);
+
+            }
             if (s.StartsWith("mouse"))
             {
                 if (s == "mouse0") return Mouse.current.leftButton.wasPressedThisFrame;

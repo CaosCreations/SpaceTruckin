@@ -322,6 +322,7 @@ namespace PixelCrushers.DialogueSystem
                 var questTitle = selectionPanelContentManager.Instantiate<StandardUIQuestTitleButtonTemplate>(completedQuestHeadingTemplate);
                 var dummyText = noQuestsMessage;
                 questTitle.Assign(dummyText, dummyText, null);
+                Destroy(questTitle.GetComponent<UnityEngine.UI.Button>());
                 selectionPanelContentManager.Add(questTitle, questSelectionContentContainer);
             }
 

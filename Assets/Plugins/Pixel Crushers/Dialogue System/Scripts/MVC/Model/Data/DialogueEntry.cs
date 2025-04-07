@@ -101,8 +101,6 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public Rect canvasRect = new Rect(0, 0, CanvasRectWidth, CanvasRectHeight);
 
-        public const string SceneEventGuidFieldName = "EventGuid";
-
         /// <summary>
         /// Gets or sets the ID of the line's actor (speaker).
         /// </summary>
@@ -344,8 +342,8 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public string sceneEventGuid
         {
-            get { return Field.LookupValue(fields, SceneEventGuidFieldName); }
-            set { SetTextField(SceneEventGuidFieldName, value); }
+            get { return Field.LookupValue(fields, DialogueSystemFields.SceneEventGuidFieldName); }
+            set { SetTextField(DialogueSystemFields.SceneEventGuidFieldName, value); }
         }
 
         /// <summary>
@@ -571,6 +569,7 @@ namespace PixelCrushers.DialogueSystem
             this.conditionsString = sourceEntry.conditionsString;
             this.userScript = sourceEntry.userScript;
             this.canvasRect = sourceEntry.canvasRect;
+            Field.RemoveField(this.fields, DialogueSystemFields.SceneEventGuidFieldName);
         }
 
         private List<Link> CopyLinks(List<Link> sourceLinks)

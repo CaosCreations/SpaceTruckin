@@ -456,6 +456,15 @@ namespace PixelCrushers.DialogueSystem
         }
 
         /// <summary>
+        /// Removes the field with the specified title if it exists in the list.
+        /// </summary>
+        public static void RemoveField(List<Field> fields, string title)
+        {
+            Field field = Lookup(fields, title);
+            if (field != null) fields.Remove(field);
+        }
+
+        /// <summary>
         /// Returns the value of a field.
         /// </summary>
         /// <returns>

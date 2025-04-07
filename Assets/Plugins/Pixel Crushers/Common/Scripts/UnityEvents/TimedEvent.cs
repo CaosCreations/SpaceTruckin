@@ -35,7 +35,7 @@ namespace PixelCrushers
 
         [Tooltip("Start timer when this component is enabled.")]
         [SerializeField]
-        private bool m_activateOnEnable = true;
+        private bool m_activateOnEnable = false;
 
         [SerializeField]
         private UnityEvent m_onTimeReached = new UnityEvent();

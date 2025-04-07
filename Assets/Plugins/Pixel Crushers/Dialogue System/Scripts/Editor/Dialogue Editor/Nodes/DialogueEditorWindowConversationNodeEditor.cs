@@ -898,7 +898,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             if (currentEntry == null) return;
             GUI.SetNextControlName("QuickDialogueText");
             EditorGUI.BeginChangeCheck();
-            currentEntry.DialogueText = GUI.TextArea(GetQuickDialogueTextRect(), currentEntry.DialogueText);
+            currentEntry.DialogueText = EditorGUI.TextArea(GetQuickDialogueTextRect(), currentEntry.DialogueText);
             if (EditorGUI.EndChangeCheck())
             {
                 dialogueEntryNodeText[currentEntry.id] = BuildDialogueEntryNodeText(currentEntry);
@@ -2259,7 +2259,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private void DuplicateEntrySceneEventIfPresent(DialogueEntry entry)
         {
-            var sceneEventGuidField = Field.Lookup(entry.fields, DialogueEntry.SceneEventGuidFieldName);
+            var sceneEventGuidField = Field.Lookup(entry.fields, DialogueSystemFields.SceneEventGuidFieldName);
 
             // If no scene event, we can end here:
             if (sceneEventGuidField == null) return;

@@ -173,6 +173,10 @@ namespace PixelCrushers.DialogueSystem.Twine
                                 linkEntry.conditionsString = AppendCode(linkEntry.conditionsString, conditions);
                                 linkEntry.userScript = AppendCode(linkEntry.userScript, script);
                             }
+                            //else
+                            //{ 
+                            //    linkEntry.ActorID = actorID;
+                            //}
                             conversation.dialogueEntries.Add(linkEntry);
                             if (!willLinkInHook)
                             {
@@ -198,15 +202,17 @@ namespace PixelCrushers.DialogueSystem.Twine
                     var conditions = hook.prefix.StartsWith("(if:") ? ConvertIfMacro(hook.prefix) : string.Empty;
                     if (hook.links.Count == 0)
                     {
-                        var linkEntry = conversation.GetDialogueEntry(GetLinkEntryTitle(hook.text, passageID));
+                        var linkEntryTitle = GetLinkEntryTitle(hook.text, passageID);
+                        var linkEntry = conversation.GetDialogueEntry(linkEntryTitle);
                         if (linkEntry != null) linkEntry.conditionsString = conditions;
                     }
                     else
                     {
                         foreach (var link in hook.links)
                         {
-                            var linkEntry = conversation.GetDialogueEntry(GetLinkEntryTitle(link, passageID));
-                            if (!string.IsNullOrEmpty(hook.text))
+                            var linkEntryTitle = GetLinkEntryTitle(hook.text, passageID);//var linkEntryTitle = GetLinkEntryTitle(link, passageID);
+                            var linkEntry = conversation.GetDialogueEntry(linkEntryTitle);
+                            if (!string.IsNullOrEmpty(hook.text) && hook.text != linkEntry.DialogueText)
                             {
                                 // Hook still has text, so make the text an intermediate entry:
                                 var midEntry = template.CreateDialogueEntry(++highestPid, conversation.id, hook.text);
@@ -243,6 +249,16 @@ namespace PixelCrushers.DialogueSystem.Twine
             {
                 conversation.SplitPipesIntoEntries();
             }
+
+            // For all nodes without text, set Sequence to Continue():
+            foreach (var entry in conversation.dialogueEntries)
+            {
+                if (string.IsNullOrEmpty(entry.DialogueText) &&
+                    string.IsNullOrEmpty(entry.Sequence))                
+                {
+                    entry.Sequence = "Continue()";
+                }
+            }
         }
 
         protected virtual void SetEntryPosition(DialogueEntry entry, TwinePosition position)
@@ -253,7 +269,7 @@ namespace PixelCrushers.DialogueSystem.Twine
         protected string GetLinkEntryTitle(string linkName, int originPassageID)
         {
             // Include ID to make links with same names unique.
-            return linkName + " Link " + originPassageID;
+            return linkName.Trim() + " Link " + originPassageID;
         }
 
         protected virtual void ExtractParticipants(string text, int actorID, int conversantID, bool isLinkEntry,
@@ -348,7 +364,7 @@ namespace PixelCrushers.DialogueSystem.Twine
 
         protected const string LinkRegexPattern = @"\[\[.*?\]\]";
         protected static Regex LinkRegex = new Regex(LinkRegexPattern);
-        protected static Regex PrefixedHookRegex = new Regex(@"\(.+\)\[.+\]");
+        protected static Regex PrefixedHookRegex = new Regex(@"\(.+\)(\s)*\[.+\]");
 
         public class TwineHook
         {
@@ -367,10 +383,13 @@ namespace PixelCrushers.DialogueSystem.Twine
             var matches = PrefixedHookRegex.Matches(text);
             foreach (var match in matches.Cast<Match>().Reverse())
             {
-                var index = match.Value.IndexOf(")[");
-                if (index == -1) continue;
-                var prefix = match.Value.Substring(0, index + 1);
-                var hookText = match.Value.Substring(index + 2, match.Length - (prefix.Length + 2)).Trim();
+                var dividerMatch = Regex.Match(match.Value, @"\)(\s)*\[");
+                if (!dividerMatch.Success) continue;
+                var index = dividerMatch.Index;
+                var dividerLength = dividerMatch.Length;
+
+                var prefix = match.Value.Substring(0, index + dividerLength - 1).Trim();
+                var hookText = match.Value.Substring(index + dividerLength, match.Length - (prefix.Length + dividerLength - 1)).Trim();
                 var isLink = hookText.StartsWith("[");
                 if (hookText.StartsWith("[")) hookText = hookText.Substring(1);
                 if (hookText.EndsWith("]")) hookText = hookText.Substring(0, hookText.Length - 1);
@@ -399,12 +418,24 @@ namespace PixelCrushers.DialogueSystem.Twine
         protected virtual void ExtractLinksFromText(ref string text, out List<string> links)
         {
             links = new List<string>();
+
+            // Look for links in [brackets]:
             var matches = LinkRegex.Matches(text);
             foreach (var match in matches.Cast<Match>().Reverse())
             {
                 links.Add(match.Value.Substring(2, match.Value.Length - 4));
                 text = Replace(text, match.Index, match.Length, string.Empty);
             }
+
+            // Handle link in the form "text -> link":
+            var arrowPos = text.IndexOf("->");
+            if (arrowPos != -1)
+            {
+                var link = text.Substring(arrowPos + "->".Length);
+                links.Add(link);
+                text = text.Substring(0, arrowPos);
+            }
+
             text = text.Trim();
         }
 
@@ -575,7 +606,8 @@ namespace PixelCrushers.DialogueSystem.Twine
             var tokens = s.Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
             if (tokens.Length < 4) return macro;
             // Indices: [0](if [1]$var [2]is [3+]condition
-            var lua = ConvertVariableToLua(tokens[1]) + " ==";
+            if (tokens[2] == "is") tokens[2] = "==";
+            var lua = ConvertVariableToLua(tokens[1]) + " " + tokens[2];
             for (int i = 3; i < tokens.Length; i++)
             {
                 lua += " " + ConvertVariableToLua(tokens[i]);

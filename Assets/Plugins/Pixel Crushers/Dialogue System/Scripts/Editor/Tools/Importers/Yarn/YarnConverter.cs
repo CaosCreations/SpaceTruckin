@@ -1000,8 +1000,11 @@ end
                     var cmdString = basicStmt.LastInstruction.Operands[0].StringValue;
 
                     //---Was (need to preserve quoted strings): var cmdTokens = cmdString.Split(' ');
-                    var tokens = new List<string>(Regex.Split(cmdString, @"(?<match>\w+)|(?<match>\""[\w\s\.\']*"")|(?<match>'[\w\s\.]*')|(?<match>\{[\w\s\.]*\})"));
+                    var tokens = new List<string>(Regex.Split(cmdString, @"(?<match>\w+)|(?<match>\""[\w\s\.\'/]*"")|(?<match>'[\w\s\./]*')|(?<match>\{[\w\s\./]*\})"));
                     tokens.RemoveAll(s => string.IsNullOrWhiteSpace(s));
+
+                    // Don't treat forward slashes as separators.
+
                     var cmdTokens = tokens.ToArray();
 
                     var cmdName = cmdTokens[0];

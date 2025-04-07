@@ -77,11 +77,17 @@ namespace PixelCrushers.DialogueSystem
         {
         }
 
-        public float GetHeight()
+        public float GetHeight(string luaCode, float width, bool flexibleHeight)
         {
             if (database == null) return 0;
             if (!isOpen) return EditorGUIUtility.singleLineHeight;
-            var height = Mathf.Max(3, conditionItems.Count + 3) * (EditorGUIUtility.singleLineHeight + 2f);
+            var textAreaHeight = flexibleHeight
+                ? GUI.skin.textArea.CalcHeight(new GUIContent(luaCode), width)
+                : EditorGUIUtility.singleLineHeight;
+            var height = (EditorGUIUtility.singleLineHeight + 2) + // label
+                (conditionItems.Count + 1) * (EditorGUIUtility.singleLineHeight + 2f) + // wiz
+                2 + // separator
+                textAreaHeight + 2; // text area
             return height;
         }
 
@@ -979,29 +985,39 @@ namespace PixelCrushers.DialogueSystem
             var rect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
             EditorGUI.LabelField(rect, guiContent);
 
-            var luaFieldWidth = rect.width - 16f;
-            var textAreaHeight = flexibleHeight ? (EditorTools.textAreaGuiStyle.CalcHeight(new GUIContent(luaCode), luaFieldWidth) + 2f) : EditorGUIUtility.singleLineHeight;
+            var textAreaHeight = flexibleHeight
+                ? EditorGUIUtility.singleLineHeight + 2
+                : Mathf.Max(EditorGUIUtility.singleLineHeight,
+                    GUI.skin.textArea.CalcHeight(new GUIContent(luaCode), position.width) + 2);
 
+            var boxRect = new Rect(0, 0, 0, 0);
+            float separator = 0;
             if (isOpen)
             {
                 // Lua wizard content:
-                rect = new Rect(position.x + 16, position.y + EditorGUIUtility.singleLineHeight + 2f, position.width - 16, position.height - (2 * (EditorGUIUtility.singleLineHeight + 2f)) - textAreaHeight + EditorGUIUtility.singleLineHeight);
+                boxRect = new Rect(position.x + 16, position.y + EditorGUIUtility.singleLineHeight,
+                    position.width - 16, position.height - textAreaHeight - EditorGUIUtility.singleLineHeight);
+                boxRect.height = (conditionItems.Count + 1) * (EditorGUIUtility.singleLineHeight + 2f);
+                separator = 2;
+
                 EditorGUI.BeginDisabledGroup(true);
-                GUI.Button(rect, GUIContent.none);
+                GUI.Button(boxRect, GUIContent.none);
                 EditorGUI.EndDisabledGroup();
 
-                luaCode = DrawConditionsWizard(new Rect(rect.x + 2, rect.y + 2, rect.width - 4, rect.height - 4), luaCode);
+                luaCode = DrawConditionsWizard(boxRect, luaCode);
             }
 
+            var textAreaRect = new Rect(position.x,
+                position.y + EditorGUIUtility.singleLineHeight + boxRect.height + separator,
+                position.width,
+                textAreaHeight);
             if (flexibleHeight)
             {
-                rect = new Rect(position.x, position.y + position.height - textAreaHeight, position.width, textAreaHeight);
-                luaCode = EditorGUI.TextArea(rect, luaCode, EditorTools.textAreaGuiStyle);
+                luaCode = EditorGUI.TextArea(textAreaRect, luaCode);
             }
             else
             {
-                rect = new Rect(position.x, position.y + position.height - EditorGUIUtility.singleLineHeight, position.width, EditorGUIUtility.singleLineHeight);
-                luaCode = EditorGUI.TextField(rect, luaCode);
+                luaCode = EditorGUI.TextField(textAreaRect, luaCode);
             }
 
             return luaCode;

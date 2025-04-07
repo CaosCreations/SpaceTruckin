@@ -474,23 +474,29 @@ namespace PixelCrushers.DialogueSystem
             "AnimatorTrigger",
             "AnimatorPlay",
             "Audio",
+            "AudioStop",
             "ClearSubtitleText",
             "Continue",
+            "GotoEntry",
+            "NavMeshAgent",
             "SendMessage",
+            "SendMessageUpwards",
             "SetActive",
             "SetEnabled",
+            "HidePanel",
             "SetPanel",
             "SetMenuPanel",
             "SetDialoguePanel",
             "SetPortrait",
             "SetTimeout",
             "SetContinueMode",
+            "StopConversation",
             "Continue",
             "SetVariable",
             "ShowAlert",
             "UpdateTracker",
             "RandomizeNextEntry",
-                    };
+        };
 
         private static void AddAllSequencerCommands(GenericMenu menu)
         {

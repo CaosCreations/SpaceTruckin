@@ -6,7 +6,8 @@ namespace PixelCrushers.DialogueSystem
 {
 
     /// <summary>
-    /// Allows toggling of the quest log window using a key or button.
+    /// Allows toggling of the quest log window using a key or button,
+    /// or by calling ToggleQuestLogWindow.
     /// </summary>
     [AddComponentMenu("")] // Use wrapper.
     public class QuestLogWindowHotkey : MonoBehaviour
@@ -30,18 +31,31 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        void Awake()
+        private void Awake()
         {
             if (questLogWindow == null) questLogWindow = GameObjectUtility.FindFirstObjectByType<QuestLogWindow>();
         }
 
-        void Update()
+        private void Update()
         {
+            if (key == KeyCode.None) return;
             if (runtimeQuestLogWindow == null) return;
             if (DialogueManager.IsDialogueSystemInputDisabled()) return;
             if (InputDeviceManager.IsKeyDown(key) || (!string.IsNullOrEmpty(buttonName) && DialogueManager.getInputButtonDown(buttonName)))
             {
-                if (runtimeQuestLogWindow.isOpen) runtimeQuestLogWindow.Close(); else runtimeQuestLogWindow.Open();
+                ToggleQuestLogWindow();
+            }
+        }
+
+        public void ToggleQuestLogWindow()
+        {
+            if (runtimeQuestLogWindow.isOpen)
+            {
+                runtimeQuestLogWindow.Close();
+            }
+            else
+            {
+                runtimeQuestLogWindow.Open();
             }
         }
 

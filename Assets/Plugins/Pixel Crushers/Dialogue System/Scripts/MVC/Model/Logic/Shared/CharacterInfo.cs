@@ -233,7 +233,7 @@ namespace PixelCrushers.DialogueSystem
             }
 
             // Also update active conversations' caches:
-            var actor = DialogueManager.masterDatabase.GetActor(actorName);
+            var actor = DialogueManager.hasInstance ? DialogueManager.masterDatabase.GetActor(actorName) : null;
             if (actor != null)
             {
                 foreach (var activeConversations in DialogueManager.instance.activeConversations)

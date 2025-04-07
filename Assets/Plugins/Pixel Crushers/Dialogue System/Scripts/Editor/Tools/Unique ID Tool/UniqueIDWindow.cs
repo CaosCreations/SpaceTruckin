@@ -5,6 +5,7 @@ using UnityEditor;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace PixelCrushers.DialogueSystem
 {
@@ -214,13 +215,21 @@ namespace PixelCrushers.DialogueSystem
             try
             {
                 report = "Unique ID Tool Report:";
+
+                // Get unique list of all databases assigned in window:
                 List<DialogueDatabase> distinct = prefs.databases.Distinct().ToList();
+                distinct.RemoveAll(x => x == null);
                 if (distinct.Count == 0)
                 {
                     report += " No databases to process.";
                     return;
                 }
                 MasterIDs masterIDs = new MasterIDs();
+
+                // Set BaseIDs for all databases that don't have them set:
+                SetBaseIDs(distinct, masterIDs);
+
+                // Determine new IDs:
                 for (int i = 0; i < distinct.Count; i++)
                 {
                     var database = distinct[i];
@@ -231,6 +240,8 @@ namespace PixelCrushers.DialogueSystem
                         if (!VerifyUniqueConversationIDs(database)) return;
                     }
                 }
+
+                // Apply new IDs:
                 for (int i = 0; i < distinct.Count; i++)
                 {
                     var database = distinct[i];
@@ -249,6 +260,41 @@ namespace PixelCrushers.DialogueSystem
             {
                 EditorUtility.ClearProgressBar();
                 Debug.Log(report);
+            }
+        }
+
+        private void SetBaseIDs(List<DialogueDatabase> distinct, MasterIDs masterIDs)
+        {
+            // Determine the next BaseID to use for databases with unassigned BaseIDs:
+            int highestBaseID = 0;
+            var usedBaseIDs = new HashSet<int>();
+            DialogueDatabase databaseWithDefaultBaseID = null;
+            foreach (var database in distinct)
+            {
+                highestBaseID = Mathf.Max(highestBaseID, database.baseID);
+                var isDefaultBaseID = (database.baseID <= 1);
+                var isNoDefaultBaseID = databaseWithDefaultBaseID == null;
+                var isFirstDefaultBaseID = isDefaultBaseID && isNoDefaultBaseID;
+                if (isFirstDefaultBaseID)
+                {
+                    databaseWithDefaultBaseID = database;
+                }
+                else if (usedBaseIDs.Contains(database.baseID))
+                {
+                    database.baseID = 0; // Reset so we can set it to a unique value below.
+                }
+                usedBaseIDs.Add(database.baseID);
+            }
+            int nextBaseID = ((highestBaseID / 10000) + 1) * 10000;
+
+            // Assign BaseIDs:
+            foreach (var database in distinct)
+            {
+                if (database == databaseWithDefaultBaseID) continue;
+                if (database.baseID > 1) continue;
+                database.baseID = nextBaseID;
+                report += $"\nDatabase {database.name} Base ID-->{database.baseID}";
+                nextBaseID += 10000;
             }
         }
 
@@ -304,14 +350,16 @@ namespace PixelCrushers.DialogueSystem
             {
                 if (masterIDs.actors.ContainsKey(actor.Name))
                 {
+                    // We've already found an actor with this name across our databases:
                     masterIDs.actors[actor.Name].oldID = actor.id;
                 }
                 else
                 {
                     int newID;
-                    if (!masterIDs.usedNewActorIDs.Contains(actor.id))
+                    if (!masterIDs.usedNewActorIDs.Contains(actor.id) &&
+                        actor.id >= database.baseID)
                     {
-                        // ID is unique so far, so no need to assign new ID.
+                        // ID is unique so far and at least BaseID, so no need to assign new ID.
                         newID = actor.id;
                     }
                     else
@@ -350,7 +398,8 @@ namespace PixelCrushers.DialogueSystem
                 else
                 {
                     int newID;
-                    if (!masterIDs.usedNewItemIDs.Contains(item.id))
+                    if (!masterIDs.usedNewItemIDs.Contains(item.id) &&
+                        item.id >= database.baseID)
                     {
                         // ID is unique so far, so no need to assign new ID.
                         newID = item.id;
@@ -391,7 +440,8 @@ namespace PixelCrushers.DialogueSystem
                 else
                 {
                     int newID;
-                    if (!masterIDs.usedNewLocationIDs.Contains(location.id))
+                    if (!masterIDs.usedNewLocationIDs.Contains(location.id) &&
+                        location.id >= database.baseID)
                     {
                         // ID is unique so far, so no need to assign new ID.
                         newID = location.id;
@@ -432,7 +482,8 @@ namespace PixelCrushers.DialogueSystem
                 else
                 {
                     int newID;
-                    if (!masterIDs.usedNewVariableIDs.Contains(variable.id))
+                    if (!masterIDs.usedNewVariableIDs.Contains(variable.id) &&
+                        variable.id >= database.baseID)
                     {
                         // ID is unique so far, so no need to assign new ID.
                         newID = variable.id;

@@ -590,6 +590,7 @@ namespace PixelCrushers.DialogueSystem
         {
             displaySettings.localizationSettings.language = newLanguage;
             UpdateLocalizationOnActiveConversations();
+            SendUpdateTracker();
         }
 
         /// <summary>

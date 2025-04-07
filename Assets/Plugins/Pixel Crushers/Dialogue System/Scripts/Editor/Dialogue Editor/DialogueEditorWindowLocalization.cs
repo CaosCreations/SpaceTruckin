@@ -265,6 +265,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             try
             {
                 database.conversations.ForEach(conversation => conversation.dialogueEntries.ForEach(entry => FindLanguagesInFields(entry.fields, false)));
+                if (template != null) FindLanguagesInFields(template.dialogueEntryFields, false);
             }
             finally
             {

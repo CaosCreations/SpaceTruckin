@@ -145,8 +145,9 @@ namespace PixelCrushers
 
         private void OnSelectionChange()
         {
-            if (Selection.activeObject is TextTable)
+            if (Selection.activeObject is TextTable selectedTextTable)
             {
+                if (selectedTextTable != m_textTable && m_serializedObject != null) m_serializedObject.ApplyModifiedProperties();
                 SelectTextTable(Selection.activeObject as TextTable);
                 Repaint();
             }
