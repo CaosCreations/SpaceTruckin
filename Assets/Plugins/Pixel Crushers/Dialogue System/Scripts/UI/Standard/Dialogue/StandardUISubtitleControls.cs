@@ -131,7 +131,9 @@ namespace PixelCrushers.DialogueSystem
                     StandardUISubtitlePanel actorCurrentPanel =
                         m_builtinPanels.Find(x => x.isOpen && x.portraitActorName == actor.Name) ??
                         m_customPanels.Find(x => x.isOpen && x.portraitActorName == actor.Name);
-                    if (actorCurrentPanel != panel && actorCurrentPanel != null && actorCurrentPanel.portraitImage.sprite == actor.GetPortraitSprite())
+                    if (actorCurrentPanel != panel && actorCurrentPanel != null && 
+                        (actorCurrentPanel.portraitImage == null ||
+                         actorCurrentPanel.portraitImage.sprite == actor.GetPortraitSprite()))
                     {
                         // Actor is currently present in another open panel, so close it 
                         // and open the new panel with the same settings:
@@ -712,12 +714,20 @@ namespace PixelCrushers.DialogueSystem
         {
             for (int i = 0; i < m_builtinPanels.Count; i++)
             {
-                var panel = m_builtinPanels[i];
-                if (panel != null && panel.isOpen &&
+                CloseSubtitlePanelOnResponseMenu(m_builtinPanels[i]);
+            }
+            foreach (var panel in m_customPanels)
+            {
+                CloseSubtitlePanelOnResponseMenu(panel);
+            }
+        }
+
+        protected virtual void CloseSubtitlePanelOnResponseMenu(StandardUISubtitlePanel panel)
+        {
+            if (panel != null && panel.isOpen &&
                     panel.visibility == UIVisibility.UntilSupercededOrActorChangeOrMenu)
-                {
-                    panel.Close();
-                }
+            {
+                panel.Close();
             }
         }
 

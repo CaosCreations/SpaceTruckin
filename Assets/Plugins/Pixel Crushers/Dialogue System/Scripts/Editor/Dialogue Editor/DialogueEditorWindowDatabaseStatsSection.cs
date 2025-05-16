@@ -30,9 +30,19 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             public int conversationWordCount;
             public int totalWordCount;
 
+            public bool actorStatsFoldout = false;
+            public Dictionary<string, ActorStats> actorStats = new Dictionary<string, ActorStats>();
+        }
+
+        public class ActorStats
+        {
+            public HashSet<int> conversationIDs = new HashSet<int>();
+            public int numDialogueEntries = 0;
+            public int numWords = 0;
         }
 
         private DatabaseStats stats = new DatabaseStats();
+        private Dictionary<int, string> actorStatsKeys = new Dictionary<int, string>();
 
         private void DrawStatsSection()
         {
@@ -63,8 +73,25 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 EditorGUILayout.IntField("Conversations", stats.conversationWordCount);
                 EditorGUILayout.IntField("Total", stats.totalWordCount);
                 EditorGUI.EndDisabledGroup();
+                stats.actorStatsFoldout = EditorGUILayout.Foldout(stats.actorStatsFoldout, "Actor Stats");
+                if (stats.actorStatsFoldout) DrawActorStats();
             }
             EditorWindowTools.EndIndentedSection();
+        }
+
+        private void DrawActorStats()
+        {
+            EditorGUI.BeginDisabledGroup(true);
+            foreach (var kvp in stats.actorStats)
+            {
+                EditorGUILayout.LabelField(kvp.Key);
+                EditorGUI.indentLevel++;
+                EditorGUILayout.IntField("Conversations", kvp.Value.conversationIDs.Count);
+                EditorGUILayout.IntField("Dialogue Entries", kvp.Value.numDialogueEntries);
+                EditorGUILayout.IntField("Words", kvp.Value.numWords);
+                EditorGUI.indentLevel--;
+            }
+            EditorGUI.EndDisabledGroup();
         }
 
         private void UpdateStats()
@@ -76,6 +103,8 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             {
                 stats.numDialogueEntries = stats.numDialogueEntriesNonBlank = stats.numSceneEvents = 0;
                 stats.questWordCount = stats.conversationWordCount = 0;
+                stats.actorStats.Clear();
+                actorStatsKeys.Clear();
 
                 EditorUtility.DisplayProgressBar("Computing Stats", "Actors", 0);
                 stats.numActors = database.actors.Count;
@@ -103,6 +132,36 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     var conversation = database.conversations[i];
                     foreach (var entry in conversation.dialogueEntries)
                     {
+                        // Get actor/conversant info and add conversation ID:
+                        var actorID = entry.ActorID;
+                        if (!actorStatsKeys.TryGetValue(actorID, out var actorKey))
+                        {
+                            var actor = database.GetActor(actorID);
+                            actorKey = (actor != null) ? $"[{actorID}] {actor.Name}" : $"[{actorID}] (Unknown)";
+                            actorStatsKeys[actorID] = actorKey;
+                        }
+                        if (!stats.actorStats.TryGetValue(actorKey, out var actorStats))
+                        {
+                            actorStats = new ActorStats();
+                            stats.actorStats[actorKey] = actorStats;
+                        }
+                        actorStats.conversationIDs.Add(conversation.id);
+                        if (entry.id != 0) actorStats.numDialogueEntries++;
+                        var conversantID = entry.ConversantID;
+                        if (!actorStatsKeys.TryGetValue(conversantID, out var conversantKey))
+                        {
+                            var conversant = database.GetActor(conversantID);
+                            conversantKey = (conversant != null) ? $"[{conversantID}] {conversant.Name}" : $"[{conversantID}] (Unknown)";
+                            actorStatsKeys[conversantID] = conversantKey;
+                        }
+                        if (!stats.actorStats.TryGetValue(conversantKey, out var conversantStats))
+                        {
+                            conversantStats = new ActorStats();
+                            stats.actorStats[conversantKey] = conversantStats;
+                        }
+                        conversantStats.conversationIDs.Add(conversation.id);
+
+                        // Entry info:
                         stats.numDialogueEntries++;
                         var menuText = entry.MenuText;
                         var dialogueText = entry.DialogueText;
@@ -110,12 +169,16 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                         {
                             stats.numDialogueEntriesNonBlank++;
                         }
-                        stats.conversationWordCount += GetWordCount(menuText) + GetWordCount(dialogueText);
+                        var wordCount = GetWordCount(menuText) + GetWordCount(dialogueText);
+                        stats.conversationWordCount += wordCount;
+                        actorStats.numWords += wordCount;
                         foreach (var field in entry.fields)
                         {
                             if (field.type == FieldType.Localization)
                             {
-                                stats.conversationWordCount += GetWordCount(field.value);
+                                var fieldWordCount = GetWordCount(field.value);
+                                stats.conversationWordCount += fieldWordCount;
+                                actorStats.numWords += fieldWordCount;
                             }
                         }
                         if (!string.IsNullOrEmpty(entry.sceneEventGuid))

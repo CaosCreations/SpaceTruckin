@@ -13,6 +13,7 @@ namespace PixelCrushers.DialogueSystem
         public const string OnConversationEnd = "OnConversationEnd";
         public const string OnConversationCancelled = "OnConversationCancelled";
         public const string OnPrepareConversationLine = "OnPrepareConversationLine";
+        public const string OnConversationLineEarly = "OnConversationLineEarly";
         public const string OnConversationLine = "OnConversationLine";
         public const string OnConversationLineEnd = "OnConversationLineEnd";
         public const string OnConversationLineCancelled = "OnConversationLineCancelled";

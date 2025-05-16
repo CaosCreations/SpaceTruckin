@@ -31,6 +31,8 @@ namespace PixelCrushers.DialogueSystem
 
         private Vector2 scrollPosition = Vector2.zero;
 
+        #region Initialization
+
         void OnEnable()
         {
             minSize = new Vector2(340, 128);
@@ -46,6 +48,10 @@ namespace PixelCrushers.DialogueSystem
         {
             if (prefs != null) prefs.Save();
         }
+
+        #endregion
+
+        #region GUI
 
         void OnGUI()
         {
@@ -64,6 +70,7 @@ namespace PixelCrushers.DialogueSystem
                                         MessageType.None);
                 DrawDatabaseSection();
                 DrawButtonSection();
+                DrawReport();
             }
             finally
             {
@@ -165,9 +172,10 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         private void DrawClearButton()
         {
-            if (GUILayout.Button("Clear", GUILayout.Width(100)))
+            if (GUILayout.Button("Clear Settings"))
             {
                 prefs.Clear();
+                report = string.Empty;
                 UniqueIDWindowPrefs.DeleteEditorPrefs();
             }
         }
@@ -177,8 +185,30 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         private void DrawProcessButton()
         {
-            if (GUILayout.Button("Process", GUILayout.Width(100))) ProcessDatabases();
+            if (GUILayout.Button("Process")) ProcessDatabases();
         }
+
+        private void DrawReport()
+        {
+            if (string.IsNullOrEmpty(report)) return;
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("Copy To Clipboard"))
+            {
+                EditorGUIUtility.systemCopyBuffer = report;
+                Debug.Log("Copied Unique ID Tool report to system clipboard.");
+            }
+            if (GUILayout.Button("Clear Report"))
+            {
+                report = string.Empty;
+            }
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.LabelField(report, EditorStyles.textArea);
+        }
+
+        #endregion
+
+        #region Process (Top Level)
 
         private class IDConversion
         {
@@ -208,6 +238,10 @@ namespace PixelCrushers.DialogueSystem
             public int highestLocationID = 0;
             public int highestVariableID = 0;
             public int highestConversationID = 0;
+
+            // List of databases. Each one: conversation title -> actor name:
+            public List<Dictionary<string, string>> actorNamesInConversations = new List<Dictionary<string, string>>();
+            public List<Dictionary<string, string>> conversantNamesInConversations = new List<Dictionary<string, string>>();
         }
 
         public void ProcessDatabases()
@@ -225,9 +259,17 @@ namespace PixelCrushers.DialogueSystem
                     return;
                 }
                 MasterIDs masterIDs = new MasterIDs();
+                prefs.databases = distinct;
 
                 // Set BaseIDs for all databases that don't have them set:
                 SetBaseIDs(distinct, masterIDs);
+
+                // Sort database list by increasing Base ID so renumbering uses
+                // lowest value for each ID:
+                distinct.Sort((x, y) => x.baseID.CompareTo(y.baseID));
+
+                // Rebaseline IDs: (renumber asset IDs from each database's Base ID)
+                RebaselineIDs(distinct, masterIDs);
 
                 // Determine new IDs:
                 for (int i = 0; i < distinct.Count; i++)
@@ -236,6 +278,7 @@ namespace PixelCrushers.DialogueSystem
                     if (database != null)
                     {
                         EditorUtility.DisplayProgressBar("Processing Databases (Phase 1/2)", database.name, i / prefs.databases.Count);
+                        RecordActorConversantNamesPerDatabaseConversation(database, masterIDs);
                         GetNewIDs(database, masterIDs);
                         if (!VerifyUniqueConversationIDs(database)) return;
                     }
@@ -248,7 +291,7 @@ namespace PixelCrushers.DialogueSystem
                     if (database != null)
                     {
                         EditorUtility.DisplayProgressBar("Processing Databases (Phase 2/2)", database.name, i / prefs.databases.Count);
-                        ProcessDatabase(database, masterIDs);
+                        ProcessDatabase(database, masterIDs, i);
                         EditorUtility.SetDirty(database);
                     }
                 }
@@ -262,6 +305,10 @@ namespace PixelCrushers.DialogueSystem
                 Debug.Log(report);
             }
         }
+
+        #endregion
+
+        #region Set Base IDs
 
         private void SetBaseIDs(List<DialogueDatabase> distinct, MasterIDs masterIDs)
         {
@@ -298,6 +345,283 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
+        #endregion
+
+        #region Rebaseline IDs
+
+        private void RebaselineIDs(List<DialogueDatabase> distinct, MasterIDs masterIDs)
+        {
+            foreach (var database in distinct)
+            {
+                RebaselineIDsInDatabase(database);
+            }
+        }
+
+        private void RebaselineIDsInDatabase(DialogueDatabase database)
+        {
+            RebaselineActorIDs(database);
+            RebaselineItemIDs(database);
+            RebaselineLocationIDs(database);
+            RebaselineVariableIDs(database);
+            //RebaselineConversationIDs(database);
+        }
+
+        private void RebaselineActorIDs(DialogueDatabase database)
+        {
+            // Determine new IDs:
+            var newIDs = new Dictionary<int, int>();
+            var nextID = database.baseID;
+            foreach (var actor in database.actors)
+            {
+                if (actor.id != nextID)
+                {
+                    if (verbose) report += $"\nRebaselining actor {actor.Name} to ID {nextID} in database {database.name}";
+                    newIDs[actor.id] = nextID;
+                    actor.id = nextID;
+                }
+                nextID++;
+            }
+            // Apply new IDs:
+            ApplyNewBaselineIDsToFields(newIDs, FieldType.Actor);
+        }
+
+        private void RebaselineItemIDs(DialogueDatabase database)
+        {
+            // Determine new IDs:
+            var newIDs = new Dictionary<int, int>();
+            var nextID = database.baseID;
+            foreach (var item in database.items)
+            {
+                if (item.id != nextID)
+                {
+                    if (verbose) report += $"\nRebaselining item/quest {item.Name} to ID {nextID} in database {database.name}";
+                    newIDs[item.id] = nextID;
+                    item.id = nextID;
+                }
+                nextID++;
+            }
+            // Apply new IDs:
+            ApplyNewBaselineIDsToFields(newIDs, FieldType.Item);
+        }
+
+        private void RebaselineLocationIDs(DialogueDatabase database)
+        {
+            // Determine new IDs:
+            var newIDs = new Dictionary<int, int>();
+            var nextID = database.baseID;
+            foreach (var location in database.locations)
+            {
+                if (location.id != nextID)
+                {
+                    if (verbose) report += $"\nRebaselining location {location.Name} to ID {nextID} in database {database.name}";
+                    newIDs[location.id] = nextID;
+                    location.id = nextID;
+                }
+                nextID++;
+            }
+            // Apply new IDs:
+            ApplyNewBaselineIDsToFields(newIDs, FieldType.Localization);
+        }
+
+        private void RebaselineVariableIDs(DialogueDatabase database)
+        {
+            // Determine new IDs:
+            var newIDs = new Dictionary<int, int>();
+            var nextID = database.baseID;
+            foreach (var variable in database.variables)
+            {
+                if (variable.id != nextID)
+                {
+                    if (verbose) report += $"\nRebaselining variable {variable.Name} to ID {nextID} in database {database.name}";
+                    newIDs[variable.id] = nextID;
+                    variable.id = nextID;
+                }
+                nextID++;
+            }
+        }
+
+        private void RebaselineConversationIDs(DialogueDatabase database)
+        {
+            // Determine new IDs:
+            var newIDs = new Dictionary<int, int>();
+            var nextID = database.baseID;
+            foreach (var conversation in database.conversations)
+            {
+                if (conversation.id != nextID)
+                {
+                    if (verbose) report += $"\nRebaselining conversation {conversation.Title} to ID {nextID} in database {database.name}";
+                    newIDs[conversation.id] = nextID;
+                    conversation.id = nextID;
+                }
+                nextID++;
+            }
+            // Apply new IDs:
+            foreach (var conversation in database.conversations)
+            {
+                foreach (var entry in conversation.dialogueEntries)
+                {
+                    foreach (var link in entry.outgoingLinks)
+                    {
+                        if (newIDs.TryGetValue(link.originConversationID, out var newOriginID))
+                        {
+                            link.originConversationID = newOriginID;
+                        }
+                        if (newIDs.TryGetValue(link.destinationConversationID, out var newDestinationID))
+                        {
+                            link.destinationConversationID = newDestinationID;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void ApplyNewBaselineIDsToFields(Dictionary<int, int> newIDs, FieldType fieldType)
+        {
+            foreach (var database in prefs.databases)
+            {
+                foreach (var actor in database.actors)
+                {
+                    foreach (var field in actor.fields)
+                    {
+                        if (field.type == fieldType)
+                        {
+                            if (string.IsNullOrEmpty(field.value)) continue;
+                            if (!int.TryParse(field.value, out var oldID))
+                            {
+                                report += $"\nInvalid {fieldType} ID found in actor {actor.Name} field {field.title} in database {database.name}";
+                            }
+                            else if (!newIDs.TryGetValue(oldID, out var newID))
+                            {
+                                report += $"\nError looking up new {fieldType} ID for actor {actor.Name} to update field {field.title} in database {database.name}";
+                            }
+                            else
+                            {
+                                field.value = newID.ToString();
+                            }
+                        }
+                    }
+                }
+                foreach (var item in database.items)
+                {
+                    foreach (var field in item.fields)
+                    {
+                        if (field.type == fieldType)
+                        {
+                            if (string.IsNullOrEmpty(field.value)) continue;
+                            if (!int.TryParse(field.value, out var oldID))
+                            {
+                                report += $"\nInvalid {fieldType} ID found in item/quest {item.Name} field {field.title} in database {database.name}";
+                            }
+                            else if (!newIDs.TryGetValue(oldID, out var newID))
+                            {
+                                report += $"\nError looking up new {fieldType} ID for item/quest {item.Name} to update field {field.title} in database {database.name}";
+                            }
+                            else
+                            {
+                                field.value = newID.ToString();
+                            }
+                        }
+                    }
+                }
+                foreach (var location in database.locations)
+                {
+                    foreach (var field in location.fields)
+                    {
+                        if (field.type == fieldType)
+                        {
+                            if (string.IsNullOrEmpty(field.value)) continue;
+                            if (!int.TryParse(field.value, out var oldID))
+                            {
+                                report += $"\nInvalid  {fieldType}  ID found in location {location.Name} field {field.title} in database {database.name}";
+                            }
+                            else if (!newIDs.TryGetValue(oldID, out var newID))
+                            {
+                                report += $"\nError looking up new {fieldType} ID for location {location.Name} to update field {field.title} in database {database.name}";
+                            }
+                            else
+                            {
+                                field.value = newID.ToString();
+                            }
+                        }
+                    }
+                }
+                foreach (var variable in database.variables)
+                {
+                    foreach (var field in variable.fields)
+                    {
+                        if (field.type == fieldType)
+                        {
+                            if (string.IsNullOrEmpty(field.value)) continue;
+                            if (!int.TryParse(field.value, out var oldID))
+                            {
+                                report += $"\nInvalid  {fieldType}  ID found in variable {variable.Name} field {field.title} in database {database.name}";
+                            }
+                            else if (!newIDs.TryGetValue(oldID, out var newID))
+                            {
+                                report += $"\nError looking up new {fieldType} ID for variable {variable.Name} to update field {field.title} in database {database.name}";
+                            }
+                            else
+                            {
+                                field.value = newID.ToString();
+                            }
+                        }
+                    }
+                }
+                foreach (var conversation in database.conversations)
+                {
+                    foreach (var field in conversation.fields)
+                    {
+                        if (field.type == fieldType)
+                        {
+                            if (string.IsNullOrEmpty(field.value)) continue;
+                            if (!int.TryParse(field.value, out var oldID))
+                            {
+                                report += $"\nInvalid {fieldType} ID found in conversation {conversation.Title} field {field.title} in database {database.name}";
+                            }
+                            else if (!newIDs.TryGetValue(oldID, out var newID))
+                            {
+                                if (fieldType != FieldType.Actor) // Conversations sometimes don't have Actor/Conversant assigned.
+                                {
+                                    report += $"\nError looking up new {fieldType} ID for conversation {conversation.Title} to update field {field.title} in database {database.name}";
+                                }
+                            }
+                            else
+                            {
+                                field.value = newID.ToString();
+                            }
+                        }
+                    }
+                    foreach (var entry in conversation.dialogueEntries)
+                    {
+                        foreach (var field in entry.fields)
+                        {
+                            if (field.type == fieldType)
+                            {
+                                if (string.IsNullOrEmpty(field.value)) continue;
+                                if (!int.TryParse(field.value, out var oldID))
+                                {
+                                    report += $"\nInvalid {fieldType} ID found in conversation {conversation.Title} entry {entry.id} field {field.title} in database {database.name}";
+                                }
+                                else if (!newIDs.TryGetValue(oldID, out var newID))
+                                {
+                                    if (fieldType != FieldType.Actor) // Conversations sometimes don't have Actor/Conversant assigned.
+                                    {
+                                        report += $"\nError looking up new {fieldType} ID for conversation {conversation.Title} entry {entry.id} to update field {field.title} in database {database.name}";
+                                    }
+                                }
+                                else
+                                {
+                                    field.value = newID.ToString();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        #endregion
+
         private bool VerifyUniqueConversationIDs(DialogueDatabase database)
         {
             var result = true;
@@ -325,6 +649,22 @@ namespace PixelCrushers.DialogueSystem
             return result;
         }
 
+        private void RecordActorConversantNamesPerDatabaseConversation(DialogueDatabase database, MasterIDs masterIDs)
+        {
+            var actorNamesByConversationTitle = new Dictionary<string, string>();
+            var conversantNamesByConversationTitle = new Dictionary<string, string>();
+            foreach (var conversation in database.conversations)
+            {
+                var conversationTitle = conversation.Title;
+                var actor = database.GetActor(conversation.ActorID);
+                var conversant = database.GetActor(conversation.ConversantID);
+                actorNamesByConversationTitle[conversationTitle] = (actor != null) ? actor.Name : "";
+                conversantNamesByConversationTitle[conversationTitle] = (conversant != null) ? conversant.Name : "";
+            }
+            masterIDs.actorNamesInConversations.Add(actorNamesByConversationTitle);
+            masterIDs.conversantNamesInConversations.Add(conversantNamesByConversationTitle);
+        }
+
         private void GetNewIDs(DialogueDatabase database, MasterIDs masterIDs)
         {
             if (verbose) report += "\nDetermining new IDs for database " + database.name;
@@ -334,10 +674,10 @@ namespace PixelCrushers.DialogueSystem
             GetNewVariableIDs(database, masterIDs);
         }
 
-        private void ProcessDatabase(DialogueDatabase database, MasterIDs masterIDs)
+        private void ProcessDatabase(DialogueDatabase database, MasterIDs masterIDs, int i)
         {
             if (verbose) report += "\nConverting IDs in database " + database.name;
-            ProcessConversations(database, masterIDs);
+            ProcessConversations(database, masterIDs, i);
             ProcessActors(database, masterIDs);
             ProcessItems(database, masterIDs);
             ProcessLocations(database, masterIDs);
@@ -356,8 +696,8 @@ namespace PixelCrushers.DialogueSystem
                 else
                 {
                     int newID;
-                    if (!masterIDs.usedNewActorIDs.Contains(actor.id) &&
-                        actor.id >= database.baseID)
+                    if (!masterIDs.usedNewActorIDs.Contains(actor.id))//[TL] &&
+                        //actor.id >= database.baseID)
                     {
                         // ID is unique so far and at least BaseID, so no need to assign new ID.
                         newID = actor.id;
@@ -398,8 +738,8 @@ namespace PixelCrushers.DialogueSystem
                 else
                 {
                     int newID;
-                    if (!masterIDs.usedNewItemIDs.Contains(item.id) &&
-                        item.id >= database.baseID)
+                    if (!masterIDs.usedNewItemIDs.Contains(item.id))//[TL] &&
+                        //item.id >= database.baseID)
                     {
                         // ID is unique so far, so no need to assign new ID.
                         newID = item.id;
@@ -440,8 +780,8 @@ namespace PixelCrushers.DialogueSystem
                 else
                 {
                     int newID;
-                    if (!masterIDs.usedNewLocationIDs.Contains(location.id) &&
-                        location.id >= database.baseID)
+                    if (!masterIDs.usedNewLocationIDs.Contains(location.id))//[TL] &&
+                        //location.id >= database.baseID)
                     {
                         // ID is unique so far, so no need to assign new ID.
                         newID = location.id;
@@ -482,8 +822,8 @@ namespace PixelCrushers.DialogueSystem
                 else
                 {
                     int newID;
-                    if (!masterIDs.usedNewVariableIDs.Contains(variable.id) &&
-                        variable.id >= database.baseID)
+                    if (!masterIDs.usedNewVariableIDs.Contains(variable.id))//[TL] &&
+                        //variable.id >= database.baseID)
                     {
                         // ID is unique so far, so no need to assign new ID.
                         newID = variable.id;
@@ -558,7 +898,7 @@ namespace PixelCrushers.DialogueSystem
                 int newID = FindIDConversion(actor.Name, masterIDs.actors, actor.id);
                 if (newID != actor.id)
                 {
-                    if (verbose) report += string.Format("\nActor {0}: ID [{1}]-->[{2}]", actor.Name, actor.id, newID);
+                    if (verbose) report += string.Format("\nActor {0}: ID [{1}]-->[{2}] in {3}", actor.Name, actor.id, newID, database.name);
                     actor.id = newID;
                 }
                 ProcessFieldIDs(database, actor.fields, masterIDs);
@@ -572,7 +912,7 @@ namespace PixelCrushers.DialogueSystem
                 int newID = FindIDConversion(item.Name, masterIDs.items, item.id);
                 if (newID != item.id)
                 {
-                    if (verbose) report += string.Format("\nItem {0}: ID [{1}]-->[{2}]", item.Name, item.id, newID);
+                    if (verbose) report += string.Format("\nItem {0}: ID [{1}]-->[{2}] in {3}", item.Name, item.id, newID, database.name);
                     item.id = newID;
                 }
                 ProcessFieldIDs(database, item.fields, masterIDs);
@@ -586,7 +926,7 @@ namespace PixelCrushers.DialogueSystem
                 int newID = FindIDConversion(location.Name, masterIDs.locations, location.id);
                 if (newID != location.id)
                 {
-                    if (verbose) report += string.Format("\nLocation {0}: ID [{1}]-->[{2}]", location.Name, location.id, newID);
+                    if (verbose) report += string.Format("\nLocation {0}: ID [{1}]-->[{2}] in {3}", location.Name, location.id, newID, database.name);
                     location.id = newID;
                 }
                 ProcessFieldIDs(database, location.fields, masterIDs);
@@ -600,21 +940,21 @@ namespace PixelCrushers.DialogueSystem
                 int newID = FindIDConversion(variable.Name, masterIDs.variables, variable.id);
                 if (newID != variable.id)
                 {
-                    if (verbose) report += string.Format("\nVariable {0}: ID [{1}]-->[{2}]", variable.Name, variable.id, newID);
+                    if (verbose) report += string.Format("\nVariable {0}: ID [{1}]-->[{2}] in {3}", variable.Name, variable.id, newID, database.name);
                     variable.id = newID;
                 }
                 ProcessFieldIDs(database, variable.fields, masterIDs);
             }
         }
 
-        private void ProcessConversations(DialogueDatabase database, MasterIDs masterIDs)
+        private void ProcessConversations(DialogueDatabase database, MasterIDs masterIDs, int i)
         {
             Dictionary<int, int> newIDs = GetNewConversationIDs(database, masterIDs);
             foreach (var conversation in database.conversations)
             {
                 if (newIDs.ContainsKey(conversation.id))
                 {
-                    if (verbose) report += string.Format("\nConversation '{0}': ID [{1}]-->[{2}]", conversation.Title, conversation.id, newIDs[conversation.id]);
+                    if (verbose) report += string.Format("\nConversation '{0}': ID [{1}]-->[{2}] in {3}", conversation.Title, conversation.id, newIDs[conversation.id], database.name);
                     conversation.id = newIDs[conversation.id];
                     ProcessFieldIDs(database, conversation.fields, masterIDs);
                     foreach (DialogueEntry entry in conversation.dialogueEntries)
@@ -626,6 +966,27 @@ namespace PixelCrushers.DialogueSystem
                             if (newIDs.ContainsKey(link.originConversationID)) link.originConversationID = newIDs[link.originConversationID];
                             if (newIDs.ContainsKey(link.destinationConversationID)) link.destinationConversationID = newIDs[link.destinationConversationID];
                         }
+                    }
+
+                    // Verify actor & conversant:
+                    var conversationTitle = conversation.Title;
+                    var actor = database.GetActor(conversation.ActorID);
+                    var conversant = database.GetActor(conversation.ConversantID);
+                    var actorName = (actor != null) ? actor.Name : "";
+                    var conversantName = (conversant != null) ? conversant.Name : "";
+                    var originalActorName = masterIDs.actorNamesInConversations[i][conversationTitle];
+                    var originalConversantName = masterIDs.conversantNamesInConversations[i][conversationTitle];
+                    if (actorName != originalActorName)
+                    {
+                        if (verbose) report += $"\nFixing actor {originalActorName} in {database.name}:{conversationTitle}";
+                        var intendedActor = database.GetActor(originalActorName);
+                        if (intendedActor != null) conversation.ActorID = intendedActor.id;
+                    }
+                    if (conversantName != originalConversantName)
+                    {
+                        if (verbose) report += $"\nFixing conversant {originalConversantName} in {database.name}:{conversationTitle}";
+                        var intendedConversant = database.GetActor(originalConversantName);
+                        if (intendedConversant != null) conversation.ConversantID = intendedConversant.id;
                     }
                 }
             }

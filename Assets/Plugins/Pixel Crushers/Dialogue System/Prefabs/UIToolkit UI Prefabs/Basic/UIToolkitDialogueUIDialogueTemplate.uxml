@@ -1,0 +1,36 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/DS%20UIToolkit%20Integration/UIToolkitDialogueUIStylesheet.uss?fileID=7433441132597879392&amp;guid=d26989a9fc2768a4bb42cb1fb60f7a7e&amp;type=3#UIToolkitDialogueUIStylesheet" />
+    <ui:VisualElement name="Container" style="flex-grow: 1;">
+        <ui:VisualElement name="Spacer" picking-mode="Ignore" style="flex-grow: 1; height: 60%;" />
+        <ui:VisualElement name="DialoguePanel" style="flex-grow: 1;">
+            <ui:VisualElement name="NPCSubtitlePanel" class="panelBackground" style="flex-grow: 1;">
+                <ui:VisualElement name="NPCPortraitContainer" style="flex-grow: 1; align-self: center;">
+                    <ui:VisualElement name="NPCPortraitImage" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Plugins/Pixel%20Crushers/Dialogue%20System/Prefabs/Art/Textures/JRPG/Test%20Portrait%20Sprite.png?fileID=2800000&amp;guid=deeae33315027e045bf104c3f198179d&amp;type=3#Test Portrait Sprite&quot;); background-size: 64px 64px;" />
+                    <ui:Label text="Name" name="NPCPortraitLabel" class="subtitleText" />
+                </ui:VisualElement>
+                <ui:Label text="Subtitle" name="NPCSubtitleLabel" class="subtitleText" />
+                <ui:Button text="Continue" name="NPCContinueButton" class="subtitleButton" />
+            </ui:VisualElement>
+            <ui:VisualElement name="PCSubtitlePanel" class="panelBackground" style="flex-grow: 1;">
+                <ui:VisualElement name="PCPortraitContainer" style="flex-grow: 1; align-self: center;">
+                    <ui:VisualElement name="PCPortraitImage" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Plugins/Pixel%20Crushers/Dialogue%20System/Prefabs/Art/Textures/JRPG/Test%20Portrait%20Sprite.png?fileID=2800000&amp;guid=deeae33315027e045bf104c3f198179d&amp;type=3#Test Portrait Sprite&quot;); background-size: 64px 64px;" />
+                    <ui:Label text="Name" name="PCPortraitLabel" class="subtitleText" />
+                </ui:VisualElement>
+                <ui:Label text="Subtitle" name="PCSubtitleLabel" data-source-path="Subtitle" class="subtitleText" />
+                <ui:Button text="Continue" name="PCContinueButton" class="subtitleButton" />
+            </ui:VisualElement>
+            <ui:VisualElement name="ResponseMenuPanel" class="panelBackground" style="flex-grow: 1;">
+                <ui:ProgressBar name="TimerProgressBar" high-value="1" class="timer" />
+                <ui:VisualElement name="MenuPortraitContainer" style="flex-grow: 1; align-self: center;">
+                    <ui:VisualElement name="MenuPortraitImage" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Plugins/Pixel%20Crushers/Dialogue%20System/Prefabs/Art/Textures/JRPG/Test%20Portrait%20Sprite.png?fileID=2800000&amp;guid=deeae33315027e045bf104c3f198179d&amp;type=3#Test Portrait Sprite&quot;); background-size: 64px 64px;" />
+                    <ui:Label text="Name" name="MenuPortraitLabel" class="subtitleText" />
+                </ui:VisualElement>
+                <ui:Button text="Button" name="ResponseButton0" class="responseButton" />
+                <ui:Button text="Button" name="ResponseButton1" class="responseButton" />
+                <ui:Button text="Button" name="ResponseButton2" class="responseButton" />
+                <ui:Button text="Button" name="ResponseButton3" class="responseButton" />
+                <ui:Button text="Button" name="ResponseButton4" class="responseButton" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

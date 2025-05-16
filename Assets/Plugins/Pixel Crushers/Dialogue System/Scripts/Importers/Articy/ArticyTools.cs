@@ -179,6 +179,9 @@ namespace PixelCrushers.DialogueSystem.Articy
                     paragraphs.Add(tmp);
             }
             string editedLine = string.Join("\n", paragraphs.ToArray());
+
+            editedLine = editedLine.Replace("[i]", "<i>").Replace("[/i]", "</i>");
+
             return editedLine;
         }
 

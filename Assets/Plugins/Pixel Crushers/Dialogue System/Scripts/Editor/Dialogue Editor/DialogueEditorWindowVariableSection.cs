@@ -19,8 +19,21 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private void ResetVariableSection()
         {
+            CleanUpUnnamedVariables();
             variableView = new DialogueEditorVariableView();
             variableView.Initialize(database, template, true);
+        }
+
+        private void CleanUpUnnamedVariables()
+        {
+            if (database == null) return;
+            var originalCount = database.variables.Count;
+            database.variables.RemoveAll(x => string.IsNullOrEmpty(x.Name));
+            var numRemoved = originalCount - database.variables.Count;
+            if (numRemoved > 0)
+            {
+                Debug.Log($"Dialogue System: Removed {numRemoved} variables with blank names.");
+            }
         }
 
         public void RefreshVariableView()
