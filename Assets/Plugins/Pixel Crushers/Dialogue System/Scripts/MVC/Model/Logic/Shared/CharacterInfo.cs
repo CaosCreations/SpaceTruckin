@@ -232,13 +232,20 @@ namespace PixelCrushers.DialogueSystem
                 registeredActorTransforms.Add(actorName, actorTransform);
             }
 
-            // Also update active conversations' caches:
-            var actor = DialogueManager.hasInstance ? DialogueManager.masterDatabase.GetActor(actorName) : null;
-            if (actor != null)
+            if (!DialogueManager.hasInstance)
             {
-                foreach (var activeConversations in DialogueManager.instance.activeConversations)
+                if (DialogueDebug.logWarnings) Debug.LogWarning($"Dialogue System: CharacterInfo.RegisterActorTransform({actorName}) can't update active conversations' caches because there no Dialogue Manager is present.");
+            }
+            else
+            {
+                // Also update active conversations' caches:
+                var actor = DialogueManager.hasInstance ? DialogueManager.masterDatabase.GetActor(actorName) : null;
+                if (actor != null)
                 {
-                    activeConversations.conversationModel.OverrideCharacterInfo(actor.id, actorTransform);
+                    foreach (var activeConversations in DialogueManager.instance.activeConversations)
+                    {
+                        activeConversations.conversationModel.OverrideCharacterInfo(actor.id, actorTransform);
+                    }
                 }
             }
         }

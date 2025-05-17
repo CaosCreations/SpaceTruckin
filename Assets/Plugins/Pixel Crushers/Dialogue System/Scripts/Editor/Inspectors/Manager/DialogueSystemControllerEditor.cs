@@ -271,6 +271,7 @@ namespace PixelCrushers.DialogueSystem
                     EditorGUILayout.PropertyField(cameraSettings.FindPropertyRelative("sequencerCamera"), true);
                     EditorGUILayout.PropertyField(cameraSettings.FindPropertyRelative("alternateCameraObject"), true);
                     EditorGUILayout.PropertyField(cameraSettings.FindPropertyRelative("cameraAngles"), true);
+                    EditorGUILayout.PropertyField(cameraSettings.FindPropertyRelative("cameraEasing"), true);
                     EditorGUILayout.PropertyField(cameraSettings.FindPropertyRelative("keepCameraPositionAtConversationEnd"), true);
                     EditorGUILayout.PropertyField(cameraSettings.FindPropertyRelative("showSubtitleOnEmptyContinue"), true);
                     EditorGUILayout.PropertyField(cameraSettings.FindPropertyRelative("defaultSequence"), true);

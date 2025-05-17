@@ -301,10 +301,17 @@ namespace PixelCrushers.DialogueSystem
         /// </param>
         public void OnFinishedSubtitle(object sender, EventArgs e)
         {
-            if (reevaluateLinksAfterSubtitle) m_model.UpdateResponses(m_state);
+            if (reevaluateLinksAfterSubtitle && !DialogueManager.useLinearGroupMode)
+            {
+                m_model.UpdateResponses(m_state);
+            }
             DialogueManager.instance.activeConversation = activeConversationRecord;
             var randomize = randomizeNextEntry;
             randomizeNextEntry = false;
+            if (DialogueManager.useLinearGroupMode) // In linear group mode, check responses once subtitle & its sequence are finished.
+            {
+                m_model.UpdateResponses(m_state);
+            }
             if (m_state.HasValidNPCResponse())
             {
                 GotoState(m_model.GetState(randomize ? m_state.GetRandomNPCEntry(randomizeNextEntryNoDuplicate) : m_state.firstNPCResponse.destinationEntry));

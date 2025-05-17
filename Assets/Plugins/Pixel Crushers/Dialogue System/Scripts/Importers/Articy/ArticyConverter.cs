@@ -227,6 +227,7 @@ namespace PixelCrushers.DialogueSystem.Articy
             {
                 otherScriptFieldTitles.Add(otherScriptFieldTitle.Trim());
             }
+            ArticyTools.convertMarkupToRichText = prefs.ConvertMarkupToRichText;
             ResetArticyIdIndex();
             this.template = template;
         }

@@ -31,6 +31,12 @@ namespace PixelCrushers.DialogueSystem
         public DialogueSystemTriggerEvent trigger = DialogueSystemTriggerEvent.OnUse;
 
         /// <summary>
+        /// Delay 1 frame before starting. Applie to OnStart and OnEnable.
+        /// </summary>
+        [Tooltip("Delay 1 frame before starting. Applie to OnStart, OnEnable, and OnSaveDataApplied.")]
+        public bool delayOneFrame = false;
+
+        /// <summary>
         /// The conditions under which the trigger will fire.
         /// </summary>
         public Condition condition;
@@ -714,6 +720,7 @@ namespace PixelCrushers.DialogueSystem
             {
                 yield return CoroutineUtility.endOfFrame;
             }
+            if (delayOneFrame) yield return null;
             TryStart(null);
         }
 

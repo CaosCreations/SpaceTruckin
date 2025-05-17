@@ -613,6 +613,7 @@ namespace PixelCrushers.DialogueSystem
 
         private void NotifyParticipantsOnConversationLine(Subtitle subtitle)
         {
+            NotifyParticipants(DialogueSystemMessages.OnConversationLineEarly, subtitle);
             NotifyParticipants(DialogueSystemMessages.OnConversationLine, subtitle);
         }
 

@@ -277,7 +277,7 @@ namespace PixelCrushers.DialogueSystem
                     {
                         AddForcedLink(npcResponses, pcResponses);
                     }
-                    else
+                    else if (!useLinearGroupMode) // In linear group mode, links are evaluated after subtitle finishes.
                     {
                         EvaluateLinks(entry, npcResponses, pcResponses, 0, new List<DialogueEntry>(), null, stopAtFirstValid, skipExecution);
                     }

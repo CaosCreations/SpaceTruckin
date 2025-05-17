@@ -196,6 +196,7 @@ namespace PixelCrushers.DialogueSystem
                 DialogueManager.isDialogueEntryValid, -1, firstValid, false, DialogueManager.useLinearGroupMode);
             ConversationState firstState = conversationModel.firstState;
             if ((firstState == null) && DialogueDebug.logWarnings) Debug.LogWarning(string.Format("{0}: Bark (speaker={1}, listener={2}): '{3}' has no START entry", new System.Object[] { DialogueDebug.Prefix, speaker, listener, conversationTitle }), speaker);
+            else if (DialogueManager.useLinearGroupMode) conversationModel.UpdateResponses(firstState); // In linear mode, conversation model doesn't check responses on creation since they're evaluated when the subtitle/bark ends.
             if ((firstState != null) && !firstState.hasAnyResponses && DialogueDebug.logWarnings) Debug.LogWarning(string.Format("{0}: Bark (speaker={1}, listener={2}): '{3}' has no valid bark at this time", new System.Object[] { DialogueDebug.Prefix, speaker, listener, conversationTitle }), speaker);
             if ((firstState != null) && firstState.hasAnyResponses)
             {

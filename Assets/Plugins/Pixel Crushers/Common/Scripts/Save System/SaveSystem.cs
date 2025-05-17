@@ -915,8 +915,11 @@ namespace PixelCrushers
         public static void BeforeSceneChange()
         {
             // Notify savers:
-            foreach (var saver in m_savers)
+            var savers = new List<Saver>(m_savers);
+            for (int i = savers.Count - 1; i >= 0; i--)
             {
+                var saver = savers[i];
+                if (saver == null) continue;
                 try
                 {
                     saver.OnBeforeSceneChange();

@@ -29,8 +29,10 @@ namespace Language.Lua.Library
 
         public static LuaValue clock(LuaValue[] values)
         {
-            int seconds = Environment.TickCount / 1000;
-            return new LuaNumber (seconds );
+            //[PixelCrushers] Use for iOS accuracy:
+            //---int seconds = Environment.TickCount / 1000;
+            var seconds = UnityEngine.Time.realtimeSinceStartup;
+            return new LuaNumber (seconds);
         }
 
         public static LuaValue date(LuaValue[] values)

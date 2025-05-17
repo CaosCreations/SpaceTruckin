@@ -19,21 +19,21 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
     public class SequencerCommandCamera : SequencerCommand
     {
 
-        private const float SmoothMoveCutoff = 0.05f;
+        protected const float SmoothMoveCutoff = 0.05f;
 
-        private Transform subject;
-        private Transform angleTransform;
-        private Transform cameraTransform;
-        private bool isLocalTransform;
-        private Quaternion targetRotation;
-        private Vector3 targetPosition;
-        private float duration;
-        private float startTime;
-        private float endTime;
-        private Quaternion originalRotation;
-        private Vector3 originalPosition;
+        protected Transform subject;
+        protected Transform angleTransform;
+        protected Transform cameraTransform;
+        protected bool isLocalTransform;
+        protected Quaternion targetRotation;
+        protected Vector3 targetPosition;
+        protected float duration;
+        protected float startTime;
+        protected float endTime;
+        protected Quaternion originalRotation;
+        protected Vector3 originalPosition;
 
-        public void Start()
+        protected virtual void Start()
         {
             // Get the values of the parameters:
             string angle = GetParameter(0, "Closeup");
@@ -51,8 +51,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
             if (angleTransform == null)
             {
                 isLocalTransform = false;
-                GameObject go = GameObject.Find(angle);
-                if (go != null) angleTransform = go.transform;
+                angleTransform = SequencerTools.GetSubject(angle, speaker, listener, null);
             }
 
             // Log:
@@ -88,7 +87,16 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
                     endTime = startTime + duration;
                     originalRotation = cameraTransform.rotation;
                     originalPosition = cameraTransform.position;
-
+                    var useUnscaledTime = DialogueTime.mode != DialogueTime.TimeMode.Gameplay;
+                    var easing = DialogueManager.displaySettings.cameraSettings.cameraEasing;
+                    Tweener.Tween(originalPosition, targetPosition, duration, useUnscaledTime, easing,
+                        onBegin: null,
+                        onValue: (x) => cameraTransform.position = x,
+                        onEnd: Stop);
+                    Tweener.Tween(originalRotation, targetRotation, duration, useUnscaledTime, easing,
+                        onBegin: null,
+                        onValue: (x) => cameraTransform.rotation = x,
+                        onEnd: Stop);
                 }
                 else
                 {
@@ -101,22 +109,28 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
             }
         }
 
-        public void Update()
+        //--- We've switched to using the Tweener class to allow for more easing styles.
+        //--- This is just a safeguard now:
+        protected virtual void Update()
         {
-            // Keep smoothing for the specified duration:
-            if (DialogueTime.time < endTime)
-            {
-                float elapsed = (DialogueTime.time - startTime) / duration;
-                cameraTransform.rotation = Quaternion.Lerp(originalRotation, targetRotation, elapsed);
-                cameraTransform.position = Vector3.Lerp(originalPosition, targetPosition, elapsed);
-            }
-            else
-            {
-                Stop();
-            }
+            if (DialogueTime.time > endTime) Stop();
         }
+        //public void Update()
+        //{
+        //    // Keep smoothing for the specified duration:
+        //    if (DialogueTime.time < endTime)
+        //    {
+        //        float elapsed = (DialogueTime.time - startTime) / duration;
+        //        cameraTransform.rotation = Quaternion.Lerp(originalRotation, targetRotation, elapsed);
+        //        cameraTransform.position = Vector3.Lerp(originalPosition, targetPosition, elapsed);
+        //    }
+        //    else
+        //    {
+        //        Stop();
+        //    }
+        //}
 
-        public void OnDestroy()
+        protected virtual void OnDestroy()
         {
             // Final position:
             if (angleTransform != null && subject != null)

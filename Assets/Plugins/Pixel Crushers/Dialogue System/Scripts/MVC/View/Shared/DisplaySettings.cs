@@ -254,6 +254,7 @@ namespace PixelCrushers.DialogueSystem
                 this.alternateCameraObject = source.alternateCameraObject;
                 this.cameraAngles = source.cameraAngles;
                 this.keepCameraPositionAtConversationEnd = source.keepCameraPositionAtConversationEnd;
+                this.cameraEasing = Tweener.Easing.Linear;
                 this.showSubtitleOnEmptyContinue = source.showSubtitleOnEmptyContinue;
                 this.defaultSequence = source.defaultSequence;
                 this.defaultPlayerSequence = source.defaultPlayerSequence;
@@ -287,11 +288,20 @@ namespace PixelCrushers.DialogueSystem
             public GameObject cameraAngles = null;
 
             /// <summary>
+            /// Specifies how Camera() commands should move the camera.
+            /// </summary>
+            [Tooltip("Specifies how Camera() commands should move the camera.")]
+            public Tweener.Easing cameraEasing = Tweener.Easing.Linear;
+
+            /// <summary>
             /// If conversation's sequences use Main Camera, leave camera in current position at end of conversation instead of restoring pre-conversation position.
             /// </summary>
             [Tooltip("If conversation's sequences use Main Camera, leave camera in current position at end of conversation instead of restoring pre-conversation position.")]
             public bool keepCameraPositionAtConversationEnd = false;
 
+            /// <summary>
+            /// Show subtitle if sequence is only 'Continue()'. Typically only useful in UIs that accumulate text.
+            /// </summary>
             [Tooltip("Show subtitle if sequence is only 'Continue()'. Typically only useful in UIs that accumulate text.")]
             public bool showSubtitleOnEmptyContinue = false;
 
@@ -305,10 +315,16 @@ namespace PixelCrushers.DialogueSystem
             [TextArea]
             public string defaultSequence = "Delay({{end}})";
 
+            /// <summary>
+            /// If defined, overrides Default Sequence for player (PC) lines only.
+            /// </summary>
             [Tooltip("If defined, overrides Default Sequence for player (PC) lines only.")]
             [TextArea]
             public string defaultPlayerSequence = string.Empty;
 
+            /// <summary>
+            /// Used when a dialogue entry doesn't define its own Response Menu Sequence.
+            /// </summary>
             [Tooltip("Used when a dialogue entry doesn't define its own Response Menu Sequence.")]
             [TextArea]
             public string defaultResponseMenuSequence = string.Empty;

@@ -18,6 +18,8 @@ namespace PixelCrushers.DialogueSystem
 
     public delegate void TransformDelegate(Transform t);
 
+    public delegate void SubtitleDelegate(Subtitle subtitle);
+
     public delegate void AssetLoadedDelegate(UnityEngine.Object asset);
 
     public delegate string GetLocalizedTextDelegate(string s);
@@ -155,6 +157,8 @@ namespace PixelCrushers.DialogueSystem
         /// Raised when a conversation ends. Parameter is primary actor.
         /// </summary>
         public event TransformDelegate conversationEnded = delegate { };
+
+        public event SubtitleDelegate conversationLinePrepared = delegate { };
 
         /// <summary>
         /// Raised when StopAllConversations() is called.
@@ -1095,7 +1099,7 @@ namespace PixelCrushers.DialogueSystem
                     initialDialogueEntryID, stopEvaluationAtFirstValid, false, useLinearGroupMode);
                 var needToSetRandomizeNextEntryAgain = m_calledRandomizeNextEntry; // Special case when START node leads to group node with RandomizeNextEntry().
                 m_calledRandomizeNextEntry = false;
-                if (!model.hasValidEntry)
+                if (!model.hasValidEntry && !useLinearGroupMode) // In linear group mode, model doesn't have responses yet because they're evaluated when subtitle finishes.
                 {
                     // Back out:
                     if (DialogueDebug.logInfo) Debug.Log($"{DialogueDebug.Prefix}: Not starting conversation '{title}' after all. After evaluating possible links, there is no valid state to show.");
@@ -1573,10 +1577,13 @@ namespace PixelCrushers.DialogueSystem
                 }
 
                 // Restore UI:
-                m_originalDialogueUI = record.originalDialogueUI;
-                m_originalDisplaySettings = record.originalDisplaySettings;
-                m_isOverrideUIPrefab = record.isOverrideUIPrefab;
-                RestoreOriginalUI();
+                if (m_currentDialogueUI != record.originalDialogueUI)
+                {
+                    m_originalDialogueUI = record.originalDialogueUI;
+                    m_originalDisplaySettings = record.originalDisplaySettings;
+                    m_isOverrideUIPrefab = record.isOverrideUIPrefab;
+                    RestoreOriginalUI();
+                }
             }
 
             // End of conversation checks:
@@ -1604,17 +1611,22 @@ namespace PixelCrushers.DialogueSystem
 
         private void OnConversationStart(Transform actor)
         {
-            conversationStarted(actor);
+            conversationStarted?.Invoke(actor);
         }
 
         private void OnConversationEnd(Transform actor)
         {
-            conversationEnded(actor);
+            conversationEnded?.Invoke(actor);
             int safeguard = 0;
             while (alertsQueuedForConversationEnd.Count > 0 && safeguard++ < 100)
             {
                 ShowAlert(alertsQueuedForConversationEnd.Dequeue());
             }
+        }
+
+        private void OnConversationLine(Subtitle subtitle)
+        {
+            conversationLinePrepared?.Invoke(subtitle);
         }
 
         /// <summary>
@@ -1739,7 +1751,7 @@ namespace PixelCrushers.DialogueSystem
                 if (DialogueDebug.logWarnings) Debug.LogWarning($"Dialogue System: Can't bark '{conversationTitle}:[{entryID}]. No barker specified.");
                 return;
             }
-            var barkUI = speaker.GetComponentInChildren(typeof(IBarkUI)) as IBarkUI;
+            var barkUI = DialogueActor.GetBarkUI(speaker); // speaker.GetComponentInChildren(typeof(IBarkUI)) as IBarkUI;
             ConversationModel conversationModel = new ConversationModel(DialogueManager.masterDatabase, conversationTitle, speaker, listener, DialogueManager.allowLuaExceptions, DialogueManager.isDialogueEntryValid, entryID, 
                 stopEvaluationAtFirstValid, useLinearGroupMode);
             var state = conversationModel.firstState;

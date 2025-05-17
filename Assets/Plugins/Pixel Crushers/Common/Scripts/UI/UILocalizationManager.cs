@@ -168,7 +168,10 @@ namespace PixelCrushers
         private IEnumerator Start()
         {
             yield return CoroutineUtility.endOfFrame; // Wait for Text components to start.
-            UpdateUIs(currentLanguage);
+            if (!string.IsNullOrEmpty(currentLanguage))
+            {
+                UpdateUIs(currentLanguage);
+            }
         }
 
         /// <summary>
