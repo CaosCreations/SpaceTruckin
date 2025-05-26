@@ -26,14 +26,14 @@ namespace PixelCrushers.DialogueSystem
         {
             get
             {
-                if (questLogWindow == null) questLogWindow = GameObjectUtility.FindFirstObjectByType<QuestLogWindow>();
+                if (questLogWindow == null) questLogWindow = PixelCrushers.GameObjectUtility.FindFirstObjectByType<QuestLogWindow>();
                 return questLogWindow;
             }
         }
 
         private void Awake()
         {
-            if (questLogWindow == null) questLogWindow = GameObjectUtility.FindFirstObjectByType<QuestLogWindow>();
+            if (questLogWindow == null) questLogWindow = PixelCrushers.GameObjectUtility.FindFirstObjectByType<QuestLogWindow>();
         }
 
         private void Update()

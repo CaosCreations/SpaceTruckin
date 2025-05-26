@@ -1065,7 +1065,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 // Make sure our serialized object points to this scene's DialogueSystemSceneEvents:
                 if (dialogueSystemSceneEvents == null || dialogueSystemSceneEventsSerializedObject == null)
                 {
-                    dialogueSystemSceneEvents = GameObjectUtility.FindFirstObjectByType<DialogueSystemSceneEvents>();
+                    dialogueSystemSceneEvents = PixelCrushers.GameObjectUtility.FindFirstObjectByType<DialogueSystemSceneEvents>();
                     dialogueSystemSceneEventsSerializedObject = (dialogueSystemSceneEvents != null)
                         ? new SerializedObject(dialogueSystemSceneEvents) : null;
                 }
@@ -1112,7 +1112,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         {
             if (dialogueSystemSceneEvents == null)
             {
-                dialogueSystemSceneEvents = GameObjectUtility.FindFirstObjectByType<DialogueSystemSceneEvents>();
+                dialogueSystemSceneEvents = PixelCrushers.GameObjectUtility.FindFirstObjectByType<DialogueSystemSceneEvents>();
                 if (dialogueSystemSceneEvents == null)
                 {
                     var go = new GameObject("Dialogue System Scene Events");

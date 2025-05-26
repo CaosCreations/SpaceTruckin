@@ -59,6 +59,16 @@ namespace PixelCrushers
                 @this[j] = tmp;
             }
         }
+
+        /// <summary>
+        /// Returns a random element from a list.
+        /// </summary>
+        public static T GetRandomElement<T>(this List<T> @this)
+        {
+            if (@this == null) return default(T);
+            return @this[UnityEngine.Random.Range(0, @this.Count)];
+        }
+
     }
 
 }

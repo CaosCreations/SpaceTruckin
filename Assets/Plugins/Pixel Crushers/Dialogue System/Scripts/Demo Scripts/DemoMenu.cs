@@ -29,7 +29,7 @@ namespace PixelCrushers.DialogueSystem.Demo
 
         void Start()
         {
-            if (questLogWindow == null) questLogWindow = GameObjectUtility.FindFirstObjectByType<QuestLogWindow>();
+            if (questLogWindow == null) questLogWindow = PixelCrushers.GameObjectUtility.FindFirstObjectByType<QuestLogWindow>();
             if (!string.IsNullOrEmpty(startMessage)) DialogueManager.ShowAlert(startMessage);
         }
 
@@ -123,7 +123,7 @@ namespace PixelCrushers.DialogueSystem.Demo
 
         private void SaveGame()
         {
-            var saveSystem = GameObjectUtility.FindFirstObjectByType<SaveSystem>();
+            var saveSystem = PixelCrushers.GameObjectUtility.FindFirstObjectByType<SaveSystem>();
             if (saveSystem != null)
             {
                 SaveSystem.SaveToSlot(1);
@@ -140,7 +140,7 @@ namespace PixelCrushers.DialogueSystem.Demo
         private void LoadGame()
         {
             PersistentDataManager.LevelWillBeUnloaded();
-            var saveSystem = GameObjectUtility.FindFirstObjectByType<SaveSystem>();
+            var saveSystem = PixelCrushers.GameObjectUtility.FindFirstObjectByType<SaveSystem>();
             if (saveSystem != null)
             {
                 if (SaveSystem.HasSavedGameInSlot(1))
@@ -159,7 +159,7 @@ namespace PixelCrushers.DialogueSystem.Demo
                 {
                     string saveData = PlayerPrefs.GetString("SavedGame");
                     Debug.Log("Load Game Data: " + saveData);
-                    LevelManager levelManager = GameObjectUtility.FindFirstObjectByType<LevelManager>();
+                    LevelManager levelManager = PixelCrushers.GameObjectUtility.FindFirstObjectByType<LevelManager>();
                     if (levelManager != null)
                     {
                         levelManager.LoadGame(saveData);
@@ -181,7 +181,7 @@ namespace PixelCrushers.DialogueSystem.Demo
 
         private void ClearSavedGame()
         {
-            var saveSystem = GameObjectUtility.FindFirstObjectByType<SaveSystem>();
+            var saveSystem = PixelCrushers.GameObjectUtility.FindFirstObjectByType<SaveSystem>();
             if (saveSystem != null)
             {
                 if (SaveSystem.HasSavedGameInSlot(1))

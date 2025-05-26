@@ -241,7 +241,7 @@ namespace PixelCrushers.DialogueSystem
 
         private static void SetupCanvas(CanvasDialogueUI ui, DialogueSystemController dialogueManager)
         {
-            if (GameObjectUtility.FindFirstObjectByType<UnityEngine.EventSystems.EventSystem>() == null)
+            if (PixelCrushers.GameObjectUtility.FindFirstObjectByType<UnityEngine.EventSystems.EventSystem>() == null)
             {
                 new GameObject("EventSystem", typeof(UnityEngine.EventSystems.EventSystem),
                     typeof(UnityEngine.EventSystems.StandaloneInputModule));
