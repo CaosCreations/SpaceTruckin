@@ -58,7 +58,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
                     }
                     else
                     {
-                        var levelManager = GameObjectUtility.FindFirstObjectByType<LevelManager>();
+                        var levelManager = PixelCrushers.GameObjectUtility.FindFirstObjectByType<LevelManager>();
                         if (levelManager != null)
                         {
                             levelManager.LoadLevel(levelName);
