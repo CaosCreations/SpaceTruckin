@@ -10,7 +10,7 @@ namespace PixelCrushers.DialogueSystem
 {
 
     [CustomEditor(typeof(DialogueSystemTrigger), true)]
-    public class DialogueSystemTriggerEditor : Editor
+    public class DialogueSystemTriggerEditor : UnityEditor.Editor
     {
 
         protected const string InspectorEditorPrefsKey = "PixelCrushers.DialogueSystem.DialogueSystemTriggerPrefs";

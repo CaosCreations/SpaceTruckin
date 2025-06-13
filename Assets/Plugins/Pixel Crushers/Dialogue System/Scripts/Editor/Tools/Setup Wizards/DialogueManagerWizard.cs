@@ -241,7 +241,7 @@ namespace PixelCrushers.DialogueSystem
 
         private static void SetupCanvas(CanvasDialogueUI ui, DialogueSystemController dialogueManager)
         {
-            if (GameObjectUtility.FindFirstObjectByType<UnityEngine.EventSystems.EventSystem>() == null)
+            if (PixelCrushers.GameObjectUtility.FindFirstObjectByType<UnityEngine.EventSystems.EventSystem>() == null)
             {
                 new GameObject("EventSystem", typeof(UnityEngine.EventSystems.EventSystem),
                     typeof(UnityEngine.EventSystems.StandaloneInputModule));
@@ -354,6 +354,10 @@ namespace PixelCrushers.DialogueSystem
             DialogueManager.instance.displaySettings.subtitleSettings.richTextEmphases = EditorGUILayout.Toggle("Rich Text", DialogueManager.instance.displaySettings.subtitleSettings.richTextEmphases);
             EditorGUILayout.HelpBox("By default, emphasis tags embedded in dialogue text are applied to the entire subtitle. To convert them to rich text tags instead, tick this checkbox. This allows emphases to affect only parts of the text, but your GUI system must support rich text.", MessageType.None);
             EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            DialogueManager.instance.displaySettings.subtitleSettings.convertPipesToLineBreaks = EditorGUILayout.Toggle("Pipes Are Line Breaks", DialogueManager.instance.displaySettings.subtitleSettings.convertPipesToLineBreaks);
+            EditorGUILayout.HelpBox("Treat '|' characters in text as line breaks.", MessageType.None);
+            EditorGUILayout.EndHorizontal();
             EditorWindowTools.EndIndentedSection();
             DrawNavigationButtons(true, true, false);
         }
@@ -434,6 +438,10 @@ namespace PixelCrushers.DialogueSystem
                 EditorGUILayout.HelpBox("Will use Default Sequence for players and NPCs.", MessageType.None);
             }
             EditorGUILayout.HelpBox("In default sequences, you can use '{{end}}' to refer to the duration of the subtitle as determined by Chars/Second and Min Seconds.", MessageType.None);
+            EditorGUILayout.BeginHorizontal();
+            DialogueManager.instance.displaySettings.cameraSettings.reportMissingAudioFiles = EditorGUILayout.Toggle("Report Missing Audio", DialogueManager.instance.displaySettings.cameraSettings.reportMissingAudioFiles);
+            EditorGUILayout.HelpBox("By default, Audio() and AudioWait() sequencer commands don't report missing audio files to reduce Console spam during development.", MessageType.None);
+            EditorGUILayout.EndHorizontal();
             EditorWindowTools.EndIndentedSection();
             DrawNavigationButtons(true, true, false);
         }
@@ -498,6 +506,22 @@ namespace PixelCrushers.DialogueSystem
             DialogueManager.instance.displaySettings.inputSettings.includeInvalidEntries = EditorGUILayout.Toggle("Include Invalid Entries", DialogueManager.instance.displaySettings.inputSettings.includeInvalidEntries);
             EditorGUILayout.HelpBox("Tick to include entries whose conditions are false in the menu. Their buttons will be visible but non-interactable.", MessageType.None);
             EditorGUILayout.EndHorizontal();
+
+            if (DialogueManager.instance.displaySettings.inputSettings.includeInvalidEntries)
+            {
+                EditorGUILayout.BeginHorizontal();
+                DialogueManager.instance.displaySettings.inputSettings.emTagForInvalidResponses =
+                    (EmTag)EditorGUILayout.EnumPopup("[em#] For Invalid Entries", DialogueManager.instance.displaySettings.inputSettings.emTagForInvalidResponses);
+                EditorGUILayout.HelpBox("The [em#] tag to wrap around invalid responses. These responses are only shown if Include Invalid Entries is ticked.", MessageType.None);
+                EditorGUILayout.EndHorizontal();
+            }
+
+            EditorGUILayout.BeginHorizontal();
+            DialogueManager.instance.displaySettings.inputSettings.emTagForOldResponses =
+                (EmTag)EditorGUILayout.EnumPopup("[em#] For Old Entries", DialogueManager.instance.displaySettings.inputSettings.emTagForOldResponses);
+            EditorGUILayout.HelpBox("The [em#] tag to wrap around responses that have been previously chosen.", MessageType.None);
+            EditorGUILayout.EndHorizontal();
+
             EditorGUILayout.BeginHorizontal();
             bool useTimeout = EditorGUILayout.Toggle("Timer", (DialogueManager.instance.displaySettings.inputSettings.responseTimeout > 0));
             EditorGUILayout.HelpBox("Tick to make the response menu timed. If unticked, players can take as long as they want to make their selection.", MessageType.None);

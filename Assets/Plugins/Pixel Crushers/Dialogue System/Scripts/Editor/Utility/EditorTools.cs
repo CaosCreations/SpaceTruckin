@@ -92,7 +92,7 @@ namespace PixelCrushers.DialogueSystem
 
         public static DialogueDatabase FindInitialDatabase()
         {
-            var dialogueSystemController = GameObjectUtility.FindFirstObjectByType<DialogueSystemController>();
+            var dialogueSystemController = PixelCrushers.GameObjectUtility.FindFirstObjectByType<DialogueSystemController>();
             return (dialogueSystemController == null) ? null : dialogueSystemController.initialDatabase;
         }
 

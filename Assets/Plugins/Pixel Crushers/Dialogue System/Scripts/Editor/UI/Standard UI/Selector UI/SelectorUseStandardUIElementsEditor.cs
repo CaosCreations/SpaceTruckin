@@ -7,7 +7,7 @@ namespace PixelCrushers.DialogueSystem
 {
 
     [CustomEditor(typeof(SelectorUseStandardUIElements), true)]
-    public class SelectorUseStandardUIElementsEditor : Editor
+    public class SelectorUseStandardUIElementsEditor : UnityEditor.Editor
     {
 
         public override void OnInspectorGUI()

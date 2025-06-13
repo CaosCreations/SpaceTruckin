@@ -13,7 +13,7 @@ namespace PixelCrushers.DialogueSystem
     /// with DialogueEditorWindow.
     /// </summary>
     [CustomEditor(typeof(DialogueDatabase), true)]
-    public class DialogueDatabaseEditor : Editor
+    public class DialogueDatabaseEditor : UnityEditor.Editor
     {
 
         public static DialogueDatabaseEditor instance = null;

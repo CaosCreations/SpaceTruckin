@@ -7,7 +7,7 @@ namespace PixelCrushers.DialogueSystem
 {
 
     [CustomEditor(typeof(BarkOnIdle), true)]
-    public class BarkOnIdleEditor : Editor
+    public class BarkOnIdleEditor : UnityEditor.Editor
     {
 
         public override void OnInspectorGUI()

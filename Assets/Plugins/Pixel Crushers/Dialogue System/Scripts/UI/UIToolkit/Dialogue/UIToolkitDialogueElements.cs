@@ -39,7 +39,7 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
         protected VisualElement RootContainer => UIToolkitDialogueUI.GetVisualElement<VisualElement>(Document, rootContainerName);
         protected VisualElement DialoguePanel => UIToolkitDialogueUI.GetVisualElement<VisualElement>(Document, dialoguePanelName);
         public override AbstractUISubtitleControls npcSubtitleControls => NPCSubtitleElements;
-        public override AbstractUISubtitleControls pcSubtitleControls => NPCSubtitleElements;
+        public override AbstractUISubtitleControls pcSubtitleControls => PCSubtitleElements;
         public override AbstractUIResponseMenuControls responseMenuControls => responseMenuElements;
 
         public void Initialize(System.Action clickedContinueAction, System.Action<object> clickedResponseAction)

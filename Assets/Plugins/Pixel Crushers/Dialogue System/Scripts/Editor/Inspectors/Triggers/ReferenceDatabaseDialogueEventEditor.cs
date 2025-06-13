@@ -11,7 +11,7 @@ namespace PixelCrushers.DialogueSystem
     /// It simply adds a Reference Database field to the editor above
     /// the default inspector.
     /// </summary>
-    public class ReferenceDatabaseDialogueEventEditor : Editor
+    public class ReferenceDatabaseDialogueEventEditor : UnityEditor.Editor
     {
 
         protected virtual bool isDeprecated { get { return false; } }

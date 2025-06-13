@@ -7,7 +7,7 @@ namespace PixelCrushers
 {
 
     [CustomEditor(typeof(InputDeviceManager), true)]
-    public class InputDeviceManagerEditor : Editor
+    public class InputDeviceManagerEditor : UnityEditor.Editor
     {
 
         public override void OnInspectorGUI()

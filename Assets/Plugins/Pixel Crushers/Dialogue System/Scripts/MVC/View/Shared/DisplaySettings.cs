@@ -89,6 +89,7 @@ namespace PixelCrushers.DialogueSystem
                 this.continueButton = source.continueButton;
                 this.requireContinueOnLastLine = source.requireContinueOnLastLine;
                 this.richTextEmphases = source.richTextEmphases;
+                this.convertPipesToLineBreaks = source.convertPipesToLineBreaks;
                 this.informSequenceStartAndEnd = source.informSequenceStartAndEnd;
             }
 
@@ -229,6 +230,12 @@ namespace PixelCrushers.DialogueSystem
             /// </summary>
             [Tooltip("Use rich text codes for [em#] markup tags. If unticked, [em#] tag will apply color to entire text.")]
             public bool richTextEmphases = true;
+
+            /// <summary>
+            /// Treat '|' characters in text as line breaks.
+            /// </summary>
+            [Tooltip("Treat '|' characters in text as line breaks.")]
+            public bool convertPipesToLineBreaks = true;
 
             /// <summary>
             /// Set <c>true</c> to send OnSequenceStart and OnSequenceEnd messages with 

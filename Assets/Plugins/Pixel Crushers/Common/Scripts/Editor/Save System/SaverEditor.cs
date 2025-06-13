@@ -7,7 +7,7 @@ namespace PixelCrushers
 {
 
     [CustomEditor(typeof(Saver), true)]
-    public class SaverEditor : Editor
+    public class SaverEditor : UnityEditor.Editor
     {
 
         protected Saver[] m_saversOnGameObject;

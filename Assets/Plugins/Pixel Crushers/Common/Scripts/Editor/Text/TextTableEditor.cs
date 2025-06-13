@@ -7,7 +7,7 @@ namespace PixelCrushers
 {
 
     [CustomEditor(typeof(TextTable), true)]
-    public class TextTableEditor : Editor
+    public class TextTableEditor : UnityEditor.Editor
     {
 
         private TextTable m_textTable;

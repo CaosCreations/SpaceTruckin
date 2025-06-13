@@ -175,6 +175,7 @@ namespace PixelCrushers.DialogueSystem
         protected Coroutine m_focusWhenOpenCoroutine = null;
         protected Coroutine m_showAfterClosingCoroutine = null;
         protected Coroutine m_setAnimatorCoroutine = null;
+        protected WaitForEndOfFrame endOfFrame = new WaitForEndOfFrame();
 
         #endregion
 
@@ -493,7 +494,7 @@ namespace PixelCrushers.DialogueSystem
             }
             else
             {
-                ShowContinueButtonNow();
+                StartCoroutine(ShowContinueButtonAtEndOfFrame());
             }
         }
 
@@ -522,6 +523,14 @@ namespace PixelCrushers.DialogueSystem
             continueButton.interactable = true;
             ShowContinueButtonNow();
             m_ShowContinueButtonCoroutine = null;
+        }
+
+        protected virtual IEnumerator ShowContinueButtonAtEndOfFrame()
+        {
+            // We wait until the end of the frame in case another subtitle panel shares the
+            // same continue button and decides to deactivate it.
+            yield return endOfFrame;
+            ShowContinueButtonNow();
         }
 
         protected virtual void ShowContinueButtonNow()

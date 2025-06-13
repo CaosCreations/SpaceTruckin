@@ -7,7 +7,7 @@ namespace PixelCrushers
 {
 
     [CustomEditor(typeof(UILocalizationManager), true)]
-    public class UILocalizationManagerEditor : Editor
+    public class UILocalizationManagerEditor : UnityEditor.Editor
     {
 
         public override void OnInspectorGUI()

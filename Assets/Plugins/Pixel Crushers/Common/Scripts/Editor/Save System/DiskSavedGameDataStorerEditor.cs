@@ -10,7 +10,7 @@ namespace PixelCrushers
 {
 
     [CustomEditor(typeof(DiskSavedGameDataStorer), true)]
-    public class DiskSavedGameDataStorerEditor : Editor
+    public class DiskSavedGameDataStorerEditor : UnityEditor.Editor
     {
 
 #if !(UNITY_WEBGL || UNITY_WSA)

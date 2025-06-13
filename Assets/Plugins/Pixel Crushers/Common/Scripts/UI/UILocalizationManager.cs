@@ -59,10 +59,10 @@ namespace PixelCrushers
             {
                 if (s_instance == null && !s_isQuitting)
                 {
-                    s_instance = GameObjectUtility.FindFirstObjectByType<UILocalizationManager>();
+                    s_instance = PixelCrushers.GameObjectUtility.FindFirstObjectByType<UILocalizationManager>();
                     if (s_instance == null && Application.isPlaying)
                     {
-                        var globalTextTable = GameObjectUtility.FindFirstObjectByType<GlobalTextTable>();
+                        var globalTextTable = PixelCrushers.GameObjectUtility.FindFirstObjectByType<GlobalTextTable>();
                         s_instance = (globalTextTable != null) ? globalTextTable.gameObject.AddComponent<UILocalizationManager>()
                             : new GameObject("UILocalizationManager").AddComponent<UILocalizationManager>();
                     }
