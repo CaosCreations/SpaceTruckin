@@ -8,7 +8,7 @@ namespace PixelCrushers.DialogueSystem
 {
 
     [CustomEditor(typeof(SequenceTrigger), true)]
-    public class SequenceTriggerEditor : Editor
+    public class SequenceTriggerEditor : UnityEditor.Editor
     {
 
         private Rect sequenceRect;

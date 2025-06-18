@@ -59,7 +59,7 @@ namespace PixelCrushers.DialogueSystem
         public static int AddNewDialogueEntrySceneEvent(out string guid, DialogueSystemSceneEvents sceneInstanceToUse = null)
         {
             guid = string.Empty;
-            if (sceneInstanceToUse == null) sceneInstanceToUse = GameObjectUtility.FindFirstObjectByType<DialogueSystemSceneEvents>();
+            if (sceneInstanceToUse == null) sceneInstanceToUse = PixelCrushers.GameObjectUtility.FindFirstObjectByType<DialogueSystemSceneEvents>();
             if (sceneInstanceToUse == null) return -1;
             guid = Guid.NewGuid().ToString();
             var x = new DialogueEntrySceneEvent();

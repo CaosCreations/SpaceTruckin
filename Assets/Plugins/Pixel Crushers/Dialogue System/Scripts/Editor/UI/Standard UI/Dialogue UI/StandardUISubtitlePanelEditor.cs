@@ -7,7 +7,7 @@ namespace PixelCrushers.DialogueSystem
 {
 
     [CustomEditor(typeof(StandardUISubtitlePanel), true)]
-    public class StandardUISubtitlePanelEditor : Editor
+    public class StandardUISubtitlePanelEditor : UnityEditor.Editor
     {
 
         public override void OnInspectorGUI()

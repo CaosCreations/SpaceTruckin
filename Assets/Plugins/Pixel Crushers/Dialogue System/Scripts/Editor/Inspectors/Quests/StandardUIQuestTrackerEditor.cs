@@ -11,7 +11,7 @@ namespace PixelCrushers.DialogueSystem
     /// clear the visibility PlayerPrefs key.
     /// </summary>
     [CustomEditor(typeof(StandardUIQuestTracker), true)]
-    public class StandardUIQuestTrackerEditor : Editor
+    public class StandardUIQuestTrackerEditor : UnityEditor.Editor
     {
         private GUIContent buttonLabel;
 

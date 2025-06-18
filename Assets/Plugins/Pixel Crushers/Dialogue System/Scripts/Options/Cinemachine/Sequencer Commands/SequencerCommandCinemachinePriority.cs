@@ -62,7 +62,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
                 // Handle cut:
                 // (Could set vcam.PreviousStateIsValid false, but need to support older CM versions.)
                 var shouldIRestoreBlendMode = false;
-                var cinemachineBrain = cut ? GameObjectUtility.FindFirstObjectByType<CinemachineBrain>() : null;
+                var cinemachineBrain = cut ? PixelCrushers.GameObjectUtility.FindFirstObjectByType<CinemachineBrain>() : null;
 #if USE_CINEMACHINE_3
                 var previousBlendStyle = CinemachineBlendDefinition.Styles.EaseInOut;
 #else

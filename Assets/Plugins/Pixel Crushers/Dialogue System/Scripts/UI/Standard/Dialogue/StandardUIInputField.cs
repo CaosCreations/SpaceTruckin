@@ -94,15 +94,54 @@ namespace PixelCrushers.DialogueSystem
             if (m_isAwaitingInput && !DialogueManager.IsDialogueSystemInputDisabled())
             {
                 if (InputDeviceManager.IsKeyDown(acceptKey) || InputDeviceManager.IsButtonDown(acceptButton) ||
-                    (m_touchScreenKeyboard != null && m_touchScreenKeyboard.status == TouchScreenKeyboard.Status.Done))
+                    IsTouchScreenDone())
                 {
                     AcceptTextInput();
                 }
                 else if (InputDeviceManager.IsKeyDown(cancelKey) || InputDeviceManager.IsButtonDown(cancelButton) ||
-                    (m_touchScreenKeyboard != null && m_touchScreenKeyboard.status == TouchScreenKeyboard.Status.Canceled))
+                    IsTouchScreenCancelled())
                 {
                     CancelTextInput();
                 }
+            }
+        }
+
+        protected virtual bool IsTouchScreenDone()
+        {
+            if (m_touchScreenKeyboard == null) return false;
+            try
+            {
+                return m_touchScreenKeyboard.status == TouchScreenKeyboard.Status.Done;
+            }
+            catch (System.Exception)
+            {
+                return false;
+            }
+        }
+
+        protected virtual bool IsTouchScreenCancelled()
+        {
+            if (m_touchScreenKeyboard == null) return false;
+            try
+            {
+                return m_touchScreenKeyboard.status == TouchScreenKeyboard.Status.Canceled;
+            }
+            catch (System.Exception)
+            {
+                return false;
+            }
+        }
+
+        protected virtual bool IsTouchScreenCanceled()
+        {
+            if (m_touchScreenKeyboard == null) return false;
+            try
+            {
+                return m_touchScreenKeyboard.status == TouchScreenKeyboard.Status.Canceled;
+            }
+            catch (System.Exception)
+            {
+                return false;
             }
         }
 
@@ -121,7 +160,7 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public virtual void AcceptTextInput()
         {
-            if (!allowBlankInput && string.IsNullOrEmpty(inputField.text)) return;
+            if (!CanAcceptInput()) return;
             m_isAwaitingInput = false;
             if (m_acceptedText != null)
             {
@@ -130,6 +169,11 @@ namespace PixelCrushers.DialogueSystem
             }
             Hide();
             onAccept.Invoke();
+        }
+
+        protected virtual bool CanAcceptInput()
+        {
+            return allowBlankInput || !string.IsNullOrWhiteSpace(inputField.text);
         }
 
         protected virtual void Show()
@@ -148,8 +192,8 @@ namespace PixelCrushers.DialogueSystem
         }
 
         protected virtual void ShowTouchScreenKeyboard()
-        { 
-            m_touchScreenKeyboard = TouchScreenKeyboard.Open(inputField.text); 
+        {
+            m_touchScreenKeyboard = TouchScreenKeyboard.Open(inputField.text);
         }
 
         protected virtual void Hide()
@@ -159,7 +203,11 @@ namespace PixelCrushers.DialogueSystem
             SetActive(false);
             if (m_touchScreenKeyboard != null)
             {
-                m_touchScreenKeyboard.active = false;
+                try
+                {
+                    m_touchScreenKeyboard.active = false;
+                }
+                catch (System.Exception) { }
                 m_touchScreenKeyboard = null;
             }
         }

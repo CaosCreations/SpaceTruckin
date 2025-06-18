@@ -41,7 +41,10 @@ namespace PixelCrushers.DialogueSystem
             [Tooltip("Invoked when a conversation is cancelled. Transform is primary actor (typically player).")]
             public TransformEvent onConversationCancelled = new TransformEvent();
 
-            [Tooltip("Invoked just before a line is delivered. Passes Subtitle.")]
+            [Tooltip("Invoked just before a line is delivered but before OnConversationLine. Passes Subtitle.")]
+            public SubtitleEvent onConversationLineEarly = new SubtitleEvent();
+
+            [Tooltip("Invoked just before a line is delivered but after OnConversationLineEarly. Passes Subtitle.")]
             public SubtitleEvent onConversationLine = new SubtitleEvent();
 
             [Tooltip("Invoked when a line has finished. Passes Subtitle.")]
@@ -150,6 +153,11 @@ namespace PixelCrushers.DialogueSystem
         public void OnConversationCancelled(Transform actor)
         {
             conversationEvents.onConversationCancelled.Invoke(actor);
+        }
+
+        public void OnConversationLineEarly(Subtitle subtitle)
+        {
+            conversationEvents.onConversationLine.Invoke(subtitle);
         }
 
         public void OnConversationLine(Subtitle subtitle)

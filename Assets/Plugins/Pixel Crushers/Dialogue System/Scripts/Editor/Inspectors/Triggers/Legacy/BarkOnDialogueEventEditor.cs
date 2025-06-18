@@ -7,7 +7,7 @@ namespace PixelCrushers.DialogueSystem
 {
 
     [CustomEditor(typeof(BarkOnDialogueEvent), true)]
-    public class BarkOnDialogueEventEditor : Editor
+    public class BarkOnDialogueEventEditor : UnityEditor.Editor
     {
 
         public void OnEnable()

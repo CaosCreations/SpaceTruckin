@@ -11,7 +11,7 @@ namespace PixelCrushers.DialogueSystem
     /// Custom inspector editor for DialogueSystemController (e.g., Dialogue Manager).
     /// </summary>
     [CustomEditor(typeof(DialogueSystemController), true)]
-    public class DialogueSystemControllerEditor : Editor
+    public class DialogueSystemControllerEditor : UnityEditor.Editor
     {
 
         private const string LightSkinIconFilename = "Dialogue System/DialogueManager Inspector Light.png";
@@ -241,6 +241,7 @@ namespace PixelCrushers.DialogueSystem
                     EditorWindowTools.EditorGUILayoutBeginGroup();
                     var subtitleSettings = displaySettingsProperty.FindPropertyRelative("subtitleSettings");
                     EditorGUILayout.PropertyField(subtitleSettings.FindPropertyRelative("richTextEmphases"), new GUIContent("Use Rich Text For [em#] Tags", "Use rich text codes for [em#] markup tags. If unticked, [em#] tag will apply color to entire text."), true);
+                    EditorGUILayout.PropertyField(subtitleSettings.FindPropertyRelative("convertPipesToLineBreaks"), new GUIContent("Convert Pipes To Line Breaks", "Treat '|' characters in text as line breaks."), true);
                     EditorGUILayout.PropertyField(subtitleSettings.FindPropertyRelative("showNPCSubtitlesDuringLine"), true);
                     EditorGUILayout.PropertyField(subtitleSettings.FindPropertyRelative("showNPCSubtitlesWithResponses"), true);
                     EditorGUILayout.PropertyField(subtitleSettings.FindPropertyRelative("showPCSubtitlesDuringLine"), true);

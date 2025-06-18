@@ -132,7 +132,7 @@ namespace PixelCrushers.DialogueSystem
             EditorWindowTools.StartIndentedSection();
             if (dialogueManager == null)
             {
-                dialogueManager = GameObjectUtility.FindFirstObjectByType<DialogueSystemController>();
+                dialogueManager = PixelCrushers.GameObjectUtility.FindFirstObjectByType<DialogueSystemController>();
             }
             if (database == null && dialogueManager != null)
             {

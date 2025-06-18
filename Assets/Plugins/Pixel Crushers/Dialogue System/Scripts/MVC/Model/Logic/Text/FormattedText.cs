@@ -155,7 +155,7 @@ namespace PixelCrushers.DialogueSystem
         /// Parses the text from a dialogue entry, which may contain formatting codes, and returns
         /// a FormattedText. The Parse() method handles these tags:
         /// 
-        /// - Pipe (|): Replaced with newlines.
+        /// - Pipe (|): Replaced with newlines unless DialogueManager.displaySettings.subtitleSettings.convertPipesToLineBreaks is false.
         /// - [a]: Italics.
         /// - [f]: Force response menu.
         /// - [position #]: Response button position.
@@ -221,11 +221,13 @@ namespace PixelCrushers.DialogueSystem
         }
 
         /// <summary>
-        /// Replaces pipe characters with newline characters.
+        /// Replaces pipe characters with newline characters, unless Dialogue Manager
+        /// specifies not to.
         /// </summary>
         /// <param name="text">Text.</param>
         private static void ReplacePipes(ref string text)
         {
+            if (DialogueManager.hasInstance && !DialogueManager.displaySettings.subtitleSettings.convertPipesToLineBreaks) return;
             if (text.Contains("|")) text = text.Replace("|", "\n");
         }
 

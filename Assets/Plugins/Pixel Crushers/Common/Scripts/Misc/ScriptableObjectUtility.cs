@@ -17,6 +17,8 @@ namespace PixelCrushers
     public static class ScriptableObjectUtility
     {
 
+        public static bool reportNullElementsInLists { get; set; } = false;
+
         /// <summary>
         /// Create a ScriptableObject of type T, calling the method Initialize() if present.
         /// </summary>
@@ -72,7 +74,7 @@ namespace PixelCrushers
                     }
                     else
                     {
-                        if (Debug.isDebugBuild)
+                        if (Debug.isDebugBuild && reportNullElementsInLists)
                         {
                             if (source != null)
                             {
@@ -83,7 +85,7 @@ namespace PixelCrushers
                                 Debug.LogWarning("CloneList<" + typeof(T).Name + ">: Element " + i + " is null.");
                             }
                         }
-                        copy.Add(null);
+                        //--- Don't add nulls: copy.Add(null);
                     }
                 }
             }

@@ -7,7 +7,7 @@ namespace PixelCrushers.DialogueSystem
 {
 
     [CustomEditor(typeof(QuestTrigger), true)]
-    public class QuestTriggerEditor : Editor
+    public class QuestTriggerEditor : UnityEditor.Editor
     {
 
         private QuestPicker questPicker = null;

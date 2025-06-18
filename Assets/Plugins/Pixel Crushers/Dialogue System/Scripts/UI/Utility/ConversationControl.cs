@@ -36,7 +36,7 @@ namespace PixelCrushers.DialogueSystem
             dialogueUI =
                 GetComponent<AbstractDialogueUI>() ??
                 (DialogueManager.standardDialogueUI as AbstractDialogueUI) ??
-                GameObjectUtility.FindFirstObjectByType<AbstractDialogueUI>();
+                PixelCrushers.GameObjectUtility.FindFirstObjectByType<AbstractDialogueUI>();
         }
 
         /// <summary>

@@ -8,7 +8,7 @@ namespace PixelCrushers.DialogueSystem
 
     [CustomEditor(typeof(DialogueActor), true)]
     [CanEditMultipleObjects]
-    public class DialogueActorEditor : Editor
+    public class DialogueActorEditor : UnityEditor.Editor
     {
 
         public override void OnInspectorGUI()

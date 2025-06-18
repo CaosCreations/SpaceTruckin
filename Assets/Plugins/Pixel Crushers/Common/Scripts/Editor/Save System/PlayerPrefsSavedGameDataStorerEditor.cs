@@ -10,7 +10,7 @@ namespace PixelCrushers
 {
 
     [CustomEditor(typeof(PlayerPrefsSavedGameDataStorer), true)]
-    public class PlayerPrefsSavedGameDataStorerEditor : Editor
+    public class PlayerPrefsSavedGameDataStorerEditor : UnityEditor.Editor
     {
 
         private const int MaxSlots = 100;

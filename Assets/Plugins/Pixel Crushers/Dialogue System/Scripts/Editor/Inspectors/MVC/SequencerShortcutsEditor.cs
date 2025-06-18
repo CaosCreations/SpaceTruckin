@@ -8,7 +8,7 @@ namespace PixelCrushers.DialogueSystem
 {
 
     [CustomEditor(typeof(SequencerShortcuts), true)]
-    public class SequencerShortcutsEditor : Editor
+    public class SequencerShortcutsEditor : UnityEditor.Editor
     {
 
         private ReorderableList shortcutsList = null;

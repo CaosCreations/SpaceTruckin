@@ -7,7 +7,7 @@ namespace PixelCrushers.DialogueSystem
 {
 
     [CustomEditor(typeof(ConversationTrigger), true)]
-    public class ConversationTriggerEditor : Editor
+    public class ConversationTriggerEditor : UnityEditor.Editor
     {
 
         private void OnEnable()

@@ -13,7 +13,7 @@ namespace PixelCrushers.DialogueSystem
     /// Custom inspector editor for localized text tables.
     /// </summary>
     [CustomEditor(typeof(LocalizedTextTable), true)]
-    public class LocalizedTextTableEditor : Editor
+    public class LocalizedTextTableEditor : UnityEditor.Editor
     {
 
         #region Variables

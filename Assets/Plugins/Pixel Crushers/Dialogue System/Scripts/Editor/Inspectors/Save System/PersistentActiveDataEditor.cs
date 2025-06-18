@@ -7,7 +7,7 @@ namespace PixelCrushers.DialogueSystem
 {
 
     [CustomEditor(typeof(PersistentActiveData), true)]
-    public class PersistentActiveDataEditor : Editor
+    public class PersistentActiveDataEditor : UnityEditor.Editor
     {
 
         public void OnEnable()

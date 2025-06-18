@@ -7,7 +7,7 @@ namespace PixelCrushers.DialogueSystem
 {
 
     [CustomEditor(typeof(LuaTrigger), true)]
-    public class LuaTriggerEditor : Editor
+    public class LuaTriggerEditor : UnityEditor.Editor
     {
 
         private LuaScriptWizard luaScriptWizard = null;

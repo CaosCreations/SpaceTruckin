@@ -72,7 +72,7 @@ namespace PixelCrushers.DialogueSystem
         public static void ClearSavedLocalizationSettings()
         {
             var key = "Language";
-            var localizationManager = GameObjectUtility.FindFirstObjectByType<UILocalizationManager>();
+            var localizationManager = PixelCrushers.GameObjectUtility.FindFirstObjectByType<UILocalizationManager>();
             if (localizationManager != null) key = localizationManager.currentLanguagePlayerPrefsKey;
             PlayerPrefs.DeleteKey(key);
             Debug.Log("Dialogue System: Deleted PlayerPrefs key '" + key + "'.");

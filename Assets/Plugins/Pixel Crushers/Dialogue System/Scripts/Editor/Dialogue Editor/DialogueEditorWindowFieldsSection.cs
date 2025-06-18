@@ -36,11 +36,21 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             duplicateFieldsReport = null;
         }
 
+        // Prevents unnecessary GUI begin/end error after finding duplicates.
+        private bool waitFrameAfterFindingDuplicateField = true;
+
         private void CheckFields(List<Field> fields)
         {
             if (!string.IsNullOrEmpty(duplicateFieldsReport))
             {
-                EditorGUILayout.HelpBox(duplicateFieldsReport, MessageType.Warning);
+                if (waitFrameAfterFindingDuplicateField)
+                {
+                    waitFrameAfterFindingDuplicateField = false;
+                }
+                else
+                {
+                    EditorGUILayout.HelpBox(duplicateFieldsReport, MessageType.Warning);
+                }
             }
             if (fields == null || fields == lastFieldsChecked) return;
             lastFieldsChecked = fields;
@@ -65,7 +75,10 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     first = false;
                     duplicateFieldsReport += fieldTitle;
                 }
+                waitFrameAfterFindingDuplicateField = true;
+                GUI.FocusControl("");
             }
+            Repaint();
         }
 
         private void DrawFieldsSection(List<Field> fields, List<string> primaryFieldTitles = null)

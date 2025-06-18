@@ -7,7 +7,7 @@ namespace PixelCrushers.DialogueSystem
 {
 
     [CustomEditor(typeof(AlertTrigger), true)]
-    public class AlertTriggerEditor : Editor
+    public class AlertTriggerEditor : UnityEditor.Editor
     {
 
         public void OnEnable()

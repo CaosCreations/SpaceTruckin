@@ -71,6 +71,9 @@ namespace PixelCrushers.DialogueSystem
 
         [Header("Save/Load")]
 
+        [Tooltip("Resume conversation when restoring saved game data.")]
+        public bool resumeConversationOnApplyPersistentData = true;
+
         [Tooltip("Load the saved conversation specified in the Conversation variable.")]
         public bool useConversationVariable = false;
 
@@ -455,6 +458,7 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public virtual void OnApplyPersistentData()
         {
+            if (!resumeConversationOnApplyPersistentData) return;
             if (!string.IsNullOrEmpty(conversationVariableOverride))
             {
                 DialogueLua.SetVariable("Conversation", conversationVariableOverride);

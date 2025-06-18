@@ -125,7 +125,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private void InitializeEntrytagFormatFromScene()
         {
-            var dialogueManager = GameObjectUtility.FindFirstObjectByType<DialogueSystemController>();
+            var dialogueManager = PixelCrushers.GameObjectUtility.FindFirstObjectByType<DialogueSystemController>();
             if (dialogueManager == null) return;
             entrytagFormat = dialogueManager.displaySettings.cameraSettings.entrytagFormat;
         }

@@ -11,7 +11,7 @@ namespace PixelCrushers.DialogueSystem
     /// of bark group members.
     /// </summary>
     [CustomEditor(typeof(BarkGroupManager), true)]
-    public class BarkGroupManagerEditor : Editor
+    public class BarkGroupManagerEditor : UnityEditor.Editor
     {
 
         public override void OnInspectorGUI()

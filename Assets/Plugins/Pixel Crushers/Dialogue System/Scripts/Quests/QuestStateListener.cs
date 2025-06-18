@@ -72,7 +72,7 @@ namespace PixelCrushers.DialogueSystem
                         m_questStateDispatcher = DialogueManager.instance.GetComponent<QuestStateDispatcher>();
                         if (m_questStateDispatcher == null)
                         {
-                            m_questStateDispatcher = GameObjectUtility.FindFirstObjectByType<QuestStateDispatcher>();
+                            m_questStateDispatcher = PixelCrushers.GameObjectUtility.FindFirstObjectByType<QuestStateDispatcher>();
                             if (m_questStateDispatcher == null)
                             {
                                 m_questStateDispatcher = DialogueManager.instance.gameObject.AddComponent<QuestStateDispatcher>();
@@ -81,7 +81,7 @@ namespace PixelCrushers.DialogueSystem
                     }
                     else
                     {
-                        m_questStateDispatcher = GameObjectUtility.FindFirstObjectByType<QuestStateDispatcher>();
+                        m_questStateDispatcher = PixelCrushers.GameObjectUtility.FindFirstObjectByType<QuestStateDispatcher>();
                         if (m_questStateDispatcher == null)
                         {
                             var go = new GameObject("QuestStateDispatcher");

@@ -643,7 +643,7 @@ namespace PixelCrushers.DialogueSystem
             {
                 hasCheckedDefaultInputManager = true;
                 var inputDeviceManagerRewiredType = RuntimeTypeUtility.GetTypeFromName("PixelCrushers.RewiredSupport.InputDeviceManagerRewired");
-                var isRewiredPresent = (inputDeviceManagerRewiredType != null) && (GameObjectUtility.FindFirstObjectByType(inputDeviceManagerRewiredType) != null);
+                var isRewiredPresent = (inputDeviceManagerRewiredType != null) && (PixelCrushers.GameObjectUtility.FindFirstObjectByType(inputDeviceManagerRewiredType) != null);
                 isUsingDefaultInputManager = !isRewiredPresent;
             }
             return isUsingDefaultInputManager;

@@ -6,7 +6,7 @@ using UnityEditor;
 namespace PixelCrushers.DialogueSystem
 {
     [CustomEditor(typeof(PersistentActiveDataMultiple), true)]
-    public class PersistentActiveDataMultipleEditor : Editor
+    public class PersistentActiveDataMultipleEditor : UnityEditor.Editor
     {
         public void OnEnable()
         {
