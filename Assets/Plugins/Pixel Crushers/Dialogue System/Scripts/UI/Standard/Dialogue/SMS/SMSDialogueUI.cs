@@ -624,7 +624,10 @@ namespace PixelCrushers.DialogueSystem
             }
             if (DialogueLua.DoesVariableExist(currentDialogueEntryRecords))
             {
+                var originalValue = resumeConversationOnApplyPersistentData;
+                resumeConversationOnApplyPersistentData = true;
                 OnApplyPersistentData();
+                resumeConversationOnApplyPersistentData = originalValue;
             }
             else
             {

@@ -173,10 +173,6 @@ namespace PixelCrushers.DialogueSystem.Twine
                                 linkEntry.conditionsString = AppendCode(linkEntry.conditionsString, conditions);
                                 linkEntry.userScript = AppendCode(linkEntry.userScript, script);
                             }
-                            //else
-                            //{ 
-                            //    linkEntry.ActorID = actorID;
-                            //}
                             conversation.dialogueEntries.Add(linkEntry);
                             if (!willLinkInHook)
                             {
@@ -199,7 +195,10 @@ namespace PixelCrushers.DialogueSystem.Twine
                 {
                     int hookActorID, hookConversantID;
                     ExtractParticipants(hook.text, passageEntry.ActorID, passageEntry.ConversantID, true, out hook.text, out hookActorID, out hookConversantID);
-                    var conditions = hook.prefix.StartsWith("(if:") ? ConvertIfMacro(hook.prefix) : string.Empty;
+                    var isIfOrElseif = hook.prefix.StartsWith("(if:") || hook.prefix.StartsWith("(else-if:");
+                    var isElse = hook.prefix.StartsWith("(else:)");
+                    var conditions = isIfOrElseif ? ConvertIfMacro(hook.prefix)
+                        : isElse ? "(else:)" : string.Empty;
                     if (hook.links.Count == 0)
                     {
                         var linkEntryTitle = GetLinkEntryTitle(hook.text, passageID);
@@ -210,7 +209,7 @@ namespace PixelCrushers.DialogueSystem.Twine
                     {
                         foreach (var link in hook.links)
                         {
-                            var linkEntryTitle = GetLinkEntryTitle(hook.text, passageID);//var linkEntryTitle = GetLinkEntryTitle(link, passageID);
+                            var linkEntryTitle = GetLinkEntryTitle(hook.text, passageID);
                             var linkEntry = conversation.GetDialogueEntry(linkEntryTitle);
                             if (!string.IsNullOrEmpty(hook.text) && hook.text != linkEntry.DialogueText)
                             {
@@ -250,11 +249,25 @@ namespace PixelCrushers.DialogueSystem.Twine
                 conversation.SplitPipesIntoEntries();
             }
 
+            // For all nodes with (else:) in Conditions, set correct Conditions:
+            foreach (var entry in conversation.dialogueEntries)
+            {
+                foreach (var link in entry.outgoingLinks)
+                {
+                    var childEntry = conversation.GetDialogueEntry(link.destinationDialogueID);
+                    if (childEntry == null) continue;
+                    if (childEntry.conditionsString == "(else:)")
+                    {
+                        childEntry.conditionsString = GetElseConditions(conversation, entry, childEntry);
+                    }
+                }
+            }
+
             // For all nodes without text, set Sequence to Continue():
             foreach (var entry in conversation.dialogueEntries)
             {
                 if (string.IsNullOrEmpty(entry.DialogueText) &&
-                    string.IsNullOrEmpty(entry.Sequence))                
+                    string.IsNullOrEmpty(entry.Sequence))
                 {
                     entry.Sequence = "Continue()";
                 }
@@ -269,6 +282,10 @@ namespace PixelCrushers.DialogueSystem.Twine
         protected string GetLinkEntryTitle(string linkName, int originPassageID)
         {
             // Include ID to make links with same names unique.
+            if (linkName.StartsWith("(") && linkName.EndsWith(")"))
+            {
+                return linkName;
+            }
             return linkName.Trim() + " Link " + originPassageID;
         }
 
@@ -389,7 +406,7 @@ namespace PixelCrushers.DialogueSystem.Twine
                 var dividerLength = dividerMatch.Length;
 
                 var prefix = match.Value.Substring(0, index + dividerLength - 1).Trim();
-                var hookText = match.Value.Substring(index + dividerLength, match.Length - (prefix.Length + dividerLength - 1)).Trim();
+                var hookText = match.Value.Substring(index + dividerLength, match.Length - (prefix.Length + dividerLength)).Trim();
                 var isLink = hookText.StartsWith("[");
                 if (hookText.StartsWith("[")) hookText = hookText.Substring(1);
                 if (hookText.EndsWith("]")) hookText = hookText.Substring(0, hookText.Length - 1);
@@ -603,15 +620,15 @@ namespace PixelCrushers.DialogueSystem.Twine
             var colonPos = s.IndexOf(':');
             if (colonPos != -1 && !s.Contains(": ")) s = s.Substring(0, colonPos + 1) + ' ' + s.Substring(colonPos + 1);
 
-            var tokens = s.Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
-            if (tokens.Length < 4) return macro;
-            // Indices: [0](if [1]$var [2]is [3+]condition
-            if (tokens[2] == "is") tokens[2] = "==";
-            var lua = ConvertVariableToLua(tokens[1]) + " " + tokens[2];
-            for (int i = 3; i < tokens.Length; i++)
+            var tokens = new List<string>(s.Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries));
+            //--- Don't recall why this was in. Removing it: if (tokens.Count < 4) return macro;
+            tokens.RemoveAt(0); // Remove (if: or (else-if:.
+            for (int i = 0; i < tokens.Count; i++)
             {
-                lua += " " + ConvertVariableToLua(tokens[i]);
+                if (tokens[i] == "is") tokens[i] = "==";
+                else tokens[i] = ConvertVariableToLua(tokens[i]);
             }
+            var lua = string.Join(" ", tokens);
             return lua;
         }
 
@@ -629,6 +646,26 @@ namespace PixelCrushers.DialogueSystem.Twine
             {
                 return variable;
             }
+        }
+
+        private string GetElseConditions(Conversation conversation, DialogueEntry parentEntry, DialogueEntry childEntry)
+        {
+            if (conversation == null || parentEntry == null || childEntry == null) return string.Empty;
+            var first = true;
+            var result = "not (";
+            foreach (var link in parentEntry.outgoingLinks)
+            {
+                var siblingEntry = conversation.GetDialogueEntry(link.destinationDialogueID);
+                if (siblingEntry == null) continue;
+                if (siblingEntry == childEntry) continue;
+                if (string.IsNullOrEmpty(siblingEntry.conditionsString)) continue;
+                if (siblingEntry.conditionsString == "(else:)") continue;
+                if (!first) result += " or ";
+                first = false;
+                result += $"({siblingEntry.conditionsString})";
+            }
+            result += ")";
+            return result;
         }
 
         #endregion

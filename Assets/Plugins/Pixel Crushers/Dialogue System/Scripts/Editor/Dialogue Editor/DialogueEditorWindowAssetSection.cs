@@ -300,6 +300,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             startEntry.fields = new List<Field>();
             InitializeFieldsFromTemplate(startEntry.fields, template.dialogueEntryFields);
             startEntry.Title = "START";
+            startEntry.isRoot = true;
             startEntry.currentSequence = "None()";
             startEntry.ActorID = database.playerID;
             startEntry.canvasRect = new Rect(DialogueEntry.CanvasRectWidth, canvasRectHeight, canvasRectWidth, canvasRectHeight);

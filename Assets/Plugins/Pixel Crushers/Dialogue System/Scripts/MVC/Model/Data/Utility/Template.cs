@@ -194,6 +194,7 @@ namespace PixelCrushers.DialogueSystem
             entry.id = id;
             entry.conversationID = conversationID;
             entry.Title = title;
+            if (id == 0 && title == "START") entry.isRoot = true;
             return entry;
         }
 

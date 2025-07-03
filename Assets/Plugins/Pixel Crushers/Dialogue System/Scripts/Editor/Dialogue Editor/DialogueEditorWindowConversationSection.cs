@@ -57,6 +57,9 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             {
                 canvasScrollPosition = currentConversation.canvasScrollPosition;
                 _zoom = currentConversation.canvasZoom;
+                // Set isRoot if not set:
+                var startEntry = currentConversation.GetFirstDialogueEntry();
+                if (startEntry != null && !startEntry.isRoot) startEntry.isRoot = true;
             }
         }
 

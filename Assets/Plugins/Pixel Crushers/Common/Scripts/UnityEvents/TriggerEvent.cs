@@ -32,12 +32,14 @@ namespace PixelCrushers
 
         protected virtual void OnTriggerEnter(Collider other)
         {
+            if (!enabled) return;
             if (!IsInTagMask(other.tag)) return;
             onTriggerEnter.Invoke(other.gameObject);
         }
 
         protected virtual void OnTriggerExit(Collider other)
         {
+            if (!enabled) return;
             if (!IsInTagMask(other.tag)) return;
             onTriggerExit.Invoke(other.gameObject);
         }
@@ -46,12 +48,14 @@ namespace PixelCrushers
 
         protected virtual void OnTriggerEnter2D(Collider2D other)
         {
+            if (!enabled) return;
             if (!IsInTagMask(other.tag)) return;
             onTriggerEnter.Invoke(other.gameObject);
         }
 
         protected virtual void OnTriggerExit2D(Collider2D other)
         {
+            if (!enabled) return;
             if (!IsInTagMask(other.tag)) return;
             onTriggerExit.Invoke(other.gameObject);
         }

@@ -37,15 +37,15 @@ namespace PixelCrushers.DialogueSystem
 
         public List<LayerInfo> layerSpecificElements = new List<LayerInfo>();
 
-        private Selector selector = null;
-        private ProximitySelector proximitySelector = null;
-        private string defaultUseMessage = string.Empty;
-        private Usable usable = null;
-        private bool lastInRange = false;
-        private AbstractUsableUI usableUI = null;
-        private bool started = false;
-        private string originalDefaultUseMessage;
-        private bool previousUseDefaultGUI;
+        protected Selector selector = null;
+        protected ProximitySelector proximitySelector = null;
+        protected string defaultUseMessage = string.Empty;
+        protected Usable usable = null;
+        protected bool lastInRange = false;
+        protected AbstractUsableUI usableUI = null;
+        protected bool started = false;
+        protected string originalDefaultUseMessage;
+        protected bool previousUseDefaultGUI;
 
         protected float CurrentDistance
         {
@@ -55,14 +55,14 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        private StandardUISelectorElements m_elements = null;
+        protected StandardUISelectorElements m_elements = null;
         public StandardUISelectorElements elements
         {
             get { return m_elements; }
             protected set { m_elements = value; }
         }
 
-        private void Start()
+        protected virtual void Start()
         {
             if (StandardUISelectorElements.instances.Count == 0)
             {
@@ -81,17 +81,17 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             if (started) ConnectDelegates();
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             DisconnectDelegates();
         }
 
-        public void ConnectDelegates()
+        public virtual void ConnectDelegates()
         {
             DisconnectDelegates(); // Make sure we're not connecting twice.
             selector = GetComponent<Selector>();
@@ -119,7 +119,7 @@ namespace PixelCrushers.DialogueSystem
             originalDefaultUseMessage = defaultUseMessage;
         }
 
-        public void DisconnectDelegates()
+        public virtual void DisconnectDelegates()
         {
             selector = GetComponent<Selector>();
             if (selector != null)
@@ -142,7 +142,7 @@ namespace PixelCrushers.DialogueSystem
             HideControls();
         }
 
-        private void SetElementsForUsable(Usable usable)
+        protected virtual void SetElementsForUsable(Usable usable)
         {
             // Check tag-specific UI elements:
             for (int i = 0; i < tagSpecificElements.Count; i++)
@@ -187,7 +187,7 @@ namespace PixelCrushers.DialogueSystem
             elements = StandardUISelectorElements.instance;
         }
 
-        private void OnSelectedUsable(Usable usable)
+        protected virtual void OnSelectedUsable(Usable usable)
         {
             this.usable = usable;
             if (usableUI != null) usableUI.Hide(); // Hide previous selection.
@@ -214,7 +214,7 @@ namespace PixelCrushers.DialogueSystem
             UpdateDisplay(!lastInRange);
         }
 
-        private void OnDeselectedUsable(Usable usable)
+        protected virtual void OnDeselectedUsable(Usable usable)
         {
             if (usableUI != null)
             {
@@ -225,12 +225,12 @@ namespace PixelCrushers.DialogueSystem
             this.usable = null;
         }
 
-        private string GetUseMessage()
+        protected virtual string GetUseMessage()
         {
             return DialogueManager.GetLocalizedText(string.IsNullOrEmpty(usable.overrideUseMessage) ? defaultUseMessage : usable.overrideUseMessage);
         }
 
-        private void ShowControls()
+        protected virtual void ShowControls()
         {
             if (usable == null || elements == null) return;
             Tools.SetGameObjectActive(elements.mainGraphic, true);
@@ -247,7 +247,7 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        private void HideControls()
+        protected virtual void HideControls()
         {
             if (CanTriggerAnimations() && elements != null && !string.IsNullOrEmpty(elements.animationTransitions.hideTrigger))
             {
@@ -260,7 +260,7 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        private void DeactivateControls()
+        protected virtual void DeactivateControls()
         {
             if (elements == null) return;
             elements.nameText.SetActive(false);
@@ -270,12 +270,12 @@ namespace PixelCrushers.DialogueSystem
             Tools.SetGameObjectActive(elements.mainGraphic, false);
         }
 
-        private bool IsUsableInRange()
+        protected virtual bool IsUsableInRange()
         {
             return (usable != null) && (CurrentDistance <= usable.maxUseDistance);
         }
 
-        public void Update()
+        public virtual void Update()
         {
             if (usable != null)
             {
@@ -283,27 +283,27 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        protected void OnSelectorEnabled()
+        protected virtual void OnSelectorEnabled()
         {
             ShowControlsOrUsableUI();
         }
 
-        protected void OnSelectorDisabled()
+        protected virtual void OnSelectorDisabled()
         {
             HideControls();
         }
 
-        public void OnConversationStart(Transform actor)
+        public virtual void OnConversationStart(Transform actor)
         {
             HideControls();
         }
 
-        public void OnConversationEnd(Transform actor)
+        public virtual void OnConversationEnd(Transform actor)
         {
             ShowControlsOrUsableUI();
         }
 
-        protected void ShowControlsOrUsableUI()
+        protected virtual void ShowControlsOrUsableUI()
         { 
             if (usableUI != null)
             {
@@ -315,7 +315,7 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        private void UpdateDisplay(bool inRange)
+        protected virtual void UpdateDisplay(bool inRange)
         {
             if ((usable != null) && (inRange != lastInRange))
             {
@@ -332,7 +332,7 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        private void UpdateText(bool inRange)
+        protected virtual void UpdateText(bool inRange)
         {
             if (elements == null) return;
             if (elements.useRangeColors)
@@ -343,14 +343,14 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        private void UpdateReticle(bool inRange)
+        protected virtual void UpdateReticle(bool inRange)
         {
             if (elements == null) return;
             Tools.SetGameObjectActive(elements.reticleInRange, inRange);
             Tools.SetGameObjectActive(elements.reticleOutOfRange, !inRange);
         }
 
-        private bool CanTriggerAnimations()
+        protected virtual bool CanTriggerAnimations()
         {
             return (elements != null) && (elements.animator != null) && (elements.animationTransitions != null);
         }
