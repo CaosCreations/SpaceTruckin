@@ -10,6 +10,7 @@ using System;
 #if USE_NEW_INPUT
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.LowLevel;
 #endif
 
 namespace PixelCrushers
@@ -36,9 +37,6 @@ namespace PixelCrushers
 
         [Tooltip("If any of these axes are greater than Joystick Axis Threshold, current device is joystick. Must be defined in Input Manager.")]
         public string[] joystickAxesToCheck = new string[0];
-        //--- Changed to prevent errors in new projects if user hasn't clicked "Add Input Definitions" yet.
-        //--- Added "Add Default Joystick Axes Check" button instead.
-        //public string[] joystickAxesToCheck = new string[] { "JoystickAxis1", "JoystickAxis2", "JoystickAxis3", "JoystickAxis4", "JoystickAxis6", "JoystickAxis7" };
 
         [Tooltip("Joystick axis values must be above this threshold to switch to joystick mode.")]
         public float joystickAxisThreshold = 0.5f;
@@ -236,6 +234,10 @@ namespace PixelCrushers
         public void OnDestroy()
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
+#if USE_NEW_INPUT
+            InputSystem.onDeviceChange -= OnInputSystemDeviceChange;
+            InputSystem.onEvent -= OnInputSystemEvent;
+#endif
         }
 
         public void Start()
@@ -246,6 +248,7 @@ namespace PixelCrushers
             SceneManager.sceneLoaded += OnSceneLoaded;
 #if USE_NEW_INPUT
             InputSystem.onDeviceChange += OnInputSystemDeviceChange;
+            InputSystem.onEvent += OnInputSystemEvent;
 #endif
         }
 
@@ -312,6 +315,74 @@ namespace PixelCrushers
             }
         }
 
+#if USE_NEW_INPUT
+        private float prevInputSystemCheckTime = 0f;
+        private const float InputSystemCheckFrequencyInSeconds = 0.5f;
+
+        private void OnInputSystemEvent(InputEventPtr eventPtr, UnityEngine.InputSystem.InputDevice device)
+        {
+            if (Time.time < prevInputSystemCheckTime) return;
+            prevInputSystemCheckTime = Time.time + InputSystemCheckFrequencyInSeconds;
+
+            if (!(eventPtr.IsA<StateEvent>() || eventPtr.IsA<DeltaStateEvent>())) return;
+
+            PixelCrushers.InputDevice newDevice = PixelCrushers.InputDevice.Joystick;
+            if (device is UnityEngine.InputSystem.Joystick || device is UnityEngine.InputSystem.Gamepad)
+                newDevice = PixelCrushers.InputDevice.Joystick;
+            else if (device is UnityEngine.InputSystem.Keyboard)
+                newDevice = keyInputSwitchesModeTo == KeyInputSwitchesModeTo.Keyboard ? PixelCrushers.InputDevice.Keyboard : PixelCrushers.InputDevice.Mouse;
+            else if (device is UnityEngine.InputSystem.Mouse)
+                newDevice = PixelCrushers.InputDevice.Mouse;
+            else if (device is UnityEngine.InputSystem.Touchscreen)
+                newDevice = PixelCrushers.InputDevice.Touch;
+            else
+            {
+                Debug.LogWarning("Pixel Crushers Input Device Manager: Detected an unknown device type.");
+                return;
+            }
+
+            if (inputDevice == newDevice) return;
+
+            if (newDevice == PixelCrushers.InputDevice.Joystick)
+            {
+                if (!eventPtr.HasButtonPress())
+                    if (device is UnityEngine.InputSystem.Joystick)
+                    {
+                        var joystick = device as UnityEngine.InputSystem.Joystick;
+                        var x = joystick.stick.x.ReadValue();
+                        var y = joystick.stick.y.ReadValue();
+                        if (!(Mathf.Abs(x) > joystickAxisThreshold || Mathf.Abs(y) > joystickAxisThreshold)) return;
+                    }
+                    else
+                    {
+                        var gamePad = device as UnityEngine.InputSystem.Gamepad;
+                        var xL = gamePad.leftStick.x.ReadValue();
+                        var yL = gamePad.leftStick.y.ReadValue();
+                        if (!(Mathf.Abs(xL) > joystickAxisThreshold || Mathf.Abs(yL) > joystickAxisThreshold))
+                        {
+                            var xR = gamePad.rightStick.x.ReadValue();
+                            var yR = gamePad.rightStick.y.ReadValue();
+                            if (!(Mathf.Abs(xR) > joystickAxisThreshold || Mathf.Abs(yR) > joystickAxisThreshold)) return;
+                        }
+                    }
+            }
+            else if (newDevice == PixelCrushers.InputDevice.Keyboard)
+            {
+                if (!isInputAllowed) return;
+            }
+            else if (newDevice == PixelCrushers.InputDevice.Mouse)
+            {
+                if (!detectMouseControl) return;
+                var mousePosition = DefaultGetMousePosition();
+                var didMouseMove = !m_ignoreMouse && (Mathf.Abs(mousePosition.x - m_lastMousePosition.x) > mouseMoveThreshold || 
+                    Mathf.Abs(mousePosition.y - m_lastMousePosition.y) > mouseMoveThreshold);
+                m_lastMousePosition = mousePosition;
+            }
+
+            SetInputDevice(newDevice);
+        }
+#else
+        // With input manager/Rewired, poll inputs for device changes:
         public void Update()
         {
             switch (inputDevice)
@@ -334,6 +405,7 @@ namespace PixelCrushers
                     break;
             }
         }
+#endif
 
         public bool IsUsingJoystick()
         {

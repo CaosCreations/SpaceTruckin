@@ -51,9 +51,9 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             }
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button(new GUIContent("Find Duplicate Fields", "Report actors, items/quests, locations, conversations, and dialogue entries that have duplicate fields.")))
+            if (GUILayout.Button(new GUIContent("Find Duplicate Fields & Titles", "Report actors, items/quests, locations, conversations, and dialogue entries that have duplicate fields and duplicate conversation titles.")))
             {
-                if (EditorUtility.DisplayDialog("Find Duplicate Fields", "This will identify actors, items/quests, locations, conversations, and dialogue entries that have duplicate fields. Continue?", "OK", "Cancel"))
+                if (EditorUtility.DisplayDialog("Find Duplicate Fields & Titles", "This will identify actors, items/quests, locations, conversations, and dialogue entries that have duplicate fields and duplicate conversation titles. Continue?", "OK", "Cancel"))
                 {
                     CheckDuplicateFields();
                 }
@@ -299,9 +299,16 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     if (string.IsNullOrEmpty(duplicateFieldsReport)) continue;
                     report += $"Location[{location.Name}] {duplicateFieldsReport}\n";
                 }
+                var conversationTitles = new HashSet<string>();
                 foreach (var conversation in database.conversations)
                 {
                     if (EditorUtility.DisplayCancelableProgressBar("Find Duplicate Fields", "Conversations", 0.8f)) return;
+                    var conversationTitle = conversation.Title;
+                    if (conversationTitles.Contains(conversationTitle))
+                    {
+                        report += $"More than one conversation has the title '{conversation.Title}'\n";
+                    }
+                    conversationTitles.Add(conversationTitle);
                     ResetLastFieldsChecked();
                     CheckFields(conversation.fields);
                     if (!string.IsNullOrEmpty(duplicateFieldsReport))

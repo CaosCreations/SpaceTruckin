@@ -158,6 +158,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 }
                 if (confirmRemove)
                 {
+                    languages.Remove(fields[fieldToRemove].title);
                     fields.RemoveAt(fieldToRemove);
                     //--- Never remove from all types of assets in database. Only from current type.
                     //if (isLocalizationTemplate)

@@ -173,7 +173,7 @@ namespace PixelCrushers.DialogueSystem
         }
 
         protected Coroutine m_focusWhenOpenCoroutine = null;
-        protected Coroutine m_showAfterClosingCoroutine = null;
+        protected Coroutine m_showAfterClosingOtherPanelsCoroutine = null;
         protected Coroutine m_setAnimatorCoroutine = null;
         protected WaitForEndOfFrame endOfFrame = new WaitForEndOfFrame();
 
@@ -272,7 +272,7 @@ namespace PixelCrushers.DialogueSystem
             {
                 if (supercedeOnActorChange) Close();
                 StopShowAfterClosingCoroutine();
-                m_showAfterClosingCoroutine = DialogueManager.instance.StartCoroutine(ShowSubtitleAfterClosing(subtitle));
+                m_showAfterClosingOtherPanelsCoroutine = DialogueManager.instance.StartCoroutine(ShowSubtitleAfterClosingOtherPanels(subtitle));
             }
             else
             {
@@ -294,7 +294,7 @@ namespace PixelCrushers.DialogueSystem
             actorOverridingPanel = null;
         }
 
-        protected virtual IEnumerator ShowSubtitleAfterClosing(Subtitle subtitle)
+        protected virtual IEnumerator ShowSubtitleAfterClosingOtherPanels(Subtitle subtitle)
         {
             shouldShowContinueButton = false;
             float safeguardTime = Time.realtimeSinceStartup + WaitForCloseTimeoutDuration;
@@ -304,15 +304,15 @@ namespace PixelCrushers.DialogueSystem
             }
             ShowSubtitleNow(subtitle);
             if (shouldShowContinueButton) ShowContinueButton();
-            m_showAfterClosingCoroutine = null;
+            m_showAfterClosingOtherPanelsCoroutine = null;
         }
 
         protected virtual void StopShowAfterClosingCoroutine()
         {
-            if (m_showAfterClosingCoroutine != null)
+            if (m_showAfterClosingOtherPanelsCoroutine != null)
             {
-                DialogueManager.instance.StopCoroutine(m_showAfterClosingCoroutine);
-                m_showAfterClosingCoroutine = null;
+                DialogueManager.instance.StopCoroutine(m_showAfterClosingOtherPanelsCoroutine);
+                m_showAfterClosingOtherPanelsCoroutine = null;
             }
         }
 
@@ -370,7 +370,10 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public override void Close()
         {
-            StopShowAfterClosingCoroutine();
+            StopAllCoroutines();
+            m_focusWhenOpenCoroutine = null;
+            m_showAfterClosingOtherPanelsCoroutine = null;
+            m_setAnimatorCoroutine = null;
             if (isOpen) base.Close();
             if (clearTextOnClose && !waitForClose) ClearText();
             hasFocus = false;
@@ -706,6 +709,7 @@ namespace PixelCrushers.DialogueSystem
             {
                 yield return null;
             }
+            if (panelState != PanelState.Open) yield break;
             subtitleText.text = text;
             TypewriterUtility.StartTyping(subtitleText, text, fromIndex);
         }

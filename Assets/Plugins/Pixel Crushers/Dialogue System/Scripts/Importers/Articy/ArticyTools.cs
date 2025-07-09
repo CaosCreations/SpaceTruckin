@@ -122,6 +122,10 @@ namespace PixelCrushers.DialogueSystem.Articy
         static readonly Regex TextRegex = new Regex(@"<p id=""s0"">(?<text>.*?)</p>", Options);
         static readonly Regex PartsRegex = new Regex(@"<span id=""(?<id>s[1-9]\d*)"">(?<text>.*?)</span>", Options); // Style id : Pure text  
 
+        // Articy X formats:
+        static readonly Regex BoldItalicUnderlineMarkupRegex = new Regex(@"\[/?[biu]\]", Options);
+        static readonly Regex ColorMarkupRegex = new Regex(@"\[color=#\w+\]|\[/color\]", Options);
+
         static string ReplaceMarkup(string s)
         {
             if (string.IsNullOrEmpty(s)) return s;
@@ -132,6 +136,16 @@ namespace PixelCrushers.DialogueSystem.Articy
         static string ConvertToRichText(string s)
         {
             s = s.Replace(@"&#39;", "'"); // Apostrophe
+
+            s = BoldItalicUnderlineMarkupRegex.Replace(s, match =>
+            {
+                return "<" + match.Value.Substring(1, match.Value.Length - 2) + ">";
+            });
+
+            s = ColorMarkupRegex.Replace(s, match =>
+            {
+                return "<" + match.Value.Substring(1, match.Value.Length - 2) + ">";
+            });
 
             // Get styles
             if (!StylesRegex.IsMatch(s)) return s; // No styles, pure text
@@ -179,8 +193,6 @@ namespace PixelCrushers.DialogueSystem.Articy
                     paragraphs.Add(tmp);
             }
             string editedLine = string.Join("\n", paragraphs.ToArray());
-
-            editedLine = editedLine.Replace("[i]", "<i>").Replace("[/i]", "</i>");
 
             return editedLine;
         }

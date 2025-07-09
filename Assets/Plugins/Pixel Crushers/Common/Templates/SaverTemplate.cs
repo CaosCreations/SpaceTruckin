@@ -61,7 +61,7 @@ namespace PixelCrushers
         //    // normal time, which may be some number of frames after the scene has started,
         //    // it can implement this method. For efficiency, the Save System will not look up 
         //    // the Saver's data; your method must look it up manually by calling 
-        //    // SaveSystem.savedGameData.GetData(key).
+        //    // SaveSystem.currentSavedGameData.GetData(key).
         //}
 
         //public override void OnBeforeSceneChange()

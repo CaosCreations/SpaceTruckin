@@ -29,6 +29,12 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("If Skip All is enabled, don't skip last conversation line.")]
         public bool dontSkipAllOnLastConversationLine;
 
+        [Tooltip("Use this continue button mode when AutoPlay is on.")]
+        public DisplaySettings.SubtitleSettings.ContinueButtonMode autoPlayOnContinueButton = DisplaySettings.SubtitleSettings.ContinueButtonMode.Never;
+
+        [Tooltip("Use this continue button mode when AutoPlay is off.")]
+        public DisplaySettings.SubtitleSettings.ContinueButtonMode autoPlayOffContinueButton = DisplaySettings.SubtitleSettings.ContinueButtonMode.Always;
+
         protected AbstractDialogueUI dialogueUI;
 
         protected virtual void Awake()
@@ -45,9 +51,19 @@ namespace PixelCrushers.DialogueSystem
         public virtual void ToggleAutoPlay()
         {
             var mode = DialogueManager.displaySettings.subtitleSettings.continueButton;
-            var newMode = (mode == DisplaySettings.SubtitleSettings.ContinueButtonMode.Never) ? DisplaySettings.SubtitleSettings.ContinueButtonMode.Always : DisplaySettings.SubtitleSettings.ContinueButtonMode.Never;
+            var newMode = (mode == autoPlayOnContinueButton) ? autoPlayOffContinueButton : autoPlayOnContinueButton;
             DialogueManager.displaySettings.subtitleSettings.continueButton = newMode;
-            if (newMode == DisplaySettings.SubtitleSettings.ContinueButtonMode.Never) dialogueUI.OnContinueConversation();
+            if (newMode == autoPlayOnContinueButton)
+            {
+                // Just started autoplay. Advance past current line:
+                dialogueUI.OnContinueConversation();
+            }
+            else
+            {
+                // Just stopped autoplay. Require continue button click:
+                DialogueManager.SetContinueMode(true);
+                DialogueManager.displaySettings.subtitleSettings.continueButton = autoPlayOffContinueButton;
+            }
         }
 
         /// <summary>
