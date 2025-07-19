@@ -1748,6 +1748,10 @@ namespace PixelCrushers.DialogueSystem.Articy
         {
             if (string.IsNullOrEmpty(expression)) return expression;
 
+            // Special "hub" codes defined in Articy:
+            if (expression == "unseen") return "Dialog[thisID].SimStatus ~= \"WasDisplayed\"";
+            if (expression == "fallback()") return string.Empty;
+
             if (isCondition && expression.Trim().StartsWith("//") && !expression.Contains("\n")) return string.Empty;
 
             // If already Lua, return it:

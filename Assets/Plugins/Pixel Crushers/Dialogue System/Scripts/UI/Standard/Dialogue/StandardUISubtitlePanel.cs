@@ -497,7 +497,7 @@ namespace PixelCrushers.DialogueSystem
             }
             else
             {
-                StartCoroutine(ShowContinueButtonAtEndOfFrame());
+                m_ShowContinueButtonCoroutine = DialogueManager.instance.StartCoroutine(ShowContinueButtonAtEndOfFrame());
             }
         }
 
@@ -506,8 +506,10 @@ namespace PixelCrushers.DialogueSystem
             if (m_ShowContinueButtonCoroutine != null)
             {
                 DialogueManager.instance.StopCoroutine(m_ShowContinueButtonCoroutine);
+                m_ShowContinueButtonCoroutine = null;
             }
             Tools.SetGameObjectActive(continueButton, false);
+            shouldShowContinueButton = false;
         }
 
         protected virtual IEnumerator ShowContinueButtonAfterBlockDuration()
