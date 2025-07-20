@@ -318,6 +318,7 @@ namespace PixelCrushers
 #if USE_NEW_INPUT
         private float prevInputSystemCheckTime = 0f;
         private const float InputSystemCheckFrequencyInSeconds = 0.5f;
+        private List<UnityEngine.InputSystem.InputDevice> reportedUnknownDevices = new List<UnityEngine.InputSystem.InputDevice>();
 
         private void OnInputSystemEvent(InputEventPtr eventPtr, UnityEngine.InputSystem.InputDevice device)
         {
@@ -337,7 +338,11 @@ namespace PixelCrushers
                 newDevice = PixelCrushers.InputDevice.Touch;
             else
             {
-                Debug.LogWarning("Pixel Crushers Input Device Manager: Detected an unknown device type.");
+                if (!reportedUnknownDevices.Contains(device))
+                {
+                    reportedUnknownDevices.Add(device);
+                    Debug.LogWarning($"Pixel Crushers Input Device Manager: Detected an unknown device type: {device.displayName}.");
+                }
                 return;
             }
 
@@ -594,6 +599,8 @@ namespace PixelCrushers
             if (keyCode == KeyCode.Return) return (Keyboard.current["enter"] as KeyControl).wasPressedThisFrame;
             if (!m_keyCodeStrings.TryGetValue(keyCode, out var s))
             {
+                // Store the Input System's lowercase string equivalent for the keycode.
+                // This is done only once per keycode and stored in a dictionary.
                 s = keyCode.ToString().ToLower();
                 m_keyCodeStrings.Add(keyCode, s);
 

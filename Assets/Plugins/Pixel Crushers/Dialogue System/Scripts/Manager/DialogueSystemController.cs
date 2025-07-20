@@ -540,7 +540,9 @@ namespace PixelCrushers.DialogueSystem
                 displaySettings.localizationSettings.language = Localization.GetLanguage(Application.systemLanguage);
             }
             var m_uiLocalizationManager = GetComponent<UILocalizationManager>() ?? PixelCrushers.GameObjectUtility.FindFirstObjectByType<UILocalizationManager>();
-            var needsLocalizationManager = !string.IsNullOrEmpty(displaySettings.localizationSettings.language) || displaySettings.localizationSettings.textTable != null;
+            var needsLocalizationManager = !string.IsNullOrEmpty(displaySettings.localizationSettings.language) ||
+                displaySettings.localizationSettings.textTable != null ||
+                UILocalizationManager.hasRecordedLanguageChange;
             if (needsLocalizationManager && m_uiLocalizationManager == null)
             {
                 m_uiLocalizationManager = gameObject.AddComponent<UILocalizationManager>();

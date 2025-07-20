@@ -125,6 +125,7 @@ namespace PixelCrushers.DialogueSystem.Articy
         // Articy X formats:
         static readonly Regex BoldItalicUnderlineMarkupRegex = new Regex(@"\[/?[biu]\]", Options);
         static readonly Regex ColorMarkupRegex = new Regex(@"\[color=#\w+\]|\[/color\]", Options);
+        static readonly Regex SizeMarkupRegex = new Regex(@"\[size=\d+\]|\[/size\]", Options);
 
         static string ReplaceMarkup(string s)
         {
@@ -143,6 +144,11 @@ namespace PixelCrushers.DialogueSystem.Articy
             });
 
             s = ColorMarkupRegex.Replace(s, match =>
+            {
+                return "<" + match.Value.Substring(1, match.Value.Length - 2) + ">";
+            });
+
+            s = SizeMarkupRegex.Replace(s, match =>
             {
                 return "<" + match.Value.Substring(1, match.Value.Length - 2) + ">";
             });

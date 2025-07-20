@@ -439,7 +439,8 @@ namespace PixelCrushers.DialogueSystem
         {
             if (speaker != null)
             {
-                speaker.BroadcastMessage(message, speaker, SendMessageOptions.DontRequireReceiver);
+                var target = (listener != null) ? listener : speaker;
+                speaker.BroadcastMessage(message, target, SendMessageOptions.DontRequireReceiver);
                 if ((listener != null) && (listener != speaker))
                 {
                     listener.BroadcastMessage(message, speaker, SendMessageOptions.DontRequireReceiver);
