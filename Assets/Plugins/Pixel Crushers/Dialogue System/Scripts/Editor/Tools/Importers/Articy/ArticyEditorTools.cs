@@ -59,7 +59,15 @@ namespace PixelCrushers.DialogueSystem.Articy
         {
             if (actor == null || actor.portrait != null) return;
             string textureName = actor.textureName;
-            actor.portrait = LoadTexture(portraitFolder, textureName, actor.Name);
+            var sprite = LoadSprite(portraitFolder, textureName, actor.Name);
+            if (sprite != null)
+            {
+                actor.spritePortrait = sprite;
+            }
+            else
+            {
+                actor.portrait = LoadTexture(portraitFolder, textureName, actor.Name);
+            }
 
             // Alternate portraits:
             var s = actor.LookupValue("SUBTABLE__AlternatePortraits");
@@ -72,10 +80,18 @@ namespace PixelCrushers.DialogueSystem.Articy
                     {
                         var imageAsset = articyData.assets[alternatePortraitID];
                         textureName = imageAsset.displayName.DefaultText + Path.GetExtension(imageAsset.assetFilename);
-                        var portrait = LoadTexture(portraitFolder, textureName, actor.Name);
-                        if (portrait != null)
-                        { 
-                            actor.alternatePortraits.Add(portrait);
+                        sprite = LoadSprite(portraitFolder, textureName, actor.Name);
+                        if (sprite != null)
+                        {
+                            actor.spritePortraits.Add(sprite);
+                        }
+                        else
+                        {
+                            var texture = LoadTexture(portraitFolder, textureName, actor.Name);
+                            if (texture != null)
+                            {
+                                actor.alternatePortraits.Add(texture);
+                            }
                         }
                     }
                 }
@@ -89,7 +105,7 @@ namespace PixelCrushers.DialogueSystem.Articy
             string assetPath1 = string.Format("{0}/{1}", portraitFolder, filename);
             int pathStart = textureName.IndexOf("/Assets/", System.StringComparison.OrdinalIgnoreCase);
             string assetPath2 = (0 <= pathStart && pathStart < textureName.Length) ? textureName.Substring(pathStart) : string.Empty;
-            Texture2D texture = AssetDatabase.LoadAssetAtPath(assetPath1, typeof(Texture2D)) as Texture2D;
+            Texture2D texture = AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath1);
             if (texture == null && !string.IsNullOrEmpty(assetPath2))
             {
                 texture = AssetDatabase.LoadAssetAtPath(assetPath2, typeof(Texture2D)) as Texture2D;
@@ -99,6 +115,21 @@ namespace PixelCrushers.DialogueSystem.Articy
                 Debug.LogWarning(string.Format("{0}: Can't find portrait texture {1} for {2} at '{3}' or '{4}'.", DialogueDebug.Prefix, filename, actorName, assetPath1, assetPath2));
             }
             return texture;
+        }
+
+        private static Sprite  LoadSprite(string portraitFolder, string textureName, string actorName)
+        {
+            if (string.IsNullOrEmpty(textureName)) return null;
+            string filename = Path.GetFileName(textureName).Replace('\\', '/');
+            string assetPath1 = string.Format("{0}/{1}", portraitFolder, filename);
+            int pathStart = textureName.IndexOf("/Assets/", System.StringComparison.OrdinalIgnoreCase);
+            string assetPath2 = (0 <= pathStart && pathStart < textureName.Length) ? textureName.Substring(pathStart) : string.Empty;
+            Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPath1);
+            if (sprite == null && !string.IsNullOrEmpty(assetPath2))
+            {
+                sprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPath2);
+            }
+            return sprite;
         }
 
     }

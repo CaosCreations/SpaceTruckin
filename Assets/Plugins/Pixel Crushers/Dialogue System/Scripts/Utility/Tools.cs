@@ -322,7 +322,8 @@ namespace PixelCrushers.DialogueSystem
             byte r = (colorCode.Length > 2) ? Tools.HexToByte(colorCode.Substring(1, 2)) : (byte)0;
             byte g = (colorCode.Length > 4) ? Tools.HexToByte(colorCode.Substring(3, 2)) : (byte)0;
             byte b = (colorCode.Length > 6) ? Tools.HexToByte(colorCode.Substring(5, 2)) : (byte)0;
-            return new Color32(r, g, b, 255);
+            byte a = (colorCode.Length > 8) ? Tools.HexToByte(colorCode.Substring(7, 2)) : (byte)255;
+            return new Color32(r, g, b, a);
         }
 
         /// <summary>

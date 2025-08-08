@@ -256,7 +256,6 @@ namespace PixelCrushers.DialogueSystem
                     DialogueLua.SetParticipants(m_actorInfo.Name, m_conversantInfo.Name, m_actorInfo.nameInDatabase, m_conversantInfo.nameInDatabase);
                 }
                 DialogueManager.instance.SendMessage(DialogueSystemMessages.OnPrepareConversationLine, entry, SendMessageOptions.DontRequireReceiver);
-                DialogueLua.MarkDialogueEntryDisplayed(entry);
                 Lua.Run("thisID = " + entry.id);
                 SetDialogTable(entry.conversationID);
                 CharacterInfo actorInfo = GetCharacterInfo(entry.ActorID);
@@ -269,6 +268,7 @@ namespace PixelCrushers.DialogueSystem
                 CheckSequenceField(entry);
                 string entrytag = m_database.GetEntrytag(entry.conversationID, entry.id, m_entrytagFormat);
                 Subtitle subtitle = new Subtitle(actorInfo, listenerInfo, formattedText, entry.currentSequence, entry.currentResponseMenuSequence, entry, entrytag);
+                DialogueLua.MarkDialogueEntryDisplayed(entry);
                 List<Response> npcResponses = new List<Response>();
                 List<Response> pcResponses = new List<Response>();
                 if (includeLinks)
