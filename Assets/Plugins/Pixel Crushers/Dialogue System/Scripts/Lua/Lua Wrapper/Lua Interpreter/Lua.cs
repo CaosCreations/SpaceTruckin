@@ -112,6 +112,7 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public static void ResetLuaEnvironment()
         {
+            Language.Lua.LuaInterpreter.Interpreter(string.Empty, new Language.Lua.LuaTable()); // Clear static variables
             m_environment = Language.Lua.LuaInterpreter.CreateGlobalEnviroment();
             m_noResult = new Result(null);
             Assignment.InitializeVariableMonitoring();

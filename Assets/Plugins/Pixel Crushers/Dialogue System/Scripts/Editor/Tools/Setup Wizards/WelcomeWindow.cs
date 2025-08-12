@@ -16,6 +16,8 @@ namespace PixelCrushers.DialogueSystem
 
         private const string ShowOnStartEditorPrefsKey = "PixelCrushers.DialogueSystem.WelcomeWindow.ShowOnStart";
 
+        private Vector2 scrollPosition = Vector2.zero;
+
         private GUIStyle m_quickButtonGuiStyle = null;
         private GUIStyle quickButtonGuiStyle
         {
@@ -41,9 +43,9 @@ namespace PixelCrushers.DialogueSystem
         {
             var window = GetWindow<WelcomeWindow>(false, "Welcome");
 #if EVALUATION_VERSION || ACADEMIC
-            window.minSize = new Vector2(370, 710);
+            window.minSize = new Vector2(370, 290);
 #else
-            window.minSize = new Vector2(370, 680);
+            window.minSize = new Vector2(370, 290);
 #endif
             window.showOnStart = true; // Can't check EditorPrefs when constructing window: showOnStartPrefs;
             return window;
@@ -81,8 +83,17 @@ namespace PixelCrushers.DialogueSystem
         private void OnGUI()
         {
             DrawBanner();
-            DrawButtons();
-            DrawDefines();
+            GUILayout.Space(40);
+            try
+            {
+                scrollPosition = GUILayout.BeginScrollView(scrollPosition);
+                DrawButtons();
+                DrawDefines();
+            }
+            finally
+            {
+                GUILayout.EndScrollView();
+            }
             DrawFooter();
         }
 
@@ -110,7 +121,7 @@ namespace PixelCrushers.DialogueSystem
 
         private void DrawButtons()
         {
-            GUILayout.BeginArea(new Rect(5, 40, position.width - 10, position.height - 40));
+            //GUILayout.BeginArea(new Rect(5, 40, position.width - 10, position.height - 40));
             try
             {
                 EditorWindowTools.DrawHorizontalLine();
@@ -138,7 +149,7 @@ namespace PixelCrushers.DialogueSystem
                     }
                     if (GUILayout.Button(new GUIContent("Forum", "Go to the Pixel Crushers forum"), quickButtonGuiStyle, GUILayout.Width(ButtonWidth), GUILayout.Height(3 * EditorGUIUtility.singleLineHeight)))
                     {
-                        Application.OpenURL("http://www.pixelcrushers.com/phpbb");
+                        Application.OpenURL("http://www.pixelcrushers.com/forum");
                     }
                 }
                 finally
@@ -179,13 +190,13 @@ namespace PixelCrushers.DialogueSystem
             }
             finally
             {
-                GUILayout.EndArea();
+                //GUILayout.EndArea();
             }
         }
 
         private void DrawDefines()
         {
-            GUILayout.BeginArea(new Rect(5, 256, position.width - 10, position.height - 256));
+            //GUILayout.BeginArea(new Rect(5, 256, position.width - 10, position.height - 256));
             EditorGUILayout.LabelField("Current Build Target: " + ObjectNames.NicifyVariableName(EditorUserBuildSettings.activeBuildTarget.ToString()), EditorStyles.boldLabel);
 
             var define_USE_PHYSICS2D = false;
@@ -504,34 +515,43 @@ namespace PixelCrushers.DialogueSystem
             }
 
             EditorWindowTools.DrawHorizontalLine();
-            GUILayout.EndArea();
+            //GUILayout.EndArea();
 
             if (changed) EditorTools.ReimportScripts();
         }
 
         private void DrawFooter()
         {
-            if (GUI.Button(new Rect(position.width - 200, position.height - 8 - 2 * EditorGUIUtility.singleLineHeight, 190, EditorGUIUtility.singleLineHeight), new GUIContent("Learn About OpenAI Addon", "Visit the Asset Store page for the Addon for OpenAI")))
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button(new GUIContent("Learn About OpenAI Addon", "Visit the Asset Store page for the Addon for OpenAI"),
+                GUILayout.Width(190)))
             {
                 Application.OpenURL("https://assetstore.unity.com/packages/tools/ai/dialogue-system-addon-for-openai-249287");
             }
+            GUILayout.EndHorizontal();
 
-            var newShowOnStart = EditorGUI.ToggleLeft(new Rect(5, position.height - 5 - EditorGUIUtility.singleLineHeight, position.width - (70 + 150), EditorGUIUtility.singleLineHeight), "Show at start", showOnStart);
+            GUILayout.BeginHorizontal();
+            var newShowOnStart = EditorGUILayout.ToggleLeft("Show at start", showOnStart, GUILayout.Width(100));
             if (newShowOnStart != showOnStart)
             {
                 showOnStart = newShowOnStart;
                 showOnStartPrefs = newShowOnStart;
             }
-            if (GUI.Button(new Rect(position.width - 80, position.height - 5 - EditorGUIUtility.singleLineHeight, 70, EditorGUIUtility.singleLineHeight), new GUIContent("Support", "Contact the developer for support")))
-            {
-                Application.OpenURL("http://www.pixelcrushers.com/support-form/");
-            }
-#if EVALUATION_VERSION || ACADEMIC
-            if (GUI.Button(new Rect(position.width - 154, position.height - 5 - EditorGUIUtility.singleLineHeight, 70, EditorGUIUtility.singleLineHeight), new GUIContent("Buy", "Buy a license")))
+            GUILayout.FlexibleSpace();
+
+            //#if EVALUATION_VERSION || ACADEMIC
+            if (GUILayout.Button(new GUIContent("Buy", "Buy a license"), GUILayout.Width(70)))
             {
                 Application.OpenURL("https://assetstore.unity.com/packages/tools/ai/dialogue-system-for-unity-11672");
             }
-#endif
+            //#endif
+
+            if (GUILayout.Button(new GUIContent("Support", "Contact the developer for support"), GUILayout.Width(70)))
+            {
+                Application.OpenURL("http://www.pixelcrushers.com/support-form/");
+            }
+            EditorGUILayout.EndHorizontal();
         }
 
     }

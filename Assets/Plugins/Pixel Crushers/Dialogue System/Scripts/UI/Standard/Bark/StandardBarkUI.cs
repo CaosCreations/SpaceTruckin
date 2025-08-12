@@ -254,12 +254,16 @@ namespace PixelCrushers.DialogueSystem
             if (value == true && canvas != null) canvas.enabled = true;
         }
 
-        public virtual void OnBarkEnd(Transform actor)
+        public virtual void OnBarkEndSpeaker(Transform barker)
         {
-            if (waitUntilSequenceEnds && !waitForContinueButton && IsActorMe(actor))
+            if (waitUntilSequenceEnds && !waitForContinueButton && IsActorMe(barker))
             {
                 numSequencesActive--;
-                if (numSequencesActive <= 0) Hide();
+                if (numSequencesActive <= 0)
+                {
+                    numSequencesActive = 0;
+                    Hide();
+                }
             }
         }
 

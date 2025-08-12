@@ -234,15 +234,16 @@ namespace PixelCrushers.DialogueSystem
         /// Shows the panel at the start of the conversation; called if it's configured to be visible at the start.
         /// </summary>
         /// <param name="portraitSprite">The image of the first actor who will use this panel.</param>
-        /// <param name="portraitName">The name of the first actor who will use this panel.</param>
+        /// <param name="portraitActorName">The (non-display) Name of the first actor who will use this panel.</param>
+        /// <param name="displayName">The actor's display name.</param>
         /// <param name="dialogueActor">The actor's DialogueActor component, or null if none.</param>
-        public virtual void OpenOnStartConversation(Sprite portraitSprite, string portraitName, DialogueActor dialogueActor)
+        public virtual void OpenOnStartConversation(Sprite portraitSprite, string portraitActorName, string displayName, DialogueActor dialogueActor)
         {
             Open();
             SetUIElementsActive(true);
             SetPortraitImage(portraitSprite);
-            portraitActorName = (dialogueActor != null) ? dialogueActor.GetActorName() : portraitName;
-            if (this.portraitName != null) this.portraitName.text = portraitActorName;
+            this.portraitActorName = (dialogueActor != null) ? dialogueActor.actor : portraitActorName;
+            if (this.portraitName != null) this.portraitName.text = displayName;
             if (subtitleText.text != null) subtitleText.text = string.Empty;
             CheckDialogueActorAnimator(dialogueActor);
         }
@@ -250,7 +251,7 @@ namespace PixelCrushers.DialogueSystem
         [System.Obsolete("Use OpenOnStartConversation(Sprite,string,DialogueActor) instead.")]
         public virtual void OpenOnStartConversation(Texture2D portraitTexture, string portraitName, DialogueActor dialogueActor)
         {
-            OpenOnStartConversation(UITools.CreateSprite(portraitTexture), portraitName, dialogueActor);
+            OpenOnStartConversation(UITools.CreateSprite(portraitTexture), portraitName, portraitName, dialogueActor);
         }
 
         public virtual void OnConversationStart(Transform actor)

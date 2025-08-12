@@ -158,6 +158,15 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public event TransformDelegate conversationEnded = delegate { };
 
+        /// <summary>
+        /// Raised when a conversation line is being prepared but a Subtitle object hasn't been created yet,
+        /// nor has SimStatus been updated.
+        /// </summary>
+        public event Action<DialogueEntry> preparingConversationLine = delegate { };
+
+        /// <summary>
+        /// Raised just prior to showing a subtitle.
+        /// </summary>
         public event SubtitleDelegate conversationLinePrepared = delegate { };
 
         /// <summary>
@@ -1624,6 +1633,11 @@ namespace PixelCrushers.DialogueSystem
             {
                 ShowAlert(alertsQueuedForConversationEnd.Dequeue());
             }
+        }
+
+        private void OnPrepareConversationLine(DialogueEntry entry)
+        {
+            preparingConversationLine?.Invoke(entry);
         }
 
         private void OnConversationLine(Subtitle subtitle)

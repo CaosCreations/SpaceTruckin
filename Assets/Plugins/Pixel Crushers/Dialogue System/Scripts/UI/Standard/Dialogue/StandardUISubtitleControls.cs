@@ -378,9 +378,10 @@ namespace PixelCrushers.DialogueSystem
                 if (m_lastPanelUsedByActor[actor.id] == panel) return; // Already using panel.
                 m_lastPanelUsedByActor[actor.id].Close();
             }
-            var displayName = DialogueLua.GetLocalizedActorField(actor.Name, "Display Name").asString;
+            var actorName = actor.Name;
+            var displayName = DialogueLua.GetLocalizedActorField(actorName, DialogueSystemFields.DisplayName).asString;
             if (string.IsNullOrEmpty(displayName)) displayName = actor.localizedName;
-            panel.OpenOnStartConversation(actor.GetPortraitSprite(), displayName, null);
+            panel.OpenOnStartConversation(actor.GetPortraitSprite(), actorName, displayName, null);
 
         }
 
@@ -834,8 +835,9 @@ namespace PixelCrushers.DialogueSystem
             if (panel.visibility == UIVisibility.AlwaysFromStart)
             {
                 var actorPortrait = (dialogueActor != null && dialogueActor.GetPortraitSprite() != null) ? dialogueActor.GetPortraitSprite() : actor.GetPortraitSprite();
-                var actorName = CharacterInfo.GetLocalizedDisplayNameInDatabase(actor.Name);
-                panel.OpenOnStartConversation(actorPortrait, actorName, dialogueActor);
+                var actorName = actor.Name;
+                var displayName = CharacterInfo.GetLocalizedDisplayNameInDatabase(actorName);
+                panel.OpenOnStartConversation(actorPortrait, actorName, displayName, dialogueActor);
                 SetLastActorToUsePanel(panel, actorID);
             }
         }
@@ -895,8 +897,9 @@ namespace PixelCrushers.DialogueSystem
                 if (actorPanel == panel)
                 {
                     var actorPortrait = (dialogueActor != null && dialogueActor.GetPortraitSprite() != null) ? dialogueActor.GetPortraitSprite() : actor.GetPortraitSprite();
-                    var actorName = CharacterInfo.GetLocalizedDisplayNameInDatabase(actor.Name);
-                    panel.OpenOnStartConversation(actorPortrait, actorName, dialogueActor);
+                    var actorName = actor.Name;
+                    var displayName = CharacterInfo.GetLocalizedDisplayNameInDatabase(actorName);
+                    panel.OpenOnStartConversation(actorPortrait, actorName, displayName, dialogueActor);
                     return;
                 }
             }

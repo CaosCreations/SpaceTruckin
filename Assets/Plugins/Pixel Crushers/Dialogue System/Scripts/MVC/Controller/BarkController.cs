@@ -216,7 +216,7 @@ namespace PixelCrushers.DialogueSystem
                         }
                         SetSpeakerCurrentBarkPriority(speaker, priority);
                         barked = true;
-                        InformParticipants(DialogueSystemMessages.OnBarkStart, speaker, listener);
+                        InformParticipants(DialogueSystemMessages.OnBarkStart, DialogueSystemMessages.OnBarkStartSpeaker, speaker, listener);
                         ConversationState barkState = conversationModel.GetState(barkEntry, false);
                         if (barkState == null)
                         {
@@ -259,7 +259,7 @@ namespace PixelCrushers.DialogueSystem
                 {
                     if (barked)
                     {
-                        InformParticipants(DialogueSystemMessages.OnBarkEnd, speaker, listener);
+                        InformParticipants(DialogueSystemMessages.OnBarkEnd, DialogueSystemMessages.OnBarkEndSpeaker, speaker, listener);
                         SetSpeakerCurrentBarkPriority(speaker, 0);
                     }
                 }
@@ -296,7 +296,9 @@ namespace PixelCrushers.DialogueSystem
                 {
                     var text = barkText;
                     int numCharacters = string.IsNullOrEmpty(text) ? 0 : Tools.StripRPGMakerCodes(Tools.StripTextMeshProTags(text)).Length;
-                    var endDuration = Mathf.Max(DialogueManager.displaySettings.GetMinSubtitleSeconds(), numCharacters / Mathf.Max(1, DialogueManager.displaySettings.GetSubtitleCharsPerSecond()));
+                    var endDuration = (DialogueManager.displaySettings.barkSettings.barkCharsPerSecond > 0)
+                        ? Mathf.Max(DialogueManager.displaySettings.barkSettings.minBarkSeconds, numCharacters / Mathf.Max(1, DialogueManager.displaySettings.barkSettings.barkCharsPerSecond))
+                        : Mathf.Max(DialogueManager.displaySettings.GetMinSubtitleSeconds(), numCharacters / Mathf.Max(1, DialogueManager.displaySettings.GetSubtitleCharsPerSecond()));
                     sequence = sequence.Replace(SequencerKeywords.End, endDuration.ToString(System.Globalization.CultureInfo.InvariantCulture));
                 }
                 return DialogueManager.PlaySequence(sequence, speaker, listener, false, false, entrytag);
@@ -335,7 +337,7 @@ namespace PixelCrushers.DialogueSystem
                 yield break;
             }
             SetSpeakerCurrentBarkPriority(speaker, priority);
-            InformParticipants(DialogueSystemMessages.OnBarkStart, speaker, listener);
+            InformParticipants(DialogueSystemMessages.OnBarkStart, DialogueSystemMessages.OnBarkStartSpeaker, speaker, listener);
             InformParticipantsLine(DialogueSystemMessages.OnBarkLine, speaker, subtitle);
             if ((barkUI == null) && DialogueDebug.logWarnings) Debug.LogWarning(string.Format("{0}: Bark (speaker={1}, listener={2}): '{3}' speaker has no bark UI", new System.Object[] { DialogueDebug.Prefix, speaker, listener, subtitle.formattedText.text }), speaker);
             if (((barkUI == null) || !(barkUI as MonoBehaviour).enabled) && DialogueDebug.logWarnings) Debug.LogWarning(string.Format("{0}: Bark (speaker={1}, listener={2}): '{3}' bark UI is null or disabled", new System.Object[] { DialogueDebug.Prefix, speaker, listener, subtitle.formattedText.text }), speaker);
@@ -357,7 +359,7 @@ namespace PixelCrushers.DialogueSystem
                 yield return null;
             }
             if (sequencer != null) GameObject.Destroy(sequencer);
-            InformParticipants(DialogueSystemMessages.OnBarkEnd, speaker, listener);
+            InformParticipants(DialogueSystemMessages.OnBarkEnd, DialogueSystemMessages.OnBarkEndSpeaker, speaker, listener);
             SetSpeakerCurrentBarkPriority(speaker, 0);
         }
 
@@ -385,7 +387,7 @@ namespace PixelCrushers.DialogueSystem
                 yield break;
             }
             SetSpeakerCurrentBarkPriority(speaker, priority);
-            InformParticipants(DialogueSystemMessages.OnBarkStart, speaker, listener);
+            InformParticipants(DialogueSystemMessages.OnBarkStart, DialogueSystemMessages.OnBarkStartSpeaker, speaker, listener);
             InformParticipantsLine(DialogueSystemMessages.OnBarkLine, speaker, subtitle);
             IBarkUI barkUI = DialogueActor.GetBarkUI(speaker); // speaker.GetComponentInChildren(typeof(IBarkUI)) as IBarkUI;
             if ((barkUI == null) && DialogueDebug.logWarnings) Debug.LogWarning(string.Format("{0}: Bark (speaker={1}, listener={2}): '{3}' speaker has no bark UI", new System.Object[] { DialogueDebug.Prefix, speaker, listener, subtitle.formattedText.text }), speaker);
@@ -412,7 +414,7 @@ namespace PixelCrushers.DialogueSystem
                 yield return null;
             }
             if (sequencer != null) GameObject.Destroy(sequencer);
-            InformParticipants(DialogueSystemMessages.OnBarkEnd, speaker, listener);
+            InformParticipants(DialogueSystemMessages.OnBarkEnd, DialogueSystemMessages.OnBarkEndSpeaker, speaker, listener);
             SetSpeakerCurrentBarkPriority(speaker, 0);
         }
 
@@ -427,7 +429,10 @@ namespace PixelCrushers.DialogueSystem
         /// OnBarkEnd messages to the speaker and listener. Also sends to the Dialogue Manager.
         /// </summary>
         /// <param name='message'>
-        /// Message (i.e., OnBarkStart or OnBarkEnd).
+        /// Message (i.e., OnBarkStart or OnBarkEnd) with other participant sent as parameter.
+        /// </param>
+        /// <param name="messageSpeaker">
+        /// Message with speaker sent as parameter, only to speaker & Dialogue Manager.
         /// </param>
         /// <param name='speaker'>
         /// Speaker.
@@ -435,12 +440,13 @@ namespace PixelCrushers.DialogueSystem
         /// <param name='listener'>
         /// Listener.
         /// </param>
-        private static void InformParticipants(string message, Transform speaker, Transform listener)
+        private static void InformParticipants(string message, string messageSpeaker, Transform speaker, Transform listener)
         {
             if (speaker != null)
             {
                 var target = (listener != null) ? listener : speaker;
                 speaker.BroadcastMessage(message, target, SendMessageOptions.DontRequireReceiver);
+                speaker.BroadcastMessage(messageSpeaker, speaker, SendMessageOptions.DontRequireReceiver);
                 if ((listener != null) && (listener != speaker))
                 {
                     listener.BroadcastMessage(message, speaker, SendMessageOptions.DontRequireReceiver);
@@ -451,6 +457,7 @@ namespace PixelCrushers.DialogueSystem
             {
                 var actor = (speaker != null) ? speaker : ((listener != null) ? listener : dialogueManagerTransform);
                 DialogueManager.instance.BroadcastMessage(message, actor, SendMessageOptions.DontRequireReceiver);
+                DialogueManager.instance.BroadcastMessage(messageSpeaker, speaker, SendMessageOptions.DontRequireReceiver);
             }
         }
 

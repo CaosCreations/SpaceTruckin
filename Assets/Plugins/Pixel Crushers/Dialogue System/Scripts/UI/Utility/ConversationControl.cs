@@ -20,6 +20,9 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("Skip all subtitles until response menu or end of conversation is reached. Set by SkipAll().")]
         public bool skipAll;
 
+        [Tooltip("Stop SkipAll() when unread subtitle is reached. You MUST tick Dialogue Manager's Include SimStatus checkbox to use this.")]
+        public bool stopSkipAllOnUnreadSubtitle = false;
+
         [Tooltip("Stop SkipAll() when response menu is reached.")]
         public bool stopSkipAllOnResponseMenu = true;
 
@@ -36,6 +39,8 @@ namespace PixelCrushers.DialogueSystem
         public DisplaySettings.SubtitleSettings.ContinueButtonMode autoPlayOffContinueButton = DisplaySettings.SubtitleSettings.ContinueButtonMode.Always;
 
         protected AbstractDialogueUI dialogueUI;
+        protected bool mustStopAtCurrentUnreadEntry = false;
+        protected bool hasStarted = false;
 
         protected virtual void Awake()
         {
@@ -43,6 +48,33 @@ namespace PixelCrushers.DialogueSystem
                 GetComponent<AbstractDialogueUI>() ??
                 (DialogueManager.standardDialogueUI as AbstractDialogueUI) ??
                 PixelCrushers.GameObjectUtility.FindFirstObjectByType<AbstractDialogueUI>();
+        }
+
+        protected virtual void Start()
+        {
+            if (stopSkipAllOnUnreadSubtitle)
+            {
+                if (!DialogueLua.includeSimStatus)
+                {
+                    Debug.LogWarning("Dialogue System: Dialogue Manager's Include SimStatus isn't ticked but it requires for Stop Skip All On Unread Subtitle. Enabling SimStatus.");
+                    DialogueLua.includeSimStatus = true;
+                }
+                DialogueManager.instance.preparingConversationLine -= OnPreparingConversationLine;
+                DialogueManager.instance.preparingConversationLine += OnPreparingConversationLine;
+            }
+            hasStarted = true;
+        }
+
+        protected virtual void OnEnable()
+        {
+            if (!hasStarted) return;
+            DialogueManager.instance.preparingConversationLine -= OnPreparingConversationLine;
+            DialogueManager.instance.preparingConversationLine += OnPreparingConversationLine;
+        }
+
+        protected virtual void OnDisable()
+        {
+            DialogueManager.instance.preparingConversationLine -= OnPreparingConversationLine;
         }
 
         /// <summary>
@@ -80,12 +112,24 @@ namespace PixelCrushers.DialogueSystem
             skipAll = false;
         }
 
+        protected virtual void OnPreparingConversationLine(DialogueEntry entry)
+        {
+            // If we're not stopping on unread entries, we can set this false and ignore it.
+            if (!stopSkipAllOnUnreadSubtitle)
+            {
+                mustStopAtCurrentUnreadEntry = false;
+                return;
+            }
+            mustStopAtCurrentUnreadEntry = DialogueLua.GetSimStatus(entry) == DialogueLua.Untouched;
+        }
+
         public virtual void OnConversationLine(Subtitle subtitle)
         {
             if (skipAll)
             {
-                if (!dontSkipAllOnLastConversationLine ||
-                    DialogueManager.currentConversationState.hasAnyResponses)
+                var shouldSkip = !dontSkipAllOnLastConversationLine ||
+                    DialogueManager.currentConversationState.hasAnyResponses;
+                if (shouldSkip && !mustStopAtCurrentUnreadEntry)
                 {
                     subtitle.sequence = "Continue(); " + subtitle.sequence;
                 }
