@@ -740,7 +740,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                                 Debug.LogError(filename + ": No actor in database is named '" + actorName + "'.");
                                 continue;
                             }
-                            Field.SetValue(actor.fields, "Display Name " + language, translatedName);
+                            Field.SetValue(actor.fields, "Display Name " + language, translatedName, FieldType.Localization);
                             if (alsoImportMainText && !string.IsNullOrEmpty(actorDisplayName))
                             {
                                 Field.SetValue(actor.fields, "Display Name", actorDisplayName);
@@ -840,7 +840,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                                         continue;
                                     }
 
-                                    Field.SetValue(entry.fields, field + " " + language, columns[columnIndex]);
+                                    Field.SetValue(entry.fields, field + " " + language, columns[columnIndex], FieldType.Localization);
 
                                     if (alsoImportMainText)
                                     {
@@ -989,7 +989,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                                             continue;
                                         }
 
-                                        Field.SetValue(item.fields, field + " " + language, columns[columnIndex]);
+                                        Field.SetValue(item.fields, field + " " + language, columns[columnIndex], FieldType.Localization);
 
                                         if (alsoImportMainText)
                                         {

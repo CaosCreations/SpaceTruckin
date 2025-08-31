@@ -247,6 +247,15 @@ namespace PixelCrushers.DialogueSystem
                     DialogueEditor.DialogueEditorWindow.instance.DrawSelectedLocationSecondPart();
                     EditorGUI.EndDisabledGroup();
                 }
+                else if (selectionType == typeof(Variable))
+                {
+                    DrawInspectorSelectionTitle("Variable");
+                    var variable = selection as Variable;
+                    EditorGUI.BeginDisabledGroup(DialogueEditor.DialogueEditorWindow.instance.IsVariableSyncedFromOtherDB(variable));
+                    DialogueEditor.DialogueEditorWindow.instance.DrawAssetSpecificPropertiesFirstPart(variable);
+                    DialogueEditor.DialogueEditorWindow.instance.DrawSelectedVariableSecondPart();
+                    EditorGUI.EndDisabledGroup();
+                }
                 else if (selectionType == typeof(Conversation))
                 {
                     EditorGUILayout.BeginHorizontal();

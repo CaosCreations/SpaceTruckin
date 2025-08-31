@@ -59,7 +59,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private double lastTimeVariableNamesChecked = 0;
         private HashSet<string> conflictedVariableNames = new HashSet<string>();
 
-        private HashSet<int> syncedVariableIDs = null;
+        public HashSet<int> syncedVariableIDs = null;
 
         // VariableGroup class is defined below.
         private const string UngroupedVariableGroup = "(Ungrouped)";
@@ -137,6 +137,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 var variableGroup = new VariableGroup(database, UngroupedVariableGroup, database.variables,
                     expandedVariableGroups, conflictedVariableNames, !isDialogueEditorWindow, runtimeValues,
                     UpdateVariableWindows, CreateNewVariable, syncedVariableIDs);
+                variableGroup.SelectedVariable += OnSelectedVariable;
                 variableGroup.group = UngroupedVariableGroup;
                 variableGroup.variableList = database.variables;
                 dict.Add(UngroupedVariableGroup, variableGroup);
@@ -156,12 +157,18 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                         var variableGroup = new VariableGroup(database, group, new List<Variable>(),
                             expandedVariableGroups, conflictedVariableNames, !isDialogueEditorWindow, runtimeValues,
                             UpdateVariableWindows, CreateNewVariable, syncedVariableIDs);
+                        variableGroup.SelectedVariable += OnSelectedVariable;
                         dict.Add(group, variableGroup);
                     }
                     dict[group].variableList.Add(variable);
                 }
             }
             return dict;
+        }
+
+        private void OnSelectedVariable(Variable variable)
+        {
+            if (isDialogueEditorWindow) DialogueEditorWindow.inspectorSelection = variable;
         }
 
         public void Draw()
@@ -412,6 +419,8 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             public System.Action refreshVariablesView = null;
             public CreateNewVariableDelegate createNewVariable = null;
 
+            public event System.Action<Variable> SelectedVariable = null;
+
             public VariableGroup(DialogueDatabase database, string group, List<Variable> variableList,
                 List<string> variableGroupFoldouts, HashSet<string> conflictedVariableNames, 
                 bool canShowRuntimeValues, Dictionary<string, RuntimeValue> runtimeValues,
@@ -453,10 +462,17 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     reorderableList.drawElementCallback = OnDrawVariableElement;
                     reorderableList.onAddDropdownCallback = OnAddVariableDropdown;
                     reorderableList.onRemoveCallback = OnRemoveVariable;
+                    reorderableList.onSelectCallback = OnSelectVariable;
                 }
                 EditorWindowTools.StartIndentedSection();
                 reorderableList.DoLayoutList();
                 EditorWindowTools.EndIndentedSection();
+            }
+
+            private void OnSelectVariable(ReorderableList list)
+            {
+                if (!(0 <= list.index && list.index < database.variables.Count)) return;
+                SelectedVariable?.Invoke(database.variables[list.index]);
             }
 
             private void OnDrawVariableHeader(Rect rect)

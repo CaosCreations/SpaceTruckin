@@ -36,24 +36,14 @@ namespace PixelCrushers.DialogueSystem
 
         protected UnityEngine.UI.Button continueButton;
 
-        protected AbstractDialogueUI m_runtimeDialogueUI;
         protected virtual AbstractDialogueUI runtimeDialogueUI
         {
             get
             {
-                if (m_runtimeDialogueUI == null)
-                {
-                    m_runtimeDialogueUI = dialogueUI;
-                    if (m_runtimeDialogueUI == null)
-                    {
-                        m_runtimeDialogueUI = GetComponentInParent<AbstractDialogueUI>();
-                        if (m_runtimeDialogueUI == null)
-                        {
-                            m_runtimeDialogueUI = DialogueManager.dialogueUI as AbstractDialogueUI;
-                        }
-                    }
-                }
-                return m_runtimeDialogueUI;
+                if (dialogueUI != null) return dialogueUI;
+                var panel = GetComponentInParent<StandardUISubtitlePanel>();
+                if (panel != null) return panel.dialogueUI;
+                else return GetComponentInParent<AbstractDialogueUI>() ?? DialogueManager.dialogueUI as AbstractDialogueUI;
             }
         }
 

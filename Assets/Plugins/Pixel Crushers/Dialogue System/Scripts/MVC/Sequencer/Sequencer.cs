@@ -2398,6 +2398,8 @@ namespace PixelCrushers.DialogueSystem
             var panelNumber = SequencerTools.GetParameterAsInt(args, 0);
             var portraitOnly = string.Equals("portrait", SequencerTools.GetParameter(args, 1), StringComparison.OrdinalIgnoreCase);
             var portraitImageOnly = string.Equals("portraitimage", SequencerTools.GetParameter(args, 1), StringComparison.OrdinalIgnoreCase);
+            var immediate = string.Equals("hideimmediate", SequencerTools.GetParameter(args, 1), StringComparison.OrdinalIgnoreCase) ||
+                string.Equals("immediate", SequencerTools.GetParameter(args, 2), StringComparison.OrdinalIgnoreCase);
             var dialogueUI = DialogueManager.dialogueUI as StandardDialogueUI;
             var commandSummary = "HidePanel(" + panelNumber + (portraitOnly ? ", portrait" : string.Empty) + ")";
             if (dialogueUI == null)
@@ -2425,6 +2427,7 @@ namespace PixelCrushers.DialogueSystem
                 else
                 {
                     panel.Close();
+                    if (immediate) panel.HideImmediate();
                 }
             }
             return true;

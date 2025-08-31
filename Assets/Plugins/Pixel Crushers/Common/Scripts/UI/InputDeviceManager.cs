@@ -87,11 +87,12 @@ namespace PixelCrushers
         public UnityEvent onUseMouse = new UnityEvent();
         public UnityEvent onUseTouch = new UnityEvent();
 
-        public delegate bool GetButtonDownDelegate(string buttonName);
+        public delegate bool GetButtonDelegate(string buttonName);
         public delegate float GetAxisDelegate(string axisName);
 
-        public GetButtonDownDelegate GetButtonDown = null;
-        public GetButtonDownDelegate GetButtonUp = null;
+        public GetButtonDelegate GetButtonDown = null;
+        public GetButtonDelegate GetButtonUp = null;
+        public GetButtonDelegate GetButtonPressed = null;
         public GetAxisDelegate GetInputAxis = null;
 
         private Vector3 m_lastMousePosition;
@@ -169,10 +170,29 @@ namespace PixelCrushers
             return (m_instance != null && m_instance.GetButtonUp != null) ? m_instance.GetButtonUp(buttonName) : DefaultGetButtonUp(buttonName);
         }
 
+        public static bool IsButtonPressed(string buttonName)
+        {
+            if (!isInputAllowed) return false;
+            return (m_instance != null && m_instance.GetButtonPressed != null) ? m_instance.GetButtonPressed(buttonName) : DefaultGetButtonPressed(buttonName);
+        }
+
+
         public static bool IsKeyDown(KeyCode keyCode)
         {
             if (!isInputAllowed) return false;
             return DefaultGetKeyDown(keyCode);
+        }
+
+        public static bool IsKeyUp(KeyCode keyCode)
+        {
+            if (!isInputAllowed) return false;
+            return DefaultGetKeyUp(keyCode);
+        }
+
+        public static bool IsKeyPressed(KeyCode keyCode)
+        {
+            if (!isInputAllowed) return false;
+            return DefaultGetKeyPressed(keyCode);
         }
 
         public static bool IsAnyKeyDown()
@@ -592,7 +612,9 @@ namespace PixelCrushers
         }
 #endif
 
-        public static bool DefaultGetKeyDown(KeyCode keyCode)
+        protected enum KeyState { Down, Up, Pressed }
+
+        protected static bool DefaultGetKeyState(KeyCode keyCode, KeyState state)
         {
 #if USE_NEW_INPUT
             if (Keyboard.current == null || keyCode == KeyCode.None) return false;
@@ -621,8 +643,32 @@ namespace PixelCrushers
             var keyControl = Keyboard.current[s] as KeyControl;
             return (keyControl != null) ? keyControl.wasPressedThisFrame : false;
 #else
-            return Input.GetKeyDown(keyCode);
+            switch (state)
+            {
+                default:
+                case KeyState.Down:
+                    return Input.GetKeyDown(keyCode);
+                case KeyState.Up:
+                    return Input.GetKeyUp(keyCode);
+                case KeyState.Pressed:
+                    return Input.GetKey(keyCode);
+            }
 #endif
+        }
+
+        public static bool DefaultGetKeyDown(KeyCode keyCode)
+        {
+            return DefaultGetKeyState(keyCode, KeyState.Down);
+        }
+
+        public static bool DefaultGetKeyUp(KeyCode keyCode)
+        {
+            return DefaultGetKeyState(keyCode, KeyState.Up);
+        }
+
+        public static bool DefaultGetKeyPressed(KeyCode keyCode)
+        {
+            return DefaultGetKeyState(keyCode, KeyState.Pressed);
         }
 
         public static bool DefaultGetAnyKeyDown()
@@ -682,6 +728,34 @@ namespace PixelCrushers
                 return false;
 #else
                 return string.IsNullOrEmpty(buttonName) ? false : Input.GetButtonUp(buttonName);
+#endif
+            }
+            catch (System.ArgumentException) // Input button not in setup.
+            {
+                return false;
+            }
+        }
+
+        public static bool DefaultGetButtonPressed(string buttonName)
+        {
+            try
+            {
+#if USE_NEW_INPUT
+                InputAction inputAction;
+                if (inputActionDict.TryGetValue(buttonName, out inputAction))
+                {
+                    foreach (var control in inputAction.controls)
+                    {
+                        if (((control is ButtonControl) && (control as ButtonControl).isPressed) ||
+                            ((control is KeyControl) && (control as KeyControl).isPressed))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+#else
+                return string.IsNullOrEmpty(buttonName) ? false : Input.GetButton(buttonName);
 #endif
             }
             catch (System.ArgumentException) // Input button not in setup.

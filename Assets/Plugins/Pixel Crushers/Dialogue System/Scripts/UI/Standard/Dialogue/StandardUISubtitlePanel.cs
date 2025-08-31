@@ -237,7 +237,8 @@ namespace PixelCrushers.DialogueSystem
         /// <param name="portraitActorName">The (non-display) Name of the first actor who will use this panel.</param>
         /// <param name="displayName">The actor's display name.</param>
         /// <param name="dialogueActor">The actor's DialogueActor component, or null if none.</param>
-        public virtual void OpenOnStartConversation(Sprite portraitSprite, string portraitActorName, string displayName, DialogueActor dialogueActor)
+        public virtual void OpenOnStartConversation(Sprite portraitSprite, string portraitActorName, string displayName, 
+            DialogueActor dialogueActor)
         {
             Open();
             SetUIElementsActive(true);
@@ -246,6 +247,13 @@ namespace PixelCrushers.DialogueSystem
             if (this.portraitName != null) this.portraitName.text = displayName;
             if (subtitleText.text != null) subtitleText.text = string.Empty;
             CheckDialogueActorAnimator(dialogueActor);
+        }
+
+        public virtual void OpenOnStartConversation(Sprite portraitSprite, string portraitActorName, string displayName,
+            DialogueActor dialogueActor, StandardDialogueUI dialogueUI)
+        {
+            m_dialogueUI = dialogueUI;
+            OpenOnStartConversation(portraitSprite, portraitActorName, displayName, dialogueActor);
         }
 
         [System.Obsolete("Use OpenOnStartConversation(Sprite,string,DialogueActor) instead.")]
@@ -356,6 +364,12 @@ namespace PixelCrushers.DialogueSystem
             if (clearTextOnClose) ClearText();
             if (deactivateOnHidden) DeactivateUIElements();
             currentSubtitle = null;
+        }
+
+        public virtual void Open(StandardDialogueUI dialogueUI)
+        {
+            m_dialogueUI = dialogueUI;
+            Open();
         }
 
         /// <summary>

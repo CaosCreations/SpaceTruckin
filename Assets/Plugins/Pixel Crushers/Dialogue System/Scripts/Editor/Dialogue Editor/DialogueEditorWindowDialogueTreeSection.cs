@@ -1577,7 +1577,10 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             return -1;
         }
 
-        private void CreateLink(DialogueEntry source, DialogueEntry destination)
+        /// <summary>
+        /// Creates a link from a source entry to a destination entry.
+        /// </summary>
+        public void CreateLink(DialogueEntry source, DialogueEntry destination)
         {
             if ((source != null) && (destination != null))
             {
@@ -1591,7 +1594,12 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             }
         }
 
-        private void LinkToNewEntry(DialogueEntry source, bool useSameActorAssignments = false)
+        /// <summary>
+        /// Creates a new entry and links from a source entry to it.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="useSameActorAssignments"></param>
+        public void LinkToNewEntry(DialogueEntry source, bool useSameActorAssignments = false)
         {
             if (source != null)
             {
