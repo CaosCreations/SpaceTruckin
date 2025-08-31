@@ -61,6 +61,7 @@ namespace PixelCrushers.DialogueSystem
         private StandardUIResponseMenuControls m_standardMenuControls = new StandardUIResponseMenuControls();
         public StandardUIResponseMenuControls standardMenuControls { get { return m_standardMenuControls; } }
         public override AbstractUIResponseMenuControls responseMenuControls { get { return m_standardMenuControls; } }
+        public StandardDialogueUI dialogueUI { get; private set; }
 
         private bool m_initializedAnimator = false;
         private Coroutine closeCoroutine = null;
@@ -69,12 +70,19 @@ namespace PixelCrushers.DialogueSystem
 
         #region Initialization
 
-        public void Initialize()
+        public void Initialize(StandardDialogueUI dialogueUI)
         {
-            m_standardSubtitleControls.Initialize(subtitlePanels, defaultNPCSubtitlePanel, defaultPCSubtitlePanel);
+            this.dialogueUI = dialogueUI;
+            m_standardSubtitleControls.Initialize(subtitlePanels, defaultNPCSubtitlePanel, defaultPCSubtitlePanel, dialogueUI);
             m_standardMenuControls.Initialize(menuPanels, defaultMenuPanel, useFirstResponseForMenuPortrait);
             m_standardSubtitleControls.allowDialogueActorCustomPanels = allowDialogueActorCustomPanels;
             m_standardMenuControls.allowDialogueActorCustomPanels = allowDialogueActorCustomPanels;
+        }
+
+        public void SetDialogueUI(StandardDialogueUI dialogueUI)
+        {
+            this.dialogueUI = dialogueUI;
+            m_standardSubtitleControls.SetDialogueUI(dialogueUI);
         }
 
         #endregion

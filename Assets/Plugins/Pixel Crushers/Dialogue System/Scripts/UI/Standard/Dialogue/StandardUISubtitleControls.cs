@@ -52,6 +52,8 @@ namespace PixelCrushers.DialogueSystem
             set { m_defaultPCPanel = value; }
         }
 
+        public StandardDialogueUI dialogueUI { get; set; }
+
         #endregion
 
         #region Public Properties
@@ -67,8 +69,11 @@ namespace PixelCrushers.DialogueSystem
 
         #region Initialization & Lookup
 
-        public void Initialize(StandardUISubtitlePanel[] subtitlePanels, StandardUISubtitlePanel defaultNPCSubtitlePanel, StandardUISubtitlePanel defaultPCSubtitlePanel)
+        public void Initialize(StandardUISubtitlePanel[] subtitlePanels, 
+            StandardUISubtitlePanel defaultNPCSubtitlePanel, StandardUISubtitlePanel defaultPCSubtitlePanel,
+            StandardDialogueUI dialogueUI)
         {
+            this.dialogueUI = dialogueUI;
             m_builtinPanels.Clear();
             m_builtinPanels.AddRange(subtitlePanels);
             m_defaultNPCPanel = (defaultNPCSubtitlePanel != null) ? defaultNPCSubtitlePanel : (m_builtinPanels.Count > 0) ? m_builtinPanels[0] : null;
@@ -80,6 +85,12 @@ namespace PixelCrushers.DialogueSystem
                 if (m_builtinPanels[i] != null) m_builtinPanels[i].panelNumber = i;
             }
             ClearCache();
+        }
+
+        public void SetDialogueUI(StandardDialogueUI dialogueUI)
+        {
+            this.dialogueUI = dialogueUI;
+            m_builtinPanels.ForEach(panel => panel.dialogueUI = dialogueUI);
         }
 
         public void ClearCache()
@@ -153,7 +164,7 @@ namespace PixelCrushers.DialogueSystem
                         }
                         if (panel.panelState != UIPanel.PanelState.Open)
                         {
-                            panel.Open();
+                            panel.Open(dialogueUI);
                             if (currentHasFocus || (actor != null && actor.id == DialogueManager.currentConversationState.subtitle.speakerInfo.id))
                             {
                                 panel.Focus();
@@ -172,7 +183,7 @@ namespace PixelCrushers.DialogueSystem
                         // specified panel and set its content from basic actor info:
                         if (panel.panelState != UIPanel.PanelState.Open)
                         {
-                            panel.Open();
+                            panel.Open(dialogueUI);
                             if ((actor != null && actor.id == DialogueManager.currentConversationState.subtitle.speakerInfo.id))
                             {
                                 panel.Focus();
@@ -302,6 +313,7 @@ namespace PixelCrushers.DialogueSystem
             {
                 var panel = GetDialogueActorPanel(dialogueActor);
                 if (panel == null) panel = defaultPanel;
+                panel.dialogueUI = dialogueUI;
                 m_actorPanelCache[speakerTransform] = panel;
                 m_useBarkUIs.Remove(speakerTransform);
                 return panel;
@@ -381,7 +393,7 @@ namespace PixelCrushers.DialogueSystem
             var actorName = actor.Name;
             var displayName = DialogueLua.GetLocalizedActorField(actorName, DialogueSystemFields.DisplayName).asString;
             if (string.IsNullOrEmpty(displayName)) displayName = actor.localizedName;
-            panel.OpenOnStartConversation(actor.GetPortraitSprite(), actorName, displayName, null);
+            panel.OpenOnStartConversation(actor.GetPortraitSprite(), actorName, displayName, null, dialogueUI);
 
         }
 
@@ -837,7 +849,7 @@ namespace PixelCrushers.DialogueSystem
                 var actorPortrait = (dialogueActor != null && dialogueActor.GetPortraitSprite() != null) ? dialogueActor.GetPortraitSprite() : actor.GetPortraitSprite();
                 var actorName = actor.Name;
                 var displayName = CharacterInfo.GetLocalizedDisplayNameInDatabase(actorName);
-                panel.OpenOnStartConversation(actorPortrait, actorName, displayName, dialogueActor);
+                panel.OpenOnStartConversation(actorPortrait, actorName, displayName, dialogueActor, dialogueUI);
                 SetLastActorToUsePanel(panel, actorID);
             }
         }
@@ -899,7 +911,7 @@ namespace PixelCrushers.DialogueSystem
                     var actorPortrait = (dialogueActor != null && dialogueActor.GetPortraitSprite() != null) ? dialogueActor.GetPortraitSprite() : actor.GetPortraitSprite();
                     var actorName = actor.Name;
                     var displayName = CharacterInfo.GetLocalizedDisplayNameInDatabase(actorName);
-                    panel.OpenOnStartConversation(actorPortrait, actorName, displayName, dialogueActor);
+                    panel.OpenOnStartConversation(actorPortrait, actorName, displayName, dialogueActor, dialogueUI);
                     return;
                 }
             }

@@ -52,7 +52,7 @@ namespace PixelCrushers.DialogueSystem
         {
             base.Awake();
             VerifyAssignments();
-            conversationUIElements.Initialize();
+            conversationUIElements.Initialize(this);
             alertUIElements.HideImmediate();
             conversationUIElements.HideImmediate();
             QTEIndicatorElements.HideImmediate();
@@ -96,6 +96,7 @@ namespace PixelCrushers.DialogueSystem
 
         public override void Open()
         {
+            conversationUIElements.SetDialogueUI(this);
             if (closeCoroutine != null)
             {
                 StopCoroutine(closeCoroutine);

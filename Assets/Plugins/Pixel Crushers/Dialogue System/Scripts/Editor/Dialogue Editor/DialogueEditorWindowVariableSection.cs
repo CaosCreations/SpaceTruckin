@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
 using System.Collections.Generic;
+using System;
 
 namespace PixelCrushers.DialogueSystem.DialogueEditor
 {
@@ -16,6 +17,12 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
     {
         [SerializeField]
         private DialogueEditorVariableView variableView;
+
+        private HashSet<int> syncedVariableIDs => variableView != null ? variableView.syncedVariableIDs : null;
+        private AssetFoldouts variableFoldouts = new AssetFoldouts()
+        {
+            fields = new Dictionary<int, bool>() { { 0, true } }
+        };
 
         private void ResetVariableSection()
         {
@@ -53,6 +60,32 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             {
                 GUI.Label(new Rect(72, -4, 500, 30), "(Use Watches tab or Variable Viewer for runtime values.)");
             }
+        }
+
+        public void DrawSelectedVariableSecondPart()
+        {
+            var variable = inspectorSelection as Variable;
+            if (variable == null) return;
+            DrawOtherVariablePrimaryFields(variable);
+            DrawFieldsFoldout<Variable>(variable, 0, variableFoldouts);
+            DrawAssetSpecificPropertiesSecondPart(variable, 0, variableFoldouts);
+        }
+
+        private void DrawOtherVariablePrimaryFields(Variable variable)
+        {
+            if (variable == null || variable.fields == null || template.variablePrimaryFieldTitles == null) return;
+            foreach (var field in variable.fields)
+            {
+                var fieldTitle = field.title;
+                if (string.IsNullOrEmpty(fieldTitle)) continue;
+                if (!template.variablePrimaryFieldTitles.Contains(field.title)) continue;
+                DrawMainSectionField(field);
+            }
+        }
+
+        public bool IsVariableSyncedFromOtherDB(Variable variable)
+        {
+            return variable != null && syncedVariableIDs != null && syncedVariableIDs.Contains(variable.id);
         }
 
     }

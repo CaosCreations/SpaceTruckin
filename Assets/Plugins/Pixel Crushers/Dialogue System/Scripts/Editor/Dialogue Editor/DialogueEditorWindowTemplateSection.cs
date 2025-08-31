@@ -75,6 +75,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             DrawTemplate("Variables", template.variableFields, null, ref templateFoldouts.variables);
             DrawTemplate("Conversations", template.conversationFields, template.conversationPrimaryFieldTitles, ref templateFoldouts.conversations);
             DrawTemplate("Dialogue Entries", template.dialogueEntryFields, template.dialogueEntryPrimaryFieldTitles, ref templateFoldouts.dialogueEntries);
+            DrawDialogueEntryTemplateAIButton();
             DrawDialogueLineColors();
             EditorWindowTools.EndIndentedSection();
             if (EditorGUI.EndChangeCheck())
@@ -112,6 +113,38 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                                 {
                                     actor.fields.Add(new Field(DialogueSystemFields.Goals, "", FieldType.Text));
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+#endif
+        }
+
+        private void DrawDialogueEntryTemplateAIButton()
+        {
+
+#if USE_OPENAI
+            if (templateFoldouts.dialogueEntries)
+            {
+                var hasAudioTagField = template.dialogueEntryFields.Find(f => f.title == DialogueSystemFields.AudioTag) != null;
+                if (!hasAudioTagField)
+                {
+                    if (GUILayout.Button(new GUIContent("Add Audio Tag for ElevenLabs AI", "Add Audio Tag field that Addon for OpenAI's ElevenLabs integration can use to guide voice acting.")))
+                    {
+                        template.dialogueEntryFields.Add(new Field(DialogueSystemFields.AudioTag, "", FieldType.Text));
+                        template.dialogueEntryPrimaryFieldTitles.Add(DialogueSystemFields.AudioTag);
+                        if (database != null)
+                        {
+                            foreach (var conversation in database.conversations)
+                            { 
+                            foreach (var entry in conversation.dialogueEntries)
+                            {
+                                if (!Field.FieldExists(entry.fields, DialogueSystemFields.AudioTag))
+                                {
+                                    entry.fields.Add(new Field(DialogueSystemFields.AudioTag, "", FieldType.Text));
+                                }
+                            }
                             }
                         }
                     }
@@ -173,7 +206,8 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     template = newTemplate;
                     SaveTemplate();
                 }
-                else {
+                else
+                {
                     EditorUtility.DisplayDialog("Import Error", "Unable to import template data from the XML file.", "OK");
                 }
             }

@@ -45,6 +45,7 @@ namespace PixelCrushers.DialogueSystem
         public const string ResponseMenuSequence = "Response Menu Sequence";
         public const string VoiceOverFile = "VoiceOverFile";
         public const string SceneEventGuidFieldName = "EventGuid";
+        public const string AudioTag = "Audio Tag"; // Used for AI Addon
 
     }
 }
