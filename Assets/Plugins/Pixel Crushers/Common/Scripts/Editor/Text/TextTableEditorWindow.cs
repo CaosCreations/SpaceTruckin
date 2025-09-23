@@ -113,7 +113,7 @@ namespace PixelCrushers
             titleContent.text = "Text Table";
             m_needRefreshLists = true;
             Undo.undoRedoPerformed += Repaint;
-            if (m_textTableInstanceID != 0) Selection.activeObject = EditorUtility.InstanceIDToObject(m_textTableInstanceID);
+            if (m_textTableInstanceID != 0) Selection.activeObject = MoreEditorUtility.InstanceIDToObject(m_textTableInstanceID);
             m_toolbarSelection = EditorPrefs.GetInt(ToolbarSelectionPrefsKey, 0);
             if (EditorPrefs.HasKey(SearchBarPrefsKey))
             {
@@ -153,7 +153,7 @@ namespace PixelCrushers
             }
             else if (m_textTable == null && m_textTableInstanceID != 0)
             {
-                SelectTextTable(EditorUtility.InstanceIDToObject(m_textTableInstanceID) as TextTable);
+                SelectTextTable(MoreEditorUtility.InstanceIDToObject(m_textTableInstanceID) as TextTable);
                 Repaint();
             }
         }

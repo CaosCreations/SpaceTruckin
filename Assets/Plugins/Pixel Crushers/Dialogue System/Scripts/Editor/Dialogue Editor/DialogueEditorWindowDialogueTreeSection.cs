@@ -1042,9 +1042,15 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             }
             if (onExecuteProperty != null)
             {
-                EditorGUI.BeginChangeCheck();
+                AssetDatabase.SaveAssets();
+                serializedObject.Update();
                 EditorGUILayout.PropertyField(onExecuteProperty);
-                if (EditorGUI.EndChangeCheck()) serializedObject.ApplyModifiedProperties();
+                if (serializedObject.ApplyModifiedProperties())
+                {
+                    SetDatabaseDirty("OnExecute");
+                    AssetDatabase.SaveAssets();
+                    AssetDatabase.Refresh();
+                }
             }
 
             // Draw scene-specific event:
