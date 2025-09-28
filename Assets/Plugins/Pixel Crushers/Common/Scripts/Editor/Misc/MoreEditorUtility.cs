@@ -168,6 +168,18 @@ namespace PixelCrushers
             }
         }
 
+        /// <summary>
+        /// Handles EditorUtility.EntityIdToObject/InstanceIDToObject() for different Unity version.
+        /// </summary>
+        public static UnityEngine.Object InstanceIDToObject(int instanceID)
+        {
+#if UNITY_6000_3_OR_NEWER
+            return EditorUtility.EntityIdToObject(instanceID);
+#else
+            return EditorUtility.InstanceIDToObject(instanceID);
+#endif
+        }
+
         //=============================================================
 
         [MenuItem("Tools/Pixel Crushers/Common/Misc/Enable TextMesh Pro Support...", false, 101)]

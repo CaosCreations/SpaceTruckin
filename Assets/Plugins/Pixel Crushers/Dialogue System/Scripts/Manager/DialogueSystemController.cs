@@ -1135,6 +1135,10 @@ namespace PixelCrushers.DialogueSystem
                 sequencer.conversationView = view;
                 view.Initialize(dialogueUI, sequencer, displaySettings, OnDialogueEntrySpoken);
                 view.SetPCPortrait(model.GetPCSprite(), model.GetPCName());
+
+                var target = (actor != null) ? actor : this.transform;
+                if (actor != this.transform) gameObject.BroadcastMessage(DialogueSystemMessages.OnConversationStart, target, SendMessageOptions.DontRequireReceiver);
+
                 m_conversationController.Initialize(model, view, reevaluateLinksAfterSubtitle, displaySettings.inputSettings.alwaysForceResponseMenu, OnEndConversation);
                 if (needToSetRandomizeNextEntryAgain) RandomizeNextEntry();
 
@@ -1152,9 +1156,6 @@ namespace PixelCrushers.DialogueSystem
                 m_activeConversations.Add(record);
                 activeConversation = record;
                 view.sequencer.activeConversationRecord = record;
-
-                var target = (actor != null) ? actor : this.transform;
-                if (actor != this.transform) gameObject.BroadcastMessage(DialogueSystemMessages.OnConversationStart, target, SendMessageOptions.DontRequireReceiver);
             }
         }
 
@@ -1579,6 +1580,7 @@ namespace PixelCrushers.DialogueSystem
                     m_conversationController = nextRecord.conversationController;
                     currentActor = nextRecord.actor;
                     currentConversant = nextRecord.conversant;
+                    nextRecord.conversationModel.SetLuaParticipants();
                 }
                 else
                 {

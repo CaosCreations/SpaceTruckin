@@ -240,6 +240,7 @@ namespace PixelCrushers.DialogueSystem
         public virtual void OpenOnStartConversation(Sprite portraitSprite, string portraitActorName, string displayName, 
             DialogueActor dialogueActor)
         {
+            if (isOpen) return;
             Open();
             SetUIElementsActive(true);
             SetPortraitImage(portraitSprite);

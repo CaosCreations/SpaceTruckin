@@ -954,13 +954,18 @@ namespace PixelCrushers.DialogueSystem
                 float now = DialogueTime.time;
                 try
                 {
-                    foreach (var queuedCommand in m_queuedCommands)
+                    for (int i = m_queuedCommands.Count - 1; i >= 0; i--)
                     {
-                        if (now >= queuedCommand.startTime) ActivateCommand(queuedCommand.command, queuedCommand.endMessage, queuedCommand.speaker, queuedCommand.listener, queuedCommand.parameters);
+                        if (!(0 <= i && i < m_queuedCommands.Count)) continue;
+                        var queuedCommand = m_queuedCommands[i];
+                        if (now >= queuedCommand.startTime)
+                        {
+                            m_queuedCommands.RemoveAt(i);
+                            ActivateCommand(queuedCommand.command, queuedCommand.endMessage, queuedCommand.speaker, queuedCommand.listener, queuedCommand.parameters);
+                        }
                     }
                 }
                 catch (InvalidOperationException) { } // Allow unusual commands to kill the conversation.
-                m_queuedCommands.RemoveAll(queuedCommand => (now >= queuedCommand.startTime));
             }
         }
 
@@ -2398,7 +2403,7 @@ namespace PixelCrushers.DialogueSystem
             var panelNumber = SequencerTools.GetParameterAsInt(args, 0);
             var portraitOnly = string.Equals("portrait", SequencerTools.GetParameter(args, 1), StringComparison.OrdinalIgnoreCase);
             var portraitImageOnly = string.Equals("portraitimage", SequencerTools.GetParameter(args, 1), StringComparison.OrdinalIgnoreCase);
-            var immediate = string.Equals("hideimmediate", SequencerTools.GetParameter(args, 1), StringComparison.OrdinalIgnoreCase) ||
+            var immediate = string.Equals("immediate", SequencerTools.GetParameter(args, 1), StringComparison.OrdinalIgnoreCase) ||
                 string.Equals("immediate", SequencerTools.GetParameter(args, 2), StringComparison.OrdinalIgnoreCase);
             var dialogueUI = DialogueManager.dialogueUI as StandardDialogueUI;
             var commandSummary = "HidePanel(" + panelNumber + (portraitOnly ? ", portrait" : string.Empty) + ")";

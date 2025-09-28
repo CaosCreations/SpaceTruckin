@@ -28,7 +28,7 @@ namespace PixelCrushers.DialogueSystem
 
         public static void HierarchyWindowItemOnGUI(int instanceID, Rect selectionRect)
         {
-            GameObject dialogueSystemControllerGameObject = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
+            GameObject dialogueSystemControllerGameObject = MoreEditorUtility.InstanceIDToObject(instanceID) as GameObject;
             var dialogueSystemController = (dialogueSystemControllerGameObject != null) ? dialogueSystemControllerGameObject.GetComponent<DialogueSystemController>() : null;
             if ((icon != null) && (dialogueSystemController != null))
             {

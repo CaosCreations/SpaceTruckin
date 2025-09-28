@@ -236,6 +236,11 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
+        public void SetLuaParticipants()
+        {
+            DialogueLua.SetParticipants(m_actorInfo.Name, m_conversantInfo.Name, m_actorInfo.nameInDatabase, m_conversantInfo.nameInDatabase);
+        }
+
         /// <summary>
         /// "Follows" a dialogue entry and returns its full conversation state. This method updates 
         /// the Lua environment (marking the entry as visited). If includeLinks is <c>true</c>, 
@@ -253,7 +258,7 @@ namespace PixelCrushers.DialogueSystem
                 if (DialogueManager.instance.activeConversations.Count > 1)
                 {
                     // If multiple conversations are active, set the right participants in Lua:
-                    DialogueLua.SetParticipants(m_actorInfo.Name, m_conversantInfo.Name, m_actorInfo.nameInDatabase, m_conversantInfo.nameInDatabase);
+                    SetLuaParticipants();
                 }
                 DialogueManager.instance.SendMessage(DialogueSystemMessages.OnPrepareConversationLine, entry, SendMessageOptions.DontRequireReceiver);
                 Lua.Run("thisID = " + entry.id);

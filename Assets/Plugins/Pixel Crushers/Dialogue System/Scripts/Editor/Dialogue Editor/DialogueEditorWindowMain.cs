@@ -256,6 +256,10 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             currentConversationState = null;
             currentRuntimeEntry = null;
             actorPortraitCache = null;
+            serializedObject = null;
+            serializedObjectCurrentEntry = null;
+            onExecuteProperty = null;
+            dialogueSystemSceneEventsSerializedObject = null;
             UITools.ClearSpriteCache();
             ResetWatchSection();
             SetReorderableListInspectorSelection();
