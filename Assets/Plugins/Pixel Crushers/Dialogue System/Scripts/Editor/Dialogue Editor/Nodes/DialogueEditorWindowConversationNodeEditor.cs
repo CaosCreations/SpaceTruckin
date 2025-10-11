@@ -1967,6 +1967,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 }
                 DialogueEntry entry = currentConversation.dialogueEntries.Find(x => x.id == entryToDelete.id);
                 currentConversation.dialogueEntries.Remove(entry);
+                inspectorSelection = currentConversation;
                 InitializeDialogueTree();
                 ResetDialogueEntryText();
                 Repaint();
@@ -2304,7 +2305,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private void SplitPipesIntoEntries(object data)
         {
-            currentConversation.SplitPipesIntoEntries(true, trimWhitespaceAroundPipes);
+            currentConversation.SplitPipesIntoEntries(true, trimWhitespaceAroundPipes, null, prefs.alternateActorsAtPipes);
             InitializeDialogueTree();
             ResetDialogueEntryText();
             Repaint();

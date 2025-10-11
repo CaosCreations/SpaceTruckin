@@ -203,8 +203,9 @@ namespace PixelCrushers.DialogueSystem
         /// </param>
         /// <param name="trimWhitespace">Trim whitespace such as newlines.</param>
         /// <param name="uniqueFieldTitle">If specified, add "-1", "-2", etc., to this field.</param>
+        /// <param name="alternateActorsAtPipes">Switch Actor & Conversant at each pipe.</param>
         public void SplitPipesIntoEntries(bool putEndSequenceOnLastSplit = true, 
-            bool trimWhitespace = false, string uniqueFieldTitle = null)
+            bool trimWhitespace = false, string uniqueFieldTitle = null, bool alternateActorsAtPipes = false)
         {
             if (dialogueEntries != null)
             {
@@ -216,7 +217,8 @@ namespace PixelCrushers.DialogueSystem
                     {
                         if (dialogueText.Contains("|"))
                         {
-                            SplitEntryAtPipes(entryIndex, dialogueText, putEndSequenceOnLastSplit, trimWhitespace, uniqueFieldTitle);
+                            SplitEntryAtPipes(entryIndex, dialogueText, putEndSequenceOnLastSplit, trimWhitespace, 
+                                uniqueFieldTitle, alternateActorsAtPipes);
                         }
                     }
                 }
@@ -224,7 +226,8 @@ namespace PixelCrushers.DialogueSystem
         }
 
         private void SplitEntryAtPipes(int originalEntryIndex, string dialogueText, 
-            bool putEndSequenceOnLastSplit, bool trimWhitespace, string uniqueFieldTitle = null)
+            bool putEndSequenceOnLastSplit, bool trimWhitespace, string uniqueFieldTitle = null,
+            bool alternateActorsAtPipes = false)
         {
             // Split by Dialogue Text:
             var substrings = dialogueText.Split(new char[] { '|' });
@@ -279,6 +282,15 @@ namespace PixelCrushers.DialogueSystem
                 currentEntry.outgoingLinks = new List<Link>() { NewLink(currentEntry, newEntry, priority) };
                 currentEntry = newEntry;
                 entries.Add(newEntry);
+
+                var swapActors = alternateActorsAtPipes && (i % 2 > 0);
+                if (swapActors)
+                {
+                    var tmpID = newEntry.ActorID;
+                    newEntry.ActorID = newEntry.ConversantID;
+                    newEntry.ConversantID = tmpID;
+                }
+
                 i++;
             }
 

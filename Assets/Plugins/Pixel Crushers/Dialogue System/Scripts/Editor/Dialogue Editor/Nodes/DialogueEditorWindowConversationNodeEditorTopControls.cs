@@ -247,6 +247,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     menu.AddItem(new GUIContent("Arrange Nodes/Horizontally"), false, ArrangeNodesCallback, AutoArrangeStyle.Horizontally);
                     menu.AddItem(new GUIContent("Split Pipes Into Nodes/Process Conversation"), false, SplitPipesIntoEntries, null);
                     menu.AddItem(new GUIContent("Split Pipes Into Nodes/Trim Whitespace Around Pipes"), trimWhitespaceAroundPipes, ToggleTrimWhitespaceAroundPipes);
+                    menu.AddItem(new GUIContent("Split Pipes Into Nodes/Alternate Actors At Pipes"), prefs.alternateActorsAtPipes, () => prefs.alternateActorsAtPipes = !prefs.alternateActorsAtPipes);
                 }
                 else
                 {

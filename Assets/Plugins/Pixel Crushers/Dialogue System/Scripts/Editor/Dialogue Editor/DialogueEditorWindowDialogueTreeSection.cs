@@ -1044,7 +1044,13 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             {
                 AssetDatabase.SaveAssets();
                 serializedObject.Update();
-                EditorGUILayout.PropertyField(onExecuteProperty);
+                try
+                {
+                    EditorGUILayout.PropertyField(onExecuteProperty);
+                }
+                catch (Exception) // Catch serialization bug in some Unity versions.
+                {
+                }
                 if (serializedObject.ApplyModifiedProperties())
                 {
                     SetDatabaseDirty("OnExecute");

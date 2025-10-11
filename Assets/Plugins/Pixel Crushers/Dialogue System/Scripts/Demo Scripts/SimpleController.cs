@@ -96,10 +96,10 @@ namespace PixelCrushers.DialogueSystem.Demo
             if (Time.timeScale <= 0) return;
 
 #if USE_NEW_INPUT
-            var mouseX = UnityEngine.InputSystem.Mouse.current.delta.x.ReadValue() * Time.deltaTime;
-            var mouseY = UnityEngine.InputSystem.Mouse.current.delta.y.ReadValue() * Time.deltaTime;
+            var mouseX = UnityEngine.InputSystem.Mouse.current.delta.x.ReadValue() * 0.05f; // Scaling to approximate Input.GetAxis().
+            var mouseY = UnityEngine.InputSystem.Mouse.current.delta.y.ReadValue() * 0.05f;
 #else
-            var mouseX = InputDeviceManager.GetAxis(mouseXAxis); // Input Manager already multiplies mouse axes by Time.deltaTime.
+            var mouseX = InputDeviceManager.GetAxis(mouseXAxis); 
             var mouseY = InputDeviceManager.GetAxis(mouseYAxis);
 #endif
 

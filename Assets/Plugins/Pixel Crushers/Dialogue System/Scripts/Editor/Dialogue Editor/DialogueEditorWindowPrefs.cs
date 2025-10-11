@@ -25,6 +25,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         public bool addNewNodesToRight = false;
         public bool autoArrangeOnCreate = false;
         public float snapToGridAmount = 0;
+        public bool alternateActorsAtPipes = false;
     }
 
 }

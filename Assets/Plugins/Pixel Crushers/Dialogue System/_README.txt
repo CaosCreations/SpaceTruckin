@@ -1,7 +1,7 @@
 /*
 ------------------------------
   Dialogue System for Unity  
-       Version 2.2.59
+       Version 2.2.60
         
   Copyright © Pixel Crushers
 ------------------------------
@@ -49,7 +49,7 @@ Need Help?
 o Check the FAQ for solutions to common questions: Tools > Pixel Crushers > Dialogue System > Help.
 o Email: support@pixelcrushers.com
 o Web: Tools > Pixel Crushers > Dialogue System > Help > Report a Bug.
-o Forum: https://pixelcrushers.com/forum
+o Forum: https://forum.pixelcrushers.com/
 o Discord: https://discord.gg/FwUaCNt
 
 We do our very best to reply to all emails within 24 hours. If you haven't received
