@@ -609,7 +609,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         {
             if (entry == null) return;
             unprocessed.Remove(entry);
-            sorted.Add(entry);
+            if (!sorted.Contains(entry)) sorted.Add(entry);
             foreach (var link in entry.outgoingLinks)
             {
                 if (link.destinationConversationID != entry.conversationID) continue;
@@ -631,7 +631,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             {
                 var entry = queued.Dequeue();
                 unprocessed.Remove(entry);
-                sorted.Add(entry);
+                if (!sorted.Contains(entry)) sorted.Add(entry);
                 foreach (var link in entry.outgoingLinks)
                 {
                     if (link.destinationConversationID != entry.conversationID) continue;

@@ -149,7 +149,7 @@ namespace PixelCrushers.DialogueSystem
                     }
                     if (GUILayout.Button(new GUIContent("Forum", "Go to the Pixel Crushers forum"), quickButtonGuiStyle, GUILayout.Width(ButtonWidth), GUILayout.Height(3 * EditorGUIUtility.singleLineHeight)))
                     {
-                        Application.OpenURL("http://www.pixelcrushers.com/forum");
+                        Application.OpenURL("https://forum.pixelcrushers.com/");
                     }
                 }
                 finally

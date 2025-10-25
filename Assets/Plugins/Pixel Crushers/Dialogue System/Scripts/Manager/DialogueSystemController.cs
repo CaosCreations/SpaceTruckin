@@ -1136,11 +1136,8 @@ namespace PixelCrushers.DialogueSystem
                 view.Initialize(dialogueUI, sequencer, displaySettings, OnDialogueEntrySpoken);
                 view.SetPCPortrait(model.GetPCSprite(), model.GetPCName());
 
-                var target = (actor != null) ? actor : this.transform;
-                if (actor != this.transform) gameObject.BroadcastMessage(DialogueSystemMessages.OnConversationStart, target, SendMessageOptions.DontRequireReceiver);
-
+                // Note: Initialize() no longer sends OnConversationStart() nor does it call GotoState(firstState):
                 m_conversationController.Initialize(model, view, reevaluateLinksAfterSubtitle, displaySettings.inputSettings.alwaysForceResponseMenu, OnEndConversation);
-                if (needToSetRandomizeNextEntryAgain) RandomizeNextEntry();
 
                 // Add an active conversation record to the list:
                 var record = new ActiveConversationRecord();
@@ -1156,6 +1153,11 @@ namespace PixelCrushers.DialogueSystem
                 m_activeConversations.Add(record);
                 activeConversation = record;
                 view.sequencer.activeConversationRecord = record;
+
+                // Send messages & go to first state:
+                model.InformParticipants(DialogueSystemMessages.OnConversationStart, informDialogueManager: true);
+                m_conversationController.GotoState(model.firstState);
+                if (needToSetRandomizeNextEntryAgain) RandomizeNextEntry();
             }
         }
 

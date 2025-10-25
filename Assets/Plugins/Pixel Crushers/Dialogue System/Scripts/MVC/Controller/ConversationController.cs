@@ -109,7 +109,9 @@ namespace PixelCrushers.DialogueSystem
 
         /// <summary>
         /// Initializes a new ConversationController and starts the conversation in the model.
-        /// Also sends OnConversationStart messages to the participants.
+        /// CHANGED: No longer sends OnConversationStart messages to the participants nor
+        /// calls GotoState(firstState). You must call them manually, just as 
+        /// DialogueSystemController.StartConversation() does.
         /// </summary>
         /// <param name='model'>
         /// Data model of the conversation.
@@ -133,17 +135,17 @@ namespace PixelCrushers.DialogueSystem
             this.randomizeNextEntry = false;
             this.reevaluateLinksAfterSubtitle = reevaluateLinksAfterSubtitle;
             DialogueManager.instance.currentConversationState = model.firstState;
-            model.InformParticipants(DialogueSystemMessages.OnConversationStart);
             view.FinishedSubtitleHandler += OnFinishedSubtitle;
             view.SelectedResponseHandler += OnSelectedResponse;
             m_currentConversationID = model.GetConversationID(model.firstState);
             SetConversationOverride(model.firstState);
-            GotoState(model.firstState);
         }
 
         /// <summary>
         /// Initializes a ConversationController and starts the conversation in the model.
-        /// Also sends OnConversationStart messages to the participants.
+        /// CHANGED: No longer sends OnConversationStart messages to the participants nor
+        /// calls GotoState(firstState). You must call them manually, just as 
+        /// DialogueSystemController.StartConversation() does.
         /// </summary>
         /// <param name='model'>
         /// Data model of the conversation.
@@ -165,14 +167,18 @@ namespace PixelCrushers.DialogueSystem
             this.randomizeNextEntry = false;
             this.reevaluateLinksAfterSubtitle = reevaluateLinksAfterSubtitle;
             DialogueManager.instance.currentConversationState = model.firstState;
-            model.InformParticipants(DialogueSystemMessages.OnConversationStart);
             view.FinishedSubtitleHandler += OnFinishedSubtitle;
             view.SelectedResponseHandler += OnSelectedResponse;
             m_currentConversationID = model.GetConversationID(model.firstState);
             SetConversationOverride(model.firstState);
-            GotoState(model.firstState);
         }
 
+        /// <summary>
+        /// Initializes a ConversationController and starts the conversation in the model.
+        /// CHANGED: No longer sends OnConversationStart messages to the participants nor
+        /// calls GotoState(firstState). You must call them manually, just as 
+        /// DialogueSystemController.StartConversation() does.
+        /// </summary>
         public void Initialize(ConversationModel model, ConversationView view, bool alwaysForceResponseMenu,
             EndConversationDelegate endConversationHandler)
         {
@@ -183,12 +189,10 @@ namespace PixelCrushers.DialogueSystem
             this.randomizeNextEntry = false;
             this.reevaluateLinksAfterSubtitle = false;
             DialogueManager.instance.currentConversationState = model.firstState;
-            model.InformParticipants(DialogueSystemMessages.OnConversationStart);
             view.FinishedSubtitleHandler += OnFinishedSubtitle;
             view.SelectedResponseHandler += OnSelectedResponse;
             m_currentConversationID = model.GetConversationID(model.firstState);
             SetConversationOverride(model.firstState);
-            GotoState(model.firstState);
         }
 
         /// <summary>
