@@ -114,6 +114,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             areParticipantsValid = false;
             startEntry = null;
             selectedLink = null;
+            conversationReorderableList = null;
             actorNamesByID.Clear();
             ResetDialogueTreeSection();
             ResetConversationNodeSection();

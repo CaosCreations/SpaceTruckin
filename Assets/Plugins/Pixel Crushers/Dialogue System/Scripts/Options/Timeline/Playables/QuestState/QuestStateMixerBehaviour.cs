@@ -53,7 +53,7 @@ namespace PixelCrushers.DialogueSystem
                         {
                             message = "Set quest " + input.quest + " entry #" + input.questEntryNumber + " to " + input.questEntryState;
                         }
-                        if (!string.IsNullOrEmpty(message)) PreviewUI.ShowMessage(message, 2, -2);
+                        if (!string.IsNullOrEmpty(message)) PreviewUI.ShowMessage(message);
                     }
                 }
                 else if (inputWeight <= 0.001f && played.Contains(i))

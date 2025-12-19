@@ -50,12 +50,13 @@ namespace PixelCrushers.DialogueSystem
                     else
                     {
                         var message = "Conversation (" + DialogueActor.GetActorName(actorTransform) + "->" + DialogueActor.GetActorName(input.conversant) + "):\n[" + input.conversation + "]\n'" + input.GetEditorDialogueText() + "' (may vary)";
-                        PreviewUI.ShowMessage(message, 2, 0);
+                        PreviewUI.ShowMessage(message);
                     }
                 }
                 else if (inputWeight <= 0.001f && played.Contains(i))
                 {
                     played.Remove(i);
+                    PreviewUI.HideMessage();
                 }
             }
         }

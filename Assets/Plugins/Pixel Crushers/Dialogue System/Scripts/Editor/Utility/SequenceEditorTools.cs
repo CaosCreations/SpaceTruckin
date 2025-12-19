@@ -31,6 +31,8 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public static event SetupGenericMenuDelegate customSequenceMenuSetup = null;
 
+        private static GUIContent DefaultButtonLabel = new GUIContent("{{default}}", "Add the {{default}} keyword, which tells the Sequence to include the Dialogue Manager's Default Sequence (or Default Player Sequence for player entries if it's not blank).");
+
         /// <summary>
         /// Add text to the currently-edited sequence. Typically called from a
         /// customSequenceMenuSetup handler.
@@ -103,7 +105,9 @@ namespace PixelCrushers.DialogueSystem
             return DrawLayout(guiContent, sequence, ref rect, ref syntaxState, entry, field);
         }
 
-        public static string DrawLayout(GUIContent guiContent, string sequence, ref Rect rect, ref SequenceSyntaxState syntaxState, DialogueEntry entry = null, Field field = null)
+        public static string DrawLayout(GUIContent guiContent, string sequence, ref Rect rect, 
+            ref SequenceSyntaxState syntaxState, DialogueEntry entry = null, Field field = null,
+            bool showDefaultShortcutButton = false)
         {
             if (!string.IsNullOrEmpty(queuedText))
             {
@@ -129,6 +133,11 @@ namespace PixelCrushers.DialogueSystem
             EditorGUI.EndDisabledGroup();
 
             EditorGUI.BeginChangeCheck();
+
+            if (GUILayout.Button(DefaultButtonLabel, EditorStyles.miniButton, GUILayout.Width(68)))
+            {
+                return "{{default}};\n" + sequence;
+            }
 
             if (GUILayout.Button("+", EditorStyles.miniButton, GUILayout.Width(26)))
             {

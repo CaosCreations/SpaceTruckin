@@ -29,6 +29,7 @@ namespace PixelCrushers.DialogueSystem
 
             EditorGUILayout.PropertyField(serializedObject.FindProperty("spritePortrait"), new GUIContent("Portrait (Sprite)", "Optional portrait. If unassigned, will use portrait of actor in database. This field allows you to assign a Sprite."), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("portrait"), new GUIContent("Portrait (Texture2D)", "Optional portrait. If unassigned, will use portrait of actor in database. This field allows you to assign a Texture."), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("cameraAngles"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("audioSource"), true);
 
             var barkUISettingsProperty = serializedObject.FindProperty("barkUISettings");

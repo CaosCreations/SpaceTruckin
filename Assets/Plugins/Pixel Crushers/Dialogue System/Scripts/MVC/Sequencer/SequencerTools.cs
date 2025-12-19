@@ -239,6 +239,62 @@ namespace PixelCrushers.DialogueSystem
         }
 
         /// <summary>
+        /// If subject has a Dialogue Actor component, returns its cameraAngles value; otherwise null.
+        /// </summary>
+        public static GameObject GetSubjectSpecificCameraAngles(Transform subject)
+        {
+            var dialogueActor = DialogueActor.GetDialogueActorComponent(subject);
+            if (dialogueActor == null) return null;
+            return dialogueActor.cameraAngles;
+        }
+
+        /// <summary>
+        /// Returns a Transform representing the camera angle to use for a Camera() command.
+        /// </summary>
+        /// <param name="angle">Specifies which angle to use</param>
+        /// <param name="subject">Transform to focus on.</param>
+        /// <param name="isLocalTransform">Is set true if angle is a local (relative) transform inside a Camera Angles hierarchy.</param>
+        /// <param name="isOriginal">Is set true if angle specifier specifies to use original camera position.</param>
+        /// <returns></returns>
+        public static Transform GetCameraAngle(GameObject cameraAngles, string angle, Transform subject,
+            out bool isLocalTransform, out bool isOriginal)
+        {
+            bool isDefault = string.Equals(angle, "default");
+            if (isDefault) angle = SequencerTools.GetDefaultCameraAngle(subject);
+            isOriginal = string.Equals(angle, "original");
+            var subjectSpecificCameraAngles = GetSubjectSpecificCameraAngles(subject);
+            Transform angleTransform = null;
+            if (isOriginal)
+            {
+                // Set to dummy value since Camera() will use original position instead.
+                angleTransform = subject;// Camera.main.transform; 
+            }
+            else
+            {
+                if (subjectSpecificCameraAngles != null)
+                {
+                    angleTransform = subjectSpecificCameraAngles.transform.Find(angle);
+                }
+                if (angleTransform == null)
+                {
+                    angleTransform = cameraAngles.transform.Find(angle);
+                }
+            }
+            
+            if (angleTransform != null)
+            {
+                isLocalTransform = true;
+            }
+            else
+            {
+                isLocalTransform = false;
+                GameObject go = GameObject.Find(angle);
+                if (go != null) angleTransform = go.transform;
+            }
+            return angleTransform;
+        }
+
+        /// <summary>
         /// Gets <c>parameters[i]</c>.
         /// </summary>
         /// <returns>

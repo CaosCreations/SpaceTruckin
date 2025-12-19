@@ -243,22 +243,29 @@ namespace PixelCrushers
         }
 
         /// <summary>
-        /// Like GetComponentInChildren(), but also searches parents.
+        /// Looks for a component on self, children, or parents.
         /// </summary>
-        /// <returns>The component, or <c>null</c> if not found.</returns>
-        /// <param name="gameObject">Game object to search.</param>
-        /// <typeparam name="T">The component type.</typeparam>
-        public static T GetComponentAnywhere<T>(GameObject gameObject) where T : Component
+        public static T GetComponentInChildrenOrParent<T>(this GameObject @this) where T : Component
         {
-            if (!gameObject) return null;
-            T component = gameObject.GetComponentInChildren<T>();
-            if (component) return component;
-            Transform ancestor = gameObject.transform.parent;
+            if (@this == null) return null;
+            return @this.GetComponent<T>() ??
+                @this.GetComponentInChildren<T>() ??
+                @this.GetComponentInParent<T>();
+        }
+
+        /// <summary>
+        /// Looks for a component on self, children, or parents' children (siblings).
+        /// </summary>
+        public static T GetComponentAnywhere<T>(this GameObject @this) where T : Component
+        {
+            if (@this == null) return null;
+            T component = null;
+            Transform t = @this.transform;
             int safeguard = 0;
-            while (!component && ancestor && safeguard < 256)
+            while (!component && t && safeguard < 256)
             {
-                component = ancestor.GetComponentInChildren<T>();
-                ancestor = ancestor.parent;
+                component = t.GetComponentInChildren<T>();
+                t = t.parent;
             }
             return component;
         }

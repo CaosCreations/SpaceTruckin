@@ -64,6 +64,9 @@ namespace PixelCrushers.DialogueSystem
         private static string cachedConversantName;
         private static string cachedActorIndex;
         private static string cachedConversantIndex;
+        private static string currentActorVariableName;
+        private static string currentConversantVariableName;
+        private static string currentSpeakerVariableName;
 
 #if UNITY_2019_3_OR_NEWER && UNITY_EDITOR
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -71,6 +74,9 @@ namespace PixelCrushers.DialogueSystem
         {
             isRegistering = false;
             hasCachedParticipants = false;
+            currentActorVariableName = string.Empty;
+            currentConversantVariableName = string.Empty;
+            currentSpeakerVariableName = string.Empty;
             includeSimStatus = true;
             statusTable = new Dictionary<string, string>();
             relationshipTable = new Dictionary<string, float>();
@@ -177,10 +183,18 @@ namespace PixelCrushers.DialogueSystem
         public static void SetParticipants(string actorName, string conversantName, string actorIndex = null, string conversantIndex = null)
         {
             //---Was: Lua.Run(string.Format("Variable[\"Actor\"] = \"{0}\"; Variable[\"Conversant\"] = \"{1}\"", new System.Object[] { DoubleQuotesToSingle(actorName), DoubleQuotesToSingle(conversantName) }), DialogueDebug.LogInfo);
-            SetVariable("Actor", actorName);
-            SetVariable("Conversant", conversantName);
-            SetVariable("ActorIndex", StringToTableIndex(string.IsNullOrEmpty(actorIndex) ? actorName : actorIndex));
-            SetVariable("ConversantIndex", StringToTableIndex(string.IsNullOrEmpty(conversantIndex) ? actorName : conversantIndex));
+            if (actorName != currentActorVariableName)
+            {
+                currentActorVariableName = actorName;
+                SetVariable("Actor", actorName);
+                SetVariable("ActorIndex", StringToTableIndex(string.IsNullOrEmpty(actorIndex) ? actorName : actorIndex));
+            }
+            if (conversantName != currentConversantVariableName)
+            {
+                currentConversantVariableName = conversantName;
+                SetVariable("Conversant", conversantName);
+                SetVariable("ConversantIndex", StringToTableIndex(string.IsNullOrEmpty(conversantIndex) ? conversantName : conversantIndex));
+            }
             if (isRegistering) // Cache participants to set after Lua funcs are registered.
             {
                 hasCachedParticipants = true;
@@ -188,6 +202,15 @@ namespace PixelCrushers.DialogueSystem
                 cachedConversantName = conversantName;
                 cachedActorIndex = actorIndex;
                 cachedConversantIndex = conversantIndex;
+            }
+        }
+
+        public static void SetSpeaker(string speakerName)
+        {
+            if (speakerName != currentSpeakerVariableName)
+            {
+                currentSpeakerVariableName = speakerName;
+                SetVariable("Speaker", speakerName);
             }
         }
 

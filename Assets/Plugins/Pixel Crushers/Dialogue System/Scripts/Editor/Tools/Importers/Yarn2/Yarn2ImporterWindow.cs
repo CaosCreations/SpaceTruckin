@@ -72,6 +72,12 @@ namespace PixelCrushers.DialogueSystem.Yarn
         // // public string customCommandsSourceFile;
         // public string customCommandsSourceFile = DefaultCustomCommandsSourceFile;
 
+        /// <summary>
+        /// If dialogue text starts with text in [square brackets], extract the
+        /// text in [square brackets] and assign it to the menu text.
+        /// </summary>
+        public bool importMenuText = false;
+
         public bool debug = false;
     }
 
@@ -344,13 +350,15 @@ namespace PixelCrushers.DialogueSystem.Yarn
 
         protected override void DrawOverwriteCheckbox()
         {
+            // Also show import menu text checkbox and debug checkbox:
+            prefs.importMenuText = EditorGUILayout.Toggle(new GUIContent("Import Menu Text", "If a line has the form '[menutext] dialoguetext', set the dialogue entry's Menu Text to 'menutext' and Dialogue Text to 'dialoguetext'"),
+                                                     prefs.importMenuText);
+
             prefs.overwrite = EditorGUILayout.Toggle(new GUIContent("Overwrite", "Overwrite database if it already exists"),
                                                      prefs.overwrite);
-            // if (prefs.overwrite)
-            // {
-            //     prefs.merge = EditorGUILayout.Toggle(new GUIContent("Merge Variables", "Merge variables into existing database instead of overwriting"),
-            //                                          prefs.merge);
-            // }
+
+            prefs.debug = EditorGUILayout.Toggle(new GUIContent("Debug", "Log debug info to the console when importing"),
+                                                     prefs.debug);
         }
 
         protected override void DrawConversionButtons()

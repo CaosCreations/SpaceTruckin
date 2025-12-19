@@ -32,6 +32,7 @@ namespace PixelCrushers.DialogueSystem
         {
             base.Reset();
             saveAcrossSceneChanges = true;
+            skipSaveWhenChangingScenes = true;
         }
 
         public override void Start()

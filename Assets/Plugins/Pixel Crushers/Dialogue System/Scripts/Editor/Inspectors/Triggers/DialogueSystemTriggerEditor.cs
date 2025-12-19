@@ -618,9 +618,6 @@ namespace PixelCrushers.DialogueSystem
                     }
                     else
                     {
-                        EditorGUILayout.PropertyField(serializedObject.FindProperty("conversationActor"), true);
-                        EditorGUILayout.PropertyField(serializedObject.FindProperty("conversationConversant"), true);
-
                         var entryIDProperty = serializedObject.FindProperty("startConversationEntryID");
                         var entryTitleProperty = serializedObject.FindProperty("startConversationEntryTitle");
                         var specifyEntryID = EditorGUILayout.Toggle(new GUIContent("Specify Starting Entry", "Start conversation at a specific entry ID."), (entryIDProperty.intValue != -1));
@@ -663,6 +660,12 @@ namespace PixelCrushers.DialogueSystem
                             entryIDProperty.intValue = -1;
                             entryTitleProperty.stringValue = string.Empty;
                         }
+
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("conversationActor"), true);
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("conversationConversant"), true);
+                        EditorGUI.indentLevel++;
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty("additionalActorOverrides"), true);
+                        EditorGUI.indentLevel--;
 
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("overrideDialogueUI"), true);
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("exclusive"), true);

@@ -34,7 +34,7 @@ namespace PixelCrushers.DialogueSystem
 
         public string GetEditorDialogueText()
         {
-            var dialogueText = PreviewUI.GetDialogueText(conversation, jumpToSpecificEntry ? entryID : -1);
+            var dialogueText = ConversationTimelineUtility.GetDialogueText(conversation, jumpToSpecificEntry ? entryID : -1);
             return "'" + dialogueText + "'";
         }
 

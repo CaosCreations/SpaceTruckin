@@ -1,7 +1,8 @@
 // Copyright (c) Pixel Crushers. All rights reserved.
 
-using UnityEngine;
 using System;
+using System.Collections;
+using UnityEngine;
 
 namespace PixelCrushers.DialogueSystem
 {
@@ -36,6 +37,9 @@ namespace PixelCrushers.DialogueSystem
 
         [Tooltip("Optional portrait. If unassigned, will use portrait of actor in database. This field allows you to assign a Sprite.")]
         public Sprite spritePortrait;
+
+        [Tooltip("Custom camera angles for this actor. If assigned, overrides Dialogue Manager's Camera & Cutscene Settings > Camera Angles.")]
+        public GameObject cameraAngles;
 
         [Tooltip("Optional. Specifies which Audio Source to use with sequencer commands such as Audio() and AudioWait().")]
         public AudioSource audioSource;
@@ -152,23 +156,36 @@ namespace PixelCrushers.DialogueSystem
         protected virtual void OnEnable()
         {
             if (string.IsNullOrEmpty(actor)) return;
+            StartCoroutine(RegisterAtEndOfFrame());
+        }
+
+        // Wait for end of frame in case DialogueActor's parent is destroyed on same frame but
+        // after OnEnable(). Must do this because OnEnable() can run before another GameObject's
+        // Awake() method.
+        protected IEnumerator RegisterAtEndOfFrame()
+        {
+            yield return new WaitForEndOfFrame();
             CharacterInfo.RegisterActorTransform(actor, transform);
         }
 
         protected virtual void OnDisable()
         {
             if (string.IsNullOrEmpty(actor)) return;
-            CharacterInfo.UnregisterActorTransform(actor, transform);
-
-            // If a conversation is active, remove this actor from its model's character cache:
-            if (DialogueManager.isConversationActive)
+            var registeredTransform = CharacterInfo.GetRegisteredActorTransform(actor);
+            if (transform == registeredTransform)
             {
-                var actorAsset = DialogueManager.masterDatabase.GetActor(actor);
-                if (actorAsset != null)
+                CharacterInfo.UnregisterActorTransform(actor, transform);
+
+                // If a conversation is active, remove this actor from its model's character cache:
+                if (DialogueManager.isConversationActive)
                 {
-                    foreach (var activeConversation in DialogueManager.instance.activeConversations)
+                    var actorAsset = DialogueManager.masterDatabase.GetActor(actor);
+                    if (actorAsset != null)
                     {
-                        activeConversation.conversationModel.ClearCharacterInfo(actorAsset.id);
+                        foreach (var activeConversation in DialogueManager.instance.activeConversations)
+                        {
+                            activeConversation.conversationModel.ClearCharacterInfo(actorAsset.id);
+                        }
                     }
                 }
             }

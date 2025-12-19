@@ -29,7 +29,7 @@ namespace PixelCrushers.DialogueSystem
 
         public virtual void AddListener(QuestStateListener listener)
         {
-            if (listener == null) return;
+            if (listener == null || m_listeners.Contains(listener)) return;
             m_listeners.Add(listener);
         }
 

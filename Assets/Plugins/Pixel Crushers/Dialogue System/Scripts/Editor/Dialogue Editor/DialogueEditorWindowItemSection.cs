@@ -618,8 +618,11 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     if (field.title.StartsWith("Description "))
                     {
                         string language = field.title.Substring("Description ".Length);
-                        questLanguages.Add(language);
-                        languages.Add(language);
+                        if (!string.IsNullOrWhiteSpace(language))
+                        {
+                            if (!questLanguages.Contains(language)) questLanguages.Add(language);
+                            if (!languages.Contains(language)) languages.Add(language);
+                        }
                     }
                 });
                 questLanguages.ForEach(language => item.fields.Add(new Field(string.Format("Entry {0} {1}", entryCount, language), string.Empty, FieldType.Localization)));

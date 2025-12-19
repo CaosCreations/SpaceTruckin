@@ -1,5 +1,6 @@
 // Copyright (c) Pixel Crushers. All rights reserved.
 
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace PixelCrushers.DialogueSystem
@@ -214,6 +215,15 @@ namespace PixelCrushers.DialogueSystem
         /// If a group node's Conditions are true, don't evaluate sibling group nodes.
         /// </summary>
         public static bool useLinearGroupMode { get { return hasInstance ? instance.useLinearGroupMode : false; } }
+
+        /// <summary>
+        /// Update any actively-displayed conversations' text when current language changes.
+        /// </summary>
+        public static bool updateActiveConversationTextWhenLanguageChanges 
+        { 
+            get { return hasInstance ? instance.updateActiveConversationTextWhenLanguageChanges : false; } 
+            set { if (hasInstance) instance.updateActiveConversationTextWhenLanguageChanges = value; }
+        }
 
         /// <summary>
         /// If <c>true</c>, Dialogue System Triggers set to OnStart should wait until save data has been applied or variables initialized.
@@ -470,8 +480,43 @@ namespace PixelCrushers.DialogueSystem
         /// <param name='initialDialogueEntryID'> 
         /// The initial dialogue entry ID, or -1 to start from the beginning.
         /// </param>
+        /// <param name="overrideDialogueUI">Use this dialogue UI.</param>
+        /// <param name="actorOverrides">Other actors to override for this active conversation.</param>
         /// <example>
-        /// StartConversation("Shopkeeper Conversation", player, shopkeeper);
+        /// StartConversation("Shopkeeper Conversation", player, shopkeeper, 7, otherUI, otherActorOverrides);
+        /// </example>
+        public static void StartConversation(string title, Transform actor, Transform conversant,
+            int initialDialogueEntryID, IDialogueUI overrideDialogueUI, List<ActorOverride> actorOverrides)
+        {
+            if (!hasInstance) return;
+            instance.StartConversation(title, actor, conversant, initialDialogueEntryID, overrideDialogueUI, actorOverrides);
+        }
+
+        /// <summary>
+        /// Starts a conversation, which also broadcasts an OnConversationStart message to the 
+        /// actor and conversant. Your scripts can listen for OnConversationStart to do anything
+        /// necessary at the beginning of a conversation, such as pausing other gameplay or 
+        /// temporarily disabling player control. See the Feature Demo scene, which uses the
+        /// SetEnabledOnDialogueEvent component to disable player control during conversations.
+        /// </summary>
+        /// <param name='title'>
+        /// The title of the conversation to look up in the master database.
+        /// </param>
+        /// <param name='actor'>
+        /// The transform of the actor (primary participant). The sequencer uses this to direct 
+        /// camera angles and perform other actions. In PC-NPC conversations, the actor is usually
+        /// the PC.
+        /// </param>
+        /// <param name='conversant'>
+        /// The transform of the conversant (the other participant). The sequencer uses this to 
+        /// direct camera angles and perform other actions. In PC-NPC conversations, the conversant
+        /// is usually the NPC.
+        /// </param>
+        /// <param name='initialDialogueEntryID'> 
+        /// The initial dialogue entry ID, or -1 to start from the beginning.
+        /// </param>
+        /// <example>
+        /// StartConversation("Shopkeeper Conversation", player, shopkeeper, 7, otherUI);
         /// </example>
         public static void StartConversation(string title, Transform actor, Transform conversant, 
             int initialDialogueEntryID, IDialogueUI overrideDialogueUI)

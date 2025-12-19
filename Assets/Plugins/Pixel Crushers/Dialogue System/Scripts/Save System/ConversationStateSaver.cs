@@ -74,6 +74,11 @@ namespace PixelCrushers.DialogueSystem
                 for (int i = 0; i < ui.conversationUIElements.subtitlePanels.Length; i++)
                 {
                     var subtitlePanel = ui.conversationUIElements.subtitlePanels[i];
+                    if (subtitlePanel == null)
+                    {
+                        data.panelOpenOnActorName[i] = null;
+                        continue;
+                    }
                     if (!subtitlePanel.isOpen && 0 <= i && i < data.panelOpenOnActorName.Count)
                     {
                         data.panelOpenOnActorName[i] = null;

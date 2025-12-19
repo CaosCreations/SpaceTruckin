@@ -69,6 +69,14 @@ namespace PixelCrushers
             return @this[UnityEngine.Random.Range(0, @this.Count)];
         }
 
+        /// <summary>
+        /// Returns true if a list is null or empty.
+        /// </summary>
+        public static bool IsNullOrEmpty<T>(this List<T> @this)
+        {
+            return @this == null || @this.Count == 0;
+        }
+
     }
 
 }

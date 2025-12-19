@@ -287,7 +287,7 @@ namespace PixelCrushers.DialogueSystem
         private void SetConversationOverride(ConversationState state)
         {
             m_view.displaySettings.conversationOverrideSettings = m_model.GetConversationOverrideSettings(state);
-            DialogueManager.displaySettings.conversationOverrideSettings = m_view.displaySettings.conversationOverrideSettings;
+            //--- Not needed: DialogueManager.displaySettings.conversationOverrideSettings = m_view.displaySettings.conversationOverrideSettings;
         }
 
         /// <summary>
@@ -297,14 +297,16 @@ namespace PixelCrushers.DialogueSystem
         /// auto-response, the conversation proceeds directly to that response). If there are no
         /// responses, the conversation ends.
         /// </summary>
-        /// <param name='sender'>
-        /// Sender.
-        /// </param>
-        /// <param name='e'>
-        /// Event args.
-        /// </param>
+        /// <param name='sender'>Sender.</param>
+        /// <param name='e'>Event args.</param>
         public void OnFinishedSubtitle(object sender, EventArgs e)
         {
+            // Record state that just finished first. To advance the conversation, this method
+            // calls GetState() to get the next state. GetState() will run new state's Script.
+            // It's possible that a custom function in Script will move the conversation to a
+            // completely different state, in which case we don't want this method to then
+            // also move the conversation, which would undo what the Script field just did.
+            var stateThatJustFinished = m_state;
             if (reevaluateLinksAfterSubtitle && !DialogueManager.useLinearGroupMode)
             {
                 m_model.UpdateResponses(m_state);
@@ -318,7 +320,11 @@ namespace PixelCrushers.DialogueSystem
             }
             if (m_state.HasValidNPCResponse())
             {
-                GotoState(m_model.GetState(randomize ? m_state.GetRandomNPCEntry(randomizeNextEntryNoDuplicate) : m_state.firstNPCResponse.destinationEntry));
+                var nextState = m_model.GetState(randomize ? m_state.GetRandomNPCEntry(randomizeNextEntryNoDuplicate) : m_state.firstNPCResponse.destinationEntry);
+                if (m_state == stateThatJustFinished)
+                {
+                    GotoState(nextState);
+                }
             }
             else if (m_state.HasValidPCResponses())
             {
@@ -326,7 +332,11 @@ namespace PixelCrushers.DialogueSystem
                 AnalyzePCResponses(m_state, out isPCResponseMenuNext, out isPCAutoResponseNext);
                 if (isPCAutoResponseNext)
                 {
-                    GotoState(m_model.GetState(m_state.pcAutoResponse.destinationEntry));
+                    var nextState = m_model.GetState(m_state.pcAutoResponse.destinationEntry);
+                    if (m_state == stateThatJustFinished)
+                    {
+                        GotoState(nextState);
+                    }
                 }
                 else
                 {

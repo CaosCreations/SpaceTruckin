@@ -170,7 +170,7 @@ namespace PixelCrushers.DialogueSystem.Yarn
             CommandType = BuiltInCommandExt.FromYarnSymbol(Name);
             StringTokens = args;
             foreach (var argToken in StringTokens) if (argToken.Type.IsExpression()) ++ExpressionCount;
-            Debug.Log($"CommandStatement::CommandStatement() - cmd: {Name}, type: {CommandType}, exp#: {ExpressionCount}");
+            // Debug.Log($"CommandStatement::CommandStatement() - cmd: {Name}, type: {CommandType}, exp#: {ExpressionCount}");
         }
     }
 

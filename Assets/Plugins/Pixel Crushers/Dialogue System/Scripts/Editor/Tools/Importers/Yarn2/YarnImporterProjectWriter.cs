@@ -511,7 +511,9 @@ $@"local {RunCommandRuntimeArgumentList} = {Lua.EvaluateYarnExpression}({{1}})
             }
             else
             {
-                var jumpLink = CreateLink(jumpEntry, dstConvo.dialogueEntries[0]);
+                var dstStartEntry = dstConvo.dialogueEntries[0];
+                if (string.IsNullOrEmpty(dstStartEntry.Sequence) || dstStartEntry.Sequence == "None()") dstStartEntry.Sequence = "Continue()";
+                var jumpLink = CreateLink(jumpEntry, dstStartEntry);
                 jumpLink.isConnector = true;
             }
 
@@ -643,6 +645,7 @@ $@"local {RunCommandRuntimeArgumentList} = {Lua.EvaluateYarnExpression}({{1}})
             }
 
             SetLineEntrySequence(lineEntry);
+            if (_prefs.importMenuText) ExtractMenuText(lineEntry);
             CreateLink(previousEntry, lineEntry);
 
             return lineEntry;
@@ -959,9 +962,45 @@ $@"local {RunCommandRuntimeArgumentList} = {Lua.EvaluateYarnExpression}({{1}})
             }
         }
 
+        private string ExtractMenuText(string text, out string remainingDialogueText)
+        { 
+            // From "[menutext] dialoguetext", set remainingDialogueText to "dialogueText"
+            // and return "menutext":
+            if (text.StartsWith("["))
+            {
+                var pos = text.IndexOf("]");
+                if (pos != -1)
+                {
+                    remainingDialogueText = text.Substring(pos + 1).TrimStart();
+                    return text.Substring(1, pos - 1);
+                }
+            }
+            remainingDialogueText = text;
+            return string.Empty;
+        }
+
+        private void ExtractMenuText(DialogueEntry lineEntry)
+        {
+            // Default menu text:
+            lineEntry.MenuText = ExtractMenuText(lineEntry.DialogueText, out var remainingDialogueText);
+            lineEntry.DialogueText = remainingDialogueText;
+
+            // Localized menu texts:
+            var localizedDialogueTextFields = lineEntry.fields.FindAll(field => field.type == FieldType.Localization && !field.title.Contains(" "));
+            foreach (var localizedDialogueTextField in localizedDialogueTextFields)
+            {
+                var localizedMenuText = ExtractMenuText(localizedDialogueTextField.value, out var remainingLocalizedDialogueText);
+                if (!string.IsNullOrEmpty(localizedMenuText))
+                {
+                    Field.SetValue(lineEntry.fields, $"Menu Text {localizedDialogueTextField.title}", localizedMenuText, FieldType.Localization);
+                    localizedDialogueTextField.value = remainingLocalizedDialogueText;
+                }
+            }
+        }
+
         private DialogueEntry CreateDialogueEntry(Conversation conversation, string title = null, string description = null)
         {
-            Debug.Log($"<color=cyan>CreateDialogueEntry {title}/{description}</color>");
+            if (_prefs.debug) Debug.Log($"<color=cyan>CreateDialogueEntry {title}/{description}</color>");
 
             var dialogueEntry = _template.CreateDialogueEntry(_template.GetNextDialogueEntryID(conversation), conversation.id, title);
 
@@ -1149,7 +1188,7 @@ $@"local {RunCommandRuntimeArgumentList} = {Lua.EvaluateYarnExpression}({{1}})
             // Parser doesn't handle ->Message, so it was temporarily replaced. Fix it back:
             sequenceString = sequenceString.Replace("SEQ_SEND_MESSAGE(", "->Message(");
 
-            Debug.Log($"YarnProjectWriter::GenerateSequence() - sequenceString: {sequenceString}, exp count: {cmd.ExpressionCount}");
+            if (_prefs.debug) Debug.Log($"YarnProjectWriter::GenerateSequence() - sequenceString: {sequenceString}, exp count: {cmd.ExpressionCount}");
 
             if (cmd.HasExpression)
             {

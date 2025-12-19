@@ -124,10 +124,11 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 AssetDatabase.CopyAsset(path, backupPath);
                 AssetDatabase.Refresh();
 #if !(UNITY_4_6 || UNITY_4_7 || UNITY_4_8 || UNITY_4_9)
-                if (!string.IsNullOrEmpty(AssetImporter.GetAtPath(backupPath).assetBundleName))
+                var importer = AssetImporter.GetAtPath(backupPath);
+                if (importer != null && !string.IsNullOrEmpty(importer.assetBundleName))
                 {
-                    AssetImporter.GetAtPath(backupPath).assetBundleVariant = string.Empty;
-                    AssetImporter.GetAtPath(backupPath).assetBundleName = string.Empty;
+                    importer.assetBundleVariant = string.Empty;
+                    importer.assetBundleName = string.Empty;
                 }
 #endif
             }

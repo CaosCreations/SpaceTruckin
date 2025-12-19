@@ -223,12 +223,12 @@ namespace PixelCrushers.DialogueSystem
             if (string.IsNullOrEmpty(actorName) || (actorTransform == null)) return;
             if (registeredActorTransforms.ContainsKey(actorName))
             {
-                if (DialogueDebug.logInfo) Debug.LogWarning("Dialogue System: Registering transform " + actorTransform.name + " as actor '" + actorName + "' but another transform is already registered. Overwriting with new transform.", actorTransform);
+                if (DialogueDebug.logInfo) Debug.LogWarning($"Dialogue System: Registering transform {actorTransform.name} as actor '{actorName}' but another transform is already registered. Overwriting with new transform.", actorTransform);
                 registeredActorTransforms[actorName] = actorTransform;
             }
             else
             {
-                if (DialogueDebug.logInfo) Debug.Log("Dialogue System: Registering transform " + actorTransform.name + " as actor '" + actorName + "'.", actorTransform);
+                if (DialogueDebug.logInfo) Debug.Log($"Dialogue System: Registering transform {actorTransform.name} as actor '{actorName}'.", actorTransform);
                 registeredActorTransforms.Add(actorName, actorTransform);
             }
 
@@ -256,10 +256,13 @@ namespace PixelCrushers.DialogueSystem
         public static void UnregisterActorTransform(string actorName, Transform actorTransform)
         {
             if (string.IsNullOrEmpty(actorName) || (actorTransform == null)) return;
-            if (registeredActorTransforms.ContainsKey(actorName))
+            if (registeredActorTransforms.TryGetValue(actorName, out var registeredTransform))
             {
-                if (DialogueDebug.logInfo) Debug.Log("Dialogue System: Unregistering transform " + actorTransform.name + " from actor '" + actorName + "'.", actorTransform);
-                registeredActorTransforms.Remove(actorName);
+                if (actorTransform == registeredTransform)
+                {
+                    if (DialogueDebug.logInfo) Debug.Log($"Dialogue System: Unregistering transform {actorTransform.name} from actor '{actorName}'.", actorTransform);
+                    registeredActorTransforms.Remove(actorName);
+                }
             }
         }
 

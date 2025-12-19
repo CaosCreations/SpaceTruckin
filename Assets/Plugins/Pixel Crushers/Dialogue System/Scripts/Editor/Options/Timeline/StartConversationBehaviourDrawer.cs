@@ -17,7 +17,7 @@ namespace PixelCrushers.DialogueSystem
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             int fieldCount = 6;
-            return fieldCount * EditorGUIUtility.singleLineHeight;
+            return fieldCount * EditorGUIUtility.singleLineHeight + 2;
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -60,17 +60,16 @@ namespace PixelCrushers.DialogueSystem
 
             singleFieldRect.y += EditorGUIUtility.singleLineHeight;
             EditorGUI.PropertyField(singleFieldRect, exclusiveProp);
+            singleFieldRect.y += EditorGUIUtility.singleLineHeight;
+            EditorGUI.HelpBox(singleFieldRect, "Actor is GameObject assigned to this track.", MessageType.None);
         }
 
         private void UpdateLength(string conversation, bool jumpToSpecificEntry, int entryID = -1)
         {
-            var duration = PreviewUI.GetSequenceDuration(conversation, jumpToSpecificEntry ? entryID : -1);
-            Debug.Log("Best estimate duration: " + duration + "sec");
-            var clip = TimelineEditor.selectedClip;
-            if (clip == null) return;
-            var startConversationClip = clip.asset as StartConversationClip;
-            if (startConversationClip == null) return;
-            startConversationClip.SetDuration(duration);
+            var duration = ConversationTimelineUtility.GetSequenceDuration(conversation, jumpToSpecificEntry ? entryID : -1);
+            Debug.Log("Best estimate duration: " + duration + " seconds");
+            if (TimelineEditor.selectedClip == null) return;
+            TimelineEditor.selectedClip.duration = duration;
         }
     }
 }

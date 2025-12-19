@@ -28,17 +28,18 @@ namespace PixelCrushers.DialogueSystem
                     SequencerMessageBehaviour input = inputPlayable.GetBehaviour();
                     if (Application.isPlaying)
                     {
-                        Debug.Log("MESSAGE: " + input.message);
+                        if (DialogueDebug.logInfo) Debug.Log("MESSAGE: " + input.message);
                         Sequencer.Message(input.message);
                     }
                     else
                     {
-                        PreviewUI.ShowMessage($"'{input.message}'-->Sequencer", 2, -3);
+                        PreviewUI.ShowMessage($"'{input.message}'-->Sequencer");
                     }
                 }
                 else if (inputWeight <= 0.001f && played.Contains(i))
                 {
                     played.Remove(i);
+                    PreviewUI.HideMessage();
                 }
             }
         }

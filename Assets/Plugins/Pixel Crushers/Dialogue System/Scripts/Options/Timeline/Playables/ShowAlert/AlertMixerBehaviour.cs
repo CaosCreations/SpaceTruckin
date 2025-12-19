@@ -35,7 +35,7 @@ namespace PixelCrushers.DialogueSystem
                     }
                     else
                     {
-                        PreviewUI.ShowMessage(message, duration, -1);
+                        PreviewUI.ShowMessage(message);
                     }
                 }
                 else if (inputWeight <= 0.001f && played.Contains(i))
