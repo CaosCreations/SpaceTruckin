@@ -54,7 +54,7 @@ namespace PixelCrushers.DialogueSystem
                     {
                         var message = DialogueActor.GetActorName(trackBinding.transform) + " bark: " + input.GetEditorBarkText();
                         if (input.useConversation) message += " (may vary)";
-                        PreviewUI.ShowMessage(message, 2, 1);
+                        PreviewUI.ShowMessage(message);
                     }
                 }
                 else if (inputWeight <= 0.001f && played.Contains(i))

@@ -811,7 +811,7 @@ namespace PixelCrushers.DialogueSystem.Yarn
             var nodeName = _currentNode.Name;
             var lineNum = context.Start.Line;
             var jumpStmtText = $"<<jump {{{jumpStmtExpression}}}>>";
-            var errMsg = $"Node '{nodeName}' line: {lineNum}: Jump statements with expressions are not supported by Unity Dialogue System: {jumpStmtText}";
+            var errMsg = $"Node '{nodeName}' line: {lineNum}: Jump statements with expressions are not supported by the Dialogue System: {jumpStmtText}";
             if (_prefs.debug) Debug.LogError(errMsg);
             throw new Exception(errMsg);
         }

@@ -142,6 +142,11 @@ namespace PixelCrushers.DialogueSystem
         public static SetQuestEntryStateDelegate SetQuestEntryStateOverride = null;
 
         /// <summary>
+        /// Invoke OnQuestStateChange events for quest entry changes as well as main quest state changes.
+        /// </summary>
+        public static bool invokeOnQuestStateChangeForEntries = true;
+
+        /// <summary>
         /// Set true to allow only one quest to be tracked at a time.
         /// </summary>
         public static bool trackOneQuestAtATime = false;
@@ -850,7 +855,10 @@ namespace PixelCrushers.DialogueSystem
             if (DialogueLua.DoesTableElementExist("Quest", questName))
             {
                 DialogueLua.SetQuestField(questName, GetEntryStateFieldName((int)entryNumber), state);
-                InformQuestStateChange(questName);
+                if (invokeOnQuestStateChangeForEntries)
+                {
+                    InformQuestStateChange(questName);
+                }
                 InformQuestEntryStateChange(questName, (int)entryNumber);
                 SendUpdateTracker();
             }

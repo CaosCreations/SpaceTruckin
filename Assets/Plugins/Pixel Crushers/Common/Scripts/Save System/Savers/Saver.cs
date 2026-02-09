@@ -24,9 +24,17 @@ namespace PixelCrushers
         [SerializeField]
         private bool m_saveAcrossSceneChanges = true;
 
+        [Tooltip("Record & apply save data when saving/load games but not when just changing scenes. Typically used only for savers on DontDestroyOnLoad GamObjects.")]
+        [SerializeField]
+        private bool m_skipSaveWhenChangingScenes = false;
+
         [Tooltip("When starting, restore this saver's state from current saved game data. Normally the save system restores state when loading games or changing scenes without this checkbox.")]
         [SerializeField]
         private bool m_restoreStateOnStart = false;
+
+        [Tooltip("Order in which savers should restore their data.")]
+        [SerializeField]
+        private int m_order = 0;
 
         protected string m_runtimeKey = null;
 
@@ -84,10 +92,34 @@ namespace PixelCrushers
             set { m_saveAcrossSceneChanges = value; }
         }
 
+        /// <summary>
+        /// Record & apply save data when saving/load games but not when just changing 
+        /// scenes. Typically used only for savers on DontDestroyOnLoad GamObjects.
+        /// </summary>
+        public virtual bool skipSaveWhenChangingScenes
+        {
+            get { return m_skipSaveWhenChangingScenes; }
+            set { m_skipSaveWhenChangingScenes = value; }
+        }
+
+        /// <summary>
+        /// When starting, restore this saver's state from current saved game data. 
+        /// Normally the save system restores state when loading games or changing 
+        /// scenes without this value, so it should usually be false.
+        /// </summary>
         public virtual bool restoreStateOnStart
         {
             get { return m_restoreStateOnStart; }
             set { m_restoreStateOnStart = value; }
+        }
+
+        /// <summary>
+        /// Order in which savers should restore their data.
+        /// </summary>
+        public virtual int order
+        { 
+            get { return m_order; }
+            set { m_order = value; }
         }
 
         public virtual void Awake() { }

@@ -94,7 +94,7 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
             }
         }
 
-        public override void ShowContinueButton() => UIToolkitDialogueUI.SetDisplay(ContinueButton, true);
+        public override void ShowContinueButton() => UIToolkitDialogueUI.SetDisplay(ContinueButton, true, InputDeviceManager.autoFocus);
         public override void HideContinueButton() => UIToolkitDialogueUI.SetDisplay(ContinueButton, false);
 
     }

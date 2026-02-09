@@ -36,6 +36,7 @@ namespace PixelCrushers.DialogueSystem
             public bool barkSettingsFoldout = false;
             public bool alertSettingsFoldout = false;
             public bool persistentDataSettingsFoldout = false;
+            public bool questSettingsFoldout = false;
             public bool otherSettingsFoldout = false;
         }
 
@@ -77,6 +78,7 @@ namespace PixelCrushers.DialogueSystem
             DrawDatabaseField();
             DrawDisplaySettings();
             DrawPersistentDataSettings();
+            DrawQuestSettings();
             DrawOtherSettings();
             serializedObject.ApplyModifiedProperties();
             var newDialogueUI = GetCurrentDialogueUI();
@@ -280,6 +282,7 @@ namespace PixelCrushers.DialogueSystem
                     EditorGUILayout.PropertyField(cameraSettings.FindPropertyRelative("defaultResponseMenuSequence"), true);
                     EditorGUILayout.PropertyField(cameraSettings.FindPropertyRelative("entrytagFormat"), true);
                     EditorGUILayout.PropertyField(cameraSettings.FindPropertyRelative("reportMissingAudioFiles"), true);
+                    EditorGUILayout.PropertyField(cameraSettings.FindPropertyRelative("treatAllCommandsAsRequired"), true);
                     EditorGUILayout.PropertyField(cameraSettings.FindPropertyRelative("disableInternalSequencerCommands"), true);
                 }
                 finally
@@ -384,6 +387,23 @@ namespace PixelCrushers.DialogueSystem
                     EditorGUILayout.PropertyField(persistentDataSettingsProperty.FindPropertyRelative("asyncGameObjectBatchSize"), true);
                     EditorGUILayout.PropertyField(persistentDataSettingsProperty.FindPropertyRelative("asyncDialogueEntryBatchSize"), true);
                     EditorGUILayout.PropertyField(persistentDataSettingsProperty.FindPropertyRelative("initializeNewVariables"), true);
+                }
+                finally
+                {
+                    EditorWindowTools.EditorGUILayoutEndGroup();
+                }
+            }
+        }
+
+        private void DrawQuestSettings()
+        {
+            foldouts.questSettingsFoldout = EditorWindowTools.EditorGUILayoutFoldout("Quest Settings", "Settings used by the quest system.", foldouts.questSettingsFoldout);
+            if (foldouts.questSettingsFoldout)
+            {
+                try
+                {
+                    EditorWindowTools.EditorGUILayoutBeginGroup();
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("invokeOnQuestStateChangeForEntries"), true);
                 }
                 finally
                 {

@@ -157,7 +157,7 @@ namespace PixelCrushers.DialogueSystem
 
         public void OnConversationLineEarly(Subtitle subtitle)
         {
-            conversationEvents.onConversationLine.Invoke(subtitle);
+            conversationEvents.onConversationLineEarly.Invoke(subtitle);
         }
 
         public void OnConversationLine(Subtitle subtitle)

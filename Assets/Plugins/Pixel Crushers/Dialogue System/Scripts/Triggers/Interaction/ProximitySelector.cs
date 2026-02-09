@@ -410,7 +410,6 @@ namespace PixelCrushers.DialogueSystem
                 if (usablesInRange.Contains(usable)) usablesInRange.Remove(usable);
                 if (currentUsable == usable)
                 {
-                    OnDeselectedUsableObject(usable);
                     toldListenersHaveUsable = false;
                     usablesInRange.RemoveAll(x => x == null || !x.gameObject.activeInHierarchy);
                     if (usablesInRange.Count > 0)

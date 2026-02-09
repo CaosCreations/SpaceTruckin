@@ -35,7 +35,7 @@ namespace PixelCrushers.DialogueSystem
         public string GetEditorBarkText()
         {
             return useConversation 
-                ? ("[" + conversation + "] '" + PreviewUI.GetDialogueText(conversation, -1) + "'")
+                ? ("[" + conversation + "] '" + ConversationTimelineUtility.GetDialogueText(conversation, -1) + "'")
                 : text;
         }
 

@@ -45,19 +45,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
             duration = GetParameterAsFloat(2, 0);
 
             // Get angle:
-            bool isDefault = string.Equals(angle, "default");
-            if (isDefault) angle = SequencerTools.GetDefaultCameraAngle(subject);
-            isOriginal = string.Equals(angle, "original");
-            angleTransform = isOriginal
-                ? Camera.main.transform
-                : ((sequencer.cameraAngles != null) ? sequencer.cameraAngles.transform.Find(angle) : null);
-            isLocalTransform = true;
-            if (angleTransform == null)
-            {
-                isLocalTransform = false;
-                GameObject go = GameObject.Find(angle);
-                if (go != null) angleTransform = go.transform;
-            }
+            angleTransform = SequencerTools.GetCameraAngle(sequencer.cameraAngles, angle, subject, out isLocalTransform, out isOriginal);
 
             // Log:
             if (DialogueDebug.logInfo) Debug.Log(string.Format("{0}: Sequencer: Camera({1}, {2}, {3}s)", new System.Object[] { DialogueDebug.Prefix, angle, Tools.GetGameObjectName(subject), duration }));

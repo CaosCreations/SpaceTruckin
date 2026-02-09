@@ -267,6 +267,7 @@ namespace PixelCrushers.DialogueSystem
                 this.defaultPlayerSequence = source.defaultPlayerSequence;
                 this.defaultResponseMenuSequence = source.defaultResponseMenuSequence;
                 this.entrytagFormat = source.entrytagFormat;
+                this.treatAllCommandsAsRequired = source.treatAllCommandsAsRequired;
                 this.reportMissingAudioFiles = source.reportMissingAudioFiles;
                 this.disableInternalSequencerCommands = source.disableInternalSequencerCommands;
             }
@@ -341,6 +342,12 @@ namespace PixelCrushers.DialogueSystem
             /// </summary>
             [Tooltip("Format to use for the 'entrytag' keyword.")]
             public EntrytagFormat entrytagFormat = EntrytagFormat.ActorName_ConversationID_EntryID;
+
+            /// <summary>
+            /// Treat all sequencer commands as if they have the 'required' keyword.
+            /// </summary>
+            [Tooltip("Treat all sequencer commands as if they have the 'required' keyword.")]
+            public bool treatAllCommandsAsRequired = false;
 
             /// <summary>
             /// By default, Audio() and AudioWait() sequencer commands don't report 

@@ -90,7 +90,7 @@ namespace PixelCrushers.DialogueSystem
         public void SetDialogueUI(StandardDialogueUI dialogueUI)
         {
             this.dialogueUI = dialogueUI;
-            m_builtinPanels.ForEach(panel => panel.dialogueUI = dialogueUI);
+            m_builtinPanels.ForEach(panel => { if (panel != null) panel.dialogueUI = dialogueUI; });
         }
 
         public void ClearCache()
@@ -313,6 +313,7 @@ namespace PixelCrushers.DialogueSystem
             {
                 var panel = GetDialogueActorPanel(dialogueActor);
                 if (panel == null) panel = defaultPanel;
+                if (panel == null) return null;
                 panel.dialogueUI = dialogueUI;
                 m_actorPanelCache[speakerTransform] = panel;
                 m_useBarkUIs.Remove(speakerTransform);
@@ -814,10 +815,25 @@ namespace PixelCrushers.DialogueSystem
 
             // Check main Actor & Conversant:
             var mainActorID = conversation.ActorID;
-            var mainActor = DialogueManager.masterDatabase.GetActor(DialogueActor.GetActorName(DialogueManager.currentActor));
-            if (mainActor != null) mainActorID = mainActor.id;
+            //var mainActor = DialogueManager.masterDatabase.GetActor(DialogueActor.GetActorName(DialogueManager.currentActor));
+            //if (mainActor != null) mainActorID = mainActor.id;
+            var mainDialogueActor = DialogueActor.GetDialogueActorComponent(DialogueManager.currentActor);
+            if (mainDialogueActor != null)
+            {
+                var mainActor = DialogueManager.masterDatabase.GetActor(mainDialogueActor.actor);
+                if (mainActor != null) mainActorID = mainActor.id;
+            }
+
+            var mainConversantID = conversation.ConversantID;
+            var conversantDialogueActor = DialogueActor.GetDialogueActorComponent(DialogueManager.currentConversant);
+            if (conversantDialogueActor != null)
+            {
+                var mainConversant = DialogueManager.masterDatabase.GetActor(conversantDialogueActor.actor);
+                if (mainConversant != null) mainConversantID = mainConversant.id;
+            }
+
             CheckActorIDOnStartConversation(mainActorID, checkedActorIDs, checkedPanels, ui);
-            CheckActorIDOnStartConversation(conversation.ConversantID, checkedActorIDs, checkedPanels, ui);
+            CheckActorIDOnStartConversation(mainConversantID, checkedActorIDs, checkedPanels, ui);
 
             // Check other actors:
             for (int i = 0; i < conversation.dialogueEntries.Count; i++)

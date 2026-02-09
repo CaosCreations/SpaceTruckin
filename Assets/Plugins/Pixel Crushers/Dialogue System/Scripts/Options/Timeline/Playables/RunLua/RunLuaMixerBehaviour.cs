@@ -38,7 +38,7 @@ namespace PixelCrushers.DialogueSystem
                     }
                     else
                     {
-                        PreviewUI.ShowMessage("Lua: " + luaCode, 3, -1);
+                        PreviewUI.ShowMessage("Lua: " + luaCode);
                     }
                 }
                 else if (inputWeight <= 0.001f && played.Contains(i))

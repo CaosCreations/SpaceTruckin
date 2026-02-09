@@ -179,10 +179,11 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
 
         #region Static Utility Methods
 
-        public static void SetDisplay(VisualElement visualElement, bool value)
+        public static void SetDisplay(VisualElement visualElement, bool value, bool setFocus = false)
         {
             if (visualElement == null) return;
             visualElement.style.display = value ? DisplayStyle.Flex : DisplayStyle.None;
+            if (setFocus) visualElement.Focus();
         }
 
         public static bool IsVisible(VisualElement visualElement)

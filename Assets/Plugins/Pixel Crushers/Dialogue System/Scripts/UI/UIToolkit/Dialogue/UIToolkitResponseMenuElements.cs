@@ -105,6 +105,7 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
             int numUnusedButtons = responseButtonNames.Count - maxResponses;
 
             // Fill in buttons using specified positions & alignment:
+            var needToFocusAButton = InputDeviceManager.autoFocus;
             for (int i = 0; i < responses.Length; i++)
             {
                 var response = responses[i];
@@ -118,7 +119,14 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
                 var button = GetResponseButton(index);
                 if (button == null) continue;
                 button.text = response.formattedText.text;
-                UIToolkitDialogueUI.SetDisplay(button, true);
+                button.SetEnabled(response.enabled);
+                var focusThisButton = false;
+                if (needToFocusAButton && response.enabled)
+                {
+                    focusThisButton = true;
+                    needToFocusAButton = false;
+                }
+                UIToolkitDialogueUI.SetDisplay(button, true, focusThisButton);
             }
 
             // If specified, show unused buttons with no text:

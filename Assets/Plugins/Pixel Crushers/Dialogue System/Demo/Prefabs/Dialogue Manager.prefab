@@ -99,17 +99,20 @@ MonoBehaviour:
       continueButton: 0
       requireContinueOnLastLine: 0
       richTextEmphases: 1
+      convertPipesToLineBreaks: 1
       informSequenceStartAndEnd: 0
     cameraSettings:
       sequencerCamera: {fileID: 0}
       alternateCameraObject: {fileID: 0}
       cameraAngles: {fileID: 0}
+      cameraEasing: 0
       keepCameraPositionAtConversationEnd: 0
       showSubtitleOnEmptyContinue: 0
       defaultSequence: AudioWait(entrytag); Delay({{end}})
       defaultPlayerSequence: AudioWait(entrytag)
       defaultResponseMenuSequence: 
       entrytagFormat: 0
+      treatAllCommandsAsRequired: 0
       reportMissingAudioFiles: 0
       disableInternalSequencerCommands: 0
     inputSettings:
@@ -155,6 +158,7 @@ MonoBehaviour:
   stopEvaluationAtFirstValid: 1
   reevaluateLinksAfterSubtitle: 0
   useLinearGroupMode: 0
+  updateActiveConversationTextWhenLanguageChanges: 1
   includeSimStatus: 0
   instantiateDatabase: 1
   preloadResources: 1
@@ -165,6 +169,7 @@ MonoBehaviour:
   onStartTriggerWaitForSaveDataApplied: 0
   dialogueTimeMode: 0
   debugLevel: 2
+  invokeOnQuestStateChangeForEntries: 1
 --- !u!114 &114041376378916948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,7 +328,9 @@ MonoBehaviour:
   m_key: ds
   m_appendSaverTypeToKey: 0
   m_saveAcrossSceneChanges: 1
+  m_skipSaveWhenChangingScenes: 1
   m_restoreStateOnStart: 0
+  m_order: 0
   skipApplyDataAfterFramesIfApplyImmediate: 1
   saveRawData: 0
 --- !u!114 &114561334627962148

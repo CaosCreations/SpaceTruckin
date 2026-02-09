@@ -754,13 +754,14 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 switch (sortEntriesBeforeExport)
                 {
                     case SortEntriesMode.DepthFirst:
-                        DepthFirstSortEntries(conversation.dialogueEntries);
+                        conversation.dialogueEntries = DepthFirstSortEntries(conversation.dialogueEntries);
                         break;
                     case SortEntriesMode.BreadthFirst:
-                        BreadthFirstSortEntries(conversation.dialogueEntries);
+                        conversation.dialogueEntries = BreadthFirstSortEntries(conversation.dialogueEntries);
                         break;
                 }
             }
+            SetDatabaseDirty("Sort");
         }
 
         private void TryExportToChatMapperXML()

@@ -448,15 +448,7 @@ namespace PixelCrushers.DialogueSystem
         public static T GetComponentAnywhere<T>(GameObject gameObject) where T : Component
         {
             if (!gameObject) return null;
-            T component = gameObject.GetComponentInChildren<T>();
-            if (component) return component;
-            Transform ancestor = gameObject.transform.parent;
-            while (!component && ancestor)
-            {
-                component = ancestor.GetComponentInChildren<T>();
-                ancestor = ancestor.parent;
-            }
-            return component;
+            return gameObject.GetComponentAnywhere<T>();
         }
 
         /// <summary>

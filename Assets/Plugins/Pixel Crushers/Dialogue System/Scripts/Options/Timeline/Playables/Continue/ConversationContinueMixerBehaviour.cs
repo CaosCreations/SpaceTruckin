@@ -61,7 +61,7 @@ namespace PixelCrushers.DialogueSystem
                         switch (input.operation)
                         {
                             case ContinueConversationBehaviour.Operation.Continue:
-                                PreviewUI.ShowMessage(GetEditorContinueText(playable), 3, -1);
+                                PreviewUI.ShowMessage(GetEditorContinueText(playable));
                                 break;
                             case ContinueConversationBehaviour.Operation.ClearSubtitleText:
                                 break;
@@ -71,6 +71,7 @@ namespace PixelCrushers.DialogueSystem
                 else if (inputWeight <= 0.001f && played.Contains(i))
                 {
                     played.Remove(i);
+                    PreviewUI.HideMessage();
                 }
             }
         }
@@ -118,7 +119,7 @@ namespace PixelCrushers.DialogueSystem
                     }
                 }
 
-                var dialogueText = PreviewUI.GetDialogueText(conversationTitle, startingEntryID, numContinues);
+                var dialogueText = ConversationTimelineUtility.GetDialogueText(conversationTitle, startingEntryID, numContinues);
                 //Debug.Log(numContinues + " continues since " + conversationTitle + " entry " + startingEntryID +
                 //    " started at " + startConversationTime + ": " + dialogueText);
                 if (!string.IsNullOrEmpty(dialogueText))
