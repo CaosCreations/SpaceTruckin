@@ -17,6 +17,9 @@
     public const string LockZoneFunctionName = "LockZone";
     public const string UnlockZoneFunctionName = "UnlockZone";
 
+    // Dialogue entry field names
+    public const string FacialExpressionFieldName = "FacialExpression";
+
     // Actor field names
     public const string FondnessFieldName = "Fondness";
     public const string HasCompletedConversationTodayFieldName = "HasCompletedConversationToday";

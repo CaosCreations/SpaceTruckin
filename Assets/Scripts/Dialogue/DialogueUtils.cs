@@ -88,4 +88,20 @@ public static class DialogueUtils
         var currentState = DialogueManager.Instance.CurrentConversationState;
         return currentState.subtitle.dialogueEntry;
     }
+
+    public static int GetFacialExpressionIndex(DialogueEntry entry, int defaultValue = -1)
+    {
+        if (entry?.fields == null)
+        {
+            return defaultValue;
+        }
+
+        var field = PixelCrushers.DialogueSystem.Field.Lookup(entry.fields, DialogueConstants.FacialExpressionFieldName);
+        if (field == null || string.IsNullOrEmpty(field.value))
+        {
+            return defaultValue;
+        }
+
+        return int.TryParse(field.value, out int index) ? index : defaultValue;
+    }
 }
