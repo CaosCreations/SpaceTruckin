@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using PixelCrushers.DialogueSystem;
 using UnityEngine;
 
@@ -8,6 +9,13 @@ public class FacialExpressionSubtitlePanel : StandardUISubtitlePanel
     [SerializeField] private ActorFaceDataRegistry faceDataRegistry;
 
     private const int NoExpressionOverride = -1;
+    private readonly Dictionary<string, FaceExpression> persistedExpressions = new Dictionary<string, FaceExpression>();
+
+    public override void OnConversationStart(Transform actor)
+    {
+        base.OnConversationStart(actor);
+        persistedExpressions.Clear();
+    }
 
     public override void SetContent(Subtitle subtitle)
     {
@@ -62,7 +70,17 @@ public class FacialExpressionSubtitlePanel : StandardUISubtitlePanel
 
     private void SetCompositePortrait(Subtitle subtitle, ActorFaceData faceData)
     {
-        if (!DialogueUtils.TryGetFaceExpression(subtitle.dialogueEntry, out var expression))
+        var actorName = subtitle.speakerInfo.nameInDatabase;
+
+        if (DialogueUtils.TryGetFaceExpression(subtitle.dialogueEntry, out var expression))
+        {
+            persistedExpressions[actorName] = expression;
+        }
+        else if (persistedExpressions.TryGetValue(actorName, out var persisted))
+        {
+            expression = persisted;
+        }
+        else
         {
             expression = new FaceExpression { Eye = 0, Mouth = 0 };
         }
