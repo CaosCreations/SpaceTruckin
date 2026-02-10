@@ -105,6 +105,30 @@ namespace Events
         }
     }
 
+    public abstract class OnActorIntroAnimationEvent : IEvent
+    {
+        public ActorIntroAnimationData AnimationData { get; }
+
+        public OnActorIntroAnimationEvent(ActorIntroAnimationData animationData)
+        {
+            AnimationData = animationData;
+        }
+    }
+
+    public class OnActorIntroAnimationStartedEvent : OnActorIntroAnimationEvent
+    {
+        public OnActorIntroAnimationStartedEvent(ActorIntroAnimationData animationData) : base(animationData)
+        {
+        }
+    }
+
+    public class OnActorIntroAnimationFinishedEvent : OnActorIntroAnimationEvent
+    {
+        public OnActorIntroAnimationFinishedEvent(ActorIntroAnimationData animationData) : base(animationData)
+        {
+        }
+    }
+
     public class OnDialogueVariableUpdatedEvent : IEvent
     {
     }
