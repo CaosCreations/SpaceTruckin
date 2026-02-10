@@ -15,6 +15,18 @@ public class CompositePortraitRenderer : MonoBehaviour
 
     public void SetExpression(ActorFaceData faceData, int eyeIndex, int mouthIndex)
     {
+        if (faceData.Eyes == null || eyeIndex < 0 || eyeIndex >= faceData.Eyes.Length)
+        {
+            Debug.LogError($"[CompositePortrait] Invalid eye index {eyeIndex} for actor '{faceData.name}' (Eyes length: {faceData.Eyes?.Length ?? 0})");
+            return;
+        }
+
+        if (faceData.Mouths == null || mouthIndex < 0 || mouthIndex >= faceData.Mouths.Length)
+        {
+            Debug.LogError($"[CompositePortrait] Invalid mouth index {mouthIndex} for actor '{faceData.name}' (Mouths length: {faceData.Mouths?.Length ?? 0})");
+            return;
+        }
+
         baseImage.sprite = faceData.BaseSprite;
         mouthImage.sprite = faceData.Mouths[mouthIndex];
         eyesImage.sprite = faceData.Eyes[eyeIndex];
@@ -49,6 +61,17 @@ public class CompositePortraitRenderer : MonoBehaviour
             StopCoroutine(blinkCoroutine);
             blinkCoroutine = null;
         }
+
+        if (currentFaceData != null && currentFaceData.Eyes != null
+            && currentEyeIndex >= 0 && currentEyeIndex < currentFaceData.Eyes.Length)
+        {
+            eyesImage.sprite = currentFaceData.Eyes[currentEyeIndex];
+        }
+    }
+
+    private void OnDisable()
+    {
+        StopBlinking();
     }
 
     private IEnumerator BlinkLoop()
@@ -56,13 +79,13 @@ public class CompositePortraitRenderer : MonoBehaviour
         while (true)
         {
             var interval = Random.Range(currentFaceData.BlinkIntervalMin, currentFaceData.BlinkIntervalMax);
-            yield return new WaitForSeconds(interval);
+            yield return new WaitForSecondsRealtime(interval);
 
             var blinkSprite = currentFaceData.GetBlinkSprite(currentEyeIndex);
             if (blinkSprite != null)
             {
                 eyesImage.sprite = blinkSprite;
-                yield return new WaitForSeconds(currentFaceData.BlinkDuration);
+                yield return new WaitForSecondsRealtime(currentFaceData.BlinkDuration);
                 eyesImage.sprite = currentFaceData.Eyes[currentEyeIndex];
             }
         }
