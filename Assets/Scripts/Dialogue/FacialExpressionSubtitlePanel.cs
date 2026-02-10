@@ -4,6 +4,9 @@ using UnityEngine;
 // Index 0 = default portrait, indices 1-8 = alternate portraits.
 public class FacialExpressionSubtitlePanel : StandardUISubtitlePanel
 {
+    [SerializeField] private CompositePortraitRenderer compositePortrait;
+    [SerializeField] private ActorFaceDataRegistry faceDataRegistry;
+
     private const int NoExpressionOverride = -1;
 
     public override void SetContent(Subtitle subtitle)
@@ -42,10 +45,45 @@ public class FacialExpressionSubtitlePanel : StandardUISubtitlePanel
             return;
         }
 
+        var actorName = subtitle.speakerInfo.nameInDatabase;
+        var faceData = faceDataRegistry != null ? faceDataRegistry.GetByActorName(actorName) : null;
+
+        if (faceData != null && compositePortrait != null)
+        {
+            SetCompositePortrait(subtitle, faceData);
+        }
+        else
+        {
+            SetFallbackPortrait(subtitle);
+        }
+
+        portraitActorName = actorName;
+    }
+
+    private void SetCompositePortrait(Subtitle subtitle, ActorFaceData faceData)
+    {
+        if (!DialogueUtils.TryGetFaceExpression(subtitle.dialogueEntry, out var expression))
+        {
+            expression = new FaceExpression { Eye = 0, Mouth = 0 };
+        }
+
+        compositePortrait.Show();
+        compositePortrait.SetExpression(faceData, expression.EyeIndex, expression.MouthIndex);
+        portraitImage.gameObject.SetActive(false);
+    }
+
+    private void SetFallbackPortrait(Subtitle subtitle)
+    {
+        if (compositePortrait != null)
+        {
+            compositePortrait.Hide();
+        }
+
+        portraitImage.gameObject.SetActive(true);
+
         var expressionIndex = DialogueUtils.GetFacialExpressionIndex(subtitle.dialogueEntry, NoExpressionOverride);
         var sprite = GetPortraitForExpression(subtitle.speakerInfo, expressionIndex);
         SetPortraitImage(sprite);
-        portraitActorName = subtitle.speakerInfo.nameInDatabase;
     }
 
     private void SetPortraitName(Subtitle subtitle)

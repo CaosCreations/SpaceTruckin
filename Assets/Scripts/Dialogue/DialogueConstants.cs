@@ -19,6 +19,7 @@
 
     // Dialogue entry field names
     public const string FacialExpressionFieldName = "FacialExpression";
+    public const string ExpressionFieldName = "Expression";
 
     // Actor field names
     public const string FondnessFieldName = "Fondness";

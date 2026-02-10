@@ -1,7 +1,16 @@
 ﻿using Language.Lua;
 using PixelCrushers.DialogueSystem;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
+
+public struct FaceExpression
+{
+    public int Eye;
+    public int Mouth;
+    public int EyeIndex => Eye + 1;
+    public int MouthIndex => Mouth + 1;
+}
 
 public static class DialogueUtils
 {
@@ -87,6 +96,34 @@ public static class DialogueUtils
     {
         var currentState = DialogueManager.Instance.CurrentConversationState;
         return currentState.subtitle.dialogueEntry;
+    }
+
+    private static readonly Regex ExpressionRegex = new Regex(@"^E(-?[01])M(-?[01])$", RegexOptions.Compiled);
+
+    public static bool TryGetFaceExpression(DialogueEntry entry, out FaceExpression result)
+    {
+        result = default;
+
+        if (entry?.fields == null)
+        {
+            return false;
+        }
+
+        var field = Field.Lookup(entry.fields, DialogueConstants.ExpressionFieldName);
+        if (field == null || string.IsNullOrEmpty(field.value))
+        {
+            return false;
+        }
+
+        var match = ExpressionRegex.Match(field.value);
+        if (!match.Success)
+        {
+            return false;
+        }
+
+        result.Eye = int.Parse(match.Groups[1].Value);
+        result.Mouth = int.Parse(match.Groups[2].Value);
+        return true;
     }
 
     public static int GetFacialExpressionIndex(DialogueEntry entry, int defaultValue = -1)
