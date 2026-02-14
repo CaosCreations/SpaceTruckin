@@ -82,6 +82,11 @@ public class NPCSpawner : MonoBehaviour
 
     private void ValidateFields()
     {
+        if (spawnDateTimes == null)
+        {
+            return;
+        }
+
         foreach (SpawnDateTime spawnDateTime in spawnDateTimes)
         {
             // Validate spawn dates/times

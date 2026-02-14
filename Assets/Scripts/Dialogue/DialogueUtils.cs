@@ -109,7 +109,7 @@ public static class DialogueUtils
             return false;
         }
 
-        var field = Field.Lookup(entry.fields, DialogueConstants.ExpressionFieldName);
+        var field = PixelCrushers.DialogueSystem.Field.Lookup(entry.fields, DialogueConstants.ExpressionFieldName);
         if (field == null || string.IsNullOrEmpty(field.value))
         {
             return false;
