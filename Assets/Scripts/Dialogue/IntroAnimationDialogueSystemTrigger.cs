@@ -38,14 +38,17 @@ public class IntroAnimationDialogueSystemTrigger : DialogueSystemTrigger
             return null;
         }
 
-        var conversantActor = DialogueManager.MasterDatabase.GetActor(conversationAsset.ConversantID);
-        if (conversantActor == null)
+        // Try conversant first; fall back to actor for hub conversations where conversant is unset
+        var npcActor = DialogueManager.MasterDatabase.GetActor(conversationAsset.ConversantID)
+            ?? DialogueManager.MasterDatabase.GetActor(conversationAsset.ActorID);
+
+        if (npcActor == null)
         {
             return null;
         }
 
         var introAnimKey = DialogueDatabaseManager.GetActorFieldAsString(
-            conversantActor.Name, DialogueConstants.IntroAnimationKeyFieldName);
+            npcActor.Name, DialogueConstants.IntroAnimationKeyFieldName);
 
         if (string.IsNullOrEmpty(introAnimKey))
         {
