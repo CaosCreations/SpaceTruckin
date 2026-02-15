@@ -1,5 +1,5 @@
-using System;
 using System.Linq;
+using Events;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -30,6 +30,7 @@ public class CheckpointManager : MonoBehaviour
         var convoIds = new int[] { 166, 167 };
         DialogueDatabaseManager.Instance.SetConversationsSeen(convoIds);
         PlayerManager.PlayerMovement.SetPosition(PlayerConstants.PlayerSpaceportPosition, AnimationConstants.SpaceportStateName);
+        SingletonManager.EventService.Dispatch<OnCheckpointActivatedEvent>();
     }
 
     public static void Day2()
@@ -69,6 +70,7 @@ public class CheckpointManager : MonoBehaviour
 
         // TODO: If we want to support going back to day 2 from a later day, we'll need to reset the dialogue db etc.
         Bed.Sleep();
+        SingletonManager.EventService.Dispatch<OnCheckpointActivatedEvent>();
     }
 
     public static void MeetShunske()
@@ -93,6 +95,7 @@ public class CheckpointManager : MonoBehaviour
             var playerPos = PlayerManager.PlayerObject.transform.position;
             shun.transform.position = playerPos + Vector3.forward * 2;
         }
+        SingletonManager.EventService.Dispatch<OnCheckpointActivatedEvent>();
     }
 }
 

@@ -17,6 +17,7 @@ public class ConversationSeenInfoEditorWindow : DataModelEditorWindow<Conversati
 #endif
         if (SingletonManager.Instance != null)
         {
+            SingletonManager.EventService.Add<OnCheckpointActivatedEvent>(OnCheckpointActivatedHandler);
             SingletonManager.EventService.Add<OnConversationEndedEvent>(OnConversationEndedHandler);
             RefreshData(DialogueDatabaseManager.GetSeenInfo());
         }
@@ -29,9 +30,15 @@ public class ConversationSeenInfoEditorWindow : DataModelEditorWindow<Conversati
 #endif
         if (SingletonManager.Instance != null)
         {
+            SingletonManager.EventService.Remove<OnCheckpointActivatedEvent>(OnCheckpointActivatedHandler);
             SingletonManager.EventService.Remove<OnConversationEndedEvent>(OnConversationEndedHandler);
         }
         dataModels = null;
+    }
+
+    private void OnCheckpointActivatedHandler()
+    {
+        RefreshData(DialogueDatabaseManager.GetSeenInfo());
     }
 
     private void OnConversationEndedHandler(OnConversationEndedEvent evt)

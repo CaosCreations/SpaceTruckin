@@ -347,4 +347,8 @@ namespace Events
     public class OnMessageReadEvent : IEvent
     {
     }
+
+    public class OnCheckpointActivatedEvent : IEvent
+    {
+    }
 }
