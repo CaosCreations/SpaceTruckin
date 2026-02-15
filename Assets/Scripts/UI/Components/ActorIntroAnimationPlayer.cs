@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DG.Tweening;
 using Events;
 using UnityEngine;
 using UnityEngine.UI;
@@ -40,11 +41,21 @@ public class ActorIntroAnimationPlayer : MonoBehaviour
         var frames = data.Frames;
         var frameRate = data.FrameRate;
 
+        var color = image.color;
+        color.a = 0f;
+        image.color = color;
+
+        image.sprite = frames[0];
+        var fadeTween = image.DOFade(1f, data.FadeInDuration).SetUpdate(true);
+        yield return fadeTween.WaitForCompletion();
+
         for (var i = 0; i < frames.Length; i++)
         {
             image.sprite = frames[i];
             yield return new WaitForSecondsRealtime(frameRate);
         }
+
+        yield return new WaitForSecondsRealtime(data.HoldDuration);
 
         Finish(data);
     }
