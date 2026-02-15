@@ -56,4 +56,14 @@ public static class DialogueEditor
     {
         CheckpointManager.Day2();
     }
+
+    [MenuItem("Space Truckin/Dialogue/Meet Shunske")]
+    public static void MeetShunske()
+    {
+        if (CheckpointManager.Instance == null)
+        {
+            return;
+        }
+        CheckpointManager.MeetShunske();
+    }
 }

@@ -10,7 +10,8 @@ public class CheckpointManager : MonoBehaviour
     public static Checkpoint[] Checkpoints { get; private set; } = new[]
     {
         new Checkpoint("Go to Day 2", Day2),
-        new Checkpoint("Pirates Convo 1", PiratesConvo1)
+        new Checkpoint("Pirates Convo 1", PiratesConvo1),
+        new Checkpoint("Meet Shunske", MeetShunske)
     };
 
     private void Awake()
@@ -68,6 +69,30 @@ public class CheckpointManager : MonoBehaviour
 
         // TODO: If we want to support going back to day 2 from a later day, we'll need to reset the dialogue db etc.
         Bed.Sleep();
+    }
+
+    public static void MeetShunske()
+    {
+        CalendarManager.SetDate(new Date(1, 1, 1));
+        ClockManager.SetCurrentTime(64680, true);
+
+        // Day2 
+        var convoIds = new int[] { 45, 51, 58, 65, 73, 74, 75, 76, 77, 78, 79, 80, 163, 166, 167, 168, 171, 172, 175, 205 };
+        DialogueDatabaseManager.Instance.SetConversationsSeen(convoIds);
+
+        var message = MessagesManager.Instance.Messages.FirstOrDefault(m => m.name == "ShunMeet_Message");
+        if (message != null)
+        {
+            message.IsUnlocked = true;
+            message.HasBeenRead = true;
+        }
+
+        var shun = NPCManager.Npcs.FirstOrDefault(npc => npc.name == "Shunsuke Umehara");
+        if (shun != null)
+        {
+            var playerPos = PlayerManager.PlayerObject.transform.position;
+            shun.transform.position = playerPos + Vector3.forward * 2;
+        }
     }
 }
 
