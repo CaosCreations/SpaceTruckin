@@ -4,7 +4,6 @@ using UnityEngine;
 [AddComponentMenu("Pixel Crushers/Dialogue System/Trigger/Intro Animation Dialogue System Trigger")]
 public class IntroAnimationDialogueSystemTrigger : DialogueSystemTrigger
 {
-    [Header("Intro Animation")]
     [SerializeField] private ActorIntroAnimationRegistry animationRegistry;
     [SerializeField] private ActorIntroAnimationPlayer animationPlayer;
 
