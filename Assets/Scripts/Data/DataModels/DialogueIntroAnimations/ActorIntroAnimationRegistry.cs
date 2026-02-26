@@ -3,7 +3,7 @@ using UnityEngine;
 
 [CreateAssetMenu(
     fileName = "ActorIntroAnimationRegistry",
-    menuName = "ScriptableObjects/DialogueIntroAnimations/ActorIntroAnimationRegistry",
+    menuName = "ScriptableObjects/Dialogue/ActorIntroAnimationRegistry",
     order = 1)]
 public class ActorIntroAnimationRegistry : ScriptableObject, IScriptableObjectContainer<ActorIntroAnimationData>
 {

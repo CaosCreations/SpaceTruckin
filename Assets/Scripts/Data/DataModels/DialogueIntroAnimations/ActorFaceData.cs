@@ -2,7 +2,7 @@ using UnityEngine;
 
 [CreateAssetMenu(
     fileName = "ActorFaceData",
-    menuName = "ScriptableObjects/DialogueIntroAnimations/ActorFaceData",
+    menuName = "ScriptableObjects/Dialogue/ActorFaceData",
     order = 1)]
 public class ActorFaceData : ScriptableObject
 {
