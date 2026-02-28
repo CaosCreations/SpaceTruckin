@@ -376,6 +376,14 @@ namespace PixelCrushers.DialogueSystem
             EditorWindowTools.EndIndentedSection();
         }
 
+        private void CheckUseButtonInputSystem(string buttonName)
+        {
+#if USE_NEW_INPUT
+            if (string.IsNullOrEmpty(buttonName)) return;
+            EditorGUILayout.HelpBox($"If you're using the Input System package, add an Input Action Registry component to your Dialogue Manager GameObject. Then assign the input action that corresponds to '{buttonName}' to its list.", MessageType.Warning);
+#endif
+        }
+
         private void DrawProximitySelector()
         {
             DestroyImmediate(pcObject.GetComponent<Selector>());
@@ -385,6 +393,7 @@ namespace PixelCrushers.DialogueSystem
             DrawSelectorUIPosition();
             proximitySelector.useKey = (KeyCode)EditorGUILayout.EnumPopup("'Use' Key", proximitySelector.useKey);
             proximitySelector.useButton = EditorGUILayout.TextField("'Use' Button", proximitySelector.useButton);
+            CheckUseButtonInputSystem(proximitySelector.useButton);
             EditorWindowTools.EndIndentedSection();
         }
 
@@ -420,6 +429,7 @@ namespace PixelCrushers.DialogueSystem
             DrawSelectorUIPosition();
             selector.useKey = (KeyCode)EditorGUILayout.EnumPopup("'Use' Key", selector.useKey);
             selector.useButton = EditorGUILayout.TextField("'Use' Button", selector.useButton);
+            CheckUseButtonInputSystem(selector.useButton);
             EditorGUILayout.HelpBox("Click Select Player to customize the Selector.", MessageType.None);
             EditorWindowTools.EndIndentedSection();
         }
@@ -568,7 +578,7 @@ namespace PixelCrushers.DialogueSystem
 
         private void ShowDialogueSystemEvents(DialogueSystemEvents events)
         {
-            EditorGUILayout.HelpBox("Click 'Select Player' to inspect the player GameObject. Then assign components to the OnConversationStart() and OnConversationEnd() events, disabling them in OnConversationStart() and re-enabling them in OnConversationEnd().\n\nFor example, you may want to assign the player's movement control component(s) and the camera's player control component(s).", MessageType.None);
+            EditorGUILayout.HelpBox("Click 'Select Player' to inspect the player GameObject. Then assign components to the OnConversationStart() and OnConversationEnd() events, disabling them in OnConversationStart() and re-enabling them in OnConversationEnd().\n\nFor example, you may want to assign the player's movement control component(s) and the camera's player control component(s) and the Selector/ProximitySelector if you're using it..", MessageType.None);
         }
 
         private bool IsPlayerControlComponent(MonoBehaviour component)

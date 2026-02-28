@@ -112,7 +112,7 @@ namespace PixelCrushers
             }
             else
             {
-                m_data.scene = currentScene;
+                m_data.scene = saveAcrossSceneChanges ? -1 : currentScene;
                 m_data.position = target.transform.position;
                 m_data.rotation = target.transform.rotation;
                 return SaveSystem.Serialize(m_data);

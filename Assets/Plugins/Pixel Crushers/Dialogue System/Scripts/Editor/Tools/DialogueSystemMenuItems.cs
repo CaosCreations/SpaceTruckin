@@ -404,7 +404,6 @@ namespace PixelCrushers.DialogueSystem
             try
             {
                 StreamReader streamReader = new StreamReader(Application.dataPath + "/Plugins/Pixel Crushers/Dialogue System/_README.txt");
-                streamReader.ReadLine();    // /*
                 streamReader.ReadLine();    // ---
                 streamReader.ReadLine();    // Dialogue System for Unity
                 version = streamReader.ReadLine().Trim(); // version

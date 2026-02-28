@@ -22,6 +22,8 @@ namespace PixelCrushers.DialogueSystem
     public class PreviewUI : MonoBehaviour
     {
 
+#if UNITY_EDITOR
+
         private static PreviewUI instance = null;
         private static PreviewUI Instance
         {
@@ -42,9 +44,6 @@ namespace PixelCrushers.DialogueSystem
         private bool computedRect;
         private Rect rect;
         private GUIStyle guiStyle = null;
-
-
-#if UNITY_EDITOR
 
         [InitializeOnLoadMethod]
         private static void InitializeOnLoad()
@@ -96,8 +95,6 @@ namespace PixelCrushers.DialogueSystem
             instance = null;
         }
 
-#endif
-
         private void OnApplicationQuit()
         {
             isQuittingOrChangingPlayMode = true;
@@ -135,6 +132,15 @@ namespace PixelCrushers.DialogueSystem
             if (Instance == null) return;
             Instance.message = string.Empty;
         }
+
+#else // Builds (not editor)
+
+        public static void ShowMessage(string message) {}
+
+        public static void HideMessage() {}
+
+#endif
+
 
     }
 }

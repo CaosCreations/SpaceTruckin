@@ -84,7 +84,7 @@ namespace PixelCrushers.DialogueSystem.Yarn
     public class Yarn2ImporterWindow : AbstractConverterWindow<YarnImporterPrefs>
     {
 
-        [MenuItem("Tools/Pixel Crushers/Dialogue System/Import/Yarn 2...", false, 1)]
+        [MenuItem("Tools/Pixel Crushers/Dialogue System/Import/Yarn/Yarn 2...", false, 1)]
         public static void Init()
         {
             var window = EditorWindow.GetWindow(typeof(Yarn2ImporterWindow), false, "Yarn 2 Importer");

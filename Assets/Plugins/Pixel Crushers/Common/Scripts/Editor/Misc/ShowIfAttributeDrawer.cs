@@ -10,24 +10,24 @@ namespace PixelCrushers
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return IsConditionalBoolTrue(property)
+            return IsConditionalBoolSetToRequiredValue(property)
                 ? base.GetPropertyHeight(property, label)
                 : 0;
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            if (!IsConditionalBoolTrue(property)) return;
+            if (!IsConditionalBoolSetToRequiredValue(property)) return;
             EditorGUI.PropertyField(position, property, label, true);
         }
 
-        private bool IsConditionalBoolTrue(SerializedProperty property)
+        private bool IsConditionalBoolSetToRequiredValue(SerializedProperty property)
         {
             var showIfAttribute = attribute as ShowIfAttribute;
             var conditionalProperty = property.serializedObject.FindProperty(showIfAttribute.conditionalBoolName);
             if (conditionalProperty != null)
             {
-                return conditionalProperty.boolValue;
+                return conditionalProperty.boolValue == showIfAttribute.conditionalBoolValue;
             }
             else
             {

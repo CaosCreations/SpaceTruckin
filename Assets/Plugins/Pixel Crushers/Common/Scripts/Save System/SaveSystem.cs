@@ -376,14 +376,18 @@ namespace PixelCrushers
         /// </summary>
         public static event System.Action saveDataApplied = delegate { };
 
-        private void Awake()
+        /// <summary>
+        /// Sets up persistent singleton.
+        /// </summary>
+        protected virtual void Awake()
         {
             if (m_instance == null)
             {
                 m_instance = this;
 #if UNITY_EDITOR
                 if (Application.isPlaying)
-                { // If GameObject is hidden in Scene view, DontDestroyOnLoad will report (harmless) error.
+                { 
+                    // If GameObject is hidden in Scene view, DontDestroyOnLoad will report (harmless) error.
                     UnityEditor.SceneVisibilityManager.instance.Show(gameObject, true);
                 }
 #endif
@@ -396,24 +400,37 @@ namespace PixelCrushers
             }
         }
 
-        private void OnApplicationQuit()
+        /// <summary>
+        /// Records that application is quitting so calls to instance don't create
+        /// a new instance, and calls OnBeforeSceneChange on savers.
+        /// </summary>
+        protected virtual void OnApplicationQuit()
         {
             m_isQuitting = true;
             BeforeSceneChange();
         }
 
-        private void OnEnable()
+        /// <summary>
+        /// Hooks OnSceneLoaded into SceneManager.sceneLoaded.
+        /// </summary>
+        protected virtual void OnEnable()
         {
             UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
-        private void OnDisable()
+        /// <summary>
+        /// Unhooks OnSceneLoaded from SceneManager.sceneLoaded.
+        /// </summary>
+        protected virtual void OnDisable()
         {
             UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
         }
 
-        public void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
+        /// <summary>
+        /// Called right after SceneManager loads scene.
+        /// </summary>
+        public virtual void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
         {
             FinishedLoadingScene(scene.name, scene.buildIndex);
         }
@@ -442,7 +459,7 @@ namespace PixelCrushers
             return false;
         }
 
-        private static void SceneManagerOrAddressablesLoadScene(string sceneName)
+        protected static void SceneManagerOrAddressablesLoadScene(string sceneName)
         {
             if (IsSceneInBuildSettings(sceneName))
             {
@@ -457,7 +474,7 @@ namespace PixelCrushers
 #endif
         }
 
-        private static void SceneManagerOrAddressablesLoadSceneAsync(string sceneName)
+        protected static void SceneManagerOrAddressablesLoadSceneAsync(string sceneName)
         {
             m_currentAsyncOperation = null;
             if (IsSceneInBuildSettings(sceneName))
@@ -473,7 +490,7 @@ namespace PixelCrushers
 #endif
         }
 
-        private static IEnumerator SceneManagerOrAddressablesLoadSceneAdditiveAsync(string sceneName)
+        protected static IEnumerator SceneManagerOrAddressablesLoadSceneAdditiveAsync(string sceneName)
         {
             if (IsSceneInBuildSettings(sceneName))
             {
@@ -494,7 +511,7 @@ namespace PixelCrushers
             }
         }
 
-        private static IEnumerator LoadSceneInternal(string sceneName, SceneValidationMode sceneValidationMode)
+        protected static IEnumerator LoadSceneInternal(string sceneName, SceneValidationMode sceneValidationMode)
         {
             m_addedScenes.Clear();
             if (sceneTransitionManager == null)
@@ -522,7 +539,7 @@ namespace PixelCrushers
             }
         }
 
-        private static IEnumerator LoadSceneInternalTransitionCoroutine(string sceneName, SceneValidationMode sceneValidationMode)
+        protected static IEnumerator LoadSceneInternalTransitionCoroutine(string sceneName, SceneValidationMode sceneValidationMode)
         {
             m_addedScenes.Clear();
             yield return instance.StartCoroutine(sceneTransitionManager.LeaveScene());
@@ -645,7 +662,7 @@ namespace PixelCrushers
         /// choose an empty positive slot up to maxSlots. If none are empty,
         /// return false;
         /// </summary>
-        private static bool SanitizeSlotNumberForSave(int slotNumber, out int sanitizedSlotNumber)
+        protected static bool SanitizeSlotNumberForSave(int slotNumber, out int sanitizedSlotNumber)
         {
             if (slotNumber >= 0 || m_instance == null || m_instance.allowNegativeSlotNumbers)
             {
@@ -669,7 +686,7 @@ namespace PixelCrushers
         /// Save System GameObject.
         /// </summary>
         /// <param name="slotNumber">Slot in which to store saved game data.</param>
-        public void SaveGameToSlot(int slotNumber)
+        public virtual void SaveGameToSlot(int slotNumber)
         {
             SaveToSlot(slotNumber);
         }
@@ -679,7 +696,7 @@ namespace PixelCrushers
         /// Save System GameObject.
         /// </summary>
         /// <param name="slotNumber"></param>
-        public void LoadGameFromSlot(int slotNumber)
+        public virtual void LoadGameFromSlot(int slotNumber)
         {
             LoadFromSlot(slotNumber);
         }
@@ -694,7 +711,7 @@ namespace PixelCrushers
         /// a GameObject in that scene. The player will be spawned at that
         /// GameObject's position.
         /// </param>
-        public void LoadSceneAtSpawnpoint(string sceneNameAndSpawnpoint)
+        public virtual void LoadSceneAtSpawnpoint(string sceneNameAndSpawnpoint)
         {
             LoadScene(sceneNameAndSpawnpoint);
         }
@@ -838,7 +855,7 @@ namespace PixelCrushers
             return m_savedGameData;
         }
 
-        private static int GetSaverSceneIndex(Saver saver)
+        protected static int GetSaverSceneIndex(Saver saver)
         {
             return (saver == null || !saver.saveAcrossSceneChanges) ? currentSceneIndex : NoSceneIndex;
         }
@@ -902,7 +919,7 @@ namespace PixelCrushers
             }
         }
 
-        private static void PrepareTempSaversList()
+        protected static void PrepareTempSaversList()
         {
             // Make a copy in case a saver ends up removing multiple savers and
             // sort the list by order.
@@ -1010,7 +1027,7 @@ namespace PixelCrushers
             instance.StartCoroutine(LoadSceneCoroutine(savedGameData, spawnpointName, SceneValidationMode.LoadingScene));
         }
 
-        private static IEnumerator LoadSceneCoroutine(SavedGameData savedGameData, string spawnpointName, SceneValidationMode sceneValidationMode)
+        protected static IEnumerator LoadSceneCoroutine(SavedGameData savedGameData, string spawnpointName, SceneValidationMode sceneValidationMode)
         {
             if (savedGameData == null) yield break;
             if (debug) Debug.Log("Save System: Loading scene " + savedGameData.sceneName +
@@ -1033,7 +1050,7 @@ namespace PixelCrushers
         }
 
         // Calls ApplyDataImmediate on all savers.
-        private static void ApplyDataImmediate()
+        protected static void ApplyDataImmediate()
         {
             if (m_savers.Count > 0)
             {
@@ -1057,7 +1074,7 @@ namespace PixelCrushers
             }
         }
 
-        private void FinishedLoadingScene(string sceneName, int sceneIndex)
+        protected virtual void FinishedLoadingScene(string sceneName, int sceneIndex)
         {
             m_currentSceneIndex = sceneIndex;
             if (!m_isLoadingAdditiveScene)
@@ -1069,7 +1086,8 @@ namespace PixelCrushers
         }
 
         /// <summary>
-        /// Additively loads another scene.
+        /// Additively loads another scene. When the scene has been loaded, the save system
+        /// applies any saved game data to the savers in the scene.
         /// </summary>
         /// <param name="sceneName">Scene to additively load.</param>
         public static void LoadAdditiveScene(string sceneName)
@@ -1081,7 +1099,8 @@ namespace PixelCrushers
         }
 
         /// <summary>
-        /// Unloads a previously additively-loaded scene.
+        /// Unloads a previously additively-loaded scene. The save system records savers' data
+        /// before unloading the scene.
         /// </summary>
         /// <param name="sceneName">Scene to unload</param>
         public static void UnloadAdditiveScene(string sceneName)

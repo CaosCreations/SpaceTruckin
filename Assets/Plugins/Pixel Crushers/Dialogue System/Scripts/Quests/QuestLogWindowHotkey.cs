@@ -36,12 +36,42 @@ namespace PixelCrushers.DialogueSystem
             if (questLogWindow == null) questLogWindow = PixelCrushers.GameObjectUtility.FindFirstObjectByType<QuestLogWindow>();
         }
 
-        private void Update()
+#if USE_NEW_INPUT
+
+        public UnityEngine.InputSystem.InputActionReference inputAction;
+
+        protected virtual void OnEnable()
         {
-            if (key == KeyCode.None) return;
+            if (inputAction != null)
+            {
+                inputAction.action.Enable();
+                inputAction.action.performed += OnInputActionPerformed;
+            }
+        }
+
+        protected virtual void OnDisable()
+        {
+            if (inputAction != null)
+            {
+                inputAction.action.performed -= OnInputActionPerformed;
+            }
+        }
+
+        private void OnInputActionPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)
+        {
             if (runtimeQuestLogWindow == null) return;
             if (DialogueManager.IsDialogueSystemInputDisabled()) return;
-            if (InputDeviceManager.IsKeyDown(key) || (!string.IsNullOrEmpty(buttonName) && DialogueManager.getInputButtonDown(buttonName)))
+            ToggleQuestLogWindow();
+        }
+
+#endif
+
+        private void Update()
+        {
+            if (runtimeQuestLogWindow == null) return;
+            if (DialogueManager.IsDialogueSystemInputDisabled()) return;
+            if (InputDeviceManager.IsKeyDown(key) ||
+                (!string.IsNullOrEmpty(buttonName) && DialogueManager.getInputButtonDown(buttonName)))
             {
                 ToggleQuestLogWindow();
             }
@@ -49,6 +79,7 @@ namespace PixelCrushers.DialogueSystem
 
         public void ToggleQuestLogWindow()
         {
+            if (runtimeQuestLogWindow == null) return;
             if (runtimeQuestLogWindow.isOpen)
             {
                 runtimeQuestLogWindow.Close();

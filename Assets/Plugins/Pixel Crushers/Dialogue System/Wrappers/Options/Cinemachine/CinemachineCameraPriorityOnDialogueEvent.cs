@@ -5,7 +5,7 @@ using UnityEngine;
 namespace PixelCrushers.DialogueSystem.Wrappers
 {
 
-#if USE_CINEMACHINE
+#if USE_CINEMACHINE || USE_CINEMACHINE_3
 
     /// <summary>
     /// This wrapper class keeps references intact if you switch between the 

@@ -710,7 +710,7 @@ namespace PixelCrushers.DialogueSystem
                     {
                         var model = new ConversationModel(databaseManager.masterDatabase, FakeConversationTitle, null, null, false, null);
                         var view = this.gameObject.AddComponent<ConversationView>();
-                        view.Initialize(dialogueUI, GetNewSequencer(), displaySettings, OnDialogueEntrySpoken);
+                        view.Initialize(dialogueUI, GetNewSequencer(), displaySettings, null, OnDialogueEntrySpoken);
                         view.SetPCPortrait(model.GetPCSprite(), model.GetPCName());
                         var controller = new ConversationController();
                         controller.Initialize(model, view, reevaluateLinksAfterSubtitle,
@@ -748,7 +748,7 @@ namespace PixelCrushers.DialogueSystem
             masterDatabase.conversations.Add(fakeConversation);
             var warmupModel = new ConversationModel(databaseManager.masterDatabase, FakeConversationTitle, null, null, false, null);
             var warmupView = this.gameObject.AddComponent<ConversationView>();
-            warmupView.Initialize(dialogueUI, GetNewSequencer(), displaySettings, OnDialogueEntrySpoken);
+            warmupView.Initialize(dialogueUI, GetNewSequencer(), displaySettings, null, OnDialogueEntrySpoken);
             warmupView.SetPCPortrait(warmupModel.GetPCSprite(), warmupModel.GetPCName());
             warmupController = new ConversationController();
             warmupController.Initialize(warmupModel, warmupView, reevaluateLinksAfterSubtitle, displaySettings.inputSettings.alwaysForceResponseMenu, OnEndConversation);
@@ -994,7 +994,7 @@ namespace PixelCrushers.DialogueSystem
             var prevCurrentConversant = currentConversant;
             currentActor = actor;
             currentConversant = conversant;
-            var model = new ConversationModel(m_databaseManager.masterDatabase, title, actor, conversant, allowLuaExceptions, 
+            var model = new ConversationModel(m_databaseManager.masterDatabase, title, actor, conversant, allowLuaExceptions,
                 isDialogueEntryValid, initialDialogueEntryID, true, true, useLinearGroupMode);
             currentActor = prevCurrentActor;
             currentConversant = prevCurrentConversant;
@@ -1126,7 +1126,7 @@ namespace PixelCrushers.DialogueSystem
 
                 m_calledRandomizeNextEntry = false;
                 m_conversationController = new ConversationController();
-                var model = new ConversationModel(m_databaseManager.masterDatabase, title, actor, conversant, allowLuaExceptions, isDialogueEntryValid, 
+                var model = new ConversationModel(m_databaseManager.masterDatabase, title, actor, conversant, allowLuaExceptions, isDialogueEntryValid,
                     initialDialogueEntryID, stopEvaluationAtFirstValid, false, useLinearGroupMode, actorOverrides);
                 var needToSetRandomizeNextEntryAgain = m_calledRandomizeNextEntry; // Special case when START node leads to group node with RandomizeNextEntry().
                 m_calledRandomizeNextEntry = false;
@@ -1153,7 +1153,7 @@ namespace PixelCrushers.DialogueSystem
                 sequencer.keepCameraPositionOnClose = displaySettings.cameraSettings.keepCameraPositionAtConversationEnd;
                 var view = this.gameObject.AddComponent<ConversationView>();
                 sequencer.conversationView = view;
-                view.Initialize(dialogueUI, sequencer, displaySettings, OnDialogueEntrySpoken);
+                view.Initialize(dialogueUI, sequencer, displaySettings, model.conversationOverrideDisplaySettings, OnDialogueEntrySpoken);
                 view.SetPCPortrait(model.GetPCSprite(), model.GetPCName());
 
                 // Note: Initialize() no longer sends OnConversationStart() nor does it call GotoState(firstState):
@@ -1828,7 +1828,7 @@ namespace PixelCrushers.DialogueSystem
                 return;
             }
             var barkUI = DialogueActor.GetBarkUI(speaker); // speaker.GetComponentInChildren(typeof(IBarkUI)) as IBarkUI;
-            ConversationModel conversationModel = new ConversationModel(DialogueManager.masterDatabase, conversationTitle, speaker, listener, DialogueManager.allowLuaExceptions, DialogueManager.isDialogueEntryValid, entryID, 
+            ConversationModel conversationModel = new ConversationModel(DialogueManager.masterDatabase, conversationTitle, speaker, listener, DialogueManager.allowLuaExceptions, DialogueManager.isDialogueEntryValid, entryID,
                 stopEvaluationAtFirstValid, useLinearGroupMode);
             var state = conversationModel.firstState;
             StartCoroutine(BarkController.Bark(state.subtitle, speaker, listener, barkUI));

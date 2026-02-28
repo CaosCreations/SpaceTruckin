@@ -174,9 +174,9 @@ namespace PixelCrushers
         private void OnGUI()
         {
             if (Event.current.commandName == "ObjectSelectorClosed" || Event.current.commandName == "ObjectSelectorUpdated")
-            { 
+            {
                 if (m_isPickingOtherTextTable)
-                { 
+                {
                     m_isPickingOtherTextTable = false;
                     AskConfirmImportOtherTextTable(EditorGUIUtility.GetObjectPickerObject() as TextTable);
                 }
@@ -1011,9 +1011,14 @@ namespace PixelCrushers
 
         private void ImportFieldsFromLocalizeUI()
         {
-            if (!EditorUtility.DisplayDialog("Import From Localize UI", 
-                "This will examine all Localize UI components in the current scene and create corresponding fields in the text table. Proceed?", 
-                "OK", "Cancel")) return;
+            var answer = EditorUtility.DisplayDialogComplex("Import From Localize UI",
+                "This will examine all Localize UI components in the current scene and create corresponding fields in the text table. Also add LocalizeUI components to all Text & TextMesh Pro elements in scene?",
+                "Only Existing Localize UI", "Cancel", "Add Localize UI");
+            if (answer == 1) return;
+            if (answer == 2)
+            {
+                AddLocalizeUIToScene();
+            }
             Undo.RecordObject(m_textTable, "Import");
             foreach (var localizeUI in GameObjectUtility.FindObjectsOfTypeAlsoInactive<LocalizeUI>())
             {
@@ -1030,6 +1035,43 @@ namespace PixelCrushers
             EditorUtility.SetDirty(m_textTable);
             m_needRefreshLists = true;
             Repaint();
+        }
+
+        private void AddLocalizeUIToScene()
+        {
+            foreach (var rootGO in UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects())
+            {
+                AddLocalizeUIToChildren(rootGO.transform);
+            }
+        }
+
+        private void AddLocalizeUIToChildren(Transform t)
+        {
+            if (t == null) return;
+            AddLocalizeUI(t);
+            foreach (Transform child in t)
+            {
+                AddLocalizeUIToChildren(child);
+            }
+        }
+
+        private void AddLocalizeUI(Transform t)
+        {
+            if (t == null) return;
+            if (t.GetComponent<LocalizeUI>()) return;
+            if (t.GetComponent<UnityEngine.UI.Text>() != null ||
+                t.GetComponent<UnityEngine.UI.Dropdown>() != null
+#if TMP_PRESENT
+                ||
+                t.GetComponent<TMPro.TextMeshPro>() != null ||
+                t.GetComponent<TMPro.TextMeshProUGUI>() != null ||
+                t.GetComponent<TMPro.TMP_Dropdown>() != null
+#endif
+                )
+            {
+                t.gameObject.AddComponent<PixelCrushers.Wrappers.LocalizeUI>();
+                Debug.Log($"{t.name}: Added LocalizeUI component.", t);
+            }
         }
 
         private void AddField(string fieldName)

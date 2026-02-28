@@ -294,7 +294,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private GUIStyle GetDialogueEntryLeafStyle(DialogueEntry entry)
         {
-            return ((entry != null) && database.IsPlayerID(entry.ActorID)) ? pcLineLeafGUIStyle : npcLineLeafGUIStyle;
+            return (entry != null && database != null && database.IsPlayerID(entry.ActorID)) ? pcLineLeafGUIStyle : npcLineLeafGUIStyle;
         }
 
         private GUIStyle GetLinkButtonStyle(DialogueEntry entry)
@@ -1050,14 +1050,15 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             {
                 try
                 {
-                    if (Event.current.type != EventType.Repaint) AssetDatabase.SaveAssets();
+                    //--- The extra SaveAssets, etc., don't appear to be necessary & impacted performance.
+                    //if (Event.current.type != EventType.Repaint) AssetDatabase.SaveAssets();
                     serializedObject.Update();
                     EditorGUILayout.PropertyField(onExecuteProperty);
                     if (serializedObject.ApplyModifiedProperties())
                     {
-                        SetDatabaseDirty("OnExecute");
-                        if (Event.current.type != EventType.Repaint) AssetDatabase.SaveAssets();
-                        AssetDatabase.Refresh();
+                        //SetDatabaseDirty("OnExecute");
+                        //if (Event.current.type != EventType.Repaint) AssetDatabase.SaveAssets();
+                        //AssetDatabase.Refresh();
                     }
                 }
                 catch (Exception) // Catch serialization bug in some Unity versions.
@@ -1202,13 +1203,19 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             // Participant IDs:
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.BeginVertical();
-            DrawParticipantField(currentEntryActor, "Speaker of this entry.");
+            var changedSpeaker = DrawParticipantField(currentEntryActor, "Speaker of this entry.");
             DrawParticipantField(currentEntryConversant, "Listener.");
             EditorGUILayout.EndVertical();
             var swap = GUILayout.Button(new GUIContent(" ", "Swap participants."), "Popup", GUILayout.Width(24));
             EditorGUILayout.EndHorizontal();
 
             if (swap) SwapParticipants(ref currentEntryActor, ref currentEntryConversant);
+
+            if (changedSpeaker || swap)
+            {
+                entryActorIDCache.Remove(entry);
+                Repaint();
+            }
         }
 
         private void VerifyParticipantField(DialogueEntry entry, string fieldTitle, ref Field participantField)
@@ -1227,7 +1234,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             return (field == null) || string.IsNullOrEmpty(field.value) || string.Equals(field.value, "-1");
         }
 
-        private void DrawParticipantField(Field participantField, string tooltipText)
+        private bool DrawParticipantField(Field participantField, string tooltipText)
         {
             string newValue = DrawAssetPopup<Actor>(participantField.value, (database != null) ? database.actors : null, new GUIContent(participantField.title, tooltipText));
             if (newValue != participantField.value)
@@ -1235,7 +1242,9 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 participantField.value = newValue;
                 ResetDialogueEntryText();
                 SetDatabaseDirty("Change Participant");
+                return true;
             }
+            return false;
         }
 
         private void SwapParticipants(ref Field currentActor, ref Field currentConversant)
