@@ -97,6 +97,9 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         private int m_currentDialogTableConversationID = -1;
 
+        public ConversationOverrideDisplaySettings conversationOverrideDisplaySettings =>
+            (conversation != null) ? conversation.overrideSettings : null;
+
         /// <summary>
         /// Initializes a new ConversationModel.
         /// </summary>
@@ -297,6 +300,7 @@ namespace PixelCrushers.DialogueSystem
                     else if (!useLinearGroupMode) // In linear group mode, links are evaluated after subtitle finishes.
                     {
                         EvaluateLinks(entry, npcResponses, pcResponses, 0, new List<DialogueEntry>(), null, stopAtFirstValid, skipExecution);
+                        SetDialogTable(entry.conversationID); // Child links may have set a different table, so ensure correct one is set.
                     }
                 }
                 return new ConversationState(subtitle, npcResponses.ToArray(), pcResponses.ToArray(), entry.isGroup);
@@ -460,6 +464,7 @@ namespace PixelCrushers.DialogueSystem
                     if (link.priority == priority) // Note: Only observe link priority. Why does Chat Mapper even have conditionPriority?
                     {
                         CharacterType characterType = m_database.GetCharacterType(destinationEntry.ActorID);
+                        SetDialogTable(destinationEntry.conversationID);
                         Lua.Run("thisID = " + destinationEntry.id);
                         bool isValid = Lua.IsTrue(destinationEntry.conditionsString, DialogueDebug.logInfo, m_allowLuaExceptions) &&
                             ((isDialogueEntryValid == null) || isDialogueEntryValid(destinationEntry));

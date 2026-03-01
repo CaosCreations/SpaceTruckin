@@ -29,7 +29,7 @@ namespace PixelCrushers.DialogueSystem
         /// If blank, uses the override name.
         /// </summary>
         [Tooltip("Name used when saving persistent data. If blank, use actor name.")]
-        [UnityEngine.Serialization.FormerlySerializedAs("internalName")]        
+        [UnityEngine.Serialization.FormerlySerializedAs("internalName")]
         public string persistentDataName;
 
         [Tooltip("Optional portrait. If unassigned, will use portrait of actor in database. This field allows you to assign a Texture.")]
@@ -159,11 +159,16 @@ namespace PixelCrushers.DialogueSystem
             StartCoroutine(RegisterAtEndOfFrame());
         }
 
-        // Wait for end of frame in case DialogueActor's parent is destroyed on same frame but
-        // after OnEnable(). Must do this because OnEnable() can run before another GameObject's
-        // Awake() method.
+        /// <summary>
+        /// Immediately registers as a candidate for the actor.
+        /// Then waits for end of frame in case DialogueActor's parent is destroyed on 
+        /// same frame but after OnEnable(). Must do this because OnEnable() can run 
+        /// before another GameObject's Awake() method. If it survives to the end
+        /// of frame, registers it as the actual actor.
+        /// </summary>
         protected IEnumerator RegisterAtEndOfFrame()
         {
+            CharacterInfo.RegisterCandidateActorTransform(actor, transform);
             yield return new WaitForEndOfFrame();
             CharacterInfo.RegisterActorTransform(actor, transform);
         }
@@ -171,6 +176,7 @@ namespace PixelCrushers.DialogueSystem
         protected virtual void OnDisable()
         {
             if (string.IsNullOrEmpty(actor)) return;
+            CharacterInfo.UnregisterCandidateActorTransform(actor, transform);
             var registeredTransform = CharacterInfo.GetRegisteredActorTransform(actor);
             if (transform == registeredTransform)
             {

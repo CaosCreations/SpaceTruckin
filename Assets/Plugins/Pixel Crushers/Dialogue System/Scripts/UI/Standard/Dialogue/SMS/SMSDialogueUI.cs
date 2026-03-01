@@ -69,6 +69,16 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("Before showing PC subtitles, delay for this duration.")]
         public PreDelaySettings pcPreDelaySettings = new PreDelaySettings();
 
+        [Serializable]
+        public class ActorReference
+        {
+            [Tooltip("No pre-delay for this actor.")]
+            [ActorPopup] public string actor;
+        }
+
+        [Tooltip("No pre-delays for these actors.")]
+        public List<ActorReference> excludePreDelayForActors = new List<ActorReference>();
+
         [Header("Save/Load")]
 
         [Tooltip("Resume conversation when restoring saved game data.")]
@@ -180,6 +190,8 @@ namespace PixelCrushers.DialogueSystem
             if (subtitle.dialogueEntry.id == 0) return; // Don't need to show START entry.
             if (string.IsNullOrEmpty(subtitle.formattedText.text)) return;
             var preDelay = subtitle.speakerInfo.IsNPC ? npcPreDelaySettings.GetDelayDuration(subtitle) : pcPreDelaySettings.GetDelayDuration(subtitle);
+            var isInExcludeList = excludePreDelayForActors.Find(x => x.actor == subtitle.speakerInfo.nameInDatabase) != null;
+            if (isInExcludeList) preDelay = 0;
             if (Mathf.Approximately(0, preDelay))
             {
                 AddMessage(subtitle);

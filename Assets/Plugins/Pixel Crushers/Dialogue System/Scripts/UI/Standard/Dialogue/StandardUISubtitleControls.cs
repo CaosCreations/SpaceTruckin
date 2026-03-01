@@ -155,6 +155,7 @@ namespace PixelCrushers.DialogueSystem
                         if (actorCurrentPanel.subtitleText.gameObject != panel.subtitleText.gameObject)
                         {
                             actorCurrentPanel.Close();
+                            actorCurrentPanel.HideImmediate();
                         }
                         else
                         {

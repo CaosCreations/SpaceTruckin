@@ -33,9 +33,16 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             set
             {
                 _currentConversation = value;
-                if (value != null) currentConversationID = value.id;
+                if (value != null)
+                {
+                    currentConversationID = value.id;
+                    currentConversationActorID = currentConversation.ActorID;
+                    currentConversationConversantID = currentConversation.ConversantID;
+                }
             }
         }
+        private int currentConversationActorID = -1;
+        private int currentConversationConversantID = -1;
 
         private bool conversationFieldsFoldout = false;
         private Field actorField = null;
@@ -46,6 +53,15 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private DialogueEntry startEntry = null;
         private ReorderableList conversationReorderableList = null;
         private HashSet<Conversation> conversationOutlineSelections = new HashSet<Conversation>();
+
+        private ConversationOverrideDisplaySettings overrideSettings;
+        private ReorderableList actorOverrideReorderableList = null;
+        private List<int> actorIDs;
+        private List<string> actorNames;
+        private string[] actorNamesArray;
+
+        private Dictionary<int, Actor> actorCache = new Dictionary<int, Actor>();
+        private Dictionary<DialogueEntry, int> entryActorIDCache = new Dictionary<DialogueEntry, int>();
 
         private void SetCurrentConversation(Conversation conversation)
         {
@@ -118,6 +134,8 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             actorNamesByID.Clear();
             ResetDialogueTreeSection();
             ResetConversationNodeSection();
+            ResetActorPanelOverrideList();
+            ResetActorCaches();
         }
 
         private void OpenConversation(Conversation conversation)
@@ -802,14 +820,87 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 settings.includeInvalidEntries = EditorGUILayout.Toggle("Include Invalid Entries", settings.includeInvalidEntries);
                 settings.responseTimeout = EditorGUILayout.FloatField("Response Timeout", settings.responseTimeout);
                 settings.emTagForOldResponses = (EmTag)EditorGUILayout.EnumPopup("Em Tag For Old Responses", settings.emTagForOldResponses);
-                settings.emTagForInvalidResponses= (EmTag)EditorGUILayout.EnumPopup("Em Tag For Invalid Responses", settings.emTagForInvalidResponses);
+                settings.emTagForInvalidResponses = (EmTag)EditorGUILayout.EnumPopup("Em Tag For Invalid Responses", settings.emTagForInvalidResponses);
                 settings.cancelSubtitle.key = (KeyCode)EditorGUILayout.EnumPopup("Cancel Subtitle Key", settings.cancelSubtitle.key);
                 settings.cancelSubtitle.buttonName = EditorGUILayout.TextField("Cancel Subtitle Button", settings.cancelSubtitle.buttonName);
                 settings.cancelConversation.key = (KeyCode)EditorGUILayout.EnumPopup("Cancel Conversation Key", settings.cancelConversation.key);
                 settings.cancelConversation.buttonName = EditorGUILayout.TextField("Cancel Conversation Button", settings.cancelConversation.buttonName);
             }
 
+            DrawActorPanelOverrideList(settings);
+
             EditorWindowTools.EndIndentedSection();
+        }
+
+        private void ResetActorCaches()
+        {
+            actorCache.Clear();
+            entryActorIDCache.Clear();
+        }
+
+        private Actor LookupActor(int actorID)
+        {
+            if (database == null) return null;
+            if (!actorCache.TryGetValue(actorID, out var actor))
+            {
+                actor = database.GetActor(actorID);
+                actorCache[actorID] = actor;
+            }
+            return actor;
+        }
+
+        private int LookupEntryActorID(DialogueEntry entry)
+        {
+            if (database == null) return NoID;
+            if (!entryActorIDCache.TryGetValue(entry, out var entryActorID))
+            {
+                entryActorID = entry.ActorID;
+                entryActorIDCache[entry] = entryActorID;
+            }
+            return entryActorID;
+        }
+
+        private void ResetActorPanelOverrideList()
+        {
+            actorOverrideReorderableList = null;
+        }
+
+        private void DrawActorPanelOverrideList(ConversationOverrideDisplaySettings settings)
+        {
+            if (actorOverrideReorderableList == null)
+            {
+                actorOverrideReorderableList = new ReorderableList(settings.actorSubtitlePanelOverrides, typeof(ActorSubtitlePanelOverride),
+                    draggable: true, displayHeader: true, displayAddButton: true, displayRemoveButton: true);
+                actorOverrideReorderableList.drawHeaderCallback += OnDrawActorPanelOverridesHeader;
+                actorOverrideReorderableList.drawElementCallback += OnDrawActorPanelOverridesElement;
+                actorNames = new List<string>();
+                actorIDs = new List<int>();
+                foreach (var actor in database.actors)
+                {
+                    actorNames.Add(actor.Name);
+                    actorIDs.Add(actor.id);
+                }
+                actorNamesArray = actorNames.ToArray();
+            }
+            overrideSettings = settings;
+            actorOverrideReorderableList.DoLayoutList();
+        }
+
+        private void OnDrawActorPanelOverridesHeader(Rect rect)
+        {
+            EditorGUI.LabelField(rect, "Actor Panel Overrides");
+        }
+
+        private void OnDrawActorPanelOverridesElement(Rect rect, int index, bool isActive, bool isFocused)
+        {
+            if (!(0 <= index && index < overrideSettings.actorSubtitlePanelOverrides.Count)) return;
+            var ovr = overrideSettings.actorSubtitlePanelOverrides[index];
+            var rect1 = new Rect(rect.x, rect.y, rect.width / 2, rect.height);
+            var rect2 = new Rect(rect.x + rect.width / 2, rect.y, rect.width / 2, rect.height);
+            var popupIndex = actorIDs.IndexOf(ovr.actorID);
+            popupIndex = EditorGUI.Popup(rect1, popupIndex, actorNamesArray);
+            ovr.actorID = (0 <= popupIndex && popupIndex < actorIDs.Count) ? actorIDs[popupIndex] : -1;
+            ovr.subtitlePanel = (SubtitlePanelNumber)EditorGUI.EnumPopup(rect2, ovr.subtitlePanel);
         }
 
         private void PlayConversationFromEntry(object o)

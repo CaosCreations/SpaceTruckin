@@ -339,21 +339,26 @@ namespace PixelCrushers.DialogueSystem
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginHorizontal();
             DialogueManager.instance.displaySettings.subtitleSettings.minSubtitleSeconds = EditorGUILayout.FloatField("Min Seconds", DialogueManager.instance.displaySettings.subtitleSettings.minSubtitleSeconds);
-            EditorGUILayout.HelpBox("Min Seconds below is the guaranteed minimum amount of time that a subtitle will be displayed (if its corresponding checkbox is ticked).", MessageType.None);
+            EditorGUILayout.HelpBox("Min Seconds is the guaranteed minimum amount of time that a subtitle will be displayed (if its corresponding checkbox is ticked).", MessageType.None);
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginHorizontal();
             DialogueManager.instance.displaySettings.subtitleSettings.continueButton = (DisplaySettings.SubtitleSettings.ContinueButtonMode)EditorGUILayout.EnumPopup("Continue Button", DialogueManager.instance.displaySettings.subtitleSettings.continueButton);
-            //.waitForContinueButton = EditorGUILayout.Toggle("Use Continue Button", DialogueManager.Instance.displaySettings.subtitleSettings.waitForContinueButton);
+            EditorGUILayout.BeginVertical();
             EditorGUILayout.HelpBox("- Never: Conversation automatically moves to next stage when subtitle is done." +
                                     "\n- Always: Requires player to click a continue button to progress past each subtitle." +
                                     "\n- Optional Before Response Menu: If player response menu is next, shows but doesn't require clicking." +
                                     "\n- Never Before Response Menu: If player response menu is next, doesn't show." +
                                     "\nFor any setting other than Never, your UI must contain continue button(s).", MessageType.None);
+            if (GUILayout.Button("Continue button modes"))
+            {
+                Application.OpenURL("https://pixelcrushers.com/dialogue_system/manual2x/html/class_pixel_crushers_1_1_dialogue_system_1_1_display_settings_1_1_subtitle_settings.html#ab9739c17b45aca7244295889504e0c1e");
+            }
+            EditorGUILayout.EndVertical();
             EditorGUILayout.EndHorizontal();
-            EditorGUILayout.BeginHorizontal();
-            DialogueManager.instance.displaySettings.subtitleSettings.richTextEmphases = EditorGUILayout.Toggle("Rich Text", DialogueManager.instance.displaySettings.subtitleSettings.richTextEmphases);
-            EditorGUILayout.HelpBox("By default, emphasis tags embedded in dialogue text are applied to the entire subtitle. To convert them to rich text tags instead, tick this checkbox. This allows emphases to affect only parts of the text, but your GUI system must support rich text.", MessageType.None);
-            EditorGUILayout.EndHorizontal();
+            //EditorGUILayout.BeginHorizontal();
+            //DialogueManager.instance.displaySettings.subtitleSettings.richTextEmphases = EditorGUILayout.Toggle("Rich Text", DialogueManager.instance.displaySettings.subtitleSettings.richTextEmphases);
+            //EditorGUILayout.HelpBox("By default, emphasis tags embedded in dialogue text are applied to the entire subtitle. To convert them to rich text tags instead, tick this checkbox. This allows emphases to affect only parts of the text, but your GUI system must support rich text.", MessageType.None);
+            //EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginHorizontal();
             DialogueManager.instance.displaySettings.subtitleSettings.convertPipesToLineBreaks = EditorGUILayout.Toggle("Pipes Are Line Breaks", DialogueManager.instance.displaySettings.subtitleSettings.convertPipesToLineBreaks);
             EditorGUILayout.HelpBox("Treat '|' characters in text as line breaks.", MessageType.None);
@@ -390,11 +395,11 @@ namespace PixelCrushers.DialogueSystem
             {
                 if (HasMainCamera())
                 {
-                    EditorGUILayout.HelpBox("Will use existing camera that is tagged Main Camera.", MessageType.None);
+                    EditorGUILayout.HelpBox("Will use existing camera that is tagged MainCamera.", MessageType.None);
                 }
                 else
                 {
-                    EditorGUILayout.HelpBox("Will use existing camera that is tagged Main Camera. Remember to add a camera that's tagged Main Camera.", MessageType.Warning);
+                    EditorGUILayout.HelpBox("Will use existing camera that is tagged MainCamera. Remember to add a camera that's tagged MainCamera.", MessageType.Warning);
                 }
             }
             else
@@ -563,6 +568,7 @@ namespace PixelCrushers.DialogueSystem
             DialogueManager.instance.displaySettings.inputSettings.cancelConversation.buttonName = EditorGUILayout.TextField("Button Name", DialogueManager.instance.displaySettings.inputSettings.cancel.buttonName);
             EditorGUILayout.HelpBox("Pressing this button cancels the conversation if in the response menu.", MessageType.None);
             EditorGUILayout.EndHorizontal();
+            EditorGUILayout.HelpBox("Note that the Cancel inputs above are different from your dialogue UI's Continue Button. Typically you can leave the Cancel inputs set to None (unused).", MessageType.None);
 
             EditorWindowTools.EndIndentedSection();
             EditorWindowTools.EndIndentedSection();
@@ -635,6 +641,7 @@ namespace PixelCrushers.DialogueSystem
                 {
                     dsSaver = DialogueManager.instance.gameObject.AddComponent(TypeUtility.GetWrapperType(typeof(PixelCrushers.DialogueSystem.DialogueSystemSaver))) as PixelCrushers.DialogueSystem.DialogueSystemSaver;
                     dsSaver.saveAcrossSceneChanges = true;
+                    dsSaver.key = "ds";
                 }
 
                 var transitionManager = DialogueManager.instance.GetComponent<PixelCrushers.SceneTransitionManager>();

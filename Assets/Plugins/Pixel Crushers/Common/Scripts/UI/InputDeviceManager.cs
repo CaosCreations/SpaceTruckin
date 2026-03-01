@@ -571,6 +571,7 @@ namespace PixelCrushers
         public static void RegisterInputAction(string name, InputAction inputAction)
         {
             inputActionDict[name] = inputAction;
+            if (inputAction != null) inputAction.Enable();
         }
 
         public static void UnregisterInputAction(string name)

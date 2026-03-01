@@ -46,6 +46,9 @@ namespace PixelCrushers.DialogueSystem
         private SerializedProperty persistentDataSettingsProperty = null;
         private bool createDatabase = false;
 
+        private static GUIContent CurrentLanguagePlayerPrefsLabel = new GUIContent("Current PlayerPrefs", 
+            "In play mode, this value takes precedence over the Language field or Use System Language checkbox above.");
+
         public static Texture2D FindIcon()
         {
             var iconPath = EditorGUIUtility.isProSkin ? DarkSkinIconFilename : LightSkinIconFilename;
@@ -206,6 +209,13 @@ namespace PixelCrushers.DialogueSystem
                     EditorGUILayout.PropertyField(localizationSettings.FindPropertyRelative("useSystemLanguage"), true);
                     EditorGUILayout.PropertyField(localizationSettings.FindPropertyRelative("textTable"), true);
                     EditorGUILayout.HelpBox("To use more than one Text Table, add a UILocalizationManager component to the Dialogue Manager and assign them there.", MessageType.None);
+                    var currentPlayerPrefs = GetCurrentLanguagePlayerPrefs();
+                    if (!string.IsNullOrEmpty(currentPlayerPrefs))
+                    {
+                        EditorGUI.BeginDisabledGroup(true);
+                        EditorGUILayout.TextField(CurrentLanguagePlayerPrefsLabel, currentPlayerPrefs);
+                        EditorGUI.EndDisabledGroup();
+                    }
                     EditorGUILayout.HelpBox("Play mode not using the language you specified here? Click Reset Language PlayerPrefs.", MessageType.None);
                     if (GUILayout.Button(new GUIContent("Reset Language PlayerPrefs", "Delete the language selection saved in PlayerPrefs.")))
                     {
@@ -218,6 +228,14 @@ namespace PixelCrushers.DialogueSystem
                     EditorWindowTools.EditorGUILayoutEndGroup();
                 }
             }
+        }
+
+        private string GetCurrentLanguagePlayerPrefs()
+        {
+            var uiLocalizationManager = dialogueSystemController.GetComponent<UILocalizationManager>();
+            return (uiLocalizationManager != null)
+                ? PlayerPrefs.GetString(uiLocalizationManager.currentLanguagePlayerPrefsKey)
+                : PlayerPrefs.GetString("Language");
         }
 
         private void ResetLanguagePlayerPrefs()

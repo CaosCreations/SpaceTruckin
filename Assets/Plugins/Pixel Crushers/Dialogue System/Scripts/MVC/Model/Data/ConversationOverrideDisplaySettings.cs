@@ -1,10 +1,18 @@
 // Copyright (c) Pixel Crushers. All rights reserved.
 
-using UnityEngine;
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace PixelCrushers.DialogueSystem
 {
+
+    [Serializable]
+    public class ActorSubtitlePanelOverride
+    {
+        [ActorPopup] public int actorID;
+        public SubtitlePanelNumber subtitlePanel;
+    }
 
     [Serializable]
     public class ConversationOverrideDisplaySettings
@@ -42,6 +50,11 @@ namespace PixelCrushers.DialogueSystem
         public EmTag emTagForInvalidResponses = EmTag.None;
         public InputTrigger cancelSubtitle = new InputTrigger(KeyCode.Escape);
         public InputTrigger cancelConversation = new InputTrigger(KeyCode.Escape);
+
+        // Override actor panels:
+
+        public List<ActorSubtitlePanelOverride> actorSubtitlePanelOverrides = new List<ActorSubtitlePanelOverride>();
+
     }
 
 }

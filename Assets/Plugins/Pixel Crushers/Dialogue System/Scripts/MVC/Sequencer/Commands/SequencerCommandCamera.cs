@@ -50,7 +50,7 @@ namespace PixelCrushers.DialogueSystem.SequencerCommands
 
             // If we have a camera angle and subject, move the camera to it:
             sequencer.TakeCameraControl();
-            if (isOriginal || (angleTransform != null && (subject != null || isLocalTransform)))
+            if (isOriginal || (angleTransform != null && (subject != null || !isLocalTransform)))
             {
                 cameraTransform = sequencer.sequencerCameraTransform;
                 if (isOriginal)

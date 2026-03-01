@@ -26,6 +26,11 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("This button fires the trigger. The button name must be defined in your project's Input Settings.")]
         public string buttonName = string.Empty;
 
+#if USE_NEW_INPUT
+        public UnityEngine.InputSystem.InputActionReference inputAction;
+        private bool hasEnabledInputAction = false;
+#endif
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PixelCrushers.DialogueSystem.InputTrigger"/> 
         /// class with no key code or button name.
@@ -84,6 +89,17 @@ namespace PixelCrushers.DialogueSystem
             get
             {
                 if (DialogueManager.IsDialogueSystemInputDisabled()) return false;
+#if USE_NEW_INPUT
+                if (inputAction != null)
+                {
+                    if (!hasEnabledInputAction)
+                    {
+                        inputAction.action.Enable();
+                        hasEnabledInputAction = true;
+                    }
+                    if (inputAction.action.WasPressedThisFrame()) return true;
+                }
+#endif
                 return InputDeviceManager.IsKeyDown(key) ||
                     (!string.IsNullOrEmpty(buttonName) && DialogueManager.getInputButtonDown(buttonName));
             }

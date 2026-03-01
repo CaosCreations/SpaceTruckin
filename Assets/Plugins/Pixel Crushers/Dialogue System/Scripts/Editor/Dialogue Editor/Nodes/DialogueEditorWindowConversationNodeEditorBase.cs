@@ -54,15 +54,9 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private void DrawCanvas()
         {
-            // Make scrollbars invisible:
-            GUIStyle verticalScrollbar = GUI.skin.verticalScrollbar;
-            GUIStyle horizontalScrollbar = GUI.skin.horizontalScrollbar;
-            GUI.skin.verticalScrollbar = GUIStyle.none;
-            GUI.skin.horizontalScrollbar = GUIStyle.none;
-
             try
             {
-                canvasScrollPosition = GUI.BeginScrollView(new Rect(0, 0, (1 / _zoom) * position.width, (1 / _zoom) * position.height), canvasScrollPosition, new Rect(0, 0, canvasScrollView.x, canvasScrollView.y), false, false);
+                canvasScrollPosition = GUI.BeginScrollView(new Rect(0, 0, (1 / _zoom) * position.width, (1 / _zoom) * position.height), canvasScrollPosition, new Rect(0, 0, canvasScrollView.x, canvasScrollView.y), GUIStyle.none, GUIStyle.none);
                 DrawCanvasBackground();
                 DrawCanvasContents();
             }
@@ -79,10 +73,6 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             //--- For debugging zoom:
             //EditorGUI.LabelField(new Rect(10, 60, 500, 30), "pos=" + canvasScrollPosition);
             //EditorGUI.LabelField(new Rect(10, 90, 500, 30), "mouse=" + Event.current.mousePosition);
-
-            // Restore previous scrollbar style:
-            GUI.skin.verticalScrollbar = verticalScrollbar;
-            GUI.skin.horizontalScrollbar = horizontalScrollbar;
         }
 
         private void DrawCanvasBackground()

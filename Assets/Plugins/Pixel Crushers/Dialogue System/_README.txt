@@ -1,7 +1,6 @@
-/*
 ------------------------------
   Dialogue System for Unity  
-      Version 2.2.63.1
+      Version 2.2.66
         
   Copyright © Pixel Crushers
 ------------------------------
@@ -25,9 +24,9 @@ o IMPORTANT NOTE FOR URP/HRDP:
 o IMPORTANT NOTE FOR 2D:
   If you want to use 2D physics you must define scripting symbol USE_PHYSICS2D.
   (Tick checkbox in Tools > Pixel Crushers > Dialogue System > Welcome Window.)
-o IMPORTANT NOTE FOR TEXTMESH PRO:
+o IMPORTANT NOTE FOR TEXTMESH PRO (pre-Unity 6):
   If you want to use TextMesh Pro you must define scripting symbol TMP_PRESENT.
-  (Tick checkbox in Tools > Pixel Crushers > Dialogue System > Welcome Window.)
+  (Tools > Pixel Crushers > Common > Misc > Enable TextMesh Pro Support)
 
 
 Documentation:
@@ -35,16 +34,12 @@ Documentation:
 o Video tutorials & online manual: Tools > Pixel Crushers > Dialogue System > Help.
 o Online documentation: https://www.pixelcrushers.com/dialogue_system/manual2x/html/
 o Download a copy: https://www.pixelcrushers.com/dialogue_system/manual2x/Documentation.zip
-  If you download a copy for offline use, do not unzip it into your Assets folder! It 
-  contains Doxygen-generated JavaScript files; if these are in the Assets folder, Unity 
-  will try to compile them and fail. Unzip it outside of your Assets folder.
 
 
 Upgrade Notes:
 --------------
+o Release Notes: https://pixelcrushers.com/dialogue_system/manual2x/html/release_notes.html
 o Re-import any Third Party Support packages that you imported in a previous release.
-o If upgrading from version 1.x, please read the Upgrade Guide:
-  http://www.pixelcrushers.com/dialogue_system/manual2x/html/getting_started.html
 
 
 Need Help?
@@ -57,4 +52,3 @@ o Discord: https://discord.gg/FwUaCNt
 
 We do our very best to reply to all emails within 24 hours. If you haven't received
 a reply within 24 hours, please check your spam folder.
-*/

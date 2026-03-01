@@ -89,6 +89,7 @@ namespace PixelCrushers.DialogueSystem
             Debug.Log("Best estimate duration: " + duration + " sec");
             if (TimelineEditor.selectedClip == null) return;
             TimelineEditor.selectedClip.duration = duration;
+            EditorUtility.SetDirty(timelineAsset);
         }
 
     }

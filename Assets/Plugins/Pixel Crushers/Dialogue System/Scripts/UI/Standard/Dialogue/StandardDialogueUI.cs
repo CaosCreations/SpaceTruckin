@@ -259,12 +259,12 @@ namespace PixelCrushers.DialogueSystem
             {
                 var focusedPanel = conversationUIElements.standardSubtitleControls.StageFocusedPanel(subtitle);
                 float timeout = Time.realtimeSinceStartup + WaitForOpenTimeoutDuration;
-                var showContinueButton = false;
+                var showContinueButton = focusedPanel.shouldShowContinueButton;
                 while (conversationUIElements.mainPanel.panelState != UIPanel.PanelState.Open && Time.realtimeSinceStartup < timeout)
                 {
                     yield return endOfFrame;
                     var isContinueButtonActive = focusedPanel != null && focusedPanel.continueButton != null && focusedPanel.continueButton.gameObject.activeSelf;
-                    showContinueButton = showContinueButton || isContinueButtonActive;
+                    showContinueButton = showContinueButton || isContinueButtonActive || focusedPanel.shouldShowContinueButton;
                     if (isContinueButtonActive)
                     {
                         focusedPanel.continueButton.gameObject.SetActive(false);

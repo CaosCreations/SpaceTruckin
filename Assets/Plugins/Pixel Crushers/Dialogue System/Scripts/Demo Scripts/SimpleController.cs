@@ -77,6 +77,7 @@ namespace PixelCrushers.DialogueSystem.Demo
         private float m_cameraRotationY = 0;
         private Quaternion m_originalCameraRotation;
         private bool m_firing = false;
+        private int m_framesForInputSystemToInit = 2;
 
         void Awake()
         {
@@ -89,35 +90,43 @@ namespace PixelCrushers.DialogueSystem.Demo
         {
             var camera = UnityEngine.Camera.main;
             m_originalCameraRotation = (camera != null) ? camera.transform.localRotation : Quaternion.identity;
+            Cursor.visible = false;
         }
 
         void Update()
         {
             if (Time.timeScale <= 0) return;
 
+            if (m_framesForInputSystemToInit > 0)
+            {
+                m_framesForInputSystemToInit--;
+            }
+            else
+            {
 #if USE_NEW_INPUT
             var mouseX = UnityEngine.InputSystem.Mouse.current.delta.x.ReadValue() * 0.05f; // Scaling to approximate Input.GetAxis().
             var mouseY = UnityEngine.InputSystem.Mouse.current.delta.y.ReadValue() * 0.05f;
 #else
-            var mouseX = InputDeviceManager.GetAxis(mouseXAxis); 
-            var mouseY = InputDeviceManager.GetAxis(mouseYAxis);
+                var mouseX = InputDeviceManager.GetAxis(mouseXAxis);
+                var mouseY = InputDeviceManager.GetAxis(mouseYAxis);
 #endif
 
-            // Mouse X rotation:
-            transform.Rotate(0, mouseX * mouseSensitivityX, 0);
+                // Mouse X rotation:
+                transform.Rotate(0, mouseX * mouseSensitivityX, 0);
 
-            // Mouse Y rotation:
-            m_cameraRotationY += mouseY * mouseSensitivityY;
-            m_cameraRotationY = ClampAngle(m_cameraRotationY, mouseMinimumY, mouseMaximumY);
-            Quaternion yQuaternion = Quaternion.AngleAxis(m_cameraRotationY, -Vector3.right);
-            if (m_smoothCamera != null)
-            {
-                // If we have a SmoothCameraWithBumper, leave camera adjustments to it:
-                m_smoothCamera.adjustQuaternion = yQuaternion;
-            }
-            else
-            {
-                UnityEngine.Camera.main.transform.localRotation = m_originalCameraRotation * yQuaternion;
+                // Mouse Y rotation:
+                m_cameraRotationY += mouseY * mouseSensitivityY;
+                m_cameraRotationY = ClampAngle(m_cameraRotationY, mouseMinimumY, mouseMaximumY);
+                Quaternion yQuaternion = Quaternion.AngleAxis(m_cameraRotationY, -Vector3.right);
+                if (m_smoothCamera != null)
+                {
+                    // If we have a SmoothCameraWithBumper, leave camera adjustments to it:
+                    m_smoothCamera.adjustQuaternion = yQuaternion;
+                }
+                else
+                {
+                    UnityEngine.Camera.main.transform.localRotation = m_originalCameraRotation * yQuaternion;
+                }
             }
 
             // Weapon:

@@ -22,6 +22,7 @@ namespace PixelCrushers.DialogueSystem
         public const string USE_TWINE = "USE_TWINE";
         public const string USE_YARN = "USE_YARN";
         public const string USE_YARN2 = "USE_YARN2";
+        public const string USE_YARN3 = "USE_YARN3";
         public const string TMP_PRESENT = "TMP_PRESENT";
         public const string USE_STM = "USE_STM";
         public const string USE_NAVMESH = "USE_NAVMESH";
