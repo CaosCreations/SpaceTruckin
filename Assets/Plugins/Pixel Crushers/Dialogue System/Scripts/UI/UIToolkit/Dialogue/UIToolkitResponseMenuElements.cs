@@ -32,9 +32,18 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
         public override AbstractUISubtitleControls subtitleReminderControls => null;
         protected VisualElement ResponseMenuPanel => UIToolkitDialogueUI.GetVisualElement<VisualElement>(Document, responseMenuPanelName);
         protected ProgressBar TimerProgressBar => UIToolkitDialogueUI.GetVisualElement<ProgressBar>(Document, timerProgressBarName);
-        protected Label PortraitLabel => UIToolkitDialogueUI.GetVisualElement<Label>(Document, portraitLabelName);
         protected VisualElement PortraitImage => UIToolkitDialogueUI.GetVisualElement<VisualElement>(Document, portraitImageName);
         protected virtual Button GetResponseButton(int index) => UIToolkitDialogueUI.GetVisualElement<Button>(Document, responseButtonNames[index]);
+
+        protected TextElement portraitLabel = null;
+        protected TextElement PortraitLabel
+        {
+            get
+            {
+                if (portraitLabel == null) portraitLabel = new TextElement(Document, portraitLabelName);
+                return portraitLabel;
+            }
+        }
 
         protected float TimerSecondsMax { get; set; }
         protected float TimerSecondsLeft { get;set; }

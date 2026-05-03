@@ -17,6 +17,16 @@ namespace PixelCrushers
 
         private List<T> m_used = new List<T>();
 
+        public delegate T GetNewDelegate();
+
+        /// <summary>
+        /// Assign a delegate if you want provide a different method to create new items
+        /// such as using UnityEngine.Object.Instantiate().
+        /// </summary>
+        public GetNewDelegate GetNew = DefaultGetNew;
+
+        public static T DefaultGetNew() => new T();
+
         /// <summary>
         /// Gets an object from the pool. After getting an object, you should 
         /// initialize its fields because it will have the values from its
@@ -35,7 +45,7 @@ namespace PixelCrushers
                 }
                 else
                 {
-                    T item = new T();
+                    T item = GetNew();
                     m_used.Add(item);
                     return item;
                 }
@@ -63,7 +73,7 @@ namespace PixelCrushers
         {
             while (m_free.Count < initialSize)
             {
-                m_free.Add(new T());
+                m_free.Add(GetNew());
             }
         }
 

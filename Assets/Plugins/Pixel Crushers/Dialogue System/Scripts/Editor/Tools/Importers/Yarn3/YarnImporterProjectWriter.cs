@@ -2,7 +2,6 @@
 
 using System;
 using System.Linq;
-using System.Text;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -146,7 +145,7 @@ $@"local {RunCommandRuntimeArgumentList} = {Lua.EvaluateYarnExpression}({{1}})
         public static readonly string StandaloneSequenceWithoutQuotesRegex = $"^\\[{SequenceAttributeName}=([^\"]\\S*)\\s*\\/\\]\\s*$";
         public static readonly string SequenceWithQuotesRegex = $"[^\\\\]\\[{SequenceAttributeName}=\"(.+)\"\\s*\\/\\]\\s*$";
         public static readonly string SequenceWithoutQuotesRegex = $"[^\\\\]\\[{SequenceAttributeName}=([^\"]\\S*)\\s*\\/\\]\\s*$";
-        
+
         private YarnImporterProject _yarnProject = null;
 
         private DialogueDatabase _dialogueDb = null;
@@ -183,11 +182,12 @@ $@"local {RunCommandRuntimeArgumentList} = {Lua.EvaluateYarnExpression}({{1}})
             CreateConversations();
             CreateDialogueEntries();
             FixSmartVariables();
+            if (_prefs.oneConversationPerFile) MergeConversationsInSameFile();
             FindActorPortraits();
         }
 
         private void FindActorPortraits()
-        { 
+        {
             _dialogueDb.actors.ForEach(a => FindPortraitImage(a));
         }
 
@@ -367,7 +367,8 @@ $@"local {RunCommandRuntimeArgumentList} = {Lua.EvaluateYarnExpression}({{1}})
                         fieldType = FieldType.Text;
                         luaVarValue = ((StringToken)valueToken).Value;
                         break;
-                };
+                }
+                ;
             }
 
             var luaVar = _template.CreateVariable(_template.GetNextVariableID(_dialogueDb), setStmt.Variable, luaVarValue, fieldType);
@@ -459,10 +460,115 @@ $@"local {RunCommandRuntimeArgumentList} = {Lua.EvaluateYarnExpression}({{1}})
 
         private void CreateConversations()
         {
+            MergeConversationNodesThatHaveSameName();
+
             // Create all Conversations, at this point they will be empty except for their START dialogue entry
             foreach (var nodeEntry in _yarnProject.Nodes)
             {
                 CreateConversation(nodeEntry.Value);
+            }
+        }
+
+        private void MergeConversationNodesThatHaveSameName()
+        {
+            var nodes = new List<ConversationNode>(_yarnProject.Nodes.Values);
+            var uniqueNodesByName = new Dictionary<string, ConversationNode>();
+            int maxSafeguard = nodes.Count;
+            int safeguard = 0;
+            int i = 0;
+            while (i < _yarnProject.Nodes.Count && safeguard++ < maxSafeguard)
+            {
+                var node = nodes[i];
+                if (uniqueNodesByName.TryGetValue(node.Name, out var existingNode))
+                {
+                    // Merge:
+                    foreach (var statement in node.Statements)
+                    {
+                        existingNode.AddStatement(statement);
+                    }
+                    nodes.Remove(node);
+                    //[TODO] Incorporate "when:" conditions.
+                }
+                else
+                {
+                    uniqueNodesByName.Add(node.Name, node);
+                    i++;
+                }
+            }
+
+            _yarnProject.ReplaceNodeList(nodes);
+        }
+
+        private void MergeConversationsInSameFile()
+        {
+            var conversations = new List<Conversation>(_dialogueDb.conversations);
+            var uniqueConversationsByFilename = new Dictionary<string, Conversation>();
+            int maxSafeguard = conversations.Count;
+            int safeguard = 0;
+            int i = 0;
+            while (i < conversations.Count && safeguard++ < maxSafeguard)
+            {
+                var conversation = conversations[i];
+                var conversationFilename = conversation.LookupValue("File");
+                if (uniqueConversationsByFilename.TryGetValue(conversationFilename, out var existingConversation))
+                {
+                    // Merge:
+                    MergeConversation(existingConversation, conversation);
+                    conversations.Remove(conversation);
+                }
+                else
+                {
+                    uniqueConversationsByFilename.Add(conversationFilename, conversation);
+                    conversation.Title = conversationFilename;
+                    i++;
+                }
+            }
+
+            _dialogueDb.conversations = conversations;
+        }
+
+        private void MergeConversation(Conversation existingConversation, Conversation conversationToRemove)
+        {
+            // Merge conversationToRemove into existingConversation, updating all references.
+            // Make entry IDs higher than existing conversation's entry IDs:
+            foreach (var entry in conversationToRemove.dialogueEntries)
+            {
+                var newID = _template.GetNextDialogueEntryID(existingConversation);
+                UpdateLinks(conversationToRemove.id, entry.id, existingConversation.id, newID);
+                entry.conversationID = existingConversation.id;
+                entry.id = newID;
+                existingConversation.dialogueEntries.Add(entry);
+            }
+
+            // Link existingConversation's START to conversationToRemove's START:
+            var existingStart = existingConversation.GetFirstDialogueEntry();
+            var otherStart = conversationToRemove.GetFirstDialogueEntry();
+            existingStart.outgoingLinks.Add(new Link(existingStart.conversationID, existingStart.id, existingStart.conversationID, otherStart.id));
+            otherStart.Title = conversationToRemove.Title;
+            otherStart.isGroup = true;
+            otherStart.Sequence = string.Empty;
+        }
+
+        private void UpdateLinks(int oldConversationID, int oldEntryID, int newConversationID, int newEntryID)
+        {
+            foreach (var conversation in _dialogueDb.conversations)
+            {
+                foreach (var entry in conversation.dialogueEntries)
+                {
+                    foreach (var link in entry.outgoingLinks)
+                    {
+                        if (link.originConversationID == oldConversationID && link.originDialogueID == oldEntryID)
+                        {
+                            link.originConversationID = newConversationID;
+                            link.originDialogueID = newEntryID;
+                        }
+                        if (link.destinationConversationID == oldConversationID && link.destinationDialogueID == oldEntryID)
+                        {
+                            link.destinationConversationID = newConversationID;
+                            link.destinationDialogueID = newEntryID;
+                        }
+                    }
+                }
             }
         }
 
@@ -473,6 +579,9 @@ $@"local {RunCommandRuntimeArgumentList} = {Lua.EvaluateYarnExpression}({{1}})
 
             var conversationId = _template.GetNextConversationID(_dialogueDb);
             var conversation = _template.CreateConversation(conversationId, convoName);
+            Field.SetValue(conversation.fields, "File", node.Filename);
+            Field.SetValue(conversation.fields, "Node", node.NodeNumber);
+            Field.SetValue(conversation.fields, "When", node.When);
 
             var actor = _playerActor;
             var conversant = _defaultNpcActor;
@@ -568,8 +677,8 @@ $@"local {RunCommandRuntimeArgumentList} = {Lua.EvaluateYarnExpression}({{1}})
 
                 case StatementType.Declare:
                     //!!!
-                     nextDlgEntry = previousEntry;
-                     nextDlgEntry = CreateAndAddDialogueEntries((DeclareStatement)stmt, previousEntry);
+                    nextDlgEntry = previousEntry;
+                    nextDlgEntry = CreateAndAddDialogueEntries((DeclareStatement)stmt, previousEntry);
                     break;
 
                 case StatementType.Set:
@@ -851,7 +960,7 @@ $@"local {RunCommandRuntimeArgumentList} = {Lua.EvaluateYarnExpression}({{1}})
                 Debug.LogWarning($"YarnProjectWriter::CreateDialogueEntries(SetStatement) - var: {stmt.Variable} expStack.Count={expStack.Count}");
             }
             else if (isSmartVariable)
-            { 
+            {
                 // Don't set for smart expressions.
             }
             else
@@ -1160,7 +1269,7 @@ $@"local {RunCommandRuntimeArgumentList} = {Lua.EvaluateYarnExpression}({{1}})
         }
 
         private string ExtractMenuText(string text, out string remainingDialogueText)
-        { 
+        {
             // From "[menutext] dialoguetext", set remainingDialogueText to "dialogueText"
             // and return "menutext":
             if (text.StartsWith("["))

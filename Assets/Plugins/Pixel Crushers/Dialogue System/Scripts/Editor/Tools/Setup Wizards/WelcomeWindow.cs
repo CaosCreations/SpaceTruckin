@@ -324,7 +324,7 @@ namespace PixelCrushers.DialogueSystem
             var new_USE_TWINE = EditorGUILayout.ToggleLeft(new GUIContent("Twine (USE_TWINE)", "Enable Dialogue System support for Twine Twison import."), define_USE_TWINE);
             var new_USE_YARN = EditorGUILayout.ToggleLeft(new GUIContent("Yarn 1 (USE_YARN)", "Enable Dialogue System support for Yarn Spinner 1 import."), define_USE_YARN);
             var new_USE_YARN2 = EditorGUILayout.ToggleLeft(new GUIContent("Yarn 2 (USE_YARN2)", "Enable Dialogue System support for Yarn Spinner 2 import."), define_USE_YARN2);
-            var new_USE_YARN3 = EditorGUILayout.ToggleLeft(new GUIContent("Yarn 3 (USE_YARN3)", "Enable Dialogue System support for Yarn Spinner 3 import."), define_USE_YARN2);
+            var new_USE_YARN3 = EditorGUILayout.ToggleLeft(new GUIContent("Yarn 3 (USE_YARN3)", "Enable Dialogue System support for Yarn Spinner 3 import."), define_USE_YARN3);
 #endif
 
             var changed = EditorGUI.EndChangeCheck();

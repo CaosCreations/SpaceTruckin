@@ -266,6 +266,9 @@ namespace PixelCrushers.DialogueSystem.Articy
                     "Instead of using entity's name as Display Name, use a custom field named 'DisplayName'."),
                     prefs.CustomDisplayName);
             }
+            prefs.AddDialogueEntryTechnicalNames = EditorGUILayout.Toggle(new GUIContent("Add Entry Technical Names",
+                "Add Technical Name field to dialogue entries. If unticked, omits Technical Name fields for dialogue entries to keep database smaller."),
+                prefs.AddDialogueEntryTechnicalNames);
             prefs.IncludeFeatureNameInFields = EditorGUILayout.Toggle(new GUIContent("Include Feature Names",
                 "Add containing feature name to property name when importing properties as fields."), prefs.IncludeFeatureNameInFields);
         }

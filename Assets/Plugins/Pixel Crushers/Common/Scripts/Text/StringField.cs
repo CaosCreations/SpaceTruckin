@@ -36,7 +36,7 @@ namespace PixelCrushers
         public string text
         {
             get { return m_text; }
-            set { m_text = value; }
+            set { m_text = value; m_stringAsset = null; m_textTable = null; m_textTableFieldID = 0; }
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace PixelCrushers
         public StringAsset stringAsset
         {
             get { return m_stringAsset; }
-            set { m_stringAsset = value; }
+            set { m_stringAsset = value; m_text = string.Empty; m_textTable = null; m_textTableFieldID = 0; }
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace PixelCrushers
         public TextTable textTable
         {
             get { return m_textTable; }
-            set { m_textTable = value; }
+            set { m_textTable = value; m_text = string.Empty; m_stringAsset = null; }
         }
 
         /// <summary>
@@ -113,55 +113,55 @@ namespace PixelCrushers
 
         public StringField()
         {
-            this.text = string.Empty;
-            this.stringAsset = null;
-            this.textTable = null;
-            this.textTableFieldID = 0;
+            m_text = string.Empty;
+            m_stringAsset = null;
+            m_textTable = null;
+            m_textTableFieldID = 0;
         }
 
         public StringField(string text)
         {
-            this.text = text;
-            this.stringAsset = null;
-            this.textTable = null;
-            this.textTableFieldID = 0;
+            m_text = text;
+            m_stringAsset = null;
+            m_textTable = null;
+            m_textTableFieldID = 0;
         }
 
         public StringField(StringAsset stringAsset)
         {
-            this.text = string.Empty;
-            this.stringAsset = stringAsset;
-            this.textTable = null;
-            this.textTableFieldID = 0;
+            m_text = string.Empty;
+            m_stringAsset = stringAsset;
+            m_textTable = null;
+            m_textTableFieldID = 0;
         }
 
         public StringField(TextTable textTable, int fieldID)
         {
-            this.text = string.Empty;
-            this.stringAsset = null;
-            this.textTable = textTable;
-            this.textTableFieldID = fieldID;
+            m_text = string.Empty;
+            m_stringAsset = null;
+            m_textTable = textTable;
+            m_textTableFieldID = fieldID;
         }
 
         public StringField(StringField source)
         {
-            this.text = string.Empty;
-            this.stringAsset = null;
-            this.textTable = null;
-            this.textTableFieldID = 0;
+            m_text = string.Empty;
+            m_stringAsset = null;
+            m_textTable = null;
+            m_textTableFieldID = 0;
             if (source == null) return;
             if (!string.IsNullOrEmpty(source.text))
             {
-                this.text = source.text;
+                m_text = source.text;
             }
             else if (source.stringAsset != null)
             {
-                this.stringAsset = source.stringAsset;
+                m_stringAsset = source.stringAsset;
             }
             else if (source.textTable != null)
             {
-                this.textTable = source.textTable;
-                this.textTableFieldID = source.textTableFieldID;
+                m_textTable = source.textTable;
+                m_textTableFieldID = source.textTableFieldID;
             }
         }
 
@@ -169,7 +169,7 @@ namespace PixelCrushers
         {
             if (string.IsNullOrEmpty(this.text) && this.stringAsset == null && this.textTable == null)
             {
-                this.textTable = textTable;
+                m_textTable = textTable;
             }
         }
 

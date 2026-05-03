@@ -262,6 +262,10 @@ namespace PixelCrushers.DialogueSystem.Yarn
             return visitCnt;
         }
 
+        public void ResetVisitedCount(string conversationName) => _visitedCount[conversationName] = 0;
+
+        public void ResetAllVisitedCount() => _visitedCount.Clear();
+
         public float Random() => RandomRange(0, 1);
         public float RandomRange(double min, double max) => UnityEngine.Random.Range((float)min, (float)max);
         public int Dice(double sides) => UnityEngine.Random.Range(1, (int)sides + 1);

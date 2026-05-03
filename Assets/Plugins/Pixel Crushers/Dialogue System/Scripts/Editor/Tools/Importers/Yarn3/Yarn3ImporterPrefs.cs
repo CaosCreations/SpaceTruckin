@@ -2,19 +2,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-
-using UnityEngine;
-using UnityEditor;
-using UnityEditorInternal;
-
-using Yarn.Unity;
-
 
 namespace PixelCrushers.DialogueSystem.Yarn3
 {
+
+    /// <summary>
+    /// Specifies what to import and how.
+    /// </summary>
     [Serializable]
-    public class Yarn3ImporterPrefs : AbstractConverterWindowPrefs
+    public class Yarn3ImporterPrefs
     {
         public const string DefaultPlayerName = "Player";
         public const string DefaultActorRegex = "^(.+?)\\:";
@@ -66,9 +62,46 @@ namespace PixelCrushers.DialogueSystem.Yarn3
         /// </summary>
         public bool importMenuText = false;
 
+        public bool oneConversationPerFile = false;
+
         public bool keepExistingActors = false;
 
         public bool debug = false;
+
+        // From abstract prefs class:
+
+        /// <summary>
+        /// The source filename. This file gets converted into a dialogue database.
+        /// </summary>
+        public string sourceFilename = string.Empty;
+
+        /// <summary>
+        /// The output folder in which to create the dialogue database.
+        /// </summary>
+        public string outputFolder = "Assets";
+
+        /// <summary>
+        /// The name of the dialogue database.
+        /// </summary>
+        public string databaseFilename = "Dialogue Database";
+
+        /// <summary>
+        /// If <c>true</c>, the converter may overwrite the dialogue database
+        /// if it already exists.
+        /// </summary>
+        public bool overwrite = false;
+
+        /// <summary>
+        /// If <c>true</c> and overwriting, merge assets into the existing database
+        /// instead of replacing it.
+        /// </summary>
+        public bool merge = false;
+
+        /// <summary>
+        /// The encoding type to use when reading the source file.
+        /// </summary>
+        public EncodingType encodingType = EncodingType.Default;
+
     }
 
 }

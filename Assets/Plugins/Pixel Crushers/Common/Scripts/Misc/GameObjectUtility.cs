@@ -16,7 +16,9 @@ namespace PixelCrushers
 
         public static T FindFirstObjectByType<T>() where T : UnityEngine.Object
         {
-#if UNITY_2023_1_OR_NEWER
+#if UNITY_6000_3_OR_NEWER
+            return UnityEngine.Object.FindAnyObjectByType<T>();
+#elif UNITY_2023_1_OR_NEWER
             return UnityEngine.Object.FindFirstObjectByType<T>();
 #else
             return UnityEngine.Object.FindObjectOfType<T>();
@@ -25,7 +27,9 @@ namespace PixelCrushers
 
         public static UnityEngine.Object FindFirstObjectByType(System.Type type)
         {
-#if UNITY_2023_1_OR_NEWER
+#if UNITY_6000_3_OR_NEWER
+            return UnityEngine.Object.FindAnyObjectByType(type);
+#elif UNITY_2023_1_OR_NEWER
             return UnityEngine.Object.FindFirstObjectByType(type);
 #else
             return UnityEngine.Object.FindObjectOfType(type);
@@ -34,7 +38,9 @@ namespace PixelCrushers
 
         public static T[] FindObjectsByType<T>() where T : UnityEngine.Object
         {
-#if UNITY_2023_1_OR_NEWER
+#if UNITY_6000_4_OR_NEWER
+            return UnityEngine.Object.FindObjectsByType<T>();
+#elif UNITY_2023_1_OR_NEWER
             return UnityEngine.Object.FindObjectsByType<T>(FindObjectsSortMode.None);
 #else
             return UnityEngine.Object.FindObjectsOfType<T>();
@@ -43,7 +49,9 @@ namespace PixelCrushers
 
         public static UnityEngine.Object[] FindObjectsByType(System.Type type)
         {
-#if UNITY_2023_1_OR_NEWER
+#if UNITY_6000_4_OR_NEWER
+            return UnityEngine.Object.FindObjectsByType(type);
+#elif UNITY_2023_1_OR_NEWER
             return UnityEngine.Object.FindObjectsByType(type, FindObjectsSortMode.None);
 #else
             return UnityEngine.Object.FindObjectsOfType(type);
@@ -204,7 +212,9 @@ namespace PixelCrushers
         /// </summary>
         public static T[] FindObjectsOfTypeAlsoInactive<T>(bool checkAllScenes = true) where T : Component
         {
-#if UNITY_2022_3_OR_NEWER || UNITY_2023_1_OR_NEWER
+#if UNITY_6000_4_OR_NEWER
+            return UnityEngine.Object.FindObjectsByType<T>(FindObjectsInactive.Include);
+#elif UNITY_2022_3_OR_NEWER || UNITY_2023_1_OR_NEWER
             return UnityEngine.Object.FindObjectsByType<T>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 #else
             var list = new List<T>();

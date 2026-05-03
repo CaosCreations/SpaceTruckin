@@ -81,6 +81,7 @@ namespace PixelCrushers.DialogueSystem
             // Export all conversations:
             foreach (var conversation in database.conversations)
             {
+                visited.Clear();
                 file.WriteLine(string.Format("[{0}]\t{1}", conversation.id, conversation.Title.ToUpper()));
                 file.WriteLine(string.Empty);
                 if (!string.IsNullOrEmpty(conversation.Description))

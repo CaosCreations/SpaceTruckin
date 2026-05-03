@@ -339,9 +339,21 @@ namespace PixelCrushers.DialogueSystem
 
         protected virtual void DrawQuestAction()
         {
-            foldouts.questFoldout = EditorWindowTools.EditorGUILayoutFoldout("Set Quest State", "Set quest states.", foldouts.questFoldout, false);
+            foldouts.questFoldout = EditorWindowTools.EditorGUILayoutFoldoutWithXButton("Set Quest State", "Set quest states.", foldouts.questFoldout, out var clickedX, false);
             if (foldouts.questFoldout)
             {
+                if (clickedX)
+                {
+                    showSetQuestStateAction = false;
+                    serializedObject.ApplyModifiedProperties();
+                    trigger.setQuestState = false;
+                    trigger.questName = string.Empty;
+                    trigger.setQuestEntryState = false;
+                    trigger.setAnotherQuestEntryState = false;
+                    serializedObject.Update();
+                    questPicker.currentQuest = string.Empty;
+                    questPicker.UpdateTitles();
+                }
                 try
                 {
                     EditorWindowTools.EditorGUILayoutBeginGroup();
@@ -399,9 +411,15 @@ namespace PixelCrushers.DialogueSystem
 
         protected virtual void DrawLuaAction()
         {
-            foldouts.luaFoldout = EditorWindowTools.EditorGUILayoutFoldout("Run Lua Code", "Run Lua code.", foldouts.luaFoldout, false);
+            foldouts.luaFoldout = EditorWindowTools.EditorGUILayoutFoldoutWithXButton("Run Lua Code", "Run Lua code.", foldouts.luaFoldout, out var clickedX, false);
             if (foldouts.luaFoldout)
             {
+                if (clickedX)
+                {
+                    showRunLuaCodeAction = false;
+                    serializedObject.FindProperty("luaCode").stringValue = string.Empty;
+                    return;
+                }
                 try
                 {
                     EditorWindowTools.EditorGUILayoutBeginGroup();
@@ -419,14 +437,6 @@ namespace PixelCrushers.DialogueSystem
                         serializedObject.FindProperty("luaCode").stringValue = newLuaCode;
                         MarkSceneDirtyIfNotPrefab();
                     }
-                    EditorGUILayout.BeginHorizontal();
-                    GUILayout.FlexibleSpace();
-                    if (GUILayout.Button("x", GUILayout.Width(18), GUILayout.Height(14)))
-                    {
-                        serializedObject.FindProperty("luaCode").stringValue = string.Empty;
-                        showRunLuaCodeAction = false;
-                    }
-                    EditorGUILayout.EndHorizontal();
                 }
                 finally
                 {
@@ -437,25 +447,23 @@ namespace PixelCrushers.DialogueSystem
 
         protected virtual void DrawSequenceAction()
         {
-            foldouts.sequenceFoldout = EditorWindowTools.EditorGUILayoutFoldout("Play Sequence", "Play a sequence.", foldouts.sequenceFoldout, false);
+            foldouts.sequenceFoldout = EditorWindowTools.EditorGUILayoutFoldoutWithXButton("Play Sequence", "Play a sequence.", foldouts.sequenceFoldout, out var clickedX, false);
             if (foldouts.sequenceFoldout)
             {
+                if (clickedX)
+                {
+                    showPlaySequenceAction = false;
+                    serializedObject.FindProperty("sequence").stringValue = string.Empty;
+                    return;
+                }
                 try
                 {
                     EditorWindowTools.EditorGUILayoutBeginGroup();
-                    EditorGUILayout.BeginHorizontal();
                     if (DialogueTriggerEventDrawer.IsEnableOrStartEnumIndex(triggerProperty.enumValueIndex))
                     {
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("waitOneFrameOnStartOrEnable"), new GUIContent("Wait 1 Frame", "Tick to wait one frame to allow other components to finish their OnStart/OnEnable"), true);
 
                     }
-                    GUILayout.FlexibleSpace();
-                    if (GUILayout.Button("x", GUILayout.Width(18), GUILayout.Height(14)))
-                    {
-                        serializedObject.FindProperty("sequence").stringValue = string.Empty;
-                        showPlaySequenceAction = false;
-                    }
-                    EditorGUILayout.EndHorizontal();
                     serializedObject.ApplyModifiedProperties();
                     EditorGUI.BeginChangeCheck();
                     var newSequence = SequenceEditorTools.DrawLayout(new GUIContent("Sequence"), trigger.sequence, ref sequenceRect, ref sequenceSyntaxState);
@@ -478,20 +486,19 @@ namespace PixelCrushers.DialogueSystem
 
         protected virtual void DrawAlertAction()
         {
-            foldouts.alertFoldout = EditorWindowTools.EditorGUILayoutFoldout("Show Alert", "Show an alert message.", foldouts.alertFoldout, false);
+            foldouts.alertFoldout = EditorWindowTools.EditorGUILayoutFoldoutWithXButton("Show Alert", "Show an alert message.", foldouts.alertFoldout, out var clickedX, false);
             if (foldouts.alertFoldout)
             {
+                if (clickedX)
+                {
+                    showAlertAction = false;
+                    serializedObject.FindProperty("alertMessage").stringValue = string.Empty;
+                    return;
+                }
                 try
                 {
                     EditorWindowTools.EditorGUILayoutBeginGroup();
-                    EditorGUILayout.BeginHorizontal();
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("alertMessage"), true);
-                    if (GUILayout.Button("x", GUILayout.Width(18), GUILayout.Height(14)))
-                    {
-                        serializedObject.FindProperty("alertMessage").stringValue = string.Empty;
-                        showAlertAction = false;
-                    }
-                    EditorGUILayout.EndHorizontal();
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("textTable"), true);
                     var alertDurationProperty = serializedObject.FindProperty("alertDuration");
                     bool specifyAlertDuration = !Mathf.Approximately(0, alertDurationProperty.floatValue);
@@ -515,26 +522,25 @@ namespace PixelCrushers.DialogueSystem
 
         protected virtual void DrawBarkAction()
         {
-            foldouts.barkFoldout = EditorWindowTools.EditorGUILayoutFoldout("Bark", "Bark.", foldouts.barkFoldout, false);
+            foldouts.barkFoldout = EditorWindowTools.EditorGUILayoutFoldoutWithXButton("Bark", "Bark.", foldouts.barkFoldout, out var clickedX, false);
             if (foldouts.barkFoldout)
             {
+                if (clickedX)
+                {
+                    showBarkAction = false;
+                    serializedObject.FindProperty("barkSource").enumValueIndex = 0;
+                    serializedObject.FindProperty("barkConversation").stringValue = string.Empty;
+                    serializedObject.FindProperty("barkText").stringValue = string.Empty;
+                    serializedObject.FindProperty("barkTextSequence").stringValue = string.Empty;
+                    return;
+                }
                 try
                 {
                     EditorWindowTools.EditorGUILayoutBeginGroup();
-                    EditorGUILayout.BeginHorizontal();
                     var barkSourceProperty = serializedObject.FindProperty("barkSource");
                     if (barkSourceProperty.enumValueIndex < 0) GUI.color = Color.red;                         
                     EditorGUILayout.PropertyField(barkSourceProperty, true);
                     GUI.color = originalColor;
-                    if (GUILayout.Button("x", GUILayout.Width(18), GUILayout.Height(14)))
-                    {
-                        serializedObject.FindProperty("barkSource").enumValueIndex = 0;
-                        serializedObject.FindProperty("barkConversation").stringValue = string.Empty;
-                        serializedObject.FindProperty("barkText").stringValue = string.Empty;
-                        serializedObject.FindProperty("barkTextSequence").stringValue = string.Empty;
-                        showBarkAction = false;
-                    }
-                    EditorGUILayout.EndHorizontal();
                     switch ((DialogueSystemTrigger.BarkSource)barkSourceProperty.enumValueIndex)
                     {
                         case DialogueSystemTrigger.BarkSource.Conversation:
@@ -596,9 +602,15 @@ namespace PixelCrushers.DialogueSystem
 
         protected virtual void DrawConversationAction()
         {
-            foldouts.conversationFoldout = EditorWindowTools.EditorGUILayoutFoldout("Start Conversation", "Start a conversation.", foldouts.conversationFoldout, false);
+            foldouts.conversationFoldout = EditorWindowTools.EditorGUILayoutFoldoutWithXButton("Start Conversation", "Start a conversation.", foldouts.conversationFoldout, out var clickedX, false);
             if (foldouts.conversationFoldout)
             {
+                if (clickedX)
+                {
+                    showConversationAction = false;
+                    serializedObject.FindProperty("conversation").stringValue = string.Empty;
+                    return;
+                }
                 try
                 {
                     var conversationProperty = serializedObject.FindProperty("conversation");
@@ -731,9 +743,17 @@ namespace PixelCrushers.DialogueSystem
 
         protected virtual void DrawUnityEventAction()
         {
-            foldouts.unityEventFoldout = EditorWindowTools.EditorGUILayoutFoldout("OnExecute() UnityEvent", "Connect other events in the Inspector.", foldouts.unityEventFoldout, false);
+            foldouts.unityEventFoldout = EditorWindowTools.EditorGUILayoutFoldoutWithXButton("OnExecute() UnityEvent", "Connect other events in the Inspector.", foldouts.unityEventFoldout, out var clickedX, false);
             if (foldouts.unityEventFoldout)
             {
+                if (clickedX)
+                {
+                    showUnityEventAction = false;
+                    serializedObject.ApplyModifiedProperties();
+                    trigger.onExecute = new GameObjectUnityEvent();
+                    serializedObject.Update();
+                    return;
+                }
                 try
                 {
                     EditorWindowTools.EditorGUILayoutBeginGroup();
@@ -748,9 +768,15 @@ namespace PixelCrushers.DialogueSystem
 
         protected virtual void DrawSendMessageAction()
         {
-            foldouts.sendMessageFoldout = EditorWindowTools.EditorGUILayoutFoldout("Send Messages", "Use SendMessage to call methods on one or more GameObjects.", foldouts.sendMessageFoldout, false);
+            foldouts.sendMessageFoldout = EditorWindowTools.EditorGUILayoutFoldoutWithXButton("Send Messages", "Use SendMessage to call methods on one or more GameObjects.", foldouts.sendMessageFoldout, out var clickedX, false);
             if (foldouts.sendMessageFoldout)
             {
+                if (clickedX)
+                {
+                    showSendMessagesAction = false;
+                    serializedObject.FindProperty("sendMessages").arraySize = 0;
+                    return;
+                }
                 try
                 {
                     EditorWindowTools.EditorGUILayoutBeginGroup();
@@ -784,9 +810,15 @@ namespace PixelCrushers.DialogueSystem
 
         protected virtual void DrawSetActiveAction()
         {
-            foldouts.setActiveFoldout = EditorWindowTools.EditorGUILayoutFoldout("Set GameObjects Active/Inactive", "Set GameObjects active or inactive.", foldouts.setActiveFoldout, false);
+            foldouts.setActiveFoldout = EditorWindowTools.EditorGUILayoutFoldoutWithXButton("Set GameObjects Active/Inactive", "Set GameObjects active or inactive.", foldouts.setActiveFoldout, out var clickedX, false);
             if (foldouts.setActiveFoldout)
             {
+                if (clickedX)
+                {
+                    showSetActiveAction = false;
+                    setActiveList.serializedProperty.arraySize = 0;
+                    return;
+                }
                 try
                 {
                     EditorWindowTools.EditorGUILayoutBeginGroup();
@@ -825,9 +857,15 @@ namespace PixelCrushers.DialogueSystem
 
         protected virtual void DrawSetEnabledAction()
         {
-            foldouts.setEnabledFoldout = EditorWindowTools.EditorGUILayoutFoldout("Set Components Enabled/Disabled", "Set components active or inactive.", foldouts.setEnabledFoldout, false);
+            foldouts.setEnabledFoldout = EditorWindowTools.EditorGUILayoutFoldoutWithXButton("Set Components Enabled/Disabled", "Set components active or inactive.", foldouts.setEnabledFoldout, out var clickedX, false);
             if (foldouts.setEnabledFoldout)
             {
+                if (clickedX)
+                {
+                    showSetEnabledAction = false;
+                    setEnabledList.serializedProperty.arraySize = 0;
+                    return;
+                }
                 try
                 {
                     EditorWindowTools.EditorGUILayoutBeginGroup();
@@ -864,9 +902,15 @@ namespace PixelCrushers.DialogueSystem
 
         protected virtual void DrawSetAnimatorStateAction()
         {
-            foldouts.setAnimatorStateFoldout = EditorWindowTools.EditorGUILayoutFoldout("Set Animator States", "Set Animator states on one or more GameObjects.", foldouts.setAnimatorStateFoldout, false);
+            foldouts.setAnimatorStateFoldout = EditorWindowTools.EditorGUILayoutFoldoutWithXButton("Set Animator States", "Set Animator states on one or more GameObjects.", foldouts.setAnimatorStateFoldout, out var clickedX, false);
             if (foldouts.setAnimatorStateFoldout)
             {
+                if (clickedX)
+                {
+                    showAnimatorStatesAction = false;
+                    setAnimatorStateList.serializedProperty.arraySize = 0;
+                    return;
+                }
                 try
                 {
                     EditorWindowTools.EditorGUILayoutBeginGroup();

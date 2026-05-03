@@ -50,12 +50,11 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         {
             if (database == null) return;
             var eventType = Event.current.type;
-            if (eventType == EventType.Repaint ||
+            if (eventType == EventType.Repaint || eventType == EventType.Layout ||
                 eventType == EventType.MouseEnterWindow || eventType == EventType.MouseLeaveWindow ||
+                eventType == EventType.MouseUp || eventType == EventType.MouseDown ||
+                eventType == EventType.MouseMove || eventType == EventType.MouseDrag ||
                 eventType == EventType.ContextClick) return;
-            //--- Changed: More event types need to register undo.
-            //if (eventType == EventType.MouseUp || eventType == EventType.MouseDrag ||
-            //    eventType == EventType.KeyUp || eventType == EventType.ContextClick)
             {
                 if (registerCompleteObjectUndo)
                 {

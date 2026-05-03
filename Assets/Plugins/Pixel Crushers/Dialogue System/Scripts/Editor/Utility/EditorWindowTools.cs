@@ -99,6 +99,34 @@ namespace PixelCrushers.DialogueSystem
             return foldout;
         }
 
+        public static bool EditorGUILayoutFoldoutWithXButton(string label, string tooltip, bool foldout, out bool clickedX, bool topLevel = true)
+        {
+            clickedX = false;
+            try
+            {
+                GUILayout.BeginHorizontal();
+                GUI.backgroundColor = foldout ? DialogueEditorStyles.collapsibleHeaderOpenColor : DialogueEditorStyles.collapsibleHeaderClosedColor;
+#if UNITY_2019_1_OR_NEWER
+                var text = label;
+#else
+                var text = topLevel ? ("<b>" + label + "</b>") : label;
+#endif
+                var guiContent = new GUIContent((foldout ? DialogueEditorStyles.FoldoutOpenArrow : DialogueEditorStyles.FoldoutClosedArrow) + text, tooltip);
+                var guiStyle = topLevel ? DialogueEditorStyles.CollapsibleHeaderButtonStyleName : DialogueEditorStyles.CollapsibleSubheaderButtonStyleName;
+                if (!GUILayout.Toggle(true, guiContent, guiStyle))
+                {
+                    foldout = !foldout;
+                }
+                if (GUILayout.Button("x", GUILayout.Width(18), GUILayout.Height(14))) clickedX = true;
+                GUI.backgroundColor = Color.white;
+            }
+            finally
+            {
+                EditorGUILayout.EndHorizontal();
+            }
+            return foldout;
+        }
+
         public static void EditorGUILayoutVerticalSpace(float pixels)
         {
             EditorGUILayout.BeginVertical();

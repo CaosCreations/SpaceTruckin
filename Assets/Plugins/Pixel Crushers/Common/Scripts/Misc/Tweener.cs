@@ -108,6 +108,12 @@ namespace PixelCrushers
                 onBegin, onValue, onEnd));
         }
 
+        public static void StopTween(Coroutine tween)
+        {
+            if (tween == null) return;
+            Instance.StopCoroutine(tween);
+        }
+
         private delegate T LerpFunction<T>(T from, T to, float current);
 
         private IEnumerator TweenCoroutine<T>(T from, T to, float seconds,

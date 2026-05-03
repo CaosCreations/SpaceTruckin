@@ -1,6 +1,5 @@
 // Copyright (c) Pixel Crushers. All rights reserved.
 
-using UnityEngine;
 using System.Xml.Serialization;
 using System.Collections.Generic;
 
@@ -70,7 +69,6 @@ namespace PixelCrushers.DialogueSystem.ChatMapper
     /// <summary>
     /// Contains all chat mapper elements (e.g., actors, locations, dialogue entries, etc).
     /// </summary>
-    [System.Serializable]
     public class Assets
     {
         [XmlArray("Actors")]
@@ -97,7 +95,6 @@ namespace PixelCrushers.DialogueSystem.ChatMapper
     /// <summary>
     /// Defines a Chat Mapper Actor.
     /// </summary>
-    [System.Serializable]
     public class Actor
     {
         [XmlAttribute("ID")]

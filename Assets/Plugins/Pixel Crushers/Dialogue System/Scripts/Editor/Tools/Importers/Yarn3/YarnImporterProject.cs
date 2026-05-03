@@ -8,6 +8,8 @@ using UnityEngine;
 
 namespace PixelCrushers.DialogueSystem.Yarn3
 {
+    public enum WhenTimes { Undefined, Once, Always }
+
     // +---------------------------------------------------------------------------------------------------------------
     // + Class: YarnLocalizedString
     // + Description:
@@ -53,11 +55,11 @@ namespace PixelCrushers.DialogueSystem.Yarn3
         public override string ToString() => Value.ToString();
     }
 
-    public class BoolToken : YarnExpressionToken<bool> { public BoolToken(bool value) : base(ExpressionTokenType.Bool, value) {} }
-    public class NumberToken : YarnExpressionToken<float> { public NumberToken(float value) : base(ExpressionTokenType.Number, value) {} }
-    public class NullToken : YarnExpressionToken<object> { public NullToken() : base(ExpressionTokenType.Null, null) {} }
-    public class StringToken : YarnExpressionToken<string> { public StringToken(string value) : base(ExpressionTokenType.Text, value) {} }
-    public class VariableToken : YarnExpressionToken<string> { public VariableToken(string value) : base(ExpressionTokenType.Variable, value) {} }
+    public class BoolToken : YarnExpressionToken<bool> { public BoolToken(bool value) : base(ExpressionTokenType.Bool, value) { } }
+    public class NumberToken : YarnExpressionToken<float> { public NumberToken(float value) : base(ExpressionTokenType.Number, value) { } }
+    public class NullToken : YarnExpressionToken<object> { public NullToken() : base(ExpressionTokenType.Null, null) { } }
+    public class StringToken : YarnExpressionToken<string> { public StringToken(string value) : base(ExpressionTokenType.Text, value) { } }
+    public class VariableToken : YarnExpressionToken<string> { public VariableToken(string value) : base(ExpressionTokenType.Variable, value) { } }
 
     public class FunctionToken : YarnExpressionToken<string>
     {
@@ -106,7 +108,8 @@ namespace PixelCrushers.DialogueSystem.Yarn3
         public YarnExpression Conditions { get; private set; } = new YarnExpression();
         public YarnExpression Expression { get; private set; } = new YarnExpression();
 
-        public ConversationNode ConversationNode {
+        public ConversationNode ConversationNode
+        {
             // This will obviously fail if the parent hierarchy is not properly set up
             get
             {
@@ -129,7 +132,7 @@ namespace PixelCrushers.DialogueSystem.Yarn3
     // +    Base class for all basic statement types. Basic statements are singular, self contained statements.
     // +    Refer to YarnStatementTypeExt.IsBasic() for all basic statement types.
     // +---------------------------------------------------------------------------------------------------------------
-    public class BasicStatement : YarnStatement { public BasicStatement(StatementType type) : base(type) {} }
+    public class BasicStatement : YarnStatement { public BasicStatement(StatementType type) : base(type) { } }
 
     public struct CommandStringToken
     {
@@ -215,7 +218,7 @@ namespace PixelCrushers.DialogueSystem.Yarn3
     public class BlockStatement : YarnStatement
     {
         public IReadOnlyList<YarnStatement> Statements { get; private set; } = new List<YarnStatement>();
-        public BlockStatement(StatementType type) : base(type) {}
+        public BlockStatement(StatementType type) : base(type) { }
 
         public virtual void AddStatement(YarnStatement stmt) => ((List<YarnStatement>)Statements).Add(stmt);
     }
@@ -229,7 +232,7 @@ namespace PixelCrushers.DialogueSystem.Yarn3
     public class BlockStatement<T> : BlockStatement where T : YarnStatement
     {
         public IReadOnlyList<T> TypedStatements { get; private set; } = new List<T>();
-        public BlockStatement(StatementType type) : base(type) {}
+        public BlockStatement(StatementType type) : base(type) { }
 
         public override void AddStatement(YarnStatement stmt)
         {
@@ -246,17 +249,55 @@ namespace PixelCrushers.DialogueSystem.Yarn3
     public class ConversationNode : BlockStatement
     {
         public string Name { get; protected set; }
+        public int NodeNumber { get; protected set; }
+        public string Filename { get; protected set; }
+        public string When { get; protected set; }
+        public WhenTimes WhenTimes { get; protected set; } = WhenTimes.Undefined;
         public bool Once { get; set; } = false; // True if node is wrapped in <<once>> tag.
         public IReadOnlyDictionary<string, string> Header { get; protected set; } = new Dictionary<string, string>();
 
-        public ConversationNode() : base(StatementType.Conversation) {}
+        public ConversationNode(string filename, int nodeNumber) : base(StatementType.Conversation)
+        {
+            Filename = filename;
+            NodeNumber = nodeNumber;
+        }
+
+        public string GetConversationNameWithNodeNumber()
+        {
+            return $"{Name}.{NodeNumber}";
+        }
 
         public void AddHeader(string key, string value)
         {
             ((Dictionary<string, string>)Header)[key] = value;
 
-            // Keep an eye out for the "title" metadata (case-sensitive), if found use it to set the node's name
-            if (key.Equals(YarnImporterProject.NodeHeaderTitleKey, StringComparison.InvariantCulture)) Name = value;
+            // Keep an eye out for the "title" metadata (case-sensitive), if found use it to set the node's name:
+            if (key.Equals(YarnImporterProject.NodeHeaderTitleKey, StringComparison.InvariantCulture))
+            {
+                Name = value;
+            }
+            // If title is "when", set node's When condition:
+            else if (key.Equals(YarnImporterProject.NodeHeaderWhenKey, StringComparison.InvariantCulture))
+            {
+                AddWhenCondition(value);
+            }
+        }
+
+        public void SetWhenTimes(WhenTimes whenTimes)
+        {
+            WhenTimes = whenTimes;
+        }
+
+        public void AddWhenCondition(string condition)
+        {
+            if (string.IsNullOrEmpty(condition) ||
+                condition.Equals(YarnImporterProject.WhenTimesOnce, StringComparison.InvariantCulture) ||
+                condition.Equals(YarnImporterProject.WhenTimesAlways, StringComparison.InvariantCulture))
+            {
+                return; // once/always handled in SetWhenTimes.
+            }
+            if (!string.IsNullOrEmpty(When)) When += " and ";
+            When += condition;
         }
     }
 
@@ -265,7 +306,7 @@ namespace PixelCrushers.DialogueSystem.Yarn3
         public bool HasElse { get => CheckForElse(); }
         public IReadOnlyList<IfClause> IfClauses { get => TypedStatements; }
 
-        public IfBlock() : base(StatementType.IfBlock) {}
+        public IfBlock() : base(StatementType.IfBlock) { }
 
         private bool CheckForElse()
         {
@@ -286,14 +327,14 @@ namespace PixelCrushers.DialogueSystem.Yarn3
 
     public class ShortcutOptionList : BlockStatement<ShortcutOption>
     {
-        public ShortcutOptionList() : base(StatementType.ShortcutOptionList) {}
+        public ShortcutOptionList() : base(StatementType.ShortcutOptionList) { }
         public IReadOnlyList<ShortcutOption> Options { get => TypedStatements; }
     }
 
     public class ShortcutOption : BlockStatement
     {
         public LineStatement Line { get => (LineStatement)Statements[0]; }
-        public ShortcutOption() : base(StatementType.ShortcutOption) {}
+        public ShortcutOption() : base(StatementType.ShortcutOption) { }
     }
 
     public class YarnImporterProject
@@ -305,20 +346,34 @@ namespace PixelCrushers.DialogueSystem.Yarn3
         public const string NodeHeaderRegex = "(.+?):(.*)";
         public const string NodeHeaderTitleKey = "title";
         public const string NodeHeaderActorKey = "actor";
+        public const string NodeHeaderWhenKey = "when";
         public const string NodeHeaderConversantKey = "conversant";
+
+        public const string WhenTimesOnce = "once";
+        public const string WhenTimesAlways = "always";
 
         private Dictionary<string, ConversationNode> _nodes = new Dictionary<string, ConversationNode>();
         private Dictionary<string, IReadOnlyList<YarnLocalizedString>> _localizedStringTable = new Dictionary<string, IReadOnlyList<YarnLocalizedString>>();
 
         public IReadOnlyDictionary<string, ConversationNode> Nodes { get => _nodes; }
         public IReadOnlyDictionary<string, YarnLocalizedString> LocalizedStringTable { get; private set; }
-        
+
         private Yarn3ImporterPrefs _prefs;
 
         public YarnImporterProject(Yarn3ImporterPrefs prefs, IReadOnlyDictionary<string, YarnLocalizedString> localizedStringTable)
         {
             _prefs = prefs;
             LocalizedStringTable = localizedStringTable;
+        }
+
+        public void ReplaceNodeList(List<ConversationNode> nodes)
+        {
+            _nodes.Clear();
+            if (nodes == null) return;
+            foreach (var node in nodes)
+            {
+                AddNode(node);
+            }
         }
 
         public void AddNode(ConversationNode node)
@@ -329,7 +384,8 @@ namespace PixelCrushers.DialogueSystem.Yarn3
             }
             else
             {
-                _nodes[node.Name] = node;
+                var key = $"{node.Name}.{node.NodeNumber}";
+                _nodes[key] = node;
             }
         }
     }

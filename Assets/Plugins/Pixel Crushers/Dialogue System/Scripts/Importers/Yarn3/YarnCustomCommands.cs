@@ -275,6 +275,16 @@ namespace PixelCrushers.DialogueSystem.Yarn3
             return visitCnt;
         }
 
+        /// <summary>
+        /// Resets the visited count for a specific conversation.
+        /// </summary>
+        public void ResetVisitedCount(string conversationName) => _visitedCount[conversationName] = 0;
+
+        /// <summary>
+        /// Resets the visited counts for all conversations.
+        /// </summary>
+        public void ResetAllVisitedCount() => _visitedCount.Clear();
+
         public float Random() => RandomRange(0, 1);
         public float RandomRange(double min, double max) => UnityEngine.Random.Range((float)min, (float)max);
         public int Dice(double sides) => UnityEngine.Random.Range(1, (int)sides + 1);

@@ -122,30 +122,7 @@ namespace PixelCrushers.DialogueSystem
         public override void Awake()
         {
             base.Awake();
-            if (removeDuplicateTypewriterEffects) RemoveIfDuplicate();
-        }
-
-        protected void RemoveIfDuplicate()
-        {
-            var effects = GetComponents<TextMeshProTypewriterEffect>();
-            if (effects.Length > 1)
-            {
-                var keep = effects[0];
-                for (int i = 1; i < effects.Length; i++)
-                {
-                    if (effects[i].GetInstanceID() < keep.GetInstanceID())
-                    {
-                        keep = effects[i];
-                    }
-                }
-                for (int i = 0; i < effects.Length; i++)
-                {
-                    if (effects[i] != keep)
-                    {
-                        Destroy(effects[i]);
-                    }
-                }
-            }
+            if (removeDuplicateTypewriterEffects) RemoveIfDuplicate<TextMeshProTypewriterEffect>();
         }
 
         public override void Start()
@@ -428,6 +405,7 @@ namespace PixelCrushers.DialogueSystem
         public override void Stop()
         {
             var wasPlaying = isPlaying;
+            StopOrFadeCharacterAudio();
             StopTypewriterCoroutine();
             if (wasPlaying)
             {

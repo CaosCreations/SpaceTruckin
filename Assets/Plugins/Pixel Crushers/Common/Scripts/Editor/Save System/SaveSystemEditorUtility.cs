@@ -71,7 +71,7 @@ namespace PixelCrushers
         private static void AssignNewKey(Saver saver, string reason)
         {
             if (saver == null) return;
-            var key = CleanName(saver.name) + "_" + Mathf.Abs(saver.GetInstanceID());
+            var key = CleanName(saver.name) + "_" + Mathf.Abs(EntityUtility.GetEntityInt(saver));
             Debug.Log(saver.name + "." + saver.GetType().Name + ".Key = " + key + reason, saver);
             Undo.RecordObject(saver, "Key");
             saver._internalKeyValue = key;

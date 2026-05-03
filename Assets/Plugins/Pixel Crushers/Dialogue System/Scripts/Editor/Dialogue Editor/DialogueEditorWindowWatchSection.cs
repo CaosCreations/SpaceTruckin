@@ -27,7 +27,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
             public int variableIndex = -1;
             public Variable variable = null;
-            public Lua.Result variableValue;
+            [System.NonSerialized] public Lua.Result variableValue;
 
             public int questIndex = -1;
             public int questEntryNumber = 0;

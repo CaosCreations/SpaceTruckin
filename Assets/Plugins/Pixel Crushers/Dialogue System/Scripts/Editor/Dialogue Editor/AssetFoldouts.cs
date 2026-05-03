@@ -11,8 +11,8 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
     public class AssetFoldouts : ISerializationCallbackReceiver
     {
 
-        public Dictionary<int, bool> properties = new Dictionary<int, bool>();
-        public Dictionary<int, bool> fields = new Dictionary<int, bool>();
+        [System.NonSerialized] public Dictionary<int, bool> properties = new Dictionary<int, bool>();
+        [System.NonSerialized] public Dictionary<int, bool> fields = new Dictionary<int, bool>();
 
         public List<int> propertiesKeys = new List<int>();
         public List<bool> propertiesValues = new List<bool>();
