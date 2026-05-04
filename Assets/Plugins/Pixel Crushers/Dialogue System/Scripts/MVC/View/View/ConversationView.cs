@@ -221,6 +221,11 @@ namespace PixelCrushers.DialogueSystem
         private bool _isPCResponseMenuNext = false;
         private bool _isPCAutoResponseNext = false;
         private bool _lastModeWasResponseMenu = false;
+        public bool LastModeWasResponseMenu // ConversationControl needs to be able to reset this.
+        {
+            get => _lastModeWasResponseMenu;
+            set => _lastModeWasResponseMenu = value;
+        }
 
         private bool IsBlankStartNode(Subtitle subtitle)
         {
@@ -420,7 +425,9 @@ namespace PixelCrushers.DialogueSystem
         public void HandleContinueButtonClick()
         {
             // If we just started and another conversation just ended, ignore the continue:
-            if (Time.frameCount == initialFrameCount && initialFrameCount == ConversationController.frameLastConversationEnded)
+            if (Time.frameCount == initialFrameCount && 
+                initialFrameCount == ConversationController.frameLastConversationEnded &&
+                !DialogueManager.allowSimultaneousConversations)
             {
                 if (DialogueDebug.logInfo) Debug.Log($"Dialogue System: At frame {Time.frameCount}, just started a conversation but another just ended, so ignoring continue button.");
                 return;

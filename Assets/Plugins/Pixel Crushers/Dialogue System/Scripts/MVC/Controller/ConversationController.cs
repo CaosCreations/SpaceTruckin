@@ -332,7 +332,26 @@ namespace PixelCrushers.DialogueSystem
                 AnalyzePCResponses(m_state, out isPCResponseMenuNext, out isPCAutoResponseNext);
                 if (isPCAutoResponseNext)
                 {
-                    var nextState = m_model.GetState(m_state.pcAutoResponse.destinationEntry);
+                    var destinationEntry = m_state.pcAutoResponse.destinationEntry;
+                    if (randomize)
+                    {
+                        // If previous node specified RandomizeNextEntry() and all responses are [auto],
+                        // choose random entry:
+                        var allAuto = true;
+                        foreach (var response in m_state.pcResponses)
+                        {
+                            if (response.formattedText.forceMenu || !response.formattedText.forceAuto)
+                            {
+                                allAuto = false;
+                                break;
+                            }
+                        }
+                        if (allAuto)
+                        {
+                            destinationEntry = m_state.pcResponses[UnityEngine.Random.Range(0, m_state.pcResponses.Length)].destinationEntry;
+                        }
+                    }
+                    var nextState = m_model.GetState(destinationEntry);
                     if (m_state == stateThatJustFinished)
                     {
                         GotoState(nextState);

@@ -186,11 +186,23 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
             if (setFocus) visualElement.Focus();
         }
 
+        public static void SetDisplay(TextElement textElement, bool value, bool setFocus = false)
+        {
+            if (textElement == null) return;
+            textElement.SetDisplay(value, setFocus);
+        }
+
         public static bool IsVisible(VisualElement visualElement)
         {
             if (visualElement == null) return false;
             return visualElement.style.display != DisplayStyle.None;
 
+        }
+
+        public static bool IsVisible(TextElement textElement)
+        {
+            if (textElement == null) return false;
+            return textElement.IsVisible;
         }
 
         public static T GetVisualElement<T>(UIDocument document, string visualElementName) where T : VisualElement

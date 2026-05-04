@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
+using System.Collections;
 using UnityEngine;
 
 namespace PixelCrushers.DialogueSystem
@@ -140,9 +141,21 @@ namespace PixelCrushers.DialogueSystem
         {
             if (skipAll)
             {
-                if (stopSkipAllOnResponseMenu) skipAll = false;
+                if (stopSkipAllOnResponseMenu)
+                {
+                    skipAll = false;
+                    StartCoroutine(SetLastWasMenuAtEndOfFrame());
+                }
                 if (dialogueUI != null) dialogueUI.ShowSubtitle(DialogueManager.currentConversationState.subtitle);
             }
+        }
+
+        protected virtual IEnumerator SetLastWasMenuAtEndOfFrame()
+        {
+            // When we stop, showing the subtitle will reset LastModeWasResponseMenu, so
+            // we need to set it back.
+            yield return new WaitForEndOfFrame();
+            DialogueManager.ConversationView.LastModeWasResponseMenu = true;
         }
 
         public virtual void OnConversationEnd(Transform actor)

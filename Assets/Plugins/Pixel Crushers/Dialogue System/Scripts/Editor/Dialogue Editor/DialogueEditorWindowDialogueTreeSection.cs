@@ -21,6 +21,8 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private const int MaxNodeTextLength = 26;
         private Rect sequenceRect;
 
+        private bool hideMenuText = false;
+
         private class DialogueNode
         {
             public DialogueEntry entry;
@@ -676,16 +678,19 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 EditorGUI.BeginChangeCheck();
 
                 // Menu text (including localized if defined in template):
-                var menuTextField = Field.Lookup(entry.fields, "Menu Text");
-                if (menuTextField == null)
+                if (!hideMenuText)
                 {
-                    menuTextField = new Field("Menu Text", "", FieldType.Text);
-                    entry.fields.Add(menuTextField);
+                    var menuTextField = Field.Lookup(entry.fields, "Menu Text");
+                    if (menuTextField == null)
+                    {
+                        menuTextField = new Field("Menu Text", "", FieldType.Text);
+                        entry.fields.Add(menuTextField);
+                    }
+                    var menuText = menuTextField.value;
+                    var menuTextLabel = string.IsNullOrEmpty(menuText) ? "Menu Text" : ("Menu Text (" + menuText.Length + " chars)");
+                    DrawRevisableTextAreaField(new GUIContent(menuTextLabel, "Response menu text (e.g., short paraphrase). If blank, uses Dialogue Text."), null, currentEntry, menuTextField);
+                    DrawLocalizedVersions(entry, entry.fields, "Menu Text {0}", false, FieldType.Text);
                 }
-                var menuText = menuTextField.value;
-                var menuTextLabel = string.IsNullOrEmpty(menuText) ? "Menu Text" : ("Menu Text (" + menuText.Length + " chars)");
-                DrawRevisableTextAreaField(new GUIContent(menuTextLabel, "Response menu text (e.g., short paraphrase). If blank, uses Dialogue Text."), null, currentEntry, menuTextField);
-                DrawLocalizedVersions(entry, entry.fields, "Menu Text {0}", false, FieldType.Text);
 
                 // Dialogue text (including localized):
                 var dialogueTextField = Field.Lookup(entry.fields, "Dialogue Text");

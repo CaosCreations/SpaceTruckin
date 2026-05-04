@@ -1416,7 +1416,12 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             multinodeSelection.nodes.Clear();
             multinodeSelection.nodes.Add(entry);
             UpdateEntrySelection();
-            System.GC.Collect(); // Unity 6.3: Clean up garbage created by IMGUI -> UIElements issue.
+            if (EditorApplication.timeSinceStartup >= nextGarbageCollectTime)
+            {
+                // Unity 6.3: Clean up garbage created by IMGUI -> UIElements bug.
+                nextGarbageCollectTime = EditorApplication.timeSinceStartup + garbageCollectFrequency;
+                System.GC.Collect(); 
+            }
         }
 
         public void CenterOnCurrentEntry()

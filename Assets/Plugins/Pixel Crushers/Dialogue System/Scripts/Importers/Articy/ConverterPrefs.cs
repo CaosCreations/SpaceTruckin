@@ -74,6 +74,7 @@ namespace PixelCrushers.DialogueSystem.Articy
         public ConvertDropdownsModes ConvertDropdownsAs { get; set; }
         public ConvertSlotsModes ConvertSlotsAs { get; set; }
         public bool UseTechnicalNames { get; set; }
+        public bool AddDialogueEntryTechnicalNames { get; set; }
         public bool IncludeFeatureNameInFields { get; set; }
         public bool SetDisplayName { get; set; }
         public bool CustomDisplayName { get; set; }
@@ -115,6 +116,7 @@ namespace PixelCrushers.DialogueSystem.Articy
             ConvertDropdownsAs = ConvertDropdownsModes.Int;
             ConvertSlotsAs = ConvertSlotsModes.DisplayName;
             UseTechnicalNames = false;
+            AddDialogueEntryTechnicalNames = false;
             IncludeFeatureNameInFields = false;
             SetDisplayName = false;
             CustomDisplayName = false;

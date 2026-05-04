@@ -81,6 +81,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private void SetCurrentConversationByID()
         {
+            if (database == null) return;
             if (verboseDebug) Debug.Log("<color=magenta>Set conversation ID to " + currentConversationID + "</color>");
             conversationTitles = null;
             OpenConversation(database.GetConversation(currentConversationID));
@@ -361,10 +362,11 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         private void DrawConversationListHeader(Rect rect)
         {
             float offset = 32f;
+            const float IDColumnWidth = 64f;
             if (prefs.showConversationIDs)
             {
-                offset += 32f;
-                EditorGUI.LabelField(new Rect(rect.x + 32f, rect.y, 32f, rect.height), "ID");
+                offset += IDColumnWidth;
+                EditorGUI.LabelField(new Rect(rect.x + 32f, rect.y, IDColumnWidth, rect.height), "ID");
             }
             EditorGUI.LabelField(new Rect(rect.x + offset, rect.y, rect.width, rect.height), "Title");
             float buttonWidth = 128f;

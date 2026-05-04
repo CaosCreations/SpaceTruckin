@@ -272,7 +272,7 @@ namespace PixelCrushers.DialogueSystem
 
             if (!DialogueManager.hasInstance)
             {
-                if (DialogueDebug.logWarnings) Debug.LogWarning($"Dialogue System: CharacterInfo.RegisterActorTransform({actorName}) can't update active conversations' caches because there no Dialogue Manager is present.");
+                if (DialogueDebug.logWarnings) Debug.LogWarning($"Dialogue System: CharacterInfo.RegisterActorTransform({actorName}) can't update active conversations' caches because no Dialogue Manager is present.");
             }
             else
             {

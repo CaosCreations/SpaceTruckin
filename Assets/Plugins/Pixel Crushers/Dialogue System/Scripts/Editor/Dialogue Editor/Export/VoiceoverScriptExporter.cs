@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
+using System;
 
 namespace PixelCrushers.DialogueSystem
 {
@@ -20,21 +21,44 @@ namespace PixelCrushers.DialogueSystem
         /// <param name="database">Source database.</param>
         /// <param name="filename">Target CSV filename.</param>
         /// <param name="exportActors">If set to <c>true</c> export actors.</param>
+        /// <param name="actorName">If not null, export only lines for specified actor.</param>
+        /// <param name="exportConversationTitleSeparateColumn">Add column for conversation ID.</param>
         /// <param name="entrytagFormat">Entrytag format, which should match Dialogue Manager config.</param>
         /// <param name="encodingType">Encoding type.</param>
-        /// <param name="exportConversationTitleSeparateColumn">Add column for conversation ID.</param>
-        public static void Export(DialogueDatabase database, string filename, bool exportActors,
-            bool exportConversationTitleSeparateColumn,
+        /// <param name="voiceoverInfoFieldName"></param>
+        public static void Export(DialogueDatabase database, string filename, bool exportActors, string actorName,
+            bool exportConversationTitleSeparateColumn, 
             EntrytagFormat entrytagFormat, EncodingType encodingType,
             string voiceoverInfoFieldName)
         {
             if (database == null || string.IsNullOrEmpty(filename)) return;
             var otherLanguages = FindOtherLanguages(database);
-            ExportFile(database, string.Empty, filename, exportActors, exportConversationTitleSeparateColumn, entrytagFormat, encodingType, voiceoverInfoFieldName);
+            ExportFile(database, string.Empty, filename, exportActors, actorName, exportConversationTitleSeparateColumn, 
+                entrytagFormat, encodingType, voiceoverInfoFieldName);
             foreach (var language in otherLanguages)
             {
-                ExportFile(database, language, filename, exportActors, exportConversationTitleSeparateColumn, entrytagFormat, encodingType, voiceoverInfoFieldName);
+                ExportFile(database, language, filename, exportActors, actorName,
+                    exportConversationTitleSeparateColumn, entrytagFormat, encodingType, voiceoverInfoFieldName);
             }
+        }
+
+        /// <summary>
+        /// Exports voiceover scripts to a CSV file for each language, for all actors.
+        /// </summary>
+        /// <param name="database">Source database.</param>
+        /// <param name="filename">Target CSV filename.</param>
+        /// <param name="exportActors">If set to <c>true</c> export actors.</param>
+        /// <param name="exportConversationTitleSeparateColumn">Add column for conversation ID.</param>
+        /// <param name="entrytagFormat">Entrytag format, which should match Dialogue Manager config.</param>
+        /// <param name="encodingType">Encoding type.</param>
+        /// <param name="voiceoverInfoFieldName"></param>
+        public static void Export(DialogueDatabase database, string filename, bool exportActors,
+            bool exportConversationTitleSeparateColumn,
+            EntrytagFormat entrytagFormat, EncodingType encodingType,
+            string voiceoverInfoFieldName)
+        {
+            Export(database, filename, exportActors, null, exportConversationTitleSeparateColumn, 
+                entrytagFormat, encodingType, voiceoverInfoFieldName);
         }
 
         private static List<string> FindOtherLanguages(DialogueDatabase database)
@@ -59,7 +83,7 @@ namespace PixelCrushers.DialogueSystem
         }
 
         private static void ExportFile(DialogueDatabase database, string language, string baseFilename, bool exportActors,
-            bool exportConversationTitleSeparateColumn, EntrytagFormat entrytagFormat, EncodingType encodingType,
+            string actorName, bool exportConversationTitleSeparateColumn, EntrytagFormat entrytagFormat, EncodingType encodingType,
             string voiceoverInfoFieldName)
         {
             var filename = string.IsNullOrEmpty(language) ? baseFilename
@@ -68,7 +92,8 @@ namespace PixelCrushers.DialogueSystem
             {
                 ExportDatabaseProperties(database, file);
                 if (exportActors) ExportActors(database, file);
-                ExportConversations(database, exportConversationTitleSeparateColumn, language, entrytagFormat, voiceoverInfoFieldName, file);
+                ExportConversations(database, actorName, exportConversationTitleSeparateColumn, 
+                    language, entrytagFormat, voiceoverInfoFieldName, file);
             }
         }
 
@@ -91,9 +116,19 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        private static void ExportConversations(DialogueDatabase database, bool exportConversationTitleSeparateColumn,
+        private static void ExportConversations(DialogueDatabase database, string requiredActorName, 
+            bool exportConversationTitleSeparateColumn,
             string language, EntrytagFormat entrytagFormat, string voiceoverInfoFieldName, StreamWriter file)
         {
+            // Record the actor whose lines to export, if specified:
+            int requiredActorID = -1;
+            bool exportSpecificActor = !string.IsNullOrEmpty(requiredActorName);
+            if (exportSpecificActor)
+            {
+                var requiredActor = database.GetActor(requiredActorName);
+                if (requiredActor != null) requiredActorID = requiredActor.id;
+            }
+
             file.WriteLine(string.Empty);
             file.WriteLine("---Conversations---");
 
@@ -103,6 +138,8 @@ namespace PixelCrushers.DialogueSystem
             // Export all conversations:
             foreach (var conversation in database.conversations)
             {
+                if (exportSpecificActor && !IsActorInConversation(conversation, requiredActorID)) continue;
+
                 var conversationTitle = CleanField(conversation.Title);
                 file.WriteLine(string.Empty);
                 file.WriteLine(string.Format("Conversation {0},{1}", conversation.id, conversationTitle));
@@ -118,15 +155,18 @@ namespace PixelCrushers.DialogueSystem
                 file.WriteLine(sb.ToString());
                 foreach (var entry in conversation.dialogueEntries)
                 {
+                    var actorID = entry.ActorID;
+                    if (exportSpecificActor && actorID != requiredActorID) continue;
+
                     if (entry.id > 0)
                     {
                         sb = new StringBuilder();
-                        if (!actorNames.ContainsKey(entry.ActorID))
+                        if (!actorNames.ContainsKey(actorID))
                         {
-                            Actor actor = database.GetActor(entry.ActorID);
-                            actorNames.Add(entry.ActorID, (actor != null) ? CleanField(actor.Name) : "ActorNotFound");
+                            Actor actor = database.GetActor(actorID);
+                            actorNames.Add(actorID, (actor != null) ? CleanField(actor.Name) : "ActorNotFound");
                         }
-                        string actorName = actorNames[entry.ActorID];
+                        string actorName = actorNames[actorID];
                         string description = Field.LookupValue(entry.fields, "Description");
                         string entrytag = database.GetEntrytag(conversation, entry, entrytagFormat);
                         var lineText = string.IsNullOrEmpty(language) ? entry.subtitleText : Field.LookupValue(entry.fields, language);
@@ -148,6 +188,13 @@ namespace PixelCrushers.DialogueSystem
                     }
                 }
             }
+        }
+
+        private static bool IsActorInConversation(Conversation conversation, int requiredActorID)
+        {
+            if (requiredActorID == -1) return true;
+            if (conversation == null) return false;
+            return conversation.dialogueEntries.Find(entry => entry.ActorID == requiredActorID) != null;
         }
 
         private static string CleanField(string s)

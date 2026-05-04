@@ -9,7 +9,6 @@ namespace PixelCrushers
     /// <summary>
     /// This struct is passed to listeners of the MessageSystem when a message is sent.
     /// </summary>
-    [Serializable]
     public struct MessageArgs
     {
         /// <summary>

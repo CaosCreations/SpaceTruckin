@@ -112,7 +112,7 @@ namespace PixelCrushers.DialogueSystem
         {
             base.Awake();
             control = GetComponent<UnityEngine.UI.Text>();
-            if (removeDuplicateTypewriterEffects) RemoveIfDuplicate();
+            if (removeDuplicateTypewriterEffects) RemoveIfDuplicate<UnityUITypewriterEffect>();
             if (audioSource == null) audioSource = GetComponent<AudioSource>();
             if (audioSource == null && (audioClip != null || (alternateAudioClips != null && alternateAudioClips.Length > 0)))
             {
@@ -123,29 +123,6 @@ namespace PixelCrushers.DialogueSystem
 #else
                 audioSource.panStereo = 0;
 #endif
-            }
-        }
-
-        protected void RemoveIfDuplicate()
-        {
-            var effects = GetComponents<UnityUITypewriterEffect>();
-            if (effects.Length > 1)
-            {
-                UnityUITypewriterEffect keep = effects[0];
-                for (int i = 1; i < effects.Length; i++)
-                {
-                    if (effects[i].GetInstanceID() < keep.GetInstanceID())
-                    {
-                        keep = effects[i];
-                    }
-                }
-                for (int i = 0; i < effects.Length; i++)
-                {
-                    if (effects[i] != keep)
-                    {
-                        Destroy(effects[i]);
-                    }
-                }
             }
         }
 
@@ -692,6 +669,7 @@ namespace PixelCrushers.DialogueSystem
         public override void Stop()
         {
             var wasPlaying = isPlaying;
+            StopOrFadeCharacterAudio();
             StopTypewriterCoroutine();
             if (wasPlaying)
             {

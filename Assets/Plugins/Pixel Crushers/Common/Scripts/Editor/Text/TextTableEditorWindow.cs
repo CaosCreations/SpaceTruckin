@@ -40,7 +40,7 @@ namespace PixelCrushers
             { new GUIContent("Languages"), new GUIContent("Fields") };
 
         [SerializeField]
-        private int m_textTableInstanceID;
+        private EntityIdWrapper m_textTableInstanceID = EntityIdWrapper.None;
 
         [SerializeField]
         private Vector2 m_languageListScrollPosition;
@@ -113,7 +113,10 @@ namespace PixelCrushers
             titleContent.text = "Text Table";
             m_needRefreshLists = true;
             Undo.undoRedoPerformed += Repaint;
-            if (m_textTableInstanceID != 0) Selection.activeObject = MoreEditorUtility.InstanceIDToObject(m_textTableInstanceID);
+            if (m_textTableInstanceID.isValid)
+            {
+                Selection.activeObject = MoreEditorUtility.InstanceIDToObject(m_textTableInstanceID);
+            }
             m_toolbarSelection = EditorPrefs.GetInt(ToolbarSelectionPrefsKey, 0);
             if (EditorPrefs.HasKey(SearchBarPrefsKey))
             {
@@ -151,7 +154,7 @@ namespace PixelCrushers
                 SelectTextTable(Selection.activeObject as TextTable);
                 Repaint();
             }
-            else if (m_textTable == null && m_textTableInstanceID != 0)
+            else if (m_textTable == null && m_textTableInstanceID.isValid)
             {
                 SelectTextTable(MoreEditorUtility.InstanceIDToObject(m_textTableInstanceID) as TextTable);
                 Repaint();
@@ -168,7 +171,7 @@ namespace PixelCrushers
             m_needToApplyBeforeUpdateSO = false;
             m_serializedObject = (newTable != null) ? new SerializedObject(newTable) : null;
             if (m_textTable != null && m_textTable.languages.Count == 0) m_textTable.AddLanguage("Default");
-            m_textTableInstanceID = (newTable != null) ? newTable.GetInstanceID() : 0;
+            m_textTableInstanceID = EntityUtility.GetEntityId(newTable);
         }
 
         private void OnGUI()
@@ -1069,7 +1072,7 @@ namespace PixelCrushers
 #endif
                 )
             {
-                t.gameObject.AddComponent<PixelCrushers.Wrappers.LocalizeUI>();
+                t.gameObject.AddComponent<LocalizeUI>();
                 Debug.Log($"{t.name}: Added LocalizeUI component.", t);
             }
         }

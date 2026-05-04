@@ -5,11 +5,11 @@ To play the demo scene, add DemoScene1 and DemoScene2
 build settings. Then play DemoScene1.
 
 
-** UNITY 6+ / URP / HDRP: ***
-If your project uses URP or HDRP, such as the default
-setting for Unity 6+ projects (URP), please import the
-corresponding unitypackage from the URP_HDRP_Materials
-folder before playing the scenes.
+** Built-in Rendering Pipeline (BIRP) / URP / HDRP: ***
+The demo scene works with the Universal Rendering Pipeline
+(URP) by default. If your project uses BIRP or HDRP, 
+please import the corresponding unitypackage from the 
+URP_HDRP_Materials folder before playing the scenes.
 
 ** INPUT SYSTEM PACKAGE: **
 If your project uses the Input System, see the steps

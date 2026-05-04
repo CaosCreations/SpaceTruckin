@@ -100,6 +100,10 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         public static bool exportConversationTitleSeparateColumn = false;
         [SerializeField]
         public static bool omitNoneSequenceEntriesInScreenplay = false;
+        [SerializeField]
+        public static bool exportSpecificActor = false;
+        [SerializeField]
+        public static int exportActorIndex = -1;
 
         public enum SortEntriesMode { DoNotSort, DepthFirst, BreadthFirst }
         [SerializeField]
@@ -119,6 +123,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
 
         private void ResetDatabaseTab()
         {
+            CacheActorNamesForExport();
             ResetLocalizationFoldout();
             InitializeEntrytagFormatFromScene();
         }
@@ -130,12 +135,25 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             entrytagFormat = dialogueManager.displaySettings.cameraSettings.entrytagFormat;
         }
 
+        private void CacheActorNamesForExport()
+        {
+            actorNames = new List<string>();
+            actorIDs = new List<int>();
+            foreach (var actor in database.actors)
+            {
+                actorNames.Add(actor.Name);
+                actorIDs.Add(actor.id);
+            }
+            actorNamesArray = actorNames.ToArray();
+        }
+
         #endregion
 
         #region Database Properties
 
         private void DrawDatabaseSection()
         {
+            CacheActorNamesForExport();
             EditorGUILayout.LabelField(database.name, EditorStyles.boldLabel);
             databaseFoldouts.database = EditorGUILayout.Foldout(databaseFoldouts.database, new GUIContent("Database Properties"));
             if (databaseFoldouts.database) DrawDatabasePropertiesSection();
@@ -237,7 +255,9 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 }
             }
             EditorGUILayout.EndHorizontal();
+            garbageCollectFrequency = EditorGUILayout.FloatField(new GUIContent("GC.Collect Frequency", "Frequency in seconds to run garbage collection. Set to zero to run every frame. (Addresses UIElements bug introduced in Unity 6.3.)"), garbageCollectFrequency);
             showDatabaseName = EditorGUILayout.ToggleLeft(new GUIContent("Show Database Name", "Show the database name in the lower left of the editor window."), showDatabaseName);
+            hideMenuText = EditorGUILayout.ToggleLeft(new GUIContent("Hide Menu Text", "Hide the Menu Text field when inspecting dialogue entries."), hideMenuText);
             syncOnOpen = EditorGUILayout.ToggleLeft(new GUIContent("Sync On Open", "If any database sections are configured to sync content from another database, automatically sync when opening database."), syncOnOpen);
             registerCompleteObjectUndo = EditorGUILayout.ToggleLeft(new GUIContent("Fast Undo for Large Databases", "Use Undo.RegisterCompleteObjectUndo instead of Undo.RegisterUndo. Tick if operations such as deleting a conversation become slow in very large databases."), registerCompleteObjectUndo);
             debug = EditorGUILayout.ToggleLeft(new GUIContent("Debug", "For internal debugging of the dialogue editor."), debug);
@@ -327,7 +347,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     result += LogSearchResultsInAssetList<Location>(database.locations, "Location");
                     if (EditorUtility.DisplayCancelableProgressBar("Searching Database", "Searching variables for '" + globalSearchText + "'. Please wait...", (database.actors.Count + database.items.Count + database.locations.Count) / size)) return;
                     result += LogSearchResultsInAssetList<Variable>(database.variables, "Variable");
-                }                
+                }
 
                 int numConversationsDone = 0;
                 foreach (var conversation in database.conversations)
@@ -666,8 +686,8 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                     EditorGUILayout.HelpBox("Use this feature to export your database to external text-based formats.\nThe proofreading option will export a proofreading text file for each language. After making corrections, you can reimport the proofreading files.", MessageType.None);
                     break;
             }
-            if (exportFormat != ExportFormat.LanguageText && 
-                exportFormat != ExportFormat.Screenplay && 
+            if (exportFormat != ExportFormat.LanguageText &&
+                exportFormat != ExportFormat.Screenplay &&
                 exportFormat != ExportFormat.JSON &&
                 exportFormat != ExportFormat.Proofreading)
             {
@@ -676,9 +696,23 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 exportLocations = EditorGUILayout.Toggle("Export Locations", exportLocations);
                 exportVariables = EditorGUILayout.Toggle("Export Variables", exportVariables);
                 exportConversations = EditorGUILayout.Toggle("Export Conversations", exportConversations);
-                if (exportFormat == ExportFormat.ChatMapperXML) exportCanvasRect = EditorGUILayout.Toggle(new GUIContent("Export Canvas Positions", "Export the positions of dialogue entry nodes in the Dialogue Editor's canvas"), exportCanvasRect);
-                if (exportFormat == ExportFormat.CSV) exportConversationsAfterEntries = EditorGUILayout.Toggle(new GUIContent("Convs. After Entries", "Put the Conversations section after the DialogueEntries section in the CSV file. Normally the Conversations section is before."), exportConversationsAfterEntries);
-                if (exportFormat == ExportFormat.VoiceoverScript) exportConversationTitleSeparateColumn = EditorGUILayout.Toggle(new GUIContent("Conv. Title in Sep. Column", "Add a separate column for conversation IDs."), exportConversationTitleSeparateColumn);
+                switch (exportFormat)
+                {
+                    case ExportFormat.ChatMapperXML:
+                        exportCanvasRect = EditorGUILayout.Toggle(new GUIContent("Export Canvas Positions", "Export the positions of dialogue entry nodes in the Dialogue Editor's canvas"), exportCanvasRect);
+                        break;
+                    case ExportFormat.CSV:
+                        exportConversationsAfterEntries = EditorGUILayout.Toggle(new GUIContent("Convs. After Entries", "Put the Conversations section after the DialogueEntries section in the CSV file. Normally the Conversations section is before."), exportConversationsAfterEntries);
+                        break;
+                    case ExportFormat.VoiceoverScript:
+                        exportConversationTitleSeparateColumn = EditorGUILayout.Toggle(new GUIContent("Conv. Title in Sep. Column", "Add a separate column for conversation IDs."), exportConversationTitleSeparateColumn);
+                        exportSpecificActor = EditorGUILayout.Toggle(new GUIContent("Specify Actor", "Export lines only for a specified actor."), exportSpecificActor);
+                        if (exportSpecificActor)
+                        {
+                            exportActorIndex = EditorGUILayout.Popup("Actor", exportActorIndex, actorNamesArray);
+                        }
+                        break;
+                }
                 entrytagFormat = (EntrytagFormat)EditorGUILayout.EnumPopup("Entrytag Format", entrytagFormat, GUILayout.Width(400));
             }
             if (exportFormat == ExportFormat.Screenplay)
@@ -872,7 +906,11 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 {
                     voiceoverExportPath = voiceoverExportPath.Replace("/", "\\");
                 }
-                VoiceoverScriptExporter.Export(database, voiceoverExportPath, exportActors, exportConversationTitleSeparateColumn, entrytagFormat, encodingType, voiceoverInfoFieldName);
+                var actorNameToExport = (exportSpecificActor && actorNamesArray != null &&
+                    (0 <= exportActorIndex && exportActorIndex < actorNamesArray.Length))
+                    ? actorNamesArray[exportActorIndex]
+                    : null;
+                VoiceoverScriptExporter.Export(database, voiceoverExportPath, exportActors, actorNameToExport, exportConversationTitleSeparateColumn, entrytagFormat, encodingType, voiceoverInfoFieldName);
                 EditorUtility.DisplayDialog("Export Complete", "The voiceover scripts were exported to CSV (comma-separated values) files in " + voiceoverExportPath + ".", "OK");
             }
         }

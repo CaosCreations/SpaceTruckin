@@ -26,7 +26,16 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
         protected UIDocument Document => document;
         protected VisualElement RootContainer => UIToolkitDialogueUI.GetVisualElement<VisualElement>(Document, rootContainerName);
         protected VisualElement AlertPanel => UIToolkitDialogueUI.GetVisualElement<VisualElement>(Document, alertPanelName);
-        protected Label AlertLabel => UIToolkitDialogueUI.GetVisualElement<Label>(Document, alertLabelName);
+
+        protected TextElement alertLabel = null;
+        protected TextElement AlertLabel
+        {
+            get
+            {
+                if (alertLabel == null) alertLabel = new TextElement(Document, alertLabelName);
+                return alertLabel;
+            }
+        }
 
         public override bool isVisible => UIToolkitDialogueUI.IsVisible(AlertPanel) || UIToolkitDialogueUI.IsVisible(AlertLabel);
 

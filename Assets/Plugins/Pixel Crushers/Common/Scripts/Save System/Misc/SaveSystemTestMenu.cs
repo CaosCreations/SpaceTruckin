@@ -12,6 +12,9 @@ namespace PixelCrushers
     [AddComponentMenu("")] // Use wrapper.
     public class SaveSystemTestMenu : MonoBehaviour
     {
+        [Tooltip("Key that toggles menu open/closed.")]
+        public KeyCode menuInputKey = KeyCode.Escape;
+
         [Tooltip("Unity input button that toggles menu open/closed.")]
         public string menuInputButton = "Cancel";
 
@@ -50,7 +53,10 @@ namespace PixelCrushers
 
         private void Update()
         {
-            if (InputDeviceManager.IsButtonDown(menuInputButton)) ToggleMenu();
+            if (InputDeviceManager.IsKeyDown(menuInputKey) || InputDeviceManager.IsButtonDown(menuInputButton))
+            {
+                ToggleMenu();
+            }
         }
 
         private void OnDestroy()

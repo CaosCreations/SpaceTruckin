@@ -26,7 +26,7 @@ namespace PixelCrushers.DialogueSystem.Yarn3
     ///   - Variables referenced in set or declare statements.
     ///   - Conversations from ConversationNodes.
     /// </summary>
-    public class Yarn3ImporterWindow : AbstractConverterWindow<Yarn3ImporterPrefs>
+    public class Yarn3ImporterWindow : AbstractConverterWindow<Yarn3ImporterWindowPrefs>
     {
 
         [MenuItem("Tools/Pixel Crushers/Dialogue System/Import/Yarn/Yarn 3...", false, 1)]
@@ -209,7 +209,6 @@ namespace PixelCrushers.DialogueSystem.Yarn3
             uiYarnSourceFileList.DoLayoutList();
             uiLocalizedFileList.DoLayoutList();
             DrawPortraitFolderField();
-            prefs.debug = EditorGUILayout.Toggle(DebugLabel, prefs.debug);
         }
 
         private void DrawPortraitFolderField()
@@ -295,18 +294,25 @@ namespace PixelCrushers.DialogueSystem.Yarn3
 
         protected override void DrawOverwriteCheckbox()
         {
-            // Also show import menu text checkbox and debug checkbox:
-            prefs.importMenuText = EditorGUILayout.Toggle(new GUIContent("Import Menu Text", "If a line has the form '[menutext] dialoguetext', set the dialogue entry's Menu Text to 'menutext' and Dialogue Text to 'dialoguetext'."),
-                                                     prefs.importMenuText);
+            // Also show import menu text, one conversation per file, and debug checkboxes:
+            prefs.importMenuText = EditorGUILayout.Toggle(new GUIContent("Import Menu Text", 
+                "If a line has the form '[menutext] dialoguetext', set the dialogue entry's Menu Text to 'menutext' and Dialogue Text to 'dialoguetext'."),
+                prefs.importMenuText);
 
-            prefs.overwrite = EditorGUILayout.Toggle(new GUIContent("Overwrite", "Overwrite database if it already exists. If unticked, then if database already exists the import will create a new database under a new name."),
-                                                     prefs.overwrite);
+            prefs.oneConversationPerFile = EditorGUILayout.Toggle(new GUIContent("One Conversation Per File", 
+                "Each file constitutes one conversation with Yarn nodes as branches in conversation."),
+                prefs.oneConversationPerFile);
+
+            prefs.overwrite = EditorGUILayout.Toggle(new GUIContent("Overwrite", 
+                "Overwrite database if it already exists. If unticked, then if database already exists the import will create a new database under a new name."),
+                prefs.overwrite);
 
             if (prefs.overwrite)
             {
                 EditorGUI.indentLevel++;
-                prefs.keepExistingActors = EditorGUILayout.Toggle(new GUIContent("Keep Existing Actors", "keep existing actors instead of clearing actors list and creating new actors with new IDs."),
-                                                     prefs.keepExistingActors);
+                prefs.keepExistingActors = EditorGUILayout.Toggle(new GUIContent("Keep Existing Actors", 
+                    "keep existing actors instead of clearing actors list and creating new actors with new IDs."),
+                    prefs.keepExistingActors);
                 EditorGUI.indentLevel--;
             }
 
@@ -342,7 +348,7 @@ namespace PixelCrushers.DialogueSystem.Yarn3
                     System.IO.Path.GetDirectoryName(prefs.prefsPath), "json");
                 if (!string.IsNullOrEmpty(path))
                 {
-                    var newPrefs = JsonUtility.FromJson<Yarn3ImporterPrefs>(System.IO.File.ReadAllText(path));
+                    var newPrefs = JsonUtility.FromJson<Yarn3ImporterWindowPrefs>(System.IO.File.ReadAllText(path));
                     if (newPrefs == null)
                     {
                         EditorUtility.DisplayDialog("Load Failed", $"Could not load Yarn import settings from {path}.", "OK");
@@ -419,11 +425,12 @@ namespace PixelCrushers.DialogueSystem.Yarn3
         private void RunConverter()
         {
             Debug.Log($"Starting Yarn project import ...");
+            var runtimePrefs = prefs.ToYarn3ImporterPrefs();
             var yarnReader = new YarnImporterProjectReader();
-            var yarnProject = yarnReader.Parse(prefs);
+            var yarnProject = yarnReader.Parse(runtimePrefs);
             var dialogueDb = LoadOrCreateDatabase();
             var yarnWriter = new YarnImporterProjectWriter();
-            yarnWriter.Write(prefs, yarnProject, dialogueDb);
+            yarnWriter.Write(runtimePrefs, yarnProject, dialogueDb);
             WriteDialogueSystemChanges(dialogueDb);
             if (DialogueEditor.DialogueEditorWindow.instance != null) DialogueEditor.DialogueEditorWindow.instance.Reset();
             Debug.Log($"Yarn project import complete - database written to: {AssetDatabase.GetAssetPath(dialogueDb)}", dialogueDb);

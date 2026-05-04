@@ -21,14 +21,31 @@ namespace PixelCrushers.DialogueSystem
         {
             icon = AssetDatabase.LoadAssetAtPath<Texture2D>(IconFilename);
             if (icon == null) return;
+#if UNITY_6000_4_OR_NEWER
+            EditorApplication.hierarchyWindowItemByEntityIdOnGUI -= HierarchyWindowItemByEntityIdOnGUI;
+            EditorApplication.hierarchyWindowItemByEntityIdOnGUI += HierarchyWindowItemByEntityIdOnGUI;
+#else
             EditorApplication.hierarchyWindowItemOnGUI -= HierarchyWindowItemOnGUI;
             EditorApplication.hierarchyWindowItemOnGUI += HierarchyWindowItemOnGUI;
+#endif
             EditorApplication.RepaintHierarchyWindow();
         }
 
+#if UNITY_6000_4_OR_NEWER
+        private static void HierarchyWindowItemByEntityIdOnGUI(EntityId entityId, Rect selectionRect)
+        {
+            ShowHierarchyIcon(new EntityIdWrapper(entityId), selectionRect);
+        }
+#else
         public static void HierarchyWindowItemOnGUI(int instanceID, Rect selectionRect)
         {
-            GameObject dialogueSystemControllerGameObject = MoreEditorUtility.InstanceIDToObject(instanceID) as GameObject;
+            ShowHierarchyIcon(new EntityIdWrapper(instanceID), selectionRect);
+        }
+#endif
+
+        private static void ShowHierarchyIcon(EntityIdWrapper entityIdWrapper, Rect selectionRect)
+        {
+            GameObject dialogueSystemControllerGameObject = MoreEditorUtility.InstanceIDToObject(entityIdWrapper) as GameObject;
             var dialogueSystemController = (dialogueSystemControllerGameObject != null) ? dialogueSystemControllerGameObject.GetComponent<DialogueSystemController>() : null;
             if ((icon != null) && (dialogueSystemController != null))
             {

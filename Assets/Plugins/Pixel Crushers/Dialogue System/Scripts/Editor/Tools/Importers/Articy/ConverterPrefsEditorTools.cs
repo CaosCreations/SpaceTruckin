@@ -34,6 +34,7 @@ namespace PixelCrushers.DialogueSystem.Articy
         private const string ArticyDropdownsKey = "PixelCrushers.DialogueSystem.ArticyDropdowns";
         private const string ArticySlotsKey = "PixelCrushers.DialogueSystem.ArticySlots";
         private const string ArticyUseTechnicalNamesKey = "PixelCrushers.DialogueSystem.UseTechnicalNames";
+        private const string ArticyEntryTechnicalNamesKey = "PixelCrushers.DialogueSystem.AddEntryTechnicalNames";
         private const string ArticyIncludeFeatureNamesKey = "PixelCrushers.DialogueSystem.IncludeFeatureNamesInFields";
         private const string ArticyCustomDisplayNameKey = "PixelCrushers.DialogueSystem.ArticyCustomDisplayName";
         private const string ArticyDirectConversationLinksToEntry1Key = "PixelCrushers.DialogueSystem.DirectConversationLinksToEntry1";
@@ -69,6 +70,7 @@ namespace PixelCrushers.DialogueSystem.Articy
             converterPrefs.ConvertDropdownsAs = EditorPrefs.HasKey(ArticyDropdownsKey) ? (ConverterPrefs.ConvertDropdownsModes)EditorPrefs.GetInt(ArticyDropdownsKey) : ConverterPrefs.ConvertDropdownsModes.Int;
             converterPrefs.ConvertSlotsAs = EditorPrefs.HasKey(ArticySlotsKey) ? (ConverterPrefs.ConvertSlotsModes)EditorPrefs.GetInt(ArticySlotsKey) : ConverterPrefs.ConvertSlotsModes.DisplayName;
             converterPrefs.UseTechnicalNames = EditorPrefs.GetBool(ArticyUseTechnicalNamesKey, false);
+            converterPrefs.AddDialogueEntryTechnicalNames = EditorPrefs.GetBool(ArticyEntryTechnicalNamesKey, false);
             converterPrefs.IncludeFeatureNameInFields = EditorPrefs.GetBool(ArticyIncludeFeatureNamesKey, false);
             converterPrefs.CustomDisplayName = EditorPrefs.GetBool(ArticyCustomDisplayNameKey, false);
             converterPrefs.DirectConversationLinksToEntry1 = EditorPrefs.GetBool(ArticyDirectConversationLinksToEntry1Key, false);
@@ -105,6 +107,7 @@ namespace PixelCrushers.DialogueSystem.Articy
             EditorPrefs.SetInt(ArticyDropdownsKey, (int)converterPrefs.ConvertDropdownsAs);
             EditorPrefs.SetInt(ArticySlotsKey, (int)converterPrefs.ConvertSlotsAs);
             EditorPrefs.SetBool(ArticyUseTechnicalNamesKey, converterPrefs.UseTechnicalNames);
+            EditorPrefs.SetBool(ArticyEntryTechnicalNamesKey, converterPrefs.AddDialogueEntryTechnicalNames);
             EditorPrefs.SetBool(ArticyIncludeFeatureNamesKey, converterPrefs.IncludeFeatureNameInFields);
             EditorPrefs.SetBool(ArticyCustomDisplayNameKey, converterPrefs.CustomDisplayName);
             EditorPrefs.SetBool(ArticyDirectConversationLinksToEntry1Key, converterPrefs.DirectConversationLinksToEntry1);
@@ -140,6 +143,7 @@ namespace PixelCrushers.DialogueSystem.Articy
             EditorPrefs.DeleteKey(ArticyDropdownsKey);
             EditorPrefs.DeleteKey(ArticySlotsKey);
             EditorPrefs.DeleteKey(ArticyUseTechnicalNamesKey);
+            EditorPrefs.DeleteKey(ArticyEntryTechnicalNamesKey);
             EditorPrefs.DeleteKey(ArticyIncludeFeatureNamesKey);
             EditorPrefs.DeleteKey(ArticyCustomDisplayNameKey);
             EditorPrefs.DeleteKey(ArticyDirectConversationLinksToEntry1Key);

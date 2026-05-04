@@ -4,7 +4,6 @@ using System;
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
-// using System.Text.RegularExpressions;
 
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -36,6 +35,8 @@ namespace PixelCrushers.DialogueSystem.Yarn3
         // Private Members  -------------------------------------------------------------------------------------------
         private YarnImporterProject _yarnProject;
         private Yarn3ImporterPrefs _prefs;
+        private string _currentFilename;
+        private int _currentNodeNumberInFile;
         private ConversationNode _currentNode;
         private Stack<BlockStatement> _blockStatementStack = new Stack<BlockStatement>();
         private YarnStatement _currentStatement;
@@ -181,6 +182,9 @@ namespace PixelCrushers.DialogueSystem.Yarn3
             if (_prefs.debug) Debug.Log("YarnProjectReader::RunPixelCrushersCompiler()");
             foreach (var filename in _prefs.sourceFiles)
             {
+                _currentFilename = filename;
+                _currentNodeNumberInFile = 0;
+
                 var yarnScriptText = File.ReadAllText(filename);
 
                 // Parser doesn't handle ->Message, so temporarily replace:
@@ -222,8 +226,8 @@ namespace PixelCrushers.DialogueSystem.Yarn3
         public override void EnterNode(PixelCrushersYarnSpinnerParser.NodeContext context)
         {
             if (_prefs.debug) Debug.Log($"YarnProjectListener::EnterNode()");
-
-            _currentNode = new ConversationNode();
+            _currentNode = new ConversationNode(System.IO.Path.GetFileNameWithoutExtension(_currentFilename), _currentNodeNumberInFile);
+            _currentNodeNumberInFile++;
             EnterBlockStatement(_currentNode);
         }
 
@@ -249,7 +253,6 @@ namespace PixelCrushers.DialogueSystem.Yarn3
         {
             if (_prefs.debug) Debug.Log($"YarnProjectListener::EnterTitle_header(): {context.title.Text}");
             _currentNode.AddHeader(YarnImporterProject.NodeHeaderTitleKey, context.title.Text);
-            base.EnterTitle_header(context);
         }
 
         public override void EnterHeader(PixelCrushersYarnSpinnerParser.HeaderContext context)
@@ -261,6 +264,19 @@ namespace PixelCrushers.DialogueSystem.Yarn3
         public override void ExitHeader(PixelCrushersYarnSpinnerParser.HeaderContext context)
         {
             if (_prefs.debug) Debug.Log($"YarnProjectListener::ExitHeader()");
+        }
+
+        public override void EnterHeader_when_expression([NotNull] Header_when_expressionContext context)
+        {
+            if (_prefs.debug) Debug.Log($"YarnProjectListener::EnterHeader_when_expression()");
+            if (context.always != null) _currentNode.SetWhenTimes(WhenTimes.Always);
+            else if (context.once != null) _currentNode.SetWhenTimes(WhenTimes.Once);
+        }
+
+        public override void EnterWhen_header([NotNull] When_headerContext context)
+        {
+            if (_prefs.debug) Debug.Log($"YarnProjectListener::EnterWhen_header(): {context}");
+            //[TODO] Use _currentNode.AddWhenCondition();
         }
 
         public override void EnterBody(PixelCrushersYarnSpinnerParser.BodyContext context)

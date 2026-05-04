@@ -49,7 +49,7 @@ namespace PixelCrushers.DialogueSystem
         }
 #endif
 
-        public Dictionary<string, HashSet<BarkGroupMember>> groups = new Dictionary<string, HashSet<BarkGroupMember>>();
+        [System.NonSerialized] public Dictionary<string, HashSet<BarkGroupMember>> groups = new Dictionary<string, HashSet<BarkGroupMember>>();
 
         private  class BarkRequest
         {

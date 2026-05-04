@@ -89,6 +89,12 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("Duration to pause when text contains '\\,'")]
         public float quarterPauseDuration = 0.25f;
 
+        [Tooltip("Fade out current audio when stopping typewriter effect.")]
+        public bool fadeAudioOnStopTyping = false;
+
+        [Tooltip("If Fade Audio On Stop Typing is ticked, fade over this duration.")]
+        public float fadeAudioDuration = 0.5f;
+
         /// <summary>
         /// Ensures this GameObject has only one typewriter effect.
         /// </summary>
@@ -99,7 +105,7 @@ namespace PixelCrushers.DialogueSystem
         /// Play using the current text content whenever component is enabled.
         /// </summary>
         [Tooltip("Play using the current text content whenever component is enabled.")]
-        public bool playOnEnable = true;
+        public bool playOnEnable = false;
 
         /// <summary>
         /// Wait one frame to allow layout elements to setup first.
@@ -116,6 +122,9 @@ namespace PixelCrushers.DialogueSystem
         public abstract bool isPlaying { get; }
 
         protected bool paused = false;
+
+        protected bool hasRecordedAudioVolume = false;
+        protected float originalAudioVolume;
 
         /// <summary>
         /// Returns the typewriter's charactersPerSecond.
@@ -155,6 +164,7 @@ namespace PixelCrushers.DialogueSystem
             {
                 DialogueManager.instance.conversationEnded -= StopOnConversationEnd;
             }
+            StopCharacterAudio();
         }
 
         public virtual void StopOnConversationEnd(Transform actor)
@@ -207,11 +217,6 @@ namespace PixelCrushers.DialogueSystem
             return false;
         }
 
-        public virtual void StopCharacterAudio()
-        {
-            if (audioSource != null) audioSource.Stop();
-        }
-
         protected virtual void PlayCharacterAudio(char c)
         {
             PlayCharacterAudio();
@@ -257,6 +262,48 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
+        public virtual void StopCharacterAudio()
+        {
+            if (audioSource != null)
+            {
+                audioSource.Stop();
+                if (hasRecordedAudioVolume) audioSource.volume = originalAudioVolume;
+            }
+        }
+
+        protected virtual void StopOrFadeCharacterAudio()
+        {
+            if (fadeAudioOnStopTyping)
+            {
+                StartCoroutine(FadeOutCharacterAudio());
+            }
+            else
+            {
+                StopCharacterAudio();
+            }
+        }
+
+        protected virtual IEnumerator FadeOutCharacterAudio()
+        {
+            if (fadeAudioDuration <= 0) yield break;
+            if (!hasRecordedAudioVolume)
+            {
+                hasRecordedAudioVolume = true;
+                originalAudioVolume = audioSource.volume;
+            }
+            float safeguardTime = Time.realtimeSinceStartup + 10f;
+            float elapsed = 0;
+            while (elapsed < fadeAudioDuration && Time.realtimeSinceStartup < safeguardTime)
+            {
+                var t = elapsed / fadeAudioDuration;
+                audioSource.volume = Mathf.Lerp(originalAudioVolume, 0, t);
+                yield return null;
+                elapsed += DialogueTime.deltaTime;
+            }
+            audioSource.Stop();
+            audioSource.volume = originalAudioVolume;
+        }
+
         protected virtual IEnumerator PauseForDuration(float duration)
         {
             paused = true;
@@ -269,6 +316,15 @@ namespace PixelCrushers.DialogueSystem
                 yield return null;
             }
             paused = false;
+        }
+
+        protected void RemoveIfDuplicate<T>() where T : AbstractTypewriterEffect
+        {
+            var effects = GetComponents<T>();
+            for (int i = effects.Length - 1; i >= 1; i--)
+            {
+                Destroy(effects[i]);
+            }
         }
 
     }

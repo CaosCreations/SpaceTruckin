@@ -169,14 +169,14 @@ namespace PixelCrushers
         }
 
         /// <summary>
-        /// Handles EditorUtility.EntityIdToObject/InstanceIDToObject() for different Unity version.
+        /// Handles EditorUtility.EntityIdToObject/InstanceIDToObject() for different Unity versions.
         /// </summary>
-        public static UnityEngine.Object InstanceIDToObject(int instanceID)
+        public static UnityEngine.Object InstanceIDToObject(EntityIdWrapper entityId)
         {
 #if UNITY_6000_3_OR_NEWER
-            return EditorUtility.EntityIdToObject(instanceID);
+            return EditorUtility.EntityIdToObject(entityId.id);
 #else
-            return EditorUtility.InstanceIDToObject(instanceID);
+            return EditorUtility.InstanceIDToObject(entityId.intValue);
 #endif
         }
 

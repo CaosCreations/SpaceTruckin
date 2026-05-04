@@ -17,7 +17,7 @@ namespace PixelCrushers.DialogueSystem
         public bool foldout = false;
         public bool drawReferenceDatabase = true;
 
-        public LuaConditionWizard luaConditionWizard = new LuaConditionWizard(null);
+        [System.NonSerialized] public LuaConditionWizard luaConditionWizard = new LuaConditionWizard(null);
         public string currentLuaWizardContent = string.Empty;
 
         public ConditionEditor(DialogueDatabase database, bool drawReferenceDatabase)

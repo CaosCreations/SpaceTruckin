@@ -94,7 +94,7 @@ namespace PixelCrushers.DialogueSystem
         [Tooltip("Tick if your conversations reference Dialog[x].SimStatus.")]
         public bool includeSimStatus = false;
 
-        [Tooltip("Use a copy of the dialogue database at runtime instead of the asset file directly. This allows you to change the database without affecting the asset.")]
+        [Tooltip("Use a copy of the dialogue database at runtime instead of the asset file directly. This allows you to change the database without affecting the asset. Warm Up Conversation Controller must be set to Off to untick this checkbox.")]
         public bool instantiateDatabase = true;
 
         /// <summary>
@@ -414,6 +414,7 @@ namespace PixelCrushers.DialogueSystem
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void InitStaticVariables()
         {
+            isWarmingUp = false;
             applicationIsQuitting = false;
             lastInitialDatabaseName = null;
         }
@@ -1116,7 +1117,7 @@ namespace PixelCrushers.DialogueSystem
                 lastConversationStarted = title;
 
                 // If we previously overrode display settings or UI, restore the original:
-                if (!isConversationActive &&
+                if (//--- Need to restore even if simultaneous conversation is playing: !isConversationActive &&
                     ((m_overrodeDisplaySettings && m_originalDisplaySettings != null) || (m_originalDialogueUI != null)))
                 {
                     RestoreOriginalUI();

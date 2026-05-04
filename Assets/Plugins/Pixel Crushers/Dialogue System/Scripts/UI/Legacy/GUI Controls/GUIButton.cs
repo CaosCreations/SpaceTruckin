@@ -1,5 +1,4 @@
 using UnityEngine;
-using System;
 
 namespace PixelCrushers.DialogueSystem.UnityGUI
 {
@@ -67,7 +66,7 @@ namespace PixelCrushers.DialogueSystem.UnityGUI
         /// assigned, the button will send it. Otherwise, if the parameter string is set, it will
         /// send the string. Otherwise, it will send a reference to this button itself.
         /// </summary>
-        public object data;
+        [System.NonSerialized] public object data;
 
         /// <summary>
         /// Gets the default GUI style to use for this type of control. It can be overridden on a per-control
