@@ -83,6 +83,7 @@ namespace PixelCrushers.DialogueSystem.Articy
         public bool SplitTextOnPipes { get; set; }
         public bool TrimWhitespace { get; set; } = true;
         public bool ReorderIDs { get; set; }
+        public bool AutoArrangeNodes { get; set; }
         public bool DelayEvaluation { get; set; }
         public string FlowFragmentScript { get; set; }
         public string VoiceOverProperty { get; set; }
@@ -125,6 +126,7 @@ namespace PixelCrushers.DialogueSystem.Articy
             SplitTextOnPipes = true;
             TrimWhitespace = true;
             ReorderIDs = false;
+            AutoArrangeNodes = false;
             DelayEvaluation = false;
             FlowFragmentScript = DefaultFlowFragmentScript;
             VoiceOverProperty = DefaultVoiceOverProperty;

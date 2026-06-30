@@ -9,7 +9,7 @@ namespace PixelCrushers.DialogueSystem.Wrappers
     /// This wrapper class keeps references intact if you switch between the 
     /// compiled assembly and source code versions of the original class.
     /// </summary>
-    [AddComponentMenu("Pixel Crushers/Dialogue System/UI/Standard UI/Selection/Standard UI Quest Title Button Template")]
+    [AddComponentMenu("Pixel Crushers/Dialogue System/UI/Standard UI/Quest/Standard UI Quest Title Button Template")]
     public class StandardUIQuestTitleButtonTemplate : PixelCrushers.DialogueSystem.StandardUIQuestTitleButtonTemplate
     {
     }

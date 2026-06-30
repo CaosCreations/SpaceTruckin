@@ -85,7 +85,7 @@ namespace PixelCrushers.DialogueSystem.Articy
             DrawConversationsForLooseFlow();
             DrawDefaultActorsToggle();
             DrawConvertMarkupToggle();
-            DrawSplitPipesToggle();
+            DrawExtraOptions();
             DrawDocumentsSubmenu();
             DrawVoiceOverOptions();
             DrawPortraitFolderField();
@@ -301,7 +301,7 @@ namespace PixelCrushers.DialogueSystem.Articy
                 prefs.ConvertMarkupToRichText);
         }
 
-        private void DrawSplitPipesToggle()
+        private void DrawExtraOptions()
         {
             prefs.SplitTextOnPipes = EditorGUILayout.Toggle(new GUIContent("Split Text On Pipes",
                 "When dialogue text contains pipe characters ( | ), split into separate dialogue entry nodes."),
@@ -315,6 +315,9 @@ namespace PixelCrushers.DialogueSystem.Articy
             prefs.ReorderIDs = EditorGUILayout.Toggle(new GUIContent("Reorder IDs",
                 "Reorder internal dialogue entry IDs depth-first after importing."), 
                 prefs.ReorderIDs);
+            prefs.AutoArrangeNodes = EditorGUILayout.Toggle(new GUIContent("Auto-arrange Nodes",
+                "Arrange dialogue entries as a vertical conversation tree on canvas."),
+                prefs.AutoArrangeNodes);
             prefs.DelayEvaluation = EditorGUILayout.Toggle(new GUIContent("Delay Evaluation",
                 "If Dialogue Manager's Other Settings > Reevaluate Links After Subtitle ticked, you can generally untick this unless you're using SimStatus. If ticked, it will add <Delay Evaluation> nodes between nodes with Scripts and nodes with Conditions."),
                 prefs.DelayEvaluation);
@@ -766,7 +769,7 @@ namespace PixelCrushers.DialogueSystem.Articy
                     projectVersion = articyData.ProjectVersion;
                     projectAuthor = articyData.ProjectAuthor;
                     prefs.ReviewSpecialProperties(articyData);
-                    Debug.Log(string.Format("{0}: Loaded {1}", DialogueDebug.Prefix, prefs.ProjectFilename));
+                    Debug.Log(string.Format("{0}: Loaded {1}. Review content, then click Save Database to save to dialogue database.", DialogueDebug.Prefix, prefs.ProjectFilename));
                 }
                 else
                 {
@@ -807,7 +810,7 @@ namespace PixelCrushers.DialogueSystem.Articy
                         ArticyConverter.ConvertArticyDataToDatabase(articyData, prefs, template, database);
                         ArticyEditorTools.FindPortraitTexturesInAssetDatabase(articyData, prefs.PortraitFolder, database);
                         if (prefs.ReorderIDs) ReorderIDs(database);
-                        AutoArrangeNodes(database);
+                        if (prefs.AutoArrangeNodes) AutoArrangeNodes(database);
                         EditorUtility.SetDirty(database);
                         PrefabUtility.RecordPrefabInstancePropertyModifications(database);
                         ConvertTextTable(assetName);

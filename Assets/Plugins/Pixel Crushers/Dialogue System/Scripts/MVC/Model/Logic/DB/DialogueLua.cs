@@ -17,6 +17,9 @@ namespace PixelCrushers.DialogueSystem
     /// For speed, this class occasionally bypasses the Lua wrapper class and works directly
     /// with the underlying Lua implementation, Lua Interpreter.
     /// </summary>
+#if VISUAL_SCRIPTING
+    [Unity.VisualScripting.IncludeInSettings(true)]
+#endif
     public static class DialogueLua
     {
 

@@ -19,14 +19,6 @@ namespace PixelCrushers.DialogueSystem
 
         public enum ScriptWizardResourceType { Quest, QuestEntry, Variable, Actor, Item, Location, SimStatus, Alert, Misc, Custom, ManualEnter }
 
-        public enum EqualityType { Is, IsNot }
-
-        public enum ComparisonType { Is, IsNot, Less, Greater, LessEqual, GreaterEqual, Between }
-
-        public enum LogicalOperatorType { All, Any }
-
-        public enum BooleanType { True, False }
-
         public enum SimStatusType { Untouched, WasOffered, WasDisplayed }
 
         public string[] questNames = new string[0];

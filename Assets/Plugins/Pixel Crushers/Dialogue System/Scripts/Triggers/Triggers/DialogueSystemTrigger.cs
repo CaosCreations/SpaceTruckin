@@ -522,7 +522,7 @@ namespace PixelCrushers.DialogueSystem
 
         // These methods run even if this DialogueSystemTrigger isn't on the actor or conversant.
         // They handle monitoring distance, showCursorDuringConversation and pauseGameDuringConversation.
-        private void OnConversationStartAnywhere(Transform actor)
+        protected virtual void OnConversationStartAnywhere(Transform actor)
         {
             DialogueManager.instance.conversationStarted -= OnConversationStartAnywhere;
             if (showCursorDuringConversation)
@@ -539,14 +539,14 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        protected IEnumerator ShowCursorAfterOneFrame()
+        protected virtual IEnumerator ShowCursorAfterOneFrame()
         {
             yield return null;
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
         }
 
-        private void OnConversationEndAnywhere(Transform actor)
+        protected virtual void OnConversationEndAnywhere(Transform actor)
         {
             var didMyConversationEnd = !DialogueManager.allowSimultaneousConversations ||
                 (activeConversation == null) || !activeConversation.conversationController.isActive;
@@ -568,7 +568,7 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        private void OnConversationEndCheckQueue(Transform actor)
+        protected virtual void OnConversationEndCheckQueue(Transform actor)
         {
             if (isConversationQueued && !DialogueManager.isConversationActive)
             {
@@ -642,7 +642,7 @@ namespace PixelCrushers.DialogueSystem
 
 #endif
 
-        protected void CheckOnTriggerExit(Transform otherTransform)
+        protected virtual void CheckOnTriggerExit(Transform otherTransform)
         {
             if (!enabled) return;
             if (stopConversationOnTriggerExit &&
@@ -671,7 +671,7 @@ namespace PixelCrushers.DialogueSystem
 
         protected bool listenForOnDestroy = false;
 
-        public void OnEnable()
+        public virtual void OnEnable()
         {
             PersistentDataManager.RegisterPersistentData(gameObject);
             listenForOnDestroy = true;
@@ -679,7 +679,7 @@ namespace PixelCrushers.DialogueSystem
             if (trigger == DialogueSystemTriggerEvent.OnEnable) StartCoroutine(StartAtEndOfFrame());
         }
 
-        public void OnDisable()
+        public virtual void OnDisable()
         {
             StopMonitoringConversationDistance();
             StopAllCoroutines();
@@ -697,7 +697,7 @@ namespace PixelCrushers.DialogueSystem
             listenForOnDestroy = false;
         }
 
-        public void OnDestroy()
+        public virtual void OnDestroy()
         {
             if (hasSaveSystem)
             {
@@ -1098,12 +1098,12 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        private float GetCurrentDialogueTime()
+        protected float GetCurrentDialogueTime()
         {
             return DialogueTime.mode == DialogueTime.TimeMode.Gameplay ? Time.time : Time.realtimeSinceStartup;
         }
 
-        private int GetEntryIDFromTitle(string conversation, string entryTitle)
+        protected int GetEntryIDFromTitle(string conversation, string entryTitle)
         {
             if (string.IsNullOrEmpty(conversation) || string.IsNullOrEmpty(entryTitle)) return -1;
             var conversationAsset = DialogueManager.MasterDatabase.GetConversation(conversation);
@@ -1212,7 +1212,7 @@ namespace PixelCrushers.DialogueSystem
         /// <summary>
         /// Listens for the OnRecordPersistentData message and records the current bark index.
         /// </summary>
-        public void OnRecordPersistentData()
+        public virtual void OnRecordPersistentData()
         {
             if (enabled && !string.IsNullOrEmpty(barkConversation))
             {
@@ -1223,7 +1223,7 @@ namespace PixelCrushers.DialogueSystem
         /// <summary>
         /// Listens for the OnApplyPersistentData message and retrieves the current bark index.
         /// </summary>
-        public void OnApplyPersistentData()
+        public virtual void OnApplyPersistentData()
         {
             if (enabled && !string.IsNullOrEmpty(barkConversation))
             {

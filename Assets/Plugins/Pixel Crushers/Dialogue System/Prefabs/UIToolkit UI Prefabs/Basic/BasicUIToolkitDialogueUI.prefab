@@ -48,9 +48,13 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 08f1e51840a47fb47bd5f3d0ab0e045b, type: 3}
   m_SortingOrder: 1
+  m_Position: 0
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
   m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
 --- !u!1 &3683253932296609294
 GameObject:
   m_ObjectHideFlags: 0
@@ -95,7 +99,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3683253932296609294}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b3bbdcb5517faf478f6ddcb5610ba6c, type: 3}
+  m_Script: {fileID: 11500000, guid: 8ea7a03b8e1c35946ba91838ff5e40f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   alertElements:
@@ -115,12 +119,14 @@ MonoBehaviour:
       portraitLabelName: NPCPortraitLabel
       portraitImageName: NPCPortraitImage
       continueButtonName: NPCContinueButton
+      continueButtonFastForwardTypewriter: 0
       visibility: 0
     - subtitlePanelName: PCSubtitlePanel
       subtitleLabelName: PCSubtitleLabel
       portraitLabelName: PCPortraitLabel
       portraitImageName: PCPortraitImage
       continueButtonName: PCContinueButton
+      continueButtonFastForwardTypewriter: 0
       visibility: 0
     responseMenuElements:
       buttonAlignment: 0
@@ -189,9 +195,13 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: e3d12f3483d5fe64eb7d8d2fefe656ea, type: 3}
   m_SortingOrder: 0
+  m_Position: 0
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
   m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
 --- !u!1 &7200741972163469924
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,6 +250,10 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: bb55ab0249bcc8248aaaed1d16936353, type: 3}
   m_SortingOrder: 1
+  m_Position: 0
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
   m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}

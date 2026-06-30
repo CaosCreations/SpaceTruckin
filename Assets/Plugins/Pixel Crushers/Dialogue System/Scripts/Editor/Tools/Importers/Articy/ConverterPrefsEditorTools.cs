@@ -42,6 +42,7 @@ namespace PixelCrushers.DialogueSystem.Articy
         private const string ArticySplitTextOnPipesKey = "PixelCrushers.DialogueSystem.SplitTextOnPipes";
         private const string ArticyTrimWhitespaceKey = "PixelCrushers.DialogueSystem.TrimWhitespace";
         private const string ArticyReorderIDsKey = "PixelCrushers.DialogueSystem.ArticyReorderIDs";
+        private const string ArticyAutoArrangeNodesKey = "PixelCrushers.DialogueSystem.ArticyAutoArrangeNodes";
         private const string ArticyDelayEvaluationKey = "PixelCrushers.DialogueSystem.DelayEvaluation";
         private const string ArticyFlowFragmentScriptKey = "PixelCrushers.DialogueSystem.ArticyFlowFragmentScript";
         private const string ArticyVoiceOverPropertyKey = "PixelCrushers.DialogueSystem.ArticyVoiceOverPropertyKey";
@@ -77,7 +78,8 @@ namespace PixelCrushers.DialogueSystem.Articy
             converterPrefs.ConvertMarkupToRichText = EditorPrefs.GetBool(ArticyConvertMarkupToRichTextKey, true);
             converterPrefs.SplitTextOnPipes = EditorPrefs.GetBool(ArticySplitTextOnPipesKey, true);
             converterPrefs.TrimWhitespace = EditorPrefs.GetBool(ArticyTrimWhitespaceKey, true);
-            converterPrefs.ReorderIDs = EditorPrefs.GetBool(ArticyReorderIDsKey, true);
+            converterPrefs.ReorderIDs = EditorPrefs.GetBool(ArticyReorderIDsKey, false);
+            converterPrefs.AutoArrangeNodes = EditorPrefs.GetBool(ArticyAutoArrangeNodesKey, false);
             converterPrefs.DelayEvaluation = EditorPrefs.GetBool(ArticyDelayEvaluationKey, true);
             converterPrefs.FlowFragmentScript = EditorPrefs.GetString(ArticyFlowFragmentScriptKey, ConverterPrefs.DefaultFlowFragmentScript);
             converterPrefs.VoiceOverProperty = EditorPrefs.GetString(ArticyVoiceOverPropertyKey, ConverterPrefs.DefaultVoiceOverProperty);
@@ -115,6 +117,7 @@ namespace PixelCrushers.DialogueSystem.Articy
             EditorPrefs.SetBool(ArticySplitTextOnPipesKey, converterPrefs.SplitTextOnPipes);
             EditorPrefs.SetBool(ArticyTrimWhitespaceKey, converterPrefs.TrimWhitespace);
             EditorPrefs.SetBool(ArticyReorderIDsKey, converterPrefs.ReorderIDs);
+            EditorPrefs.SetBool(ArticyAutoArrangeNodesKey, converterPrefs.AutoArrangeNodes);
             EditorPrefs.SetBool(ArticyDelayEvaluationKey, converterPrefs.DelayEvaluation);
             EditorPrefs.SetString(ArticyFlowFragmentScriptKey, converterPrefs.FlowFragmentScript);
             EditorPrefs.SetString(ArticyVoiceOverPropertyKey, converterPrefs.VoiceOverProperty);
@@ -151,6 +154,7 @@ namespace PixelCrushers.DialogueSystem.Articy
             EditorPrefs.DeleteKey(ArticySplitTextOnPipesKey);
             EditorPrefs.DeleteKey(ArticyTrimWhitespaceKey);
             EditorPrefs.DeleteKey(ArticyReorderIDsKey);
+            EditorPrefs.DeleteKey(ArticyAutoArrangeNodesKey);
             EditorPrefs.DeleteKey(ArticyDelayEvaluationKey);
             EditorPrefs.DeleteKey(ArticyFlowFragmentScriptKey);
             EditorPrefs.DeleteKey(ArticyVoiceOverPropertyKey);

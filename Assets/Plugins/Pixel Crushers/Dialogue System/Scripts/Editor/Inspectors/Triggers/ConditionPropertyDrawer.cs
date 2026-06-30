@@ -16,6 +16,7 @@ namespace PixelCrushers.DialogueSystem
         public static bool hideMainFoldout = false;
 
         private SerializedProperty luaConditionsProperty = null;
+        private SerializedProperty luaElementsMustBeTrueProperty = null;
         private SerializedProperty questConditionsProperty = null;
         private SerializedProperty acceptedTagsProperty = null;
         private SerializedProperty acceptedGameObjectsProperty = null;
@@ -34,6 +35,7 @@ namespace PixelCrushers.DialogueSystem
             luaConditionWizardHeight = luaConditionsProperty.isExpanded 
                 ? luaConditionWizard.GetHeight("x", propertyWidth, true)
                 : 0;
+            if (luaConditionsProperty.isExpanded) height += EditorGUIUtility.singleLineHeight + 2f; // Any/All
             height += luaConditionWizardHeight;
             height += GetTextAreaArrayHeight(luaConditionsProperty);
             height += GetQuestConditionsHeight(questConditionsProperty);
@@ -113,6 +115,8 @@ namespace PixelCrushers.DialogueSystem
 
                     if (luaConditionsProperty.isExpanded)
                     {
+                        EditorGUI.PropertyField(new Rect(x + 16f, y, rect.width, EditorGUIUtility.singleLineHeight), luaElementsMustBeTrueProperty);
+                        y += EditorGUIUtility.singleLineHeight + 2f;
                         rect = new Rect(x + 16f, y, 80f, EditorGUIUtility.singleLineHeight + 2f);
                         EditorGUI.LabelField(rect, "Size");
                         rect = new Rect(x + 96f, y, width - 96f, EditorGUIUtility.singleLineHeight + 2f);
@@ -205,6 +209,7 @@ namespace PixelCrushers.DialogueSystem
         private void FindProperties(SerializedProperty property)
         {
             luaConditionsProperty = property.FindPropertyRelative("luaConditions");
+            luaElementsMustBeTrueProperty = property.FindPropertyRelative("luaElementsMustBeTrue");
             questConditionsProperty = property.FindPropertyRelative("questConditions");
             acceptedTagsProperty = property.FindPropertyRelative("acceptedTags");
             acceptedGameObjectsProperty = property.FindPropertyRelative("acceptedGameObjects");

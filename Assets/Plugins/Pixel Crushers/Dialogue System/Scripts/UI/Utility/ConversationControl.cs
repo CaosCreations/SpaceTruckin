@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -60,8 +61,7 @@ namespace PixelCrushers.DialogueSystem
                     Debug.LogWarning("Dialogue System: Dialogue Manager's Include SimStatus isn't ticked but it requires for Stop Skip All On Unread Subtitle. Enabling SimStatus.");
                     DialogueLua.includeSimStatus = true;
                 }
-                DialogueManager.instance.preparingConversationLine -= OnPreparingConversationLine;
-                DialogueManager.instance.preparingConversationLine += OnPreparingConversationLine;
+                RegisterEvents();
             }
             hasStarted = true;
         }
@@ -69,13 +69,29 @@ namespace PixelCrushers.DialogueSystem
         protected virtual void OnEnable()
         {
             if (!hasStarted) return;
-            DialogueManager.instance.preparingConversationLine -= OnPreparingConversationLine;
-            DialogueManager.instance.preparingConversationLine += OnPreparingConversationLine;
+            RegisterEvents();
         }
 
         protected virtual void OnDisable()
         {
+            UnregisterEvents();
+        }
+
+        protected virtual void RegisterEvents()
+        {
+            UnregisterEvents();
+            DialogueManager.instance.preparingConversationLine += OnPreparingConversationLine;
+            DialogueManager.instance.conversationLinePrepared += OnConversationLinePrepared;
+            DialogueManager.instance.conversationResponseMenuPrepared -= OnConversationResponseMenuPrepared;
+            DialogueManager.instance.conversationEnded += OnConversationEnded;
+        }
+
+        protected virtual void UnregisterEvents()
+        {
             DialogueManager.instance.preparingConversationLine -= OnPreparingConversationLine;
+            DialogueManager.instance.conversationLinePrepared -= OnConversationLinePrepared;
+            DialogueManager.instance.conversationResponseMenuPrepared -= OnConversationResponseMenuPrepared;
+            DialogueManager.instance.conversationEnded -= OnConversationEnded;
         }
 
         /// <summary>
@@ -124,7 +140,7 @@ namespace PixelCrushers.DialogueSystem
             mustStopAtCurrentUnreadEntry = DialogueLua.GetSimStatus(entry) == DialogueLua.Untouched;
         }
 
-        public virtual void OnConversationLine(Subtitle subtitle)
+        protected virtual void OnConversationLinePrepared(Subtitle subtitle)
         {
             if (skipAll)
             {
@@ -137,7 +153,7 @@ namespace PixelCrushers.DialogueSystem
             }
         }
 
-        public virtual void OnConversationResponseMenu(Response[] responses)
+        protected virtual void OnConversationResponseMenuPrepared(Response[] responses)
         {
             if (skipAll)
             {
@@ -158,7 +174,7 @@ namespace PixelCrushers.DialogueSystem
             DialogueManager.ConversationView.LastModeWasResponseMenu = true;
         }
 
-        public virtual void OnConversationEnd(Transform actor)
+        protected virtual void OnConversationEnded(Transform t)
         {
             if (stopSkipAllOnConversationEnd) skipAll = false;
         }

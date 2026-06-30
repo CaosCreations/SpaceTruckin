@@ -14,16 +14,27 @@ namespace PixelCrushers
     [RequireComponent(typeof(RectTransform))]
     public class KeepRectTransformOnscreen : MonoBehaviour
     {
+
+        [Tooltip("Padding from edges of screen in viewport units (0 to 1).")]
+        public Vector2 padding = new Vector2(0.05f, 0.05f);
+        [Tooltip("Rotate RectTransform so it always faces camera.")]
+        public bool alwaysFaceCamera = true;
+
+        private Camera mainCamera = null;
+        private Transform parentTransform;
         private RectTransform rectTransform;
         private float originalX = 0;
         private bool applied = false;
-        private Camera mainCamera = null;
+        private float verticalOffset;
 
         private void Start()
         {
+            mainCamera = Camera.main;
+            parentTransform = transform.parent;
             rectTransform = GetComponent<RectTransform>();
             originalX = rectTransform.position.x;
-            mainCamera = Camera.main;
+            verticalOffset = transform.localPosition.y;
+            if (parentTransform == null || rectTransform == null || mainCamera == null) enabled = false;
         }
 
         private void OnEnable()
@@ -34,7 +45,11 @@ namespace PixelCrushers
 
         private void LateUpdate()
         {
-            if (mainCamera == null || rectTransform == null) return;
+            if (alwaysFaceCamera) transform.rotation = mainCamera.transform.rotation;
+
+            // Try to keep at original position when possible:
+            Vector3 originalPos = parentTransform.position + Vector3.up * verticalOffset;
+            transform.position = originalPos;
 
             Vector3[] worldCorners = new Vector3[4];
             rectTransform.GetWorldCorners(worldCorners);
@@ -45,20 +60,32 @@ namespace PixelCrushers
             Vector3 topRight = mainCamera.WorldToViewportPoint(worldCorners[2]);
 
             float offsetX = 0f;
+            float offsetY = 0f;
 
-            if (topRight.x > 1)
+            if (topRight.x > (1 - padding.x))
             {
-                offsetX = topRight.x - 1;
+                offsetX = topRight.x - (1 - padding.x);
             }
 
-            else if (bottomLeft.x < 0)
+            else if (bottomLeft.x < padding.x)
             {
-                offsetX = bottomLeft.x;
+                offsetX = bottomLeft.x - padding.x;
             }
 
-            if (offsetX != 0)
+            if (topRight.y > (1 - padding.y))
+            {
+                offsetY = topRight.y - (1 - padding.y);
+            }
+
+            else if (bottomLeft.y < padding.y)
+            {
+                offsetY = bottomLeft.y - padding.y;
+            }
+
+            if (offsetX != 0 || offsetY != 0)
             {
                 pos.x = Mathf.Clamp(pos.x - offsetX, 0, 1);
+                pos.y = Mathf.Clamp(pos.y - offsetY, 0, 1);
 
                 rectTransform.position = mainCamera.ViewportToWorldPoint(pos);
                 applied = true;

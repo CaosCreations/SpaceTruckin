@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
-using UnityEngine;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -19,7 +18,7 @@ namespace PixelCrushers
         public static List<Type> GetSubtypes<T>() where T : class
         {
             var subtypes = new List<Type>();
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            foreach (var assembly in RuntimeTypeUtility.GetAssemblies())
             {
                 if (assembly.FullName.StartsWith("Mono.Cecil")) continue;
                 if (assembly.FullName.StartsWith("UnityScript")) continue;

@@ -887,7 +887,7 @@ namespace PixelCrushers.DialogueSystem
         public static void Preload()
         {
             // Cache sequencer commands:
-            var assemblies = System.AppDomain.CurrentDomain.GetAssemblies();
+            var assemblies = RuntimeTypeUtility.GetAssemblies();
             for (int i = 0; i < assemblies.Length; i++)
             {
                 var assembly = assemblies[i];
@@ -919,7 +919,7 @@ namespace PixelCrushers.DialogueSystem
 
         public System.Type GetTypeFromName(string typeName)
         {
-            var assemblies = System.AppDomain.CurrentDomain.GetAssemblies();
+            var assemblies = RuntimeTypeUtility.GetAssemblies();
             for (int i = 0; i < assemblies.Length; i++)
             {
                 var assembly = assemblies[i];

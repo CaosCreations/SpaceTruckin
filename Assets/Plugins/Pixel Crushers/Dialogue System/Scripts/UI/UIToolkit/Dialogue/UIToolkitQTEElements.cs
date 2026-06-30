@@ -1,4 +1,4 @@
-#if UNITY_2021_1_OR_NEWER
+#if UNITY_2022_1_OR_NEWER
 // Copyright (c) Pixel Crushers. All rights reserved.
 
 using System;
@@ -22,7 +22,7 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
         [SerializeField] private List<string> indicatorNames;
 
         protected UIDocument Document => document;
-        protected VisualElement RootContainer => UIToolkitDialogueUI.GetVisualElement<VisualElement>(Document, rootContainerName);
+        protected VisualElement RootContainer => UIToolkitUtility.GetVisualElement<VisualElement>(Document, rootContainerName);
 
         protected virtual VisualElement GetIndicator(int index)
         {
@@ -36,7 +36,7 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
             {
                 for (int i = 0; i < indicatorNames.Count; i++)
                 {
-                    if (UIToolkitDialogueUI.IsVisible(GetIndicator(i))) return true;
+                    if (UIToolkitUtility.IsVisible(GetIndicator(i))) return true;
                 }
                 return false;
             }
@@ -44,21 +44,21 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
 
         public override void SetActive(bool value)
         {
-            UIToolkitDialogueUI.SetInteractable(RootContainer, value);
+            UIToolkitUtility.SetInteractable(RootContainer, value);
             for (int i = 0; i < indicatorNames.Count; i++)
             {
-                UIToolkitDialogueUI.SetDisplay(GetIndicator(i), false);
+                UIToolkitUtility.SetDisplay(GetIndicator(i), false);
             }
         }
 
         public override void ShowIndicator(int index)
         {
-            UIToolkitDialogueUI.SetDisplay(GetIndicator(index), true);
+            UIToolkitUtility.SetDisplay(GetIndicator(index), true);
         }
 
         public override void HideIndicator(int index)
         {
-            UIToolkitDialogueUI.SetDisplay(GetIndicator(index), false);
+            UIToolkitUtility.SetDisplay(GetIndicator(index), false);
         }
 
     }
