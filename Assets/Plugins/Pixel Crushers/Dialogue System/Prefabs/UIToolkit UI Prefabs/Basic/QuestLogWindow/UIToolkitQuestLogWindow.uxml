@@ -1,0 +1,22 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="RootContainer" style="flex-grow: 1; -unity-text-align: upper-left; background-color: rgb(128, 128, 128);">
+        <ui:Label text="Quest Log" name="Title" style="-unity-text-align: upper-center; font-size: 16px; color: rgb(255, 255, 255); -unity-font-style: bold;"/>
+        <ui:VisualElement name="Container" style="flex-grow: 1; align-items: auto; flex-direction: row; align-content: auto; flex-shrink: 0; border-left-width: 4px; border-right-width: 4px; padding-top: 4px; padding-right: 4px; padding-bottom: 4px; padding-left: 4px;">
+            <ui:ScrollView name="QuestSelectionScrollView" style="flex-grow: 1; width: 50%; background-color: rgb(64, 64, 64); height: 100%; margin-right: 2px;">
+                <ui:TreeView name="TreeView"/>
+            </ui:ScrollView>
+            <ui:VisualElement name="RightSide" style="flex-grow: 1; width: 50%; height: 100%; background-color: rgb(64, 64, 64); margin-left: 2px;">
+                <ui:GroupBox name="Details" style="width: auto;">
+                    <ui:Label text="Quest Heading" name="QuestHeading" style="color: rgb(255, 255, 255); flex-wrap: wrap; white-space: normal;"/>
+                    <ui:Label text="Quest Description" name="QuestDescription" style="color: rgb(255, 255, 255); flex-wrap: wrap; flex-grow: 1; white-space: normal;"/>
+                    <ui:ListView name="QuestEntryListView" enabled="false"/>
+                </ui:GroupBox>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="Buttons" style="flex-grow: 1; flex-direction: row; align-items: auto;">
+            <ui:Button text="Active" name="ActiveButton"/>
+            <ui:Button text="Completed" name="CompletedButton"/>
+            <ui:Button text="Close" name="CloseButton"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

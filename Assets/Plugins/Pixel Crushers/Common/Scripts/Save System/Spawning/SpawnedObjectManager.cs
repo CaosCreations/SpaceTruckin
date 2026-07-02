@@ -19,14 +19,16 @@ namespace PixelCrushers
         public class SpawnedObjectData
         {
             public string prefabName;
+            public string gameObjectName;
             public Vector3 position;
             public Quaternion rotation;
             public string guid;
 
             public SpawnedObjectData() { }
-            public SpawnedObjectData(string prefabName, Vector3 position, Quaternion rotation, string guid = null)
+            public SpawnedObjectData(string prefabName, string gameObjectName, Vector3 position, Quaternion rotation, string guid = null)
             {
                 this.prefabName = prefabName;
+                this.gameObjectName = gameObjectName;
                 this.position = position;
                 this.rotation = rotation;
                 this.guid = guid;
@@ -110,7 +112,7 @@ namespace PixelCrushers
             {
                 var spawnedObject = m_spawnedObjects[i];
                 if (spawnedObject == null) continue;
-                spawnedObjectDataList.list.Add(new SpawnedObjectData(spawnedObject.name.Replace("(Clone)", string.Empty), spawnedObject.transform.position, spawnedObject.transform.rotation, spawnedObject.guid));
+                spawnedObjectDataList.list.Add(new SpawnedObjectData(spawnedObject.prefabName, spawnedObject.name, spawnedObject.transform.position, spawnedObject.transform.rotation, spawnedObject.guid));
             }
             return SaveSystem.Serialize(spawnedObjectDataList);
         }
@@ -129,6 +131,7 @@ namespace PixelCrushers
                 if (prefab == null) continue;
                 var instance = Instantiate(prefab, spawnedObjectData.position, spawnedObjectData.rotation);
                 instance.guid = spawnedObjectData.guid;
+                if (!string.IsNullOrEmpty(spawnedObjectData.gameObjectName)) instance.name = spawnedObjectData.gameObjectName;
             }
             if (m_applySaveDataToSpawnedObjectsOnRestore)
             {
@@ -168,6 +171,7 @@ namespace PixelCrushers
                     if (prefab != null) break;
                 }
             }
+            if (prefab == null) Debug.LogWarning($"SpawnedObjectManager: Spawned Object Prefabs list doesn't have a prefab named '{prefabName}'", this);
             return prefab;
         }
 

@@ -1,4 +1,4 @@
-#if UNITY_2021_1_OR_NEWER
+#if UNITY_2022_1_OR_NEWER
 // Copyright (c) Pixel Crushers. All rights reserved.
 
 using UnityEngine.UIElements;
@@ -23,9 +23,9 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
         public TextElement(UIDocument document, string elementName)
         {
             this.document = document;
-            label = UIToolkitDialogueUI.GetVisualElement<Label>(document, elementName);
+            label = UIToolkitUtility.GetVisualElement<Label>(document, elementName);
 #if USE_TEXT_ANIMATOR
-            animatedLabel = UIToolkitDialogueUI.GetVisualElement<Febucci.TextAnimatorForUnity.AnimatedLabel>(document, elementName);
+            animatedLabel = UIToolkitUtility.GetVisualElement<Febucci.TextAnimatorForUnity.AnimatedLabel>(document, elementName);
 #endif
         }
 
@@ -52,9 +52,9 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
         {
             get
             {
-                if (label != null) return UIToolkitDialogueUI.IsVisible(label);
+                if (label != null) return UIToolkitUtility.IsVisible(label);
 #if USE_TEXT_ANIMATOR
-                else if (animatedLabel != null) return UIToolkitDialogueUI.IsVisible(animatedLabel);
+                else if (animatedLabel != null) return UIToolkitUtility.IsVisible(animatedLabel);
 #endif
                 else return false;
             }
@@ -73,9 +73,9 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
 
         public void SetDisplay(bool value, bool setFocus)
         {
-            UIToolkitDialogueUI.SetDisplay(label, value, setFocus);
+            UIToolkitUtility.SetDisplay(label, value, setFocus);
 #if USE_TEXT_ANIMATOR
-            UIToolkitDialogueUI.SetDisplay(animatedLabel, value, setFocus);
+            UIToolkitUtility.SetDisplay(animatedLabel, value, setFocus);
 #endif
         }
 

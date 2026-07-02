@@ -1,6 +1,6 @@
 ------------------------------
   Dialogue System for Unity  
-       Version 2.2.69
+      Version 2.2.72
         
   Copyright © Pixel Crushers
 ------------------------------
@@ -17,10 +17,11 @@ Getting Started:
 ----------------
 o Follow the 5 minute quick start guide in the Getting Started section of the manual.
 o Read the documentation and/or watch the tutorial videos.
-o Play the scene in the Demo folder. (URP or HDRP? See below.)
+o Play the scene in the Demo folder. (Built-in RP or HDRP? See below.)
 o IMPORTANT NOTE FOR URP/HRDP:
-  The demo defaults to the built-in rendering pipeline. If you're using URP or HDRP,
-  first import the corresponding unitypackage file located in the Demo folder.
+  The demo defaults to URP (Universal Rendering Pipeline). If you're using the
+  built-in rendering pipeline (BiRP) or HDRP, first import the corresponding 
+  unitypackage file located in the Demo folder.
 o IMPORTANT NOTE FOR 2D:
   If you want to use 2D physics you must define scripting symbol USE_PHYSICS2D.
   (Tick checkbox in Tools > Pixel Crushers > Dialogue System > Welcome Window.)

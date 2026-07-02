@@ -25,21 +25,27 @@ namespace PixelCrushers.DialogueSystem
         /// </example>
         public string[] luaConditions = new string[0];
 
+        [Tooltip("If 'All', all Lua Conditions elements must be true. If 'Any', then any one element can be true.")]
+        public LogicalOperatorType luaElementsMustBeTrue = LogicalOperatorType.All;
+
         /// <summary>
         /// Quest conditions. The Condition is true only if all quest conditions are true.
         /// </summary>
+        [Tooltip("Quest conditions. The Condition is true only if all quest conditions specified below are true.")]
         public QuestCondition[] questConditions = new QuestCondition[0];
 
         /// <summary>
         /// The accepted tags. The Condition is true only if the interactor's tag is in the list of accepted 
         /// tags, or if the list is empty.
         /// </summary>
+        [Tooltip("The accepted tags. The Condition is true only if the interactor's tag is in the list of accepted tags, or if the list is empty.")]
         public string[] acceptedTags = new string[0];
 
         /// <summary>
         /// The accepted game objects. The Condition is true only if the interactor is in the list of
         /// accepted game objects, or if the list is empty.
         /// </summary>
+        [Tooltip("The accepted game objects. The Condition is true only if the interactor is in the list of accepted game objects, or if the list is empty.")]
         public GameObject[] acceptedGameObjects = new GameObject[0];
 
         [HideInInspector]
@@ -66,14 +72,17 @@ namespace PixelCrushers.DialogueSystem
 
         private bool LuaConditionsAreTrue()
         {
-            if (luaConditions != null)
+            if (luaConditions == null || luaConditions.Length == 0) return true;
+            for (int i = 0; i < luaConditions.Length; i++)
             {
-                for (int i = 0; i < luaConditions.Length; i++)
-                {
-                    var luaCondition = luaConditions[i];
-                    if (!Lua.IsTrue(luaCondition, DialogueDebug.logInfo)) return false;
-                }
+                var luaCondition = luaConditions[i];
+                var isElementTrue = Lua.IsTrue(luaCondition, DialogueDebug.logInfo);
+                if (luaElementsMustBeTrue == LogicalOperatorType.Any && isElementTrue) return true;
+                if (luaElementsMustBeTrue == LogicalOperatorType.All && !isElementTrue) return false;
             }
+            // If Any and got to end and none were true, return false:
+            if (luaElementsMustBeTrue == LogicalOperatorType.Any) return false;
+            // If All and got to end and none were false, return true:
             return true;
         }
 
@@ -144,7 +153,7 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public bool IsTrue
         {
-            get 
+            get
             {
                 return
                     string.IsNullOrEmpty(questName) ||

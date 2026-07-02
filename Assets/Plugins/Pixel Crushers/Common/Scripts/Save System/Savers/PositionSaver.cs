@@ -188,7 +188,11 @@ namespace PixelCrushers
             }
 #endif
             // Set the plain old transform's position:
+            // (If a CharacterController is present, must disable it when moving the transform.)
+            var cc = target.GetComponent<CharacterController>();
+            if (cc != null) cc.enabled = false;
             target.transform.SetPositionAndRotation(position, rotation);
+            if (cc != null) cc.enabled = true;
         }
 
     }

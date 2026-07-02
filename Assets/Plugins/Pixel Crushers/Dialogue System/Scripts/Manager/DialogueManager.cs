@@ -114,6 +114,11 @@ namespace PixelCrushers.DialogueSystem
         public static bool interruptActiveConversations { get { return hasInstance ? instance.interruptActiveConversations : false; } }
 
         /// <summary>
+        /// Ignore continue button click if new conversation started on same frame that previous conversation ended and not allowing simultaneous conversations.
+        /// </summary>
+        public static bool ignoreContinueWhenConversationsStartAndEndSameFrame { get { return hasInstance ? instance.ignoreContinueWhenConversationsStartAndEndSameFrame : true; } }
+
+        /// <summary>
         /// The IsDialogueEntryValid delegate (if one is assigned). This is an optional delegate that you
         /// can add to check if a dialogue entry is valid before allowing a conversation to use it.
         /// It should return <c>true</c> if the entry is valid.

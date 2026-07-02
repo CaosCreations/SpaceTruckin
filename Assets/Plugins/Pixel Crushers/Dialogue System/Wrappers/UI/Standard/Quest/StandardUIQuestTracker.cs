@@ -10,7 +10,7 @@ namespace PixelCrushers.DialogueSystem.Wrappers
     /// compiled assembly and source code versions of the original class.
     /// </summary>
     [HelpURL("http://www.pixelcrushers.com/dialogue_system/manual2x/html/standard_u_i_quest_tracker.html")]
-    [AddComponentMenu("Pixel Crushers/Dialogue System/UI/Standard UI/Selection/Standard UI Quest Tracker")]
+    [AddComponentMenu("Pixel Crushers/Dialogue System/UI/Standard UI/Quest/Standard UI Quest Tracker")]
     public class StandardUIQuestTracker : PixelCrushers.DialogueSystem.StandardUIQuestTracker
     {
     }

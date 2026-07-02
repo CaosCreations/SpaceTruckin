@@ -11,6 +11,14 @@ using System.Text;
 namespace PixelCrushers.DialogueSystem
 {
 
+    public enum EqualityType { Is, IsNot }
+
+    public enum ComparisonType { Is, IsNot, Less, Greater, LessEqual, GreaterEqual, Between }
+
+    public enum LogicalOperatorType { All, Any }
+
+    public enum BooleanType { True, False }
+
     /// <summary>
     /// A static class of general purpose functions used by the Dialogue System.
     /// </summary>

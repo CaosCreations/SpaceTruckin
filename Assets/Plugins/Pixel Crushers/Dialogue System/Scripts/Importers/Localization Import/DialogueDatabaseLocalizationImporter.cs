@@ -59,7 +59,7 @@ namespace PixelCrushers.DialogueSystem
             var numLanguages = localizationLanguages.languages.Count;
             for (int i = 0; i < numLanguages; i++)
             {
-                var progress = (float)i / (float)numLanguages;
+                //var progress = (float)i / (float)numLanguages;
                 var language = localizationLanguages.languages[i];
                 var alsoImportMainText = localizationLanguages.importMainTextIndex == i;
 

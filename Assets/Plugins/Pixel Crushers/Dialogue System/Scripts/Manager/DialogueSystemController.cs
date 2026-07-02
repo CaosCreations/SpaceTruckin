@@ -20,6 +20,8 @@ namespace PixelCrushers.DialogueSystem
 
     public delegate void SubtitleDelegate(Subtitle subtitle);
 
+    public delegate void ResponsesDelegate(Response[] responses);
+
     public delegate void AssetLoadedDelegate(UnityEngine.Object asset);
 
     public delegate string GetLocalizedTextDelegate(string s);
@@ -63,6 +65,12 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         [Tooltip("If not allowing simultaneous conversations and a conversation is active, stop it if another conversation wants to start.")]
         public bool interruptActiveConversations = false;
+
+        /// <summary>
+        /// Ignore continue button click if new conversation started on same frame that previous conversation ended and not allowing simultaneous conversations.
+        /// </summary>
+        [Tooltip("Ignore continue button click if new conversation started on same frame that previous conversation ended and not allowing simultaneous conversations.")]
+        public bool ignoreContinueWhenConversationsStartAndEndSameFrame = true;
 
         /// <summary>
         /// Stop evaluating links at first valid NPC link unless parent uses RandomizeNextEntry().
@@ -180,6 +188,8 @@ namespace PixelCrushers.DialogueSystem
         /// Raised just prior to showing a subtitle.
         /// </summary>
         public event SubtitleDelegate conversationLinePrepared = delegate { };
+
+        public event ResponsesDelegate conversationResponseMenuPrepared = delegate { };
 
         /// <summary>
         /// Raised when StopAllConversations() is called.
@@ -1704,6 +1714,11 @@ namespace PixelCrushers.DialogueSystem
         private void OnConversationLine(Subtitle subtitle)
         {
             conversationLinePrepared?.Invoke(subtitle);
+        }
+
+        public void InvokeConversationResponseMenuPrepared(Response[] responses)
+        {
+            conversationResponseMenuPrepared?.Invoke(responses);
         }
 
         /// <summary>

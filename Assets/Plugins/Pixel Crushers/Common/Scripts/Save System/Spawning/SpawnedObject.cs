@@ -52,10 +52,13 @@ namespace PixelCrushers
             set { m_guid = value; }
         }
 
+        public string prefabName { get; protected set; }
+
         public override void Awake()
         {
             base.Awake();
             m_guid = Guid.NewGuid().ToString();
+            prefabName = name.Replace("(Clone)", "");
         }
 
         public override void Start()

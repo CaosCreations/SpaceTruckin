@@ -1,4 +1,4 @@
-#if UNITY_2021_1_OR_NEWER
+#if UNITY_2022_1_OR_NEWER
 // Copyright (c) Pixel Crushers. All rights reserved.
 
 using System;
@@ -24,8 +24,8 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
         [SerializeField] private string alertLabelName;
 
         protected UIDocument Document => document;
-        protected VisualElement RootContainer => UIToolkitDialogueUI.GetVisualElement<VisualElement>(Document, rootContainerName);
-        protected VisualElement AlertPanel => UIToolkitDialogueUI.GetVisualElement<VisualElement>(Document, alertPanelName);
+        protected VisualElement RootContainer => UIToolkitUtility.GetVisualElement<VisualElement>(Document, rootContainerName);
+        protected VisualElement AlertPanel => UIToolkitUtility.GetVisualElement<VisualElement>(Document, alertPanelName);
 
         protected TextElement alertLabel = null;
         protected TextElement AlertLabel
@@ -37,13 +37,13 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
             }
         }
 
-        public override bool isVisible => UIToolkitDialogueUI.IsVisible(AlertPanel) || UIToolkitDialogueUI.IsVisible(AlertLabel);
+        public override bool isVisible => UIToolkitUtility.IsVisible(AlertPanel) || UIToolkitUtility.IsVisible(AlertLabel);
 
         public override void SetActive(bool value)
         {
-            UIToolkitDialogueUI.SetInteractable(RootContainer, value);
-            UIToolkitDialogueUI.SetDisplay(AlertPanel, value);
-            UIToolkitDialogueUI.SetDisplay(AlertLabel, value);
+            UIToolkitUtility.SetInteractable(RootContainer, value);
+            UIToolkitUtility.SetDisplay(AlertPanel, value);
+            UIToolkitUtility.SetDisplay(AlertLabel, value);
         }
 
         public override void SetMessage(string message, float duration)

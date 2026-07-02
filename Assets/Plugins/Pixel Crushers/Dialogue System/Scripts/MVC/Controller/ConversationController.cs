@@ -211,9 +211,16 @@ namespace PixelCrushers.DialogueSystem
                 m_view.SelectedResponseHandler -= OnSelectedResponse;
                 m_view.Close();
                 DialogueManager.instance.lastConversationEnded = m_model.conversationTitle;
+                // Record the final conversation state but don't null it yet so it's valid for OnConversationEnd handlers:
+                var finalConversationState = m_state;
                 m_model.InformParticipants(DialogueSystemMessages.OnConversationEnd, true);
                 if (m_endConversationHandler != null) m_endConversationHandler(this);
-                DialogueManager.instance.currentConversationState = null;
+                // After OnConversationEnd, if the current conversation state is still this conversation's
+                // final conversation state (i.e., a new conversation hasn't started), null it:
+                if (DialogueManager.instance.currentConversationState == finalConversationState)
+                {
+                    DialogueManager.instance.currentConversationState = null;
+                }
             }
         }
 

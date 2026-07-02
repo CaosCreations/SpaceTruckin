@@ -382,7 +382,7 @@ namespace PixelCrushers.DialogueSystem.Twine
                 var sequenceIndex = FindBlockIndex(text, blockIndex, "Sequence:");
                 var conditionsIndex = FindBlockIndex(text, blockIndex, "Conditions:");
                 var scriptIndex = FindBlockIndex(text, blockIndex, "Script:");
-                var descriptionIndex = FindBlockIndex(text, blockIndex, "Description:");
+                //--- Not currently used: var descriptionIndex = FindBlockIndex(text, blockIndex, "Description:");
                 var rindex = Mathf.Min(sequenceIndex, Mathf.Min(conditionsIndex, scriptIndex));
                 block = text.Substring(blockIndex, rindex - blockIndex).Trim();
                 var remaining = text.Substring(0, index);
@@ -456,7 +456,7 @@ namespace PixelCrushers.DialogueSystem.Twine
         {
             // Replace the (goto:) clause with a [[link]]:
             var gotoMatch = GotoMacroNameAnywhereRegex.Match(conditionalGoto);
-            var beforeGoto = conditionalGoto.Substring(0, gotoMatch.Index);
+            //--- Not currently used: var beforeGoto = conditionalGoto.Substring(0, gotoMatch.Index);
             var firstQuotePos = conditionalGoto.IndexOf("\"", gotoMatch.Index);
             var secondQuotePos = conditionalGoto.IndexOf("\"", firstQuotePos + 1);
             var closeParenPos = conditionalGoto.IndexOf(")", secondQuotePos + 1);

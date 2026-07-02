@@ -121,7 +121,9 @@ namespace PixelCrushers
             }
             set
             {
+                var changed = s_currentLanguage != value;
                 s_currentLanguage = value;
+                if (changed) languageChanged?.Invoke(value);
                 instance.UpdateUIs(value);
             }
         }
@@ -241,8 +243,12 @@ namespace PixelCrushers
         /// <param name="language">Language code defined in your Text Table.</param>
         public void UpdateUIs(string language)
         {
+            // User may set currentLanguage property or call UpdateUIs() to set current language.
+            // Either way, make sure to invoke languageChanged.
+            var changed = s_currentLanguage != language;
             s_currentLanguage = language;
-            languageChanged?.Invoke(language);
+            if (changed) languageChanged?.Invoke(language);
+
             if (saveLanguageInPlayerPrefs)
             {
                 if (!string.IsNullOrEmpty(currentLanguagePlayerPrefsKey))

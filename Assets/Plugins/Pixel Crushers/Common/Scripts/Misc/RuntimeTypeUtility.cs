@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Pixel Crushers. All rights reserved.
 
-using UnityEngine;
 using System;
 using System.Linq;
 
@@ -13,6 +12,15 @@ namespace PixelCrushers
     public static class RuntimeTypeUtility
     {
 
+        public static System.Reflection.Assembly[] GetAssemblies()
+        {
+#if UNITY_6000_4_OR_NEWER
+            return UnityEngine.Assemblies.CurrentAssemblies.GetLoadedAssemblies().ToArray();
+#else
+            return AppDomain.CurrentDomain.GetAssemblies();
+#endif
+        }
+
         /// <summary>
         /// Searches all assemblies for a type with a specified name.
         /// </summary>
@@ -20,7 +28,7 @@ namespace PixelCrushers
         /// <returns>A type, or null if none matches.</returns>
         public static System.Type GetTypeFromName(string typeName)
         {
-            var assemblies = System.AppDomain.CurrentDomain.GetAssemblies();
+            var assemblies = GetAssemblies();
             for (int i = 0; i < assemblies.Length; i++)
             {
                 var assembly = assemblies[i];
@@ -35,16 +43,6 @@ namespace PixelCrushers
                 }
             }
             return null;
-        }
-
-        public static System.Reflection.Assembly[] GetAssemblies()
-        {
-#if NET_STANDARD_2_0 || UNITY_IOS
-            return AppDomain.CurrentDomain.GetAssemblies(); // Used to exclude dynamic assemblies, but unsupported in some iOS.
-#else
-            //---Was: return AppDomain.CurrentDomain.GetAssemblies().Where(p => !(p.ManifestModule is System.Reflection.Emit.ModuleBuilder)).ToArray(); // Exclude dynamic assemblies.
-            return AppDomain.CurrentDomain.GetAssemblies(); // Allows evaluation version to build to iOS.
-#endif
         }
 
         /// <summary>

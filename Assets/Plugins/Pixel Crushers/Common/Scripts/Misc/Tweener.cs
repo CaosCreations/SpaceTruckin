@@ -110,7 +110,7 @@ namespace PixelCrushers
 
         public static void StopTween(Coroutine tween)
         {
-            if (tween == null) return;
+            if (Instance == null || tween == null) return;
             Instance.StopCoroutine(tween);
         }
 

@@ -333,6 +333,12 @@ namespace PixelCrushers
             }
         }
 
+        /// <summary>
+        /// True if save data is being recorded or applied because the save system
+        /// is changing scenes, not loading a saved game.
+        /// </summary>
+        public static bool isOnlyChangingScene => m_isOnlyChangingScene;
+
         public delegate string ValidateSceneNameDelegate(string sceneName, SceneValidationMode sceneValidationMode);
 
         /// <summary>

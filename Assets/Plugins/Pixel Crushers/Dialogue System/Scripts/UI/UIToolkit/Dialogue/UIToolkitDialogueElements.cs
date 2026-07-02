@@ -1,4 +1,4 @@
-#if UNITY_2021_1_OR_NEWER
+#if UNITY_2022_1_OR_NEWER
 // Copyright (c) Pixel Crushers. All rights reserved.
 
 using System;
@@ -36,8 +36,8 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
         }
 
         protected UIDocument Document => document;
-        protected VisualElement RootContainer => UIToolkitDialogueUI.GetVisualElement<VisualElement>(Document, rootContainerName);
-        protected VisualElement DialoguePanel => UIToolkitDialogueUI.GetVisualElement<VisualElement>(Document, dialoguePanelName);
+        protected VisualElement RootContainer => UIToolkitUtility.GetVisualElement<VisualElement>(Document, rootContainerName);
+        protected VisualElement DialoguePanel => UIToolkitUtility.GetVisualElement<VisualElement>(Document, dialoguePanelName);
         public override AbstractUISubtitleControls npcSubtitleControls => NPCSubtitleElements;
         public override AbstractUISubtitleControls pcSubtitleControls => PCSubtitleElements;
         public override AbstractUIResponseMenuControls responseMenuControls => responseMenuElements;
@@ -50,14 +50,14 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
 
         public override void ShowPanel()
         {
-            UIToolkitDialogueUI.SetInteractable(RootContainer, false);
-            UIToolkitDialogueUI.SetDisplay(DialoguePanel, true);
+            UIToolkitUtility.SetInteractable(RootContainer, false);
+            UIToolkitUtility.SetDisplay(DialoguePanel, true);
         }
 
         public override void SetActive(bool value)
         {
-            UIToolkitDialogueUI.SetInteractable(RootContainer, value);
-            UIToolkitDialogueUI.SetDisplay(DialoguePanel, value);
+            UIToolkitUtility.SetInteractable(RootContainer, value);
+            UIToolkitUtility.SetDisplay(DialoguePanel, value);
             base.SetActive(value);
         }
 

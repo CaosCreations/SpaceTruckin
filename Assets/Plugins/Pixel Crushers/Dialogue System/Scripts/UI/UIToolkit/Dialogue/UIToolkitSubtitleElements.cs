@@ -1,4 +1,4 @@
-#if UNITY_2021_1_OR_NEWER
+#if UNITY_2022_1_OR_NEWER
 // Copyright (c) Pixel Crushers. All rights reserved.
 
 using System;
@@ -29,15 +29,19 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
         [SerializeField] private bool continueButtonFastForwardTypewriter;
         [Tooltip("Specifies when panel should be visible/hidden.")]
         [SerializeField] private UIVisibility visibility;
+        [Tooltip("Each subtitle adds to Subtitle Text instead of replacing it.")]
+        [SerializeField] private bool accumulateText = false;
+        [Tooltip("(Only relevant if Accumulate Text is ticked.) Holds accumulated text prior to current subtitle text.")]
+        [SerializeField] private string previousLabelName;
 
         public bool IsSamePanel(UIToolkitSubtitleElements panel) => panel.subtitlePanelName == this.subtitlePanelName;
         public string SubtitlePanelName => subtitlePanelName;
         public UIVisibility Visibility => visibility;
 
         protected UIDocument Document { get; set; }
-        protected VisualElement SubtitlePanel => UIToolkitDialogueUI.GetVisualElement<VisualElement>(Document, subtitlePanelName);
-        protected VisualElement PortraitImage => UIToolkitDialogueUI.GetVisualElement<VisualElement>(Document, portraitImageName);
-        protected Button ContinueButton => UIToolkitDialogueUI.GetVisualElement<Button>(Document, continueButtonName);
+        protected VisualElement SubtitlePanel => UIToolkitUtility.GetVisualElement<VisualElement>(Document, subtitlePanelName);
+        protected VisualElement PortraitImage => UIToolkitUtility.GetVisualElement<VisualElement>(Document, portraitImageName);
+        protected Button ContinueButton => UIToolkitUtility.GetVisualElement<Button>(Document, continueButtonName);
 
         protected TextElement subtitleLabel = null;
         protected TextElement SubtitleLabel
@@ -58,6 +62,19 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
                 return portraitLabel;
             }
         }
+
+        protected TextElement previousLabel = null;
+        protected TextElement PreviousLabel
+        {
+            get
+            {
+                if (previousLabel == null) previousLabel = new TextElement(Document, previousLabelName);
+                return previousLabel;
+            }
+        }
+
+        protected string AccumulatedText { get; set; }
+        protected string PreviousText { get; set; }
 
         public bool ShouldStayVisible => Visibility == UIVisibility.AlwaysFromStart || Visibility == UIVisibility.AlwaysOnceShown;
 
@@ -89,7 +106,7 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
 
         public override void SetActive(bool value)
         {
-            UIToolkitDialogueUI.SetDisplay(SubtitlePanel, value);
+            UIToolkitUtility.SetDisplay(SubtitlePanel, value);
             HideContinueButton();
         }
 
@@ -106,6 +123,7 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
             }
             SetActorPortraitSprite(actorName, actorSprite);
             if (SubtitleLabel != null) SubtitleLabel.text = string.Empty;
+            if (AccumulatedText != null) AccumulatedText = string.Empty;
         }
 
         public override void ClearSubtitle()
@@ -118,7 +136,20 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
         {
             SetActive(true);
             if (SubtitleLabel == null) Debug.LogError("SubtitleLabel is null");
-            if (SubtitleLabel != null) SubtitleLabel.text = subtitle.formattedText.text;
+            if (SubtitleLabel != null)
+            {
+                if (accumulateText)
+                {
+                    if (PreviousLabel == null) Debug.LogError("PreviousLabel is null");
+                    PreviousText = AccumulatedText;
+                    AccumulatedText += subtitle.formattedText.text;
+                    if (PreviousLabel != null)
+                    {
+                        PreviousLabel.text = PreviousText;
+                    }
+                }
+                SubtitleLabel.text = subtitle.formattedText.text;
+            }
             SetActorPortraitSprite(subtitle.speakerInfo.Name, subtitle.GetSpeakerPortrait());
         }
 
@@ -128,13 +159,13 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
             if (PortraitImage != null)
             {
                 var hasSprite = sprite != null;
-                UIToolkitDialogueUI.SetDisplay(PortraitImage, hasSprite);
+                UIToolkitUtility.SetDisplay(PortraitImage, hasSprite);
                 if (hasSprite) PortraitImage.style.backgroundImage = new StyleBackground(sprite);
             }
         }
 
-        public override void ShowContinueButton() => UIToolkitDialogueUI.SetDisplay(ContinueButton, true, InputDeviceManager.autoFocus);
-        public override void HideContinueButton() => UIToolkitDialogueUI.SetDisplay(ContinueButton, false);
+        public override void ShowContinueButton() => UIToolkitUtility.SetDisplay(ContinueButton, true, InputDeviceManager.autoFocus);
+        public override void HideContinueButton() => UIToolkitUtility.SetDisplay(ContinueButton, false);
 
     }
 
