@@ -16,7 +16,7 @@ namespace PixelCrushers.DialogueSystem
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            int fieldCount = 6;
+            int fieldCount = 7;
             return fieldCount * EditorGUIUtility.singleLineHeight + 2;
         }
 
@@ -60,6 +60,7 @@ namespace PixelCrushers.DialogueSystem
 
             singleFieldRect.y += EditorGUIUtility.singleLineHeight;
             EditorGUI.PropertyField(singleFieldRect, exclusiveProp);
+            singleFieldRect.y += EditorGUIUtility.singleLineHeight;
             singleFieldRect.y += EditorGUIUtility.singleLineHeight;
             EditorGUI.HelpBox(singleFieldRect, "Actor is GameObject assigned to this track.", MessageType.None);
         }

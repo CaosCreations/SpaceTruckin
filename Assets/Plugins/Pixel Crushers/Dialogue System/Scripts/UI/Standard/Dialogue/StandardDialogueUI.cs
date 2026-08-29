@@ -60,7 +60,7 @@ namespace PixelCrushers.DialogueSystem
 
         private void VerifyAssignments()
         {
-            if (addEventSystemIfNeeded) UITools.RequireEventSystem();
+            if (addEventSystemIfNeeded) UITools.RequireEventSystem(gameObject);
             if (DialogueDebug.logWarnings && verifyPanelAssignments)
             {
                 if (alertUIElements.alertText.gameObject == null) Debug.LogWarning("Dialogue System: No UI text element is assigned to Standard Dialogue UI's Alert UI Elements.", this);
@@ -90,7 +90,7 @@ namespace PixelCrushers.DialogueSystem
 
         public void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
         {
-            if (addEventSystemIfNeeded) UITools.RequireEventSystem();
+            if (addEventSystemIfNeeded) UITools.RequireEventSystem(gameObject);
         }
 #endif
 

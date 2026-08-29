@@ -116,6 +116,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
         [SerializeField]
         private EncodingType encodingType = EncodingType.UTF8;
 
+        private static GUIContent RebaselineIDsLabel = new GUIContent("Rebaseline IDs", "Reassign new IDs to all content in this database counting up from the database's Base ID. (Will not change IDs of content synced from other databases.)");
         private static GUIContent GlobalSearchLabel = new GUIContent("Search For:");
         private static GUIContent RegexSearchLabel = new GUIContent("Regex", "Use regular expressions in searches.");
 
@@ -186,7 +187,13 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             database.globalUserScript = EditorGUILayout.TextArea(database.globalUserScript);
             databaseFoldouts.emphasisSettings = EditorGUILayout.Foldout(databaseFoldouts.emphasisSettings, new GUIContent("Emphasis Settings", "Settings to use for [em#] tags in dialogue text."));
             if (databaseFoldouts.emphasisSettings) DrawEmphasisSettings();
+            EditorGUILayout.BeginHorizontal();
             database.baseID = EditorGUILayout.IntField(new GUIContent("Base ID", "Assign internal IDs to actors, variables, conversations, etc., starting from this base value. Useful when working with multiple databases."), database.baseID);
+            if (GUILayout.Button(RebaselineIDsLabel, GUILayout.Width(128)))
+            {
+                ConfirmRebaselineAllIDs();
+            }
+            EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
             EditorWindowTools.EndIndentedSection();
         }

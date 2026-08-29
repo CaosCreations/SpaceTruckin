@@ -61,8 +61,8 @@ namespace PixelCrushers.DialogueSystem
                     Debug.LogWarning("Dialogue System: Dialogue Manager's Include SimStatus isn't ticked but it requires for Stop Skip All On Unread Subtitle. Enabling SimStatus.");
                     DialogueLua.includeSimStatus = true;
                 }
-                RegisterEvents();
             }
+            RegisterEvents();
             hasStarted = true;
         }
 

@@ -86,7 +86,7 @@ namespace PixelCrushers.DialogueSystem.Articy
         // Returns an object identifier string such as Actor["Player"] that getProp/setProp/getSeenCounter can use.
         public static string getObj(string objectName)
         {
-            var db = DialogueManager.MasterDatabase;
+            var db = DialogueManager.masterDatabase;
 
             // Does objectName match an actor's Name, Technical Name, or Articy Id?
             var actor = db.actors.Find(x => string.Equals(objectName, x.Name) || string.Equals(objectName, x.LookupValue(ArticyTechnicalNameFieldTitle)) || string.Equals(objectName, x.LookupValue(ArticyIdFieldTitle)));
@@ -105,7 +105,23 @@ namespace PixelCrushers.DialogueSystem.Articy
             if (conversation != null) return "Conversation[\"" + conversation.id + "\"]";
 
             // Does objectName match a dialogue entry's id, Title, Technical Name, or Articy Id?
-            if (objectName.StartsWith("Dialog[")) return objectName;
+            return LookupDialogByArticyId(objectName);
+        }
+
+        public static string LookupDialogByArticyId(string objectName)
+        {
+            foreach (Conversation conversation in DialogueManager.masterDatabase.conversations)
+            {
+                foreach (DialogueEntry dialogueEntry in conversation.dialogueEntries)
+                {
+                    if (Field.LookupValue(dialogueEntry.fields, ArticyIdFieldTitle) == objectName ||
+                        Field.LookupValue(dialogueEntry.fields, ArticyTechnicalNameFieldTitle) == objectName ||
+                        Field.LookupValue(dialogueEntry.fields, DialogueSystemFields.Title) == objectName)
+                    {
+                        return $"Dialog[{dialogueEntry.id}]";
+                    }
+                }
+            }
             return null;
         }
 
@@ -117,7 +133,8 @@ namespace PixelCrushers.DialogueSystem.Articy
             if (objectIdentifier.StartsWith("Dialog[") && DialogueManager.isConversationActive)
             {
                 // Handle Dialog[#] specially:
-                var entryID = Tools.StringToInt(objectIdentifier.Substring(7, objectIdentifier.Length - 8));
+                var DialogLength = "Dialog[".Length;
+                var entryID = Tools.StringToInt(objectIdentifier.Substring(DialogLength, objectIdentifier.Length - (DialogLength + 1)));
                 var conversationID = DialogueManager.currentConversationState.subtitle.dialogueEntry.conversationID;
                 if (string.Equals("SimStatus", propertyName)) return DialogueLua.GetSimStatus(conversationID, entryID);
                 var entry = DialogueManager.masterDatabase.GetDialogueEntry(conversationID, entryID);

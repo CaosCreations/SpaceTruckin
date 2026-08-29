@@ -14,7 +14,8 @@ namespace PixelCrushers.DialogueSystem
 
         private HashSet<int> played = new HashSet<int>();
 
-        // NOTE: This function is called at runtime and edit time.  Keep that in mind when setting the values of properties.
+        private double timeLastStartedConversation = -1;
+
         public override void ProcessFrame(Playable playable, FrameData info, object playerData)
         {
             GameObject trackBinding = playerData as GameObject;
@@ -31,20 +32,27 @@ namespace PixelCrushers.DialogueSystem
                     played.Add(i);
                     ScriptPlayable<StartConversationBehaviour> inputPlayable = (ScriptPlayable<StartConversationBehaviour>)playable.GetInput(i);
                     StartConversationBehaviour input = inputPlayable.GetBehaviour();
-                    if (Application.isPlaying)
+                    if (Application.isPlaying)                        
                     {
-                        if (input.exclusive)
+                        double rootTime = playable.GetGraph().GetRootPlayable(0).GetTime();
+                        double dt = rootTime - timeLastStartedConversation;
+                        var sameTimeAsLastStartConversation = (-0.01 <= dt && dt <= 0.01);
+                        if (!sameTimeAsLastStartConversation)
                         {
-                            DialogueManager.StopAllConversations();
-                        }
-                        var entryID = (input.jumpToSpecificEntry && input.entryID > 0) ? input.entryID : -1;
-                        if (input.overrideDialogueUI != null)
-                        { 
-                            DialogueManager.StartConversation(input.conversation, actorTransform, input.conversant, input.entryID, input.overrideDialogueUI);
-                        }
-                        else
-                        {
-                            DialogueManager.StartConversation(input.conversation, actorTransform, input.conversant, input.entryID);
+                            timeLastStartedConversation = rootTime;
+                            if (input.exclusive)
+                            {
+                                DialogueManager.StopAllConversations();
+                            }
+                            var entryID = (input.jumpToSpecificEntry && input.entryID > 0) ? input.entryID : -1;
+                            if (input.overrideDialogueUI != null)
+                            {
+                                DialogueManager.StartConversation(input.conversation, actorTransform, input.conversant, input.entryID, input.overrideDialogueUI);
+                            }
+                            else
+                            {
+                                DialogueManager.StartConversation(input.conversation, actorTransform, input.conversant, input.entryID);
+                            }
                         }
                     }
                     else

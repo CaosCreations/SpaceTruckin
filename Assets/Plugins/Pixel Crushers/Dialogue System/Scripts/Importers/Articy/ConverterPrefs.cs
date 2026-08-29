@@ -73,6 +73,7 @@ namespace PixelCrushers.DialogueSystem.Articy
         public CodeNodeMode ConvertInstructionsAs { get; set; }
         public ConvertDropdownsModes ConvertDropdownsAs { get; set; }
         public ConvertSlotsModes ConvertSlotsAs { get; set; }
+        public bool OutputPinsSeparateEntries { get; set; }
         public bool UseTechnicalNames { get; set; }
         public bool AddDialogueEntryTechnicalNames { get; set; }
         public bool IncludeFeatureNameInFields { get; set; }
@@ -116,6 +117,7 @@ namespace PixelCrushers.DialogueSystem.Articy
             ConvertInstructionsAs = CodeNodeMode.RegularEntry;
             ConvertDropdownsAs = ConvertDropdownsModes.Int;
             ConvertSlotsAs = ConvertSlotsModes.DisplayName;
+            OutputPinsSeparateEntries = true;
             UseTechnicalNames = false;
             AddDialogueEntryTechnicalNames = false;
             IncludeFeatureNameInFields = false;

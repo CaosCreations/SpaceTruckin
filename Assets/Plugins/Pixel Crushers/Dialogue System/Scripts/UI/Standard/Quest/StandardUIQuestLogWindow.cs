@@ -116,7 +116,7 @@ namespace PixelCrushers.DialogueSystem
         {
             m_isAwake = true;
             base.Awake();
-            if (addEventSystemIfNeeded) UITools.RequireEventSystem();
+            if (addEventSystemIfNeeded) UITools.RequireEventSystem(gameObject);
             InitializeTemplates();
         }
 
