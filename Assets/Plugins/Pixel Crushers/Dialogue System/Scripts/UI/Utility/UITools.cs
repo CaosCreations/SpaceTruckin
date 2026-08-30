@@ -32,9 +32,20 @@ namespace PixelCrushers.DialogueSystem
         /// <summary>
         /// Ensures that the scene has an EventSystem.
         /// </summary>
-        public static void RequireEventSystem()
+        public static void RequireEventSystem(GameObject source = null)
         {
-            UIUtility.RequireEventSystem(DialogueDebug.logWarnings ? "Dialogue System: The scene is missing an EventSystem. Adding one." : null);
+            if (source == null)
+            {
+                UIUtility.RequireEventSystem(DialogueDebug.logWarnings
+                    ? "Dialogue System: The scene is missing an EventSystem. Adding one." 
+                    : null);
+            }
+            else
+            {
+                UIUtility.RequireEventSystem(DialogueDebug.logWarnings
+                    ? $"Dialogue System: The scene is missing an EventSystem. Adding one. If you don't want the Dialogue System to automatically create an EventSystem, inspect {source.name} and untick 'Add EventSystem If Needed'."
+                    : null);
+            }
         }
 
         /// <summary>

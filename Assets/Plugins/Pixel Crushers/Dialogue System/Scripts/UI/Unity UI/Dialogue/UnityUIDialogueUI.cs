@@ -160,7 +160,7 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         private void FindControls()
         {
-            if (addEventSystemIfNeeded) UITools.RequireEventSystem();
+            if (addEventSystemIfNeeded) UITools.RequireEventSystem(gameObject);
             m_qteControls = new UnityUIQTEControls(qteIndicators);
             if (DialogueDebug.logErrors)
             {
@@ -195,7 +195,7 @@ namespace PixelCrushers.DialogueSystem
 #else
         public void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
         {
-            if (addEventSystemIfNeeded) UITools.RequireEventSystem();
+            if (addEventSystemIfNeeded) UITools.RequireEventSystem(gameObject);
         }
 #endif
 

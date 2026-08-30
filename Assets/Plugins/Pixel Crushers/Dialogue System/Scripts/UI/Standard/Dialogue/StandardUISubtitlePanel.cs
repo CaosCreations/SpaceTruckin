@@ -236,6 +236,11 @@ namespace PixelCrushers.DialogueSystem
 
         #region Show & Hide
 
+        protected virtual void ResetAnimationTrigger(string triggerName)
+        {
+            if (m_panelAnimator != null && !string.IsNullOrEmpty(triggerName)) m_panelAnimator.ResetTrigger(triggerName);
+        }
+
         /// <summary>
         /// Shows the panel at the start of the conversation; called if it's configured to be visible at the start.
         /// </summary>
@@ -392,7 +397,8 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public override void Close()
         {
-            //StopAllCoroutines();
+            ResetAnimationTrigger(focusAnimationTrigger);
+            ResetAnimationTrigger(unfocusAnimationTrigger);
             if (m_focusWhenOpenCoroutine != null) StopCoroutine(m_focusWhenOpenCoroutine);
             if (m_showAfterClosingOtherPanelsCoroutine != null) StopCoroutine(m_showAfterClosingOtherPanelsCoroutine);
             if (m_setAnimatorCoroutine != null) StopCoroutine(m_setAnimatorCoroutine);
@@ -437,7 +443,7 @@ namespace PixelCrushers.DialogueSystem
             panelState = PanelState.Open;
             if (hasFocus) return;
             isFocusing = true;
-            if (m_panelAnimator != null && !string.IsNullOrEmpty(unfocusAnimationTrigger)) m_panelAnimator.ResetTrigger(unfocusAnimationTrigger);
+            ResetAnimationTrigger(unfocusAnimationTrigger);
             if (string.IsNullOrEmpty(focusAnimationTrigger))
             {
                 OnFocused();
@@ -460,7 +466,7 @@ namespace PixelCrushers.DialogueSystem
         /// </summary>
         public virtual void Unfocus()
         {
-            if (m_panelAnimator != null && !string.IsNullOrEmpty(focusAnimationTrigger)) m_panelAnimator.ResetTrigger(focusAnimationTrigger);
+            ResetAnimationTrigger(focusAnimationTrigger);
             StopShowSubtitleCoroutines();
             if (!string.IsNullOrEmpty(focusAnimationTrigger) && animatorMonitor.currentTrigger == focusAnimationTrigger)
             {

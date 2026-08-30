@@ -15,7 +15,8 @@ namespace PixelCrushers.DialogueSystem
 
         private HashSet<int> played = new HashSet<int>();
 
-        // NOTE: This function is called at runtime and edit time.  Keep that in mind when setting the values of properties.
+        private double timeLastContinued = -1;
+
         public override void ProcessFrame(Playable playable, FrameData info, object playerData)
         {
             int inputCount = playable.GetInputCount();
@@ -30,30 +31,40 @@ namespace PixelCrushers.DialogueSystem
                     ContinueConversationBehaviour input = inputPlayable.GetBehaviour();
                     if (Application.isPlaying)
                     {
-                        switch (input.operation)
+                        if (DialogueManager.isConversationActive)
                         {
-                            case ContinueConversationBehaviour.Operation.Continue:
-                                DialogueManager.instance.BroadcastMessage("OnConversationContinueAll", SendMessageOptions.DontRequireReceiver);
-                                break;
-                            case ContinueConversationBehaviour.Operation.ClearSubtitleText:
-                                var standardDialogueUI = DialogueManager.dialogueUI as StandardDialogueUI;
-                                if (standardDialogueUI != null)
+                            double rootTime = playable.GetGraph().GetRootPlayable(0).GetTime();
+                            double dt = rootTime - timeLastContinued;
+                            var sameTimeAsLastContinue = (-0.01 <= dt && dt <= 0.01);
+                            if (!sameTimeAsLastContinue)
+                            {
+                                timeLastContinued = rootTime;
+                                switch (input.operation)
                                 {
-                                    if (input.clearAllPanels)
-                                    {
-                                        for (int j = 0; j < standardDialogueUI.conversationUIElements.subtitlePanels.Length; j++)
+                                    case ContinueConversationBehaviour.Operation.Continue:
+                                        DialogueManager.instance.BroadcastMessage("OnConversationContinueAll", SendMessageOptions.DontRequireReceiver);
+                                        break;
+                                    case ContinueConversationBehaviour.Operation.ClearSubtitleText:
+                                        var standardDialogueUI = DialogueManager.dialogueUI as StandardDialogueUI;
+                                        if (standardDialogueUI != null)
                                         {
-                                            if (standardDialogueUI.conversationUIElements.subtitlePanels[j] == null) continue;
-                                            standardDialogueUI.conversationUIElements.subtitlePanels[j].ClearText();
+                                            if (input.clearAllPanels)
+                                            {
+                                                for (int j = 0; j < standardDialogueUI.conversationUIElements.subtitlePanels.Length; j++)
+                                                {
+                                                    if (standardDialogueUI.conversationUIElements.subtitlePanels[j] == null) continue;
+                                                    standardDialogueUI.conversationUIElements.subtitlePanels[j].ClearText();
+                                                }
+                                            }
+                                            else if (0 <= input.clearPanelNumber && input.clearPanelNumber < standardDialogueUI.conversationUIElements.subtitlePanels.Length &&
+                                                standardDialogueUI.conversationUIElements.subtitlePanels[input.clearPanelNumber] != null)
+                                            {
+                                                standardDialogueUI.conversationUIElements.subtitlePanels[input.clearPanelNumber].ClearText();
+                                            }
                                         }
-                                    }
-                                    else if (0 <= input.clearPanelNumber && input.clearPanelNumber < standardDialogueUI.conversationUIElements.subtitlePanels.Length &&
-                                        standardDialogueUI.conversationUIElements.subtitlePanels[input.clearPanelNumber] != null)
-                                    {
-                                        standardDialogueUI.conversationUIElements.subtitlePanels[input.clearPanelNumber].ClearText();
-                                    }
+                                        break;
                                 }
-                                break;
+                            }
                         }
                     }
                     else

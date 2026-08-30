@@ -96,7 +96,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             syncedVariableIDs = null;
         }
 
-        private void RecordSyncedVariableIDs()
+        public void RecordSyncedVariableIDs()
         {
             syncedVariableIDs = new HashSet<int>();
             if (database.syncInfo.syncVariables && database.syncInfo.syncVariablesDatabase != null)

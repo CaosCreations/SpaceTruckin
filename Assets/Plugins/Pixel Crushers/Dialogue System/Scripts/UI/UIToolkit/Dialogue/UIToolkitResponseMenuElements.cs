@@ -113,9 +113,14 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
             var maxResponses = Mathf.Min(responses.Length, responseButtonNames.Count);
             int numUnusedButtons = responseButtonNames.Count - maxResponses;
 
+            if (responses.Length > responseButtonNames.Count && DialogueDebug.logWarnings)
+            {
+                Debug.LogWarning($"Dialogue System: Conversation '{DialogueManager.lastConversationStarted}' has {responses.Length} responses but the dialogue UI only has {responseButtonNames.Count} buttons available.");
+            }
+
             // Fill in buttons using specified positions & alignment:
             var needToFocusAButton = InputDeviceManager.autoFocus;
-            for (int i = 0; i < responses.Length; i++)
+            for (int i = 0; i < maxResponses; i++)
             {
                 var response = responses[i];
                 var index = (response.formattedText.position != FormattedText.NoAssignedPosition)
@@ -123,6 +128,14 @@ namespace PixelCrushers.DialogueSystem.UIToolkit
                     : (buttonAlignment == ResponseButtonAlignment.ToFirst)
                         ? i
                         : numUnusedButtons + i;
+                if (!(0 <= index && index < responseButtonNames.Count))
+                {
+                    index = i; // Choose a fallback position.
+                    if (DialogueDebug.logWarnings)
+                    {
+                        Debug.LogWarning($"Dialogue System: Conversation '{DialogueManager.lastConversationStarted}' specifies button position {index} but the dialogue UI only has {responseButtonNames.Count} buttons available.");
+                    }
+                }
 
                 ResponsesByButtonIndex[index] = response;
                 var button = GetResponseButton(index);

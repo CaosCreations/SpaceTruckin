@@ -562,10 +562,20 @@ namespace PixelCrushers.DialogueSystem.Articy
             ConvertDialoguesToConversations();
             onProgressCallback("Processing hierarchy", 0.3f);
             ProcessHierarchy();
+            onProgressCallback("Adding Delay Evaluation entries", 0.4f);
             InsertDelayEvaluationNodesBeforeInputPins();
-            onProgressCallback("Sorting links by position", 0.7f);
+            onProgressCallback("Sorting links by position", 0.6f);
             SortAllLinksByPosition();
-            if (prefs.SplitTextOnPipes) SplitPipesIntoEntries();
+            if (prefs.SplitTextOnPipes)
+            {
+                onProgressCallback("Splitting text at pipe characters", 0.7f);
+                SplitPipesIntoEntries();
+            }
+            if (prefs.OutputPinsSeparateEntries)
+            {
+                onProgressCallback("Using separate entries for output pin code", 0.8f);
+                MoveOutputPinCodeToSeparateEntries();
+            }
             onProgressCallback("Converting VoiceOver properties", 0.9f);
             ConvertVoiceOverProperties();
         }
@@ -2083,6 +2093,47 @@ namespace PixelCrushers.DialogueSystem.Articy
             }
         }
 
+        protected virtual void MoveOutputPinCodeToSeparateEntries()
+        {
+            foreach (var conversation in database.conversations)
+            {
+                MoveOutputPinCodeToSeparateEntries(conversation);
+            }
+        }
+
+        protected virtual void MoveOutputPinCodeToSeparateEntries(Conversation conversation)
+        {
+            var outputPinEntries = new List<DialogueEntry>();
+            foreach (var entry in conversation.dialogueEntries)
+            {
+                if (string.IsNullOrEmpty(entry.userScript)) continue;
+                var outputId = Field.LookupValue(entry.fields, "OutputId");
+                if (string.IsNullOrEmpty(outputId)) continue;
+                // Entry has code in userScript from an output pin, so move the code
+                // to its own entry and link this entry that the new one:
+                // (Note: We may need to do this split when we process the original entry's pins
+                //  if the original entry has code from something else as well as from an output pin.)
+                var articyId = Field.LookupValue(entry.fields, ArticyIdFieldTitle);
+                var nextEntryID = GetNextConversationEntryID(conversation);
+                var title = entry.Title;
+                title = string.IsNullOrEmpty(title) ? "Output" : $"{title} Output";
+                var outputPinEntry = template.CreateDialogueEntry(nextEntryID, conversation.id, title);
+                outputPinEntries.Add(outputPinEntry);
+                outputPinEntry.userScript = entry.userScript;
+                entry.userScript = string.Empty;
+                outputPinEntry.isGroup = prefs.ConvertInstructionsAs == ConverterPrefs.CodeNodeMode.GroupEntry;
+                if (!outputPinEntry.isGroup) outputPinEntry.Sequence = "Continue()";
+                SetDialogueEntryParticipants(outputPinEntry, entry.ActorID, entry.ConversantID);
+                Field.SetValue(outputPinEntry.fields, ArticyIdFieldTitle, outputId, FieldType.Text);
+                outputPinEntry.outgoingLinks = entry.outgoingLinks;
+                entry.outgoingLinks = new List<Link>
+                {
+                    new Link(entry.conversationID, entry.id, entry.conversationID, outputPinEntry.id)
+                };
+            }
+            conversation.dialogueEntries.AddRange(outputPinEntries);
+        }
+
         protected virtual void SortAllLinksByPosition() // articy orders links by Y position.
         {
             foreach (var conversation in database.conversations)
@@ -2105,13 +2156,13 @@ namespace PixelCrushers.DialogueSystem.Articy
                             // Keeping separate block in case this causes and issue and needs to be reverted.
                             var destA = database.GetDialogueEntry(A);
                             var destB = database.GetDialogueEntry(B);
-                            if (destA == null || destB == null)
-                            {
-                                Debug.LogWarning("Dialogue System: Unexpected error sorting links by position. destA=" +
-                                    ((destA == null) ? "null" : destA.ToString()) + " (" + A.destinationConversationID + ":" + A.destinationDialogueID + "), destB=" +
-                                    ((destB == null) ? "null" : destB.ToString()) + " (" + B.destinationConversationID + ":" + B.destinationDialogueID + ") in conversation '" +
-                                    conversation.Title + "' entry " + entry.id + ".");
-                            }
+                            //if (destA == null || destB == null)
+                            //{
+                            //    Debug.LogWarning("Dialogue System: Unexpected error sorting links by position. destA=" +
+                            //        ((destA == null) ? "null" : destA.ToString()) + " (" + A.destinationConversationID + ":" + A.destinationDialogueID + "), destB=" +
+                            //        ((destB == null) ? "null" : destB.ToString()) + " (" + B.destinationConversationID + ":" + B.destinationDialogueID + ") in conversation '" +
+                            //        conversation.Title + "' entry " + entry.id + ".");
+                            //}
                             return (destA == null || destB == null)
                                 ? A.destinationDialogueID.CompareTo(B.destinationDialogueID)
                                     : destA.canvasRect.y.CompareTo(destB.canvasRect.y);

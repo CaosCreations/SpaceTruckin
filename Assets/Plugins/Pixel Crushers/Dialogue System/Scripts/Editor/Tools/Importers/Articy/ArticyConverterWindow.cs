@@ -81,10 +81,6 @@ namespace PixelCrushers.DialogueSystem.Articy
             DrawFlowFragmentMode();
             DrawOtherScriptsField();
             DrawUseTechnicalNamesToggle();
-            DrawDirectConversationLinksToEntry1Toggle();
-            DrawConversationsForLooseFlow();
-            DrawDefaultActorsToggle();
-            DrawConvertMarkupToggle();
             DrawExtraOptions();
             DrawDocumentsSubmenu();
             DrawVoiceOverOptions();
@@ -273,36 +269,23 @@ namespace PixelCrushers.DialogueSystem.Articy
                 "Add containing feature name to property name when importing properties as fields."), prefs.IncludeFeatureNameInFields);
         }
 
-        private void DrawDirectConversationLinksToEntry1Toggle()
-        {
-            prefs.DirectConversationLinksToEntry1 = EditorGUILayout.Toggle(new GUIContent("Conv. Links to Entry 1",
-                "When a link points to a conversation's START node, redirect it to entry 1 instead."),
-                prefs.DirectConversationLinksToEntry1);
-        }
-
-        private void DrawConversationsForLooseFlow()
-        {
-            prefs.CreateConversationsForLooseFlow = EditorGUILayout.Toggle(new GUIContent("Conv. Loose Flow Frags",
-                "Make conversations for flow fragments that aren't inside dialogues."),
-                prefs.CreateConversationsForLooseFlow);
-        }
-
-        private void DrawDefaultActorsToggle()
+        private void DrawExtraOptions()
         {
             prefs.UseDefaultActorsIfNoneAssignedToDialogue = EditorGUILayout.Toggle(new GUIContent("Use Default Actors If None",
                 "If no actors are assigned to a dialogue, assign default 'Player' and 'NPC' actors. If unticked, leave conversation unassigned."),
                 prefs.UseDefaultActorsIfNoneAssignedToDialogue);
-        }
-
-        private void DrawConvertMarkupToggle()
-        {
+            prefs.OutputPinsSeparateEntries = EditorGUILayout.Toggle(new GUIContent("Output Pins Sep. Entries",
+                "Create separate dialogue entries for code in output pins. If unticked, output pin code will be added to dialogue entry's Script field, which runs before entry's Sequence field."),
+                prefs.OutputPinsSeparateEntries);
+            prefs.DirectConversationLinksToEntry1 = EditorGUILayout.Toggle(new GUIContent("Conv. Links to Entry 1",
+                "When a link points to a conversation's START node, redirect it to entry 1 instead."),
+                prefs.DirectConversationLinksToEntry1);
+            prefs.CreateConversationsForLooseFlow = EditorGUILayout.Toggle(new GUIContent("Conv. Loose Flow Frags",
+                "Make conversations for flow fragments that aren't inside dialogues."),
+                prefs.CreateConversationsForLooseFlow);
             prefs.ConvertMarkupToRichText = EditorGUILayout.Toggle(new GUIContent("Convert Markup",
                 "Convert articy markup to rich text codes that Unity can display."),
                 prefs.ConvertMarkupToRichText);
-        }
-
-        private void DrawExtraOptions()
-        {
             prefs.SplitTextOnPipes = EditorGUILayout.Toggle(new GUIContent("Split Text On Pipes",
                 "When dialogue text contains pipe characters ( | ), split into separate dialogue entry nodes."),
                 prefs.SplitTextOnPipes);
@@ -312,15 +295,15 @@ namespace PixelCrushers.DialogueSystem.Articy
                 "Trim whitespace around pipes."),
                 prefs.TrimWhitespace);
             }
+            prefs.DelayEvaluation = EditorGUILayout.Toggle(new GUIContent("Delay Evaluation",
+                "If Dialogue Manager's Other Settings > Reevaluate Links After Subtitle ticked, you can generally untick this unless you're using SimStatus. If ticked, it will add <Delay Evaluation> nodes between nodes with Scripts and nodes with Conditions."),
+                prefs.DelayEvaluation);
             prefs.ReorderIDs = EditorGUILayout.Toggle(new GUIContent("Reorder IDs",
                 "Reorder internal dialogue entry IDs depth-first after importing."), 
                 prefs.ReorderIDs);
             prefs.AutoArrangeNodes = EditorGUILayout.Toggle(new GUIContent("Auto-arrange Nodes",
                 "Arrange dialogue entries as a vertical conversation tree on canvas."),
                 prefs.AutoArrangeNodes);
-            prefs.DelayEvaluation = EditorGUILayout.Toggle(new GUIContent("Delay Evaluation",
-                "If Dialogue Manager's Other Settings > Reevaluate Links After Subtitle ticked, you can generally untick this unless you're using SimStatus. If ticked, it will add <Delay Evaluation> nodes between nodes with Scripts and nodes with Conditions."),
-                prefs.DelayEvaluation);
         }
 
         /// <summary>

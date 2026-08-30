@@ -237,6 +237,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 menu.AddItem(new GUIContent("Sort/Reorder IDs/This Conversation"), false, ConfirmReorderIDsThisConversation);
                 menu.AddItem(new GUIContent("Sort/Reorder IDs/All Conversations"), false, ConfirmReorderIDsAllConversations);
                 menu.AddItem(new GUIContent("Sort/Reorder IDs/Depth First Reordering"), reorderIDsDepthFirst, () => { reorderIDsDepthFirst = !reorderIDsDepthFirst; });
+                menu.AddItem(new GUIContent("Sort/Reorder IDs/Rebaseline All IDs"), false, ConfirmRebaselineAllIDs);
                 menu.AddItem(new GUIContent("Show/Show Conversation IDs"), prefs.showConversationIDs, ToggleShowConversationIDs);
                 menu.AddItem(new GUIContent("Show/Prefer Titles For 'Links To' Menus"), prefs.preferTitlesForLinksTo, TogglePreferTitlesForLinksTo);
                 menu.AddItem(new GUIContent("Search Bar"), isSearchBarOpen, ToggleDialogueTreeSearchBar);
@@ -359,10 +360,11 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             conversationReorderableList.DoLayoutList();
         }
 
+        private const float IDColumnWidth = 48;
+
         private void DrawConversationListHeader(Rect rect)
         {
             float offset = 32f;
-            const float IDColumnWidth = 64f;
             if (prefs.showConversationIDs)
             {
                 offset += IDColumnWidth;
@@ -403,7 +405,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 else conversationOutlineSelections.Remove(conversation);
             }
 
-            float idWidth = prefs.showConversationIDs ? 32f : 0f;
+            float idWidth = prefs.showConversationIDs ? IDColumnWidth : 0f;
             if (prefs.showConversationIDs)
             {
                 EditorGUI.BeginDisabledGroup(true);
@@ -423,13 +425,6 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             }
         }
 
-        //private void DrawConversationListElementBackground(Rect rect, int index, bool isActive, bool isFocused)
-        //{
-        //    if (!(0 <= index && index < database.conversations.Count)) return;
-        //    var conversation = database.conversations[index];
-        //    ReorderableList.defaultBehaviours.DrawElementBackground(rect, index, isActive, isFocused, true);
-        //}
-
         private void OnConversationListAdd(ReorderableList list)
         {
             AddNewConversation();
@@ -443,6 +438,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 {
                     DeleteConversationOutlineSelections();
                 }
+                return;
             }
 
             if (!(0 <= list.index && list.index < database.conversations.Count)) return;
@@ -809,9 +805,12 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             if (settings.overrideSequenceSettings)
             {
                 EditorWindowTools.StartIndentedSection();
-                settings.defaultSequence = EditorGUILayout.TextField("Default Sequence", settings.defaultSequence);
-                settings.defaultPlayerSequence = EditorGUILayout.TextField("Default Player Sequence", settings.defaultPlayerSequence);
-                settings.defaultResponseMenuSequence = EditorGUILayout.TextField("Default Response Menu Sequence", settings.defaultResponseMenuSequence);
+                EditorGUILayout.LabelField("Default Sequence");
+                settings.defaultSequence = EditorGUILayout.TextArea(settings.defaultSequence);
+                EditorGUILayout.LabelField("Default Player Sequence");
+                settings.defaultPlayerSequence = EditorGUILayout.TextArea(settings.defaultPlayerSequence);
+                EditorGUILayout.LabelField("Default Response Menu Sequence");
+                settings.defaultResponseMenuSequence = EditorGUILayout.TextArea(settings.defaultResponseMenuSequence);
                 EditorWindowTools.EndIndentedSection();
             }
 

@@ -2,7 +2,6 @@
 
 using UnityEngine;
 using UnityEditor;
-using UnityEditorInternal;
 using System.Collections.Generic;
 
 namespace PixelCrushers.DialogueSystem.DialogueEditor
@@ -13,6 +12,8 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
     /// </summary>
     public partial class DialogueEditorWindow
     {
+
+        #region Reorder IDs Entrypoints
 
         private bool reorderIDsDepthFirst = true;
 
@@ -91,6 +92,8 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
             }
             return conflictedIDs.Count == 0;
         }
+
+        #endregion
 
         #region Reorder IDs Depth First
 
@@ -439,7 +442,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                             List<DialogueEntry> copyOfExistingBranch = new List<DialogueEntry>();
                             copyOfExistingBranch.AddRange(existingBranch);
                             List<List<DialogueEntry>> newBranchesCreated;
-                            fullBranch = RecursiveContinueBranch(conversation, GetNodeByID(conversation, branchNode.outgoingLinks[0].destinationDialogueID), 
+                            fullBranch = RecursiveContinueBranch(conversation, GetNodeByID(conversation, branchNode.outgoingLinks[0].destinationDialogueID),
                                 copyOfExistingBranch, out newBranchesCreated);
                             additionalBranches.AddRange(newBranchesCreated);
                         }
@@ -503,7 +506,7 @@ namespace PixelCrushers.DialogueSystem.DialogueEditor
                 List<DialogueEntry> copyOfExistingBranch = new List<DialogueEntry>();
                 copyOfExistingBranch.AddRange(existingBranch);
                 List<List<DialogueEntry>> additionalNewBranchesCreated;
-                outList = RecursiveContinueBranch(conversation, GetNodeByID(conversation, branchNode.outgoingLinks[0].destinationDialogueID), 
+                outList = RecursiveContinueBranch(conversation, GetNodeByID(conversation, branchNode.outgoingLinks[0].destinationDialogueID),
                     copyOfExistingBranch, out additionalNewBranchesCreated);
                 newBranchesCreated.AddRange(additionalNewBranchesCreated);
             }

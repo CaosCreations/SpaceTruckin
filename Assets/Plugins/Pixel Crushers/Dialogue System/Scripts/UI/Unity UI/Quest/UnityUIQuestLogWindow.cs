@@ -129,7 +129,7 @@ namespace PixelCrushers.DialogueSystem
         protected override void Start()
         {
             base.Start();
-            if (addEventSystemIfNeeded) UITools.RequireEventSystem();
+            if (addEventSystemIfNeeded) UITools.RequireEventSystem(gameObject);
             Tools.SetGameObjectActive(mainPanel, false);
             Tools.SetGameObjectActive(abandonPopup, false);
             Tools.SetGameObjectActive(questGroupTemplate, false);
